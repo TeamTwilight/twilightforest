@@ -2,19 +2,20 @@ package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFEntities;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.KnightPhantom;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
 
 public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<KnightPhantom> {
 
@@ -27,16 +28,16 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 	}
 
 	@Override
-	public boolean anyPlayerInRange() {
-		Player closestPlayer = this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange(), false);
+	public boolean anyPlayerInRange(Level level) {
+		Player closestPlayer =level.getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange(), false);
 		return closestPlayer != null && closestPlayer.getY() > this.getBlockPos().getY() - 2;
 	}
 
 	@Override
-	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
-		for (int i = spawned; i < COUNT; i++) {
+	protected boolean spawnMyBoss(ServerLevel level) {
+		for (int i = this.spawned; i < COUNT; i++) {
 			// create creature
-			KnightPhantom myCreature = this.makeMyCreature();
+			KnightPhantom myCreature = this.makeMyCreature(level);
 
 			float angle = (360F / COUNT) * i;
 			final float distance = 4F;
@@ -45,10 +46,10 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 			double ry = this.getBlockPos().getY();
 			double rz = this.getBlockPos().getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
-			myCreature.moveTo(rx, ry, rz, accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-			ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
+			myCreature.snapTo(rx, ry, rz, level.getLevel().getRandom().nextFloat() * 360F, 0.0F);
+			EventHooks.finalizeMobSpawn(myCreature, level, level.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), EntitySpawnReason.SPAWNER, null);
 
-			if(i == 5 && accessor.getDifficulty() == Difficulty.HARD){
+			if (i == 5 && level.getDifficulty() == Difficulty.HARD) {
 				myCreature.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(TFItems.KNIGHTMETAL_SHIELD.get()));
 			}
 
@@ -58,11 +59,11 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 			myCreature.setNumber(i);
 
 			// spawn it
-			if (accessor.addFreshEntity(myCreature)) {
-				spawned++;
+			if (level.addFreshEntity(myCreature)) {
+				this.spawned++;
 			}
 		}
-		return spawned == COUNT;
+		return this.spawned == COUNT;
 	}
 
 	@Override

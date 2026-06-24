@@ -1,107 +1,123 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.client.state.entity.PartEntityState;
 import twilightforest.entity.TFPart;
 
-import org.jetbrains.annotations.Nullable;
+public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntityState, M extends EntityModel<S>> extends EntityRenderer<T, S> {
 
-public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>> extends EntityRenderer<T> {
+	protected final M model;
 
-	protected final M entityModel;
-
-	public TFPartRenderer(EntityRendererProvider.Context renderManager, M model) {
-		super(renderManager);
-		this.entityModel = model;
+	public TFPartRenderer(EntityRendererProvider.Context context, M model) {
+		super(context);
+		this.model = model;
 	}
 
 	@Override
-	public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int light) {
-		int packedLightIn = entityRenderDispatcher.getPackedLightCoords(entityIn.getParent(), partialTicks);
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-		matrixStackIn.pushPose();
+	public void submit(S state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
+		stack.pushPose();
 
-		float f = Mth.rotLerp(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
-		float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
-
-		float f7 = this.handleRotationFloat(entityIn, partialTicks);
-		this.applyRotations(entityIn, matrixStackIn, f7, f, partialTicks);
-		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-		matrixStackIn.translate(0.0D, -1.501F, 0.0D);
-		float f8 = 0.0F;
-		float f5 = 0.0F;
-
-		this.entityModel.prepareMobModel(entityIn, f5, f8, partialTicks);
-		this.entityModel.setupAnim(entityIn, f5, f8, f7, f, f6);
-		Minecraft minecraft = Minecraft.getInstance();
-		boolean flag = this.isVisible(entityIn);
-		boolean flag1 = !flag && !entityIn.isInvisibleTo(minecraft.player);
-		boolean flag2 = minecraft.shouldEntityAppearGlowing(entityIn);
-		RenderType rendertype = this.getRenderType(entityIn, flag, flag1, flag2);
+		this.setupRotations(state, stack, state.partialTick);
+		stack.scale(-1.0F, -1.0F, 1.0F);
+		stack.translate(0.0D, -1.501F, 0.0D);
+		this.model.setupAnim(state);
+		boolean visible = !state.isInvisible;
+		boolean ghostly = !visible && !state.isInvisibleToPlayer;
+		boolean glowing = state.appearsGlowing;
+		RenderType rendertype = this.getRenderType(state, visible, ghostly, glowing);
 		if (rendertype != null) {
-			VertexConsumer ivertexbuilder = bufferIn.getBuffer(rendertype);
-			int i = getPackedOverlay(entityIn, this.getOverlayProgress(entityIn, partialTicks));
-			this.entityModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, i, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F);
+			int overlay = this.getOverlayCoords(state);
+			int j = ghostly ? 654311423 : -1;
+			int k = ARGB.multiply(j, this.getModelTint(state));
+			buffer.submitModel(this.model, state, stack, rendertype, state.lightCoords, overlay, k, null, state.outlineColor, null);
 		}
 
-		matrixStackIn.popPose();
+		stack.popPose();
+		super.submit(state, stack, buffer, cameraRenderState);
 	}
 
-	protected float getOverlayProgress(T livingEntityIn, float partialTicks) {
-		return 0.0F;
+	protected int getModelTint(S state) {
+		return -1;
 	}
 
-	public int getPackedOverlay(T livingEntityIn, float uIn) {
-		if (livingEntityIn.getParent() instanceof LivingEntity)
-			return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(((LivingEntity) livingEntityIn.getParent()).hurtTime > 0 || ((LivingEntity) livingEntityIn.getParent()).deathTime > 0));
-		return OverlayTexture.NO_OVERLAY;
+	private int getOverlayCoords(PartEntityState state) {
+		return OverlayTexture.pack(OverlayTexture.u(OverlayTexture.NO_WHITE_U), OverlayTexture.v(state.hasRedOverlay));
 	}
 
 	@Nullable
-	protected RenderType getRenderType(T p_230496_1_, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
-		ResourceLocation resourcelocation = this.getTextureLocation(p_230496_1_);
-		if (p_230496_3_) {
-			return RenderType.itemEntityTranslucentCull(resourcelocation);
-		} else if (p_230496_2_) {
-			return this.entityModel.renderType(resourcelocation);
+	protected RenderType getRenderType(S state, boolean visible, boolean ghostly, boolean glowing) {
+		Identifier Identifier = this.getTextureLocation(state);
+		if (ghostly) {
+			return RenderTypes.itemTranslucent(Identifier);
+		} else if (visible) {
+			return this.model.renderType(Identifier);
 		} else {
-			return p_230496_4_ ? RenderType.outline(resourcelocation) : null;
+			return glowing ? RenderTypes.outline(Identifier) : null;
 		}
 	}
 
-	protected float handleRotationFloat(T livingBase, float partialTicks) {
-		return (float)livingBase.tickCount + partialTicks;
-	}
-
-	protected void applyRotations(T entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
-		if (entityLiving.deathTime > 0) {
-			float f = ((float)entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
+	protected void setupRotations(S state, PoseStack stack, float partialTicks) {
+		if (state.deathTime > 0) {
+			float f = (state.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
 			f = Mth.sqrt(f);
 			if (f > 1.0F) {
 				f = 1.0F;
 			}
 
-			matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f * this.getDeathMaxRotation(entityLiving)));
+			stack.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees()));
+		} else if (state.isUpsideDown) {
+			stack.translate(0.0F, (state.boundingBoxHeight + 0.1F) / partialTicks, 0.0F);
+			stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 		}
-
 	}
 
-	protected float getDeathMaxRotation(T entityLivingBaseIn) {
+	protected float getFlipDegrees() {
 		return 90.0F;
 	}
 
-	protected boolean isVisible(T livingEntityIn) {
-		return !livingEntityIn.isInvisible();
+	@Override
+	public void extractRenderState(T entity, S state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.yRot = entity.getYRot();
+		state.yRotO = entity.yRotO;
+		state.xRot = entity.getXRot(partialTick);
+		state.customName = entity.getCustomName();
+		state.isUpsideDown = this.isEntityUpsideDown(entity);
+		if (state.isUpsideDown) {
+			state.xRot *= -1.0F;
+			state.yRot *= -1.0F;
+		}
+
+		state.isInWater = entity.isInWater()/* || entity.isInFluidType((fluidType, height) -> entity.canSwimInFluidType(fluidType))*/;
+		state.hasRedOverlay = entity.hurtTime > 0 || entity.deathTime > 0;
+		state.deathTime = entity.deathTime > 0 ? (float) entity.deathTime + partialTick : 0.0F;
+		Minecraft minecraft = Minecraft.getInstance();
+		state.isInvisibleToPlayer = state.isInvisible && entity.isInvisibleTo(minecraft.player);
+		state.appearsGlowing = minecraft.shouldEntityAppearGlowing(entity);
 	}
+
+	private boolean isEntityUpsideDown(T entity) {
+		if (entity.hasCustomName()) {
+			String s = ChatFormatting.stripFormatting(entity.getName().getString());
+			return "Dinnerbone".equalsIgnoreCase(s) || "Grumm".equalsIgnoreCase(s);
+		}
+		return false;
+	}
+
+	public abstract Identifier getTextureLocation(S state);
 }

@@ -1,13 +1,12 @@
 package twilightforest.entity.monster;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,12 +21,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.RedcapLightTNTGoal;
 import twilightforest.entity.ai.goal.RedcapShyGoal;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class Redcap extends Monster {
 
@@ -55,8 +55,8 @@ public class Redcap extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override
@@ -75,16 +75,16 @@ public class Redcap extends Monster {
 	}
 
 	public boolean isShy() {
-		return this.lastHurtByPlayerTime <= 0;
+		return this.lastHurtByPlayerMemoryTime <= 0;
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
-		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
 
 		this.setDropChance(EquipmentSlot.MAINHAND, 0.2F);
 		this.setDropChance(EquipmentSlot.FEET, 0.2F);
@@ -99,19 +99,14 @@ public class Redcap extends Monster {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("TNTLeft", this.heldTNT.getCount());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.heldTNT.setCount(compound.getInt("TNTLeft"));
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -0.25D;
+		this.heldTNT.setCount(compound.getIntOr("TNTLeft", 0));
 	}
 }

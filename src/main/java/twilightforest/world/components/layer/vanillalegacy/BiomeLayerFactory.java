@@ -6,7 +6,7 @@ import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaConte
 import java.util.function.LongFunction;
 
 public interface BiomeLayerFactory {
-    LazyArea build(LongFunction<LazyAreaContext> contextFactory);
+	LazyArea build(LongFunction<LazyAreaContext> contextFactory);
 
-    BiomeLayerType getType();
+	BiomeLayerType getType();
 }

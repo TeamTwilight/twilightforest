@@ -1,0 +1,90 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "twilightforest:block/ominous_fire_floor0"
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_floor1"
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "twilightforest:block/ominous_fire_side0"
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side1"
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt0"
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt1"
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "twilightforest:block/ominous_fire_side0",
+          "y": 90
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side1",
+          "y": 90
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt0",
+          "y": 90
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt1",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "twilightforest:block/ominous_fire_side0",
+          "y": 180
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side1",
+          "y": 180
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt0",
+          "y": 180
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt1",
+          "y": 180
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "twilightforest:block/ominous_fire_side0",
+          "y": 270
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side1",
+          "y": 270
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt0",
+          "y": 270
+        },
+        {
+          "model": "twilightforest:block/ominous_fire_side_alt1",
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

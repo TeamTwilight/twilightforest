@@ -1,0 +1,32 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "uncraft_table": {
+      "conditions": {
+        "item": {
+          "items": "twilightforest:uncrafting_table"
+        }
+      },
+      "trigger": "twilightforest:uncraft_item"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.uncraft_uncrafting_table.desc"
+    },
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:uncrafting_table"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.uncraft_uncrafting_table"
+    }
+  },
+  "requirements": [
+    [
+      "uncraft_table"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

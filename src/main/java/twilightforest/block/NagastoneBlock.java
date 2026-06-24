@@ -2,8 +2,10 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -21,8 +23,8 @@ public class NagastoneBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction directionToNeighbor, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
-		return this.getVariant(accessor, pos);
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		return this.getVariant(level, pos);
 	}
 
 	@Override
@@ -31,13 +33,13 @@ public class NagastoneBlock extends Block {
 	}
 
 	@SuppressWarnings("fallthrough")
-	private BlockState getVariant(LevelAccessor accessor, BlockPos pos) {
+	private BlockState getVariant(LevelReader level, BlockPos pos) {
 		int connectionCount = 0;
 		BlockState stateOut;
 		Direction[] facings = new Direction[2];
 
 		for (Direction side : Direction.values()) {
-			BlockState neighborState = accessor.getBlockState(pos.relative(side));
+			BlockState neighborState = level.getBlockState(pos.relative(side));
 			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.NAGASTONE_HEAD.get() && side == neighborState.getValue(TFHorizontalBlock.FACING))) {
 				facings[connectionCount++] = side;
 				if (connectionCount >= 2) {
@@ -65,7 +67,6 @@ public class NagastoneBlock extends Block {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(VARIANT);
 	}
 }

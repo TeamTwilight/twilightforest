@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/abstract_bush_large_5",
+  "textures": {
+    "all": "twilightforest:block/blightberry_bush"
+  }
+}

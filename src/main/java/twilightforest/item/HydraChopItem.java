@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 
 public class HydraChopItem extends Item {
 
@@ -17,7 +17,7 @@ public class HydraChopItem extends Item {
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
 		// if the player is at zero food, achievements
 		if (living instanceof ServerPlayer player && player.getFoodData().getFoodLevel() <= 0) {
-			TFAdvancements.CONSUME_HYDRA_CHOP.trigger(player);
+			TFAdvancements.CONSUME_HYDRA_CHOP.get().trigger(player);
 		}
 		// then normal effects
 		return super.finishUsingItem(stack, level, living);

@@ -8,17 +8,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class BrownCanopyMushroomFeature extends CanopyMushroomFeature {
-    public BrownCanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec) {
-        super(featureConfigurationCodec);
-    }
+	public BrownCanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec) {
+		super(featureConfigurationCodec);
+	}
 
-    @Override
-    protected int getBranches(RandomSource random) {
-        return Math.max(random.nextInt(5), 3);
-    }
+	@Override
+	protected int getBranches(RandomSource random) {
+		return Math.max(random.nextInt(5), 3);
+	}
 
-    @Override
-    protected double getLength(RandomSource random) {
-        return 9 - random.nextInt(2);
-    }
+	@Override
+	protected double getLength(RandomSource random) {
+		return 9 - random.nextInt(2);
+	}
 }

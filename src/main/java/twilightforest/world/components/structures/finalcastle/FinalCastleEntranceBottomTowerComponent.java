@@ -23,7 +23,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 	public FinalCastleEntranceBottomTowerComponent(int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
 		super(TFStructurePieceTypes.TFFCEnBoTo.get(), i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 
-    }
+	}
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {

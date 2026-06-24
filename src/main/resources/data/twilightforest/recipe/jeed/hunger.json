@@ -1,0 +1,15 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "jeed"
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "minecraft:hunger",
+  "providers": [
+    {
+      "item": "twilightforest:mosquito_swarm_spawn_egg"
+    }
+  ]
+}

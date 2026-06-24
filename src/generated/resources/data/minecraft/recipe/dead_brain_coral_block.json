@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 40,
+  "input": {
+    "item": "minecraft:brain_coral_block"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:dead_brain_coral_block"
+  }
+}

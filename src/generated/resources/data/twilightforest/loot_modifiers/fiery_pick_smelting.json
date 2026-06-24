@@ -4,9 +4,7 @@
     {
       "condition": "minecraft:match_tool",
       "predicate": {
-        "items": [
-          "twilightforest:fiery_pickaxe"
-        ]
+        "items": "twilightforest:fiery_pickaxe"
       }
     }
   ]

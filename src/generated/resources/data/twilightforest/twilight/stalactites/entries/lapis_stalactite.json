@@ -1,0 +1,6 @@
+{
+  "max_length": 8,
+  "ores": "minecraft:lapis_ore",
+  "size_variation": 0.8,
+  "weight": 12
+}

@@ -14,28 +14,33 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.selectors.MazestoneRandomBlockSelectoryFactory;
 
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
-
+	@Autowired
+	private static MazestoneRandomBlockSelectoryFactory mazestone;
 	final TFMaze maze;
 	final int[] rcoords;
 	private final int level;
 
+	@SuppressWarnings("this-escape")
 	public MinotaurMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFMMaze.get(), nbt);
 
-		this.level = nbt.getInt("mazeLevel");
-		this.rcoords = nbt.getIntArray("roomCoords");
+		this.level = nbt.getIntOr("mazeLevel", 0);
+		this.rcoords = nbt.getIntArray("roomCoords").orElse(null); //TODO: Probably not good
 
 		// recreate maze object
-		maze = new TFMaze(getMazeSize(), getMazeSize(), RandomSource.create());
-		setFixedMazeSeed();
+		RandomSource random = RandomSource.create(getSeed());
+		maze = new TFMaze(getMazeSize(), getMazeSize(), random);
+		configureMaze();
 
 		// blank out rcoords above 1 so that the room generation works properly
 		//TODO: re-do this. :)
@@ -44,35 +49,37 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		}
 
 		// recreate rooms
-		this.addRoomsToMaze(this.rcoords[0], this.rcoords[1], (this.rcoords.length + 1) / 2);
+		this.addRoomsToMaze(this.rcoords[0], this.rcoords[1], (this.rcoords.length + 1) / 2, random);
 
 		// regenerate maze
-		maze.generateRecursiveBacktracker(0, 0);
+		maze.generateRecursiveBacktracker(0, 0, random);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MinotaurMazeComponent(int index, int x, int y, int z, int entranceX, int entranceZ, int level, RandomSource random) {
 		super(TFStructurePieceTypes.TFMMaze.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.level = level;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH, false);
 
 		// make maze object
+		random.setSeed(getSeed());
 		maze = new TFMaze(getMazeSize(), getMazeSize(), random);
 
 		// set the seed to a fixed value based on this maze's x and z
-		setFixedMazeSeed();
+		configureMaze();
 
 		// rooms
 		int nrooms = 7;
 		rcoords = new int[nrooms * 2];
 
-		addRoomsToMaze(entranceX, entranceZ, nrooms);
+		addRoomsToMaze(entranceX, entranceZ, nrooms, random);
 
 		// make actual maze
-		maze.generateRecursiveBacktracker(0, 0);
+		maze.generateRecursiveBacktracker(0, 0, random);
 	}
 
-	private void addRoomsToMaze(int entranceX, int entranceZ, int nrooms) {
+	private void addRoomsToMaze(int entranceX, int entranceZ, int nrooms, RandomSource rand) {
 		// make one entrance room always
 		rcoords[0] = entranceX;
 		rcoords[1] = entranceZ;
@@ -82,8 +89,8 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		for (int i = 1; i < nrooms; i++) {
 			int rx, rz;
 			do {
-				rx = maze.rand.nextInt(getMazeSize() - 2) + 1;
-				rz = maze.rand.nextInt(getMazeSize() - 2) + 1;
+				rx = rand.nextInt(getMazeSize() - 2) + 1;
+				rz = rand.nextInt(getMazeSize() - 2) + 1;
 			} while (isNearRoom(rx, rz, rcoords, i == 1 ? 7 : 4));
 
 			maze.carveRoom1(rx, rz);
@@ -93,8 +100,8 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private void setFixedMazeSeed() {
-		maze.setSeed(this.boundingBox.minX() * 90342903L + this.boundingBox.minY() * 90342903L ^ this.boundingBox.minZ());
+	private long getSeed() {
+		return this.boundingBox.minX() * 90342903L + this.boundingBox.minY() * 90342903L ^ this.boundingBox.minZ();
 	}
 
 	public MinotaurMazeComponent(int index, int x, int y, int z, int level, RandomSource random) {
@@ -152,7 +159,6 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 	/**
 	 * Find dead ends and put something there
-	 *
 	 */
 	protected void decorateDeadEndsCorridors(RandomSource random, StructurePieceAccessor list) {
 		for (int x = 0; x < maze.width; x++) {
@@ -175,11 +181,11 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 				// corridors
 				if (!maze.isWall(x, z, x - 1, z) && !maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)
-						&& maze.isWall(x - 1, z, x - 1, z - 1) && maze.isWall(x - 1, z, x - 1, z + 1) && maze.isWall(x + 1, z, x + 1, z - 1) && maze.isWall(x + 1, z, x + 1, z + 1)) {
+					&& maze.isWall(x - 1, z, x - 1, z - 1) && maze.isWall(x - 1, z, x - 1, z + 1) && maze.isWall(x + 1, z, x + 1, z - 1) && maze.isWall(x + 1, z, x + 1, z + 1)) {
 					component = makeCorridor(random, x, z, Direction.WEST);
 				}
 				if (!maze.isWall(x, z, x, z - 1) && !maze.isWall(x, z, x, z + 1) && maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z)
-						&& maze.isWall(x, z - 1, x - 1, z - 1) && maze.isWall(x, z - 1, x + 1, z - 1) && maze.isWall(x, z + 1, x - 1, z + 1) && maze.isWall(x, z + 1, x + 1, z + 1)) {
+					&& maze.isWall(x, z - 1, x - 1, z - 1) && maze.isWall(x, z - 1, x + 1, z - 1) && maze.isWall(x, z + 1, x - 1, z + 1) && maze.isWall(x, z + 1, x + 1, z + 1)) {
 					component = makeCorridor(random, x, z, Direction.SOUTH);
 				}
 
@@ -212,7 +218,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 			case 6 -> new MazeDeadEndPaintingComponent(4, worldX, worldY, worldZ, rotation);
 			case 7 -> this.level == 1 ? new MazeDeadEndRootsComponent(TFStructurePieceTypes.TFMMDER.get(), 4, worldX, worldY, worldZ, rotation) : new MazeDeadEndShroomsComponent(4, worldX, worldY, worldZ, rotation);
 			default -> // blank with fence doorway
-					new MazeDeadEndComponent(TFStructurePieceTypes.TFMMDE.get(), 4, worldX, worldY, worldZ, rotation);
+				new MazeDeadEndComponent(TFStructurePieceTypes.TFMMDE.get(), 4, worldX, worldY, worldZ, rotation);
 		};
 	}
 
@@ -278,21 +284,23 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		// clear the area
 		generateAirBox(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
 		boolean onlyReplaceCeiling = this.level == 1;
-		generateBox(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
-		generateBox(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
+		generateBox(world, sbb, 1, 5, 1, getDiameter() + 1, 5, getDiameter() + 1, TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
+		generateBox(world, sbb, 1, 0, 1, getDiameter() + 1, 0, getDiameter() + 1, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
 
+		maze.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb, rand);
+	}
+
+	private void configureMaze() {
 		maze.headBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
 		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
 		maze.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
 		maze.pillarBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
-		maze.wallBlocks = new MazestoneProcessor();
+		maze.wallBlocks = mazestone.make();
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;
 		maze.head = 1;
 		maze.roots = 1;
 		maze.oddBias = 4;
-
-		maze.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb);
 	}
 
 	public int getMazeSize() {

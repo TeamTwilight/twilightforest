@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -36,19 +37,19 @@ public class HugeLilypadFeature extends Feature<NoneFeatureConfiguration> {
 
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.offset(
-					random.nextInt(8) - random.nextInt(8),
-					random.nextInt(4) - random.nextInt(4),
-					random.nextInt(8) - random.nextInt(8)
+				random.nextInt(8) - random.nextInt(8),
+				random.nextInt(4) - random.nextInt(4),
+				random.nextInt(8) - random.nextInt(8)
 			);
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
 				final Direction horizontal = Direction.from2DDataValue(random.nextInt(4));
 				final BlockState lilypad = TFBlocks.HUGE_LILY_PAD.get().defaultBlockState().setValue(FACING, horizontal);
 
-				world.setBlock(dPos, lilypad.setValue(PIECE, NW), 16 | 2);
-				world.setBlock(dPos.east(), lilypad.setValue(PIECE, NE), 16 | 2);
-				world.setBlock(dPos.east().south(), lilypad.setValue(PIECE, SE), 16 | 2);
-				world.setBlock(dPos.south(), lilypad.setValue(PIECE, SW), 16 | 2);
+				world.setBlock(dPos, lilypad.setValue(PIECE, NW), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+				world.setBlock(dPos.east(), lilypad.setValue(PIECE, NE), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+				world.setBlock(dPos.east().south(), lilypad.setValue(PIECE, SE), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+				world.setBlock(dPos.south(), lilypad.setValue(PIECE, SW), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 			}
 		}
 
@@ -57,8 +58,8 @@ public class HugeLilypadFeature extends Feature<NoneFeatureConfiguration> {
 
 	private boolean shouldPlacePadAt(LevelAccessor world, BlockPos pos) {
 		return world.isEmptyBlock(pos) && world.getBlockState(pos.below()).is(Blocks.WATER)
-				&& world.isEmptyBlock(pos.east()) && world.getBlockState(pos.east().below()).is(Blocks.WATER)
-				&& world.isEmptyBlock(pos.south()) && world.getBlockState(pos.south().below()).is(Blocks.WATER)
-				&& world.isEmptyBlock(pos.east().south()) && world.getBlockState(pos.east().south().below()).is(Blocks.WATER);
+			&& world.isEmptyBlock(pos.east()) && world.getBlockState(pos.east().below()).is(Blocks.WATER)
+			&& world.isEmptyBlock(pos.south()) && world.getBlockState(pos.south().below()).is(Blocks.WATER)
+			&& world.isEmptyBlock(pos.east().south()) && world.getBlockState(pos.east().south().below()).is(Blocks.WATER);
 	}
 }

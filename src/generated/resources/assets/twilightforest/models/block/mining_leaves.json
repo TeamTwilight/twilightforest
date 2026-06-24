@@ -1,5 +1,57 @@
 {
   "parent": "minecraft:block/leaves",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "rotation": 90,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "east": {
+          "cullface": "east",
+          "rotation": 90,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "north": {
+          "cullface": "north",
+          "rotation": 90,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "south": {
+          "cullface": "south",
+          "rotation": 90,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "up": {
+          "cullface": "up",
+          "rotation": 90,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "west": {
+          "cullface": "west",
+          "rotation": 90,
+          "texture": "#all",
+          "tintindex": 0
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
   "textures": {
     "all": "twilightforest:block/mining_leaves"
   }

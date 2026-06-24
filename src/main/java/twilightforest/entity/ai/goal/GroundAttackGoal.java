@@ -25,6 +25,7 @@ public class GroundAttackGoal extends Goal {
 	private int cooldown;
 	private int attackTick;
 
+	@SuppressWarnings("this-escape")
 	public GroundAttackGoal(Minoshroom minoshroom) {
 		this.attacker = minoshroom;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

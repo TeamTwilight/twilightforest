@@ -1,0 +1,20 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:sidestep_cooldown": 40
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.side_step.description",
+      "with": [
+        {
+          "keybind": "key.left"
+        },
+        {
+          "keybind": "key.right"
+        }
+      ]
+    }
+  ],
+  "equipment_slots": "legs"
+}

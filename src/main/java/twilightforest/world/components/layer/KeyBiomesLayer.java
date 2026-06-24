@@ -1,21 +1,22 @@
 package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
 import java.util.List;
@@ -29,8 +30,6 @@ import java.util.function.LongFunction;
  * @author Ben
  */
 public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements AreaTransformer1 {
-	private static final Random RANDOM = new Random();
-
 	@Override
 	public int getParentX(int x) {
 		return x | 3;
@@ -42,12 +41,12 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 	}
 
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
-		RANDOM.setSeed(TFDimensionSettings.seed + (x & -4) * 25117L + (z & -4) * 151121L);
-		int ox = RANDOM.nextInt(2) + 1;
-		int oz = RANDOM.nextInt(2) + 1;
-		RANDOM.setSeed(TFDimensionSettings.seed + (x / 8) * 25117L + (z / 8) * 151121L);
-		int offset = RANDOM.nextInt(3);
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area layer, int x, int z) {
+		final Random rand = new Random(WorldUtil.getOverworldSeed() + (x & -4) * 25117L + (z & -4) * 151121L);
+		int ox = rand.nextInt(2) + 1;
+		int oz = rand.nextInt(2) + 1;
+		rand.setSeed(WorldUtil.getOverworldSeed() + (x / 8) * 25117L + (z / 8) * 151121L);
+		int offset = rand.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4
 			if ((x & 4) == 0) {
@@ -79,10 +78,10 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(list -> Util.fixedSize(list, 4), Function.identity()).fieldOf("key_biomes").forGetter(Factory::keyBiomes),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(list -> Util.fixedSize(list, 4), Function.identity()).fieldOf("key_biomes").forGetter(Factory::keyBiomes),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 		private final long salt;
 		private final List<ResourceKey<Biome>> keyBiomes;
@@ -100,7 +99,7 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

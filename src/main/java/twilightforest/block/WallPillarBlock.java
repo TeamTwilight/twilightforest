@@ -2,9 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -17,19 +19,17 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 public class WallPillarBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape BASE_SHAPE = Block.box(2.0D, 2.0D, 2.0D, 14.0D, 14.0D, 14.0D);
-
 	protected static final VoxelShape WEST_SHAPE = Block.box(0.0D, 2.0D, 2.0D, 2.0D, 14.0D, 14.0D);
 	protected static final VoxelShape EAST_SHAPE = Block.box(14.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
 	protected static final VoxelShape DOWN_SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
 	protected static final VoxelShape UP_SHAPE = Block.box(2.0D, 14.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	protected static final VoxelShape NORTH_SHAPE = Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 2.0D);
 	protected static final VoxelShape SOUTH_SHAPE = Block.box(2.0D, 2.0D, 14.0D, 14.0D, 14.0D, 16.0D);
-
 	private static final VoxelShape WEST_FLAT = Block.box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
 	private static final VoxelShape EAST_FLAT = Block.box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 	private static final VoxelShape DOWN_FLAT = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
@@ -37,10 +37,8 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 	private static final VoxelShape NORTH_FLAT = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
 	private static final VoxelShape SOUTH_FLAT = Block.box(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
 
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-
-	public WallPillarBlock(BlockBehaviour.Properties properties, double width, double height) {
-		super(properties, width, height);
+	public WallPillarBlock(double width, double height, BlockBehaviour.Properties properties) {
+		super(properties, width);
 		this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
@@ -80,7 +78,6 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
@@ -89,17 +86,16 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(WATERLOGGED);
+		super.createBlockStateDefinition(builder.add(WATERLOGGED));
 	}
 }

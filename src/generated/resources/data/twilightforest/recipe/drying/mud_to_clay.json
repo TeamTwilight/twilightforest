@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 7200,
+  "input": {
+    "item": "minecraft:mud"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:clay"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": true,
+  "modifier_key": "twilightforest:auto_repair",
+  "pattern": {
+    "key": {
+      "E": {
+        "item": "minecraft:experience_bottle"
+      },
+      "M": {
+        "item": "twilightforest:moss_patch"
+      },
+      "T": {
+        "item": "twilightforest:travellers_wings"
+      }
+    },
+    "pattern": [
+      " M ",
+      "ETE",
+      " M "
+    ]
+  }
+}

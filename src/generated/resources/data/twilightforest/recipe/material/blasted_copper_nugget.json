@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "copper_nugget",
+  "ingredient": {
+    "item": "twilightforest:copper_berry"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:copper_nugget"
+  }
+}

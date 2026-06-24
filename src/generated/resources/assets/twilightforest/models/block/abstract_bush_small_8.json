@@ -1,0 +1,74 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#snow"
+        },
+        "east": {
+          "texture": "#snow"
+        },
+        "north": {
+          "texture": "#snow"
+        },
+        "south": {
+          "texture": "#snow"
+        },
+        "up": {
+          "texture": "#snow"
+        },
+        "west": {
+          "texture": "#snow"
+        }
+      },
+      "from": [
+        4,
+        8,
+        4
+      ],
+      "to": [
+        12,
+        10,
+        12
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#snow"
+        },
+        "east": {
+          "texture": "#snow"
+        },
+        "north": {
+          "texture": "#snow"
+        },
+        "south": {
+          "texture": "#snow"
+        },
+        "up": {
+          "texture": "#snow"
+        },
+        "west": {
+          "texture": "#snow"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "minecraft:block/bedrock",
+    "snow": "minecraft:block/snow"
+  }
+}

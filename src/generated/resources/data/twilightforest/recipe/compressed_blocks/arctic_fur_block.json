@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "tag": "twilightforest:arctic_fur"
+    },
+    "m": {
+      "item": "twilightforest:arctic_fur"
+    }
+  },
+  "pattern": [
+    "###",
+    "#m#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:arctic_fur_block"
+  }
+}

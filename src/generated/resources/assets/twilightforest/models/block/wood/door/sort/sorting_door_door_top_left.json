@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_left",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "bottom": "twilightforest:block/wood/door/sort_lower",
-    "top": "twilightforest:block/wood/door/sort_upper"
-  }
-}

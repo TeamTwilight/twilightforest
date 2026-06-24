@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": {
+    "item": "minecraft:rabbit"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:rabbit_jerky"
+  }
+}

@@ -1,70 +1,35 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.client.renderer.ItemInHandRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.resources.Identifier;
+import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KoboldModel;
-import twilightforest.client.renderer.entity.TFBipedRenderer;
+import twilightforest.client.state.entity.KoboldRenderState;
 import twilightforest.entity.monster.Kobold;
 
-public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
+public class KoboldRenderer extends HumanoidMobRenderer<Kobold, KoboldRenderState, KoboldModel> {
 
-	public KoboldRenderer(EntityRendererProvider.Context context, KoboldModel model, float shadowSize, String textureName) {
-		super(context, model, shadowSize, textureName);
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("kobold.png");
 
-		this.layers.removeIf(r -> r instanceof ItemInHandLayer);
-		this.addLayer(new HeldItemLayer(this, context.getItemInHandRenderer()));
+	public KoboldRenderer(EntityRendererProvider.Context context) {
+		super(context, new KoboldModel(context.bakeLayer(TFModelLayers.KOBOLD)), 0.4F);
 	}
 
-	/**
-	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.ItemInHandLayer} with additional transforms
-	 */
-	private static class HeldItemLayer extends RenderLayer<Kobold, KoboldModel> {
-		private final ItemInHandRenderer handRenderer;
+	@Override
+	public KoboldRenderState createRenderState() {
+		return new KoboldRenderState();
+	}
 
-		public HeldItemLayer(RenderLayerParent<Kobold, KoboldModel> renderer, ItemInHandRenderer handRenderer) {
-			super(renderer);
-			this.handRenderer = handRenderer;
-		}
+	@Override
+	public void extractRenderState(Kobold entity, KoboldRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.jumping = !entity.isNoAi() && !entity.onGround() && entity.getDeltaMovement().y() != 0;
+	}
 
-		@Override
-		public void render(PoseStack ms, MultiBufferSource buffers, int light, Kobold living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			boolean flag = living.getMainArm() == HumanoidArm.RIGHT;
-			ItemStack itemstack = flag ? living.getOffhandItem() : living.getMainHandItem();
-			ItemStack itemstack1 = flag ? living.getMainHandItem() : living.getOffhandItem();
-			if (!itemstack.isEmpty() || !itemstack1.isEmpty()) {
-				ms.pushPose();
-				if (this.getParentModel().young) {
-					ms.translate(0.0D, 0.75D, 0.0D);
-					ms.scale(0.5F, 0.5F, 0.5F);
-				}
-
-				this.renderItem(living, itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, HumanoidArm.RIGHT, ms, buffers, light);
-				this.renderItem(living, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, HumanoidArm.LEFT, ms, buffers, light);
-				ms.popPose();
-			}
-		}
-
-		private void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext transform, HumanoidArm handSide, PoseStack ms, MultiBufferSource buffers, int light) {
-			if (!stack.isEmpty()) {
-				ms.pushPose();
-				this.getParentModel().translateToHand(handSide, ms);
-				ms.mulPose(Axis.XP.rotationDegrees(-90.0F));
-				ms.mulPose(Axis.YP.rotationDegrees(180.0F));
-				boolean flag = handSide == HumanoidArm.LEFT;
-				ms.translate(0.05D, 0.125D, -0.35D);
-				this.handRenderer.renderItem(entity, stack, transform, flag, ms, buffers, light);
-				ms.popPose();
-			}
-		}
+	@Override
+	public Identifier getTextureLocation(KoboldRenderState state) {
+		return TEXTURE;
 	}
 }

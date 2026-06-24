@@ -19,13 +19,13 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 
 
-public class StrongholdTreasureRoomComponent extends StructureTFStrongholdComponent {
+public class StrongholdTreasureRoomComponent extends KnightStrongholdComponent {
 
 	private boolean enterBottom;
 
 	public StrongholdTreasureRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFTreaR.get(), nbt);
-		this.enterBottom = nbt.getBoolean("enterBottom");
+		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 	}
 
 	public StrongholdTreasureRoomComponent(int i, Direction facing, int x, int y, int z) {

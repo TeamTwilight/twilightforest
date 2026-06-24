@@ -2,45 +2,42 @@ package twilightforest.world.components.feature.templates;
 
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.Vec3i;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.minecraft.world.level.block.state.properties.StructureMode;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Rotation;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFStructureProcessors;
-
-import org.jetbrains.annotations.Nullable;
-import twilightforest.util.FeatureLogic;
+import twilightforest.loot.TFLootTables;
+import twilightforest.util.features.FeatureLogic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
-	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
-	private static final ResourceLocation TRAP = TwilightForestMod.prefix("feature/graveyard/grave_trap");
+	private static final Identifier GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
+	private static final Identifier TRAP = TwilightForestMod.prefix("feature/graveyard/grave_trap");
 
 	public GraveyardFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);
@@ -117,8 +114,8 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		Vec3i transformedSize = base.getSize(rotation);
 		Vec3i transformedGraveSize = graves.get(0).getValue().getSize(rotation);
 
-		ChunkPos chunkpos = new ChunkPos(pos.offset(-8, 0, -8));
-		ChunkPos chunkendpos = new ChunkPos(pos.offset(-8, 0, -8).offset(transformedSize));
+		ChunkPos chunkpos = ChunkPos.containing(pos.offset(-8, 0, -8));
+		ChunkPos chunkendpos =ChunkPos.containing(pos.offset(-8, 0, -8).offset(transformedSize));
 		BoundingBox structureboundingbox = new BoundingBox(chunkpos.getMinBlockX() + 8, 0, chunkpos.getMinBlockZ() + 8, chunkendpos.getMaxBlockX() + 8, 255, chunkendpos.getMaxBlockZ() + 8);
 		StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(rand);
 
@@ -149,11 +146,11 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		BlockPos innerSize = new BlockPos(bound.getX() - inner.getX(), bound.getY() - inner.getY(), bound.getZ() - inner.getZ());
 		BlockPos fixed = inner.offset(
 
-				(rotation == Rotation.CLOCKWISE_180 ? graveSize.getX() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getX() - 1 : 0) * (rotation == Rotation.CLOCKWISE_180 ? -1 : 1),
+			(rotation == Rotation.CLOCKWISE_180 ? graveSize.getX() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getX() - 1 : 0) * (rotation == Rotation.CLOCKWISE_180 ? -1 : 1),
 
-				0,
+			0,
 
-				(rotation == Rotation.COUNTERCLOCKWISE_90 ? graveSize.getZ() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getZ() - 1 : 0) * (rotation == Rotation.COUNTERCLOCKWISE_90 ? -1 : 1)
+			(rotation == Rotation.COUNTERCLOCKWISE_90 ? graveSize.getZ() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getZ() - 1 : 0) * (rotation == Rotation.COUNTERCLOCKWISE_90 ? -1 : 1)
 
 		);
 		BlockPos fixedSize = innerSize.offset(-graveSize.getX(), 0, -graveSize.getZ());
@@ -175,12 +172,12 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						data.addAll(trap.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlock(placement.offset(chestloc), Blocks.TRAPPED_CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
-							TFLootTables.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
-							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
+							TFLootTables.generateChestContents(world, placement.offset(chestloc), TFLootTables.GRAVEYARD);
+							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), Block.UPDATE_ALL);
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						ForgeEventFactory.onFinalizeSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null, null);
+						EventHooks.finalizeMobSpawn(wraith, world, world.getCurrentDifficultyAt(placement), EntitySpawnReason.STRUCTURE, null);
 						world.addFreshEntity(wraith);
 					}
 				}
@@ -188,13 +185,14 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		}
 
 		data.forEach(info -> {
-			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA) {
-				String s = info.nbt().getString("metadata");
+			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
+			if (info.nbt() != null && mode == StructureMode.DATA) {
+				String s = info.nbt().getString("metadata").orElseThrow();
 				BlockPos p = info.pos();
 				if ("spawner".equals(s)) {
 					world.removeBlock(p, false);
 					if (rand.nextInt(4) == 0) {
-						if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), 3)) {
+						if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), Block.UPDATE_ALL)) {
 							SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(p);
 							if (ms != null)
 								ms.setEntityId(TFEntities.RISING_ZOMBIE.get(), rand);
@@ -216,16 +214,16 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		Lower(TwilightForestMod.prefix("feature/graveyard/grave_lower"));
 
 		private static final GraveType[] VALUES = values();
-		private final ResourceLocation RL;
+		private final Identifier RL;
 
-		GraveType(ResourceLocation rl) {
+		GraveType(Identifier rl) {
 			this.RL = rl;
 		}
 	}
 
 	public static class WebTemplateProcessor extends StructureProcessor {
 		public static final WebTemplateProcessor INSTANCE = new WebTemplateProcessor();
-		public static final Codec<WebTemplateProcessor> CODEC = Codec.unit(() -> INSTANCE);
+		public static final MapCodec<WebTemplateProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
 		private WebTemplateProcessor() {
 		}

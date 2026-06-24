@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -9,25 +10,23 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
+import twilightforest.tags.TFBlockTags;
 
 public class FireJetBlock extends BaseEntityBlock {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
+	public static final MapCodec<FireJetBlock> CODEC = simpleCodec(FireJetBlock::new);
 
 	public FireJetBlock(Properties properties) {
 		super(properties);
@@ -35,24 +34,22 @@ public class FireJetBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(STATE);
 	}
 
 	@Nullable
 	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
-		return state.getValue(STATE) == FireJetVariant.IDLE ? null : BlockPathTypes.DAMAGE_FIRE;
+	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+		return state.getValue(STATE) == FireJetVariant.IDLE ? null : PathType.FIRE;
 	}
 
 	@Override
-	@Deprecated
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isClientSide() && state.getValue(STATE) == FireJetVariant.IDLE) {
 			BlockPos lavaPos = findLavaAround(level, pos.below());
@@ -65,7 +62,7 @@ public class FireJetBlock extends BaseEntityBlock {
 	}
 
 	/**
-	 * Find a full block of lava near the designated block.  This is intentionally not really that reliable.
+	 * Find a full block of lava near the designated block. This is intentionally not really that reliable.
 	 */
 	private BlockPos findLavaAround(Level level, BlockPos pos) {
 		if (this.isLava(level, pos)) {
@@ -84,10 +81,9 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	private boolean isLava(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getBlock().getFluidState(state).is(FluidTagGenerator.FIRE_JET_FUEL);
+		return state.is(TFBlockTags.FIRE_JET_FUEL);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new FireJetBlockEntity(pos, state);

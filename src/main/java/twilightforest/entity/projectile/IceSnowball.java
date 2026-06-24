@@ -1,23 +1,19 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class IceSnowball extends TFThrowable implements ItemSupplier {
 
 	private static final int DAMAGE = 2;
@@ -27,7 +23,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	public IceSnowball(Level world, LivingEntity thrower) {
-		super(TFEntities.ICE_SNOWBALL.get(), world, thrower);
+		super(TFEntities.ICE_SNOWBALL.get(), world, thrower, new ItemStack(Items.SNOWBALL));
 	}
 
 	@Override
@@ -37,21 +33,20 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.006F;
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+		super.hurtServer(server, source, amount);
 		this.die();
 		return true;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 3) {
+		if (id == EntityEvent.DEATH) {
 			for (int j = 0; j < 8; ++j) {
 				this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
@@ -64,14 +59,8 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		Entity target = result.getEntity();
-		if (!this.level().isClientSide() && target instanceof LivingEntity) {
+		if (!this.level().isClientSide() && target instanceof LivingEntity)
 			target.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SNOWBALL_FIGHT, this, this.getOwner()), DAMAGE);
-			//damage armor pieces
-			if (target instanceof Player) {
-				for (ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
-			}
-		}
 	}
 
 	@Override
@@ -85,6 +74,11 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return Items.SNOWBALL;
 	}
 
 	@Override

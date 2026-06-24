@@ -1,39 +1,48 @@
 package twilightforest.client.renderer;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.TextureTransform;
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.renderer.block.RedThreadRenderer;
+import twilightforest.client.renderer.entity.LichRenderer;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+//TODO check all of these in-game, im bad at writing these
+public class TFRenderTypes {
 
-@ParametersAreNonnullByDefault
-public class TFRenderTypes extends RenderType {
-    public TFRenderTypes(String name, VertexFormat vertexFormat, VertexFormat.Mode mode, int bufferSize, boolean crumbling, boolean sort, Runnable setup, Runnable clear) {
-        super(name, vertexFormat, mode, bufferSize, crumbling, sort, setup, clear);
-    }
+	public static final RenderType RED_THREAD = RenderType.create("twilightforest:red_thread", RenderSetup.builder(TFRenderPipelines.RED_THREAD)
+		.withTexture("Sampler0", RedThreadRenderer.TEXTURE)
+		.affectsCrumbling()
+		.useLightmap()
+		.useOverlay()
+		.setOutline(RenderSetup.OutlineProperty.AFFECTS_OUTLINE)
+		.createRenderSetup());
 
-    public static final RenderType PROTECTION_BOX = create("protection_box", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
-            RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(TwilightForestMod.getModelTexture("protectionbox.png"), false, false))
-                    .setTexturingState(new ProtectionBoxTexturingStateShard())
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL)
-                    .setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
-                    .createCompositeState(false));
+	public static final RenderType PROTECTION_BOX = RenderType.create("twilightforest:protection_box", RenderSetup.builder(TFRenderPipelines.PROTECTION_BOX)
+		.withTexture("Sampler0", TwilightForestMod.getModelTexture("protectionbox.png"))
+		.setTextureTransform(new ProtectionBoxTextureTransform())
+		.useLightmap()
+		.useOverlay()
+		.sortOnUpload()
+		.createRenderSetup());
 
-    @OnlyIn(Dist.CLIENT)
-    public static final class ProtectionBoxTexturingStateShard extends RenderStateShard.TexturingStateShard {
-        public ProtectionBoxTexturingStateShard() {
-            super("protection_offset_texturing", () -> {
-                float tick = (float) (Minecraft.getInstance().cameraEntity != null ? Minecraft.getInstance().cameraEntity.tickCount : 0) + Minecraft.getInstance().getPartialTick();
-                RenderSystem.setTextureMatrix((new Matrix4f()).translation((-tick * 0.06F) % 1.0F, (-tick * 0.035F) % 1.0F, 0.0F).scale(0.5F));
-            }, RenderSystem::resetTextureMatrix);
-        }
-    }
+	public static final RenderType SHADOW_CLONE = RenderType.create("twilightforest:shadow_clone", RenderSetup.builder(TFRenderPipelines.SHADOW_CLONE)
+		.withTexture("Sampler0", LichRenderer.TEXTURE)
+		.useLightmap()
+		.useOverlay()
+		.affectsCrumbling()
+		.sortOnUpload()
+		.setOutline(RenderSetup.OutlineProperty.AFFECTS_OUTLINE)
+		.createRenderSetup());
+
+	public static final class ProtectionBoxTextureTransform extends TextureTransform {
+		public ProtectionBoxTextureTransform() {
+			super("protection_offset_texturing", () -> {
+				float tick = (float) (Minecraft.getInstance().getCameraEntity() != null ? Minecraft.getInstance().getCameraEntity().tickCount : 0) + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+				return new Matrix4f().translation((-tick * 0.06F) % 1.0F, (-tick * 0.035F) % 1.0F, 0.0F).scale(0.5F);
+			});
+		}
+	}
 }

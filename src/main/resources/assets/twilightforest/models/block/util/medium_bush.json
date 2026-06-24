@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "elements": [
+    {
+      "from": [2, 0.008, 2],
+      "to": [14, 12, 14],
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "cullface": "down"
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      }
+    }
+  ]
+}

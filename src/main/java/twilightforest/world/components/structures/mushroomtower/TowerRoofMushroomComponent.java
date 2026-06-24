@@ -18,13 +18,13 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
-
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
 	public TowerRoofMushroomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFMTRoofMush.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TowerRoofMushroomComponent(int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMTRoofMush.get(), i, x, y, z);
 		this.height = wing.size;

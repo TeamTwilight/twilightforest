@@ -1,0 +1,141 @@
+package twilightforest.util.iterators;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
+import java.util.Optional;
+
+// For making rectangular grids that are approximately-evenly spaced (floating-point -> integer rounding), even if re-sampled for a different chunk or general region
+// Making a hexagonal pattern will require using two of these
+// Positions are lazily generated, meaning no excess of positions are produced if terminated early
+public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
+	private final int yLevel, latticeStartX, latticeStartZ, latticeCountX, latticeCountZ;
+	private final float xSpacing, zSpacing, xOffset, zOffset;
+	private final TernaryIntegerFunction<T> converter;
+
+	private int latticeX = 0, latticeZ = 0;
+
+	public static RectangleLatticeIterator<BlockPos.MutableBlockPos> boundedGrid(BoundingBox chunkBounds, int yLevel, float xSpacing, float zSpacing, float xOffset, float zOffset) {
+		BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+		return new RectangleLatticeIterator<>(chunkBounds.minX(), chunkBounds.minZ(), chunkBounds.maxX(), chunkBounds.maxZ(), yLevel, xSpacing, zSpacing, xOffset, zOffset, mutableBlockPos::set);
+	}
+
+	public RectangleLatticeIterator(int minX, int minZ, int maxX, int maxZ, int yLevel, float xSpacing, float zSpacing, float xOffset, float zOffset, TernaryIntegerFunction<T> converter) {
+		this.yLevel = yLevel;
+
+		this.xSpacing = xSpacing;
+		this.zSpacing = zSpacing;
+		this.xOffset = xOffset;
+		this.zOffset = zOffset;
+
+		this.latticeStartX = getNearestLatticeIndex(this.xSpacing, (int) (minX - this.xOffset));
+		this.latticeStartZ = getNearestLatticeIndex(this.zSpacing, (int) (minZ - this.zOffset));
+		this.latticeCountX = getNearestLatticeIndex(this.xSpacing, (int) (maxX + 1 - this.xOffset)) - this.latticeStartX;
+		this.latticeCountZ = getNearestLatticeIndex(this.zSpacing, (int) (maxZ + 1 - this.zOffset)) - this.latticeStartZ;
+
+		this.converter = converter;
+	}
+
+	@Override
+	public T next() {
+		T ret = this.converter.apply(this.generateX(), this.yLevel, this.generateZ());
+
+		// March downwards, then rightwards as each column is completed
+		if (this.latticeZ + 1 < this.latticeCountZ) {
+			this.latticeZ++;
+		} else {
+			this.latticeZ = 0;
+			this.latticeX++;
+		}
+
+		return ret;
+	}
+
+	private int generateX() {
+		return (int) (this.xOffset + (this.latticeStartX + this.latticeX) * this.xSpacing);
+	}
+
+	private int generateZ() {
+		return (int) (this.zOffset + (this.latticeStartZ + this.latticeZ) * this.zSpacing);
+	}
+
+	@Override
+	public boolean hasNext() {
+		return this.latticeX < this.latticeCountX;
+	}
+
+	@NotNull
+	@Override
+	public Iterator<T> iterator() {
+		return this;
+	}
+
+	private static int getNearestLatticeIndex(float latticeSpacing, int i) {
+		return Mth.floor((i - Mth.positiveModulo(i, latticeSpacing)) / latticeSpacing);
+	}
+
+	@FunctionalInterface
+	public interface TernaryIntegerFunction<T> {
+		T apply(int x, int y, int z);
+	}
+
+	public record TriangularLatticeConfig(float spacing, float xOffset, float zOffset, float xSpacing, float zSpacing) {
+		private static final Codec<TriangularLatticeConfig> VERBOSE_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.floatRange(1, 32).fieldOf("spacing").forGetter(TriangularLatticeConfig::spacing),
+			Codec.floatRange(1, 32).fieldOf("x_offset").forGetter(TriangularLatticeConfig::xOffset),
+			Codec.floatRange(1, 32).fieldOf("z_offset").forGetter(TriangularLatticeConfig::zOffset),
+			Codec.floatRange(1, 32).fieldOf("x_spacing").forGetter(TriangularLatticeConfig::xSpacing),
+			Codec.floatRange(1, 32).fieldOf("z_spacing").forGetter(TriangularLatticeConfig::zSpacing)
+		).apply(instance, TriangularLatticeConfig::new));
+
+		private static final Codec<TriangularLatticeConfig> OFFSET_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.floatRange(1, 32).fieldOf("spacing").forGetter(TriangularLatticeConfig::spacing),
+			Codec.floatRange(1, 32).fieldOf("x_offset").forGetter(TriangularLatticeConfig::xOffset),
+			Codec.floatRange(1, 32).fieldOf("z_offset").forGetter(TriangularLatticeConfig::zOffset)
+		).apply(instance, TriangularLatticeConfig::new));
+
+		private static final Codec<TriangularLatticeConfig> SPACING_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.floatRange(1, 32).fieldOf("spacing").forGetter(TriangularLatticeConfig::spacing)
+		).apply(instance, TriangularLatticeConfig::new));
+
+		public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.5f);
+
+		public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, MapCodec.unitCodec(DEFAULT))));
+
+		public TriangularLatticeConfig(float spacing) {
+			this(spacing, Mth.cos(Mth.PI / 6f) * spacing, Mth.sin(Mth.PI / 6f) * spacing);
+		}
+
+		public TriangularLatticeConfig(float spacing, float xOffset, float zOffset) {
+			this(spacing, xOffset, zOffset, xOffset * 2f, spacing);
+		}
+
+		public static TriangularLatticeConfig fromNBT(CompoundTag tag) {
+			float spacing = tag.getFloatOr("spacing", 0f);
+			if (spacing <= 0.0000001) spacing = 3.5f;
+
+			float xOffset = tag.getFloat("x_offset").orElse(Mth.cos(Mth.PI / 6f) * spacing);
+			float zOffset = tag.getFloat("z_offset").orElse(Mth.sin(Mth.PI / 6f) * spacing);
+
+			float xSpacing = tag.getFloatOr("x_spacing", 0f);
+			float zSpacing = tag.getFloatOr("z_spacing", 0f);
+
+			if (xSpacing != 0 || zSpacing != 0) {
+				return new TriangularLatticeConfig(spacing, xOffset, zOffset, xSpacing, zSpacing);
+			} else {
+				return new TriangularLatticeConfig(spacing, xOffset, zOffset);
+			}
+		}
+
+		public ZippedIterator<BlockPos.MutableBlockPos> boundedGrid(BoundingBox chunkBounds, int yLevel) {
+			return new ZippedIterator<>(RectangleLatticeIterator.boundedGrid(chunkBounds, yLevel, this.xSpacing, this.zSpacing, 0, 0), RectangleLatticeIterator.boundedGrid(chunkBounds, yLevel, this.xSpacing, this.zSpacing, this.xOffset, this.zOffset));
+		}
+	}
+}

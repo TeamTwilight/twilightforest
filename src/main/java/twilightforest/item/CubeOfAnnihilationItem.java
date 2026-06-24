@@ -1,68 +1,57 @@
 package twilightforest.item;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.entity.CubeOfAnnihilation;
+import org.jspecify.annotations.Nullable;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
 
 import java.util.UUID;
 
 public class CubeOfAnnihilationItem extends Item {
 
-	private static final String THROWN_UUID_KEY = "cubeEntity";
-
 	public CubeOfAnnihilationItem(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean isSelected) {
-		if (!level.isClientSide() && getThrownUuid(stack) != null && getThrownEntity(level, stack) == null) {
-			stack.getTag().remove(THROWN_UUID_KEY);
+	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
+		if (!level.isClientSide() && stack.get(TFDataComponents.THROWN_PROJECTILE) != null && getThrownEntity(level, stack) == null) {
+			stack.remove(TFDataComponents.THROWN_PROJECTILE);
 		}
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (getThrownUuid(stack) != null)
-			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
+		if (stack.get(TFDataComponents.THROWN_PROJECTILE) != null)
+			return InteractionResult.PASS;
 
 		if (!level.isClientSide()) {
-			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player);
+			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player, stack);
 			level.addFreshEntity(launchedCube);
-			setThrownEntity(stack, launchedCube);
+			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedCube.getUUID());
 		}
 
 		player.startUsingItem(hand);
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
-	}
-
-	@Nullable
-	public static UUID getThrownUuid(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().hasUUID(THROWN_UUID_KEY)) {
-			return stack.getTag().getUUID(THROWN_UUID_KEY);
-		}
-
-		return null;
+		return InteractionResult.SUCCESS;
 	}
 
 	@Nullable
 	private static CubeOfAnnihilation getThrownEntity(Level level, ItemStack stack) {
 		if (level instanceof ServerLevel server) {
-			UUID id = getThrownUuid(stack);
+			UUID id = stack.get(TFDataComponents.THROWN_PROJECTILE);
 			if (id != null) {
 				Entity e = server.getEntity(id);
 				if (e instanceof CubeOfAnnihilation) {
@@ -74,25 +63,13 @@ public class CubeOfAnnihilationItem extends Item {
 		return null;
 	}
 
-	private static void setThrownEntity(ItemStack stack, CubeOfAnnihilation cube) {
-		if (!stack.hasTag()) {
-			stack.setTag(new CompoundTag());
-		}
-		stack.getTag().putUUID(THROWN_UUID_KEY, cube.getUUID());
-	}
-
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.BLOCK;
-	}
-
-	@Override
-	public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
-		return true;
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.BLOCK;
 	}
 }

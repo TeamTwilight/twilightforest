@@ -1,8 +1,7 @@
 package twilightforest.dispenser;
 
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.sounds.SoundEvent;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.init.TFBlocks;
@@ -81,7 +79,7 @@ public class TFDispenserBehaviors {
 
 			@Override
 			protected SoundEvent getFiredSound() {
-				return TFSounds.SCEPTER_PEARL.get();
+				return TFSounds.TWILIGHT_SCEPTER_USE.get();
 			}
 
 			@Override
@@ -90,37 +88,25 @@ public class TFDispenserBehaviors {
 			}
 		});
 
-		DispenserBlock.registerBehavior(TFItems.ICE_BOMB.get(), new AbstractProjectileDispenseBehavior() {
-			@Override
-			protected Projectile getProjectile(Level level, Position pos, ItemStack stack) {
-				return new IceBomb(level, pos);
-			}
-		});
-
-		//store the vanilla values so we can use them in case our stuff fails
-		DispenseItemBehavior cachedFlintBehavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.FLINT_AND_STEEL);
-		DispenseItemBehavior cachedFireChargeBehavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.FIRE_CHARGE);
-
-		DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new IgniteLightableDispenseBehavior(cachedFlintBehavior));
-		DispenserBlock.registerBehavior(Items.FIRE_CHARGE, new IgniteLightableDispenseBehavior(cachedFireChargeBehavior));
+		DispenserBlock.registerProjectileBehavior(TFItems.ICE_BOMB.get());
 
 		//handling tags should be a thing smh
-		DispenserBlock.registerBehavior(Items.CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BLACK_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.GRAY_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIGHT_GRAY_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.WHITE_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.RED_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.ORANGE_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.YELLOW_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.GREEN_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIME_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BLUE_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.CYAN_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIGHT_BLUE_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.PURPLE_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.MAGENTA_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.PINK_CANDLE, new SkullCandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BROWN_CANDLE, new SkullCandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.BLACK_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.GRAY_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.LIGHT_GRAY_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.WHITE_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.RED_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.ORANGE_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.YELLOW_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.GREEN_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.LIME_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.BLUE_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.CYAN_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.LIGHT_BLUE_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.PURPLE_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.MAGENTA_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.PINK_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.BROWN_CANDLE, new CandleDispenseBehavior());
 	}
 }

@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/handheld",
-  "forge_data": {
+  "loader": "neoforge:item_layers",
+  "neoforge_data": {
     "layers": {
       "0": {
         "block_light": 15,
@@ -8,7 +9,6 @@
       }
     }
   },
-  "loader": "forge:item_layers",
   "render_types": {
     "minecraft:translucent": [
       0

@@ -2,13 +2,17 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
@@ -16,81 +20,147 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.BoundingBoxUtils;
 
 public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece {
-    protected final StructureTemplateManager structureManager;
-    private final BlockPos originalPlacement;
-    private final BoundingBox originalBox;
+	protected final StructureTemplateManager structureManager;
+	private final BlockPos originalPlacement;
+	private final BoundingBox originalBox;
 
-    public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction) {
-        super(structurePieceType, compoundTag, ctx.structureTemplateManager(), rl -> rl2SettingsFunction);
-        this.rotation = this.getRotation();
-        this.mirror = this.getMirror();
+	protected int placeFlag;
 
-        this.structureManager = ctx.structureTemplateManager();
+	@SuppressWarnings("this-escape")
+	public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings placeSettings) {
+		super(structurePieceType, compoundTag, ctx.structureTemplateManager(), rl -> placeSettings);
+		this.rotation = this.getRotation();
+		this.mirror = this.getMirror();
 
-        this.originalPlacement = this.templatePosition;
-        this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
-    }
+		this.structureManager = ctx.structureTemplateManager();
 
-    public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-        super(type, genDepth, structureManager, templateLocation, templateLocation.toString(), placeSettings, startPosition);
-        this.rotation = this.getRotation();
-        this.mirror = this.getMirror();
+		this.originalPlacement = this.templatePosition;
+		this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
 
-        this.structureManager = structureManager;
+		// Fixes Ladders
+		this.placeSettings.setKnownShape(true);
+		this.placeFlag = Block.UPDATE_CLIENTS;
+	}
 
-        this.originalPlacement = this.templatePosition;
-        this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
-    }
+	@SuppressWarnings("this-escape")
+	public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
+		super(type, genDepth, structureManager, templateLocation, templateLocation.toString(), placeSettings, startPosition);
+		this.rotation = this.getRotation();
+		this.mirror = this.getMirror();
 
-    @Override
-    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
-        super.addAdditionalSaveData(ctx, structureTag);
+		this.structureManager = structureManager;
 
-        structureTag.putInt("rotation", this.placeSettings.getRotation().ordinal());
-        structureTag.putInt("mirror", this.placeSettings.getMirror().ordinal());
-    }
+		this.originalPlacement = this.templatePosition;
+		this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
 
-    // This will be required if you want to dig a piece into a noise beard
-    protected void placePieceAdjusted(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos, int dY) {
-        this.templatePosition = this.templatePosition.above(dY);
+		// Fixes Ladders
+		this.placeSettings.setKnownShape(true);
+		this.placeFlag = Block.UPDATE_CLIENTS;
+	}
 
-        super.postProcess(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos.above(dY));
+	@Override
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+		super.addAdditionalSaveData(ctx, structureTag);
 
-        this.templatePosition = this.originalPlacement;
-        this.boundingBox = BoundingBoxUtils.clone(this.originalBox);
+		structureTag.putInt("rotation", this.placeSettings.getRotation().ordinal());
+		structureTag.putInt("mirror", this.placeSettings.getMirror().ordinal());
+		BlockPos pivot = this.placeSettings.getRotationPivot();
+		structureTag.putInt("pivot_x", pivot.getX());
+		structureTag.putInt("pivot_y", pivot.getY());
+		structureTag.putInt("pivot_z", pivot.getZ());
+	}
 
-        this.placeSettings.setBoundingBox(this.boundingBox);
-    }
+	// TODO Remove, shifting vertical position was originally needed for changing beardifier position.
+	//  Thanks to PieceBeardifierModifier this is no longer needed
+	@Deprecated
+	// This will be required if you want to dig a piece into a noise beard
+	protected void placePieceAdjusted(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, BlockPos pos, int dY) {
+		this.templatePosition = this.templatePosition.above(dY);
 
-    public static StructurePlaceSettings readSettings(CompoundTag compoundTag) {
-        return new StructurePlaceSettings()
-                .setRotation(ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("rotation")))
-                .setMirror(ArrayUtil.wrapped(Mirror.values(), compoundTag.getInt("mirror")))
-                .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
-    }
+		// Call this class's overridden method instead of the supermethod to ensure execution of our custom handleDataMarker() method
+		this.customPostProcess(level, chunkGenerator, random, boundingBox, pos.above(dY));
 
-    public static StructurePlaceSettings makeSettings(Rotation rotation) {
-        return new StructurePlaceSettings().setRotation(rotation).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
-    }
+		this.templatePosition = this.originalPlacement;
+		this.boundingBox = BoundingBoxUtils.clone(this.originalBox);
 
-    public static StructurePlaceSettings makeSettings(Rotation rotation, Mirror mirror) {
-        return new StructurePlaceSettings().setRotation(rotation).setMirror(mirror).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
-    }
+		this.placeSettings.setBoundingBox(this.boundingBox);
+	}
 
-    public static StructurePlaceSettings randomRotation(RandomSource random) {
-        return makeSettings(Rotation.getRandom(random));
-    }
+	public static StructurePlaceSettings readSettings(CompoundTag compoundTag) {
+		return new StructurePlaceSettings()
+			.setRotation(ArrayUtil.wrapped(Rotation.values(), compoundTag.getIntOr("rotation", 0)))
+			.setMirror(ArrayUtil.wrapped(Mirror.values(), compoundTag.getIntOr("mirror", 0)))
+			.setRotationPivot(new BlockPos(compoundTag.getIntOr("pivot_x", 0), compoundTag.getIntOr("pivot_y", 0), compoundTag.getIntOr("pivot_z", 0)))
+			.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+	}
 
+	public static StructurePlaceSettings makeSettings(Rotation rotation) {
+		return new StructurePlaceSettings().setRotation(rotation).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+	}
 
-    // Worse case scenario if the terrain still isn't being risen for the Lich Tower,
-    // then we'll need to do via this. I still have other solutions I'd like to explore first
-    //@Override
-    //public BoundingBox getBoundingBox() {
-    //    return this.boundingBox = StructureBoundingBoxUtils.clone(this.originalBox);
-    //}
+	public static StructurePlaceSettings makeSettings(Rotation rotation, Mirror mirror) {
+		return new StructurePlaceSettings().setRotation(rotation).setMirror(mirror).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+	}
+
+	public static StructurePlaceSettings randomRotation(RandomSource random) {
+		return makeSettings(Rotation.getRandom(random));
+	}
+
+	// VANILLACOPY: Same as the supercall except without the dumb jigsaw code
+	@Override
+	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		this.customPostProcess(level, chunkGen, random, chunkBounds, structureBottomCenter);
+	}
+
+	private void customPostProcess(WorldGenLevel level, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, BlockPos structureBottomCenter) {
+		this.placeSettings.setBoundingBox(chunkBounds);
+		this.boundingBox = this.template.getBoundingBox(this.placeSettings, this.templatePosition);
+		if (this.template.placeInWorld(level, this.templatePosition, structureBottomCenter, this.placeSettings, random, this.placeFlag)) {
+			Rotation rotation = this.placeSettings.getRotation();
+			for (StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo : this.template
+				.filterBlocks(this.templatePosition, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
+				if (structuretemplate$structureblockinfo.nbt() != null) {
+					StructureMode structuremode = StructureMode.valueOf(structuretemplate$structureblockinfo.nbt().getString("mode").orElseThrow());
+					if (structuremode == StructureMode.DATA) {
+						this.handleDataMarker(
+							structuretemplate$structureblockinfo.nbt().getString("metadata").orElseThrow(),
+							structuretemplate$structureblockinfo.pos(),
+							level,
+							random,
+							chunkBounds,
+							chunkGen, // Additional param, new method callable
+							rotation
+						);
+					}
+				}
+			}
+		}
+	}
+
+	// Enhanced version of TemplateStructurePiece#handleDataMarker() method that up-levels ServerLevelAccessor into WorldGenLevel while also adding ChunkGenerator parameter
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
+	}
+
+	@Deprecated
+	@Override
+	protected final void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds) {
+		// Deprecated - use above method as that is called instead
+	}
+
+	public String getTemplateName() {
+		return this.templateName;
+	}
+
+	// Worse case scenario if the terrain still isn't being risen for the Lich Tower,
+	// then we'll need to do via this. I still have other solutions I'd like to explore first
+	//@Override
+	//public BoundingBox getBoundingBox() {
+	//    return this.boundingBox = StructureBoundingBoxUtils.clone(this.originalBox);
+	//}
 }

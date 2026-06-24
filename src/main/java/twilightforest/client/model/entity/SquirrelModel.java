@@ -6,114 +6,102 @@
 
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.Squirrel;
 
-public class SquirrelModel extends QuadrupedModel<Squirrel> {
-	//fields
-	final ModelPart tail;
-	final ModelPart fluff1;
-	final ModelPart fluff2;
-	final ModelPart fluff3;
+public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
+
+	private final ModelPart tail;
+	private final ModelPart tailPart1;
+	private final ModelPart tailPart2;
 
 	public SquirrelModel(ModelPart root) {
-		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
-		this.tail = root.getChild("tail");
-		this.fluff1 = tail.getChild("fluff_1");
-		this.fluff2 = fluff1.getChild("fluff_2");
-		this.fluff3 = fluff2.getChild("fluff_3");
+		super(root);
+		this.tail = this.body.getChild("tail");
+		this.tailPart1 = this.tail.getChild("tail_1");
+		this.tailPart2 = this.tailPart1.getChild("tail_2");
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
-		PartDefinition partRoot = mesh.getRoot();
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, false, true, CubeDeformation.NONE);
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-2F, -5F, -3F, 4, 4, 4)
-						.texOffs(16, 0)
-						.addBox(-2F, -6F, -0.5F, 1, 1, 1)
-						.texOffs(16, 0)
-						.addBox(1F, -6F, -0.5F, 1, 1, 1),
-				PartPose.offset(0F, 22F, -2F));
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-2.0F, -5.0F, -3.0F, 4.0F, 4.0F, 4.0F)
+				.texOffs(16, 0)
+				.addBox(-2.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F)
+				.texOffs(16, 0)
+				.addBox(1.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(0.0F, 22.0F, -2.0F));
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create().mirror()
-						.texOffs(0, 8)
-						.addBox(-2F, -1F, -2F, 4, 3, 5),
-				PartPose.offset(0F, 21F, 0F));
+		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().mirror()
+				.texOffs(0, 8)
+				.addBox(-2.0F, -1.0F, -2.0F, 4.0F, 3.0F, 5.0F),
+			PartPose.offset(0.0F, 21.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(-2F, 23F, 2F));
+		partdefinition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().mirror()
+				.texOffs(0, 16)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-2.0F, 23.0F, 2.0F));
 
-		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(1F, 23F, 2F));
+		partdefinition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().mirror()
+				.texOffs(0, 16)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.0F, 23.0F, 2.0F));
 
-		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(-2F, 23F, -2F));
+		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-2.0F, 23.0F, -2.0F));
 
-		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(1F, 23F, -2F));
+		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.0F, 23.0F, -2.0F));
 
-		var tail = partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
-						.texOffs(0, 18)
-						.addBox(-0.5F, -1.5F, 0.5F, 1, 1, 1),
-				PartPose.offset(0F, 21F, 2F));
+		var tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(0, 18)
+				.addBox(-0.5F, -1.5F, 0.5F, 1.0F, 1.0F, 1.0F)
+				.texOffs(0, 20)
+				.addBox(-1.5F, -4.0F, 1.0F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 0.0F, 2.0F));
 
-		var fluff1 = tail.addOrReplaceChild("fluff_1", CubeListBuilder.create()
-						.texOffs(0, 20)
-						.addBox(-1.5F, -4F, 1F, 3, 3, 3),
-				PartPose.ZERO);
+		var tail1 = tail.addOrReplaceChild("tail_1", CubeListBuilder.create()
+				.texOffs(0, 20)
+				.addBox(0.0F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(-1.5F, -4.0F, 2.5F));
 
-		var fluff2 = fluff1.addOrReplaceChild("fluff_2", CubeListBuilder.create()
-						.texOffs(0, 20)
-						.addBox(0F, -3F, -1.5F, 3, 3, 3),
-				PartPose.offset(-1.5F, -4F, 2.5F));
+		tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
+				.texOffs(0, 26)
+				.addBox(1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(-1.5F, -3.0F, 0.0F));
 
-		fluff2.addOrReplaceChild("fluff_3", CubeListBuilder.create()
-						.texOffs(0, 26)
-						.addBox(1.5F, -3F, -1.5F, 3, 3, 3),
-				PartPose.offset(-1.5F, -3F, 0F));
-
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return Iterables.concat(super.bodyParts(), ImmutableList.of(tail));
-	}
+	public void setupAnim(LivingEntityRenderState entity) {
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.rightHindLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftHindLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
+		this.rightFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
+		this.leftFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
 
-	@Override
-	public void setupAnim(Squirrel entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-
-		if (limbSwingAmount > 0.2) {
-			float wiggle = Math.min(limbSwingAmount, 0.6F);
-			this.tail.xRot = (Mth.cos(ageInTicks * 0.6662F) - (float) Math.PI / 3) * wiggle;
-			this.fluff2.xRot = Mth.cos(ageInTicks * 0.7774F) * 1.2F * wiggle;
-			this.fluff3.xRot = Mth.cos(ageInTicks * 0.8886F + (float) Math.PI / 2) * 1.4F * wiggle;
+		if (entity.walkAnimationSpeed > 0.2) {
+			float wiggle = Math.min(entity.walkAnimationSpeed, 0.6F);
+			this.tail.xRot = 0.2F + (Mth.cos(entity.ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
+			this.tailPart1.xRot = Mth.cos(entity.ageInTicks * 0.7774F) * 1.2F * wiggle;
+			this.tailPart2.xRot = Mth.cos(entity.ageInTicks * 0.8886F + Mth.PI / 2.0F) * 1.4F * wiggle;
 		} else {
-			this.tail.xRot = 0.2F + Mth.cos(ageInTicks * 0.3335F) * 0.15F;
-			this.fluff2.xRot = 0.1F + Mth.cos(ageInTicks * 0.4445F) * 0.20F;
-			this.fluff3.xRot = 0.1F + Mth.cos(ageInTicks * 0.5555F) * 0.25F;
+			this.tail.xRot = 0.2F + Mth.cos(entity.ageInTicks * 0.3335F) * 0.15F;
+			this.tailPart1.xRot = 0.1F + Mth.cos(entity.ageInTicks * 0.4445F) * 0.20F;
+			this.tailPart2.xRot = 0.1F + Mth.cos(entity.ageInTicks * 0.5555F) * 0.25F;
 		}
 	}
 }

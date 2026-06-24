@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/chest",
+  "textures": {
+    "particle": "twilightforest:block/wood/planks_twilight_oak_0"
+  }
+}

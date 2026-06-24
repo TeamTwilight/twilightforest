@@ -1,76 +1,82 @@
 {
   "type": "twilightforest:hollow_hill",
-  "adjust_structure_elevation": false,
-  "allow_biome_surface_decorations": true,
-  "allow_biome_underground_decorations": false,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_hollow_hill_biomes",
-  "chunk_clearance_radius": 2,
-  "hill_size": 2,
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "twilightforest:redcap",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:redcap_sapper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
-        "type": "twilightforest:kobold",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:skeleton",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:swarm_spider",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:spider",
-        "maxCount": 3,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:fire_beetle",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "twilightforest:slime_beetle",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "minecraft:witch",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      }
-    ]
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "twilightforest:redcap",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:redcap_sapper",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 2
+        },
+        {
+          "type": "twilightforest:kobold",
+          "maxCount": 4,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:skeleton",
+          "maxCount": 3,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:swarm_spider",
+          "maxCount": 4,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:spider",
+          "maxCount": 3,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:creeper",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 5
+        },
+        {
+          "type": "twilightforest:fire_beetle",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 5
+        },
+        {
+          "type": "twilightforest:slime_beetle",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 5
+        },
+        {
+          "type": "minecraft:witch",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 1
+        }
+      ]
+    },
+    "water_spawns": []
   },
+  "decoration_clearance": {
+    "adjust_structure_elevation": false,
+    "allow_biome_surface_decorations": true,
+    "allow_biome_underground_decorations": false,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 2.0
+  },
+  "hill_size": 2,
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",
@@ -105,6 +111,7 @@
       "spawns": []
     }
   },
+  "speleothem_config": "twilightforest:medium_hollow_hill",
   "step": "surface_structures",
-  "water_spawns": []
+  "structure_icon": "twilightforest:medium_hollow_hill"
 }

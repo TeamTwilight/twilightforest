@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twilightforest:ironwood_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "twilightforest:ironwood_ingot"
+  }
+}

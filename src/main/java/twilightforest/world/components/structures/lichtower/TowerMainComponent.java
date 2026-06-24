@@ -8,22 +8,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -320,7 +318,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		this.setOrientation(getStructureRelativeRotation(rotation));
 
 		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState()
-				.setValue(SlabBlock.TYPE, SlabType.TOP);
+			.setValue(SlabBlock.TYPE, SlabType.TOP);
 		BlockState birchPlank = Blocks.BIRCH_PLANKS.defaultBlockState();
 
 		// place a platform there
@@ -449,7 +447,7 @@ public class TowerMainComponent extends TowerWingComponent {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
-			if(wCoords == null)
+			if (wCoords == null)
 				continue;
 
 			// offset to see where the fence should be
@@ -460,9 +458,14 @@ public class TowerMainComponent extends TowerWingComponent {
 			BlockState aboveBlockState = world.getBlockState(tCoords.above());
 			if (blockState.isAir() && aboveBlockState.isAir() && EntityUtil.getEntitiesInAABB(world, new AABB(tCoords)).size() == 0) {
 				// if not, place a torch
-				world.setBlock(tCoords, Blocks.OAK_FENCE.defaultBlockState().setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true), 2);
-				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);
+				world.setBlock(tCoords, Blocks.OAK_FENCE.defaultBlockState().setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true), Block.UPDATE_CLIENTS);
+				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), Block.UPDATE_CLIENTS);
 			}
 		}
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BEARD_BOX;
 	}
 }

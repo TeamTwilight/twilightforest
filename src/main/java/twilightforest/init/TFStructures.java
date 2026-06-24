@@ -1,17 +1,18 @@
 package twilightforest.init;
 
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.type.*;
 
 public class TFStructures {
 
 	public static final ResourceKey<Structure> HEDGE_MAZE = registerKey("hedge_maze");
 	public static final ResourceKey<Structure> QUEST_GROVE = registerKey("quest_grove");
-	public static final ResourceKey<Structure> MUSHROOM_TOWER = registerKey("mushroom_tower");
 	public static final ResourceKey<Structure> HOLLOW_HILL_SMALL = registerKey("small_hollow_hill");
 	public static final ResourceKey<Structure> HOLLOW_HILL_MEDIUM = registerKey("medium_hollow_hill");
 	public static final ResourceKey<Structure> HOLLOW_HILL_LARGE = registerKey("large_hollow_hill");
@@ -24,17 +25,30 @@ public class TFStructures {
 	public static final ResourceKey<Structure> YETI_CAVE = registerKey("yeti_cave");
 	public static final ResourceKey<Structure> AURORA_PALACE = registerKey("aurora_palace");
 	public static final ResourceKey<Structure> TROLL_CAVE = registerKey("troll_cave");
+	public static final ResourceKey<Structure> GIANT_HOUSE = registerKey("giant_house");
 	public static final ResourceKey<Structure> FINAL_CASTLE = registerKey("final_castle");
+
+	public static final ResourceKey<Structure> FALLEN_TRUNK = registerKey("fallen_trunk");
+	public static final ResourceKey<Structure> HOLLOW_TREE = registerKey("hollow_tree");
+	public static final ResourceKey<Structure> SWAMP_HOLLOW_TREE = registerKey("swamp_hollow_tree");
+	public static final ResourceKey<Structure> CAMP = registerKey("camp");
+	public static final ResourceKey<Structure> MUSHROOM_TOWER = registerKey("mushroom_tower");
+	public static final ResourceKey<Structure> QUEST_ISLAND = registerKey("quest_island");
+	public static final ResourceKey<Structure> DRUID_GROVE = registerKey("druid_grove");
+	public static final ResourceKey<Structure> FLOATING_RUINS = registerKey("floating_ruins");
+	public static final ResourceKey<Structure> WORLD_TREE = registerKey("world_tree");
 
 	public static ResourceKey<Structure> registerKey(String name) {
 		return ResourceKey.create(Registries.STRUCTURE, TwilightForestMod.prefix(name));
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void bootstrap(BootstapContext<Structure> context) {
+	public static void bootstrap(BootstrapContext<Structure> context) {
+		context.register(FALLEN_TRUNK, FallenTrunkStructure.buildStructureConfig(context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
+		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(false, context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
+		context.register(SWAMP_HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(true, HolderSet.direct(context.lookup(Registries.BIOME).getOrThrow(TFBiomes.SWAMP))));
+		context.register(CAMP, CampStructure.buildStructureConfig(context));
 		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
 		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));
-		context.register(MUSHROOM_TOWER, MushroomTowerStructure.buildStructureConfig(context));
 		context.register(HOLLOW_HILL_SMALL, HollowHillStructure.buildSmallHillConfig(context));
 		context.register(HOLLOW_HILL_MEDIUM, HollowHillStructure.buildMediumHillConfig(context));
 		context.register(HOLLOW_HILL_LARGE, HollowHillStructure.buildLargeHillConfig(context));
@@ -47,6 +61,9 @@ public class TFStructures {
 		context.register(YETI_CAVE, YetiCaveStructure.buildYetiCaveConfig(context));
 		context.register(AURORA_PALACE, AuroraPalaceStructure.buildAuroraPalaceConfig(context));
 		context.register(TROLL_CAVE, TrollCaveStructure.buildTrollCaveConfig(context));
+		context.register(GIANT_HOUSE, GiantHouseStructure.buildGiantHouseConfig(context));
 		context.register(FINAL_CASTLE, FinalCastleStructure.buildFinalCastleConfig(context));
+
+		context.register(MUSHROOM_TOWER, MushroomTowerStructure.buildStructureConfig(context));
 	}
 }

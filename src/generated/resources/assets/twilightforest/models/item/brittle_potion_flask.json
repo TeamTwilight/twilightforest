@@ -20,12 +20,6 @@
       }
     },
     {
-      "model": "twilightforest:item/brittle_flask_3",
-      "predicate": {
-        "twilightforest:potion_level": 4.0
-      }
-    },
-    {
       "model": "twilightforest:item/brittle_flask_splintered",
       "predicate": {
         "twilightforest:breakage": 1.0,
@@ -54,80 +48,31 @@
       }
     },
     {
-      "model": "twilightforest:item/brittle_flask_3_splintered",
-      "predicate": {
-        "twilightforest:breakage": 1.0,
-        "twilightforest:potion_level": 4.0
-      }
-    },
-    {
-      "model": "twilightforest:item/brittle_flask_cracked",
-      "predicate": {
-        "twilightforest:breakage": 2.0,
-        "twilightforest:potion_level": 0.0
-      }
-    },
-    {
-      "model": "twilightforest:item/brittle_flask_0_cracked",
-      "predicate": {
-        "twilightforest:breakage": 2.0,
-        "twilightforest:potion_level": 1.0
-      }
-    },
-    {
-      "model": "twilightforest:item/brittle_flask_1_cracked",
-      "predicate": {
-        "twilightforest:breakage": 2.0,
-        "twilightforest:potion_level": 2.0
-      }
-    },
-    {
-      "model": "twilightforest:item/brittle_flask_2_cracked",
-      "predicate": {
-        "twilightforest:breakage": 2.0,
-        "twilightforest:potion_level": 3.0
-      }
-    },
-    {
-      "model": "twilightforest:item/brittle_flask_3_cracked",
-      "predicate": {
-        "twilightforest:breakage": 2.0,
-        "twilightforest:potion_level": 4.0
-      }
-    },
-    {
       "model": "twilightforest:item/brittle_flask_damaged",
       "predicate": {
-        "twilightforest:breakage": 3.0,
+        "twilightforest:breakage": 2.0,
         "twilightforest:potion_level": 0.0
       }
     },
     {
       "model": "twilightforest:item/brittle_flask_0_damaged",
       "predicate": {
-        "twilightforest:breakage": 3.0,
+        "twilightforest:breakage": 2.0,
         "twilightforest:potion_level": 1.0
       }
     },
     {
       "model": "twilightforest:item/brittle_flask_1_damaged",
       "predicate": {
-        "twilightforest:breakage": 3.0,
+        "twilightforest:breakage": 2.0,
         "twilightforest:potion_level": 2.0
       }
     },
     {
       "model": "twilightforest:item/brittle_flask_2_damaged",
       "predicate": {
-        "twilightforest:breakage": 3.0,
+        "twilightforest:breakage": 2.0,
         "twilightforest:potion_level": 3.0
-      }
-    },
-    {
-      "model": "twilightforest:item/brittle_flask_3_damaged",
-      "predicate": {
-        "twilightforest:breakage": 3.0,
-        "twilightforest:potion_level": 4.0
       }
     }
   ],

@@ -4,11 +4,8 @@
   ],
   "enforcement": "twilightforest:acid_rain",
   "locked_biome_toast": {
-    "Count": 1,
-    "id": "twilightforest:lamp_of_cinders",
-    "tag": {
-      "Damage": 0
-    }
+    "count": 1,
+    "id": "twilightforest:lamp_of_cinders"
   },
   "multiplier": 1.5,
   "structure_key": "twilightforest:final_castle"

@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:wraith",
-  "reversible": true,
-  "to": "minecraft:vex"
-}

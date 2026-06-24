@@ -1,0 +1,34 @@
+{
+  "type": "twilightforest:troll_cave_big_mushgloom",
+  "config": {
+    "cap_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "twilightforest:huge_mushgloom",
+        "Properties": {
+          "down": "false",
+          "east": "true",
+          "north": "true",
+          "south": "true",
+          "up": "true",
+          "west": "true"
+        }
+      }
+    },
+    "foliage_radius": 1,
+    "stem_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "twilightforest:huge_mushgloom_stem",
+        "Properties": {
+          "down": "false",
+          "east": "true",
+          "north": "true",
+          "south": "true",
+          "up": "false",
+          "west": "true"
+        }
+      }
+    }
+  }
+}

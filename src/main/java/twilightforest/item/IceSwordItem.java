@@ -1,53 +1,30 @@
 package twilightforest.item;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import twilightforest.enchantment.ChillAuraEnchantment;
+import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.init.TFParticleType;
+import twilightforest.network.ParticlePacket;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+public class IceSwordItem extends Item {
 
-public class IceSwordItem extends SwordItem {
-
-	public IceSwordItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, 3, -2.4F, properties);
+	public IceSwordItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
-			if (Objects.equals(Enchantments.FIRE_ASPECT, enchantment)) {
-				badEnchant.set(true);
-			}
-		});
-
-		return !badEnchant.get();
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.FIRE_ASPECT.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
-	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		boolean result = super.hurtEnemy(stack, target, attacker);
-
-		if (result) {
-			ChillAuraEnchantment.doChillAuraEffect(target, 200, 2, true);
-			for (int i = 0; i < 20; i++) {
-				((ServerLevel) target.level()).sendParticles(TFParticleType.SNOW.get(), target.getX(), target.getY() + target.getBbHeight() * 0.5F, target.getZ(), 1, target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5, 0);
-			}
+	public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		ApplyFrostedEffect.doChillAuraEffect(target, 200, 2, true);
+		ParticlePacket particlePacket = new ParticlePacket();
+		for (int i = 0; i < 20; i++) {
+			particlePacket.queueParticle(TFParticleType.SNOW.get(), false,
+				target.getX() + (target.getRandom().nextGaussian() * target.getBbWidth() * 0.5),
+				target.getY() + target.getBbHeight() * 0.5F + (target.getRandom().nextGaussian() * target.getBbHeight() * 0.5),
+				target.getZ() + (target.getRandom().nextGaussian() * target.getBbWidth() * 0.5),
+				0, 0, 0);
 		}
-
-		return result;
+		PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
 	}
 }

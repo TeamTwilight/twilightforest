@@ -17,6 +17,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 
 	private final KnightPhantom boss;
 
+	@SuppressWarnings("this-escape")
 	public PhantomThrowWeaponGoal(KnightPhantom entity) {
 		this.boss = entity;
 		setFlags(EnumSet.of(Flag.LOOK));

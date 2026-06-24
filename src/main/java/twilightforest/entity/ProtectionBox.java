@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -24,6 +25,7 @@ public class ProtectionBox extends Entity {
 		this.sbb = null;
 	}
 
+	@SuppressWarnings("this-escape")
 	public ProtectionBox(Level world, BoundingBox sbb) {
 		super(TFEntities.PROTECTION_BOX.get(), world);
 
@@ -53,7 +55,7 @@ public class ProtectionBox extends Entity {
 
 	public boolean matches(BoundingBox sbb) {
 		return this.sbb.minX() == sbb.minX() && this.sbb.minY() == sbb.minY() && this.sbb.minZ() == sbb.minZ()
-				&& this.sbb.maxX() == sbb.maxX() && this.sbb.maxY() == sbb.maxY() && this.sbb.maxZ() == sbb.maxZ();
+			&& this.sbb.maxX() == sbb.maxX() && this.sbb.maxY() == sbb.maxY() && this.sbb.maxZ() == sbb.maxZ();
 	}
 
 	public void resetLifetime() {
@@ -61,7 +63,7 @@ public class ProtectionBox extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 	}
 
 	@Override

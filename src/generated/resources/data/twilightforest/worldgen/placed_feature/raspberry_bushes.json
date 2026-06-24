@@ -1,0 +1,31 @@
+{
+  "feature": "twilightforest:raspberry_bushes",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 50
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "additional_clearance": 0,
+      "occupies_surface": true,
+      "occupies_underground": false,
+      "occupies_vegetation": false,
+      "structures_allowed": []
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

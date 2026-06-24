@@ -2,7 +2,7 @@ package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.boss.PlateauBoss;
 import twilightforest.init.TFBlockEntities;
@@ -17,7 +17,7 @@ public class FinalBossSpawnerBlockEntity extends BossSpawnerBlockEntity<PlateauB
 
 	//no spawning for you
 	@Override
-	protected boolean spawnMyBoss(ServerLevelAccessor world) {
+	protected boolean spawnMyBoss(ServerLevel level) {
 		return false;
 	}
 

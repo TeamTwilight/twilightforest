@@ -9,6 +9,13 @@
       {
         "chance": 0.25,
         "feature": {
+          "feature": "twilightforest:tree/vanilla_birch_tree",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.25,
+        "feature": {
           "feature": "minecraft:spruce",
           "placement": []
         }

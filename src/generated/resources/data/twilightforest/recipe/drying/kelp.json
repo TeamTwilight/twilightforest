@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 3600,
+  "input": {
+    "item": "minecraft:kelp"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:dried_kelp"
+  }
+}

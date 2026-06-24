@@ -1,0 +1,45 @@
+{
+  "parent": "twilightforest:hill1",
+  "criteria": {
+    "redcap": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:redcap_sapper",
+              "location": {
+                "structures": "twilightforest:medium_hollow_hill"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.hill2.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.redcap_sapper"
+        }
+      ]
+    },
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:ironwood_pickaxe"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.hill2"
+    }
+  },
+  "requirements": [
+    [
+      "redcap"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

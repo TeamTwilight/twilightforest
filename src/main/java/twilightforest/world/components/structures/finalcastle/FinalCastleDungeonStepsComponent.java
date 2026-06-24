@@ -25,6 +25,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCDunSt.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleDungeonStepsComponent(int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFFCDunSt.get(), i, x, y, z);
 		this.spawnListIndex = 2; // dungeon monsters

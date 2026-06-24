@@ -1,159 +1,83 @@
 package twilightforest.block;
 
-import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HalfTransparentBlock;
-import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
-import twilightforest.TFConfig;
-import twilightforest.client.MissingAdvancementToast;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFSounds;
+import org.jspecify.annotations.Nullable;
+import twilightforest.config.TFConfig;
+import twilightforest.init.*;
 import twilightforest.network.MissingAdvancementToastPacket;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.NoReturnTeleporter;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.TFTeleporter;
-import twilightforest.world.registration.TFGenerationSettings;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 // KelpBlock seems to use ILiquidContainer as it's a block that permanently has water, so I suppose in best practices we also use this interface as well?
-public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockContainer {
+public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockContainer, Portal {
 
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
-
-	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
-	private static ResourceKey<Level> cachedOriginDimension;
-
 	public static final Component PORTAL_UNWORTHY = Component.translatable("misc.twilightforest.portal_unworthy");
+	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
 	private static final int MIN_PORTAL_SIZE = 4;
 	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
+	@Nullable
+	private static ResourceKey<Level> cachedOriginDimension;
 
 	public TFPortalBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(DISALLOW_RETURN, false));
 	}
 
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(DISALLOW_RETURN);
-	}
-
-	@Override
-	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		return AABB;
-	}
-
-	@Override
-	@Deprecated
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		return state.getValue(DISALLOW_RETURN) ? AABB : Shapes.empty();
-	}
-
-	@Override
-	public FluidState getFluidState(BlockState state) {
-		// The portal itself is kind of technically water, and this checks the checkbox in Sugar Cane logic to not destroy itself when portal is made.
-		return Fluids.WATER.getFlowing(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
-	}
-
-	public boolean tryToCreatePortal(Level level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
-
-		BlockState state = level.getBlockState(pos);
-
-		if (this.canFormPortal(state) && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP)) {
-			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
-			blocksChecked.put(pos, true);
-
-			MutableInt size = new MutableInt(0);
-
-			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
-
-				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
-					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
-					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
-						// TODO: "failure" effect - particles?
-						if (player != null) {
-							player.displayClientMessage(Component.translatable("misc.twilightforest.portal_unsafe"), true);
-						}
-						return false;
-					}
-				}
-
-				catalyst.getItem().shrink(1);
-				causeLightning(level, pos, TFConfig.COMMON_CONFIG.portalLightning.get());
-
-				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
-					if (checkedPos.getValue()) {
-						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState(), 2);
-					}
-				}
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public boolean canFormPortal(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
-	}
-
-	private static void causeLightning(Level level, BlockPos pos, boolean fake) {
+	private static void causeLightning(Level level, BlockPos pos, boolean destructive) {
 		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
 		bolt.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-		bolt.setVisualOnly(fake);
+		bolt.setVisualOnly(destructive);
 		level.addFreshEntity(bolt);
 
-		if (fake && level instanceof ServerLevel) {
+		if (destructive && level instanceof ServerLevel) {
 			double range = 3.0D;
 			List<Entity> list = level.getEntitiesOfClass(Entity.class, new AABB(pos).inflate(range));
 
 			for (Entity victim : list) {
-				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
+				if (!EventHooks.onEntityStruckByLightning(victim, bolt)) {
 					victim.thunderHit((ServerLevel) level, bolt);
 				}
 			}
@@ -161,11 +85,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public static boolean recursivelyValidatePortal(Level level, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
-		if (portalSize.incrementAndGet() > TFConfig.COMMON_CONFIG.maxPortalSize.get()) return false;
+		if (portalSize.incrementAndGet() > TFConfig.maxPortalSize) return false;
 
 		boolean isPoolProbablyEnclosed = true;
 
-		for (int i = 0; i < 4 && portalSize.intValue() <= TFConfig.COMMON_CONFIG.maxPortalSize.get(); i++) {
+		for (int i = 0; i < 4 && portalSize.intValue() <= TFConfig.maxPortalSize; i++) {
 			BlockPos positionCheck = pos.relative(Direction.from2DDataValue(i));
 
 			if (!blocksChecked.containsKey(positionCheck)) {
@@ -188,16 +112,86 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_DECO);
+		return state.is(TFBlockTags.PORTAL_DECO);
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_EDGE);
+		return state.is(TFBlockTags.PORTAL_EDGE);
+	}
+
+	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
+		return playersNotified.contains(player);
+	}
+
+	public static void playerNotifiedOfRequirement(ServerPlayer player) {
+		playersNotified.add(player);
 	}
 
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(DISALLOW_RETURN);
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return AABB;
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return state.getValue(DISALLOW_RETURN) ? AABB : Shapes.empty();
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		// The portal itself is kind of technically water, and this checks the checkbox in Sugar Cane logic to not destroy itself when portal is made.
+		return Fluids.WATER.getFlowing(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
+	}
+
+	public boolean tryToCreatePortal(ServerLevel level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
+		BlockState state = level.getBlockState(pos);
+
+		if (this.canFormPortal(state) && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP)) {
+			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
+			blocksChecked.put(pos, true);
+
+			MutableInt size = new MutableInt(0);
+
+			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
+
+				if (!TFConfig.checkPortalPlacement) {
+					boolean checkProgression = LandmarkUtil.isProgressionEnforced(level);
+					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
+						// TODO: "failure" effect - particles?
+						if (player != null) {
+							player.sendOverlayMessage(Component.translatable("misc.twilightforest.portal_unsafe"));
+						}
+						return false;
+					}
+				}
+
+				catalyst.getItem().shrink(1);
+				causeLightning(level, pos, TFConfig.destructivePortalLightning);
+
+				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
+					if (checkedPos.getValue()) {
+						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean canFormPortal(BlockState state) {
+		return state.is(TFBlockTags.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
+	}
+
+	@Override
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		boolean good = level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
 
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
@@ -209,25 +203,24 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		}
 
 		if (!good) {
-			level.levelEvent(2001, pos, Block.getId(state));
-			level.setBlock(pos, Blocks.WATER.defaultBlockState(), 0b11);
+			level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
+			level.setBlock(pos, Blocks.WATER.defaultBlockState(), Block.UPDATE_ALL);
 		}
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (state == this.defaultBlockState()) {
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+		if (!state.getValue(DISALLOW_RETURN)) {
 			if (entity instanceof ServerPlayer player && !player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
-				Advancement requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
+				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
 
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
-					player.displayClientMessage(PORTAL_UNWORTHY, true);
+					player.sendOverlayMessage(PORTAL_UNWORTHY);
 
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
-						DisplayInfo info = requirement.getDisplay();
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? MissingAdvancementToast.FALLBACK : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
-
+						DisplayInfo info = requirement.value().display().orElse(null);
+						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon().create()));
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
 
@@ -235,51 +228,15 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				}
 			}
 
-			attemptSendEntity(entity, false, true);
+			if (entity.canUsePortal(false)) {
+				entity.setAsInsidePortal(this, entity.blockPosition());
+				entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
+			}
 		}
 	}
 
-	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
-		return playersNotified.contains(player);
-	}
-
-	public static void playerNotifiedOfRequirement(ServerPlayer player) {
-		playersNotified.add(player);
-	}
-
-	private static ResourceKey<Level> getDestination(Entity entity) {
-		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
-		return !entity.getCommandSenderWorld().dimension().location().equals(TFGenerationSettings.DIMENSION)
-				? TFGenerationSettings.DIMENSION_KEY : cachedOriginDimension;
-	}
-
-	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
-		if (!entity.isAlive() || entity.level().isClientSide()) {
-			return;
-		}
-
-		if (entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) {
-			return;
-		}
-
-		ResourceKey<Level> destination = getDestination(entity);
-		ServerLevel serverWorld = entity.getCommandSenderWorld().getServer().getLevel(destination);
-
-		if (serverWorld == null)
-			return;
-
-		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
-
-		if (destination == TFGenerationSettings.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
-			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
-			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
-		}
-
-	}
-
-	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
+	// Full [VanillaCopy] of NetherPortalBlock.animateTick
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		int random = rand.nextInt(100);
 		if (state.getValue(DISALLOW_RETURN) && random < 80) return;
@@ -301,12 +258,37 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	@Override
-	public boolean canPlaceLiquid(BlockGetter getter, BlockPos pos, BlockState state, Fluid fluid) {
+	public boolean canPlaceLiquid(@Nullable LivingEntity user, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
 		return false;
 	}
 
 	@Override
 	public boolean placeLiquid(LevelAccessor accessor, BlockPos pos, BlockState state, FluidState fluidState) {
 		return false;
+	}
+
+	@Override
+	public int getPortalTransitionTime(ServerLevel level, Entity entity) {
+		if (!(entity instanceof Player player))
+			return 0;
+		return player.getAbilities().invulnerable
+			? level.getGameRules().get(TFGameRules.TF_PORTAL_CREATIVE_DELAY.get())
+			: level.getGameRules().get(TFGameRules.TF_PORTAL_DEFAULT_DELAY.get());
+	}
+
+	@Nullable
+	@Override
+	public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, Identifier.parse(TFConfig.originDimension));
+		ResourceKey<Level> newDimension = !level.dimension().identifier().equals(TFDimension.DIMENSION) ? TFDimension.DIMENSION_KEY : cachedOriginDimension;
+		ServerLevel serverlevel = level.getServer().getLevel(newDimension);
+		if (serverlevel == null) {
+			return null;
+		} else {
+			WorldBorder worldborder = serverlevel.getWorldBorder();
+			double d0 = DimensionType.getTeleportationScale(level.dimensionType(), serverlevel.dimensionType());
+			BlockPos newPos = worldborder.clampToBounds(pos.getX() * d0, pos.getY(), pos.getZ() * d0);
+			return TFTeleporter.createTransition(entity, serverlevel, newPos, false);
+		}
 	}
 }

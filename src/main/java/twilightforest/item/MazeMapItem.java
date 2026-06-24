@@ -5,11 +5,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.Packet;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
@@ -19,14 +20,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.common.Tags;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMazeMapData;
+import net.neoforged.neoforge.common.Tags;
+import org.jspecify.annotations.Nullable;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
+import twilightforest.item.mapdata.TFMazeMapData;
+import twilightforest.util.datamaps.OreMapOreColor;
+
+import java.util.Optional;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-
 public class MazeMapItem extends MapItem {
 
 	public static final String STR_ID = "mazemap";
@@ -39,7 +45,7 @@ public class MazeMapItem extends MapItem {
 		this.mapOres = mapOres;
 	}
 
-	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
+	public static ItemStack setupNewMap(ServerLevel level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
 		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.get() : TFItems.FILLED_MAZE_MAP.get());
 		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension(), worldY, mapOres);
 		return itemstack;
@@ -47,23 +53,24 @@ public class MazeMapItem extends MapItem {
 
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level level) {
-		Integer id = getMapId(stack);
-		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id));
+		MapId id = stack.get(DataComponents.MAP_ID);
+		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id.id()));
 	}
 
 	@Nullable
 	@Override
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMazeMapData mapdata = getData(stack, level);
-		if (mapdata == null && !level.isClientSide()) {
-			mapdata = MazeMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 0, false, false, level.dimension(), level.getLevelData().getYSpawn(), mapOres);
+		if (mapdata == null && level instanceof ServerLevel serverLevel) {
+			BlockPos pos = serverLevel.getRespawnData().pos();
+			mapdata = MazeMapItem.createMapData(stack, serverLevel, pos.getX(), pos.getZ(), 0, false, false, level.dimension(), pos.getY(), mapOres);
 		}
 
 		return mapdata;
 	}
 
-	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
-		int i = level.getFreeMapId();
+	private static TFMazeMapData createMapData(ItemStack stack, ServerLevel level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
+		MapId i = level.getFreeMapId();
 
 		int mapSize = 128 * (1 << scale);
 		int roundX = Mth.floor((x + 64.0D) / (double) mapSize);
@@ -74,8 +81,8 @@ public class MazeMapItem extends MapItem {
 		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
 		mapdata.ore = ore;
-		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i)); // call our own register method
-		stack.getOrCreateTag().putInt("map", i);
+		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i.id())); // call our own register method
+		stack.set(DataComponents.MAP_ID, i);
 		return mapdata;
 	}
 
@@ -126,11 +133,10 @@ public class MazeMapItem extends MapItem {
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
 									if ((l3 >> 20 & 1) == 0) {
-										multiset.add(Blocks.DIRT.defaultBlockState().getMapColor(level, BlockPos.ZERO), 10);
+										multiset.add(MapColor.DIRT, 10);
 									} else {
-										multiset.add(Blocks.STONE.defaultBlockState().getMapColor(level, BlockPos.ZERO), 100);
+										multiset.add(MapColor.STONE, 100);
 									}
-
 								} else {
 									// TF - remove extra 2 levels of loops
 									// maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
@@ -158,25 +164,12 @@ public class MazeMapItem extends MapItem {
 										}
 									}
 
-									if (mapOres) {
+									if (this.mapOres) {
 										// recolor ores
-										if (state.is(BlockTags.COAL_ORES)) {
-											multiset.add(MapColor.COLOR_BLACK, 1000);
-										} else if (state.is(BlockTags.GOLD_ORES)) {
-											multiset.add(MapColor.GOLD, 1000);
-										} else if (state.is(BlockTags.IRON_ORES)) {
-											multiset.add(MapColor.METAL, 1000);
-										} else if (state.is(BlockTags.LAPIS_ORES)) {
-											multiset.add(MapColor.LAPIS, 1000);
-										} else if (state.is(BlockTags.REDSTONE_ORES)) {
-											multiset.add(MapColor.COLOR_RED, 1000);
-										} else if (state.is(BlockTags.DIAMOND_ORES)) {
-											multiset.add(MapColor.DIAMOND, 1000);
-										} else if (state.is(BlockTags.EMERALD_ORES)) {
-											multiset.add(MapColor.EMERALD, 1000);
-										} else if (state.is(BlockTags.COPPER_ORES)) {
-											multiset.add(MapColor.COLOR_ORANGE, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
+										OreMapOreColor color = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.ORE_MAP_ORE_COLOR);
+										if (color != null) {
+											multiset.add(color.color(), 1000);
+										} else if (!state.isAir() && state.is(Tags.Blocks.ORES)) {
 											multiset.add(MapColor.COLOR_PINK, 1000);
 										}
 									}
@@ -204,41 +197,28 @@ public class MazeMapItem extends MapItem {
 
 	// [VanillaCopy] super but shows a dot if player is too far in the vertical direction as well
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
 		if (!level.isClientSide()) {
 			TFMazeMapData mapdata = this.getCustomMapData(stack, level);
 
 			if (mapdata != null) {
-				if (entity instanceof Player entityplayer) {
-					mapdata.tickCarriedBy(entityplayer, stack);
+				if (owner instanceof Player entityplayer) {
+					mapdata.tickCarriedBy(entityplayer, stack, null);
 
 					// TF - if player is far away vertically, show a dot
 					int yProximity = Mth.floor(entityplayer.getY() - mapdata.yCenter);
 					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
 						MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
 						if (decoration != null) {
-							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRot(), null));
+							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecorationTypes.PLAYER_OFF_MAP, decoration.x(), decoration.y(), decoration.rot(), Optional.empty()));
 						}
 					}
 				}
 
-				if (!mapdata.locked && (isSelected || entity instanceof Player player && player.getOffhandItem() == stack)) {
-					this.update(level, entity, mapdata);
+				if (!mapdata.locked && slot != null && slot.getType() == EquipmentSlot.Type.HAND) {
+					this.update(level, owner, mapdata);
 				}
 			}
 		}
-	}
-
-	@Override
-	public void onCraftedBy(ItemStack stack, Level level, Player player) {
-		// disable zooming
-	}
-
-	@Override
-	@Nullable
-	public Packet<?> getUpdatePacket(ItemStack stack, Level level, Player player) {
-		Integer id = getMapId(stack);
-		TFMazeMapData mapdata = getCustomMapData(stack, level);
-		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
 	}
 }

@@ -3,27 +3,32 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.PacketDistributor;
-import twilightforest.TFConfig;
-import twilightforest.data.tags.EntityTagGenerator;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.tags.TFEntityTypeTags;
+import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
+
+	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -31,30 +36,33 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.COMMON_CONFIG.MAGIC_TREES.disableSorting.get();
+		return !TFConfig.disableSortingCore;
 	}
 
+	//TODO fuckkkkkkkkk
 	@Override
-	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
-		Map<List<IItemHandler>, Vec3> inputMap = new HashMap<>();
-		Map<IItemHandler, Vec3> outputMap = new HashMap<>();
+	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
+		Map<List<ResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();
+		Map<ResourceHandler<ItemResource>, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.sortingRange.get())) { // Get every itemHandler from every block in the area
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
 			if (!blockPos.equals(pos)) {
 				BlockEntity blockEntity = level.getBlockEntity(blockPos);
 				if (blockEntity != null) {
 					// Put it in the input if its within 2 blocks
 					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-						List<IItemHandler> handlers = new ArrayList<>();
+						List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
 						for (Direction side : Direction.values()) {
-							blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
+							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
+							if (handler != null) handlers.add(handler);
 						}
 						if (!handlers.isEmpty()) {
 							inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					} else { // Output if its outside that range
 						for (Direction side : Direction.values()) {
-							blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, Vec3.upFromBottomCenterOf(blockPos, 1.9D)));
+							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
+							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					}
 				}
@@ -63,10 +71,11 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		List<Entity> alreadyUsedForInput = new ArrayList<>(); // Keep track of entities we already have for inputs, so we can skip over them when looking for outputs
 
-		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
-			List<IItemHandler> handlers = new ArrayList<>();
+		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
+			List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
 			for (Direction side : Direction.values()) {
-				entity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
+				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
+				if (handler != null) handlers.add(handler);
 			}
 			if (!handlers.isEmpty()) {
 				inputMap.put(handlers, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
@@ -76,69 +85,53 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		if (inputMap.isEmpty()) return; // No input
 
-		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
 			for (Direction side : Direction.values()) {
-				entity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D)));
+				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
+				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 			}
 		});
 
 		if (outputMap.isEmpty()) return; // No output
 
-		for (Map.Entry<List<IItemHandler>, Vec3> inputHandlers : inputMap.entrySet()) {
+		for (Map.Entry<List<ResourceHandler<ItemResource>>, Vec3> inputHandlers : inputMap.entrySet()) {
 			boolean transferred = false;
-			for (IItemHandler inputIItemHandler : inputHandlers.getKey()) {
-				for (int i = 0; i < inputIItemHandler.getSlots(); i++) {
-					ItemStack inputStack = inputIItemHandler.extractItem(i, 1, true);
-					if (!inputStack.isEmpty()) {
-						Map<Integer, IItemHandler> outputsByCount = new HashMap<>();
+			for (ResourceHandler<ItemResource> inputIItemHandler : inputHandlers.getKey()) {
+				for (int i = 0; i < inputIItemHandler.size(); i++) {
+					ItemResource itemResource = inputIItemHandler.getResource(i);
+					if (itemResource.isEmpty()) continue;
+					try (Transaction tx = Transaction.openRoot()) {
+						if (inputIItemHandler.extract(i, itemResource, 1, tx) == 0) continue;
+						Map<ResourceHandler<ItemResource>, Integer> outputCounts = new HashMap<>();
 
-						for (IItemHandler outputIItemHandler : outputMap.keySet()) {
+						for (ResourceHandler<ItemResource> outputHandler : outputMap.keySet()) {
 							int count = 0;
-							for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
-								ItemStack stack = outputIItemHandler.getStackInSlot(j);
-								if (stack.is(inputStack.getItem())) count += stack.getCount();
+							for (int j = 0; j < outputHandler.size(); j++) {
+								if (itemResource.equals(outputHandler.getResource(j))) count += outputHandler.getAmountAsInt(j);
 							}
-							if (count > 0) outputsByCount.put(count, outputIItemHandler);
+							if (count > 0) outputCounts.put(outputHandler, count);
 						}
 
-						for (Integer count : outputsByCount.keySet().stream().sorted(Comparator.comparingInt(Integer::intValue).reversed()).toList()) {
-							IItemHandler outputIItemHandler = outputsByCount.get(count);
-							int firstProperStack = -1;
-							for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
-								if (outputIItemHandler.isItemValid(j, inputStack)) {
-									ItemStack outputStack = outputIItemHandler.getStackInSlot(j);
+						List<ResourceHandler<ItemResource>> sortedOutputs = outputCounts.entrySet().stream()
+							.sorted(Map.Entry.<ResourceHandler<ItemResource>, Integer>comparingByValue().reversed())
+							.map(Map.Entry::getKey)
+							.toList();
 
-									if (firstProperStack == -1 && outputStack.isEmpty()) {
-										firstProperStack = j; //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
-									} else if (ItemStack.isSameItemSameTags(inputStack, outputStack)
-											&& outputStack.getCount() < outputStack.getMaxStackSize()
-											&& outputStack.getCount() < outputIItemHandler.getSlotLimit(j)) {
-										firstProperStack = j;
-										break;
-									}
-								}
-							}
-							if (firstProperStack != -1) { // If there weren't any non-full stacks, we transfer to an empty space instead
-								ItemStack newStack = inputIItemHandler.extractItem(i, 1, false);
-								if (!newStack.isEmpty() && outputIItemHandler.insertItem(firstProperStack, newStack, true).isEmpty()) {
-									outputIItemHandler.insertItem(firstProperStack, newStack, false);
-									transferred = true;
+						for (ResourceHandler<ItemResource> outputHandler : sortedOutputs) {
+							if (ResourceHandlerUtil.insertStacking(outputHandler, itemResource, 1, tx) == 1) {
+								tx.commit();
+								transferred = true;
 
-									Vec3 xyz = outputMap.get(outputIItemHandler);
-									Vec3 diff = inputHandlers.getValue().subtract(xyz);
+								Vec3 xyz = outputMap.get(outputHandler);
+								Vec3 diff = inputHandlers.getValue().subtract(xyz);
 
-									for (ServerPlayer serverplayer : ((ServerLevel) level).players()) { // This is just particle math, we send a particle packet to every player in range
-										if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
-											ParticlePacket particlePacket = new ParticlePacket();
-											double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
-											double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
-											double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-											particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-											TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
-										}
-									}
-									break;
-								}
+								ParticlePacket particlePacket = new ParticlePacket();
+								double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
+								double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
+								double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
+								particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
+								PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
+								break;
 							}
 						}
 					}

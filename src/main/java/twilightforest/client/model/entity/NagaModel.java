@@ -1,68 +1,46 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.entity.boss.Naga;
-import twilightforest.entity.boss.NagaSegment;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.world.item.ItemDisplayContext;
+import org.jspecify.annotations.Nullable;
+import twilightforest.client.renderer.entity.NagaRenderer;
 
-public class NagaModel<T extends Entity> extends ListModel<T> {
+public class NagaModel<T extends EntityRenderState> extends EntityModel<T> implements TrophyBlockModel {
 
-	public final ModelPart head;
-	public final ModelPart body;
-	@Nullable
-	private T entity;
+	private final ModelPart head;
 
 	public NagaModel(ModelPart root) {
+		super(root);
 		this.head = root.getChild("head");
-		this.body = root.getChild("body");
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
-				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+			PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
-				PartPose.ZERO);
-
-		return LayerDefinition.create(mesh, 64, 32);
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(this.head, this.body);
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-		if (this.entity instanceof Naga naga) {
-			this.head.render(stack, builder, light, overlay, red, green - naga.stunlessRedOverlayProgress, blue - naga.stunlessRedOverlayProgress, scale * 2);
-		} else if (this.entity instanceof NagaSegment) {
-			this.body.render(stack, builder, light, overlay, red, green, blue, scale * 2);
-		} else {
-			this.head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
-		}
-		this.entity = null;
-	}
-
-	@Override
-	public void setupAnim(T entity, float v, float v1, float v2, float v3, float v4) {
-		this.entity = entity;
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
+		stack.scale(0.5F, 0.5F, 0.5F);
+		stack.translate(0.0F, -0.25F, 0.0F);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(NagaRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 	}
 }

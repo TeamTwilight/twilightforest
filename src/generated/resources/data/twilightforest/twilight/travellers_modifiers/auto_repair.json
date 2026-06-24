@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:auto_repair_probability": 0.001
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.auto_repair.description"
+    }
+  ],
+  "equipment_slots": "armor"
+}

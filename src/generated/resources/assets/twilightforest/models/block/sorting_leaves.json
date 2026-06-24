@@ -1,5 +1,48 @@
 {
   "parent": "minecraft:block/leaves",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "east": {
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "north": {
+          "rotation": 180,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "south": {
+          "rotation": 270,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "up": {
+          "rotation": 180,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "west": {
+          "texture": "#all",
+          "tintindex": 0
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
   "textures": {
     "all": "twilightforest:block/sorting_leaves"
   }

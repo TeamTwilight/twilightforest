@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
@@ -28,7 +29,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected boolean shouldHaveBase(RandomSource rand) {
+	protected boolean shouldHaveBase(StructurePieceAccessor list, RandomSource rand) {
 		return false;
 	}
 
@@ -52,7 +53,6 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
-	 *
 	 */
 	@Override
 	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {

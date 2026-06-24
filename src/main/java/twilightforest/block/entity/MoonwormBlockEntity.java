@@ -8,10 +8,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlockEntities;
 
 public class MoonwormBlockEntity extends BlockEntity {
+	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
-	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 
 	public MoonwormBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.MOONWORM.get(), pos, state);

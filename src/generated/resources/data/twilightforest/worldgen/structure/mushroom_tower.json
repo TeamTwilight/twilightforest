@@ -1,10 +1,13 @@
 {
   "type": "twilightforest:mushroom_tower",
-  "adjust_structure_elevation": true,
-  "allow_biome_surface_decorations": true,
-  "allow_biome_underground_decorations": true,
   "biomes": "#twilightforest:valid_mushroom_tower_biomes",
-  "chunk_clearance_radius": 2,
+  "decoration_clearance": {
+    "adjust_structure_elevation": true,
+    "allow_biome_surface_decorations": true,
+    "allow_biome_underground_decorations": true,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 2.0
+  },
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",

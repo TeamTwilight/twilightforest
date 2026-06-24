@@ -1,14 +1,15 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class GiantBlock extends Block {
 
@@ -16,6 +17,37 @@ public class GiantBlock extends Block {
 
 	public GiantBlock(Properties properties) {
 		super(properties);
+	}
+
+	public static Iterable<BlockPos> getVolume(BlockPos pos) {
+		return BlockPos.betweenClosed(
+			pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
+			pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
+		);
+	}
+
+	public static int packCoords(BlockPos pos) {
+		return packCoords(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public static int packCoords(int x, int y, int z) {
+		int length = 4;
+
+		int packedX = Mth.positiveModulo(x, length);
+		int packedY = Mth.positiveModulo(y, length) << length;
+		int packedZ = Mth.positiveModulo(z, length) << (length + length);
+
+		return packedX | packedY | packedZ;
+	}
+
+	public static BlockPos unpackCoords(int index) {
+		int length = 4;
+
+		int unpackedX = Mth.positiveModulo(index, length);
+		int unpackedY = Mth.positiveModulo(index >> length, length);
+		int unpackedZ = Mth.positiveModulo(index >> (length + length), length);
+
+		return new BlockPos(unpackedX, unpackedY, unpackedZ);
 	}
 
 	@Nullable
@@ -26,23 +58,22 @@ public class GiantBlock extends Block {
 				return null;
 			}
 		}
-		return defaultBlockState();
+		return super.getStateForPlacement(context);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		if (!level.isClientSide()) {
 			for (BlockPos dPos : getVolume(pos)) {
-				level.setBlockAndUpdate(dPos, defaultBlockState());
+				level.setBlockAndUpdate(dPos, this.defaultBlockState());
 			}
 		}
 	}
 
 	@Override
-	@Deprecated
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onRemove(state, level, pos, newState, isMoving);
-		if (!this.isSelfDestructing && !isVolumeFilled(level, pos)) {
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+		if (!this.isSelfDestructing && !this.isVolumeFilled(level, pos)) {
 			this.setGiantBlockToAir(level, pos);
 		}
 	}
@@ -67,12 +98,5 @@ public class GiantBlock extends Block {
 			}
 		}
 		return true;
-	}
-
-	public static Iterable<BlockPos> getVolume(BlockPos pos) {
-		return BlockPos.betweenClosed(
-				pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
-				pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
-		);
 	}
 }

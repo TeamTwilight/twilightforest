@@ -1,0 +1,22 @@
+{
+  "remove": [
+    "#c:tools/shield"
+  ],
+  "values": [
+    "twilightforest:gelatinous_slime_drop",
+    "twilightforest:gelatinous_maze_slime_drop",
+    "twilightforest:zombie_skull_candle",
+    "twilightforest:skeleton_skull_candle",
+    "twilightforest:wither_skeleton_skull_candle",
+    "twilightforest:creeper_skull_candle",
+    "twilightforest:player_skull_candle",
+    "twilightforest:piglin_skull_candle",
+    "minecraft:pointed_dripstone",
+    "minecraft:recovery_compass",
+    "minecraft:clock",
+    "minecraft:spyglass",
+    "minecraft:trident",
+    "#minecraft:banners",
+    "#c:tools"
+  ]
+}

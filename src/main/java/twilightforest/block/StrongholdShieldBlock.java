@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -13,31 +14,37 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import twilightforest.util.EntityUtil;
-
-import org.jetbrains.annotations.Nullable;
+import twilightforest.util.entities.EntityUtil;
 
 public class StrongholdShieldBlock extends DirectionalBlock {
 
-	public StrongholdShieldBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public static final MapCodec<StrongholdShieldBlock> CODEC = simpleCodec(StrongholdShieldBlock::new);
+
+	public StrongholdShieldBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
 	}
 
 	@Override
+	protected MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
+	}
+
+	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+		Direction facing = context.getNearestLookingDirection();
+		if (facing.getAxis().equals(Direction.Axis.Y)) {
+			facing = facing.getOpposite();
+		}
+		return defaultBlockState().setValue(FACING, facing);
 	}
 
 	@Override
-	@Deprecated
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
 		BlockHitResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
@@ -47,7 +54,7 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 		Direction upFace = state.getValue(DirectionalBlock.FACING);
 
 		if (hitFace == (upOrDown ? upFace : sideFace)) {
-			return player.getDigSpeed(Blocks.STONE.defaultBlockState(), pos) / 1.5F / 100F;
+			return player.getDestroySpeed(Blocks.STONE.defaultBlockState(), pos) / 1.5F / 100F;
 		} else {
 			return super.getDestroyProgress(state, player, getter, pos);
 		}

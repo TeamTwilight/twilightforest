@@ -1,70 +1,32 @@
 package twilightforest.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.capabilities.CapabilityList;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
-public class FortificationWandItem extends Item {
+public class FortificationWandItem extends ScepterItem {
 
 	public FortificationWandItem(Properties properties) {
 		super(properties);
 	}
 
-	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
-		ItemStack stack = player.getItemInHand(hand);
-
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
-			return InteractionResultHolder.fail(stack);
-		}
-
+	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
 		if (!level.isClientSide()) {
-			player.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
-				cap.replenishShields();
-				stack.hurt(1, level.getRandom(), null);
-			});
+			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
+			if (!player.isCreative()) {
+				stack.hurtWithoutBreaking(1, player);
+			}
 		}
+		player.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);
 
-		if (!player.isCreative())
-			player.getCooldowns().addCooldown(this, 1200);
-
-		return InteractionResultHolder.success(stack);
-	}
-
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, level, tooltip, flags);
-		tooltip.add(Component.translatable("item.twilightforest.scepter.desc", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
+		if (!player.isCreative()) {
+			player.getCooldowns().addCooldown(stack, 1200);
+		}
+		return InteractionResult.SUCCESS;
 	}
 }

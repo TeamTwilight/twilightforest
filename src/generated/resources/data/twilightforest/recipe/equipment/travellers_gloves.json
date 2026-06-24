@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "l": {
+      "item": "twilightforest:tanned_leather"
+    },
+    "s": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "s s",
+    "l l"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:travellers_gloves"
+  }
+}

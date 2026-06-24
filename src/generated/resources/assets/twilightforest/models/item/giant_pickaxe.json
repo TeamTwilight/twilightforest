@@ -6,7 +6,7 @@
       "layer0": "minecraft:item/stone_pickaxe"
     }
   },
-  "loader": "forge:separate_transforms",
+  "loader": "neoforge:separate_transforms",
   "perspectives": {
     "gui": {
       "elements": [

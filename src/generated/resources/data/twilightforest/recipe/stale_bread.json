@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": {
+    "item": "minecraft:bread"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:stale_bread"
+  }
+}

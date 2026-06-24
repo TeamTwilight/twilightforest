@@ -1,0 +1,21 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
+  "ingredients": [
+    {
+      "item": "twilightforest:exanimate_essence"
+    },
+    {
+      "item": "twilightforest:ore_magnet"
+    },
+    {
+      "item": "twilightforest:liveroot"
+    },
+    {
+      "item": "minecraft:chicken"
+    },
+    {
+      "item": "twilightforest:travellers_vest"
+    }
+  ],
+  "modifier_key": "twilightforest:arrow_magnetism"
+}

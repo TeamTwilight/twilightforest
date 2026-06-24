@@ -10,6 +10,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -17,13 +19,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.Troll;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-
-import org.jetbrains.annotations.Nullable;
 
 public class ThrownBlock extends TFThrowable {
 
@@ -41,23 +44,23 @@ public class ThrownBlock extends TFThrowable {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tag) {
+	protected void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
-		tag.put("BlockState", NbtUtils.writeBlockState(this.state));
+		tag.store("BlockState", BlockState.CODEC, this.state);
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag tag) {
+	protected void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
-		this.state = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), tag.getCompound("BlockState"));
+		this.state = tag.read("BlockState", BlockState.CODEC).orElse(Blocks.AIR.defaultBlockState());
 	}
 
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 3) {
+		if (id == EntityEvent.DEATH) {
 			ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, this.state);
 			for (int i = 0; i < 20; i++) {
-				this.level().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
+				this.level().addParticle(particle, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -90,8 +93,8 @@ public class ThrownBlock extends TFThrowable {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this, Block.getId(this.getBlockState()));
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+		return new ClientboundAddEntityPacket(this, entity, Block.getId(this.getBlockState()));
 	}
 
 	@Override

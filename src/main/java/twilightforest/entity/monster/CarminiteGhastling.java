@@ -1,12 +1,14 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -14,6 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
 
@@ -23,6 +27,7 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 
 	private boolean isMinion = false;
 
+	@SuppressWarnings("this-escape")
 	public CarminiteGhastling(EntityType<? extends CarminiteGhastling> type, Level world) {
 		super(type, world);
 		this.wanderFactor = 4.0F;
@@ -40,13 +45,8 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return CarminiteGhastguard.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 10)
-				.add(Attributes.FOLLOW_RANGE, 16.0D);
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return 0.5F;
+			.add(Attributes.MAX_HEALTH, 10)
+			.add(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 
 	@Override
@@ -93,8 +93,8 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	}
 
 	//This does not factor into whether the entity is a Minion or not. However, since it is spawned via MOB_SUMMONED, it will always spawn if that is the SpawnReason
-	public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.MOB_SUMMONED || Monster.isDarkEnoughToSpawn(world, pos, random)) && checkMobSpawnRules(entity, world, reason, pos, random);
+	public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == EntitySpawnReason.MOB_SUMMONED || Monster.isDarkEnoughToSpawn(world, pos, random)) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
 	public void makeBossMinion() {
@@ -110,15 +110,15 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		compound.putBoolean("isMinion", this.isMinion);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		if (compound.getBoolean("isMinion")) {
+		if (compound.getBooleanOr("isMinion", false)) {
 			this.makeBossMinion();
 		}
 	}

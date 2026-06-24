@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.JsonOps;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
 import net.minecraft.client.renderer.block.model.BlockElementRotation;
@@ -14,10 +13,9 @@ import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.model.ForgeFaceData;
-import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.ExtraFaceData;
+import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -27,29 +25,57 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {
-	protected final List<ForceFieldElementBuilder> elements = new ArrayList<>();
+public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 
-	public static <T extends ModelBuilder<T>> ForceFieldModelBuilder<T> begin(T parent, ExistingFileHelper helper) {
-		return new ForceFieldModelBuilder<>(parent, helper);
+	private boolean defaultShade = true;
+	private int brightnessOverride = 0;
+	private int tint = -1;
+	protected List<ForceFieldElementBuilder> elements = new ArrayList<>();
+
+	public static ForceFieldModelBuilder begin() {
+		return new ForceFieldModelBuilder();
 	}
 
-	private ForceFieldModelBuilder<T> self() {
+	private ForceFieldModelBuilder self() {
 		return this;
 	}
 
-	protected ForceFieldModelBuilder(T parent, ExistingFileHelper helper) {
-		super(TwilightForestMod.prefix("force_field"), parent, helper);
+	public ForceFieldModelBuilder() {
+		super(TwilightForestMod.prefix("force_field"), false);
 	}
 
 	public ForceFieldElementBuilder forceFieldElement() {
-		ForceFieldElementBuilder ret = new ForceFieldElementBuilder();
-		elements.add(ret);
+		ForceFieldElementBuilder ret = new ForceFieldElementBuilder(this.defaultShade, this.brightnessOverride, this.tint);
+		this.elements.add(ret);
 		return ret;
 	}
 
+	public ForceFieldModelBuilder brightnessOverride(int light) {
+		this.brightnessOverride = light;
+		return this;
+	}
+
+	public ForceFieldModelBuilder disableShade() {
+		this.defaultShade = false;
+		return this;
+	}
+
+	public ForceFieldModelBuilder tintAll(int index) {
+		this.tint = index;
+		return this;
+	}
+
 	@Override
-	@SuppressWarnings({"ConstantConditions", "OptionalGetWithoutIsPresent"})
+	protected CustomLoaderBuilder copyInternal() {
+		ForceFieldModelBuilder builder = new ForceFieldModelBuilder();
+		builder.elements = this.elements;
+		builder.defaultShade = this.defaultShade;
+		builder.brightnessOverride = this.brightnessOverride;
+		builder.tint = this.tint;
+		return builder;
+	}
+
+	@Override
 	public JsonObject toJson(JsonObject json) {
 		json = super.toJson(json);
 		if (!this.elements.isEmpty()) {
@@ -81,7 +107,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 					rotation.addProperty("axis", part.rotation.axis().getSerializedName());
 					rotation.addProperty("angle", part.rotation.angle());
 					if (part.rotation.rescale()) {
-						rotation.addProperty("rescale", part.rotation.rescale());
+						rotation.addProperty("rescale", true);
 					}
 					partObj.add("rotation", rotation);
 				}
@@ -90,27 +116,28 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 					partObj.addProperty("shade", part.shade);
 				}
 
+				if (part.lightEmission != 0) {
+					partObj.addProperty("light_emission", part.lightEmission);
+				}
+
 				JsonObject faces = new JsonObject();
 				for (Direction dir : Direction.values()) {
 					BlockElementFace face = part.faces.get(dir);
 					if (face == null) continue;
 
 					JsonObject faceObj = new JsonObject();
-					faceObj.addProperty("texture", serializeLocOrKey(face.texture));
-					if (!Arrays.equals(face.uv.uvs, part.uvsByFace(dir))) {
-						faceObj.add("uv", new Gson().toJsonTree(face.uv.uvs));
+					faceObj.addProperty("texture", serializeLocOrKey(face.texture()));
+					if (!Arrays.equals(face.uv().uvs, part.uvsByFace(dir))) {
+						faceObj.add("uv", new Gson().toJsonTree(face.uv().uvs));
 					}
-					if (face.cullForDirection != null) {
-						faceObj.addProperty("cullface", face.cullForDirection.getSerializedName());
+					if (face.cullForDirection() != null) {
+						faceObj.addProperty("cullface", face.cullForDirection().getSerializedName());
 					}
-					if (face.uv.rotation != 0) {
-						faceObj.addProperty("rotation", face.uv.rotation);
+					if (face.uv().rotation != 0) {
+						faceObj.addProperty("rotation", face.uv().rotation);
 					}
-					if (face.tintIndex != -1) {
-						faceObj.addProperty("tintindex", face.tintIndex);
-					}
-					if (!face.getFaceData().equals(ForgeFaceData.DEFAULT)) {
-						faceObj.add("forge_data", ForgeFaceData.CODEC.encodeStart(JsonOps.INSTANCE, face.getFaceData()).result().get());
+					if (face.tintIndex() != -1) {
+						faceObj.addProperty("tintindex", face.tintIndex());
 					}
 					faces.add(dir.getSerializedName(), faceObj);
 				}
@@ -124,14 +151,14 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		return json;
 	}
 
-	private String serializeLocOrKey(String tex) {
+	private static String serializeLocOrKey(String tex) {
 		if (tex.charAt(0) == '#') {
 			return tex;
 		}
-		return new ResourceLocation(tex).toString();
+		return ResourceLocation.parse(tex).toString();
 	}
 
-	private JsonArray serializeVector3f(Vector3f vec) {
+	private static JsonArray serializeVector3f(Vector3f vec) {
 		JsonArray ret = new JsonArray();
 		ret.add(serializeFloat(vec.x()));
 		ret.add(serializeFloat(vec.y()));
@@ -139,7 +166,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		return ret;
 	}
 
-	private Number serializeFloat(float f) {
+	private static Number serializeFloat(float f) {
 		if ((int) f == f) return (int) f;
 		return f;
 	}
@@ -152,19 +179,26 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		private Vector3f from = new Vector3f();
 		private Vector3f to = new Vector3f(16, 16, 16);
 		private final Map<Direction, ForceFieldElementBuilder.FaceBuilder> faces = new LinkedHashMap<>();
+		@Nullable
 		private ForceFieldElementBuilder.RotationBuilder rotation;
-		private boolean shade = true;
-		private int color = 0xFFFFFFFF;
-		private int blockLight = 0, skyLight = 0;
-		private boolean hasAmbientOcclusion = true;
+		private boolean shade;
+		private int light;
+		private int tint;
+		@Nullable
 		private Pair<ExtraDirection, Boolean> condition = null;
 		private final List<ExtraDirection> parents = new ArrayList<>();
 
-		private void validateCoordinate(float coord, char name) {
+		private ForceFieldElementBuilder(boolean defaultShade, int brightnessOverride, int tint) {
+			this.shade = defaultShade;
+			this.light = brightnessOverride;
+			this.tint = tint;
+		}
+
+		private static void validateCoordinate(float coord, char name) {
 			Preconditions.checkArgument(!(coord < -16.0F) && !(coord > 32.0F), "Position " + name + " out of range, must be within [-16, 32]. Found: %d", coord);
 		}
 
-		private void validatePosition(Vector3f pos) {
+		private static void validatePosition(Vector3f pos) {
 			validateCoordinate(pos.x(), 'x');
 			validateCoordinate(pos.y(), 'y');
 			validateCoordinate(pos.z(), 'z');
@@ -184,7 +218,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 
 		public ForceFieldElementBuilder.FaceBuilder face(Direction dir) {
 			Preconditions.checkNotNull(dir, "Direction must not be null");
-			return faces.computeIfAbsent(dir, ForceFieldElementBuilder.FaceBuilder::new);
+			return this.faces.computeIfAbsent(dir, direction -> new FaceBuilder(this.tint));
 		}
 
 		public ForceFieldElementBuilder.RotationBuilder rotation() {
@@ -200,41 +234,29 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		}
 
 		public ForceFieldElementBuilder allFaces(BiConsumer<Direction, ForceFieldElementBuilder.FaceBuilder> action) {
-			Arrays.stream(Direction.values())
-					.forEach(d -> action.accept(d, face(d)));
+			Arrays.stream(Direction.values()).forEach(d -> action.accept(d, this.face(d)));
 			return this;
 		}
 
 		public ForceFieldElementBuilder faces(BiConsumer<Direction, ForceFieldElementBuilder.FaceBuilder> action) {
-			faces.forEach(action);
+			this.faces.forEach(action);
 			return this;
 		}
 
 		public ForceFieldElementBuilder textureAll(String texture) {
-			return allFaces(addTexture(texture));
+			return this.allFaces(this.addTexture(texture));
 		}
 
 		public ForceFieldElementBuilder texture(String texture) {
-			return faces(addTexture(texture));
+			return this.faces(this.addTexture(texture));
 		}
 
 		public ForceFieldElementBuilder cube(String texture) {
-			return allFaces(addTexture(texture).andThen((dir, f) -> f.cullface(dir)));
+			return this.allFaces(this.addTexture(texture).andThen((dir, f) -> f.cullface(dir)));
 		}
 
-		public ForceFieldElementBuilder emissivity(int blockLight, int skyLight) {
-			this.blockLight = blockLight;
-			this.skyLight = skyLight;
-			return this;
-		}
-
-		public ForceFieldElementBuilder color(int color) {
-			this.color = color;
-			return this;
-		}
-
-		public ForceFieldElementBuilder ao(boolean ao) {
-			this.hasAmbientOcclusion = ao;
+		public ForceFieldElementBuilder emissivity(int light) {
+			this.light = light;
 			return this;
 		}
 
@@ -263,31 +285,32 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		}
 
 		private BiConsumer<Direction, ForceFieldElementBuilder.FaceBuilder> addTexture(String texture) {
-			return ($, f) -> f.texture(texture);
+			return (direction, builder) -> builder.texture(texture);
 		}
 
 		BlockElement build() {
 			Map<Direction, BlockElementFace> faces = this.faces.entrySet().stream()
-					.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().build(), (k1, k2) -> { throw new IllegalArgumentException(); }, LinkedHashMap::new));
-			return new BlockElement(from, to, faces, rotation == null ? null : rotation.build(), shade, new ForgeFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion));
+				.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().build(), (direction, face) -> {
+					throw new IllegalArgumentException();
+				}, LinkedHashMap::new));
+			return new BlockElement(this.from, this.to, faces, this.rotation == null ? null : this.rotation.build(), this.shade, this.light, ExtraFaceData.DEFAULT);
 		}
 
-		public ForceFieldModelBuilder<T> end() {
+		public ForceFieldModelBuilder end() {
 			return self();
 		}
 
 		public class FaceBuilder {
+			@Nullable
 			private Direction cullface;
-			private int tintindex = -1;
+			private int tintindex;
+			@Nullable
 			private String texture = MissingTextureAtlasSprite.getLocation().toString();
-			private float[] uvs;
+			private float@Nullable[] uvs;
 			private FaceRotation rotation = FaceRotation.ZERO;
-			private int color = 0xFFFFFFFF;
-			private int blockLight = 0, skyLight = 0;
-			private boolean hasAmbientOcclusion = true;
 
-			FaceBuilder(Direction dir) {
-				// param unused for functional match
+			FaceBuilder(int tint) {
+				this.tintindex = tint;
 			}
 
 			public ForceFieldElementBuilder.FaceBuilder cullface(@Nullable Direction dir) {
@@ -307,7 +330,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 			}
 
 			public ForceFieldElementBuilder.FaceBuilder uvs(float u1, float v1, float u2, float v2) {
-				this.uvs = new float[] { u1, v1, u2, v2 };
+				this.uvs = new float[]{u1, v1, u2, v2};
 				return this;
 			}
 
@@ -317,27 +340,11 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 				return this;
 			}
 
-			public ForceFieldElementBuilder.FaceBuilder emissivity(int blockLight, int skyLight) {
-				this.blockLight = blockLight;
-				this.skyLight = skyLight;
-				return this;
-			}
-
-			public ForceFieldElementBuilder.FaceBuilder color(int color) {
-				this.color = color;
-				return this;
-			}
-
-			public ForceFieldElementBuilder.FaceBuilder ao(boolean ao) {
-				this.hasAmbientOcclusion = ao;
-				return this;
-			}
-
 			BlockElementFace build() {
 				if (this.texture == null) {
 					throw new IllegalStateException("A model face must have a texture");
 				}
-				return new BlockElementFace(cullface, tintindex, texture, new BlockFaceUV(uvs, rotation.rotation), new ForgeFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion));
+				return new BlockElementFace(this.cullface, this.tintindex, this.texture, new BlockFaceUV(this.uvs, this.rotation.rotation), ExtraFaceData.DEFAULT, new MutableObject<>());
 			}
 
 			public ForceFieldElementBuilder end() {
@@ -347,7 +354,9 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 
 		public class RotationBuilder {
 
+			@Nullable
 			private Vector3f origin;
+			@Nullable
 			private Direction.Axis axis;
 			private float angle;
 			private boolean rescale;
@@ -376,7 +385,9 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 			}
 
 			BlockElementRotation build() {
-				return new BlockElementRotation(origin, axis, angle, rescale);
+				Preconditions.checkNotNull(this.origin, "No origin specified");
+				Preconditions.checkNotNull(this.axis, "No axis specified");
+				return new BlockElementRotation(this.origin, this.axis, this.angle, this.rescale);
 			}
 
 			public ForceFieldElementBuilder end() {
@@ -389,8 +400,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		ZERO(0),
 		CLOCKWISE_90(90),
 		UPSIDE_DOWN(180),
-		COUNTERCLOCKWISE_90(270),
-		;
+		COUNTERCLOCKWISE_90(270);
 
 		final int rotation;
 
@@ -398,5 +408,4 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 			this.rotation = rotation;
 		}
 	}
-
 }

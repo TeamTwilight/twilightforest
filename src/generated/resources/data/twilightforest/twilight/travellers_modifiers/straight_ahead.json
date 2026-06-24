@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:straight_ahead_multiplier": 1.4
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.straight_ahead.description"
+    }
+  ],
+  "equipment_slots": "feet"
+}

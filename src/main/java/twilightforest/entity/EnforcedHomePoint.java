@@ -7,15 +7,15 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFDimension;
 
 public interface EnforcedHomePoint {
 
@@ -23,20 +23,20 @@ public interface EnforcedHomePoint {
 		selector.addGoal(5, new AttemptToGoHomeGoal<>(entity, 1.25D));
 	}
 
-	default void saveHomePointToNbt(CompoundTag tag) {
+	default void saveHomePointToNbt(ValueOutput tag) {
 		if (this.getRestrictionPoint() != null) {
 			GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, this.getRestrictionPoint()).resultOrPartial(TwilightForestMod.LOGGER::error).ifPresent(tag1 -> tag.put("HomePos", tag1));
 		}
 	}
 
-	default void loadHomePointFromNbt(CompoundTag tag) {
+	default void loadHomePointFromNbt(ValueInput tag) {
 		//properly load old home points, just assume theyre set in TF
 		if (tag.contains("Home", 9)) {
 			ListTag nbttaglist = tag.getList("Home", 6);
 			double hx = nbttaglist.getDouble(0);
 			double hy = nbttaglist.getDouble(1);
 			double hz = nbttaglist.getDouble(2);
-			this.setRestrictionPoint(GlobalPos.of(TFGenerationSettings.DIMENSION_KEY, BlockPos.containing(hx, hy, hz)));
+			this.setRestrictionPoint(GlobalPos.of(TFDimension.DIMENSION_KEY, BlockPos.containing(hx, hy, hz)));
 		} else {
 			if (tag.contains("HomePos")) {
 				this.setRestrictionPoint(GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("HomePos")).resultOrPartial(TwilightForestMod.LOGGER::error).orElse(null));
@@ -46,15 +46,15 @@ public interface EnforcedHomePoint {
 
 	default boolean isMobWithinHomeArea(Entity entity) {
 		if (!this.isRestrictionPointValid(entity.level().dimension())) return true;
-		return this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double)(this.getHomeRadius() * this.getHomeRadius());
+		return this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
 	}
 
 	default boolean isRestrictionPointValid(ResourceKey<Level> currentMobLevel) {
 		return this.getRestrictionPoint() != null && this.getRestrictionPoint().dimension().equals(currentMobLevel);
-
 	}
 
-	@Nullable GlobalPos getRestrictionPoint();
+	@Nullable
+	GlobalPos getRestrictionPoint();
 
 	void setRestrictionPoint(@Nullable GlobalPos pos);
 

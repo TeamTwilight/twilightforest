@@ -1,0 +1,59 @@
+{
+	"parent": "minecraft:block/block",
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"1": "twilightforest:block/canopy_log_top",
+		"2": "twilightforest:block/canopy_log",
+		"particle": "twilightforest:block/canopy_log_top"
+	},
+	"elements": [
+		{
+			"from": [5, 12, 5],
+			"to": [11, 16, 11],
+			"faces": {
+				"up": {"uv": [5, 5, 11, 11], "texture": "#1", "cullface": "up"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, 12, 4],
+			"to": [12, 16, 5],
+			"faces": {
+				"north": {"uv": [4, 0, 12, 4], "texture": "#2"},
+				"east": {"uv": [11, 0, 12, 4], "texture": "#2"},
+				"west": {"uv": [4, 0, 5, 4], "texture": "#2"},
+				"up": {"uv": [4, 0, 12, 1], "texture": "#1"},
+				"down": {"uv": [4, 0, 12, 1], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, 12, 11],
+			"to": [12, 16, 12],
+			"faces": {
+				"east": {"uv": [4, 0, 5, 4], "texture": "#2"},
+				"south": {"uv": [4, 0, 12, 4], "texture": "#2"},
+				"west": {"uv": [11, 0, 12, 4], "texture": "#2"},
+				"up": {"uv": [4, 0, 12, 1], "texture": "#1"},
+				"down": {"uv": [4, 0, 12, 1], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, 12, 5],
+			"to": [5, 16, 11],
+			"faces": {
+				"west": {"uv": [5, 0, 11, 4], "texture": "#2"},
+				"up": {"uv": [0, 5, 1, 11], "texture": "#1"},
+				"down": {"uv": [0, 5, 1, 11], "texture": "#1"}
+			}
+		},
+		{
+			"from": [11, 12, 5],
+			"to": [12, 16, 11],
+			"faces": {
+				"east": {"uv": [5, 0, 11, 4], "texture": "#2"},
+				"up": {"uv": [15, 5, 16, 11], "texture": "#1"},
+				"down": {"uv": [15, 5, 16, 11], "texture": "#1"}
+			}
+		}
+	]
+}

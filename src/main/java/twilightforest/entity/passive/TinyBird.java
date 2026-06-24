@@ -1,30 +1,40 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.Ocelot;
+import net.minecraft.world.entity.animal.feline.Cat;
+import net.minecraft.world.entity.animal.feline.Ocelot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.variant.VariantUtils;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.TFRegistries;
+import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFSounds;
-import twilightforest.init.custom.TinyBirdVariant;
+import twilightforest.init.custom.TinyBirdVariants;
+import twilightforest.tags.TFItemTags;
 
 public class TinyBird extends FlyingBird {
 
-	private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(TinyBird.class, EntityDataSerializers.STRING);
+	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get());
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level level) {
 		super(type, level);
-		this.setBirdType(TinyBirdVariant.getVariantId(TinyBirdVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
@@ -34,37 +44,44 @@ public class TinyBird extends FlyingBird {
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Ocelot.class, 8.0F, 1.0D, 1.25D));
 	}
 
-
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(TYPE, TinyBirdVariant.getVariantId(TinyBirdVariant.getRandomVariant(this.getRandom())));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, this.registryAccess().lookupOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT).getOrThrow(TinyBirdVariants.RED));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return FlyingBird.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D);
+			.add(Attributes.MAX_HEALTH, 4.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.2D)
+			.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putString("BirdType", TinyBirdVariant.getVariantId(this.getBirdType()));
+		compound.putString("variant", this.getVariant().unwrapKey().orElse(TinyBirdVariants.RED).identifier().toString());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setBirdType(compound.getString("BirdType"));
+		VariantUtils.readVariant(compound, TFRegistries.Keys.TINY_BIRD_VARIANT).ifPresent(this::setVariant);
 	}
 
-	public TinyBirdVariant getBirdType() {
-		return TinyBirdVariant.getVariant(this.getEntityData().get(TYPE)).orElse(TinyBirdVariant.BLUE.get());
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
+		this.setVariant(TinyBirdVariant.getVariant(accessor.registryAccess(), accessor.getBiome(this.blockPosition()), this.getRandom()));
+		return data;
 	}
 
-	public void setBirdType(String type) {
-		this.getEntityData().set(TYPE, type);
+	public Holder<TinyBirdVariant> getVariant() {
+		return this.getEntityData().get(VARIANT);
+	}
+
+	public void setVariant(Holder<TinyBirdVariant> variant) {
+		this.getEntityData().set(VARIANT, variant);
 	}
 
 	@Override
@@ -83,16 +100,14 @@ public class TinyBird extends FlyingBird {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.7F;
-	}
-
-	@Override
 	public boolean isSpooked() {
 		if (this.getLastHurtByMob() != null) return true;
 		Player closestPlayer = this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
-		return closestPlayer != null
-				&& !SEEDS.test(closestPlayer.getMainHandItem())
-				&& !SEEDS.test(closestPlayer.getOffhandItem());
+		return closestPlayer != null && closestPlayer.isHolding(stack -> stack.is(this.getTemptItems()));
+	}
+
+	@Override
+	public TagKey<Item> getTemptItems() {
+		return TFItemTags.TINY_BIRD_TEMPT_ITEMS;
 	}
 }

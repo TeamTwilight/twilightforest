@@ -2,7 +2,7 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
-  "creature_spawn_probability": 0.2,
+  "creature_spawn_probability": 0.15,
   "downfall": 0.1,
   "effects": {
     "fog_color": 3547016,
@@ -40,8 +40,7 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [],

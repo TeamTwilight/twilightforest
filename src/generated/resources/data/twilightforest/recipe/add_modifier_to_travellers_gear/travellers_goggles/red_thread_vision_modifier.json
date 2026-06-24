@@ -1,0 +1,19 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:red_thread_vision",
+  "pattern": {
+    "key": {
+      "G": {
+        "item": "twilightforest:travellers_goggles"
+      },
+      "R": {
+        "item": "twilightforest:red_thread"
+      }
+    },
+    "pattern": [
+      " R ",
+      "RGR"
+    ]
+  }
+}

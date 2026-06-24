@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:red_thread_vision": {}
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.red_thread_vision.description"
+    }
+  ],
+  "equipment_slots": "head"
+}

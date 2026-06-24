@@ -3,15 +3,16 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,13 +27,17 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.TomeBolt;
@@ -63,41 +68,50 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
+			@Override
+			protected void findTarget() {
+				if (this.mob instanceof DeathTome tome && tome.isOnLectern()) {
+					this.target = tome.level().getNearestPlayer(tome.getX(), tome.getY(), tome.getZ(), 3.0D, entity ->
+						entity instanceof Player player && !player.isShiftKeyDown() && tome.isInPlayersView(player, 0.25D, false, true, tome.getEyeY(), tome.getY() + 0.5D * tome.getScale(), (tome.getEyeY() + tome.getY()) / 2.0D) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player));
+				} else super.findTarget();
+			}
+		});
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.25D)
-				.add(Attributes.FLYING_SPEED, 0.6D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.25D)
+			.add(Attributes.FLYING_SPEED, 0.6D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(DATA_LECTERN, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_LECTERN, false);
 	}
 
 	public void setOnLectern(boolean hidden) {
-		this.entityData.set(DATA_LECTERN, hidden);
+		this.getEntityData().set(DATA_LECTERN, hidden);
 	}
 
 	public boolean isOnLectern() {
-		return this.entityData.get(DATA_LECTERN);
+		return this.getEntityData().get(DATA_LECTERN);
 	}
 
 	@Override
 	protected PathNavigation createNavigation(Level level) {
 		FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
+			@Override
 			public boolean isStableDestination(BlockPos pos) {
 				return !this.level.getBlockState(pos.below()).isAir();
 			}
 		};
 		flyingpathnavigation.setCanOpenDoors(false);
 		flyingpathnavigation.setCanFloat(false);
-		flyingpathnavigation.setCanPassDoors(true);
+		//flyingpathnavigation.setCanPassDoors(true);
 		return flyingpathnavigation;
 	}
 
@@ -121,9 +135,9 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 				if (!this.level().isClientSide()) this.targetSelector.tick(); // Tick target selector, so that our Tome can find an enemy to ambush
 
-				if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 20.0D) {
+				if (this.getTarget() != null) {
 					this.setOnLectern(false);
-					this.jumpControl.jump();
+					this.setDeltaMovement(0.0D, 0.25D, 0.0D);
 					this.performRangedAttack(this.getTarget(), 1.0F);
 				}
 
@@ -142,14 +156,42 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 		for (int i = 0; i < 1; ++i) {
 			this.level().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
-					0.0D, 0.5D, 0.0D);
+				0.0D, 0.5D, 0.0D);
+		}
+	}
+
+	//TODO replace with LivingEntity.isLookingAtMe in 1.21.4
+	private boolean isInPlayersView(LivingEntity target, double tolerance, boolean scaleByDistance, boolean visual, double... yValues) {
+		Vec3 vec3 = target.getViewVector(1.0F).normalize();
+
+		for (double d0 : yValues) {
+			Vec3 vec31 = new Vec3(this.getX() - target.getX(), d0 - target.getEyeY(), this.getZ() - target.getZ());
+			double d1 = vec31.length();
+			vec31 = vec31.normalize();
+			double d2 = vec3.dot(vec31);
+			if (d2 > 1.0 - tolerance / (scaleByDistance ? d1 : 1.0)
+				&& this.hasLineOfSight(target, visual ? ClipContext.Block.VISUAL : ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, d0)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean hasLineOfSight(Entity entity, ClipContext.Block block, ClipContext.Fluid fluid, double eyeHeight) {
+		if (entity.level() != this.level()) {
+			return false;
+		} else {
+			Vec3 vec3 = new Vec3(this.getX(), eyeHeight, this.getZ());
+			Vec3 vec31 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
+			return !(vec31.distanceTo(vec3) > 128.0) && this.level().clip(new ClipContext(vec3, vec31, block, fluid, this)).getType() == HitResult.Type.MISS;
 		}
 	}
 
 	@Override
 	public void tick() {
 		if (this.isOnLectern()) this.ambientSoundTime = -1; // Don't play ambient sounds if we're trying to be stealthy
-		if (this.level().isClientSide) {
+		if (this.level().isClientSide()) {
 			float f1 = this.flipT;
 
 			if (this.random.nextInt(this.isOnLectern() ? 120 : 30) == 0) {
@@ -168,22 +210,21 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public boolean hurt(DamageSource src, float damage) {
-		if (this.isOnLectern()) {
-			this.jumpControl.jump();
-			this.setOnLectern(false);
-		}
-
+	public boolean hurtServer(ServerLevel server, DamageSource src, float damage) {
 		if (src.is(DamageTypeTags.IS_FIRE)) {
 			damage *= 2;
 		}
 
-		if (super.hurt(src, damage)) {
+		if (super.hurtServer(server, src, damage)) {
 			if (damage > 0) {
+				if (this.isOnLectern()) {
+					this.setDeltaMovement(0.0D, 0.25D, 0.0D);
+					this.setOnLectern(false);
+				}
 				if (!this.level().isClientSide()) {
 					LootParams ctx = TFLootTables.createLootParams(this, true, src).create(LootContextParamSets.ENTITY);
 
-					Objects.requireNonNull(this.level().getServer()).getLootData().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(server, s, 1.0F));
 				}
 			}
 			return true;
@@ -226,14 +267,19 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {
+	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
-		this.entityData.set(DATA_LECTERN, tag.getBoolean("on_lectern"));
+		this.entityData.set(DATA_LECTERN, tag.getBooleanOr("on_lectern", false));
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag) {
+	public void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("on_lectern", this.entityData.get(DATA_LECTERN));
+	}
+
+	@Override
+	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
+		// NO-OP: Fall damage immunity, and prevents spawning particles. It's a hovering book.
 	}
 }

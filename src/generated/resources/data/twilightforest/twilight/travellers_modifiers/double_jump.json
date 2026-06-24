@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:double_jump": {}
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.double_jump.description"
+    }
+  ],
+  "equipment_slots": "legs"
+}

@@ -1,73 +1,85 @@
 package twilightforest.world.components.structures.util;
 
-import com.google.common.collect.Streams;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 // FIXME Using IDs to enumerate lists of mob spawn tables is a bad idea... Using String for now in the config, will transition this implementation detail later
 public interface ControlledSpawns {
-    List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList();
 
-    List<MobSpawnSettings.SpawnerData> getCombinedCreatureSpawnableList();
+	String CODEC_NAME = "controlled_spawns";
 
-    /**
-     * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
-     */
-    List<MobSpawnSettings.SpawnerData> getSpawnableList(MobCategory creatureType);
+	/**
+	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
+	 */
+	WeightedList<MobSpawnSettings.SpawnerData> getSpawnableList(MobCategory creatureType);
 
-    /**
-     * Returns a list of hostile monsters in the specified indexed category
-     */
-    List<MobSpawnSettings.SpawnerData> getSpawnableMonsterList(int index);
+	/**
+	 * Returns a list of hostile monsters in the specified indexed category
+	 */
+	WeightedList<MobSpawnSettings.SpawnerData> getSpawnableMonsterList(int index);
 
-    record ControlledSpawningConfig(Map<String, List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, List<MobSpawnSettings.SpawnerData> ambientCreatureList, List<MobSpawnSettings.SpawnerData> waterCreatureList, List<MobSpawnSettings.SpawnerData> combinedMonsterSpawnableCache, List<MobSpawnSettings.SpawnerData> combinedCreatureSpawnableCache) {
-        public static final MapCodec<ControlledSpawningConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Codec.unboundedMap(Codec.STRING, MobSpawnSettings.SpawnerData.CODEC.listOf()).fieldOf("labelled_monster_spawns").forGetter(ControlledSpawningConfig::spawnableMonsterLists),
-                MobSpawnSettings.SpawnerData.CODEC.listOf().fieldOf("ambient_spawns").forGetter(ControlledSpawningConfig::ambientCreatureList),
-                MobSpawnSettings.SpawnerData.CODEC.listOf().fieldOf("water_spawns").forGetter(ControlledSpawningConfig::waterCreatureList)
-        ).apply(instance, ControlledSpawningConfig::create));
+	record ControlledSpawningConfig(Map<String, WeightedList<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, WeightedList<MobSpawnSettings.SpawnerData> ambientCreatureList, WeightedList<MobSpawnSettings.SpawnerData> waterCreatureList, WeightedList<MobSpawnSettings.SpawnerData> combinedMonsterSpawnableCache, WeightedList<MobSpawnSettings.SpawnerData> combinedCreatureSpawnableCache) {
+		public static final Codec<ControlledSpawningConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.unboundedMap(Codec.STRING, WeightedList.codec(MobSpawnSettings.SpawnerData.CODEC)).fieldOf("labelled_monster_spawns").forGetter(ControlledSpawningConfig::spawnableMonsterLists),
+			WeightedList.codec(MobSpawnSettings.SpawnerData.CODEC).fieldOf("ambient_spawns").forGetter(ControlledSpawningConfig::ambientCreatureList),
+			WeightedList.codec(MobSpawnSettings.SpawnerData.CODEC).fieldOf("water_spawns").forGetter(ControlledSpawningConfig::waterCreatureList)
+		).apply(instance, ControlledSpawningConfig::create));
 
-        public static final ControlledSpawningConfig EMPTY = create(Map.of(), List.of(), List.of());
+		public static final ControlledSpawningConfig EMPTY = create(Map.of(), WeightedList.of(), WeightedList.of());
 
-        public static ControlledSpawningConfig firstIndexMonsters(MobSpawnSettings.SpawnerData... spawnableMonsterList) {
-            return create(List.of(List.of(spawnableMonsterList)), List.of(), List.of());
-        }
+		@SuppressWarnings("unchecked")
+		public static ControlledSpawningConfig firstIndexMonsters(WeightedList<MobSpawnSettings.SpawnerData> spawnableMonsterList) {
+			return justMonsters(spawnableMonsterList);
+		}
 
-        public static ControlledSpawningConfig create(List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, List<MobSpawnSettings.SpawnerData> ambientCreatureList, List<MobSpawnSettings.SpawnerData> waterCreatureList) {
-            return create(convertMonsterList(spawnableMonsterLists), ambientCreatureList, waterCreatureList);
-        }
+		@SuppressWarnings("unchecked")
+		public static ControlledSpawningConfig justMonsters(WeightedList<MobSpawnSettings.SpawnerData>... spawnableMonsterLists) {
+			return create(convertMonsterList(Arrays.asList(spawnableMonsterLists)), WeightedList.of(), WeightedList.of());
+		}
 
-        public static ControlledSpawningConfig create(Map<String, List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, List<MobSpawnSettings.SpawnerData> ambientCreatureList, List<MobSpawnSettings.SpawnerData> waterCreatureList) {
-            return new ControlledSpawningConfig(
-                    spawnableMonsterLists,
-                    ambientCreatureList,
-                    waterCreatureList,
-                    spawnableMonsterLists.values().stream().flatMap(List::stream).toList(),
-                    Streams.concat(ambientCreatureList.stream(), waterCreatureList.stream()).toList()
-            );
-        }
+		public static ControlledSpawningConfig create(List<WeightedList<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, WeightedList<MobSpawnSettings.SpawnerData> ambientCreatureList, WeightedList<MobSpawnSettings.SpawnerData> waterCreatureList) {
+			return create(convertMonsterList(spawnableMonsterLists), ambientCreatureList, waterCreatureList);
+		}
 
-        private static Map<String, List<MobSpawnSettings.SpawnerData>> convertMonsterList(List<List<MobSpawnSettings.SpawnerData>> lists) {
-            int i = 0;
-            Map<String, List<MobSpawnSettings.SpawnerData>> map = new HashMap<>();
+		public static ControlledSpawningConfig create(Map<String, WeightedList<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, WeightedList<MobSpawnSettings.SpawnerData> ambientCreatureList, WeightedList<MobSpawnSettings.SpawnerData> waterCreatureList) {
+			WeightedList.Builder<MobSpawnSettings.SpawnerData> combinedMonsters = WeightedList.builder();
+			spawnableMonsterLists.values().forEach(combinedMonsters::addAll);
 
-            for (List<MobSpawnSettings.SpawnerData> list : lists) {
-                map.put("" + i, list);
-                i++;
-            }
+			WeightedList.Builder<MobSpawnSettings.SpawnerData> combinedCreatures = WeightedList.builder();
+			combinedCreatures.addAll(ambientCreatureList);
+			combinedCreatures.addAll(waterCreatureList);
 
-            return map;
-        }
+			return new ControlledSpawningConfig(
+				spawnableMonsterLists,
+				ambientCreatureList,
+				waterCreatureList,
+				combinedMonsters.build(),
+				combinedCreatures.build()
+			);
+		}
 
-        public List<MobSpawnSettings.SpawnerData> getForLabel(String index) {
-            return this.spawnableMonsterLists().getOrDefault(index, List.of());
-        }
-    }
+		private static Map<String, WeightedList<MobSpawnSettings.SpawnerData>> convertMonsterList(List<WeightedList<MobSpawnSettings.SpawnerData>> lists) {
+			int i = 0;
+			Map<String, WeightedList<MobSpawnSettings.SpawnerData>> map = new HashMap<>();
+
+			for (WeightedList<MobSpawnSettings.SpawnerData> list : lists) {
+				map.put(String.valueOf(i), list);
+				i++;
+			}
+
+			return map;
+		}
+
+		public WeightedList<MobSpawnSettings.SpawnerData> getForLabel(String index) {
+			return this.spawnableMonsterLists().getOrDefault(index, WeightedList.of());
+		}
+	}
 }

@@ -1,53 +1,47 @@
 package twilightforest.network;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.client.DimensionSpecialEffectsManager;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
+import twilightforest.init.TFDimension;
+import twilightforest.util.Codecs;
 
-import java.util.function.Supplier;
+import java.util.List;
+import java.util.Optional;
 
-public class StructureProtectionPacket {
+public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>>> boxes) implements CustomPacketPayload {
 
-	private final BoundingBox sbb;
+	public static final Type<StructureProtectionPacket> TYPE = new Type<>(TwilightForestMod.prefix("change_protection_renderer"));
 
-	public StructureProtectionPacket(BoundingBox sbb) {
-		this.sbb = sbb;
-	}
-
-	public StructureProtectionPacket(FriendlyByteBuf buf) {
-		this.sbb = new BoundingBox(
-				buf.readInt(), buf.readInt(), buf.readInt(),
-				buf.readInt(), buf.readInt(), buf.readInt()
+	public static final StreamCodec<RegistryFriendlyByteBuf, StructureProtectionPacket> STREAM_CODEC =
+		StreamCodec.composite(
+			Codecs.listOf(Codecs.BOX_AND_FLAG_STREAM_CODEC).apply(ByteBufCodecs::optional),
+			StructureProtectionPacket::boxes,
+			StructureProtectionPacket::new
 		);
+
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(this.sbb.minX());
-		buf.writeInt(this.sbb.minY());
-		buf.writeInt(this.sbb.minZ());
-		buf.writeInt(this.sbb.maxX());
-		buf.writeInt(this.sbb.maxY());
-		buf.writeInt(this.sbb.maxZ());
-	}
+	public static void handle(StructureProtectionPacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TFDimension.DIMENSION_RENDERER);
 
-	public static class Handler {
-		public static boolean onMessage(StructureProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
-
-				// add weather box if needed
-				if (info instanceof TwilightForestRenderInfo) {
-					TFWeatherRenderer.setProtectedBox(message.sbb);
-				}
-			});
-
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			// Now you have a List<Pair<BoundingBox, Boolean>>
+			if (info instanceof TwilightForestRenderInfo) {
+				TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null));
+			}
+		});
 	}
 }

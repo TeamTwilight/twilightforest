@@ -1,8 +1,6 @@
 {
   "placement": {
-    "type": "twilightforest:forced_landmark",
-    "landmark_set": "labyrinth",
-    "scan_elevation": 256
+    "type": "twilightforest:landmark_grid"
   },
   "structures": [
     {

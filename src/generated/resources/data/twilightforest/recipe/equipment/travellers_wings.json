@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "tag": "c:gems/carminite"
+    },
+    "g": {
+      "tag": "c:ingots/gold"
+    },
+    "i": {
+      "tag": "c:ingots/copper"
+    },
+    "l": {
+      "item": "twilightforest:tanned_leather"
+    }
+  },
+  "pattern": [
+    "g g",
+    "ili",
+    "ici"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:travellers_wings"
+  }
+}

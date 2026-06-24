@@ -1,39 +1,36 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import twilightforest.entity.boss.HydraMortar;
+import twilightforest.client.state.entity.HydraMortarRenderState;
 
-public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
+public class HydraMortarModel extends EntityModel<HydraMortarRenderState> {
 
-	public final ModelPart root;
+	private final ModelPart root;
 
 	public HydraMortarModel(ModelPart root) {
+		super(root);
 		this.root = root;
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partRoot.addOrReplaceChild("mortar", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("mortar", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+			PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
+	public void setupAnim(HydraMortarRenderState renderState) {
 	}
-
-	@Override
-	public void setupAnim(HydraMortar entity, float v, float v1, float v2, float v3, float v4) { }
 }

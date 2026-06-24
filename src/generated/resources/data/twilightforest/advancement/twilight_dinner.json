@@ -1,0 +1,159 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "berry": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:raspberry",
+            "twilightforest:blackberry",
+            "twilightforest:blueberry",
+            "twilightforest:maloberry"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "berry_medley": {
+      "conditions": {
+        "item": {
+          "items": "twilightforest:berry_medley"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "experiment_115": {
+      "conditions": {
+        "item": {
+          "items": "twilightforest:experiment_115"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "hydra_chop": {
+      "conditions": {
+        "item": {
+          "items": "twilightforest:hydra_chop"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "jerky": {
+      "conditions": {
+        "item": {
+          "items": "#c:foods/jerky"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "maze_wafer": {
+      "conditions": {
+        "item": {
+          "items": "twilightforest:maze_wafer"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "meef": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:raw_meef",
+            "twilightforest:cooked_meef"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "meef_stroganoff": {
+      "conditions": {
+        "item": {
+          "items": "twilightforest:meef_stroganoff"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "moss_soup": {
+      "conditions": {
+        "item": {
+          "items": "twilightforest:moss_soup"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "slime_drop": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:gelatinous_slime_drop",
+            "twilightforest:gelatinous_maze_slime_drop"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "venison": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:raw_venison",
+            "twilightforest:cooked_venison"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.twilight_dining.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:bowl"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.twilight_dining"
+    }
+  },
+  "requirements": [
+    [
+      "venison"
+    ],
+    [
+      "meef"
+    ],
+    [
+      "meef_stroganoff"
+    ],
+    [
+      "hydra_chop"
+    ],
+    [
+      "maze_wafer"
+    ],
+    [
+      "experiment_115"
+    ],
+    [
+      "jerky"
+    ],
+    [
+      "berry"
+    ],
+    [
+      "slime_drop"
+    ],
+    [
+      "berry_medley"
+    ],
+    [
+      "moss_soup"
+    ]
+  ],
+  "rewards": {
+    "experience": 75
+  },
+  "sends_telemetry_event": true
+}

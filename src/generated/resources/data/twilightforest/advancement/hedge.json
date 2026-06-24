@@ -1,0 +1,58 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "hedge_spider": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:hedge_spider",
+              "location": {
+                "structures": "twilightforest:hedge_maze"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "swarm_spider": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:swarm_spider",
+              "location": {
+                "structures": "twilightforest:hedge_maze"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.hedge.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:hedge"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.hedge"
+    }
+  },
+  "requirements": [
+    [
+      "hedge_spider",
+      "swarm_spider"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

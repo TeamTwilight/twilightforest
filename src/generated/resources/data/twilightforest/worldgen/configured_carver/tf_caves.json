@@ -2,20 +2,20 @@
   "type": "twilightforest:tf_caves",
   "config": {
     "floor_level": -0.7,
-    "horizontal_radius_multiplier": 1.0,
+    "horizontal_radius_multiplier": 1.05,
     "lava_level": {
       "above_bottom": 0
     },
     "probability": 0.1,
-    "replaceable": "#minecraft:overworld_carver_replaceables",
-    "vertical_radius_multiplier": 1.0,
+    "replaceable": "#twilightforest:carver_replaceables",
+    "vertical_radius_multiplier": 1.05,
     "y": {
       "type": "minecraft:uniform",
       "max_inclusive": {
         "absolute": -8
       },
       "min_inclusive": {
-        "above_bottom": 5
+        "above_bottom": 16
       }
     },
     "yScale": 0.6

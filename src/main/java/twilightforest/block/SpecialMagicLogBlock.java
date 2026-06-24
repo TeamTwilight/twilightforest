@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -30,8 +29,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(ACTIVE);
+		super.createBlockStateDefinition(builder.add(ACTIVE));
 	}
 
 	//No longer an override, but keep here for sanity
@@ -40,15 +38,13 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@Deprecated
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		level.scheduleTick(pos, this, this.tickRate());
 	}
 
 	@Override
-	@Deprecated
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
-		if (level.isClientSide() || !state.getValue(ACTIVE) || !this.doesCoreFunction()) return;
+		if (!state.getValue(ACTIVE) || !this.doesCoreFunction()) return;
 
 		this.playSound(level, pos, rand);
 		this.performTreeEffect(level, pos, rand);
@@ -57,11 +53,10 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@Deprecated
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (!this.doesCoreFunction()) {
-			state.setValue(ACTIVE, false);
-			player.displayClientMessage(Component.translatable("misc.twilightforest.core_disabled", this.getName()).withStyle(ChatFormatting.RED), true);
+			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, false));
+			player.sendOverlayMessage(Component.translatable("misc.twilightforest.core_disabled", this.getName()).withStyle(ChatFormatting.RED));
 			return InteractionResult.SUCCESS;
 		}
 
@@ -77,8 +72,9 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 		return InteractionResult.PASS;
 	}
 
-	abstract void performTreeEffect(Level level, BlockPos pos, RandomSource rand);
+	abstract void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand);
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public abstract boolean doesCoreFunction();
 
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {

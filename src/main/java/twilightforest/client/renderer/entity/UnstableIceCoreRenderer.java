@@ -3,30 +3,31 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
 import twilightforest.entity.monster.UnstableIceCore;
 
-public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends UnstableIceCoreModel<T>> extends TFGenericMobRenderer<T, M> {
+public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, LivingEntityRenderState, UnstableIceCoreModel> {
 
-	public UnstableIceCoreRenderer(EntityRendererProvider.Context manager, M model) {
-		super(manager, model, 0.4F, "iceexploder.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("iceexploder.png");
+
+	public UnstableIceCoreRenderer(EntityRendererProvider.Context context) {
+		super(context, new UnstableIceCoreModel(context.bakeLayer(TFModelLayers.UNSTABLE_ICE_CORE)), 0.4F);
 	}
 
 	@Override
-	protected void scale(T entity, PoseStack stack, float partialTicks) {
-		float bounce = entity.tickCount + partialTicks;
-
-		stack.translate(0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0F);
+	protected void scale(LivingEntityRenderState state, PoseStack stack) {
+		stack.translate(0.0F, Mth.sin(state.ageInTicks * 0.2F) * 0.15F, 0.0F);
 
 		// flash
-		float f1 = entity.deathTime;
+		float f1 = state.deathTime;
 		if (f1 > 0) {
 			float f2 = 1.0F + Mth.sin(f1 * 100.0F) * f1 * 0.01F;
-
-			if (f1 < 0.0F) {
-				f1 = 0.0F;
-			}
 
 			if (f1 > 1.0F) {
 				f1 = 1.0F;
@@ -41,14 +42,14 @@ public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends Unstab
 	}
 
 	@Override
-	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		stack.mulPose(Axis.YP.rotationDegrees(180 - rotationYaw));
+	protected void setupRotations(LivingEntityRenderState state, PoseStack stack, float yRot, float scale) {
+		stack.mulPose(Axis.YP.rotationDegrees(180 - yRot));
 	}
 
 	@Override
-	protected float getWhiteOverlayProgress(T entity, float partialTicks) {
-		if (entity.deathTime > 0) {
-			float f2 = entity.deathTime + partialTicks;
+	protected float getWhiteOverlayProgress(LivingEntityRenderState state) {
+		if (state.deathTime > 0) {
+			float f2 = state.deathTime + state.partialTick;
 
 			if ((int) (f2 / 2) % 2 == 0) {
 				return 0;
@@ -71,6 +72,16 @@ public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends Unstab
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public LivingEntityRenderState createRenderState() {
+		return new LivingEntityRenderState();
+	}
+
+	@Override
+	public Identifier getTextureLocation(LivingEntityRenderState state) {
+		return TEXTURE;
 	}
 }
 

@@ -1,0 +1,27 @@
+{
+  "type": "twilightforest:attribute",
+  "attribute_modifiers": [
+    {
+      "type": "minecraft:generic.oxygen_bonus",
+      "amount": 3.0,
+      "id": "twilightforest:travellers_gear.goggles_aquatic_agility_oxygen",
+      "operation": "add_value",
+      "slot": "head"
+    },
+    {
+      "type": "minecraft:player.submerged_mining_speed",
+      "amount": 4.0,
+      "id": "twilightforest:travellers_gear.goggles_aquatic_agility_mining",
+      "operation": "add_multiplied_total",
+      "slot": "head"
+    }
+  ],
+  "builtin_modifier": false,
+  "component": "twilightforest:aquatic_agility",
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.aquatic_agility.description"
+    }
+  ],
+  "equipment_slots": "head"
+}

@@ -1,17 +1,18 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeaturePlacers;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.features.FeatureLogic;
+import twilightforest.util.features.FeaturePlacers;
+import twilightforest.util.RootPlacer;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 import twilightforest.world.components.feature.config.RootConfig;
 
 public class WoodRootFeature extends Feature<RootConfig> {
@@ -41,7 +42,7 @@ public class WoodRootFeature extends Feature<RootConfig> {
 		return drawRoot(world, rand, pos, pos, length, rand.nextFloat(), tilt, ctx.config().blockRoot(), ctx.config().oreRoot());
 	}
 
-	private boolean drawRoot(LevelAccessor world, RandomSource rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt, BlockStateProvider rootBlock, BlockStateProvider oreBlock) {
+	private boolean drawRoot(WorldGenLevel world, RandomSource rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt, BlockStateProvider rootBlock, BlockStateProvider oreBlock) {
 		// generate a direction and a length
 		BlockPos dest = FeatureLogic.translate(pos, length, angle, tilt);
 
@@ -66,7 +67,7 @@ public class WoodRootFeature extends Feature<RootConfig> {
 		}
 
 		// if both the start and the end are in stone, put a root there
-		FeaturePlacers.traceRoot(world, (checkedPos, rootPlacement) -> world.setBlock(checkedPos, rootPlacement, 3), rand, rootBlock, new VoxelBresenhamIterator(pos, dest));
+		FeaturePlacers.traceRoot(world, new RootPlacer((checkedPos, rootPlacement) -> world.setBlock(checkedPos, rootPlacement, Block.UPDATE_ALL), 1), rand, rootBlock, new VoxelBresenhamIterator(pos, dest));
 
 		// if we are long enough, make either another root or an oreball
 		if (length > 8) {
@@ -102,7 +103,7 @@ public class WoodRootFeature extends Feature<RootConfig> {
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
-	protected boolean placeRootBlock(LevelAccessor world, BlockPos pos, BlockStateProvider state, RandomSource random) {
-		return FeatureLogic.canRootGrowIn(world, pos) && world.setBlock(pos, state.getState(random, pos), 3);
+	protected boolean placeRootBlock(WorldGenLevel world, BlockPos pos, BlockStateProvider state, RandomSource random) {
+		return FeatureLogic.canRootGrowIn(world, pos) && world.setBlock(pos, state.getState(world, random, pos), Block.UPDATE_ALL);
 	}
 }

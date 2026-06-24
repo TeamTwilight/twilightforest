@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/tooting_goat_horn",
+  "textures": {
+    "layer0": "twilightforest:item/crumble_horn"
+  }
+}

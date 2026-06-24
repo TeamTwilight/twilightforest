@@ -1,59 +1,67 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraMortarModel;
+import twilightforest.client.state.entity.HydraMortarRenderState;
 import twilightforest.entity.boss.HydraMortar;
 
-public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
+public class HydraMortarRenderer extends EntityRenderer<HydraMortar, HydraMortarRenderState> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final HydraMortarModel mortarModel;
 
-	public HydraMortarRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public HydraMortarRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		this.shadowRadius = 0.5F;
-		mortarModel = new HydraMortarModel(manager.bakeLayer(TFModelLayers.HYDRA_MORTAR));
+		this.mortarModel = new HydraMortarModel(context.bakeLayer(TFModelLayers.HYDRA_MORTAR));
 	}
 
 	@Override
-	public void render(HydraMortar mortar, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
+	public void submit(HydraMortarRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		stack.pushPose();
-		float blink;
-		// [VanillaCopy] TNTRenderer
-		if (mortar.fuse - partialTicks + 1.0F < 10.0F) {
-			float f = 1.0F - (mortar.fuse - partialTicks + 1.0F) / 10.0F;
-			f = Mth.clamp(f, 0.0F, 1.0F);
-			f = f * f;
-			f = f * f;
-			float f1 = 1.0F + f * 0.3F;
-			stack.scale(f1, f1, f1);
+		// [VanillaCopy] TNTRenderer fuse logic
+		float f = state.fuse;
+		if (state.fuse < 10.0F) {
+			float f1 = 1.0F - state.fuse / 10.0F;
+			f1 = Mth.clamp(f1, 0.0F, 1.0F);
+			f1 *= f1;
+			f1 *= f1;
+			float f2 = 1.0F + f1 * 0.3F;
+			stack.scale(f2, f2, f2);
 		}
 
-		float alpha = (1.0F - (mortar.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
+		float alpha = (1.0F - f / 100.0F) * 0.8F;
 
-		VertexConsumer builder = buffers.getBuffer(mortarModel.renderType(textureLoc));
-		mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.075F);
+		RenderType renderType = this.mortarModel.renderType(TEXTURE);
+		submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 
-		if (mortar.fuse / 5 % 2 == 0) {
-			builder = buffers.getBuffer(RenderType.entityTranslucent(textureLoc));
-			mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.pack(OverlayTexture.u(1), 10), 1.0F, 1.0F, 1.0F, alpha);
+		if (state.fuse / 5 % 2 == 0) {
+			submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.pack(OverlayTexture.u(1.0F), 10), ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F), null, state.outlineColor, null);
+
 		}
 
 		stack.popPose();
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HydraMortar entity) {
-		return textureLoc;
+	public HydraMortarRenderState createRenderState() {
+		return new HydraMortarRenderState();
+	}
+
+	@Override
+	public void extractRenderState(HydraMortar entity, HydraMortarRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.fuse = entity.fuse - partialTick + 1.0F;
 	}
 }

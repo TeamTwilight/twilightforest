@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:oreberry_bushes",
+  "config": {
+    "state": {
+      "Name": "twilightforest:copper_oreberry",
+      "Properties": {
+        "age": "3",
+        "layers": "0"
+      }
+    }
+  }
+}

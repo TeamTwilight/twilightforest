@@ -1,0 +1,15 @@
+{
+  "type": "twilightforest:attribute",
+  "attribute_modifiers": [
+    {
+      "type": "minecraft:generic.step_height",
+      "amount": 0.5,
+      "id": "twilightforest:travellers_gear.boots_high_step",
+      "operation": "add_value",
+      "slot": "feet"
+    }
+  ],
+  "builtin_modifier": true,
+  "component": "twilightforest:high_step",
+  "equipment_slots": "feet"
+}

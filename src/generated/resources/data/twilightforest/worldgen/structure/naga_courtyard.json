@@ -1,10 +1,13 @@
 {
   "type": "twilightforest:naga_courtyard",
-  "adjust_structure_elevation": true,
-  "allow_biome_surface_decorations": false,
-  "allow_biome_underground_decorations": true,
   "biomes": "#twilightforest:valid_naga_courtyard_biomes",
-  "chunk_clearance_radius": 3,
+  "decoration_clearance": {
+    "adjust_structure_elevation": true,
+    "allow_biome_surface_decorations": false,
+    "allow_biome_underground_decorations": true,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 3.0
+  },
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",
@@ -40,5 +43,6 @@
     }
   },
   "step": "surface_structures",
+  "structure_icon": "twilightforest:naga_courtyard",
   "terrain_adaptation": "beard_thin"
 }

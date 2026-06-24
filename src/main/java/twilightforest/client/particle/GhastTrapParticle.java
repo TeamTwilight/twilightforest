@@ -1,14 +1,13 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.RandomSource;
 
-@OnlyIn(Dist.CLIENT)
-public class GhastTrapParticle extends TextureSheetParticle {
+public class GhastTrapParticle extends SingleQuadParticle {
 
 	private final float reddustParticleScale;
 
@@ -16,12 +15,12 @@ public class GhastTrapParticle extends TextureSheetParticle {
 	private final double originY;
 	private final double originZ;
 
-	public GhastTrapParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
-		this(level, x, y, z, 3.0F, vx, vy, vz);
+	public GhastTrapParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, TextureAtlasSprite sprite) {
+		this(level, x, y, z, 3.0F, vx, vy, vz, sprite);
 	}
 
-	public GhastTrapParticle(ClientLevel level, double x, double y, double z, float scale, double mx, double my, double mz) {
-		super(level, x + mx, y + my, z + mz, mx, my, mz);
+	public GhastTrapParticle(ClientLevel level, double x, double y, double z, float scale, double mx, double my, double mz, TextureAtlasSprite sprite) {
+		super(level, x + mx, y + my, z + mz, mx, my, mz, sprite);
 		this.xd = mx;
 		this.yd = my;
 		this.zd = mz;
@@ -32,7 +31,7 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		float brightness = (float) Math.random() * 0.4F;
 		this.rCol = 1.0F;
 		this.gCol = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
-		this.bCol  = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
+		this.bCol = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
 		this.quadSize *= 0.75F * scale;
 		this.reddustParticleScale = this.quadSize;
 		this.lifetime = (int) (10.0D / (Math.random() * 0.8D + 0.2D));
@@ -40,8 +39,8 @@ public class GhastTrapParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	protected Layer getLayer() {
+		return Layer.OPAQUE;
 	}
 
 	@Override
@@ -68,12 +67,11 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			GhastTrapParticle particle = new GhastTrapParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			GhastTrapParticle particle = new GhastTrapParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite.get(random));
 			particle.setSpriteFromAge(this.sprite);
 			return particle;
 		}

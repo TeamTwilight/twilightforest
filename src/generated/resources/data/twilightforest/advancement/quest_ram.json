@@ -1,0 +1,35 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "quest_ram_complete": {
+      "trigger": "twilightforest:complete_quest_ram"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.quest_ram.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.quest_ram"
+        }
+      ]
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:quest_ram_trophy"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.quest_ram"
+    }
+  },
+  "requirements": [
+    [
+      "quest_ram_complete"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

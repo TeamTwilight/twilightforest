@@ -1,0 +1,203 @@
+{
+  "biome_landscape": [
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:clearing",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.05,
+      "key_biome": "twilightforest:clearing",
+      "scale": 1.15,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:dark_forest",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.1,
+      "key_biome": "twilightforest:dark_forest",
+      "scale": 1.25,
+      "weight": 0.5
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:dark_forest_center",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.1,
+      "key_biome": "twilightforest:dark_forest_center",
+      "scale": 1.125,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.8": "twilightforest:dense_forest",
+        "-3.8": "twilightforest:underground"
+      },
+      "depth": -0.8,
+      "key_biome": "twilightforest:dense_forest",
+      "scale": 3.9,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:dense_mushroom_forest",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.0,
+      "key_biome": "twilightforest:dense_mushroom_forest",
+      "scale": 1.75,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.5": "twilightforest:enchanted_forest",
+        "-3.5": "twilightforest:underground"
+      },
+      "depth": -0.5,
+      "key_biome": "twilightforest:enchanted_forest",
+      "scale": 4.0,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "0.0": "twilightforest:final_plateau"
+      },
+      "depth": 12.0,
+      "key_biome": "twilightforest:final_plateau",
+      "scale": 0.75,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:fire_swamp",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.2,
+      "key_biome": "twilightforest:fire_swamp",
+      "scale": 1.25,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.75": "twilightforest:firefly_forest",
+        "-3.75": "twilightforest:underground"
+      },
+      "depth": -0.75,
+      "key_biome": "twilightforest:firefly_forest",
+      "scale": 4.15,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.7": "twilightforest:forest",
+        "-3.7": "twilightforest:underground"
+      },
+      "depth": -0.7,
+      "key_biome": "twilightforest:forest",
+      "scale": 4.2,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.05": "twilightforest:glacier",
+        "-3.05": "twilightforest:underground"
+      },
+      "depth": -0.05,
+      "key_biome": "twilightforest:glacier",
+      "scale": 1.75,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:highlands",
+        "-3.0": "twilightforest:highlands_underground"
+      },
+      "depth": 3.0,
+      "key_biome": "twilightforest:highlands",
+      "scale": 2.25,
+      "weight": 0.135
+    },
+    {
+      "biome_layers": {
+        "-3.2": "twilightforest:lake",
+        "-5.2": "twilightforest:underground"
+      },
+      "depth": -2.2,
+      "key_biome": "twilightforest:lake",
+      "scale": 2.0,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:mushroom_forest",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.0,
+      "key_biome": "twilightforest:mushroom_forest",
+      "scale": 2.0,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.05": "twilightforest:oak_savannah",
+        "-3.05": "twilightforest:underground"
+      },
+      "depth": -0.05,
+      "key_biome": "twilightforest:oak_savannah",
+      "scale": 2.0,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:snowy_forest",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.0,
+      "key_biome": "twilightforest:snowy_forest",
+      "scale": 2.45,
+      "weight": 0.5
+    },
+    {
+      "biome_layers": {
+        "-1.0": "twilightforest:spooky_forest",
+        "-3.0": "twilightforest:underground"
+      },
+      "depth": 0.0,
+      "key_biome": "twilightforest:spooky_forest",
+      "scale": 2.25,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "-1.1": "twilightforest:stream",
+        "-3.1": "twilightforest:underground"
+      },
+      "depth": -0.1,
+      "key_biome": "twilightforest:stream",
+      "scale": 0.001,
+      "weight": 1.35
+    },
+    {
+      "biome_layers": {
+        "-1.6": "twilightforest:swamp",
+        "-3.6": "twilightforest:underground"
+      },
+      "depth": -0.6,
+      "key_biome": "twilightforest:swamp",
+      "scale": 1.7,
+      "weight": 1.0
+    },
+    {
+      "biome_layers": {
+        "0.0": "twilightforest:thornlands"
+      },
+      "depth": 5.5,
+      "key_biome": "twilightforest:thornlands",
+      "scale": 1.75,
+      "weight": 1.15
+    }
+  ],
+  "biome_layer_config": "twilightforest:biomes_along_streams"
+}

@@ -1,7 +1,396 @@
 {
   "variants": {
-    "": {
-      "model": "twilightforest:block/sorting_leaves"
-    }
+    "distance=1,persistent=false,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=1,persistent=false,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=1,persistent=true,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=1,persistent=true,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=2,persistent=false,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=2,persistent=false,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=2,persistent=true,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=2,persistent=true,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=3,persistent=false,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=3,persistent=false,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=3,persistent=true,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=3,persistent=true,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=4,persistent=false,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=4,persistent=false,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=4,persistent=true,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=4,persistent=true,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=5,persistent=false,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=5,persistent=false,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=5,persistent=true,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=5,persistent=true,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=6,persistent=false,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=6,persistent=false,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=6,persistent=true,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=6,persistent=true,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=7,persistent=false,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=7,persistent=false,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=7,persistent=true,waterlogged=false": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ],
+    "distance=7,persistent=true,waterlogged=true": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves3"
+      }
+    ]
   }
 }

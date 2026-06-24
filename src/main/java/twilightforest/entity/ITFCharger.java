@@ -2,8 +2,8 @@ package twilightforest.entity;
 
 public interface ITFCharger {
 
-    boolean isCharging();
-    
-    void setCharging(boolean flag);
-    
+	boolean isCharging();
+
+	void setCharging(boolean flag);
+
 }

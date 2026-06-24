@@ -1,64 +1,65 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
+import twilightforest.client.state.entity.NagaRenderState;
 import twilightforest.entity.boss.Naga;
 
-public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M> {
+public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<NagaRenderState>> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
-	private static final ResourceLocation textureLocCharging = TwilightForestMod.getModelTexture("nagahead_charging.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("nagahead.png");
+	public static final Identifier CHARGING_TEXTURE = TwilightForestMod.getModelTexture("nagahead_charging.png");
+	public static final Identifier DAZED_TEXTURE = TwilightForestMod.getModelTexture("nagahead_dazed.png");
 
-	public NagaRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
-		super(manager, model, shadowSize);
-		this.addLayer(new NagaEyelidsLayer<>(this));
+	public NagaRenderer(EntityRendererProvider.Context context) {
+		super(context, new NagaModel<>(context.bakeLayer(TFModelLayers.NAGA)), 1.45F);
 	}
 
 	@Override
-	protected void scale(Naga entity, PoseStack stack, float partialTicks) {
-		super.scale(entity, stack, partialTicks);
+	protected void scale(NagaRenderState state, PoseStack stack) {
+		super.scale(state, stack);
 		//make size adjustment
 		stack.scale(2.01F, 2.01F, 2.01F);
-		stack.translate(0.0F, entity.isDazed() ? 1.075F : 0.75F, entity.isDazed() ? 0.175F : 0.0F);
+		stack.translate(0.0F, state.isDazed ? 1.075F : 0.75F, state.isDazed ? 0.175F : 0.0F);
 	}
 
 	@Override
-	protected float getFlipDegrees(Naga naga) { //Prevent the body from keeling over
-		return naga.isDeadOrDying() ? 0.0F : super.getFlipDegrees(naga);
+	protected int getModelTint(NagaRenderState state) {
+		return ARGB.colorFromFloat(1.0F, 1.0F, 1.0F - state.stunlessChargeProgress, 1.0F - state.stunlessChargeProgress);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Naga entity) {
-		if (entity.isCharging() || entity.isDeadOrDying()) {
-			return textureLocCharging;
+	protected float getFlipDegrees() { //Prevent the body from keeling over
+		return 0.0F;
+	}
+
+	@Override
+	public NagaRenderState createRenderState() {
+		return new NagaRenderState();
+	}
+
+	@Override
+	public void extractRenderState(Naga entity, NagaRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.stunlessChargeProgress = entity.stunlessRedOverlayProgress;
+		state.isCharging = entity.isCharging() || entity.isStunlessCharging();
+		state.isDazed = entity.isDazed();
+	}
+
+	@Override
+	public Identifier getTextureLocation(NagaRenderState state) {
+		if (state.isDazed) {
+			return DAZED_TEXTURE;
+		} else if (state.isCharging || state.deathTime > 0) {
+			return CHARGING_TEXTURE;
 		} else {
-			return textureLoc;
-		}
-	}
-
-	public static class NagaEyelidsLayer<T extends Naga, M extends NagaModel<T>> extends RenderLayer<T, M> {
-		private static final ResourceLocation textureLocDazed = TwilightForestMod.getModelTexture("nagahead_dazed.png");
-
-		public NagaEyelidsLayer(RenderLayerParent<T, M> renderer) {
-			super(renderer);
-		}
-
-		@Override
-		public void render(PoseStack stack, MultiBufferSource buffer, int light, T naga, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (naga.isDazed()) {
-				VertexConsumer vertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocDazed));
-				this.getParentModel().renderToBuffer(stack, vertex, light, OverlayTexture.pack(0.0F, naga.hurtTime > 0), 1.0F, 1.0F, 1.0F, 1.0F);
-			}
+			return TEXTURE;
 		}
 	}
 }

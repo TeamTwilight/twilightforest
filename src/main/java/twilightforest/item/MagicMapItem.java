@@ -1,12 +1,11 @@
 package twilightforest.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -14,51 +13,38 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMagicMapData;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFLandmark;
-import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.item.mapdata.TFMagicMapData;
+import twilightforest.tags.TFStructureTags;
+import twilightforest.util.datamaps.MagicMapBiomeColor;
+import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
+import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-
 public class MagicMapItem extends MapItem {
 
 	public static final String STR_ID = "magicmap";
-	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	public MagicMapItem(Properties properties) {
 		super(properties);
 	}
 
-	private static class MapColorBrightness {
-		public final MapColor color;
-		public final int brightness;
-
-		public MapColorBrightness(MapColor color, int brightness) {
-			this.color = color;
-			this.brightness = brightness;
-		}
-
-		public MapColorBrightness(MapColor color) {
-			this.color = color;
-			this.brightness = 1;
-		}
-	}
-
-	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
+	public static ItemStack setupNewMap(ServerLevel level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
 		ItemStack itemstack = new ItemStack(TFItems.FILLED_MAGIC_MAP.get());
 		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension());
 		return itemstack;
@@ -66,16 +52,23 @@ public class MagicMapItem extends MapItem {
 
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level level) {
-		Integer id = getMapId(stack);
-		return id == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(id));
+		MapId mapid = stack.get(DataComponents.MAP_ID);
+		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(mapid.id()));
+	}
+
+	@Nullable
+	public static TFMagicMapData getData(ItemStack stack, TooltipContext context) {
+		MapId mapid = stack.get(DataComponents.MAP_ID);
+		return mapid != null && context.mapData(mapid) instanceof TFMagicMapData mapData ? mapData : null;
 	}
 
 	@Nullable
 	@Override
 	protected TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMagicMapData mapdata = getData(stack, level);
-		if (mapdata == null && !level.isClientSide()) {
-			mapdata = MagicMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 3, false, false, level.dimension());
+		if (mapdata == null && level instanceof ServerLevel serverLevel) {
+			BlockPos sharedSpawnPos = level.getRespawnData().pos();
+			mapdata = MagicMapItem.createMapData(stack, serverLevel, sharedSpawnPos.getX(), sharedSpawnPos.getZ(), 3, false, false, level.dimension());
 		}
 
 		return mapdata;
@@ -91,13 +84,13 @@ public class MagicMapItem extends MapItem {
 		return new ColumnPos(scaledX, scaledZ);
 	}
 
-	private static TFMagicMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
-		int i = level.getFreeMapId();
+	private static TFMagicMapData createMapData(ItemStack stack, ServerLevel level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
+		MapId freeMapId = level.getFreeMapId();
 		ColumnPos pos = getMagicMapCenter(x, z);
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(i)); // call our own register method
-		stack.getOrCreateTag().putInt("map", i);
+		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
+		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
 
@@ -105,12 +98,11 @@ public class MagicMapItem extends MapItem {
 		return STR_ID + "_" + id;
 	}
 
-	private static final Map<ChunkPos, ResourceLocation[]> CACHE = new HashMap<>();
-	private static final ResourceLocation NULL_BIOME = new ResourceLocation("null");
+	private static final Map<ChunkPos, Holder<Biome>[]> CACHE = new HashMap<>();
 
 	@Override
 	public void update(Level level, Entity viewer, MapItemSavedData data) {
-		if (level.dimension() == data.dimension && viewer instanceof Player && level instanceof ServerLevel serverLevel && TFGenerationSettings.usesTwilightChunkGenerator(serverLevel)) {
+		if (level.dimension() == data.dimension && viewer instanceof Player && !level.isClientSide()) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.centerX;
@@ -121,19 +113,18 @@ public class MagicMapItem extends MapItem {
 
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			ResourceLocation[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
-				ResourceLocation[] array = new ResourceLocation[128 * biomesPerPixel * 128 * biomesPerPixel];
+			Holder<Biome>[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
+				@SuppressWarnings({"unchecked", "rawtypes"})
+				Holder<Biome>[] array = new Holder[128 * biomesPerPixel * 128 * biomesPerPixel];
 				for (int l = 0; l < 128 * biomesPerPixel; ++l) {
 					for (int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
-						array[l * 128 * biomesPerPixel + i1] = level
-								.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel))
-								.unwrapKey()
-								.map(ResourceKey::location)
-								.orElse(NULL_BIOME);
+						array[l * 128 * biomesPerPixel + i1] = level.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel));
 					}
 				}
 				return array;
 			});
+
+			Registry<Structure> structureRegistry = level.registryAccess().lookupOrThrow(Registries.STRUCTURE);
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
@@ -142,17 +133,17 @@ public class MagicMapItem extends MapItem {
 						int zPixelDist = zPixel - viewerZ;
 						boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
 
-						ResourceLocation biome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel];
+						Holder<Biome> biome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel];
 
 						// make streams more visible
-						ResourceLocation overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
-						ResourceLocation downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && TFBiomes.STREAM.location().equals(overBiome) ? overBiome : downBiome != null && TFBiomes.STREAM.location().equals(downBiome) ? downBiome : biome;
+						Holder<Biome> overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
+						Holder<Biome> downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
+						biome = overBiome != null && overBiome.is(TFBiomes.STREAM) ? overBiome : downBiome != null && downBiome.is(TFBiomes.STREAM) ? downBiome : biome;
 
-						MapColorBrightness colorBrightness = this.getMapColorPerBiome(biome);
+						MagicMapBiomeColor colorBrightness = this.getMapColorPerBiome(biome);
 
-						MapColor mapcolor = colorBrightness.color;
-						int brightness = colorBrightness.brightness;
+						MapColor mapcolor = colorBrightness.color();
+						int brightness = colorBrightness.brightness();
 
 						if (xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0)) {
 							byte orgPixel = data.colors[xPixel + zPixel * 128];
@@ -167,12 +158,15 @@ public class MagicMapItem extends MapItem {
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
 							if (LegacyLandmarkPlacements.blockIsInLandmarkCenter(worldX, worldZ)) {
-								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
-								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-								TFLandmark feature = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) level);
-								TFMagicMapData tfData = (TFMagicMapData) data;
-								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature, mapX, mapZ, (byte) 8));
-								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+								ResourceKey<Structure> structureKey = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, level);
+								// Filters by structures we want to give icons for
+								if (structureRegistry.get(structureKey).map(structureRef -> structureRef.is(TFStructureTags.LANDMARK)).orElse(false)) {
+									TFMagicMapData tfData = (TFMagicMapData) data;
+									if (structureRegistry.getOrThrow(structureKey).value() instanceof LandmarkStructure landmark) {
+										landmark.getMapIcon().ifPresent(icon -> tfData.addTFDecoration(icon, level, makeName(icon, worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConquered(level, worldX, worldZ)));
+										//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+									}
+								}
 							}
 						}
 					}
@@ -181,100 +175,29 @@ public class MagicMapItem extends MapItem {
 		}
 	}
 
-	private MapColorBrightness getMapColorPerBiome(ResourceLocation biome) {
-		if (BIOME_COLORS.isEmpty()) {
-			setupBiomeColors();
-		}
-		if (biome == NULL_BIOME)
-			return new MapColorBrightness(MapColor.COLOR_BLACK);
-		MapColorBrightness color = BIOME_COLORS.get(biome);
-		if (color != null) {
-			return color;
-		}
-		return new MapColorBrightness(MapColor.COLOR_MAGENTA);
+	public static String makeName(Holder<MapDecorationType> type, int x, int z) {
+		return type.value().assetId() + "_" + x + "_" + z;
 	}
 
-	private static void setupBiomeColors() {
-		putBiomeColor(TFBiomes.FOREST, new MapColorBrightness(MapColor.PLANT, 1));
-		putBiomeColor(TFBiomes.DENSE_FOREST, new MapColorBrightness(MapColor.PLANT, 0));
-		putBiomeColor(TFBiomes.LAKE, new MapColorBrightness(MapColor.WATER, 3));
-		putBiomeColor(TFBiomes.STREAM, new MapColorBrightness(MapColor.WATER, 1));
-		putBiomeColor(TFBiomes.SWAMP, new MapColorBrightness(MapColor.DIAMOND, 3));
-		putBiomeColor(TFBiomes.FIRE_SWAMP, new MapColorBrightness(MapColor.NETHER, 1));
-		putBiomeColor(TFBiomes.CLEARING, new MapColorBrightness(MapColor.GRASS, 2));
-		putBiomeColor(TFBiomes.OAK_SAVANNAH, new MapColorBrightness(MapColor.GRASS, 0));
-		putBiomeColor(TFBiomes.HIGHLANDS, new MapColorBrightness(MapColor.DIRT, 0));
-		putBiomeColor(TFBiomes.THORNLANDS, new MapColorBrightness(MapColor.WOOD, 3));
-		putBiomeColor(TFBiomes.FINAL_PLATEAU, new MapColorBrightness(MapColor.COLOR_LIGHT_GRAY, 2));
-		putBiomeColor(TFBiomes.FIREFLY_FOREST, new MapColorBrightness(MapColor.EMERALD, 1));
-		putBiomeColor(TFBiomes.DARK_FOREST, new MapColorBrightness(MapColor.COLOR_GREEN, 3));
-		putBiomeColor(TFBiomes.DARK_FOREST_CENTER, new MapColorBrightness(MapColor.COLOR_ORANGE, 3));
-		putBiomeColor(TFBiomes.SNOWY_FOREST, new MapColorBrightness(MapColor.SNOW, 1));
-		putBiomeColor(TFBiomes.GLACIER, new MapColorBrightness(MapColor.ICE, 1));
-		putBiomeColor(TFBiomes.MUSHROOM_FOREST, new MapColorBrightness(MapColor.COLOR_ORANGE, 0));
-		putBiomeColor(TFBiomes.DENSE_MUSHROOM_FOREST, new MapColorBrightness(MapColor.COLOR_PINK, 0));
-		putBiomeColor(TFBiomes.ENCHANTED_FOREST, new MapColorBrightness(MapColor.COLOR_CYAN, 2));
-		putBiomeColor(TFBiomes.SPOOKY_FOREST, new MapColorBrightness(MapColor.COLOR_PURPLE, 0));
+	private MagicMapBiomeColor getMapColorPerBiome(Holder<Biome> biome) {
+		MagicMapBiomeColor color = biome.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
 	}
 
-	private static void putBiomeColor(ResourceKey<Biome> biome, MapColorBrightness color) {
-		BIOME_COLORS.put(biome.location(), color);
-	}
-
-	public static int getBiomeColor(Level level, Biome biome) {
-		if (BIOME_COLORS.isEmpty()) {
-			setupBiomeColors();
-		}
-
-		MapColorBrightness c = BIOME_COLORS.get(level.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome));
-
-		return c != null ? getMapColor(c) : 0xFF000000;
-	}
-
-	public static int getMapColor(MapColorBrightness mcb) {
-		int i = switch (mcb.color.id) {
-			case 3 -> 135;
-			case 2 -> 255;
-			case 0 -> 180;
-			default -> 220;
-		};
-
-		int j = (mcb.color.col >> 16 & 255) * i / 255;
-		int k = (mcb.color.col >> 8 & 255) * i / 255;
-		int l = (mcb.color.col & 255) * i / 255;
-		return 0xFF000000 | l << 16 | k << 8 | j;
-	}
-
-	@Override
-	public void onCraftedBy(ItemStack stack, Level world, Player player) {
-		// disable zooming
-	}
-
-	@Override
-	@Nullable
-	public Packet<?> getUpdatePacket(ItemStack stack, Level world, Player player) {
-		Integer id = getMapId(stack);
-		TFMagicMapData mapdata = getCustomMapData(stack, world);
-		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		Integer integer = getMapId(stack);
-		TFMagicMapData mapitemsaveddata = level == null ? null : getData(stack, level);
-		if (flag.isAdvanced()) {
-			if (mapitemsaveddata != null) {
-				tooltip.add((Component.translatable("filled_map.id", integer)).withStyle(ChatFormatting.GRAY));
-				tooltip.add((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
-				tooltip.add((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
-			} else {
-				tooltip.add((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
-			}
-		} else {
-			if (integer != null) {
-				tooltip.add(Component.literal("#" + integer).withStyle(ChatFormatting.GRAY));
-			}
-		}
-
-	}
+//	@Override
+//	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+//		MapId mapId = stack.get(DataComponents.MAP_ID);
+//		if (mapId != null) {
+//			if (flag.isAdvanced()) {
+//				MapItemSavedData mapitemsaveddata = TFMagicMapData.getClientMagicMapData(getMapName(mapId.id()));
+//				if (mapitemsaveddata != null) {
+//					builder.accept((Component.translatable("filled_map.id", mapId.id())).withStyle(ChatFormatting.GRAY));
+//					builder.accept((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
+//					builder.accept((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
+//				} else {
+//					builder.accept((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
+//				}
+//			}
+//		}
+//	}
 }

@@ -1,0 +1,14 @@
+{
+  "type": "twilightforest:berry_bush",
+  "config": {
+    "bush": {
+      "Name": "twilightforest:blackberry_bush",
+      "Properties": {
+        "age": "0",
+        "layers": "0"
+      }
+    },
+    "can_generate_snowy": true,
+    "generates_on": "twilightforest:tf_berry_bushes_survive"
+  }
+}

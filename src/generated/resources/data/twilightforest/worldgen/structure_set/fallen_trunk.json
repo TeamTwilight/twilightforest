@@ -1,0 +1,20 @@
+{
+  "placement": {
+    "type": "twilightforest:avoid_landmark_grid",
+    "exclusion_zone": {
+      "chunk_count": 1,
+      "other_set": "twilightforest:hollow_tree"
+    },
+    "frequency": 0.8,
+    "salt": 1275623845,
+    "separation": 5,
+    "spacing": 7,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:fallen_trunk",
+      "weight": 1
+    }
+  ]
+}

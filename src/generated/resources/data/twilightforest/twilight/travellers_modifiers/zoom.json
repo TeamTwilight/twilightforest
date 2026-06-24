@@ -1,0 +1,5 @@
+{
+  "type": "twilightforest:builtin",
+  "component": "twilightforest:zoom_ability_modifier",
+  "equipment_slots": "head"
+}

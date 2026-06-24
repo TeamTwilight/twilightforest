@@ -2,7 +2,9 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,22 +22,21 @@ public class IronLadderBlock extends LadderBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(LEFT, RIGHT);
+		super.createBlockStateDefinition(builder.add(LEFT, RIGHT));
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		Direction facing = state.getValue(LadderBlock.FACING);
-		BlockState superUpdated = super.updateShape(state, direction, facingState, accessor, currentPos, facingPos);
-		if (superUpdated.getBlock() != this) {
+		BlockState superUpdated = super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
+		if (!superUpdated.is(this)) {
 			return superUpdated;
 		}
 
-		BlockState leftState = accessor.getBlockState(currentPos.relative(facing.getCounterClockWise()));
-		BlockState rightState = accessor.getBlockState(currentPos.relative(facing.getClockWise()));
+		BlockState leftState = level.getBlockState(pos.relative(facing.getCounterClockWise()));
+		BlockState rightState = level.getBlockState(pos.relative(facing.getClockWise()));
 
 		return superUpdated.setValue(LEFT, leftState.getBlock() instanceof IronLadderBlock && leftState.getValue(LadderBlock.FACING) == facing)
-				.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
+			.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
 	}
 }

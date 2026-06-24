@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "twilightforest:uncrafting_table_enabled"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:uncrafting_table"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_uncrafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:uncrafting_table"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_uncrafting_table"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:uncrafting_table"
+    ]
+  }
+}

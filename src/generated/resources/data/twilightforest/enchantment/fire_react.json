@@ -1,0 +1,61 @@
+{
+  "anvil_cost": 8,
+  "description": {
+    "translate": "enchantment.twilightforest.fire_react"
+  },
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "affected": "attacker",
+        "effect": {
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "minecraft:ignite",
+              "duration": {
+                "type": "minecraft:linear",
+                "base": 2.0,
+                "per_level_above_first": 3.0
+              }
+            },
+            {
+              "type": "minecraft:damage_item",
+              "amount": 2.0
+            }
+          ]
+        },
+        "enchanted": "victim",
+        "requirements": {
+          "chance": {
+            "type": "minecraft:enchantment_level",
+            "amount": {
+              "type": "minecraft:linear",
+              "base": 0.15,
+              "per_level_above_first": 0.15
+            }
+          },
+          "condition": "minecraft:random_chance"
+        }
+      }
+    ]
+  },
+  "exclusive_set": [
+    "minecraft:thorns",
+    "twilightforest:chill_aura"
+  ],
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 9
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 9
+  },
+  "primary_items": "#minecraft:enchantable/chest_armor",
+  "slots": [
+    "armor"
+  ],
+  "supported_items": "#minecraft:enchantable/armor",
+  "weight": 1
+}

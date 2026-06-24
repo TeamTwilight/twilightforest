@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees.treeplacers;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,13 +13,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFFeatureModifiers;
 
 public class TrunkSideDecorator extends TreeDecorator {
-	public static final Codec<TrunkSideDecorator> CODEC = RecordCodecBuilder.create(
-			instance -> instance.group(
-					Codec.intRange(0, 64).fieldOf("placement_count").forGetter(o -> o.count),
-					Codec.floatRange(0f, 1f).fieldOf("probability_of_placement").forGetter(o -> o.probability),
-					BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.decoration)
-			).apply(instance, TrunkSideDecorator::new)
-	);
+	public static final MapCodec<TrunkSideDecorator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		Codec.intRange(0, 64).fieldOf("placement_count").forGetter(o -> o.count),
+		Codec.floatRange(0f, 1f).fieldOf("probability_of_placement").forGetter(o -> o.probability),
+		BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.decoration)
+	).apply(instance, TrunkSideDecorator::new));
 
 	private final int count;
 	private final float probability;
@@ -55,10 +54,10 @@ public class TrunkSideDecorator extends TreeDecorator {
 			BlockPos newPos = logPos.offset(direction.getStepX(), 0, direction.getStepZ());
 			//if we have empty space, we're golden!
 			if (context.isAir(newPos)) {
-				if (this.decoration.getState(context.random(), newPos).hasProperty(BlockStateProperties.FACING)) {
-					context.setBlock(newPos, this.decoration.getState(context.random(), newPos).setValue(BlockStateProperties.FACING, direction));
+				if (this.decoration.getState(context.level(), context.random(), newPos).hasProperty(BlockStateProperties.FACING)) {
+					context.setBlock(newPos, this.decoration.getState(context.level(), context.random(), newPos).setValue(BlockStateProperties.FACING, direction));
 				} else {
-					context.setBlock(newPos, this.decoration.getState(context.random(), newPos));
+					context.setBlock(newPos, this.decoration.getState(context.level(), context.random(), newPos));
 				}
 			}
 		}

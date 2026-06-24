@@ -20,8 +20,7 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(REVERSED);
+		super.createBlockStateDefinition(builder.add(REVERSED));
 	}
 
 	@Override
@@ -30,13 +29,12 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@Deprecated
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		if (mirror != Mirror.NONE) {
 			Direction.Axis axis = state.getValue(AXIS);
 			if (axis == Direction.Axis.Y
-					|| mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.Z
-					|| mirror == Mirror.FRONT_BACK && axis == Direction.Axis.X) {
+				|| mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.Z
+				|| mirror == Mirror.FRONT_BACK && axis == Direction.Axis.X) {
 
 				return state.cycle(REVERSED);
 			}

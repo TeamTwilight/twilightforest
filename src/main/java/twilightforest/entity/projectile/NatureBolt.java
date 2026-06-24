@@ -8,9 +8,11 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -21,15 +23,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.data.tags.BlockTagGenerator;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-import twilightforest.util.EntityUtil;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.util.entities.EntityUtil;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSupplier {
 
 	public NatureBolt(EntityType<? extends NatureBolt> type, Level level) {
@@ -37,7 +36,7 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 	}
 
 	public NatureBolt(Level level, LivingEntity owner) {
-		super(TFEntities.NATURE_BOLT.get(), level, owner);
+		super(TFEntities.NATURE_BOLT.get(), level, owner, new ItemStack(Items.WHEAT_SEEDS));
 	}
 
 	@Override
@@ -47,16 +46,15 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.003F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 3) {
+		if (id == EntityEvent.DEATH) {
 			for (int i = 0; i < 8; ++i) {
-				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.OAK_LEAVES.defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.OAK_LEAVES.defaultBlockState()), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -69,9 +67,9 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		BlockPos blockPosHit = result.getBlockPos();
 		BlockState stateHit = this.level().getBlockState(blockPosHit);
 
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
-			if (!this.level().isClientSide() && stateHit.getBlock() instanceof BonemealableBlock bonemealable && bonemealable.isValidBonemealTarget(this.level(), blockPosHit, stateHit, this.level().isClientSide())) {
-				bonemealable.performBonemeal((ServerLevel) this.level(), this.random, blockPosHit, stateHit);
+		if (this.level() instanceof ServerLevel server && EventHooks.canEntityGrief(server, this)) {
+			if (stateHit.getBlock() instanceof BonemealableBlock bonemealable && bonemealable.isValidBonemealTarget(this.level(), blockPosHit, stateHit)) {
+				bonemealable.performBonemeal(server, this.random, blockPosHit, stateHit);
 			} else if (stateHit.isSolid() && this.canReplaceBlock(this.level(), blockPosHit)) {
 				this.level().setBlockAndUpdate(blockPosHit, Blocks.BIRCH_LEAVES.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true));
 			}
@@ -83,9 +81,9 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		super.onHitEntity(result);
 		Entity owner = this.getOwner();
 		Entity entityHit = result.getEntity();
-		if (entityHit instanceof LivingEntity living && (owner == null || (entityHit != owner && entityHit != owner.getVehicle()))) {
-			if (entityHit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LEAF_BRAIN, this, this.getOwner()), 2)
-					&& this.level().getDifficulty() != Difficulty.PEACEFUL) {
+		if (this.level() instanceof ServerLevel server && entityHit instanceof LivingEntity living && (owner == null || (entityHit != owner && entityHit != owner.getVehicle()))) {
+			if (entityHit.hurtServer(server, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LEAF_BRAIN, this, this.getOwner()), 2)
+				&& this.level().getDifficulty() != Difficulty.PEACEFUL) {
 				int poisonTime = this.level().getDifficulty() == Difficulty.HARD ? 7 : 3;
 				living.addEffect(new MobEffectInstance(MobEffects.POISON, poisonTime * 20, 0));
 			}
@@ -102,11 +100,16 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 	}
 
 	private boolean canReplaceBlock(Level level, BlockPos pos) {
-		return !level.getBlockState(pos).hasBlockEntity() && level.getBlockState(pos).isSolidRender(level, pos) && level.getBlockState(pos).is(BlockTagGenerator.DRUID_PROJECTILE_REPLACEABLE) && EntityUtil.canDestroyBlock(level, pos, this);
+		return !level.getBlockState(pos).hasBlockEntity() && level.getBlockState(pos).isSolidRender() && level.getBlockState(pos).is(TFBlockTags.DRUID_PROJECTILE_REPLACEABLE) && EntityUtil.canDestroyBlock(level, pos, this);
 	}
 
 	@Override
 	public ItemStack getItem() {
 		return new ItemStack(Items.WHEAT_SEEDS);
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return Items.WHEAT_SEEDS;
 	}
 }

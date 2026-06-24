@@ -14,7 +14,7 @@
           "faces": {
             "down": {
               "cullface": "down",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               },
@@ -23,7 +23,7 @@
             },
             "east": {
               "cullface": "east",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               },
@@ -32,7 +32,7 @@
             },
             "north": {
               "cullface": "north",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               },
@@ -41,7 +41,7 @@
             },
             "south": {
               "cullface": "south",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               },
@@ -50,7 +50,7 @@
             },
             "up": {
               "cullface": "up",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               },
@@ -59,7 +59,7 @@
             },
             "west": {
               "cullface": "west",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               },
@@ -96,7 +96,7 @@
     "brick",
     "runes"
   ],
-  "loader": "forge:composite",
+  "loader": "neoforge:composite",
   "textures": {
     "particle": "twilightforest:block/castle_brick"
   }

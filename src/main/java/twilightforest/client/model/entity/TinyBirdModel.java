@@ -6,10 +6,7 @@
 
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.AgeableListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -17,132 +14,89 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.TinyBird;
+import twilightforest.client.state.entity.BirdRenderState;
 
-public class TinyBirdModel extends AgeableListModel<TinyBird> {
-	//fields
-	final ModelPart head;
-	final ModelPart body;
-	final ModelPart rightarm;
-	final ModelPart leftarm;
-	final ModelPart rightleg;
-	final ModelPart leftleg;
-	final ModelPart tail;
+public class TinyBirdModel extends EntityModel<BirdRenderState> {
+
+	private final ModelPart head;
+	private final ModelPart rightFoot;
+	private final ModelPart leftFoot;
+	private final ModelPart rightWing;
+	private final ModelPart leftWing;
 
 	public TinyBirdModel(ModelPart root) {
+		super(root);
 		this.head = root.getChild("head");
-		this.body = root.getChild("body");
-		this.rightarm = root.getChild("right_arm");
-		this.leftarm = root.getChild("left_arm");
-		this.rightleg = root.getChild("right_leg");
-		this.leftleg = root.getChild("left_leg");
-		this.tail = root.getChild("tail");
+		ModelPart body = root.getChild("body");
+		this.rightFoot = root.getChild("right_foot");
+		this.leftFoot = root.getChild("left_foot");
+		this.rightWing = body.getChild("right_wing");
+		this.leftWing = body.getChild("left_wing");
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-				PartPose.offset(0F, 20.5F, -0.5F));
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 20.5F, -0.5F));
 
 		head.addOrReplaceChild("beak", CubeListBuilder.create()
-						.texOffs(12, 0)
-						.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1),
-				PartPose.offset(0F, 0.5F, -2F));
+				.texOffs(12, 0)
+				.addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(0.0F, 0.5F, -2.0F));
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 6)
-						.addBox(-1.5F, 0F, -1F, 3, 3, 3),
-				PartPose.offset(0F, 20F, 0F));
+		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 6)
+				.addBox(-1.5F, 0.0F, -1.0F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 20.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(12, 2)
-						.addBox(-1F, 0F, -1.5F, 1, 2, 3),
-				PartPose.offset(-1.5F, 20.5F, 1F));
+		body.addOrReplaceChild("right_wing", CubeListBuilder.create()
+				.texOffs(12, 2)
+				.addBox(-1.0F, 0.0F, -1.5F, 1.0F, 2.0F, 3.0F),
+			PartPose.offset(-1.5F, 0.5F, 1.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(12, 2)
-						.addBox(0F, 0F, -1.5F, 1, 2, 3),
-				PartPose.offset(1.5F, 20.5F, 1F));
+		body.addOrReplaceChild("left_wing", CubeListBuilder.create().mirror()
+				.texOffs(12, 2)
+				.addBox(0.0F, 0F, -1.5F, 1.0F, 2.0F, 3.0F),
+			PartPose.offset(1.5F, 0.5F, 1.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 12)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(-1.5F, 23F, 0F));
+		partdefinition.addOrReplaceChild("right_foot", CubeListBuilder.create()
+				.texOffs(0, 12)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-1.5F, 23.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 12)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(0F, 23F, 0F));
+		partdefinition.addOrReplaceChild("left_foot", CubeListBuilder.create().mirror()
+				.texOffs(0, 12)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(0.0F, 23.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
-						.texOffs(0, 14)
-						.addBox(-1.5F, -0.5F, 0F, 3, 1, 2),
-				PartPose.offset(0F, 22F, 2F));
+		body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(0, 14)
+				.addBox(-1.5F, -0.5F, 0.0F, 3.0F, 1.0F, 2.0F),
+			PartPose.offset(0.0F, 2.0F, 2.0F));
 
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
-	protected Iterable<ModelPart> headParts() {
-		return ImmutableList.of(this.head);
-	}
+	public void setupAnim(BirdRenderState state) {
+		super.setupAnim(state);
+		float f = (Mth.sin(state.flap) + 1.0F) * state.flapSpeed;
+		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
+		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
 
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(
-				head,
-				body,
-				rightleg,
-				leftleg,
-				rightarm,
-				leftarm,
-				tail
-		);
-	}
+		this.rightFoot.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
+		this.leftFoot.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
 
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-		if (young) {
-			float f = 2.0F;
-			stack.pushPose();
-			stack.translate(0.0F, 5F * scale, 0.75F * scale);
-			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			stack.popPose();
-			stack.pushPose();
-			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
-			stack.translate(0.0F, 24F * scale, 0.0F);
-			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			stack.popPose();
-		} else {
-			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-		}
-	}
+		this.rightWing.zRot = f;
+		this.leftWing.zRot = -f;
 
-	/**
-	 * Sets the models various rotation angles.
-	 */
-	@Override
-	public void setupAnim(TinyBird entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		head.xRot = headPitch / (180F / (float) Math.PI);
-		head.yRot = netHeadYaw / (180F / (float) Math.PI);
-
-		rightleg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		leftleg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-
-		rightarm.zRot = ageInTicks;
-		leftarm.zRot = -ageInTicks;
-
-		if (entity.isBirdLanded()) {
-			rightleg.y = 23;
-			leftleg.y = 23;
-		} else {
-			rightleg.y = 22.5F;
-			leftleg.y = 22.5F;
+		if (!state.landed) {
+			this.rightFoot.y -= 0.5F;
+			this.leftFoot.y -= 0.5F;
 		}
 	}
 }

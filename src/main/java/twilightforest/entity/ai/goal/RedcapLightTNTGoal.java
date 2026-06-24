@@ -4,10 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.Redcap;
 
 import java.util.EnumSet;
@@ -18,6 +19,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 	private int delay;
 	private BlockPos tntPos = null;
 
+	@SuppressWarnings("this-escape")
 	public RedcapLightTNTGoal(Redcap hostEntity, float speed) {
 		super(hostEntity);
 		this.pursueSpeed = speed;
@@ -26,7 +28,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!ForgeEventFactory.getMobGriefingEvent(this.redcap.level(), this.redcap)) {
+		if (!EventHooks.canEntityGrief(this.redcap.level(), this.redcap)) {
 			return false;
 		}
 
@@ -71,7 +73,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 			Blocks.TNT.onCaughtFire(Blocks.TNT.defaultBlockState(), this.redcap.level(), this.tntPos, Direction.UP, this.redcap);
 			this.redcap.swing(InteractionHand.MAIN_HAND);
-			this.redcap.level().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
+			this.redcap.level().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 			this.redcap.gameEvent(GameEvent.PRIME_FUSE);
 			this.redcap.getNavigation().stop();
 		} else {

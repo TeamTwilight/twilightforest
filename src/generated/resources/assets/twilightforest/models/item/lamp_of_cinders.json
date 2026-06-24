@@ -1,5 +1,41 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:item/handheld",
+  "display": {
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "translation": [
+        0,
+        -0.5,
+        -3
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "translation": [
+        0,
+        -0.5,
+        -3
+      ]
+    }
+  },
   "textures": {
     "layer0": "twilightforest:item/lamp_of_cinders"
   }

@@ -6,8 +6,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -19,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.SlimeProjectile;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -43,9 +42,15 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 25.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 4);
+			.add(Attributes.MAX_HEALTH, 25.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 4);
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.SLIME_BEETLE_AMBIENT.get();
 	}
 
 	@Override
@@ -61,21 +66,6 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
 		playSound(TFSounds.SLIME_BEETLE_STEP.get(), 0.15F, 1.0F);
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return 0.25F;
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -0.15D;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
 	}
 
 	@Override

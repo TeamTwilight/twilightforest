@@ -1,22 +1,21 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.RandomSource;
 
-@OnlyIn(Dist.CLIENT)
-public class SnowParticle extends TextureSheetParticle {
+public class SnowParticle extends SingleQuadParticle {
 
 	final float initialParticleScale;
 
-	public SnowParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
-		this(level, x, y, z, vx, vy, vz, 1.0F);
+	public SnowParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, TextureAtlasSprite sprite) {
+		this(level, x, y, z, vx, vy, vz, 1.0F, sprite);
 	}
 
-	public SnowParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, float scale) {
-		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
+	public SnowParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, float scale, TextureAtlasSprite sprite) {
+		super(level, x, y, z, 0.0D, 0.0D, 0.0D, sprite);
 		this.xd *= 0.1D;
 		this.yd *= 0.1D;
 		this.zd *= 0.1D;
@@ -33,8 +32,8 @@ public class SnowParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	protected Layer getLayer() {
+		return Layer.OPAQUE;
 	}
 
 	@Override
@@ -61,17 +60,15 @@ public class SnowParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public int getLightColor(float partialTicks) {
+	public int getLightCoords(float partialTicks) {
 		return 240 | 240 << 16;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			SnowParticle particle = new SnowParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.pickSprite(this.sprite);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			SnowParticle particle = new SnowParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite.get(random));
 			return particle;
 		}
 	}

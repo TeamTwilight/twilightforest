@@ -10,46 +10,34 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import twilightforest.util.LandmarkUtil;
-import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Optional;
 
+@tamaized.beanification.Component
 public class ConquerCommand {
-	private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));
 
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
-		LiteralArgumentBuilder<CommandSourceStack> conquer = Commands.literal("conquer").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
-		LiteralArgumentBuilder<CommandSourceStack> reactivate = Commands.literal("reactivate").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
+	private final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));
+
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
+		LiteralArgumentBuilder<CommandSourceStack> conquer = Commands.literal("conquer").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
+		LiteralArgumentBuilder<CommandSourceStack> reactivate = Commands.literal("reactivate").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
 		return conquer.then(reactivate);
 	}
 
-	private static int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
-
-		// are you in a structure?
-		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(source.getLevel());
-
+	private int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
 		BlockPos pos = BlockPos.containing(source.getPosition());
-		if (chunkGenerator != null) {
-			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+		Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
-			if (struct.isPresent() && struct.get().getBoundingBox().isInside(pos) && struct.get() instanceof TFStructureStart TFStructureStart) {
-				source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
+		if (struct.isPresent() && struct.get().getBoundingBox().isInside(pos) && struct.get() instanceof TFStructureStart TFStructureStart) {
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
 
-				TFStructureStart.setConquered(flag, source.getLevel());
-			} else {
-				throw NOT_IN_STRUCTURE.create();
-			}
-
-			return Command.SINGLE_SUCCESS;
+			TFStructureStart.setConquered(flag, source.getLevel());
 		} else {
 			throw NOT_IN_STRUCTURE.create();
 		}
+
+		return Command.SINGLE_SUCCESS;
 	}
 }

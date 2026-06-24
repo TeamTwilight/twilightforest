@@ -10,8 +10,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class TrollCloudComponent extends TFStructureComponentOld {
@@ -21,8 +21,8 @@ public class TrollCloudComponent extends TFStructureComponentOld {
 
 	public TrollCloudComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFTCloud.get(), nbt);
-		this.size = nbt.getInt("size");
-		this.height = nbt.getInt("height");
+		this.size = nbt.getIntOr("size", 0);
+		this.height = nbt.getIntOr("height", 0);
 	}
 
 	@Override

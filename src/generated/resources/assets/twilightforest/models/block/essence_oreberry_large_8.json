@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#snow"
+        },
+        "east": {
+          "texture": "#snow"
+        },
+        "north": {
+          "texture": "#snow"
+        },
+        "south": {
+          "texture": "#snow"
+        },
+        "up": {
+          "texture": "#snow"
+        },
+        "west": {
+          "texture": "#snow"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "twilightforest:block/essence_oreberry",
+    "snow": "minecraft:block/snow"
+  }
+}

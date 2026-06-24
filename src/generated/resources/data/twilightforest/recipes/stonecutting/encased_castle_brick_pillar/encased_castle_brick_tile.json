@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "twilightforest:encased_castle_brick_pillar"
-  },
-  "result": "twilightforest:encased_castle_brick_tile"
-}

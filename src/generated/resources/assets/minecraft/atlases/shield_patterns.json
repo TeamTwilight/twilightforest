@@ -2,7 +2,7 @@
   "sources": [
     {
       "type": "minecraft:single",
-      "resource": "twilightforest:model/knightmetal_shield"
+      "resource": "twilightforest:entity/knightmetal_shield"
     }
   ]
 }

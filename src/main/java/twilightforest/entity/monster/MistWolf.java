@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,13 +21,13 @@ public class MistWolf extends HostileWolf {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return HostileWolf.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.ATTACK_DAMAGE, 6);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.ATTACK_DAMAGE, 6);
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		if (super.doHurtTarget(entity)) {
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
+		if (super.doHurtTarget(server, entity)) {
 			float myBrightness = this.level().getMaxLocalRawBrightness(this.blockPosition());
 
 			if (entity instanceof LivingEntity && myBrightness < 0.10F) {

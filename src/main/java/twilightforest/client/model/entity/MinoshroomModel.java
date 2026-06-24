@@ -1,206 +1,153 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
-import twilightforest.entity.boss.Minoshroom;
+import net.minecraft.world.item.ItemDisplayContext;
+import org.jspecify.annotations.Nullable;
+import twilightforest.client.renderer.entity.MinoshroomRenderer;
+import twilightforest.client.state.entity.MinoshroomRenderState;
 
-public class MinoshroomModel extends HumanoidModel<Minoshroom> {
+public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implements TrophyBlockModel {
 
-	final ModelPart leg1;
-	final ModelPart leg2;
-	final ModelPart leg3;
-	final ModelPart leg4;
-	final ModelPart cowbody;
-	final ModelPart udders;
+	public final ModelPart cowTorso;
+	private final ModelPart rightFrontLeg;
+	private final ModelPart leftFrontLeg;
+	private final ModelPart rightBackLeg;
+	private final ModelPart leftBackLeg;
 
 	public MinoshroomModel(ModelPart root) {
 		super(root);
-		this.leg1 = root.getChild("leg_1");
-		this.leg2 = root.getChild("leg_2");
-		this.leg3 = root.getChild("leg_3");
-		this.leg4 = root.getChild("leg_4");
-		this.cowbody = root.getChild("cow_body");
-		this.udders = root.getChild("udders");
+		this.cowTorso = root.getChild("cow_torso");
+		this.rightFrontLeg = root.getChild("right_front_leg");
+		this.leftFrontLeg = root.getChild("left_front_leg");
+		this.rightBackLeg = root.getChild("right_back_leg");
+		this.leftBackLeg = root.getChild("left_back_leg");
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
-		PartDefinition partRoot = mesh.getRoot();
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(96, 16)
-						.addBox(-4F, -8F, -4F, 8, 8, 8),
-				PartPose.offset(0F, -6F, -9F));
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(96, 16)
+				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+			PartPose.offset(0.0F, -6.0F, -9.0F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
-				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
-						.texOffs(105, 28)
-						.addBox(-2, -1, -1, 4, 3, 1),
-				PartPose.offset(0F, -2.0F, -4F));
+				.texOffs(105, 28)
+				.addBox(-2.0F, -1.0F, -1.0F, 4.0F, 3.0F, 1.0F),
+			PartPose.offset(0.0F, -2.0F, -4.0F));
 
-		var rightHorn = head.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
-				PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, -25F / (180F / Mth.PI), 10F / (180F / Mth.PI) ));
+		var rightHorn = head.addOrReplaceChild("right_horn_1", CubeListBuilder.create().mirror()
+				.texOffs(0, 0)
+				.addBox(-5.5F, -1.5F, -1.5F, 5.0F, 3.0F, 3.0F),
+			PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, -25.0F * Mth.DEG_TO_RAD, 10.0F * Mth.DEG_TO_RAD));
 
-		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create()
-						.texOffs(16, 0)
-						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F, 0.0F, -15F / (180F / Mth.PI), 45F / (180F / Mth.PI)));
+		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create().mirror()
+				.texOffs(16, 0)
+				.addBox(-3.5F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
+			PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F, 0.0F, -15.0F * Mth.DEG_TO_RAD, 45.0F * Mth.DEG_TO_RAD));
 
-		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
-						.texOffs(0, 0)
-						.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3),
-				PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25F / (180F / Mth.PI), -10F / (180F / Mth.PI) ));
+		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(0.5F, -1.5F, -1.5F, 5.0F, 3.0F, 3.0F),
+			PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25.0F * Mth.DEG_TO_RAD, -10.0F * Mth.DEG_TO_RAD));
 
 		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create()
-						.texOffs(16, 0)
-						.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(4.5F, 0.0F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -45F / (180F / Mth.PI)));
+				.texOffs(16, 0)
+				.addBox(0.5F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
+			PartPose.offsetAndRotation(4.5F, 0.0F, 0.0F, 0.0F, 15.0F * Mth.DEG_TO_RAD, -45.0F * Mth.DEG_TO_RAD));
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(64, 0)
-						.addBox(-4F, 0F, -2.5F, 8, 12, 5),
-				PartPose.offset(0F, -6F, -9F));
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(64, 0)
+				.addBox(-4.0F, 0.0F, -2.5F, 8.0F, 12.0F, 5.0F),
+			PartPose.offset(0.0F, -6.0F, -9.0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(90, 0)
-						.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(-5F, -4F, -9F));
+		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+				.texOffs(90, 0)
+				.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(-5.0F, -4.0F, -9.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(90, 0)
-						.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(5F, -4F, -9F));
+		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+				.texOffs(90, 0)
+				.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(5.0F, -4.0F, -9.0F));
 
-		partRoot.addOrReplaceChild("cow_body", CubeListBuilder.create()
-						.texOffs(18, 4)
-						.addBox(-6F, -10F, -7F, 12, 18, 10),
-				PartPose.offsetAndRotation(0F, 5F, 2F, 1.570796F, 0F, 0F));
+		var body = partdefinition.addOrReplaceChild("cow_torso", CubeListBuilder.create()
+				.texOffs(18, 4)
+				.addBox(-6.0F, -10.0F, -7.0F, 12.0F, 18.0F, 10.0F),
+			PartPose.offsetAndRotation(0.0F, 5.0F, 2.0F, 1.570796F, 0.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("udders", CubeListBuilder.create()
-						.texOffs(52, 0)
-						.addBox(-2F, -3F, 0F, 4, 6, 2),
-				PartPose.offsetAndRotation(0F, 14F, 6F, 1.570796F, 0F, 0F));
+		body.addOrReplaceChild("udders", CubeListBuilder.create()
+				.texOffs(53, 1)
+				.addBox(-2.0F, -3.0F, 0.0F, 4.0F, 6.0F, 1.0F),
+			PartPose.offset(0.0F, 5.0F, -8.0F));
 
-		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-3F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(-3F, 12F, 7F));
+		partdefinition.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-3.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(-3.0F, 12.0F, 7.0F));
 
-		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(3F, 12F, 7F));
+		partdefinition.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-1.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(3.0F, 12.0F, 7.0F));
 
-		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-3F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(-3F, 12F, -5F));
+		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-3.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(-3.0F, 12.0F, -5.0F));
 
-		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(3F, 12F, -5F));
+		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-1.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(3.0F, 12.0F, -5.0F));
 
-		return LayerDefinition.create(mesh, 128, 32);
+		return LayerDefinition.create(meshdefinition, 128, 32);
 	}
 
 	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(this.head, this.body, this.leftArm, this.rightArm, this.cowbody, this.udders, this.leg1, this.leg2, this.leg3, this.leg4);
-	}
+	public void setupAnim(MinoshroomRenderState state) {
+		super.setupAnim(state);
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
-	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
-	 * "far" arms and legs can swing at most.
-	 */
-	@Override
-	public void setupAnim(Minoshroom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		// copied from HumanoidModel
+		// copied from QuadrupedModel
+		this.cowTorso.xRot = Mth.HALF_PI;
+		this.leftFrontLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
+		this.rightFrontLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
+		this.leftBackLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
+		this.rightBackLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
 
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
-		this.hat.yRot = this.head.yRot;
-		this.hat.xRot = this.head.xRot;
-
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
-		this.rightArm.zRot = 0.0F;
-		this.leftArm.zRot = 0.0F;
-
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.rightLeg.yRot = 0.0F;
-		this.leftLeg.yRot = 0.0F;
-
-		if (this.leftArmPose != ArmPose.EMPTY) {
-			this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float) Math.PI / 10F);
-		}
-
-		if (this.rightArmPose != ArmPose.EMPTY) {
-			this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
-		}
-
-
-		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
-
-		float var7 = 0.0F;
-		float var8 = 0.0F;
-
-		if (this.leftArmPose == ArmPose.BOW_AND_ARROW) {
-			this.leftArm.zRot = 0.0F;
-			this.leftArm.yRot = 0.1F - var7 * 0.6F + this.head.yRot + 0.4F;
-			this.leftArm.xRot = -((float) Math.PI / 2F) + this.head.xRot;
-			this.leftArm.xRot -= var7 * 1.2F - var8 * 0.4F;
-			this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-			this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		}
-
-		if (this.rightArmPose == ArmPose.BOW_AND_ARROW) {
-			this.rightArm.zRot = 0.0F;
-			this.rightArm.yRot = -(0.1F - var7 * 0.6F) + this.head.yRot;
-			this.rightArm.xRot = -((float) Math.PI / 2F) + this.head.xRot;
-			this.rightArm.xRot -= var7 * 1.2F - var8 * 0.4F;
-			this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-			this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		}
-
-		// copied from ModelQuadruped
-		this.cowbody.xRot = ((float) Math.PI / 2F);
-		this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.leg3.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.leg4.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-
-		float f = ageInTicks - entity.tickCount;
-		float f1 = entity.getChargeAnimationScale(f);
+		// Ground slam animation
+		float f1 = state.chargeAnim;
 		f1 = f1 * f1;
-		float f2 = 1.0F - f1;
 
-		this.leg3.y = 12.0F + (-7F * f1);
-		this.leg3.z = -4.0F + (-5.8F * f1);
-		this.leg4.y = this.leg3.y;
-		this.leg4.z = this.leg3.z;
-		this.body.y = -6F + -3.0F * f1;
-		this.rightArm.y = -4F - f1;
-		this.rightArm.z = -9F + f1;
-		this.leftArm.y = rightArm.y;
-		this.leftArm.z = rightArm.z;
+		this.leftFrontLeg.y = 12.0F + -5.0F * f1;
+		this.leftFrontLeg.z = -4.0F + f1;
+		this.rightFrontLeg.y = this.leftFrontLeg.y;
+		this.rightFrontLeg.z = this.leftFrontLeg.z;
+		this.head.y = -6.0F + -3.0F * f1;
+		this.head.z = -9.0F + 6.0F * f1;
+		this.body.y = -6.0F + -3.0F * f1;
+		this.body.z = -9.0F + 6.0F * f1;
+		this.cowTorso.y = 5.0F + f1;
+		this.cowTorso.z = 2.0F + 4.0F * f1;
+		this.rightArm.y = -4.0F - 3.0F * f1;
+		this.rightArm.z = -9.0F + (6.0F * f1);
+		this.leftArm.y = this.rightArm.y;
+		this.leftArm.z = this.rightArm.z;
 
 		if (f1 > 0) {
-			if (entity.getMainArm() == HumanoidArm.RIGHT) {
+			if (state.mainArm == HumanoidArm.RIGHT) {
 				this.rightArm.xRot = f1 * -1.8F;
 				this.leftArm.xRot = 0.0F;
 				this.rightArm.zRot = -0.2F;
@@ -209,9 +156,15 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
 				this.leftArm.xRot = f1 * -1.8F;
 				this.leftArm.zRot = 0.2F;
 			}
-			this.cowbody.xRot = ((float) Math.PI / 2F) - f1 * (float) Math.PI * 0.2F;
-			this.leg3.xRot -= f1 * (float) Math.PI * 0.3F;
-			this.leg4.xRot -= f1 * (float) Math.PI * 0.3F;
+			this.cowTorso.xRot = Mth.HALF_PI - f1 * Mth.PI * 0.2F;
+			this.leftFrontLeg.xRot -= f1 * Mth.PI * 0.3F;
+			this.rightFrontLeg.xRot -= f1 * Mth.PI * 0.3F;
 		}
+	}
+
+	@Override
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
+		stack.translate(0.0F, 0.375F, 0.56F);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 	}
 }

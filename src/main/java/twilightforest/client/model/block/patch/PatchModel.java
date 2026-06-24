@@ -1,6 +1,8 @@
 package twilightforest.client.model.block.patch;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -8,225 +10,213 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.ChunkRenderTypeSet;
-import net.minecraftforge.client.model.SimpleModelState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
+import net.neoforged.neoforge.client.model.SimpleModelState;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.block.PatchBlock;
+import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/* Unlike the usual way models are done, this takes more of a state-oriented approach.
- * It is suboptimal but please, be my guest if you wish to see it improved */
-public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, boolean shaggify) implements BakedModel {
-    private static final FaceBakery BAKERY = new FaceBakery();
+public class PatchModel implements BakedModel {
 
-    // POOLED - not threadsafe
-    private static final Vector3f MIN = new Vector3f(0, 0, 0);
-    private static final Vector3f MAX = new Vector3f(0, 0, 0);
+	private final TextureAtlasSprite texture;
+	private final boolean shaggify;
+	private final TextureAtlasSprite particle;
+	private final boolean usesAO;
+	private final boolean usesBlockLight;
+	private final ItemTransforms transforms;
+	@Nullable
+	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
+	private final RenderType itemRenderType;
 
-    private void setVectors(AABB bb) {
-        MIN.set((float) bb.minX, (float) bb.minY, (float) bb.minZ);
-        MAX.set((float) bb.maxX, (float) bb.maxY, (float) bb.maxZ);
-    }
+	public PatchModel(TextureAtlasSprite texture, boolean shaggify, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
+		this.texture = texture;
+		this.shaggify = shaggify;
+		this.particle = particle;
+		this.usesAO = usesAO;
+		this.usesBlockLight = usesBlockLight;
+		this.transforms = transforms;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
+	}
 
-    private void setVectors(AABB bb, boolean north, boolean east, boolean south, boolean west) {
-        MIN.set(west ? 0 : (float) bb.minX, (float) bb.minY, north ? 0 : (float) bb.minZ);
-        MAX.set(east ? 16 : (float) bb.maxX, (float) bb.maxY, south ? 16 : (float) bb.maxZ);
-    }
+	@Override
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
+		if (state == null)
+			return this.getQuads(false, false, false, false, random);
+		else
+			return this.getQuads(state.getValue(PatchBlock.NORTH), state.getValue(PatchBlock.EAST), state.getValue(PatchBlock.SOUTH), state.getValue(PatchBlock.WEST), random);
+	}
 
-    @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
-        if (state == null)
-            return this.getQuads(false, false, false, false, PatchBlock.AABBFromRandom(random), random);
-        else
-            return this.getQuads(state.getValue(PatchBlock.NORTH), state.getValue(PatchBlock.EAST), state.getValue(PatchBlock.SOUTH), state.getValue(PatchBlock.WEST), PatchBlock.AABBFromRandom(random), random);
-    }
+	private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, RandomSource posRandom) {
+		List<BakedQuad> list = new ArrayList<>();
 
-    private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, AABB bb, RandomSource random) {
-        List<BakedQuad> list = new ArrayList<>();
+		BoundingBox bb = PatchBlock.AABBFromRandom(posRandom);
 
-        this.setVectors(bb, north, east, south, west);
+		this.quadsFromAABB(list, west ? 0 : bb.minX(), bb.minY(), north ? 0 : bb.minZ(), east ? 16 : bb.maxX(), bb.maxY(), south ? 16 : bb.maxZ());
 
-        this.quadsFromAABB(list);
+		if (!this.shaggify)
+			return ImmutableList.copyOf(list);
 
-        if (!this.shaggify())
-            return list;
+		// Poll these seeds before entering branching code, otherwise placing neighbors will cause odd changes
+		long westSeed = posRandom.nextLong();
+		long eastSeed = posRandom.nextLong();
+		long northSeed = posRandom.nextLong();
+		long southSeed = posRandom.nextLong();
 
-        // This has to be set without connections or else there will be inconsistency problems
-        this.setVectors(bb);
+		int minY = bb.minY();
+		int maxY = bb.maxY();
 
-        // add on shaggy edges
-        if (MIN.x() > 0) {
-            float originalMaxZ = MAX.z();
+		// add on shaggy edges
+		if (!west) {
+			long seed = westSeed;
+			seed = seed * seed * 42317861L + seed * 7L;
 
-            long seed = random.nextLong();
-            seed = seed * seed * 42317861L + seed * 7L;
+			int num0 = (int) (seed >> 12 & 3L) + 1;
+			int num1 = (int) (seed >> 15 & 3L) + 1;
+			int num2 = (int) (seed >> 18 & 3L) + 1;
+			int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            int num0 = (int) (seed >> 12 & 3L) + 1;
-            int num1 = (int) (seed >> 15 & 3L) + 1;
-            int num2 = (int) (seed >> 18 & 3L) + 1;
-            int num3 = (int) (seed >> 21 & 3L) + 1;
+			int minZ = bb.minZ() + num0;
+			int maxZ = bb.maxZ();
 
-            MAX.x = MIN.x();
-            MIN.add(-1, 0, num0);
-            if (MAX.z() - ((num1 + num2 + num3)) > MIN.z()) {
-                // draw two blobs
-                MAX.z = MIN.z() + num1;
-                this.quadsFromAABB(list);
-                MAX.z = originalMaxZ - num2;
-                MIN.z = MAX.z() - num3;
-                this.quadsFromAABB(list);
-            } else {
-                //draw one blob
-                MAX.add(0, 0, -num2);
-                this.quadsFromAABB(list);
-            }
+			if (maxZ - ((num1 + num2 + num3)) > minZ) {
+				// draw two blobs
+				int innerZ = bb.maxZ() - num2;
+				this.quadsFromAABB(list, bb.minX() - 1, minY, minZ, bb.minX(), maxY, minZ + num1);
+				this.quadsFromAABB(list, bb.minX() - 1, minY, innerZ - num3, bb.minX(), maxY, innerZ);
+			} else {
+				//draw one blob
+				this.quadsFromAABB(list, bb.minX() - 1, minY, minZ, bb.minX(), maxY, maxZ - num2);
+			}
+		}
 
-            // reset render bounds
-            this.setVectors(bb);
-        }
-        if (MAX.x() < 16F) {
-            float originalMaxZ = MAX.z();
+		if (!east) {
+			long seed = eastSeed;
+			seed = seed * seed * 42317861L + seed * 17L;
 
-            long seed = random.nextLong();
-            seed = seed * seed * 42317861L + seed * 17L;
+			int num0 = (int) (seed >> 12 & 3L) + 1;
+			int num1 = (int) (seed >> 15 & 3L) + 1;
+			int num2 = (int) (seed >> 18 & 3L) + 1;
+			int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            int num0 = (int) (seed >> 12 & 3L) + 1;
-            int num1 = (int) (seed >> 15 & 3L) + 1;
-            int num2 = (int) (seed >> 18 & 3L) + 1;
-            int num3 = (int) (seed >> 21 & 3L) + 1;
+			int minZ = bb.minZ() + num0;
+			int maxZ = bb.maxZ();
 
-            MIN.x = MAX.x();
-            MAX.add(1, 0, 0);
-            MIN.add(0, 0, num0);
-            if (MAX.z() - ((num1 +num2 + num3)) > MIN.z()) {
-                // draw two blobs
-                MAX.z = MIN.z() + num1;
-                this.quadsFromAABB(list);
-                MAX.z = originalMaxZ - num2;
-                MIN.z = MAX.z() - num3;
-                this.quadsFromAABB(list);
-            } else {
-                //draw one blob
-                MAX.add(0, 0, -num2);
-                this.quadsFromAABB(list);
-            }
-            // reset render bounds
-            this.setVectors(bb);
-        }
-        if (MIN.z() > 0) {
-            float originalMaxX = MAX.x();
+			if (maxZ - ((num1 + num2 + num3)) > minZ) {
+				// draw two blobs
+				int innerZ = maxZ - num2;
+				this.quadsFromAABB(list, bb.maxX(), minY, minZ, bb.maxX() + 1, maxY, minZ + num1);
+				this.quadsFromAABB(list, bb.maxX(), minY, innerZ - num3, bb.maxX() + 1, maxY, innerZ);
+			} else {
+				//draw one blob
+				this.quadsFromAABB(list, bb.maxX(), minY, minZ, bb.maxX() + 1, maxY, maxZ - num2);
+			}
+		}
 
-            long seed = random.nextLong();
-            seed = seed * seed * 42317861L + seed * 23L;
+		if (!north) {
+			long seed = northSeed;
+			seed = seed * seed * 42317861L + seed * 23L;
 
-            int num0 = (int) (seed >> 12 & 3L) + 1;
-            int num1 = (int) (seed >> 15 & 3L) + 1;
-            int num2 = (int) (seed >> 18 & 3L) + 1;
-            int num3 = (int) (seed >> 21 & 3L) + 1;
+			int num0 = (int) (seed >> 12 & 3L) + 1;
+			int num1 = (int) (seed >> 15 & 3L) + 1;
+			int num2 = (int) (seed >> 18 & 3L) + 1;
+			int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MAX.z = MIN.z();
-            MIN.add(num0, 0, -1F);
-            MAX.x = MIN.x() + num1;
-            this.quadsFromAABB(list);
-            MAX.x = originalMaxX - num2;
-            MIN.x = MAX.x() - num3;
-            this.quadsFromAABB(list);
-            // reset render bounds
-            this.setVectors(bb);
-        }
-        if (MAX.z() < 16F) {
-            float originalMaxX = MAX.x();
+			int minX = bb.minX() + num0;
+			int innerX = minX + num1;
+			int maxX = bb.maxX() - num2;
 
-            long seed = random.nextLong();
-            seed = seed * seed * 42317861L + seed * 11L;
+			this.quadsFromAABB(list, minX, minY, bb.minZ() - 1, innerX, maxY, bb.minZ());
+			this.quadsFromAABB(list, maxX - num3, minY, bb.minZ() - 1, maxX, maxY, bb.minZ());
+		}
 
-            int num0 = (int) (seed >> 12 & 3L) + 1;
-            int num1 = (int) (seed >> 15 & 3L) + 1;
-            int num2 = (int) (seed >> 18 & 3L) + 1;
-            int num3 = (int) (seed >> 21 & 3L) + 1;
+		if (!south) {
+			long seed = southSeed;
+			seed = seed * seed * 42317861L + seed * 11L;
 
-            MIN.z = MAX.z();
-            MAX.add(0, 0, 1F);
-            MIN.add(num0, 0, 0);
-            MAX.x = MIN.x() + num1;
-            this.quadsFromAABB(list);
-            MAX.x = originalMaxX - num2;
-            MIN.x = MAX.x() - num3;
-            this.quadsFromAABB(list);
-            // reset render bounds
-            this.setVectors(bb);
-        }
+			int num0 = (int) (seed >> 12 & 3L) + 1;
+			int num1 = (int) (seed >> 15 & 3L) + 1;
+			int num2 = (int) (seed >> 18 & 3L) + 1;
+			int num3 = (int) (seed >> 21 & 3L) + 1;
 
-        return list;
-    }
+			int minX = bb.minX() + num0;
+			int maxX = bb.maxX() - num2;
 
-    // FIXME I'm open for a efficient way of putting quads but this is good enough without reading through a bunch of method chains to duplicate behavior
-    // For now this works, especially when the blocks won't generate frequently on worldgen
-    private void quadsFromAABB(List<BakedQuad> quads) {
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.UP));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.NORTH));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.EAST));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.SOUTH));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.WEST));
-    }
+			this.quadsFromAABB(list, minX, minY, bb.maxZ(), minX + num1, maxY, bb.maxZ() + 1);
+			this.quadsFromAABB(list, maxX - num3, minY, bb.maxZ(), maxX, maxY, bb.maxZ() + 1);
+		}
 
-    private BakedQuad quadFromVectors(Vector3f min, Vector3f max, Direction direction) {
-        BlockElementFace face = new BlockElementFace(null, 0, this.texture().atlasLocation().toString(), switch (direction) {
-            case NORTH -> new BlockFaceUV(new float[] { max.x(), min.z() + 1f, min.x(), min.z() }, 0);
-            case EAST  -> new BlockFaceUV(new float[] { max.x(), min.z(), max.x() - 1f, max.z() }, 90);
-            case SOUTH -> new BlockFaceUV(new float[] { min.x(), max.z(), max.x(), max.z() - 1f }, 0);
-            case WEST  -> new BlockFaceUV(new float[] { min.x(), max.z(), min.x() + 1f, min.z() }, 90);
-            default -> new BlockFaceUV(new float[] { min.x(), min.z(), max.x(), max.z() }, 0);
-        });
+		return ImmutableList.copyOf(list);
+	}
 
-        return BAKERY.bakeQuad(min, max, face, this.texture(), direction, new SimpleModelState(Transformation.identity()), null, true, this.location);
-    }
+	private void quadsFromAABB(List<BakedQuad> quads, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+		quads.add(this.quadFromVectors(Direction.UP, minX, minY, minZ, maxX, maxY, maxZ));
+		quads.add(this.quadFromVectors(Direction.NORTH, minX, minY, minZ, maxX, maxY, maxZ));
+		quads.add(this.quadFromVectors(Direction.EAST, minX, minY, minZ, maxX, maxY, maxZ));
+		quads.add(this.quadFromVectors(Direction.SOUTH, minX, minY, minZ, maxX, maxY, maxZ));
+		quads.add(this.quadFromVectors(Direction.WEST, minX, minY, minZ, maxX, maxY, maxZ));
+		quads.add(this.quadFromVectors(Direction.DOWN, minX, minY, minZ, maxX, maxY, maxZ));
+	}
 
-    // --- Boilerplating ---------------------------------------------------
+	private BakedQuad quadFromVectors(Direction direction, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+		BlockElementFace face = new BlockElementFace(null, 0, this.texture.atlasLocation().toString(), switch (direction) {
+			case NORTH -> new BlockFaceUV(new float[]{maxX, minZ + 1f, minX, minZ}, 0);
+			case EAST -> new BlockFaceUV(new float[]{maxX, minZ, maxX - 1f, maxZ}, 90);
+			case SOUTH -> new BlockFaceUV(new float[]{minX, maxZ, maxX, maxZ - 1f}, 0);
+			case WEST -> new BlockFaceUV(new float[]{minX, maxZ, minX + 1f, minZ}, 90);
+			default -> new BlockFaceUV(new float[]{minX, minZ, maxX, maxZ}, 0);
+		});
 
-    @Override
-    public boolean useAmbientOcclusion() {
-        return false;
-    }
+		return FaceBakery.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true, 0);
+	}
 
-    @Override
-    public boolean isGui3d() {
-        return false;
-    }
+	@Override
+	public boolean useAmbientOcclusion() {
+		return this.usesAO;
+	}
 
-    @Override
-    public boolean usesBlockLight() {
-        return false;
-    }
+	@Override
+	public boolean isGui3d() {
+		return false;
+	}
 
-    @Override
-    public boolean isCustomRenderer() {
-        return false;
-    }
+	@Override
+	public boolean usesBlockLight() {
+		return this.usesBlockLight;
+	}
 
-    @Override
-    public TextureAtlasSprite getParticleIcon() {
-        return this.texture;
-    }
+	@Override
+	public ItemTransforms getTransforms() {
+		return this.transforms;
+	}
 
-    @Override
-    public ItemOverrides getOverrides() {
-        return ItemOverrides.EMPTY; //I doubt we need to do anything here
-    }
+	@Override
+	public TextureAtlasSprite getParticleIcon() {
+		return this.particle;
+	}
 
-    @Override
-    public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-        if (state.is(TFBlocks.CLOVER_PATCH.get())) {
-            return ChunkRenderTypeSet.of(RenderType.cutout());
-        }
-        return BakedModel.super.getRenderTypes(state, rand, data);
-    }
+	@NotNull
+	@Override
+	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+		return this.blockRenderTypes != null ? this.blockRenderTypes : BakedModel.super.getRenderTypes(state, rand, data);
+	}
+
+	@Override
+	public RenderType getRenderType(ItemStack stack) {
+		return this.itemRenderType != null ? this.itemRenderType : BakedModel.super.getRenderType(stack);
+	}
 }

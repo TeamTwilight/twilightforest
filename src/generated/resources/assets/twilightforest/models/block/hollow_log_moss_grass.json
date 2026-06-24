@@ -4,6 +4,6 @@
   "textures": {
     "carpet": "twilightforest:block/mosspatch",
     "overhang": "twilightforest:block/moss_overhang",
-    "plant": "minecraft:block/grass"
+    "plant": "minecraft:block/short_grass"
   }
 }

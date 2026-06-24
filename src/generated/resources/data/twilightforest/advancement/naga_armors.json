@@ -1,0 +1,50 @@
+{
+  "parent": "twilightforest:progress_naga",
+  "criteria": {
+    "chestplate": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/naga_chestplate"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "leggings": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/naga_leggings"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.naga_armors.desc",
+      "with": [
+        {
+          "translate": "item.twilightforest.naga_chestplate"
+        },
+        {
+          "translate": "item.twilightforest.naga_leggings"
+        }
+      ]
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:naga_chestplate"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.naga_armors"
+    }
+  },
+  "requirements": [
+    [
+      "chestplate"
+    ],
+    [
+      "leggings"
+    ]
+  ],
+  "rewards": {
+    "experience": 25
+  },
+  "sends_telemetry_event": true
+}

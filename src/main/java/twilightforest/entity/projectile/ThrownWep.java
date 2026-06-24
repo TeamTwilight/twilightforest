@@ -4,14 +4,13 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
@@ -37,9 +36,9 @@ public class ThrownWep extends TFThrowable {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(DATA_ITEMSTACK, ItemStack.EMPTY);
-		this.getEntityData().define(DATA_VELOCITY, 0.001F);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_ITEMSTACK, ItemStack.EMPTY);
+		builder.define(DATA_VELOCITY, 0.001F);
 	}
 
 	public ThrownWep setItem(ItemStack stack) {
@@ -56,10 +55,9 @@ public class ThrownWep extends TFThrowable {
 		return this;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 3) {
+		if (id == EntityEvent.DEATH) {
 			for (int i = 0; i < 8; ++i) {
 				this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
@@ -100,7 +98,7 @@ public class ThrownWep extends TFThrowable {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return this.getEntityData().get(DATA_VELOCITY);
 	}
 }

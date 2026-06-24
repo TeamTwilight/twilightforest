@@ -1,7 +1,5 @@
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NullMarked
 package twilightforest.item.recipe;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
-import javax.annotation.ParametersAreNonnullByDefault;

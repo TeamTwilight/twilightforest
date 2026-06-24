@@ -2,44 +2,48 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.model.Model;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
-import twilightforest.entity.CubeOfAnnihilation;
+import twilightforest.client.state.entity.CubeOfAnnihilationRenderState;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
 
-public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilation> {
+public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilation, CubeOfAnnihilationRenderState> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
-	private final Model model;
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("cubeofannihilation.png");
+	private final CubeOfAnnihilationModel model;
 
-	public CubeOfAnnihilationRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
-		model = new CubeOfAnnihilationModel(manager.bakeLayer(TFModelLayers.CUBE_OF_ANNIHILATION));
+	public CubeOfAnnihilationRenderer(EntityRendererProvider.Context context) {
+		super(context);
+		this.model = new CubeOfAnnihilationModel(context.bakeLayer(TFModelLayers.CUBE_OF_ANNIHILATION));
 	}
 
 	@Override
-	public void render(CubeOfAnnihilation entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		super.render(entity, yaw, partialTicks, stack, buffer, light);
-
-		stack.pushPose();
-
-		stack.scale(-1.0F, -1.0F, 1.0F);
-		stack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees((entity.tickCount + partialTicks) * 11F)));
-		stack.translate(0F, -0.5F, 0F);
-		model.renderToBuffer(stack, buffer.getBuffer(model.renderType(textureLoc)), light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-
-		stack.popPose();
+	public CubeOfAnnihilationRenderState createRenderState() {
+		return new CubeOfAnnihilationRenderState();
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CubeOfAnnihilation entity) {
-		return textureLoc;
+	public void submit(CubeOfAnnihilationRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+		super.submit(state, poseStack, submitNodeCollector, camera);
+		poseStack.pushPose();
+		poseStack.scale(-1.0F, -1.0F, 1.0F);
+		poseStack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees(state.ageInTicks * 11.0F)));
+		poseStack.translate(0.0F, -0.5F, 0.0F);
+		submitNodeCollector.submitModel(this.model, state, poseStack, this.model.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		poseStack.popPose();
+	}
+
+	@Override
+	public void extractRenderState(CubeOfAnnihilation entity, CubeOfAnnihilationRenderState state, float partialTicks) {
+		super.extractRenderState(entity, state, partialTicks);
+		state.rotation = Mth.sin((state.ageInTicks + entity.getYRot(partialTicks)));
 	}
 }

@@ -1,56 +1,44 @@
 package twilightforest.block;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import twilightforest.enums.Diagonals;
 
-public class SpiralBrickBlock extends Block {
+public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 
 	public static final EnumProperty<Diagonals> DIAGONAL = EnumProperty.create("diagonal", Diagonals.class);
 	public static final EnumProperty<Direction.Axis> AXIS_FACING = EnumProperty.create("axis", Direction.Axis.class);
 
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
 	public SpiralBrickBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.getStateDefinition().any().setValue(DIAGONAL, Diagonals.BOTTOM_RIGHT).setValue(AXIS_FACING, Direction.Axis.X));
-	}
-
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(AXIS_FACING, DIAGONAL);
-	}
-
-	@Nullable
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		if (context.isSecondaryUseActive()) {
-			//if sneaking, place on the y axis with glazed terracotta logic
-			return this.defaultBlockState()
-					.setValue(AXIS_FACING, Direction.Axis.Y)
-					.setValue(DIAGONAL, convertVerticalDirectionToDiagonal(context.getHorizontalDirection()));
-		} else {
-			//otherwise, place on the x and z with stair logic
-			return this.defaultBlockState()
-					.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis())
-					.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double) context.getClickedPos().getY() > 0.5D));
-		}
+		this.registerDefaultState(this.getStateDefinition().any().setValue(DIAGONAL, Diagonals.BOTTOM_RIGHT).setValue(AXIS_FACING, Direction.Axis.X).setValue(WATERLOGGED, false));
 	}
 
 	private static Diagonals convertVerticalDirectionToDiagonal(Direction facing) {
 		return switch (facing) {
-			default -> Diagonals.TOP_RIGHT;
 			case SOUTH -> Diagonals.BOTTOM_LEFT;
 			case EAST -> Diagonals.TOP_LEFT;
 			case WEST -> Diagonals.BOTTOM_RIGHT;
+			default -> Diagonals.TOP_RIGHT;
 		};
 	}
 
@@ -60,7 +48,34 @@ public class SpiralBrickBlock extends Block {
 			case SOUTH, WEST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() != facing, upper);
 			default -> Diagonals.BOTTOM_RIGHT;
 		};
+	}
 
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(AXIS_FACING, DIAGONAL, WATERLOGGED);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		if (context.isSecondaryUseActive()) {
+			//if sneaking, place on the y axis with glazed terracotta logic
+			return this.defaultBlockState()
+				.setValue(AXIS_FACING, Direction.Axis.Y)
+				.setValue(DIAGONAL, convertVerticalDirectionToDiagonal(context.getHorizontalDirection()))
+				.setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+		} else {
+			//otherwise, place on the x and z with stair logic
+			return this.defaultBlockState()
+				.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis())
+				.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double) context.getClickedPos().getY() > 0.5D))
+				.setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+		}
+	}
+
+	@Override
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (state.getValue(WATERLOGGED)) ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override
@@ -84,9 +99,12 @@ public class SpiralBrickBlock extends Block {
 	}
 
 	@Override
-	@Deprecated
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(DIAGONAL, Diagonals.mirrorOn(state.getValue(AXIS_FACING), state.getValue(DIAGONAL), mirror));
 	}
-
 }

@@ -17,13 +17,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdBalconyRoomComponent extends StructureTFStrongholdComponent {
+public class StrongholdBalconyRoomComponent extends KnightStrongholdComponent {
 
 	boolean enterBottom;
 
 	public StrongholdBalconyRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSBalR.get(), nbt);
-		this.enterBottom = nbt.getBoolean("enterBottom");
+		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 	}
 
 	public StrongholdBalconyRoomComponent(int i, Direction facing, int x, int y, int z) {
@@ -48,10 +48,10 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 		}
 
 		if (enterBottom) {
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 18, 14, 27, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 18, 14, 27, facing);
 		} else {
 			// enter on the top
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -8, 0, 18, 14, 27, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -8, 0, 18, 14, 27, facing);
 		}
 	}
 

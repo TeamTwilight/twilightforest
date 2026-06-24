@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -12,10 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,12 +25,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.HeavySpearAttackGoal;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,14 +44,15 @@ public class UpperGoblinKnight extends Monster {
 	private static final EntityDataAccessor<Byte> DATA_EQUIP = SynchedEntityData.defineId(UpperGoblinKnight.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Boolean> SHIELD_DISABLED = SynchedEntityData.defineId(UpperGoblinKnight.class, EntityDataSerializers.BOOLEAN);
 
-	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, AttributeModifier.Operation.ADDITION);
-	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("armor_boost"), 20, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("spear_attack_boost"), 12, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	public static final int HEAVY_SPEAR_TIMER_START = 60;
 
 	private int shieldHits = 0;
 	private int shieldDisabledTicks;
 	public int heavySpearTimer;
 
+	@SuppressWarnings("this-escape")
 	public UpperGoblinKnight(EntityType<? extends UpperGoblinKnight> type, Level level) {
 		super(type, level);
 
@@ -67,7 +67,7 @@ public class UpperGoblinKnight extends Monster {
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
 			@Override
 			public boolean canUse() {
-				return !this.mob.isPassenger() && !(((UpperGoblinKnight) this.mob).heavySpearTimer > 0) && super.canUse();
+				return !(((UpperGoblinKnight) this.mob).heavySpearTimer > 0) && super.canUse();
 			}
 		});
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -79,16 +79,16 @@ public class UpperGoblinKnight extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 8.0D);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 8.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_EQUIP, (byte) 0);
-		this.getEntityData().define(SHIELD_DISABLED, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_EQUIP, (byte) 0);
+		builder.define(SHIELD_DISABLED, false);
 	}
 
 	public boolean hasArmor() {
@@ -101,11 +101,11 @@ public class UpperGoblinKnight extends Monster {
 
 		if (!this.level().isClientSide()) {
 			if (flag) {
-				if (!Objects.requireNonNull(getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER)) {
+				if (!Objects.requireNonNull(getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER.id())) {
 					Objects.requireNonNull(getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER);
+				Objects.requireNonNull(getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER.id());
 			}
 		}
 	}
@@ -120,17 +120,17 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("hasArmor", this.hasArmor());
 		compound.putBoolean("hasShield", this.hasShield());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setHasArmor(compound.getBoolean("hasArmor"));
-		this.setHasShield(compound.getBoolean("hasShield"));
+		this.setHasArmor(compound.getBooleanOr("hasArmor", false));
+		this.setHasShield(compound.getBooleanOr("hasShield", false));
 	}
 
 	@Override
@@ -143,12 +143,12 @@ public class UpperGoblinKnight extends Monster {
 
 		if (this.isShieldDisabled()) {
 			this.level().addParticle(ParticleTypes.SPLASH,
-					this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
-					this.getY() + this.getEyeHeight(),
-					this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
-					(this.getRandom().nextFloat() - 0.5F) * 0.75F,
-					0,
-					(this.getRandom().nextFloat() - 0.5F) * 0.75F);
+				this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
+				this.getY() + this.getEyeHeight(),
+				this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
+				(this.getRandom().nextFloat() - 0.5F) * 0.75F,
+				0,
+				(this.getRandom().nextFloat() - 0.5F) * 0.75F);
 		}
 	}
 
@@ -168,8 +168,8 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void customServerAiStep() {
-		super.customServerAiStep();
+	public void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 
 		if (this.isShieldDisabled() && this.shieldDisabledTicks++ >= 100) {
 			this.shieldDisabledTicks = 0;
@@ -187,11 +187,11 @@ public class UpperGoblinKnight extends Monster {
 			}
 
 			if (this.heavySpearTimer > 0) {
-				if (!Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).hasModifier(DAMAGE_MODIFIER)) {
+				if (!Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).hasModifier(DAMAGE_MODIFIER.id())) {
 					Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).addTransientModifier(DAMAGE_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).removeModifier(DAMAGE_MODIFIER.getId());
+				Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).removeModifier(DAMAGE_MODIFIER.id());
 			}
 		}
 	}
@@ -205,26 +205,27 @@ public class UpperGoblinKnight extends Monster {
 		double py = this.getBoundingBox().minY - (this.isPassenger() ? 0.75D : 0.0D);
 		double pz = this.getZ() + vector.z() * dist;
 
-
-		if (this.level() instanceof ServerLevel server) {
+		if (this.level() instanceof ServerLevel) {
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 50; i++) {
-				server.sendParticles(
-						ParticleTypes.LARGE_SMOKE, px, py, pz, 1,
-						(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F,
-						0,
-						(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F, 0);
+				particlePacket.queueParticle(ParticleTypes.LARGE_SMOKE, false,
+					px + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
+					py,
+					pz + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
+					0, 0, 0);
 			}
+			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 		}
 
 		// damage things in front that aren't us or our "mount"
 		double radius = 1.5D;
-
 		AABB spearBB = new AABB(px - radius, py - radius, pz - radius, px + radius, py + radius, pz + radius);
-
 		List<Entity> inBox = this.level().getEntities(this, spearBB, e -> e != this.getVehicle());
 
-		for (Entity entity : inBox) {
-			super.doHurtTarget(entity);
+		if (this.level() instanceof ServerLevel server) {
+			for (Entity entity : inBox) {
+				super.doHurtTarget(server, entity);
+			}
 		}
 
 		if (!inBox.isEmpty()) {
@@ -234,12 +235,11 @@ public class UpperGoblinKnight extends Monster {
 		this.gameEvent(GameEvent.HIT_GROUND);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 4) {
+		if (id == EntityEvent.START_ATTACKING) {
 			this.heavySpearTimer = HEAVY_SPEAR_TIMER_START;
-		} else if (id == 5) {
+		} else if (id == EntityEvent.STOP_ATTACKING) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);
 			this.breakItem(broken);
 			this.breakItem(broken);
@@ -250,8 +250,7 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		if (this.heavySpearTimer > 0) {
 			return false;
 		}
@@ -263,11 +262,11 @@ public class UpperGoblinKnight extends Monster {
 		}
 
 		this.swing(InteractionHand.MAIN_HAND);
-		return super.doHurtTarget(entity);
+		return super.doHurtTarget(server, entity);
 	}
 
 	@Override
-	public boolean hurt(DamageSource damageSource, float amount) {
+	public boolean hurtServer(ServerLevel server, DamageSource damageSource, float amount) {
 		// don't take suffocation damage while riding
 		if (damageSource.is(DamageTypes.IN_WALL) && this.getVehicle() != null) {
 			return false;
@@ -297,7 +296,7 @@ public class UpperGoblinKnight extends Monster {
 			}
 		}
 
-		return super.hurt(damageSource, amount);
+		return super.hurtServer(server, damageSource, amount);
 	}
 
 	private void breakArmor() {
@@ -319,14 +318,14 @@ public class UpperGoblinKnight extends Monster {
 
 		if (source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof AxeItem && !this.level().isClientSide()) {
 			this.getEntityData().set(SHIELD_DISABLED, true);
-			this.playSound(SoundEvents.SHIELD_BREAK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+			this.playSound(SoundEvents.SHIELD_BREAK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 			return true;
 		}
 
 		if (amount > SHIELD_DAMAGE_THRESHOLD && !this.level().isClientSide()) {
 			this.damageShield();
 		} else {
-			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+			this.playSound(SoundEvents.SHIELD_BLOCK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 		}
 
 		// knock back slightly

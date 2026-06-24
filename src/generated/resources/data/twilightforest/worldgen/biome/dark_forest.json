@@ -43,22 +43,20 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [
-      "twilightforest:flower_placer",
       "minecraft:patch_grass_normal",
       "twilightforest:tree/selector/dark_forest_tree_mix",
       "twilightforest:tree/selector/dark_forest_trees",
       "twilightforest:tree/darkwood_tree",
       "twilightforest:dark_grass",
-      "twilightforest:dark_ferns",
-      "twilightforest:dark_mushglooms",
       "twilightforest:dark_dead_bushes",
       "twilightforest:dark_pumpkins",
-      "twilightforest:dark_mushrooms"
+      "twilightforest:dark_mushglooms",
+      "twilightforest:dark_brown_mushrooms",
+      "twilightforest:dark_red_mushrooms"
     ]
   ],
   "has_precipitation": true,
@@ -68,32 +66,32 @@
       "energy_budget": 0.15
     },
     "minecraft:skeleton": {
-      "charge": 0.85,
+      "charge": 0.8,
       "energy_budget": 0.15
     },
     "minecraft:witch": {
       "charge": 0.75,
-      "energy_budget": 0.11
+      "energy_budget": 0.15
     },
     "minecraft:zombie": {
-      "charge": 0.75,
+      "charge": 0.7,
       "energy_budget": 0.15
     },
     "twilightforest:king_spider": {
-      "charge": 1.0,
-      "energy_budget": 0.5
+      "charge": 0.85,
+      "energy_budget": 0.25
     },
     "twilightforest:kobold": {
       "charge": 0.7,
-      "energy_budget": 0.11
+      "energy_budget": 0.15
     },
     "twilightforest:mist_wolf": {
-      "charge": 0.5,
-      "energy_budget": 0.35
+      "charge": 0.75,
+      "energy_budget": 0.2
     },
     "twilightforest:skeleton_druid": {
-      "charge": 0.85,
-      "energy_budget": 0.4
+      "charge": 0.8,
+      "energy_budget": 0.2
     }
   },
   "spawners": {

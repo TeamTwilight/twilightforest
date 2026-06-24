@@ -1,0 +1,58 @@
+{
+  "values": {
+    "#minecraft:coal_ores": {
+      "map_color": {
+        "color": 1644825,
+        "id": 29
+      }
+    },
+    "#minecraft:copper_ores": {
+      "map_color": {
+        "color": 14188339,
+        "id": 15
+      }
+    },
+    "#minecraft:diamond_ores": {
+      "map_color": {
+        "color": 6085589,
+        "id": 31
+      }
+    },
+    "#minecraft:emerald_ores": {
+      "map_color": {
+        "color": 55610,
+        "id": 33
+      }
+    },
+    "#minecraft:gold_ores": {
+      "map_color": {
+        "color": 16445005,
+        "id": 30
+      }
+    },
+    "#minecraft:iron_ores": {
+      "map_color": {
+        "color": 14200723,
+        "id": 60
+      }
+    },
+    "#minecraft:lapis_ores": {
+      "map_color": {
+        "color": 4882687,
+        "id": 32
+      }
+    },
+    "#minecraft:redstone_ores": {
+      "map_color": {
+        "color": 10040115,
+        "id": 28
+      }
+    },
+    "minecraft:ancient_debris": {
+      "map_color": {
+        "color": 4993571,
+        "id": 48
+      }
+    }
+  }
+}

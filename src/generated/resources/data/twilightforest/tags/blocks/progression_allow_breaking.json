@@ -1,9 +1,0 @@
-{
-  "values": [
-    "twilightforest:keepsake_casket",
-    {
-      "id": "gravestone:gravestone",
-      "required": false
-    }
-  ]
-}

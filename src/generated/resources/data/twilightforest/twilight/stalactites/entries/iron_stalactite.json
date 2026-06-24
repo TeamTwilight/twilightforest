@@ -1,0 +1,6 @@
+{
+  "max_length": 8,
+  "ores": "minecraft:iron_ore",
+  "size_variation": 0.7,
+  "weight": 40
+}

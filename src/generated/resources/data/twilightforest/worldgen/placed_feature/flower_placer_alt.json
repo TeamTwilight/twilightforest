@@ -18,6 +18,14 @@
     },
     {
       "type": "minecraft:biome"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "additional_clearance": 0,
+      "occupies_surface": false,
+      "occupies_underground": false,
+      "occupies_vegetation": true,
+      "structures_allowed": []
     }
   ]
 }

@@ -2,7 +2,9 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -13,25 +15,35 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import tamaized.beanification.Autowired;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
-
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.lichtower.TowerWingComponent;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
+
+	public static final Identifier LARGE_TOWER_TEMP_POOL = TwilightForestMod.prefix("final_castle/temp/large_tower");
+
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
 	public FinalCastleLargeTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFFCLaTo.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleLargeTowerComponent(int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFFCLaTo.get(), i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 13;
 		this.height = 61;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH, false);
 
 	}
 
@@ -44,6 +56,11 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		FinalCastleRoof9CrenellatedComponent roof = new FinalCastleRoof9CrenellatedComponent(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
+
+		TwilightJigsawPiece templatePiece = TwilightJigsawPiece.initializeTemplateFromPool(LARGE_TOWER_TEMP_POOL, this.getWorldPos(0, 1, 2), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/large_tower", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
+		if (templatePiece != null) {
+			list.addPiece(templatePiece);
+		}
 	}
 
 	@Override
@@ -68,7 +85,10 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		final BlockState castleDoor = TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState();
 		this.generateBox(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
-		this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
+		// sign placed by template
+		// this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
+
+		// this.placeBlock(world, Blocks.JIGSAW.defaultBlockState().setValue(BlockStateProperties.ORIENTATION, FrontAndTop.WEST_UP), 0, 1, 2, sbb);
 	}
 
 	public BlockState getGlyphMeta() {

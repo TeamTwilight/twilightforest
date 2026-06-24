@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "twilightforest:item/special_handheld",
   "overrides": [
     {
       "model": "twilightforest:item/ore_magnet_pulling_1",
