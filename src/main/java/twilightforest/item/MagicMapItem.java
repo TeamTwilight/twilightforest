@@ -37,7 +37,6 @@ import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 public class MagicMapItem extends MapItem {
-
 	public static final String STR_ID = "magicmap";
 
 	public MagicMapItem(Properties properties) {
@@ -53,7 +52,7 @@ public class MagicMapItem extends MapItem {
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level level) {
 		MapId mapid = stack.get(DataComponents.MAP_ID);
-		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(mapid.id()));
+		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, mapid);
 	}
 
 	@Nullable
@@ -89,7 +88,7 @@ public class MagicMapItem extends MapItem {
 		ColumnPos pos = getMagicMapCenter(x, z);
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
+		TFMagicMapData.registerMagicMapData(level, mapdata, new MapId(freeMapId.id())); // call our own register method
 		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}

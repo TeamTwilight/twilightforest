@@ -11,6 +11,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public record TravellersEntryModifier(EquipmentSlotGroup group, List<ItemAttribu
 	public static final MapCodec<TravellersEntryModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		EquipmentSlotGroup.CODEC.fieldOf("equipment_slots").validate(TravellersModifier::validateEquipment).forGetter(TravellersEntryModifier::group),
 		ItemAttributeModifiers.Entry.CODEC.listOf().fieldOf("attribute_modifiers").forGetter(TravellersEntryModifier::modifiers),
-		DataComponentType.CODEC.fieldOf("component").xmap(component -> (DataComponentType<Unit>) component, object -> object).forGetter(TravellersEntryModifier::markerComponent),
+		DataComponentType.CODEC.fieldOf("component").xmap(component -> (DataComponentType<@NotNull Unit>) component, object -> object).forGetter(TravellersEntryModifier::markerComponent),
 		ComponentSerialization.CODEC.listOf().optionalFieldOf("description", List.of()).forGetter(TravellersEntryModifier::description),
 		Codec.BOOL.fieldOf("builtin_modifier").orElse(false).forGetter(TravellersEntryModifier::builtin)
 	).apply(instance, TravellersEntryModifier::new));
@@ -63,7 +64,7 @@ public record TravellersEntryModifier(EquipmentSlotGroup group, List<ItemAttribu
 					newEntries.add(entry);
 				}
 			});
-			stack.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(newEntries, modifiers.showInTooltip()));
+			stack.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(newEntries));
 			stack.remove(this.markerComponent());
 		}
 	}

@@ -11,9 +11,9 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
@@ -26,12 +26,12 @@ public record TransferableComponentModifier(
 	public static final MapCodec<TransferableComponentModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		EquipmentSlotGroup.CODEC.fieldOf("equipment_slots").validate(TravellersModifier::validateEquipment).forGetter(TransferableComponentModifier::group),
 		DataComponentType.CODEC.fieldOf("component").forGetter(o -> o.markerComponent),
-		DataComponentMap.CODEC.fieldOf("transferable_components").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.transferableComponent().type(), o.transferableComponent().value()).build()),
+		DataComponentMap.CODEC.fieldOf("transferable_components").forGetter(o -> DataComponentMap.builder().set((DataComponentType<@NotNull Object>) o.transferableComponent().type(), o.transferableComponent().value()).build()),
 		ComponentSerialization.CODEC.listOf().optionalFieldOf("description", List.of()).forGetter(TransferableComponentModifier::description)
 	).apply(instance, (group, markerComponentMap, transferableComponentsMap, description) -> {
 		if (transferableComponentsMap.size() != 1)
 			throw new IllegalArgumentException(String.format("Expected exactly one entry in this data component maps: %s", transferableComponentsMap));
-		DataComponentType<Unit> marker = (DataComponentType<Unit>) markerComponentMap;
+		DataComponentType<Unit> marker = (DataComponentType<@NotNull Unit>) markerComponentMap;
 		TypedDataComponent<?> transferable = transferableComponentsMap.stream().findFirst().orElseThrow();
 		return new TransferableComponentModifier(group, marker, transferable, description);
 	}));
@@ -53,7 +53,7 @@ public record TransferableComponentModifier(
 	@Override
 	public boolean addModifier(ItemStack stack) {
 		stack.set(markerComponent, Unit.INSTANCE);
-		stack.set((DataComponentType<Object>) transferableComponent.type(), transferableComponent.value());
+		stack.set((DataComponentType<@NotNull Object>) transferableComponent.type(), transferableComponent.value());
 		return true;
 	}
 
@@ -74,18 +74,21 @@ public record TransferableComponentModifier(
 		if (dataComponentProviders.isEmpty())
 			return false;
 		if (dataComponentProviders.size() > 1) {
-			TwilightForestMod.LOGGER.error(String.format("A recipe with more than 2 dataComponentProviders was matched: %s. Please report to https://github.com/TeamTwilight/twilightforest/issues", input));
+			TwilightForestMod.LOGGER.error("A recipe with more than 2 dataComponentProviders was matched: {}. Please report to https://github.com/TeamTwilight/twilightforest/issues", input);
 			return false;
 		}
 		ItemStack dataComponentProvider = dataComponentProviders.getFirst()[0];
 		output.set(this.markerComponent, Unit.INSTANCE);
-		output.set((DataComponentType<Object>) this.transferableComponent.type(), dataComponentProvider.get(transferableComponent.type()));
+		output.set((DataComponentType<@NotNull Object>) this.transferableComponent.type(), dataComponentProvider.get(transferableComponent.type()));
 		return true;
 	}
 
 	public List<ItemStack[]> findDataComponentProviders(List<Ingredient> input) {
-		return input.stream().map(Ingredient::getItems)
-			.filter(itemStacks -> Arrays.stream(itemStacks)
+		return input.stream()
+			.map(ingredient -> ingredient.getValues().stream()
+				.map(itemHolder -> new ItemStack(itemHolder.value()))
+				.toArray(ItemStack[]::new))
+			.filter(itemStacks -> java.util.Arrays.stream(itemStacks)
 				.anyMatch(itemStack -> itemStack.has(transferableComponent.type())))
 			.toList();
 	}

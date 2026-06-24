@@ -2,9 +2,11 @@ package twilightforest.item.travellers_gear;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.player.PlayerModel;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -187,7 +189,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		@Nullable
 		@Override
 		public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier def) {
-			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
+			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS ?
 				TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
 				super.getArmorTexture(stack, type, layer, def);
 		}
@@ -236,7 +238,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		@Override
 		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (model instanceof TravellersWingsModel wingsModel)
-				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+				wingsModel.setupModelAnimations(livingEntity, ageInTicks);
 		}
 
 		private boolean isModelSlim(Model<?> model) {
