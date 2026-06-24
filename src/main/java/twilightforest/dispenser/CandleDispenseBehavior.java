@@ -1,8 +1,12 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -41,7 +45,7 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
 	private static boolean tryAddCandle(ServerLevel level, BlockPos pos, Item candle) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.getCandleColor())).asItem()) {
+			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.candleInfo.color())).asItem()) {
 				BlockState state = level.getBlockState(pos);
 				int candles = state.getValue(BlockStateProperties.CANDLES);
 				if (candles < 4) {
@@ -117,9 +121,15 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockEntity(new SkullCandleBlockEntity(pos,
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
-		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			Tag profileTag = ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, profile).getOrThrow();
+			ResolvableProfile resolvableProfile = ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, profileTag).getOrThrow();
+			var patch = DataComponentMap.builder().set(DataComponents.PROFILE, resolvableProfile).build();
+			sc.setComponents(patch);
+			sc.setChanged();
+			level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
+		}
 	}
 
 	private static void makeWallSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
@@ -131,8 +141,14 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockEntity(new SkullCandleBlockEntity(pos,
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
-		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			Tag profileTag = ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, profile).getOrThrow();
+			ResolvableProfile resolvableProfile = ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, profileTag).getOrThrow();
+			var patch = DataComponentMap.builder().set(DataComponents.PROFILE, resolvableProfile).build();
+			sc.setComponents(patch);
+			sc.setChanged();
+			level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
+		}
 	}
 }
