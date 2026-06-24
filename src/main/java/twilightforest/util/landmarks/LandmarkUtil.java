@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.StructureTagGenerator;
+import twilightforest.tags.TFStructureTags;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFGameRules;
@@ -28,20 +28,23 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @SuppressWarnings("OptionalIsPresent")
 public final class LandmarkUtil {
 	public static Optional<StructureStart> locateNearestLandmarkStart(LevelAccessor level, int chunkX, int chunkZ) {
-		return locateNearestMatchingLandmark(level, StructureTagGenerator.LANDMARK, chunkX, chunkZ);
+		return locateNearestMatchingLandmark(level, TFStructureTags.LANDMARK, chunkX, chunkZ);
 	}
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, TagKey<Structure> matching, int chunkX, int chunkZ) {
-		var structureRegistry = level.registryAccess().registry(Registries.STRUCTURE);
-		if (structureRegistry.isEmpty()) return Optional.empty();
-		var holders = structureRegistry.get().getTag(matching);
-		if (holders.isEmpty()) return Optional.empty();
+		var structureRegistry = level.registryAccess().lookupOrThrow(Registries.STRUCTURE);
+		if (structureRegistry.size() == 0) return Optional.empty();
+		var holders = structureRegistry.getTagOrEmpty(matching);
+		if (!holders.iterator().hasNext()) return Optional.empty();
 
-		return locateNearestMatchingLandmark(level, holders.get(), chunkX, chunkZ);
+		HolderSet<Structure> holderSet = HolderSet.direct(StreamSupport.stream(holders.spliterator(), false).toList());
+
+		return locateNearestMatchingLandmark(level, holderSet, chunkX, chunkZ);
 	}
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, HolderSet<Structure> matching, int chunkX, int chunkZ) {
@@ -89,9 +92,9 @@ public final class LandmarkUtil {
 
 	@Nullable
 	public static Structure structureForKey(LevelReader level, ResourceKey<Structure> structureKey) {
-		Optional<Registry<Structure>> registry = level.registryAccess().registry(Registries.STRUCTURE);
+		Optional<Registry<Structure>> registry = level.registryAccess().lookup(Registries.STRUCTURE);
 
-		return registry.isPresent() ? registry.get().get(structureKey) : null;
+		return registry.isPresent() ? registry.get().get(structureKey).orElseThrow().value() : null;
 	}
 
 	public static Optional<StructureStart> locateNearestLandmarkStart(LevelAccessor level, ResourceKey<Structure> structureKey, BlockPos pos) {

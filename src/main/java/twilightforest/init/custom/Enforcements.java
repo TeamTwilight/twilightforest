@@ -44,7 +44,7 @@ public class Enforcements {
 
 	public static final DeferredHolder<Enforcement, Enforcement> ACID_RAIN = ENFORCEMENTS.register("acid_rain", () -> new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 5 == 0 && level.tickRateManager().runsNormally()) {
-			if (player.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.ACID_RAIN), restriction.multiplier())) {
+			if (player.hurtServer(level, TFDamageTypes.getDamageSource(level, TFDamageTypes.ACID_RAIN), restriction.multiplier())) {
 				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 			}
 		}
