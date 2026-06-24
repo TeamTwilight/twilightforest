@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 // For making rectangular grids that are approximately-evenly spaced (floating-point -> integer rounding), even if re-sampled for a different chunk or general region
 // Making a hexagonal pattern will require using two of these

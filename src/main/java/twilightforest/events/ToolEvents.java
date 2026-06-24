@@ -39,7 +39,7 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.block.GiantBlock;
 import twilightforest.components.entity.GiantPickaxeMiningAttachment;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
@@ -70,7 +70,7 @@ public class ToolEvents {
 		if (arrow.getOwner() instanceof Player player
 			&& evt.getRayTraceResult() instanceof EntityHitResult result
 			&& result.getEntity() instanceof LivingEntity living
-			&& arrow.getOwner() != result.getEntity() && !result.getEntity().getType().is(Tags.EntityTypes.BOSSES)) {
+			&& arrow.getOwner() != result.getEntity() && !result.getEntity().is(Tags.EntityTypes.BOSSES)) {
 
 			if (arrow.getPersistentData().contains(EnderBowItem.KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
@@ -151,7 +151,7 @@ public class ToolEvents {
 
 	private void damageNonMazebreakerToolsMore(BlockEvent.BreakEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
-		if (event.getState().is(BlockTagGenerator.MAZEBREAKER_ACCELERATED)) {
+		if (event.getState().is(TFBlockTags.MAZEBREAKER_ACCELERATED)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
 				stack.hurtAndBreak(16, event.getPlayer(), EquipmentSlot.MAINHAND);
 			}
@@ -232,13 +232,13 @@ public class ToolEvents {
 				//check if a tag for ore grounds matches up with our ores in ground tag
 				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
-					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
-						BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
+					BuiltInRegistries.BLOCK.get(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
+						BuiltInRegistries.BLOCK.get(tag).get().forEach(ore -> {
 							//exclude ignored ores
-							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
+							if (!ore.value().defaultBlockState().is(TFBlockTags.ORE_MAGNET_IGNORE)) {
 								OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
 							}
-							if (!ore.value().defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED)) {
+							if (!ore.value().defaultBlockState().is(TFBlockTags.MINING_CORE_EXCLUDED)) {
 								OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
 							}
 						}));
@@ -248,11 +248,11 @@ public class ToolEvents {
 
 		//Gonna need to special case this one as it isn't covered by tags.
 		//Ancient debris isn't exactly an ore, so it makes sense that the tag doesn't include it
-		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE) && !OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(TFBlockTags.ORE_MAGNET_IGNORE) && !OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
 			OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
 
-		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED) && !OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(TFBlockTags.MINING_CORE_EXCLUDED) && !OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
 			OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
 	}

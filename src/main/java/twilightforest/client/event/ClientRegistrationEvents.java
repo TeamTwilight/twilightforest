@@ -14,18 +14,19 @@ import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -71,7 +72,8 @@ import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.init.*;
-import twilightforest.item.*;
+import twilightforest.item.ArcticArmorItem;
+import twilightforest.item.PotionFlaskItem;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
@@ -586,18 +588,18 @@ public class ClientRegistrationEvents {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
-			if (renderer instanceof LivingEntityRenderer<?, ?> living) {
+			if (renderer instanceof LivingEntityRenderer living) {
 				attachRenderLayers(living);
 			}
 		}
 
 		event.getSkins().forEach(renderer -> {
-			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
+			AvatarRenderer<AbstractClientPlayer> skin = event.getPlayerRenderer(renderer);
 			attachRenderLayers(Objects.requireNonNull(skin));
 		});
 	}
 
-	private <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
+	private <T extends LivingEntityRenderState, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<?, T, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
 	}
