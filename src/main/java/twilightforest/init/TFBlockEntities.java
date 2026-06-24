@@ -19,7 +19,7 @@ public class TFBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AntibuilderBlockEntity>> ANTIBUILDER = BLOCK_ENTITIES.register("antibuilder", () ->
 		new BlockEntityType<>(
 			AntibuilderBlockEntity::new,
-			Set.of(TFBlocks.ANTIBUILDER.get())
+			TFBlocks.ANTIBUILDER.get()
 		)
 	);
 
