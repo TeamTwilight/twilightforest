@@ -18,6 +18,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
@@ -58,9 +59,7 @@ public class PotionFlaskItem extends Item {
 			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
 				if (!player.getAbilities().instabuild) {
 					other.shrink(1);
-					if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
-						player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
-					}
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
 				}
 
 				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
@@ -81,9 +80,7 @@ public class PotionFlaskItem extends Item {
 			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
 				if (!player.getAbilities().instabuild) {
 					other.shrink(1);
-					if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
-						player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
-					}
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
 				}
 
 				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
@@ -168,9 +165,7 @@ public class PotionFlaskItem extends Item {
 			stack.shrink(1);
 
 			onDrink.accept(copy);
-			if (!player.getInventory().add(copy)) {
-				player.drop(copy, false);
-			}
+			InventoryUtil.giveItemToPlayer(player, copy);
 		} else {
 			//otherwise just use the existing stack. Having it jump around the inventory is weird
 			onDrink.accept(stack);
