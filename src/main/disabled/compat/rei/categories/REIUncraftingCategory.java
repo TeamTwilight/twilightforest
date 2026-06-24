@@ -19,7 +19,7 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.TFREIServerPlugin;
 import twilightforest.compat.rei.displays.REIUncraftingDisplay;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.recipe.UncraftingRecipe;
 
@@ -72,7 +72,7 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
 
 		List<Ingredient> outputs = new ArrayList<>(display.getRecipe().getIngredients()); //Collect each ingredient
 		outputs.replaceAll(ingredient -> Ingredient.of(Arrays.stream(ingredient.getItems())
-			.filter(o -> !o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS))
+			.filter(o -> !o.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS))
 			.filter(o -> !o.hasCraftingRemainingItem())));
 
 		CraftingRecipe recipe = display.getRecipe();

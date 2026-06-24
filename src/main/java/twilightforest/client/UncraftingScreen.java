@@ -27,9 +27,9 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
+import twilightforest.tags.TFItemTags;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.network.UncraftingGuiPacket;
-import twilightforest.tags.TFItemTags;
 
 import java.util.List;
 
