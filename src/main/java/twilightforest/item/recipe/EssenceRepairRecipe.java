@@ -7,7 +7,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
@@ -25,7 +25,7 @@ public class EssenceRepairRecipe extends CustomRecipe {
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
-				if (stackInQuestion.is(ItemTagGenerator.SCEPTERS) && stackInQuestion.isDamaged()) {
+				if (stackInQuestion.is(TFItemTags.SCEPTERS) && stackInQuestion.isDamaged()) {
 					if (scepter) return false;
 					scepter = true;
 				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE.get())) {
@@ -45,7 +45,7 @@ public class EssenceRepairRecipe extends CustomRecipe {
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack itemstack = input.getItem(i);
 			if (!itemstack.isEmpty()) {
-				if (itemstack.is(ItemTagGenerator.SCEPTERS)) {
+				if (itemstack.is(TFItemTags.SCEPTERS)) {
 					if (scepter == null) {
 						scepter = itemstack;
 					} else {
