@@ -22,8 +22,8 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 
 	public IceTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFITBea.get(), nbt);
-		this.size = nbt.getInt("beardSize");
-		this.height = nbt.getInt("beardHeight");
+		this.size = nbt.getInt("beardSize").get();
+		this.height = nbt.getInt("beardHeight").get();
 	}
 
 	@SuppressWarnings("this-escape")

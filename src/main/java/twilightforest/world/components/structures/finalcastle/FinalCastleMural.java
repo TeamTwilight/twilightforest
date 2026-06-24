@@ -13,13 +13,13 @@ public class FinalCastleMural {
 	private final byte[] mural;
 
 	public FinalCastleMural(CompoundTag compoundTag) {
-		this.width = compoundTag.getInt("muralWidth");
-		this.height = compoundTag.getInt("muralHeight");
+		this.width = compoundTag.getInt("muralWidth").get();
+		this.height = compoundTag.getInt("muralHeight").get();
 
 		if (this.width == 0 || this.height == 0) {
 			this.mural = new byte[0];
 		} else {
-			this.mural = compoundTag.getByteArray("muralBytes");
+			this.mural = compoundTag.getByteArray("muralBytes").get();
 		}
 	}
 

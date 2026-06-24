@@ -38,7 +38,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	public LichTowerBase(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		this.casketWingIndex = compoundTag.getInt("CasketWingIdx");
+		this.casketWingIndex = compoundTag.getInt("CasketWingIdx").get();
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TrimProcessor.INSTANCE));
 	}

@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.loot.TFLootTables;
@@ -47,9 +48,9 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	private final IntProvider length;
 	private final IntProvider bigTrunkLength;
 	private final BlockStateProvider log;
-	private final ResourceKey<LootTable> chestLootTable;
+	private final ResourceKey<@NotNull LootTable> chestLootTable;
 
-	protected FallenTrunkStructure(StructureSettings settings, IntProvider length, IntProvider bigTrunkLength, BlockStateProvider log, ResourceKey<LootTable> chestLootTable) {
+	protected FallenTrunkStructure(StructureSettings settings, IntProvider length, IntProvider bigTrunkLength, BlockStateProvider log, ResourceKey<@NotNull LootTable> chestLootTable) {
 		super(settings);
 		this.length = length;
 		this.bigTrunkLength = bigTrunkLength;
@@ -97,13 +98,13 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	}
 
 	private boolean isValidNoiseBiome(GenerationContext context, int x, int worldY, int z) {
-		Holder<Biome> noiseBiome = context.chunkGenerator().getBiomeSource()
+		Holder<@NotNull Biome> noiseBiome = context.chunkGenerator().getBiomeSource()
 			.getNoiseBiome(x >> 2, worldY >> 2, z >> 2, context.randomState().sampler());
 		return this.getModifiedStructureSettings().biomes().contains(noiseBiome);
 	}
 
 	private boolean hasInvalidNearbyBiome(GenerationContext context, int x, int worldY, int z, RandomSource random) {
-		Pair<BlockPos, Holder<Biome>> invalidBiome = context.biomeSource().findBiomeHorizontal(
+		Pair<BlockPos, Holder<@NotNull Biome>> invalidBiome = context.biomeSource().findBiomeHorizontal(
 			x, worldY, z,
 			this.length.maxInclusive(), 1,
 			biomeHolder -> !context.validBiome().test(biomeHolder),
@@ -124,11 +125,11 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		return TFStructureTypes.FALLEN_TRUNK.get();
 	}
 
-	public static FallenTrunkStructure buildStructureConfig(HolderSet<Biome> biomes) {
+	public static FallenTrunkStructure buildStructureConfig(HolderSet<@NotNull Biome> biomes) {
 		return new FallenTrunkStructure(
 			new Structure.StructureSettings(
 				biomes,
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
+				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
@@ -143,7 +144,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		boolean isBigTree = piece.radius == radiuses.get(2);
 		int minMounds = 1;
 		int maxMounds = 2;
-		return new TrunkUnderDensityFunction(objectlist.iterator(), piece, isBigTree, minMounds, maxMounds);  // big trees are a special case
+		return new TrunkUnderDensityFunction(objectlist, piece, isBigTree, minMounds, maxMounds, piece.getBoundingBox());  // big trees are a special case
 	}
 
 	@Override

@@ -37,8 +37,8 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 
-		this.putChest = compoundTag.getBoolean("put_chest");
-		this.chestSide = compoundTag.getBoolean("chest_side");
+		this.putChest = compoundTag.getBoolean("put_chest").get();
+		this.chestSide = compoundTag.getBoolean("chest_side").get();
 	}
 
 	public LichTowerFoyer(StructureTemplateManager structureManager, JigsawPlaceContext placeContext, boolean putChest, boolean chestSide) {

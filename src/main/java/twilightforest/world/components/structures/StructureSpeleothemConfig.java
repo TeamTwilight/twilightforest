@@ -160,11 +160,13 @@ public record StructureSpeleothemConfig(
 	}
 
 	public boolean shouldDoAStalactite(RandomSource rand) {
-		return this.getVarietyConfig().shouldDoAStalactite(rand);
+		SpeleothemVarietyConfig variety = this.getVarietyConfig();
+		return variety != null && variety.shouldDoAStalactite(rand);
 	}
 
 	public boolean shouldDoAStalagmite(RandomSource rand) {
-		return this.getVarietyConfig().shouldDoAStalagmite(rand);
+		SpeleothemVarietyConfig variety = this.getVarietyConfig();
+		return variety != null && variety.shouldDoAStalagmite(rand);
 	}
 
 	@NotNull

@@ -19,7 +19,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 
 	public IceTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFITMai.get(), nbt);
-		this.hasBossWing = nbt.getBoolean("hasBossWing");
+		this.hasBossWing = nbt.getBoolean("hasBossWing").get();
 	}
 
 	public IceTowerMainComponent(RandomSource rand, int index, int x, int y, int z) {
@@ -60,7 +60,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 				towerBB.encapsulate(structurecomponent.getBoundingBox());
 
 			// TODO: make this more general
-			BlockPos myDoor = this.openings.get(0);
+			BlockPos myDoor = this.openings.getFirst();
 			BlockPos entranceDoor = new BlockPos(myDoor);
 
 
@@ -95,7 +95,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 
 		list.addPiece(bridge);
 		if (list instanceof StructurePiecesBuilder start) {
-			bridge.addChildren(start.pieces.get(0), list, rand);
+			bridge.addChildren(start.pieces.getFirst(), list, rand);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 
 		list.addPiece(entrance);
 		if (list instanceof StructurePiecesBuilder start) {
-			entrance.addChildren(start.pieces.get(0), list, rand);
+			entrance.addChildren(start.pieces.getFirst(), list, rand);
 		}
 		addOpening(x, y, z, rotation);
 		return true;

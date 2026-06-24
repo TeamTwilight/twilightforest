@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.features.FeatureLogic;
@@ -34,8 +35,8 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	private final BlockStateProvider dungeonWood;
 	private final BlockStateProvider dungeonAir;
 	private final BlockStateProvider dungeonLootBlock;
-	private final ResourceKey<LootTable> dungeonLootTable;
-	private final Holder<EntityType<?>> dungeonMonster;
+	private final ResourceKey<@NotNull LootTable> dungeonLootTable;
+	private final Holder<@NotNull EntityType<?>> dungeonMonster;
 
 	protected HollowTreeLargeBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, RandomSource rand, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTLB.value(), i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
@@ -52,19 +53,19 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	public HollowTreeLargeBranch(StructurePieceSerializationContext context, CompoundTag tag) {
 		super(TFStructurePieceTypes.TFHTLB.value(), context, tag);
 
-		this.hasLeafDungeon = tag.getBoolean("has_leaf_dungeon");
+		this.hasLeafDungeon = tag.getBoolean("has_leaf_dungeon").get();
 
-		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
+		RegistryOps<@NotNull Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 
-		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
-		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
-		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
+		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood").get()).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air").get()).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
+		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block").get()).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
-		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("dungeon_loot_table")));
+		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("dungeon_loot_table").get()));
 
-		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.parse(tag.getString("dungeon_monster")));
-		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+		ResourceKey<@NotNull EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.parse(tag.getString("dungeon_monster").get()));
+		this.dungeonMonster = context.registryAccess().get(Registries.ENTITY_TYPE)
+			.<Holder<@NotNull EntityType<?>>>flatMap(reg -> reg.value().get(dungeonMonster))
 			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
@@ -78,7 +79,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
-		tag.putString("dungeon_loot_table", this.dungeonLootTable.location().toString());
+		tag.putString("dungeon_loot_table", this.dungeonLootTable.identifier().toString());
 
 		tag.putString("dungeon_monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.dungeonMonster.value()).toString());
 	}

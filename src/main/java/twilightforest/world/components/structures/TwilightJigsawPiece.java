@@ -35,7 +35,6 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
-
 	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
 
 	private static final String NBT_JIGSAW_SOURCE = "source";
@@ -59,6 +58,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
 	}
+
 	@Nullable
 	public static TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos.MutableBlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
 		Identifier templateId = StructureTemplateDefinitions.INSTANCE.rollTemplatePool(rand, templatePool);

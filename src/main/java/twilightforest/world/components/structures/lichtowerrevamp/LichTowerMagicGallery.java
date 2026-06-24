@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import tamaized.beanification.Autowired;
@@ -120,7 +121,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 		if ("painting".equals(label)) {
 			Direction direction = this.placeSettings.getRotation().rotate(Direction.SOUTH);
 
-			Optional<Holder.Reference<MagicPaintingVariant>> variantHolderOpt = variantForGallery(level, this.templateName);
+			Optional<Holder.Reference<@NotNull MagicPaintingVariant>> variantHolderOpt = variantForGallery(level, this.templateName);
 			MagicPainting galleryPainting = TFEntities.MAGIC_PAINTING.value().create(level.getLevel(), EntitySpawnReason.STRUCTURE);
 			if (variantHolderOpt.isPresent() && galleryPainting != null) {
 				galleryPainting.setDirection(direction);
@@ -128,7 +129,9 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 
 				variantHolderOpt.get().value();
 				this.placeSettings.getRotation();
-				galleryPainting.moveTo(pos.getBottomCenter(), 0, 0);
+				galleryPainting.setPos(pos.getBottomCenter());
+				galleryPainting.setXRot(0);
+				galleryPainting.setYRot(0);
 
 				level.addFreshEntityWithPassengers(galleryPainting);
 			}
@@ -137,8 +140,8 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 		}
 	}
 
-	private static Optional<Holder.Reference<MagicPaintingVariant>> variantForGallery(ServerLevelAccessor level, String roomId) {
-		ResourceKey<MagicPaintingVariant> variantId = switch (roomId) {
+	private static Optional<Holder.Reference<@NotNull MagicPaintingVariant>> variantForGallery(ServerLevelAccessor level, String roomId) {
+		ResourceKey<@NotNull MagicPaintingVariant> variantId = switch (roomId) {
 			case "twilightforest:lich_tower/gallery/castaway_paradise" -> MagicPaintingVariants.CASTAWAY_PARADISE;
 			case "twilightforest:lich_tower/gallery/darkness" -> MagicPaintingVariants.DARKNESS;
 			case "twilightforest:lich_tower/gallery/lucid_lands" -> MagicPaintingVariants.LUCID_LANDS;

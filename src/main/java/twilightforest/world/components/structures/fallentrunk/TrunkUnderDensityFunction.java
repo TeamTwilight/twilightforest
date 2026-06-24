@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.fallentrunk;
 
-import it.unimi.dsi.fastutil.objects.ObjectIterators;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
@@ -9,7 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Beardifier;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.pools.JigsawJunction;
 import twilightforest.world.components.chunkgenerators.TanhHillFunction;
 
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	private final RandomSource random;  // used to create dirt mounds
 	private final BoundingBox boundingBox;
 	private final List<TanhHillFunction> tanhHillFunctions;
+	private final ObjectListIterator<Rigid> pieceIterator;
 	protected final BoundingBox moundBase;
 	protected static final float MOUND_RADIUS = 3F;
 	protected static final int MAX_RANDOM_RADIUS_INCREASE_BIG_TREE = 4;
@@ -30,9 +30,10 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	protected static final float BIG_TREE_MOUND_HEIGHT = 3F;
 	protected static final float NON_BIG_TREE_MOUND_HEIGHT = 1.5F;
 
-	public TrunkUnderDensityFunction(ObjectListIterator<Rigid> pieceIterator, FallenTrunkPiece piece, boolean isBigTree, int minMounds, int maxMounds) {
-		super(pieceIterator, (ObjectListIterator<JigsawJunction>) ObjectIterators.<JigsawJunction>emptyIterator());
+	public TrunkUnderDensityFunction(ObjectList<Rigid> pieceIterator, FallenTrunkPiece piece, boolean isBigTree, int minMounds, int maxMounds, BoundingBox box) {
+		super(pieceIterator, List.of(), box);
 		this.isBigTree = isBigTree;
+		this.pieceIterator = pieceIterator.iterator();
 		boundingBox = getFallenTrunkPiece().box();
 		random = RandomSource.create(boundingBox.minX() * 14413411L + boundingBox.minZ() * 43387781L);
 		isXOriented = boundingBox.maxX() - boundingBox.minX() > boundingBox.maxZ() - boundingBox.minZ();

@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -16,15 +17,22 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
+import twilightforest.util.jigsaw.JigsawPlaceContext;
+import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Component {
 
@@ -65,11 +73,17 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
-		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(BELL_TOWER_TEMP_POOL, this.getWorldPos(0, 9, 10), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/room", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
-		if (templatePiece != null) {
-			list.addPiece(templatePiece);
-		}
+		var structureManager = ServerLifecycleHooks.getCurrentServer().getStructureManager();
+		Identifier templateLocation = Identifier.fromNamespaceAndPath("twilightforest", "final_castle/room");
+		StructurePlaceSettings placementSettings = new StructurePlaceSettings().setRotation(this.rotation).setMirror(this.mirror != null ? this.mirror : Mirror.NONE);
+		JigsawRecord dummyRecord = new JigsawRecord(0, FrontAndTop.WEST_UP, BlockPos.ZERO, "minecraft:empty", "minecraft:empty", "minecraft:empty");
+		List<JigsawRecord> spareJigsaws = new ArrayList<>();
+		JigsawPlaceContext jigsawContext = new JigsawPlaceContext(this.getWorldPos(0, 9, 10), placementSettings, dummyRecord, spareJigsaws, templateLocation);
+		TwilightJigsawPiece templatePiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFFCBelTo.value(), this.genDepth + 1, structureManager, templateLocation, jigsawContext);
+
+		list.addPiece(templatePiece);
 	}
+
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {

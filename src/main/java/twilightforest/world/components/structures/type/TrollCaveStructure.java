@@ -14,15 +14,16 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
@@ -45,13 +46,13 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 	);
 
 	private final ControlledSpawningConfig controlledSpawningConfig;
-	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
+	private final Holder.Reference<@NotNull StructureSpeleothemConfig> speleothemConfig;
 
-	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<@NotNull StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.controlledSpawningConfig = controlledSpawningConfig;
-		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
+		this.speleothemConfig = (Holder.Reference<@NotNull StructureSpeleothemConfig>) speleothemConfig;
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 		return this.controlledSpawningConfig;
 	}
 
-	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {
+	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<@NotNull Structure> context) {
 		return new TrollCaveStructure(
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 5)
@@ -88,7 +89,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 			Optional.of(new DecorationConfig(4, true, true, false)),
 			false, Optional.of(TFMapDecorations.TROLL_CAVES),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_TROLL_CAVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
 				TerrainAdjustment.BURY

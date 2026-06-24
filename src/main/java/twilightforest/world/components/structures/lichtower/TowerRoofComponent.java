@@ -25,8 +25,8 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 
 	public TowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.size = nbt.getInt("roofSize");
-		this.height = nbt.getInt("roofHeight");
+		this.size = nbt.getInt("roofSize").get();
+		this.height = nbt.getInt("roofHeight").get();
 	}
 
 	public TowerRoofComponent(StructurePieceType type, int i, int x, int y, int z) {

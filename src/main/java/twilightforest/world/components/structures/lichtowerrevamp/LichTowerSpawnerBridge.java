@@ -12,6 +12,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
@@ -37,7 +38,7 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 
-		this.invertedPalette = compoundTag.getBoolean("inverted");
+		this.invertedPalette = compoundTag.getBoolean("inverted").get();
 
 		if (this.invertedPalette) {
 			RegistryAccess registryAccess = ctx.registryAccess();
@@ -46,12 +47,12 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 	}
 
 	private static void addInvertedWoodProcessors(RegistryAccess registryAccess, StructurePlaceSettings placeSettings) {
-		Optional<Registry<WoodPalette>> woodPalettes = registryAccess.lookup(TFRegistries.Keys.WOOD_PALETTES);
+		Optional<Registry<@NotNull WoodPalette>> woodPalettes = registryAccess.lookup(TFRegistries.Keys.WOOD_PALETTES);
 
 		if (woodPalettes.isPresent()) {
-			Registry<WoodPalette> woodPaletteRegistry = woodPalettes.get();
-			Holder<WoodPalette> twiOak = woodPaletteRegistry.getOrThrow(WoodPalettes.TWILIGHT_OAK);
-			Holder<WoodPalette> canopy = woodPaletteRegistry.getOrThrow(WoodPalettes.CANOPY);
+			Registry<@NotNull WoodPalette> woodPaletteRegistry = woodPalettes.get();
+			Holder<@NotNull WoodPalette> twiOak = woodPaletteRegistry.getOrThrow(WoodPalettes.TWILIGHT_OAK);
+			Holder<@NotNull WoodPalette> canopy = woodPaletteRegistry.getOrThrow(WoodPalettes.CANOPY);
 			placeSettings.addProcessor(new WoodMultiPaletteSwizzle(List.of(
 				Pair.of(twiOak, canopy),
 				Pair.of(canopy, twiOak)

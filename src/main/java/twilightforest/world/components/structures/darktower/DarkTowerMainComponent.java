@@ -24,15 +24,17 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -166,7 +168,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				if (possibleKeyTowers.size() < 1) {
+				if (possibleKeyTowers.isEmpty()) {
 					TwilightForestMod.LOGGER.warn("Dark forest tower could not find four small towers to place keys in.");
 					break;
 				}
@@ -1078,7 +1080,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		int dy = getWorldY(y + 1);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		if (sbb.isInside(new BlockPos(dx, dy, dz))) {
-			ResourceKey<ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
+			ResourceKey<@NotNull ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
 				case 1 ->
 					// jungle tree
 					// made a custom one so it doesnt cut through the floor
@@ -1095,16 +1097,23 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
-					break;
+				var configuredFeatureHolder = world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen);
+
+				if (configuredFeatureHolder.isPresent()) {
+					PlacementContext context = new PlacementContext(world, generator, java.util.Optional.empty());
+
+					if (configuredFeatureHolder.get().value().place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
+						break;
+					}
 				}
+
 			}
 		}
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, RandomSource decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-			.getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS)
+			.get(TFBlockTags.DARK_TOWER_ALLOWED_POTS)
 			.flatMap(tag -> tag.getRandomElement(decoRNG))
 			.map(Holder::value);
 		setBlockStateRotated(world, decoRNG.nextInt(10) != 0 && optional.isPresent() ? optional.get().defaultBlockState() : Blocks.FLOWER_POT.defaultBlockState(), x, y, z, rotation, sbb);

@@ -17,12 +17,13 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
@@ -51,7 +52,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 		return TFStructureTypes.KNIGHT_STRONGHOLD.get();
 	}
 
-	public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<Structure> context) {
+	public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<@NotNull Structure> context) {
 		return new KnightStrongholdStructure(
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 1, 2), 10)
@@ -69,7 +70,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.KNIGHT_STRONGHOLD),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_KNIGHT_STRONGHOLD_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
 				TerrainAdjustment.BURY
@@ -116,7 +117,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 		@Override
 		public void loadFromTag(CompoundTag nbt) {
 			super.loadFromTag(nbt);
-			this.startY = nbt.getInt("knight_y");
+			this.startY = nbt.getInt("knight_y").get();
 		}
 	}
 }

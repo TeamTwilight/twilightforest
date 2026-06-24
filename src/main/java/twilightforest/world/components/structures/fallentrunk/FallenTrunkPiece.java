@@ -48,11 +48,11 @@ public class FallenTrunkPiece extends StructurePiece {
 	protected final BlockStateProvider log;
 	public final int length;
 	public final int radius;
-	protected final ResourceKey<LootTable> chestLootTable;
+	protected final ResourceKey<@NotNull LootTable> chestLootTable;
 	private final long holeSeed;
 	protected final Hole hole;
 
-	public FallenTrunkPiece(int length, int radius, BlockStateProvider log, ResourceKey<LootTable> chestLootTable, Direction orientation, BoundingBox boundingBox, long seed) {
+	public FallenTrunkPiece(int length, int radius, BlockStateProvider log, ResourceKey<@NotNull LootTable> chestLootTable, Direction orientation, BoundingBox boundingBox, long seed) {
 		super(TFStructurePieceTypes.TFFallenTrunk.value(), 0, boundingBox);
 		this.length = length;
 		this.radius = radius;
@@ -65,13 +65,13 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	public FallenTrunkPiece(StructurePieceSerializationContext context, CompoundTag tag) {
 		super(TFStructurePieceTypes.TFFallenTrunk.value(), tag);
-		this.length = tag.getInt("length");
-		this.radius = tag.getInt("radius");
+		this.length = tag.getInt("length").get();
+		this.radius = tag.getInt("radius").get();
 
-		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
-		log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log")).result().orElse(DEFAULT_LOG);
-		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("chest_loot_table")));
-		this.holeSeed = tag.getInt("hole_seed");
+		RegistryOps<@NotNull Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
+		log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log").get()).result().orElse(DEFAULT_LOG);
+		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("chest_loot_table").get()));
+		this.holeSeed = tag.getInt("hole_seed").get();
 		this.hole = new Hole(this, RandomSource.create(holeSeed));
 	}
 
@@ -80,7 +80,7 @@ public class FallenTrunkPiece extends StructurePiece {
 		tag.putInt("length", this.length);
 		tag.putInt("radius", this.radius);
 		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.putString("chest_loot_table", this.chestLootTable.location().toString());
+		tag.putString("chest_loot_table", this.chestLootTable.identifier().toString());
 		tag.putLong("hole_seed", this.holeSeed);
 	}
 
@@ -145,7 +145,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	private void generateTrunkMainRod(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole) {
 		for (int dz = ERODED_LENGTH; dz < length - 1 - ERODED_LENGTH; dz++) {
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
+			this.placeLog(level, getLogState(level, random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 	}
 
@@ -155,7 +155,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				break;
 
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
+			this.placeLog(level, getLogState(level, random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 
 		for (int dz = length - 1 - ERODED_LENGTH; dz < length - 1; dz++) {
@@ -163,7 +163,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				break;
 
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
+			this.placeLog(level, getLogState(level, random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 	}
 
@@ -209,8 +209,8 @@ public class FallenTrunkPiece extends StructurePiece {
 		return (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.5));
 	}
 
-	private BlockState getLogState(RandomSource random, BlockPos pos) {
-		return log.getState(random, pos).trySetValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	private BlockState getLogState(WorldGenLevel worldGenLevel, RandomSource random, BlockPos pos) {
+		return log.getState(worldGenLevel, random, pos).trySetValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 	}
 
 	private void placeLog(WorldGenLevel level, BlockState blockstate, int x, int y, int z, BoundingBox boundingbox, RandomSource random, boolean hasHole) {
@@ -223,7 +223,7 @@ public class FallenTrunkPiece extends StructurePiece {
 			placeBlock(level, blockstate, x, y, z, boundingbox);
 			if (randomChild.nextFloat() <= MOSS_CHANCE && boundingbox.isInside(getWorldPos(x, y + 1, z)) && this.getBlock(level, x, y + 1, z, boundingbox).is(BlockTags.REPLACEABLE)) {
 				placeBlock(level, TFBlocks.MOSS_PATCH.get().defaultBlockState(), x, y + 1, z, boundingbox);
-				level.blockUpdated(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH.get());  // to connect moss patches
+				level.updateNeighborsAt(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH.get());  // to connect moss patches
 				level.getChunk(getWorldPos(x, y + 1, z)).markPosForPostprocessing(getWorldPos(x, y + 1, z));
 			}
 		}

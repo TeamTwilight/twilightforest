@@ -151,8 +151,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Predicate<Biome> plateauBiomes = biome ->
-			biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.THORNLANDS) ||
-				biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.FINAL_PLATEAU);
+			biome == world.registryAccess().lookupOrThrow(Registries.BIOME).get(TFBiomes.THORNLANDS).get().value() ||
+				biome == world.registryAccess().lookupOrThrow(Registries.BIOME).get(TFBiomes.FINAL_PLATEAU).get().value();
 
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes, blockPos)) {
 			return;

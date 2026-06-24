@@ -7,15 +7,16 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.world.components.structures.lichtowerrevamp.LichBossRoom;
 
-public record PaintingMarkerHandler(TagKey<PaintingVariant> paintings) implements TemplateMarkerHandler {
+public record PaintingMarkerHandler(TagKey<@NotNull PaintingVariant> paintings) implements TemplateMarkerHandler {
 	public static final MapCodec<PaintingMarkerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		TagKey.codec(Registries.PAINTING_VARIANT).fieldOf("paintings").forGetter(PaintingMarkerHandler::paintings)
 	).apply(instance, PaintingMarkerHandler::new));

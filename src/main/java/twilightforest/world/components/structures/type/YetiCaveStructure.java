@@ -16,14 +16,15 @@ import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
@@ -42,12 +43,12 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 			.apply(instance, YetiCaveStructure::new)
 	);
 
-	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
+	private final Holder.Reference<@NotNull StructureSpeleothemConfig> speleothemConfig;
 
-	public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
+	public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<@NotNull StructureSpeleothemConfig> speleothemConfig) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
-		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
+		this.speleothemConfig = (Holder.Reference<@NotNull StructureSpeleothemConfig>) speleothemConfig;
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 		return TFStructureTypes.YETI_CAVE.get();
 	}
 
-	public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {
+	public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<@NotNull Structure> context) {
 		return new YetiCaveStructure(
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 1, 2), 5)
@@ -71,7 +72,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 			Optional.of(new DecorationConfig(2, true, false, false)),
 			false, Optional.of(TFMapDecorations.YETI_LAIR),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_YETI_CAVE_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_YETI_CAVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE

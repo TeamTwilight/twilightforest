@@ -15,9 +15,10 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.init.custom.TemplateMarkerHandlers;
 
-public record LootMarkerHandler(BlockStateProvider provider, ResourceKey<LootTable> lootTable) implements TemplateMarkerHandler {
+public record LootMarkerHandler(BlockStateProvider provider, ResourceKey<@NotNull LootTable> lootTable) implements TemplateMarkerHandler {
 	public static final MapCodec<LootMarkerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		BlockStateProvider.CODEC.fieldOf("loot_block").forGetter(LootMarkerHandler::provider),
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("loot_table").forGetter(LootMarkerHandler::lootTable)
@@ -25,7 +26,7 @@ public record LootMarkerHandler(BlockStateProvider provider, ResourceKey<LootTab
 
 	@Override
 	public boolean handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
-		BlockState state = this.provider.getState(random, pos).rotate(rotation);
+		BlockState state = this.provider.getState(level, random, pos).rotate(rotation);
 
 		if (level.setBlock(pos, state, Block.UPDATE_ALL) && level.getBlockEntity(pos) instanceof RandomizableContainer) {
 			RandomizableContainer.setBlockEntityLootTable(level, random, pos, this.lootTable);
