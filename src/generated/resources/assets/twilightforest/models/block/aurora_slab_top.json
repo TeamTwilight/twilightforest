@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/tinted_slab_top",
+  "textures": {
+    "bottom": "twilightforest:block/aurora_pillar_slab",
+    "side": "twilightforest:block/aurora_pillar_slab",
+    "top": "twilightforest:block/aurora_pillar_slab"
+  }
+}

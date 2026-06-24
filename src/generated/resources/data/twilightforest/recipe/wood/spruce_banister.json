@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_banister",
   "key": {
-    "-": {
-      "item": "minecraft:spruce_slab"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "-": "minecraft:spruce_slab",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "---",

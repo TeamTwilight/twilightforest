@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/chest",
+  "parent": "minecraft:item/template_chest",
   "textures": {
-    "particle": "twilightforest:block/wood/planks_mangrove_0"
+    "particle": "twilightforest:block/wood/planks_magrove_0"
   }
 }

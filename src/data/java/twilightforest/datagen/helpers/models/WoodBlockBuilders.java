@@ -146,8 +146,8 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		this.registerSimpleItemModel(stairs, straight);
 	}
 
-	public void generateTrapdoor(Block trapdoor, boolean orientable) {
-		TextureMapping texturemapping = TextureMapping.defaultTexture(trapdoor);
+	public void generateTrapdoor(Block trapdoor, boolean orientable, String material) {
+		TextureMapping texturemapping = TextureMapping.defaultTexture(new Material(TwilightForestMod.prefix("block/wood/trapdoor/" + material + "_trapdoor")));
 		MultiVariant top = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).create(trapdoor, texturemapping, this.modelOutput));
 		Identifier bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).create(trapdoor, texturemapping, this.modelOutput);
 		MultiVariant open = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).create(trapdoor, texturemapping, this.modelOutput));
@@ -156,8 +156,8 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	}
 
 	//holy ternary batman
-	public void generateDoor(Block door, boolean useSideTexture) {
-		TextureMapping texturemapping = useSideTexture ? TFTextureMapping.sideDoor(door) : TextureMapping.door(door);
+	public void generateDoor(Block door, boolean useSideTexture, String type) {
+		TextureMapping texturemapping = useSideTexture ? TFTextureMapping.sideDoor(type) : TFTextureMapping.door(type);
 		MultiVariant bottomLeft = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).create(door, texturemapping, this.modelOutput));
 		MultiVariant bottomLeftOpen = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).create(door, texturemapping, this.modelOutput));
 		MultiVariant bottomRight = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).create(door, texturemapping, this.modelOutput));
@@ -204,8 +204,8 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	public void generateHollowLog(Block log, Block stripped, Block horizontal, Block vertical, Block climbable) {
 		TextureMapping base = TextureMapping.logColumn(log).put(TextureSlot.INSIDE, TextureMapping.getBlockTexture(stripped));
 		Identifier horizModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG.create(horizontal, base, this.modelOutput);
-		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
-		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, new Material(TwilightForestMod.prefix("block/mosspatch"))).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, new Material(TwilightForestMod.prefix("block/mosspatch"))).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
 		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/snow_overhang"))), this.modelOutput);
 		Identifier vertModel = TFModelTemplates.VERTICAL_HOLLOW_LOG.create(vertical, base, this.modelOutput);
 		Identifier ladderModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_ladder", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.LADDER)), this.modelOutput);
@@ -252,7 +252,12 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	}
 
 	public void generateChiseledBookshelf(Block shelf) {
-		MultiVariant variant = plainVariant(ModelLocationUtils.getModelLocation(shelf));
+		TextureMapping mapping = new TextureMapping()
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/wood/chiseled_canopy_bookshelf_side")))
+			.put(TextureSlot.FRONT, new Material(TwilightForestMod.prefix("block/wood/chiseled_canopy_bookshelf_empty")))
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/wood/chiseled_canopy_bookshelf_top")));
+		Identifier model = ModelTemplates.CUBE_ORIENTABLE.createWithSuffix(shelf, "_inventory", mapping, this.modelOutput);
+		MultiVariant variant = plainVariant(ModelTemplates.CUBE_ORIENTABLE.create(shelf, mapping, this.modelOutput));
 		MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(shelf);
 		forEachHorizontalDirection((direction, mutator) -> {
 				Condition condition = condition(BlockStateProperties.HORIZONTAL_FACING, direction).build();
@@ -261,11 +266,17 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 			}
 		);
 		this.blockStateOutput.accept(multipartgenerator);
-		this.registerSimpleItemModel(shelf, ModelTemplates.CUBE_ORIENTABLE.createWithSuffix(shelf, "_inventory", new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(shelf, "_side"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(shelf, "_empty"))
-			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(shelf, "_top")), this.modelOutput));
+		this.registerSimpleItemModel(shelf, model);
 		CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.clear();
+	}
+
+	public void generatePlanks(Block planks, String type) {
+		this.blockStateOutput.accept(createSimpleBlock(planks, variants(
+			new Variant(ModelTemplates.CUBE_ALL.createWithSuffix(planks, "_0", TextureMapping.cube(new Material(TwilightForestMod.prefix("block/wood/planks_" + type + "_0"))), this.modelOutput)),
+			new Variant(ModelTemplates.CUBE_ALL.createWithSuffix(planks, "_1", TextureMapping.cube(new Material(TwilightForestMod.prefix("block/wood/planks_" + type + "_1"))), this.modelOutput)),
+			new Variant(ModelTemplates.CUBE_ALL.createWithSuffix(planks, "_2", TextureMapping.cube(new Material(TwilightForestMod.prefix("block/wood/planks_" + type + "_2"))), this.modelOutput)),
+			new Variant(ModelTemplates.CUBE_ALL.createWithSuffix(planks, "_3", TextureMapping.cube(new Material(TwilightForestMod.prefix("block/wood/planks_" + type + "_3"))), this.modelOutput)))));
+		this.registerSimpleItemModel(planks, BuiltInRegistries.BLOCK.getKey(planks).withPrefix("block/").withSuffix("_0"));
 	}
 
 	public void addSlotStateAndRotationVariants(Block shelf, MultiPartGenerator generator, Condition condition, VariantMutator rotation) {
@@ -287,7 +298,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 
 	public void addBookSlotModel(Block shelf, MultiPartGenerator generator, Condition condition, VariantMutator rotation, BooleanProperty property, ModelTemplate template, boolean occupied) {
 		String suffix = occupied ? "_occupied" : "_empty";
-		TextureMapping texturemapping = new TextureMapping().put(TextureSlot.TEXTURE, TextureMapping.getBlockTexture(shelf, suffix));
+		TextureMapping texturemapping = new TextureMapping().put(TextureSlot.TEXTURE, new Material(TwilightForestMod.prefix("block/wood/chiseled_canopy_bookshelf" + suffix)));
 		BlockModelGenerators.BookSlotModelCacheKey cache = new BlockModelGenerators.BookSlotModelCacheKey(template, suffix);
 		MultiVariant variant = plainVariant(CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, key -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput)));
 		generator.with(

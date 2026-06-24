@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:storage_blocks/carminite"
+  ],
+  "result": {
+    "count": 9,
+    "id": "twilightforest:carminite"
+  }
+}

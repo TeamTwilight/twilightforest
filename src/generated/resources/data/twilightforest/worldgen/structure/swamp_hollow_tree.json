@@ -96,40 +96,7 @@
       "Name": "twilightforest:root"
     }
   },
-  "spawn_overrides": {
-    "ambient": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "axolotls": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "creature": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "misc": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "monster": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "underground_water_creature": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "water_ambient": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "water_creature": {
-      "bounding_box": "full",
-      "spawns": []
-    }
-  },
+  "spawn_overrides": {},
   "step": "surface_structures",
   "vine": {
     "type": "minecraft:simple_state_provider",

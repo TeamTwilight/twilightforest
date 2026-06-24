@@ -70,5 +70,8 @@
       "path": "frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.darkness.title"
+  },
   "width": 64
 }

@@ -159,24 +159,6 @@
     ],
     "subtitle": "subtitles.twilightforest.block.door.vanish"
   },
-  "block.twilightforest.drying_rack.add_item": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "entity.item_frame.add_item"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.block.drying_rack.add_item"
-  },
-  "block.twilightforest.drying_rack.remove_item": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "entity.item_frame.add_item"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.block.drying_rack.remove_item"
-  },
   "block.twilightforest.generic.annihilation": {
     "sounds": [
       {
@@ -335,7 +317,7 @@
     "sounds": [
       {
         "type": "event",
-        "name": "block.dispenser.dispense"
+        "name": "entity.item.pickup"
       }
     ],
     "subtitle": "subtitles.twilightforest.block.reappearing_block.reappear"
@@ -806,16 +788,6 @@
       "twilightforest:mob/deer/death"
     ],
     "subtitle": "subtitles.twilightforest.entity.deer.death"
-  },
-  "entity.twilightforest.deer.eat": {
-    "sounds": [
-      "entity/horse/eat1",
-      "entity/horse/eat2",
-      "entity/horse/eat3",
-      "entity/horse/eat4",
-      "entity/horse/eat5"
-    ],
-    "subtitle": "subtitles.twilightforest.entity.deer.eat"
   },
   "entity.twilightforest.deer.hurt": {
     "sounds": [
@@ -2570,69 +2542,6 @@
       }
     ],
     "subtitle": "subtitles.twilightforest.item.transformation_powder.use"
-  },
-  "item.twilightforest.travellers_gear.cycle_maps": {
-    "sounds": [
-      "item/book/open_flip1"
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_gear.cycle_maps"
-  },
-  "item.twilightforest.travellers_gear.cycle_maps_empty": {
-    "sounds": [
-      "item/book/open_flip2"
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_gear.cycle_maps_empty"
-  },
-  "item.twilightforest.travellers_gear.double_jump": {
-    "sounds": [
-      "twilightforest:random/travellers/double_jump"
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_gear.double_jump"
-  },
-  "item.twilightforest.travellers_gear.perfect_dodge": {
-    "sounds": [
-      "twilightforest:random/travellers/perfect_dodge"
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_gear.perfect_dodge"
-  },
-  "item.twilightforest.travellers_gear.side_step": {
-    "sounds": [
-      "twilightforest:random/travellers/side_step"
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_gear.side_step"
-  },
-  "item.twilightforest.travellers_gear.side_step_ready": {
-    "sounds": [
-      "twilightforest:random/travellers/side_step_ready"
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_gear.side_step_ready"
-  },
-  "item.twilightforest.travellers_gear.swap_hotbar": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "item.armor.equip_leather"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_gear.swap_hotbar"
-  },
-  "item.twilightforest.travellers_goggles.zoom_in": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "item.spyglass.use"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_goggles.zoom_in"
-  },
-  "item.twilightforest.travellers_goggles.zoom_out": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "item.spyglass.stop_using"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.item.travellers_goggles.zoom_out"
   },
   "item.twilightforest.twilight_scepter.pearl_hit": {
     "sounds": [

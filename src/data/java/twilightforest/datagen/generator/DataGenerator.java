@@ -19,7 +19,6 @@ import java.util.concurrent.CompletableFuture;
 
 @Component
 public class DataGenerator {
-
 	public void generate(GatherDataEvent.Client event) {
 		net.minecraft.data.DataGenerator generator = event.getGenerator();
 		PackOutput output = event.getGenerator().getPackOutput();

@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/firefly",
+    "model": {
+      "type": "twilightforest:item/firefly"
+    }
+  }
+}

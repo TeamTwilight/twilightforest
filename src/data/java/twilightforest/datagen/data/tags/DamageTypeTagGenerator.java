@@ -10,13 +10,14 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.neoforged.neoforge.common.Tags;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.tags.TFDamageTypeTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
+public class DamageTypeTagGenerator extends TagsProvider<@NotNull DamageType> {
 
 	public DamageTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
 		super(output, Registries.DAMAGE_TYPE, future, TwilightForestMod.ID);
@@ -68,9 +69,9 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 	}
 
 	@SafeVarargs
-	private void tag(ResourceKey<DamageType> type, TagKey<DamageType>... tags) {
-		for (TagKey<DamageType> key : tags) {
-			tag(key).add(type);
+	private void tag(ResourceKey<@NotNull DamageType> type, TagKey<@NotNull DamageType>... tags) {
+		for (TagKey<@NotNull DamageType> key : tags) {
+			getOrCreateRawBuilder(key).addElement(type.identifier());
 		}
 	}
 }

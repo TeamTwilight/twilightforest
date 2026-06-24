@@ -77,40 +77,7 @@
     "chunk_clearance_radius": 2.0
   },
   "hill_size": 2,
-  "spawn_overrides": {
-    "ambient": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "axolotls": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "creature": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "misc": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "monster": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "underground_water_creature": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "water_ambient": {
-      "bounding_box": "full",
-      "spawns": []
-    },
-    "water_creature": {
-      "bounding_box": "full",
-      "spawns": []
-    }
-  },
+  "spawn_overrides": {},
   "speleothem_config": "twilightforest:medium_hollow_hill",
   "step": "surface_structures",
   "structure_icon": "twilightforest:medium_hollow_hill"

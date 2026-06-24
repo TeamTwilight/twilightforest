@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/medium_bush",
+  "textures": {
+    "all": "twilightforest:block/stingberry_bush"
+  }
+}

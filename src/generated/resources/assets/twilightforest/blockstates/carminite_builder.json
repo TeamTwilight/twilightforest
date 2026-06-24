@@ -1,7 +1,7 @@
 {
   "variants": {
     "state=builder_active": {
-      "model": "twilightforest:block/carminite_builder_active"
+      "model": "twilightforest:block/carminite_builder_on"
     },
     "state=builder_inactive": {
       "model": "twilightforest:block/carminite_builder"

@@ -8,16 +8,13 @@
       "min_inclusive": 4
     },
     "state_provider": {
-      "fallback": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "minecraft:mycelium",
-          "Properties": {
-            "snowy": "false"
-          }
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:mycelium",
+        "Properties": {
+          "snowy": "false"
         }
-      },
-      "rules": []
+      }
     },
     "target": {
       "type": "minecraft:matching_blocks",

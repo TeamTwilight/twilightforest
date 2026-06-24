@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "twilightforest:block/dark_log",
-    "side": "twilightforest:block/dark_log"
-  }
-}

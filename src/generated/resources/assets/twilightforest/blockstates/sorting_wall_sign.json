@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/sorting_wall_sign"
+      "model": "twilightforest:block/sorting_sign"
     }
   }
 }

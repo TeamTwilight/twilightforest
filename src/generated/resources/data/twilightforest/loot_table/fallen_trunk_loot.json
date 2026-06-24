@@ -107,22 +107,6 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 6.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:shika_senbei",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:water_bucket",
           "weight": 75
         },

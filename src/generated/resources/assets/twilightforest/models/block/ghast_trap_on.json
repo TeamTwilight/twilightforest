@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "twilightforest:block/encased_towerwood",
+    "side": "twilightforest:block/towerdev_ghasttrap_on",
+    "top": "twilightforest:block/towerdev_ghasttraplid_on"
+  }
+}

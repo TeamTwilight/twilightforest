@@ -3,10 +3,7 @@
     "twilightforest:progress_lich"
   ],
   "enforcement": "twilightforest:hunger",
-  "locked_biome_toast": {
-    "count": 1,
-    "id": "twilightforest:lich_tower_miniature_structure"
-  },
+  "locked_biome_toast": {},
   "multiplier": 1.0,
   "structure_key": "twilightforest:labyrinth"
 }

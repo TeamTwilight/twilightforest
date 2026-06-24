@@ -1,0 +1,26 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/experiment_115_think"
+        },
+        "when": "think"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:block/experiment_115_8_8"
+        },
+        "when": "full"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/experiment_115"
+    },
+    "property": "twilightforest:experiment_115_variant"
+  }
+}

@@ -40,7 +40,6 @@
     },
     "frame": "goal",
     "icon": {
-      "count": 1,
       "id": "twilightforest:knight_phantom_trophy"
     },
     "title": {
@@ -49,7 +48,9 @@
   },
   "requirements": [
     [
-      "all_knights",
+      "all_knights"
+    ],
+    [
       "trophy"
     ],
     [

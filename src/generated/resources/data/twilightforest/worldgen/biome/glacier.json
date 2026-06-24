@@ -1,26 +1,16 @@
 {
-  "carvers": {
-    "air": "twilightforest:tf_caves"
+  "attributes": {
+    "minecraft:gameplay/can_pillager_patrol_spawn": false,
+    "minecraft:visual/fog_color": "#361f88",
+    "minecraft:visual/sky_color": "#130d28"
   },
+  "carvers": "twilightforest:tf_caves",
   "creature_spawn_probability": 0.15,
   "downfall": 0.1,
   "effects": {
-    "fog_color": 3547016,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
-    "sky_color": 1248552,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "foliage_color": "#ffffff",
+    "grass_color": "#ffffff",
+    "water_color": "#3f76e4"
   },
   "features": [
     [],
@@ -67,5 +57,6 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.08
+  "temperature": 0.08,
+  "temperature_modifier": "frozen"
 }

@@ -18,6 +18,7 @@ public class StructureTagGenerator extends StructureTagsProvider {
 		super(output, provider, TwilightForestMod.ID);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 		this.tag(TFStructureTags.LANDMARK).add(

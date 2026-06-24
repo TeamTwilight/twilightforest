@@ -8,10 +8,13 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.recipe.UncraftingRecipe;
@@ -22,41 +25,40 @@ import java.util.List;
 import java.util.Map;
 
 public class UncraftingRecipeBuilder implements RecipeBuilder {
-
-	private final HolderGetter<Item> items;
+	private final HolderGetter<@NotNull Item> items;
 	private final Ingredient input;
 	private final int count;
 	private int cost = -1;
 	private final List<String> rows = new ArrayList<>();
 	private final Map<Character, Ingredient> key = new LinkedHashMap<>();
 
-	public UncraftingRecipeBuilder(HolderGetter<Item> getter, Ingredient input, int count) {
+	public UncraftingRecipeBuilder(HolderGetter<@NotNull Item> getter, Ingredient input, int count) {
 		this.items = getter;
 		this.input = input;
 		this.count = count;
 	}
 
-	public static UncraftingRecipeBuilder uncrafting(HolderGetter<Item> getter, ItemLike input) {
+	public static UncraftingRecipeBuilder uncrafting(HolderGetter<@NotNull Item> getter, ItemLike input) {
 		return uncrafting(getter, Ingredient.of(input), 1);
 	}
 
-	public static UncraftingRecipeBuilder uncrafting(HolderGetter<Item> getter, TagKey<Item> input) {
+	public static UncraftingRecipeBuilder uncrafting(HolderGetter<@NotNull Item> getter, TagKey<@NotNull Item> input) {
 		return uncrafting(getter, Ingredient.of(getter.getOrThrow(input)), 1);
 	}
 
-	public static UncraftingRecipeBuilder uncrafting(HolderGetter<Item> getter, ItemLike input, int count) {
+	public static UncraftingRecipeBuilder uncrafting(HolderGetter<@NotNull Item> getter, ItemLike input, int count) {
 		return uncrafting(getter, Ingredient.of(input), count);
 	}
 
-	public static UncraftingRecipeBuilder uncrafting(HolderGetter<Item> getter, TagKey<Item> input, int count) {
+	public static UncraftingRecipeBuilder uncrafting(HolderGetter<@NotNull Item> getter, TagKey<@NotNull Item> input, int count) {
 		return uncrafting(getter, Ingredient.of(getter.getOrThrow(input)), count);
 	}
 
-	public static UncraftingRecipeBuilder uncrafting(HolderGetter<Item> getter, Ingredient input, int count) {
+	public static UncraftingRecipeBuilder uncrafting(HolderGetter<@NotNull Item> getter, Ingredient input, int count) {
 		return new UncraftingRecipeBuilder(getter, input, count);
 	}
 
-	public UncraftingRecipeBuilder define(Character symbol, TagKey<Item> tag) {
+	public UncraftingRecipeBuilder define(Character symbol, TagKey<@NotNull Item> tag) {
 		return this.define(symbol, Ingredient.of(this.items.getOrThrow(tag)));
 	}
 
@@ -81,7 +83,7 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 	}
 
 	public UncraftingRecipeBuilder pattern(String pattern) {
-		if (!this.rows.isEmpty() && pattern.length() != this.rows.get(0).length()) {
+		if (!this.rows.isEmpty() && pattern.length() != this.rows.getFirst().length()) {
 			throw new IllegalArgumentException("Pattern must be the same width on every line!");
 		} else {
 			this.rows.add(pattern);
@@ -100,19 +102,33 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 	}
 
 	@Override
+	public ResourceKey<@NotNull Recipe<?>> defaultId() {
+		return RecipeBuilder.getDefaultRecipeId(this.input.getValues().get(0).value().getDefaultInstance());
+	}
+
 	public Item getResult() {
 		return this.input.getValues().get(0).value();
 	}
 
 	@Override
 	public void save(RecipeOutput output) {
-		this.save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("uncrafting/" + RecipeBuilder.getDefaultRecipeId(this.getResult()).getPath())));
+		if (this.getResult() == null || this.getResult() == Items.AIR) {
+			return;
+		}
+		this.save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("uncrafting/" + this.getResult().builtInRegistryHolder().key().identifier().getPath())));
 	}
 
 	@Override
-	public void save(RecipeOutput output, ResourceKey<Recipe<?>> id) {
-		ShapedRecipePattern pattern = ShapedRecipePattern.of(this.key, this.rows);
-		UncraftingRecipe recipe = new UncraftingRecipe(this.cost, this.input, this.count, pattern);
-		output.accept(id, recipe, null);
+	public void save(RecipeOutput output, ResourceKey<@NotNull Recipe<?>> id) {
+		try {
+			ShapedRecipePattern pattern = ShapedRecipePattern.of(this.key, this.rows);
+			UncraftingRecipe recipe = new UncraftingRecipe(this.cost, this.input, this.count, pattern);
+			output.accept(id, recipe, null);
+		} catch (IllegalStateException e) {
+			if ("Item must be non-empty".equals(e.getMessage())) {
+				return;
+			}
+			throw e;
+		}
 	}
 }

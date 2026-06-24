@@ -7,7 +7,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
@@ -24,31 +23,30 @@ public class TFTextureMapping {
 			.put(TFTextureSlot.ALL_3, TextureMapping.getBlockTexture(block, suffix + "_layer_2"));
 	}
 
-	public static TextureMapping threeLayerDevice(Block block, Block topBlock, String suffix) {
+	public static TextureMapping threeLayerDevice(String texture, String suffix) {
+		if (suffix.isEmpty()) suffix = "_off";
 		return new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, suffix))
-			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(topBlock, suffix + "_top"))
-			.put(TFTextureSlot.TOP_2, TextureMapping.getBlockTexture(topBlock, suffix + "_top_layer_1"))
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/towerdev_" + texture + suffix)))
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/towerdev_ghasttraplid_off")))
 			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
-			.put(TFTextureSlot.SIDE_2, TextureMapping.getBlockTexture(block, "_layer_1"))
-			.put(TFTextureSlot.SIDE_3, TextureMapping.getBlockTexture(block, suffix + "_layer_2"));
+			.put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(TFBlocks.ENCASED_TOWERWOOD.get()));
 	}
 
-	public static TextureMapping threeLayerDeviceOn(Block block, Block topBlock) {
-		return threeLayerDevice(block, topBlock, "_on")
-			.put(TFTextureSlot.TOP_3, TextureMapping.getBlockTexture(topBlock, "_on_top_layer_2"));
+	public static TextureMapping threeLayerDeviceOn(String texture) {
+		return threeLayerDevice(texture, "_on")
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/towerdev_ghasttraplid_on")));
 	}
 
-	public static TextureMapping uncraftingTable(Block block) {
+	public static TextureMapping uncraftingTable() {
 		return new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
-			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
-			.put(TFTextureSlot.TOP_2, TextureMapping.getBlockTexture(block, "_top_glow"))
-			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.JUNGLE_PLANKS));
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/uncrafting_side")))
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/uncrafting_top")))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.JUNGLE_PLANKS))
+			.put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(Blocks.JUNGLE_PLANKS));
 	}
 
-	public static TextureMapping uncraftingTableOn(Block block) {
-		return uncraftingTable(block).put(TFTextureSlot.SIDE_2, TextureMapping.getBlockTexture(block, "_glow"));
+	public static TextureMapping uncraftingTableOn() {
+		return uncraftingTable().put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/uncrafting_particle")));
 	}
 
 	public static TextureMapping ctmBlock(Block block) {
@@ -56,9 +54,9 @@ public class TFTextureMapping {
 		return ctmBlock(null, overlay.sprite());
 	}
 
-	public static TextureMapping forcefield() {
-		var tex = new Material(TwilightForestMod.prefix("block/forcefield"));
-		return new TextureMapping().put(TextureSlot.PANE, tex).put(TextureSlot.PARTICLE, tex);
+	public static TextureMapping forcefield(Block forcefield) {
+		var tex = TextureMapping.getBlockTexture(forcefield);
+		return new TextureMapping().put(TextureSlot.PANE, tex);
 	}
 
 	public static TextureMapping giantBlock(Block block) {
@@ -87,31 +85,46 @@ public class TFTextureMapping {
 		return mapping.put(TFTextureSlot.CTM_OVERLAY, new Material(overlay)).put(TFTextureSlot.CTM_OVERLAY_CONNECTED, new Material(overlay.withSuffix("_ctm")));
 	}
 
-	public static TextureMapping sideDoor(Block block) {
+	public static TextureMapping sideDoor(String type) {
 		return new TextureMapping()
-			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
-			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"))
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"));
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/wood/door/" + type + "_upper")))
+			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/wood/door/" + type + "_lower")))
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/wood/door/" + type + "_side")));
 	}
 
-	public static TextureMapping trophyPedestal(Block block, boolean active, BossVariant north, BossVariant south, BossVariant east, BossVariant west) {
+	public static TextureMapping trophyPedestal(boolean active, BossVariant north, BossVariant south, BossVariant east, BossVariant west) {
 		var mapping = new TextureMapping()
-			.put(TextureSlot.NORTH, TextureMapping.getBlockTexture(block, "_" + north.getSerializedName() + "_latent"))
-			.put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(block, "_" + south.getSerializedName() + "_latent"))
-			.put(TextureSlot.EAST, TextureMapping.getBlockTexture(block, "_" + east.getSerializedName() + "_latent"))
-			.put(TextureSlot.WEST, TextureMapping.getBlockTexture(block, "_" + west.getSerializedName() + "_latent"));
+			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(north.getSerializedName()) + "_latent")))
+			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(south.getSerializedName()) + "_latent")))
+			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(east.getSerializedName()) + "_latent")))
+			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(west.getSerializedName()) + "_latent")))
+			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/pedestal/top")))
+			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/pedestal/top")))
+			.put(TextureSlot.PARTICLE, new Material(Identifier.withDefaultNamespace("block/stone")));
 
 		if (active) {
 			mapping = mapping
-				.put(TFTextureSlot.NORTH2, TextureMapping.getBlockTexture(block, "_" + north.getSerializedName() + "_glow"))
-				.put(TFTextureSlot.SOUTH2, TextureMapping.getBlockTexture(block, "_" + south.getSerializedName() + "_glow"))
-				.put(TFTextureSlot.EAST2, TextureMapping.getBlockTexture(block, "_" + east.getSerializedName() + "_glow"))
-				.put(TFTextureSlot.WEST2, TextureMapping.getBlockTexture(block, "_" + west.getSerializedName() + "_glow"))
-				.put(TFTextureSlot.NORTH3, TextureMapping.getBlockTexture(block, "_" + north.getSerializedName()))
-				.put(TFTextureSlot.SOUTH3, TextureMapping.getBlockTexture(block, "_" + south.getSerializedName()))
-				.put(TFTextureSlot.EAST3, TextureMapping.getBlockTexture(block, "_" + east.getSerializedName()))
-				.put(TFTextureSlot.WEST3, TextureMapping.getBlockTexture(block, "_" + west.getSerializedName()));
+				.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(north.getSerializedName()) + "_flat")))
+				.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(south.getSerializedName()) + "_flat")))
+				.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(east.getSerializedName()) + "_flat")))
+				.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/pedestal/" + clean(west.getSerializedName()) + "_flat")))
+				.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/pedestal/top_flat")));
 		}
 		return mapping;
+	}
+
+	private static String clean(String bossVariant) {
+		if (bossVariant.equals("snow_queen")) return bossVariant;
+		return bossVariant.replace('_', '-'); // ur_ghast -> ur-ghast
+	}
+
+	public static TextureMapping door(String type) {
+		return new TextureMapping()
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/wood/door/" + type + "_upper")))
+			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/wood/door/" + type + "_lower")));
+	}
+
+	public static TextureMapping crossEmissiveWithCustomSuffix(Block block, String suffix) {
+		return (new TextureMapping()).put(TextureSlot.CROSS, TextureMapping.getBlockTexture(block)).put(TextureSlot.CROSS_EMISSIVE, TextureMapping.getBlockTexture(block, suffix));
 	}
 }

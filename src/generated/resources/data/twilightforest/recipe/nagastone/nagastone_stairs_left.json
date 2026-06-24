@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "twilightforest:etched_nagastone"
-    }
+    "#": "twilightforest:etched_nagastone"
   },
   "pattern": [
     "#  ",

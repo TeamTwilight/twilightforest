@@ -9,6 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.datagen.data.tags.compat.ModdedItemTagGenerator;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
@@ -18,8 +19,7 @@ import twilightforest.tags.TFItemTags;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGenerator extends ModdedItemTagGenerator {
-
-	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagsProvider.TagLookup<Block>> provider) {
+	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagsProvider.TagLookup<@NotNull Block>> provider) {
 		super(output, future, provider);
 	}
 
@@ -312,8 +312,6 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.ARCTIC_BOOTS.get(),
 			TFItems.YETI_BOOTS.get(),
 			TFItems.FIERY_BOOTS.get());
-
-		this.tag(ItemTags.DYEABLE).add(TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 
 		this.tag(TFItemTags.BLOCK_AND_CHAIN_ENCHANTABLE).add(TFItems.BLOCK_AND_CHAIN.get());
 		this.tag(ItemTags.BOW_ENCHANTABLE).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());

@@ -152,5 +152,8 @@
       "path": "13_frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.the_hostile_paradise.title"
+  },
   "width": 48
 }

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_sign",
   "key": {
-    "#": {
-      "item": "twilightforest:time_planks"
-    },
-    "-": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "twilightforest:time_planks",
+    "-": "#c:rods/wooden"
   },
   "pattern": [
     "###",

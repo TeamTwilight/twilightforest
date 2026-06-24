@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_sign",
   "key": {
-    "#": {
-      "item": "twilightforest:canopy_planks"
-    },
-    "-": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "twilightforest:canopy_planks",
+    "-": "#c:rods/wooden"
   },
   "pattern": [
     "###",

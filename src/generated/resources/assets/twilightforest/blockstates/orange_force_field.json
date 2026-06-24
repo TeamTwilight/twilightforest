@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/orange_force_field"
+      "model": "twilightforest:block/orange_force_field_noside"
     }
   }
 }

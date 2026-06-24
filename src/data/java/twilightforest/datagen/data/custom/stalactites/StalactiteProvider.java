@@ -10,10 +10,11 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.spelothem.SpeleothemVarietyConfig;
-import twilightforest.world.components.spelothem.Stalactite;
-import twilightforest.world.components.spelothem.StalactiteReloadListener;
+import twilightforest.world.components.speleothem.SpeleothemVarietyConfig;
+import twilightforest.world.components.speleothem.Stalactite;
+import twilightforest.world.components.speleothem.StalactiteReloadListener;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public abstract class StalactiteProvider implements DataProvider {
 		List<SpeleothemVarietyConfig> configs = new ArrayList<>();
 		Map<Identifier, Stalactite> map = Maps.newHashMap();
 
-		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
+		ImmutableList.Builder<@NotNull CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
 
 		this.builder.clear();
 		this.createStalactites();

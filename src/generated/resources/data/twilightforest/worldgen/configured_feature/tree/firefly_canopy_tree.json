@@ -1,6 +1,26 @@
 {
   "type": "minecraft:tree",
   "config": {
+    "below_trunk_provider": {
+      "type": "minecraft:rule_based_state_provider",
+      "rules": [
+        {
+          "if_true": {
+            "type": "minecraft:not",
+            "predicate": {
+              "type": "minecraft:matching_block_tag",
+              "tag": "minecraft:cannot_replace_below_tree_trunk"
+            }
+          },
+          "then": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "minecraft:dirt"
+            }
+          }
+        }
+      ]
+    },
     "decorators": [
       {
         "type": "twilightforest:tree_roots",
@@ -100,7 +120,7 @@
             },
             {
               "data": {
-                "Name": "minecraft:chain",
+                "Name": "minecraft:iron_chain",
                 "Properties": {
                   "axis": "y",
                   "waterlogged": "false"
@@ -112,12 +132,6 @@
         }
       }
     ],
-    "dirt_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:dirt"
-      }
-    },
     "foliage_placer": {
       "type": "twilightforest:spheroid_foliage_placer",
       "horizontal_radius": 4.1231055,
@@ -139,7 +153,6 @@
         }
       }
     },
-    "force_dirt": false,
     "ignore_vines": true,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",

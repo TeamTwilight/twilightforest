@@ -3,14 +3,26 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "entries": [],
-      "functions": [
+      "entries": [
         {
-          "block": "twilightforest:keepsake_casket",
-          "function": "minecraft:copy_state",
-          "properties": [
-            "damage"
-          ]
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name"
+              ],
+              "source": "block_entity"
+            },
+            {
+              "block": "twilightforest:keepsake_casket",
+              "function": "minecraft:copy_state",
+              "properties": [
+                "damage"
+              ]
+            }
+          ],
+          "name": "twilightforest:keepsake_casket"
         }
       ],
       "rolls": 1.0

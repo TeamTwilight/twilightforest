@@ -1,33 +1,25 @@
 {
-  "carvers": {
-    "air": "twilightforest:tf_caves"
+  "attributes": {
+    "minecraft:gameplay/can_pillager_patrol_spawn": false,
+    "minecraft:gameplay/snow_golem_melts": true,
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "minecraft:white_ash"
+        },
+        "probability": 0.015
+      }
+    ],
+    "minecraft:visual/fog_color": "#380a00",
+    "minecraft:visual/sky_color": "#002112",
+    "minecraft:visual/water_fog_color": "#6c2c2c"
   },
+  "carvers": "twilightforest:tf_caves",
   "downfall": 0.4,
   "effects": {
-    "fog_color": 3672576,
-    "foliage_color": 6563343,
-    "grass_color": 5713443,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
-    "particle": {
-      "options": {
-        "type": "minecraft:white_ash"
-      },
-      "probability": 0.05
-    },
-    "sky_color": 2105930,
-    "water_color": 7089196,
-    "water_fog_color": 7089196
+    "foliage_color": "#64260f",
+    "grass_color": "#572e23",
+    "water_color": "#2d0700"
   },
   "features": [
     [],

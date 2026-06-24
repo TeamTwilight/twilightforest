@@ -17,8 +17,14 @@
         "y": 90
       },
       "when": {
-        "axis": "x",
-        "east": "false"
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "east": "false"
+          }
+        ]
       }
     },
     {
@@ -28,8 +34,14 @@
         "y": 90
       },
       "when": {
-        "axis": "x",
-        "west": "false"
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "west": "false"
+          }
+        ]
       }
     },
     {
@@ -39,8 +51,14 @@
         "y": 90
       },
       "when": {
-        "axis": "y|z",
-        "east": "true"
+        "AND": [
+          {
+            "axis": "y|z"
+          },
+          {
+            "east": "true"
+          }
+        ]
       }
     },
     {
@@ -50,8 +68,14 @@
         "y": 90
       },
       "when": {
-        "axis": "y|z",
-        "west": "true"
+        "AND": [
+          {
+            "axis": "y|z"
+          },
+          {
+            "west": "true"
+          }
+        ]
       }
     },
     {
@@ -67,8 +91,14 @@
         "model": "twilightforest:block/pillar/pillar_top"
       },
       "when": {
-        "axis": "y",
-        "up": "false"
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "up": "false"
+          }
+        ]
       }
     },
     {
@@ -76,8 +106,14 @@
         "model": "twilightforest:block/pillar/pillar_bottom"
       },
       "when": {
-        "axis": "y",
-        "down": "false"
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "down": "false"
+          }
+        ]
       }
     },
     {
@@ -85,8 +121,14 @@
         "model": "twilightforest:block/pillar/pillar_up"
       },
       "when": {
-        "axis": "x|z",
-        "up": "true"
+        "AND": [
+          {
+            "axis": "x|z"
+          },
+          {
+            "up": "true"
+          }
+        ]
       }
     },
     {
@@ -94,8 +136,14 @@
         "model": "twilightforest:block/pillar/pillar_down"
       },
       "when": {
-        "axis": "x|z",
-        "down": "true"
+        "AND": [
+          {
+            "axis": "x|z"
+          },
+          {
+            "down": "true"
+          }
+        ]
       }
     },
     {
@@ -113,8 +161,14 @@
         "x": 90
       },
       "when": {
-        "axis": "z",
-        "north": "false"
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "north": "false"
+          }
+        ]
       }
     },
     {
@@ -123,8 +177,14 @@
         "x": 90
       },
       "when": {
-        "axis": "z",
-        "south": "false"
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "south": "false"
+          }
+        ]
       }
     },
     {
@@ -133,8 +193,14 @@
         "x": 90
       },
       "when": {
-        "axis": "x|y",
-        "north": "true"
+        "AND": [
+          {
+            "axis": "x|y"
+          },
+          {
+            "north": "true"
+          }
+        ]
       }
     },
     {
@@ -143,8 +209,14 @@
         "x": 90
       },
       "when": {
-        "axis": "x|y",
-        "south": "true"
+        "AND": [
+          {
+            "axis": "x|y"
+          },
+          {
+            "south": "true"
+          }
+        ]
       }
     }
   ]

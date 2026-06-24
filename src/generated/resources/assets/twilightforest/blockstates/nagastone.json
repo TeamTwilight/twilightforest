@@ -25,7 +25,7 @@
       "y": 270
     },
     "variant=solid": {
-      "model": "twilightforest:block/nagastone"
+      "model": "twilightforest:block/nagastone_solid"
     },
     "variant=south_down": {
       "model": "twilightforest:block/naga_segment/down",

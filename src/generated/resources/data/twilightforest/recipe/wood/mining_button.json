@@ -3,12 +3,9 @@
   "category": "redstone",
   "group": "wooden_button",
   "ingredients": [
-    {
-      "item": "twilightforest:mining_planks"
-    }
+    "twilightforest:mining_planks"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:mining_button"
   }
 }

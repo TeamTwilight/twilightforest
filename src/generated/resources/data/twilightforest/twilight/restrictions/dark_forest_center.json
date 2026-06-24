@@ -3,10 +3,7 @@
     "twilightforest:progress_knights"
   ],
   "enforcement": "twilightforest:darkness",
-  "locked_biome_toast": {
-    "count": 1,
-    "id": "twilightforest:knight_phantom_trophy"
-  },
+  "locked_biome_toast": {},
   "multiplier": 0.0,
   "structure_key": "twilightforest:dark_tower"
 }

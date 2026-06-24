@@ -54,10 +54,6 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -70,10 +66,6 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -92,10 +84,6 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -108,10 +96,6 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -130,10 +114,6 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -248,5 +228,8 @@
       "path": "frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.lucid_lands.title"
+  },
   "width": 48
 }

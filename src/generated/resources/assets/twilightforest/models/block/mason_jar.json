@@ -35,10 +35,9 @@
       ]
     }
   ],
-  "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "twilightforest:block/jar_bottom",
-    "particle": "#side",
+    "particle": "twilightforest:block/jar_side",
     "side": "twilightforest:block/jar_side",
     "top": "twilightforest:block/jar_top"
   }

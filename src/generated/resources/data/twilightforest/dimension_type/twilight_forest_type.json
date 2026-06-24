@@ -1,11 +1,37 @@
 {
   "ambient_light": 0.01,
-  "bed_works": true,
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "minecraft:ambient.cave",
+        "tick_delay": 6000
+      }
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 12000,
+        "min_delay": 1200,
+        "replace_current_music": true,
+        "sound": "twilightforest:music.twilightforest.twilight_forest"
+      }
+    },
+    "minecraft:gameplay/bed_rule": {
+      "can_set_spawn": "always",
+      "can_sleep": "never"
+    },
+    "minecraft:gameplay/can_pillager_patrol_spawn": false,
+    "minecraft:gameplay/can_start_raid": false,
+    "minecraft:gameplay/creaking_active": true,
+    "minecraft:gameplay/eyeblossom_open": true,
+    "minecraft:gameplay/piglins_zombify": false,
+    "minecraft:visual/star_brightness": 1.0
+  },
   "coordinate_scale": 0.125,
-  "effects": "twilightforest:renderer",
-  "fixed_time": 13000,
   "has_ceiling": false,
-  "has_raids": false,
+  "has_ender_dragon_fight": false,
+  "has_fixed_time": true,
   "has_skylight": true,
   "height": 288,
   "infiniburn": "#minecraft:infiniburn_overworld",
@@ -17,8 +43,5 @@
     "max_inclusive": 7,
     "min_inclusive": 0
   },
-  "natural": true,
-  "piglin_safe": false,
-  "respawn_anchor_works": false,
-  "ultrawarm": false
+  "timelines": "#minecraft:universal"
 }

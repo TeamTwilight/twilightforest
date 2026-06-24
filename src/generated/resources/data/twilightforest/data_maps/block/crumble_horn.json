@@ -2,11 +2,11 @@
   "values": {
     "minecraft:andesite": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:clay": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:coarse_dirt": {
       "crumble_chance": 0.2,
@@ -30,11 +30,11 @@
     },
     "minecraft:diorite": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:dirt": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:exposed_chiseled_copper": {
       "crumble_chance": 0.2,
@@ -74,7 +74,7 @@
     },
     "minecraft:granite": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:grass_block": {
       "crumble_chance": 0.2,
@@ -82,7 +82,7 @@
     },
     "minecraft:gravel": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:infested_stone_bricks": {
       "crumble_chance": 0.2,
@@ -142,7 +142,7 @@
     },
     "minecraft:red_sand": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:red_sandstone": {
       "crumble_chance": 0.2,
@@ -154,7 +154,7 @@
     },
     "minecraft:sand": {
       "crumble_chance": 0.05,
-      "crumble_to": "minecraft:air"
+      "crumble_to": "minecraft:cave_air"
     },
     "minecraft:sandstone": {
       "crumble_chance": 0.2,

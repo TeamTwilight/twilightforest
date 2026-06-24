@@ -1,0 +1,53 @@
+{
+  "author": "Albazavr",
+  "parent": "block/block",
+  "textures": {
+    "layer_1": "twilightforest:block/mushgloom",
+    "layer_2": "twilightforest:block/mushgloom_head",
+    "particle": "#layer_2"
+  },
+  "elements": [
+    {
+      "from": [0.8, 0, 8],
+      "to": [15.2, 16, 8],
+      "rotation": {"origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true},
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#layer_1"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#layer_1"}
+      }
+    },
+    {
+      "from": [8, 0, 0.8],
+      "to": [8, 16, 15.2],
+      "rotation": {"origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true},
+      "shade": false,
+      "faces": {
+        "west": {"uv": [0, 0, 16, 16], "texture": "#layer_1"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#layer_1"}
+      }
+    },
+    {
+      "from": [0.8, 0, 8],
+      "to": [15.2, 16, 8],
+      "rotation": {"origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true},
+      "shade": false,
+      "light_emission": 7,
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#layer_2"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#layer_2"}
+      }
+    },
+    {
+      "from": [8, 0, 0.8],
+      "to": [8, 16, 15.2],
+      "rotation": {"origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true},
+      "shade": false,
+      "light_emission": 7,
+      "faces": {
+        "west": {"uv": [0, 0, 16, 16], "texture": "#layer_2"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#layer_2"}
+      }
+    }
+  ]
+}

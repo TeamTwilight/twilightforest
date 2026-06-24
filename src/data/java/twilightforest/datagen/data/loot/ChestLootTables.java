@@ -18,6 +18,7 @@ import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
@@ -29,15 +30,15 @@ import java.util.function.BiConsumer;
 public record ChestLootTables(HolderLookup.Provider registries) implements LootTableSubProvider {
 
 	@Override
-	public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> register) {
-		HolderLookup.RegistryLookup<Enchantment> lookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+	public void generate(BiConsumer<ResourceKey<@NotNull LootTable>, LootTable.Builder> register) {
+		HolderLookup.RegistryLookup<@NotNull Enchantment> lookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
 		register.accept(TFLootTables.SUSPICIOUS_STEW,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					.add(LootItem.lootTableItem(Items.SUSPICIOUS_STEW).apply(SetStewEffectFunction.stewEffect()
-						.withEffect(MobEffects.JUMP, UniformGenerator.between(7, 10))
+						.withEffect(MobEffects.JUMP_BOOST, UniformGenerator.between(7, 10))
 						.withEffect(MobEffects.WEAKNESS, UniformGenerator.between(6, 8))
 						.withEffect(MobEffects.BLINDNESS, UniformGenerator.between(5, 7))
 						.withEffect(MobEffects.POISON, UniformGenerator.between(10, 20))
@@ -641,7 +642,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 
 		register.accept(TFLootTables.TOWER_JARS, LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-				.add(LootItem.lootTableItem(Items.CHAIN))
+				.add(LootItem.lootTableItem(Items.IRON_CHAIN))
 				.add(LootItem.lootTableItem(Items.ENDER_PEARL))
 				.add(LootItem.lootTableItem(Items.SPIDER_EYE))
 				.add(LootItem.lootTableItem(Items.FERMENTED_SPIDER_EYE))
@@ -677,7 +678,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 				.add(LootItem.lootTableItem(Items.ROTTEN_FLESH))
 				.add(LootItem.lootTableItem(Items.BONE).setWeight(3))));
 
-		//all values in this loot table have been halved so I can fill both chests that appear in the dead ends
+		//all values in this loot table have been halved, so I can fill both chests that appear in the dead ends
 		register.accept(TFLootTables.LABYRINTH_DEAD_END,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()

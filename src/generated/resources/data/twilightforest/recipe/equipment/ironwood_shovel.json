@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:ingots/ironwood"
-    },
-    "X": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#c:ingots/ironwood",
+    "X": "#c:rods/wooden"
   },
   "pattern": [
     "#",
@@ -15,14 +11,6 @@
     "X"
   ],
   "result": {
-    "components": {
-      "minecraft:enchantments": {
-        "levels": {
-          "minecraft:unbreaking": 1
-        }
-      }
-    },
-    "count": 1,
     "id": "twilightforest:ironwood_shovel"
   }
 }

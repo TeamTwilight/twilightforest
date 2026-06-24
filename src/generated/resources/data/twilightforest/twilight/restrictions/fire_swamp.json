@@ -3,10 +3,7 @@
     "twilightforest:progress_labyrinth"
   ],
   "enforcement": "twilightforest:fire",
-  "locked_biome_toast": {
-    "count": 1,
-    "id": "twilightforest:meef_stroganoff"
-  },
+  "locked_biome_toast": {},
   "multiplier": 8.0,
   "structure_key": "twilightforest:hydra_lair"
 }

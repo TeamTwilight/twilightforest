@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:item/moon_dial_template",
+  "textures": {
+    "layer0": "twilightforest:item/moon_dial/waning_crescent"
+  }
+}

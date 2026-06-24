@@ -1,0 +1,65 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "component": "twilightforest:has_travellers_gloves",
+    "ignore_default": true,
+    "on_false": {
+      "type": "minecraft:condition",
+      "on_false": {
+        "type": "twilightforest:travellers_gear",
+        "base_model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/travellers_vest"
+        },
+        "modifier_directory": "twilightforest:travellers_modifiers/vest"
+      },
+      "on_true": {
+        "type": "twilightforest:travellers_gear",
+        "base_model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/travellers_vest_broken"
+        },
+        "modifier_directory": "twilightforest:travellers_modifiers/vest/broken"
+      },
+      "property": "minecraft:broken"
+    },
+    "on_true": {
+      "type": "minecraft:composite",
+      "models": [
+        {
+          "type": "minecraft:condition",
+          "on_false": {
+            "type": "twilightforest:travellers_gear",
+            "base_model": {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/travellers_vest"
+            },
+            "modifier_directory": "twilightforest:travellers_modifiers/vest"
+          },
+          "on_true": {
+            "type": "twilightforest:travellers_gear",
+            "base_model": {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/travellers_vest_broken"
+            },
+            "modifier_directory": "twilightforest:travellers_modifiers/vest/broken"
+          },
+          "property": "minecraft:broken"
+        },
+        {
+          "type": "minecraft:condition",
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/travellers_gloves"
+          },
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/travellers_gloves_broken"
+          },
+          "property": "minecraft:broken"
+        }
+      ]
+    },
+    "property": "minecraft:has_component"
+  }
+}

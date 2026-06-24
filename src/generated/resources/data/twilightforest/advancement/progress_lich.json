@@ -110,7 +110,6 @@
     },
     "frame": "goal",
     "icon": {
-      "count": 1,
       "id": "twilightforest:lich_tower_miniature_structure"
     },
     "title": {
@@ -119,12 +118,24 @@
   },
   "requirements": [
     [
-      "kill_lich",
-      "trophy",
-      "lifedrain_scepter",
-      "twilight_scepter",
-      "zombie_scepter",
-      "shield_scepter",
+      "kill_lich"
+    ],
+    [
+      "trophy"
+    ],
+    [
+      "lifedrain_scepter"
+    ],
+    [
+      "twilight_scepter"
+    ],
+    [
+      "zombie_scepter"
+    ],
+    [
+      "shield_scepter"
+    ],
+    [
       "was_in_fight"
     ],
     [

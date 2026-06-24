@@ -2,20 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "tag": "c:ingots/ironwood"
-    },
-    "m": {
-      "item": "twilightforest:ironwood_ingot"
-    }
+    "#": "#c:ingots/ironwood"
   },
   "pattern": [
     "###",
-    "#m#",
+    "###",
     "###"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:ironwood_block"
   }
 }

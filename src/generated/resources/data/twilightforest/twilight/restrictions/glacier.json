@@ -3,10 +3,7 @@
     "twilightforest:progress_yeti"
   ],
   "enforcement": "twilightforest:frost",
-  "locked_biome_toast": {
-    "count": 1,
-    "id": "twilightforest:alpha_yeti_fur"
-  },
+  "locked_biome_toast": {},
   "multiplier": 1.0,
   "structure_key": "twilightforest:aurora_palace"
 }

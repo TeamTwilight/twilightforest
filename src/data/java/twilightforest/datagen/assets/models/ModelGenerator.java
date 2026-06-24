@@ -6,6 +6,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -37,12 +38,12 @@ public class ModelGenerator extends ModelProvider {
 	}
 
 	@Override
-	protected Stream<? extends Holder<Block>> getKnownBlocks() {
+	protected Stream<? extends Holder<@NotNull Block>> getKnownBlocks() {
 		return TFBlocks.BLOCKS.getEntries().stream();
 	}
 
 	@Override
-	protected Stream<? extends Holder<Item>> getKnownItems() {
+	protected Stream<? extends Holder<@NotNull Item>> getKnownItems() {
 		return TFItems.ITEMS.getEntries().stream();
 	}
 }

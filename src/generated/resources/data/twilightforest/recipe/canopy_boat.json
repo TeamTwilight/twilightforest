@@ -3,16 +3,13 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "P": {
-      "item": "twilightforest:canopy_planks"
-    }
+    "P": "twilightforest:canopy_planks"
   },
   "pattern": [
     "P P",
     "PPP"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:canopy_boat"
   }
 }

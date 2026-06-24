@@ -1,8 +1,30 @@
 {
-  "parent": "minecraft:block/carpet",
-  "loader": "twilightforest:royal_rags",
+  "parent": "minecraft:block/block",
+  "connectable_blocks": [
+    "twilightforest:coronation_carpet"
+  ],
+  "connected_texture": {
+    "faces": [
+      "up",
+      "down"
+    ]
+  },
+  "element": {
+    "from": [
+      0,
+      0,
+      0
+    ],
+    "to": [
+      16,
+      1,
+      16
+    ]
+  },
+  "loader": "twilightforest:connected_texture_block",
   "textures": {
-    "wool": "twilightforest:block/coronation_carpet",
-    "wool_ctm": "twilightforest:block/coronation_carpet_ctm"
+    "overlay_connected": "twilightforest:block/coronation_carpet_ctm",
+    "overlay_texture": "twilightforest:block/coronation_carpet",
+    "particle": "twilightforest:block/coronation_carpet"
   }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/boss_spawner"
+      "model": "twilightforest:block/alpha_yeti_boss_spawner"
     }
   }
 }

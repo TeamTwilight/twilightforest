@@ -2,8 +2,8 @@ package twilightforest.datagen.data.recipes;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -16,6 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -26,7 +27,7 @@ import static twilightforest.TwilightForestMod.prefix;
 
 public class StonecuttingGenerator {
 
-	protected static void buildRecipes(HolderGetter<Item> getter, RecipeOutput output) {
+	protected static void buildRecipes(HolderGetter<@NotNull Item> getter, RecipeOutput output) {
 		stonecutting(getter, output, TFBlocks.CASTLE_BRICK, TFBlocks.CASTLE_BRICK_STAIRS);
 		stonecutting(getter, output, TFBlocks.CASTLE_BRICK, TFBlocks.THICK_CASTLE_BRICK);
 		stonecutting(getter, output, TFBlocks.CASTLE_BRICK, TFBlocks.WORN_CASTLE_BRICK);
@@ -161,20 +162,20 @@ public class StonecuttingGenerator {
 		stonecutting(getter, output, TFBlocks.UNDERBRICK, TFBlocks.UNDERBRICK_FLOOR);
 	}
 
-	private static void stonecutting(HolderGetter<Item> getter, RecipeOutput recipe, ItemLike input, ItemLike output) {
+	private static void stonecutting(HolderGetter<@NotNull Item> getter, RecipeOutput recipe, ItemLike input, ItemLike output) {
 		stonecutting(getter, recipe, input, output, 1);
 	}
 
-	private static void stonecutting(HolderGetter<Item> getter, RecipeOutput recipe, ItemLike input, ItemLike output, int count) {
+	private static void stonecutting(HolderGetter<@NotNull Item> getter, RecipeOutput recipe, ItemLike input, ItemLike output, int count) {
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output.asItem(), count).unlockedBy("has_block", has(getter, input)).save(recipe, getIdFor(input, output));
 	}
 
-	private static ResourceKey<Recipe<?>> getIdFor(ItemLike input, ItemLike output) {
+	private static ResourceKey<@NotNull Recipe<?>> getIdFor(ItemLike input, ItemLike output) {
 		String path = String.format("stonecutting/%s/%s", BuiltInRegistries.ITEM.getKey(input.asItem()).getPath(), BuiltInRegistries.ITEM.getKey(output.asItem()).getPath());
 		return ResourceKey.create(Registries.RECIPE, prefix(path));
 	}
 
-	protected static Criterion<InventoryChangeTrigger.TriggerInstance> has(HolderGetter<Item> getter, ItemLike item) {
+	protected static Criterion<InventoryChangeTrigger.@NotNull TriggerInstance> has(HolderGetter<@NotNull Item> getter, ItemLike item) {
 		return CriteriaTriggers.INVENTORY_CHANGED.createCriterion(new InventoryChangeTrigger.TriggerInstance(Optional.empty(), InventoryChangeTrigger.TriggerInstance.Slots.ANY, Collections.singletonList(ItemPredicate.Builder.item().of(getter, item).build())));
 	}
 }

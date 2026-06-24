@@ -1,0 +1,35 @@
+{
+  "author": "Albazavr",
+  "parent": "block/block",
+  "textures": {
+    "all": "#all",
+    "rune": "#rune",
+    "particle": "#all"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all" },
+        "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#all" },
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#all" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#all" },
+        "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all" },
+        "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all" }
+      }
+    },
+    {
+      "from": [-0.01, -0.01, -0.01],
+      "to": [16.01, 16.01, 16.01],
+      "faces": {
+        "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#rune", "cullface": "down", "tintindex": 0 },
+        "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#rune", "cullface": "up", "tintindex": 0 },
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#rune", "cullface": "north", "tintindex": 0 },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#rune", "cullface": "south", "tintindex": 0 },
+        "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#rune", "cullface": "west", "tintindex": 0 },
+        "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#rune", "cullface": "east", "tintindex": 0 }
+      }
+    }
+  ]
+}

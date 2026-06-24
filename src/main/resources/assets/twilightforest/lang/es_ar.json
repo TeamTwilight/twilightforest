@@ -1,11 +1,9 @@
 {
   "itemGroup.twilightforest": "Twilight Forest",
 
-  // ADVANCEMENTS
-  "advancement.twilightforest.root.desc": "Entra en el misterioso bosque mágico: the Twilight Forest.",
+    "advancement.twilightforest.root.desc": "Entra en el misterioso bosque mágico: the Twilight Forest.",
 
-  // General progression
-  "advancement.twilightforest.hedge": "Golpeador de Bichos",
+    "advancement.twilightforest.hedge": "Golpeador de Bichos",
   "advancement.twilightforest.hedge.desc": "Derrota a una araña en un %s.",
 
   "advancement.twilightforest.hill1": "Las botas son mías!",
@@ -18,8 +16,7 @@
   "advancement.twilightforest.quest_ram": "Consumación de Baaahs",
   "advancement.twilightforest.quest_ram.desc": "Dale al %s lo que le falta.",
 
-  // Map
-  "advancement.twilightforest.magic_map_focus": "Con El Fuego Se Escribe",
+    "advancement.twilightforest.magic_map_focus": "Con El Fuego Se Escribe",
   "advancement.twilightforest.magic_map_focus.desc": "Elabora el %s con un %s, %s, y %s.",
   "advancement.twilightforest.magic_map": "Puedo Ver Para Siempre",
   "advancement.twilightforest.magic_map.desc": "Haz los %s.",
@@ -28,8 +25,7 @@
   "advancement.twilightforest.ore_map": "Cómo puede merecer la pena?",
   "advancement.twilightforest.ore_map.desc": "Haz los %s.",
 
-  // Mainline beginning progression
-  "advancement.twilightforest.twilight_hunter": "El Silencio del Bosque",
+    "advancement.twilightforest.twilight_hunter": "El Silencio del Bosque",
   "advancement.twilightforest.twilight_hunter.desc": "Cazar algo de la fauna local.",
 
   "advancement.twilightforest.kill_naga": "Es Hora de Igualar la Balanza",
@@ -42,8 +38,7 @@
   "advancement.twilightforest.lich_scepters": "Por Nuestros Poderes Combinados!",
   "advancement.twilightforest.lich_scepters.desc": "Consigue los cuatro cetros de poder.",
 
-  // Swamp Progression
-  "advancement.twilightforest.progress_labyrinth": "El Poderoso Stroganoff",
+    "advancement.twilightforest.progress_labyrinth": "El Poderoso Stroganoff",
   "advancement.twilightforest.progress_labyrinth.desc": "El guiso de carne y hongos te calienta agradablemente, lo suficiente como para que sientas que estás lo suficientemente aclimatado como para aventurarte en el Pantano del Fuego.",
   "advancement.twilightforest.kill_hydra": "Cazador de Hidras",
   "advancement.twilightforest.kill_hydra.desc": "Derrota a los poderosos %s y empodérate.",
@@ -52,8 +47,7 @@
   "advancement.twilightforest.hydra_chop": "Chuleta de Hidra, Baby!",
   "advancement.twilightforest.hydra_chop.desc": "Disminuye el consumo de carne de %s hydra cuando la barra de comida esté vacía.",
 
-  // Dark Forest Progression
-  "advancement.twilightforest.progress_trophy_pedestal": "Trofeo de Campeón",
+    "advancement.twilightforest.progress_trophy_pedestal": "Trofeo de Campeón",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "Reclama tu título colocando un trofeo en el pedestal de las ruinas del bosque oscuro.",
   "advancement.twilightforest.progress_knights": "Aclimatación de Carminita",
   "advancement.twilightforest.progress_knights.desc": "Acomoda a los inquietos fantasmas en la Tumba del Caballero y los dispositivos de la torre de carminita te obedecerán.",
@@ -67,23 +61,20 @@
   "advancement.twilightforest.experiment_115_2": "Tomar nota: ¡Un gran éxito!",
   "advancement.twilightforest.experiment_115_2.desc": "Es tan delicioso y húmedo!",
 
-  // Snow Forest Progression
-  "advancement.twilightforest.progress_yeti": "Pelaje Alfa",
+    "advancement.twilightforest.progress_yeti": "Pelaje Alfa",
   "advancement.twilightforest.progress_yeti.desc": "Cubre tus prendas con el suave pelaje de los %s, manteniéndote a salvo del frío del Glaciar.",
   "advancement.twilightforest.progress_glacier": "Cielos Despejados",
   "advancement.twilightforest.progress_glacier.desc": "Derrota a los %s encima de los %s.",
   "advancement.twilightforest.arctic_dyed": "Ponerse a la Moda",
   "advancement.twilightforest.arctic_dyed.desc": "Tiñe las cuatro piezas de la Armadura Ártica.",
 
-  // Mid-way Misc. Stuff
   "advancement.twilightforest.glass_sword": "Una Maravilla De Un Solo Golpe",
   "advancement.twilightforest.glass_sword.desc": "Espero que lo hayas aprovechado.",
 
   "advancement.twilightforest.fiery_set": "Galones de Sangre y Lágrimas",
   "advancement.twilightforest.fiery_set.desc": "Empuña una herramienta o arma mientras tienes al menos una pieza de armadura de ardiente en tu inventario.",
 
-  // Highlands
-  "advancement.twilightforest.progress_merge": "Enfrentamiento Final",
+    "advancement.twilightforest.progress_merge": "Enfrentamiento Final",
   "advancement.twilightforest.progress_merge.desc": "Mata a los %s, %s y %s para eliminar la lluvia ácida y envalentonarte para las Tierras Altas.",
   "advancement.twilightforest.troll": "Trolleamos un Poco",
   "advancement.twilightforest.troll.desc": "Encuentra y mata a un %s.",
@@ -98,8 +89,7 @@
   "advancement.twilightforest.progress_castle": "Wow Que Super Castillo!!! [NYI]",
   "advancement.twilightforest.progress_castle.desc": "Qué podría haber en ese castillo?!?",
 
-  // Collections
-  "advancement.twilightforest.twilight_dining": "Cenamos en el Eterno Atardecer",
+    "advancement.twilightforest.twilight_dining": "Cenamos en el Eterno Atardecer",
   "advancement.twilightforest.twilight_dining.desc": "Come toda la comida exclusiva de Twilight Forest.",
   "advancement.twilightforest.experiment_115_3": "Comer 115 cada día, 115 años, para siempre",
   "advancement.twilightforest.experiment_115_3.desc": "comer experimento ciento quince durante todo el día, para siempre, ciento quince veces experimento ciento quince, experimento ciento quince punto com, doble-u doble-u punto experimento ciento quince punto com, ciento quince años, cada minuto experimento ciento quince punto com, doble-u doble-u punto ciento quince punto com",
@@ -112,8 +102,7 @@
   "twilightforest.ore_meter.exposed": "Expuesto: %s",
   "twilightforest.scepter_charges": "Quedan %d cargas",
 
-  // Commands
-  "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
+    "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.nearest": "The nearest feature is %s",
   "commands.tffeature.center": "Center of feature: %s",
   "commands.tffeature.chunk": "Are in feature chunk: %s",
@@ -125,8 +114,7 @@
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
   "commands.tfreload.reload": "Reloading Twilight Forest Shaders!",
 
-  // Biomes
-  "biome.twilightforest.forest": "Bosque Crepuscular",
+    "biome.twilightforest.forest": "Bosque Crepuscular",
   "biome.twilightforest.dense_forest": "Bosque Denso",
   "biome.twilightforest.firefly_forest": "Bosque de las Luciérnagas",
   "biome.twilightforest.clearing": "Despeje Crepuscular",
@@ -147,18 +135,14 @@
   "biome.twilightforest.thornlands": "Tierras Espinosas",
   "biome.twilightforest.final_plateau": "Meseta Final",
 
-  // Gamerules
-  "gamerule.tfEnforcedProgression": "Progresión de Twilight Forest",
+    "gamerule.tfEnforcedProgression": "Progresión de Twilight Forest",
 
-  // Enchantments
-  "enchantment.twilightforest.fire_react": "Reacción al Fuego",
+    "enchantment.twilightforest.fire_react": "Reacción al Fuego",
   "enchantment.twilightforest.chill_aura": "Aura fría",
 
-  // Effects
-  "effect.twilightforest.frosted": "Escarchado",
+    "effect.twilightforest.frosted": "Escarchado",
 
-  // Blocks
-  "block.twilightforest.twilight_oak_log": "Tronco de Roble Crepuscular",
+    "block.twilightforest.twilight_oak_log": "Tronco de Roble Crepuscular",
   "block.twilightforest.canopy_log": "Tronco de Dosel Arbóreo",
   "block.twilightforest.mangrove_log": "Tronco de Manglar",
   "block.twilightforest.dark_log": "Tronco de Madera Oscura",
@@ -499,8 +483,7 @@
   "block.arctic.tooltip": "Reduce el daño por caída en un 90%",
   "block.knightmetal.tooltip": "Funciona como un cactus más fuerte",
 
-  // Structures
-  "structure.twilight_portal": "Portal de Twilight",
+    "structure.twilight_portal": "Portal de Twilight",
   "structure.hedge_maze": "Laberinto de Setos",
   "structure.hollow_hill": "Colina Hueca",
   "structure.quest_grove": "Búsqueda de la Arboleda",
@@ -516,8 +499,7 @@
   "structure.troll_cave_and_cloud_castle": "Cueva de los Trolls y Casa en las Nubes",
   "structure.final_castle": "Castillo Final",
 
-  // Items
-  "item.twilightforest.boarkchop": "Chuleta de Boark",
+    "item.twilightforest.boarkchop": "Chuleta de Boark",
   "item.twilightforest.naga_scale": "Escama Naga",
   "item.twilightforest.naga_chestplate": "Tunica de Escama Naga",
   "item.twilightforest.naga_leggings": "Mallas de Escama Naga",
@@ -709,8 +691,7 @@
 
   "item.twilightforest.arctic_armor.tooltip": "Teñible como la armadura de cuero",
 
-  // Entities
-  "entity.twilightforest.wild_boar": "Jabalí",
+    "entity.twilightforest.wild_boar": "Jabalí",
   "entity.twilightforest.bighorn_sheep": "Oveja Cimarrón",
   "entity.twilightforest.deer": "Ciervo salvaje",
   "entity.twilightforest.redcap": "Goblin del Gorro Rojo",
@@ -794,8 +775,7 @@
   "entity.twilightforest.slider": "Trampa Deslizante en Movimiento",
   "entity.twilightforest.protection_box": "Caja de Protección de la Progresión",
 
-  // Subtitles
-  "subtitles.twilightforest.entity.alphayeti.alert": "Yeti Alfa se dirige al jugador",
+    "subtitles.twilightforest.entity.alphayeti.alert": "Yeti Alfa se dirige al jugador",
   "subtitles.twilightforest.entity.alphayeti.death": "Yeti Alfa muerto",
   "subtitles.twilightforest.entity.alphayeti.grab": "Yeti Alfa agarra al jugador",
   "subtitles.twilightforest.entity.alphayeti.growl": "Yeti Alfa gruñe",
@@ -1020,8 +1000,7 @@
 
   "subtitles.random.slider": "Trampa Deslizante en Movimiento",
 
-  // Death Messages
-  "death.attack.twilightforest.ghastTear": "%1$s fue escaldado por lágrimas de fuego",
+    "death.attack.twilightforest.ghastTear": "%1$s fue escaldado por lágrimas de fuego",
   "death.attack.twilightforest.ghastTear.player": "%1$s fue escaldado por lágrimas de fuego mientras escapaba de %2$s",
   "death.attack.twilightforest.hydraFire": "%1$s fue asado vivo por la Hidra",
   "death.attack.twilightforest.hydraFire.player": "%1$s fue asado vivo por la Hidra mientras escapaba de %2$s",
@@ -1077,16 +1056,14 @@
   "death.attack.twilightforest.yeeted": "%1$s fue golpeado por última vez por %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s ha sido golpeado por última vez por %2$s mientras sostenía %3$s",
 
-  // Misc
-  "twilightforest.misc.wip0": "Este bloque es un trabajo en proceso y puede tener errores o efectos no deseados que pueden dañar tu mundo.",
+    "twilightforest.misc.wip0": "Este bloque es un trabajo en proceso y puede tener errores o efectos no deseados que pueden dañar tu mundo.",
   "twilightforest.misc.wip1": "Utilizar con precaución.",
   "twilightforest.misc.nyi": "Este bloque tiene efectos que aún no se han implementado.",
 
   "twilightforest.loading.title.enter": "Llevándote al Twilight Forest...",
   "twilightforest.loading.title.leave": "Sacándote de Twilight Forest...",
 
-  // Config
-  "twilightforest.config.dimension": "Ajustes de Dimensión",
+    "twilightforest.config.dimension": "Ajustes de Dimensión",
   "twilightforest.config.dimension.tooltip": "No podrás cambiar estas configuraciones sin que se produzca un reinicio.",
   "twilightforest.config.dimension_id": "Dimension ID",
   "twilightforest.config.dimension_id.tooltip": "Qué número de identificación asignar a la dimensión de Twilight Forest. Cambia si tienes conflictos con otro mod.",
@@ -1209,8 +1186,7 @@
   "twilightforest.config.casket_uuid_locking": "Cierre del ataúd UUID",
   "twilightforest.config.casket_uuid_locking.tooltip": "Si es cierto, los ataúdes de recuerdo que se generan cuando un jugador muere no serán accesibles para otros jugadores. Utiliza esta opción si no quieres que la gente coja de los ataúdes de muerte de otras personas. NOTA: los operadores del servidor seguirán pudiendo abrir los ataúdes cerrados.",
 
-  // Books
-  "twilightforest.book.lichtower.1": "\u00A78[[Un cuaderno de explorador, roído por los monstruos]]\u00A70\n\n_He comenzado a examinar la extraña aura que rodea a esta torre. Los ladrillos de la torre están protegidos por una maldición, más fuerte que cualquiera que haya visto antes. La magia de la maldición",
+    "twilightforest.book.lichtower.1": "\u00A78[[Un cuaderno de explorador, roído por los monstruos]]\u00A70\n\n_He comenzado a examinar la extraña aura que rodea a esta torre. Los ladrillos de la torre están protegidos por una maldición, más fuerte que cualquiera que haya visto antes. La magia de la maldición",
   "twilightforest.book.lichtower.2": "está hirviendo en los alrededores.\n\n_En mi tierra natal tendría muchas opciones para lidiar con esta magia, pero aquí mis suministros son limitados. En mi tierra natal tendría muchas opciones para lidiar con esta magia, pero aquí mis suministros son limitados. Tendré que investigar...",
   "twilightforest.book.lichtower.3": "\u00A78[[Muchas entradas después]]\u00A70\n\n_Un avance! En mis viajes avisté un enorme monstruo con forma de serpiente en un patio decorado. Cerca, recogí una escama verde desgastada y desechada.\n\n_La magia de la escama parece tener las",
   "twilightforest.book.lichtower.4": "propiedades para romper maldiciones que necesito, pero la magia es demasiado débil. Puede que necesite adquirir un espécimen más fresco, directamente de la criatura.",
@@ -1251,13 +1227,11 @@
   "twilightforest.book.unknown.1": "\u00A78[[Este libro muestra signos de haber sido copiado muchas veces]]\u00A70\n\n_No puedo explicar el campo que rodea esta estructura, pero la magia es poderosa. Si esta maldición es como las otras, entonces la respuesta para desbloquearla está en otra parte. Tal vez hay",
   "twilightforest.book.unknown.2": "algo que he dejado sin hacer, o algún monstruo que aún no he vencido. Tendré que regresar. Volveré a este lugar más tarde, para ver si algo ha cambiado.",
 
-  // Fluid
 
   "fluid.fierymetal": "Fierro fundido",
   "fluid.knightmetal": "Caballero de Metal Fundido",
   "fluid.fiery_essence": "Esencia ardiente",
 
-  // TCon
 
   "material.nagascale": "Escama Naga",
   "material.steeleaf": "Hoja de Acero",
@@ -1278,8 +1252,7 @@
   "modifier.veiled": "Velada",
   "modifier.veiled.desc": "§oComo un espectro!§r\nEl proyectil será invisible.",
 
-  // Immersive Engineering
-  "desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
+    "desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
 
   "item.twilightforest.shader": "Twilit Shader: %s",
   "item.twilightforest.shader_bag": "Twilit %s Shader Bag",
@@ -1309,7 +1282,6 @@
   "item.twilightforest.shader.name.cube_of_annihilation": "Cubo de la Aniquilación",
   "item.twilightforest.shader.name.final_castle": "Castillo Final",
 
-  // Optifine
-  "twilightforest.gui.optifine.title": "AVISO: OPTIFINE DETECTADO",
+    "twilightforest.gui.optifine.title": "AVISO: OPTIFINE DETECTADO",
   "twilightforest.gui.optifine.message": "Antes de continuar, por favor, tenga en cuenta que Optifine es conocido por causar fallos, errores visuales de entidades multiparte y muchos otros problemas.\n\nAntes de informar de un error, por favor, elimine Optifine primero y compruebe de nuevo si el error sigue presente.\n\nLos problemas relacionados con Optifine no pueden ser resueltos por Twilight Forest!\n\nEsta pantalla puede ser desactivada en la configuración del cliente."
 }

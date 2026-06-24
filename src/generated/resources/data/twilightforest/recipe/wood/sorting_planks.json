@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "tag": "twilightforest:sortwood_logs"
-    }
+    "#twilightforest:sortwood_logs"
   ],
   "result": {
     "count": 4,

@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/cube_all",
-  "render_type": "minecraft:cutout",
   "textures": {
     "all": "twilightforest:block/canopy_window"
   }

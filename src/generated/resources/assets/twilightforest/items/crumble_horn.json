@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/crumble_horn"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "twilightforest:tooting_crumble_horn"
+    },
+    "property": "minecraft:using_item"
+  }
+}

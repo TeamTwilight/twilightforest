@@ -1,33 +1,33 @@
 {
   "variants": {
     "facing=east,on_wall=false": {
-      "model": "twilightforest:block/candelabra",
+      "model": "twilightforest:item/candelabra",
       "y": 270
     },
     "facing=east,on_wall=true": {
-      "model": "twilightforest:block/wall_candelabra",
+      "model": "twilightforest:item/candelabra",
       "y": 270
     },
     "facing=north,on_wall=false": {
-      "model": "twilightforest:block/candelabra",
+      "model": "twilightforest:item/candelabra",
       "y": 180
     },
     "facing=north,on_wall=true": {
-      "model": "twilightforest:block/wall_candelabra",
+      "model": "twilightforest:item/candelabra",
       "y": 180
     },
     "facing=south,on_wall=false": {
-      "model": "twilightforest:block/candelabra"
+      "model": "twilightforest:item/candelabra"
     },
     "facing=south,on_wall=true": {
-      "model": "twilightforest:block/wall_candelabra"
+      "model": "twilightforest:item/candelabra"
     },
     "facing=west,on_wall=false": {
-      "model": "twilightforest:block/candelabra",
+      "model": "twilightforest:item/candelabra",
       "y": 90
     },
     "facing=west,on_wall=true": {
-      "model": "twilightforest:block/wall_candelabra",
+      "model": "twilightforest:item/candelabra",
       "y": 90
     }
   }

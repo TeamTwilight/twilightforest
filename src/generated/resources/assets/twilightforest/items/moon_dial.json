@@ -1,0 +1,74 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "entries": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/full"
+        },
+        "threshold": 0.0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/waning_gibbous"
+        },
+        "threshold": 0.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/third_quarter"
+        },
+        "threshold": 1.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/waning_crescent"
+        },
+        "threshold": 2.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/new"
+        },
+        "threshold": 3.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/waxing_crescent"
+        },
+        "threshold": 4.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/first_quarter"
+        },
+        "threshold": 5.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/waxing_gibbous"
+        },
+        "threshold": 6.5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/moon_dial/full"
+        },
+        "threshold": 7.5
+      }
+    ],
+    "property": "minecraft:time",
+    "scale": 8.0,
+    "source": "moon_phase",
+    "wobble": false
+  }
+}

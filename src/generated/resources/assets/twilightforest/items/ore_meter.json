@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/ore_meter"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/ore_meter_active"
+    },
+    "property": "twilightforest:ore_meter_flash"
+  }
+}

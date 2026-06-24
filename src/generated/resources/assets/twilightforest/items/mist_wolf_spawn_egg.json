@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:item/mist_wolf_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -12970991
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1914742
+      }
+    ]
+  }
+}

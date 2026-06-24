@@ -4,12 +4,10 @@
       "model": "twilightforest:block/aurora_slab"
     },
     "type=double": {
-      "model": "twilightforest:block/aurora_slab_double"
+      "model": "twilightforest:block/aurora_pillar"
     },
     "type=top": {
-      "model": "twilightforest:block/aurora_slab",
-      "uvlock": true,
-      "x": 180
+      "model": "twilightforest:block/aurora_slab_top"
     }
   }
 }

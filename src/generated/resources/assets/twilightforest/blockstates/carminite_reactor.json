@@ -4,7 +4,7 @@
       "model": "twilightforest:block/carminite_reactor"
     },
     "active=true": {
-      "model": "twilightforest:block/carminite_reactor_active"
+      "model": "twilightforest:block/carminite_reactor_on"
     }
   }
 }

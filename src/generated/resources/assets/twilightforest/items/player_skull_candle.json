@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/template_skull_candle",
+    "model": {
+      "type": "twilightforest:item/template_skull_candle",
+      "kind": "player"
+    }
+  }
+}

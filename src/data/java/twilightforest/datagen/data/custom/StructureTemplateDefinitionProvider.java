@@ -4,15 +4,16 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinition;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.StructureTemplateDefinition;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<StructureTemplateDefinition> {
+public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<@NotNull StructureTemplateDefinition> {
 	private final Map<Identifier, Map<Identifier, Integer>> poolsForTemplateWeights = new HashMap<>();
 
 	public StructureTemplateDefinitionProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId) {

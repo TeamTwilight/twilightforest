@@ -68,7 +68,6 @@
     },
     "frame": "challenge",
     "icon": {
-      "count": 1,
       "id": "twilightforest:fiery_sword"
     },
     "title": {
@@ -77,13 +76,21 @@
   },
   "requirements": [
     [
-      "fiery_pick",
+      "fiery_pick"
+    ],
+    [
       "fiery_sword"
     ],
     [
-      "fiery_helmet",
-      "fiery_chestplate",
-      "fiery_leggings",
+      "fiery_helmet"
+    ],
+    [
+      "fiery_chestplate"
+    ],
+    [
+      "fiery_leggings"
+    ],
+    [
       "fiery_boots"
     ]
   ],

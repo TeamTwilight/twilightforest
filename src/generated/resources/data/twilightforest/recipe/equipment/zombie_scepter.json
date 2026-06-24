@@ -2,38 +2,39 @@
   "type": "twilightforest:scepter_repair",
   "durability": 9,
   "repair_ingredients": [
-    [
-      {
-        "type": "neoforge:components",
-        "components": {
-          "minecraft:potion_contents": {
-            "potion": "minecraft:strength"
-          }
-        },
-        "items": "minecraft:potion"
-      },
-      {
-        "type": "neoforge:components",
-        "components": {
-          "minecraft:potion_contents": {
-            "potion": "minecraft:long_strength"
-          }
-        },
-        "items": "minecraft:potion"
-      },
-      {
-        "type": "neoforge:components",
-        "components": {
-          "minecraft:potion_contents": {
-            "potion": "minecraft:strong_strength"
-          }
-        },
-        "items": "minecraft:potion"
-      }
-    ],
     {
-      "item": "minecraft:rotten_flesh"
-    }
+      "neoforge:ingredient_type": "neoforge:compound",
+      "children": [
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:strength"
+            }
+          },
+          "items": "minecraft:potion"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:long_strength"
+            }
+          },
+          "items": "minecraft:potion"
+        },
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:strong_strength"
+            }
+          },
+          "items": "minecraft:potion"
+        }
+      ]
+    },
+    "minecraft:rotten_flesh"
   ],
   "scepter": "twilightforest:zombie_scepter"
 }

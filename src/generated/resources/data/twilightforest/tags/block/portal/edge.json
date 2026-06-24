@@ -1,5 +1,7 @@
 {
   "values": [
+    "minecraft:grass_block",
+    "minecraft:mycelium",
     "minecraft:farmland",
     "minecraft:dirt_path",
     "#minecraft:dirt"

@@ -11,7 +11,6 @@ import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
  * Class for using ModelTemplates to reference existing block models.
  */
 public class TFModelTemplates extends ModelTemplates {
-
 	public static final ModelTemplate TWO_LAYER_BLOCK = create("twilightforest:util/two_layer_block_15", TextureSlot.ALL, TFTextureSlot.ALL_2);
 	public static final ModelTemplate TWO_LAYER_BLOCK_DARKER = create("twilightforest:util/two_layer_block_10", TextureSlot.ALL, TFTextureSlot.ALL_2);
 	public static final ModelTemplate THREE_LAYER_BLOCK = create("twilightforest:util/three_layer_block", TextureSlot.ALL, TFTextureSlot.ALL_2, TFTextureSlot.ALL_3);
@@ -33,8 +32,8 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate FORCEFIELD = create("twilightforest:forcefield", TextureSlot.PANE, TextureSlot.PARTICLE).extend().parent(Identifier.withDefaultNamespace("block/block")).ambientOcclusion(false).build();
 	public static final ModelTemplate FULLBRIGHT_BLOCK = create("twilightforest:util/fullbright_cube", TextureSlot.ALL);
 
-	public static final ModelTemplate CTM_NO_BASE = create("twilightforest:ctm_no_base", TextureSlot.PARTICLE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
-	public static final ModelTemplate CTM = create("twilightforest:ctm", TextureSlot.PARTICLE, TFTextureSlot.CTM_BASE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
+	public static final ModelTemplate CTM_NO_BASE = create("minecraft:thin_block", TextureSlot.PARTICLE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
+	public static final ModelTemplate CTM = create("minecraft:thin_block", TextureSlot.PARTICLE, TFTextureSlot.CTM_BASE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
 	public static final ModelTemplate GIANT_BLOCK = create("twilightforest:giant_block", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN).extend().parent(Identifier.withDefaultNamespace("block/block")).customLoader(GiantBlockBuilder::new, builder -> {}).build();
 
 	public static final ModelTemplate BANISTER_CONNECTED = create("twilightforest:banister_connected", "_connected", TextureSlot.TEXTURE);
@@ -43,7 +42,7 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate BANISTER_SHORT_EXTENDED = create("twilightforest:banister_short_extended", "_short_extended", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_TALL = create("twilightforest:banister_tall", "_tall", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_TALL_EXTENDED = create("twilightforest:banister_tall_extended", "_tall_extended", TextureSlot.TEXTURE);
-	public static final ModelTemplate BANISTER_INVENTORY = createItem("twilightforest:banister_inventory", "_inventory", TextureSlot.TEXTURE);
+	public static final ModelTemplate BANISTER_INVENTORY = createItem("twilightforest:banister_item", "_inventory", TextureSlot.TEXTURE);
 	public static final ModelTemplate DRYING_RACK = create("twilightforest:template_drying_rack", TextureSlot.TEXTURE);
 
 	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT = create("twilightforest:util/corrected_door_bottom_left", "_bottom_left", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
@@ -74,11 +73,7 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate TINTED_BLOCK = create("twilightforest:tinted_block", TextureSlot.ALL);
 	public static final ModelTemplate TINTED_SLAB_BOTTOM = create("twilightforest:tinted_slab_bottom", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
 	public static final ModelTemplate TINTED_SLAB_TOP = create("twilightforest:tinted_slab_top", "_top", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
-	public static final ModelTemplate TROPHY_PEDESTAL = create("twilightforest:template_trophy_pedestal", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST);
-	public static final ModelTemplate TROPHY_PEDESTAL_ACTIVE = create("twilightforest:template_trophy_pedestal_active",
-		TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, //base
-		TFTextureSlot.NORTH2, TFTextureSlot.SOUTH2, TFTextureSlot.EAST2, TFTextureSlot.WEST2, //glow
-		TFTextureSlot.NORTH3, TFTextureSlot.SOUTH3, TFTextureSlot.EAST3, TFTextureSlot.WEST3); //boss face
+	public static final ModelTemplate TROPHY_PEDESTAL = create("twilightforest:template_trophy_pedestal", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN, TextureSlot.PARTICLE);
 
 	public static final ModelTemplate GIANT_BLOCK_BASE = createItem("twilightforest:giant_block_base", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
 	public static final ModelTemplate GIANT_BLOCK_GUI = createItem("twilightforest:giant_block_gui", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);

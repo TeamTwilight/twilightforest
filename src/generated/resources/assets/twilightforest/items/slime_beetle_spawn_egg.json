@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:item/slime_beetle_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -15985146
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -10442932
+      }
+    ]
+  }
+}

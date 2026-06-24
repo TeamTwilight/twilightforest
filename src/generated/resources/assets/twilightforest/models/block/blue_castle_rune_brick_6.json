@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/castle_rune_template",
+  "textures": {
+    "all": "twilightforest:block/castle_brick",
+    "rune": "twilightforest:block/castleblock_magic_6"
+  }
+}

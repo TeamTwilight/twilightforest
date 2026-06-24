@@ -19,16 +19,6 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "components": {
-        "twilightforest:flask_contents": {
-          "breakable": false,
-          "doses": 4,
-          "potion": {
-            "potion": "minecraft:strong_harming"
-          }
-        }
-      },
-      "count": 1,
       "id": "twilightforest:brittle_potion_flask"
     },
     "title": {

@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:item/stable_ice_core_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -6176781
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -9436936
+      }
+    ]
+  }
+}

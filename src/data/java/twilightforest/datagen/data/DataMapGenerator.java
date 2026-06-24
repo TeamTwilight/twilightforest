@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import net.neoforged.neoforge.registries.datamaps.builtin.ParrotImitation;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.*;
 import twilightforest.util.datamaps.CrumbledBlock;
@@ -140,7 +141,7 @@ public class DataMapGenerator extends DataMapProvider {
 		this.add2WayTransform(transformation, TFEntities.TOWERWOOD_BORER, EntityType.SILVERFISH);
 		this.add2WayTransform(transformation, TFEntities.MAZE_SLIME, EntityType.SLIME);
 
-        Builder<EntityTransformation, EntityType<?>> zombieBuilder = this.builder(TFDataMaps.OMINOUS_FIRE);
+        Builder<@NotNull EntityTransformation, @NotNull EntityType<?>> zombieBuilder = this.builder(TFDataMaps.OMINOUS_FIRE);
 		this.add1WayTransform(zombieBuilder, EntityType.VILLAGER, EntityType.ZOMBIE_VILLAGER);
 		this.add1WayTransform(zombieBuilder, EntityType.PIGLIN, EntityType.ZOMBIFIED_PIGLIN);
 		this.add1WayTransform(zombieBuilder, EntityType.HORSE, EntityType.ZOMBIE_HORSE);
@@ -201,14 +202,14 @@ public class DataMapGenerator extends DataMapProvider {
 		crumble.add(Blocks.OXIDIZED_COPPER_DOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_COPPER_DOOR, 0.2F), false);
 		crumble.add(Blocks.WEATHERED_COPPER_DOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_COPPER_DOOR, 0.2F), false);
 		crumble.add(Blocks.EXPOSED_COPPER_DOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.COPPER_DOOR, 0.2F), false);
-		crumble.add(Blocks.GRAVEL.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
-		crumble.add(Blocks.DIRT.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
-		crumble.add(Blocks.SAND.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
-		crumble.add(Blocks.RED_SAND.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
-		crumble.add(Blocks.CLAY.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
-		crumble.add(Blocks.ANDESITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
-		crumble.add(Blocks.DIORITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
-		crumble.add(Blocks.GRANITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+		crumble.add(Blocks.GRAVEL.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
+		crumble.add(Blocks.DIRT.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
+		crumble.add(Blocks.SAND.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
+		crumble.add(Blocks.RED_SAND.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
+		crumble.add(Blocks.CLAY.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
+		crumble.add(Blocks.ANDESITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
+		crumble.add(Blocks.DIORITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
+		crumble.add(Blocks.GRANITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.CAVE_AIR, 0.05F), false);
 
 		var magicMap = this.builder(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
 		magicMap.add(TFBiomes.FOREST, new MagicMapBiomeColor(MapColor.PLANT, 1), false);
@@ -244,11 +245,11 @@ public class DataMapGenerator extends DataMapProvider {
 		oreMap.add(Blocks.ANCIENT_DEBRIS.builtInRegistryHolder(), new OreMapOreColor(MapColor.TERRACOTTA_BROWN), false);
 	}
 
-	private void add1WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, EntityType<?> from, EntityType<?> to) {
+	private void add1WayTransform(DataMapProvider.Builder<@NotNull EntityTransformation, @NotNull EntityType<?>> builder, EntityType<?> from, EntityType<?> to) {
 		builder.add(BuiltInRegistries.ENTITY_TYPE.getKey(from), new EntityTransformation(to), false);
 	}
 
-	private void add2WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, Holder<EntityType<?>> tfMob, EntityType<?> vanillaMob) {
+	private void add2WayTransform(DataMapProvider.Builder<@NotNull EntityTransformation, @NotNull EntityType<?>> builder, Holder<@NotNull EntityType<?>> tfMob, EntityType<?> vanillaMob) {
 		builder.add(tfMob, new EntityTransformation(vanillaMob), false);
 		builder.add(BuiltInRegistries.ENTITY_TYPE.getKey(vanillaMob), new EntityTransformation(tfMob.value()), false);
 	}

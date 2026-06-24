@@ -1,8 +1,9 @@
 package twilightforest.datagen.data;
 
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.advancements.AdvancementSubProvider;
@@ -10,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -19,13 +21,12 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.neoforge.common.util.Lazy;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
-import twilightforest.advancements.predicate.ItemColorPredicate;
 import tamaized.beanification.Autowired;
 import twilightforest.block.Experiment115Block;
 import twilightforest.components.item.PotionFlaskComponent;
-import twilightforest.util.AdvancementDataMultiRequirements;
 import twilightforest.init.*;
 
 import java.util.Optional;
@@ -33,7 +34,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class TFAdvancementGenerator implements AdvancementSubProvider {
-
 	private static final Supplier<EntityType<?>[]> TF_KILLABLE = Lazy.of(() -> new EntityType<?>[]{TFEntities.ADHERENT.get(), TFEntities.ARMORED_GIANT.get(), TFEntities.BIGHORN_SHEEP.get(), TFEntities.BLOCKCHAIN_GOBLIN.get(), TFEntities.DWARF_RABBIT.get(), TFEntities.DEATH_TOME.get(), TFEntities.DEER.get(), TFEntities.FIRE_BEETLE.get(), TFEntities.GIANT_MINER.get(), TFEntities.LOWER_GOBLIN_KNIGHT.get(), TFEntities.UPPER_GOBLIN_KNIGHT.get(), TFEntities.HARBINGER_CUBE.get(), TFEntities.HEDGE_SPIDER.get(), TFEntities.HELMET_CRAB.get(), TFEntities.HOSTILE_WOLF.get(), TFEntities.HYDRA.get(), TFEntities.KING_SPIDER.get(), TFEntities.KNIGHT_PHANTOM.get(), TFEntities.KOBOLD.get(), TFEntities.LICH.get(), TFEntities.LICH_MINION.get(), TFEntities.MAZE_SLIME.get(), TFEntities.CARMINITE_GHASTLING.get(), TFEntities.MINOSHROOM.get(), TFEntities.MINOTAUR.get(), TFEntities.MIST_WOLF.get(), TFEntities.MOSQUITO_SWARM.get(), TFEntities.NAGA.get(), TFEntities.PENGUIN.get(), TFEntities.PINCH_BEETLE.get(), TFEntities.PLATEAU_BOSS.get(), TFEntities.QUEST_RAM.get(), TFEntities.RAVEN.get(), TFEntities.REDCAP.get(), TFEntities.REDCAP_SAPPER.get(), TFEntities.SKELETON_DRUID.get(), TFEntities.SLIME_BEETLE.get(), TFEntities.SNOW_GUARDIAN.get(), TFEntities.SNOW_QUEEN.get(), TFEntities.SQUIRREL.get(), TFEntities.STABLE_ICE_CORE.get(), TFEntities.SWARM_SPIDER.get(), TFEntities.TINY_BIRD.get(), TFEntities.CARMINITE_BROODLING.get(), TFEntities.CARMINITE_GHASTGUARD.get(), TFEntities.CARMINITE_GOLEM.get(), TFEntities.TOWERWOOD_BORER.get(), TFEntities.TROLL.get(), TFEntities.UNSTABLE_ICE_CORE.get(), TFEntities.UR_GHAST.get(), TFEntities.BOAR.get(), TFEntities.WINTER_WOLF.get(), TFEntities.WRAITH.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get()});
 
 	private static final Supplier<ItemLike[]> DENDROLOGIST_BLOCKS = Lazy.of(() -> new ItemLike[]{
@@ -50,15 +50,12 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 	});
 
 	@Autowired
-	private static AdvancementDataMultiRequirements advancementDataMultiRequirements;
-
-	@Autowired
 	private static DrinkFromFlaskTrigger.TriggerInstance.DrinkFromFlaskTriggerInstanceFactory drinkFromFlaskTriggerInstanceFactory;
 
 	@Override
 	public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer) {
-		HolderLookup.RegistryLookup<Biome> biomes = registries.lookupOrThrow(Registries.BIOME);
-		HolderLookup.RegistryLookup<Structure> structures = registries.lookupOrThrow(Registries.STRUCTURE);
+		HolderLookup.RegistryLookup<@NotNull Biome> biomes = registries.lookupOrThrow(Registries.BIOME);
+		HolderLookup.RegistryLookup<@NotNull Structure> structures = registries.lookupOrThrow(Registries.STRUCTURE);
 
 		AdvancementHolder root = Advancement.Builder.advancement().display(
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE,
@@ -96,12 +93,19 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.requirements(AdvancementRequirements.Strategy.OR)
 			.save(consumer, "twilightforest:progress_naga");
 
-		AdvancementHolder lich = advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(naga).display(
+		AdvancementHolder lich = Advancement.Builder.advancement()
+			.parent(naga)
+			.display(
 				TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE,
 				Component.translatable("advancement.twilightforest.kill_lich"),
 				Component.translatable("advancement.twilightforest.kill_lich.desc",
 					Component.translatable(TFEntities.LICH.get().getDescriptionId())),
-				null, AdvancementType.GOAL, true, true, false))
+				null,
+				AdvancementType.GOAL,
+				true,
+				true,
+				false
+			)
 			.addCriterion("kill_lich", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.LICH.get())))
 			.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.LICH_TROPHY))
 			.addCriterion("lifedrain_scepter", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.LIFEDRAIN_SCEPTER))
@@ -109,9 +113,8 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.addCriterion("zombie_scepter", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ZOMBIE_SCEPTER))
 			.addCriterion("shield_scepter", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FORTIFICATION_SCEPTER))
 			.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.LICH.get())))
-			.and()
 			.addCriterion("kill_naga", this.advancementTrigger(naga))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_lich");
 
 		AdvancementHolder minoshroom = Advancement.Builder.advancement().parent(lich).display(
@@ -124,18 +127,24 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_labyrinth");
 
-		AdvancementHolder hydra = advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(minoshroom).display(
+		AdvancementHolder hydra = Advancement.Builder.advancement()
+			.parent(minoshroom)
+			.display(
 				TFBlocks.HYDRA_TROPHY,
 				Component.translatable("advancement.twilightforest.kill_hydra"),
 				Component.translatable("advancement.twilightforest.kill_hydra.desc",
 					Component.translatable(TFEntities.HYDRA.get().getDescriptionId())),
-				null, AdvancementType.GOAL, true, true, false))
+				null,
+				AdvancementType.GOAL,
+				true,
+				true,
+				false
+			)
 			.addCriterion("kill_hydra", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.HYDRA.get())))
 			.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.HYDRA_TROPHY))
 			.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.HYDRA.get())))
-			.and()
 			.addCriterion("stroganoff", this.advancementTrigger(minoshroom))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_hydra");
 
 		AdvancementHolder trophy_pedestal = Advancement.Builder.advancement().parent(lich).display(
@@ -148,16 +157,22 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_trophy_pedestal");
 
-		AdvancementHolder knights = advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(trophy_pedestal).display(
+		AdvancementHolder knights = Advancement.Builder.advancement()
+			.parent(trophy_pedestal)
+			.display(
 				TFBlocks.KNIGHT_PHANTOM_TROPHY,
 				Component.translatable("advancement.twilightforest.progress_knights"),
 				Component.translatable("advancement.twilightforest.progress_knights.desc"),
-				null, AdvancementType.GOAL, true, true, false))
+				null,
+				AdvancementType.GOAL,
+				true,
+				true,
+				false
+			)
 			.addCriterion("all_knights", SimpleAdvancementTrigger.TriggerInstance.killAllPhantoms())
 			.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.KNIGHT_PHANTOM_TROPHY))
-			.and()
 			.addCriterion("previous_progression", this.advancementTrigger(trophy_pedestal))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_knights");
 
 		AdvancementHolder trap = Advancement.Builder.advancement().parent(knights).display(
@@ -171,47 +186,65 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.addCriterion("activate_ghast_trap", SimpleAdvancementTrigger.TriggerInstance.activateGhastTrap())
 			.save(consumer, "twilightforest:ghast_trap");
 
-		AdvancementHolder ur_ghast = advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(trap).display(
+		AdvancementHolder ur_ghast = Advancement.Builder.advancement()
+			.parent(trap)
+			.display(
 				TFBlocks.UR_GHAST_TROPHY,
 				Component.translatable("advancement.twilightforest.progress_ur_ghast"),
 				Component.translatable("advancement.twilightforest.progress_ur_ghast.desc",
 					Component.translatable(TFEntities.UR_GHAST.get().getDescriptionId())),
-				null, AdvancementType.GOAL, true, true, false))
+				null,
+				AdvancementType.GOAL,
+				true,
+				true,
+				false
+			)
 			.addCriterion("ghast", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.UR_GHAST.get())))
 			.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.UR_GHAST_TROPHY))
 			.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.UR_GHAST.get())))
-			.and()
 			.addCriterion("previous_progression", this.advancementTrigger(knights))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_ur_ghast");
 
-		AdvancementHolder yeti = advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(lich).display(
+		AdvancementHolder yeti = Advancement.Builder.advancement()
+			.parent(lich)
+			.display(
 				TFItems.ALPHA_YETI_FUR,
 				Component.translatable("advancement.twilightforest.progress_yeti"),
 				Component.translatable("advancement.twilightforest.progress_yeti.desc",
 					Component.translatable(TFEntities.ALPHA_YETI.get().getDescriptionId())),
-				null, AdvancementType.GOAL, true, true, false))
+				null,
+				AdvancementType.GOAL,
+				true,
+				true,
+				false
+			)
 			.addCriterion("yeti", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.ALPHA_YETI.get())))
 			.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.ALPHA_YETI_TROPHY))
 			.addCriterion("fur", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ALPHA_YETI_FUR))
 			.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.ALPHA_YETI.get())))
-			.and()
 			.addCriterion("previous_progression", this.advancementTrigger(lich))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_yeti");
 
-		AdvancementHolder snow_queen = advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(yeti).display(
+		AdvancementHolder snow_queen = Advancement.Builder.advancement()
+			.parent(yeti)
+			.display(
 				TFBlocks.SNOW_QUEEN_TROPHY,
 				Component.translatable("advancement.twilightforest.progress_glacier"),
 				Component.translatable("advancement.twilightforest.progress_glacier.desc",
 					Component.translatable(TFEntities.SNOW_QUEEN.get().getDescriptionId())),
-				null, AdvancementType.GOAL, true, true, false))
+				null,
+				AdvancementType.GOAL,
+				true,
+				true,
+				false
+			)
 			.addCriterion("queen", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.SNOW_QUEEN.get())))
 			.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.SNOW_QUEEN_TROPHY))
 			.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(registries.lookupOrThrow(Registries.ENTITY_TYPE), TFEntities.SNOW_QUEEN.get())))
-			.and()
 			.addCriterion("previous_progression", this.advancementTrigger(yeti))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.save(consumer, "twilightforest:progress_glacier");
 
 		AdvancementHolder merge = Advancement.Builder.advancement().parent(lich).display(
@@ -396,27 +429,28 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.requirements(AdvancementRequirements.Strategy.OR)
 			.save(consumer, "twilightforest:hedge");
 
-		advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(root).display(
+		Advancement.Builder.advancement()
+			.parent(root)
+			.display(
 				Items.BOWL,
 				Component.translatable("advancement.twilightforest.twilight_dining"),
 				Component.translatable("advancement.twilightforest.twilight_dining.desc"),
-				null, AdvancementType.CHALLENGE, true, true, false))
+				null,
+				AdvancementType.CHALLENGE,
+				true,
+				true,
+				false
+			)
 			.addCriterion("raw_venison", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.RAW_VENISON))
 			.addCriterion("cooked_venison", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.COOKED_VENISON))
-			.and()
 			.addCriterion("raw_meef", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.RAW_MEEF))
 			.addCriterion("cooked_meef", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.COOKED_MEEF))
-			.and()
 			.addCriterion("meef_stroganoff", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.MEEF_STROGANOFF))
-			.and()
 			.addCriterion("hydra_chop", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.HYDRA_CHOP))
-			.and()
 			.addCriterion("maze_wafer", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.MAZE_WAFER))
-			.and()
 			.addCriterion("experiment_115", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.EXPERIMENT_115))
-			.and()
 			.addCriterion("torchberries", ConsumeItemTrigger.TriggerInstance.usedItem(registries.lookupOrThrow(Registries.ITEM), TFItems.TORCHBERRIES))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.rewards(AdvancementRewards.Builder.experience(75))
 			.save(consumer, "twilightforest:twilight_dinner");
 
@@ -443,7 +477,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.save(consumer, "twilightforest:lich_scepters");
 
 		Advancement.Builder.advancement().parent(lich).display(
-				this.flaskWithHarming(),
+				TFItems.BRITTLE_FLASK.get(),
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist"),
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
@@ -470,19 +504,25 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.addCriterion("hydra_chop", SimpleAdvancementTrigger.TriggerInstance.eatHydraChop())
 			.save(consumer, "twilightforest:hydra_chop");
 
-		advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(hydra).display(
+		Advancement.Builder.advancement()
+			.parent(hydra)
+			.display(
 				TFItems.FIERY_SWORD,
 				Component.translatable("advancement.twilightforest.fiery_set"),
 				Component.translatable("advancement.twilightforest.fiery_set.desc"),
-				null, AdvancementType.CHALLENGE, true, true, false))
+				null,
+				AdvancementType.CHALLENGE,
+				true,
+				true,
+				false
+			)
 			.addCriterion("fiery_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_PICKAXE))
 			.addCriterion("fiery_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_SWORD))
-			.and()
 			.addCriterion("fiery_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_HELMET))
 			.addCriterion("fiery_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_CHESTPLATE))
 			.addCriterion("fiery_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_LEGGINGS))
 			.addCriterion("fiery_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_BOOTS))
-			.requirements()
+			.requirements(AdvancementRequirements.Strategy.AND)
 			.rewards(AdvancementRewards.Builder.experience(75))
 			.save(consumer, "twilightforest:fiery_set");
 
@@ -495,7 +535,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.save(consumer, "twilightforest:experiment_115");
 
 		Advancement.Builder.advancement().parent(e115).display(
-				e115Tag("think"),
+				TFItems.EXPERIMENT_115.get(),
 				Component.translatable("advancement.twilightforest.experiment_115_3"),
 				Component.translatable("advancement.twilightforest.experiment_115_3.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
@@ -503,22 +543,23 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.save(consumer, "twilightforest:experiment_115_115");
 
 		Advancement.Builder.advancement().parent(e115).display(
-				e115Tag("full"),
+				TFItems.EXPERIMENT_115.get(),
 				Component.translatable("advancement.twilightforest.experiment_115_2"),
 				Component.translatable("advancement.twilightforest.experiment_115_2.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
 			.addCriterion("place_complete_e115", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(registries.lookupOrThrow(Registries.BLOCK), TFBlocks.EXPERIMENT_115.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Experiment115Block.REGENERATE, true))), ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), Items.REDSTONE)))
 			.save(consumer, "twilightforest:experiment_115_self_replenishing");
 
+		DataComponentMatchers itemPredicate = DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build();
 		Advancement.Builder.advancement().parent(yeti).display(
 						TFItems.ARCTIC_CHESTPLATE.get(),
 						Component.translatable("advancement.twilightforest.arctic_dyed"),
 						Component.translatable("advancement.twilightforest.arctic_dyed.desc"),
 						null, AdvancementType.TASK, true, true, false)
-				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
+				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).withComponents(itemPredicate)))
+				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).withComponents(itemPredicate)))
+				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).withComponents(itemPredicate)))
+				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).withComponents(itemPredicate)))
 				.rewards(AdvancementRewards.Builder.experience(25))
 				.save(consumer, "twilightforest:arctic_armor_dyed");
 
@@ -542,18 +583,6 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 
 	}
 
-	private ItemStack e115Tag(String key) {
-		ItemStack itemstack = new ItemStack(TFItems.EXPERIMENT_115.get());
-		itemstack.set(TFDataComponents.EXPERIMENT_115_VARIANTS, key);
-		return itemstack;
-	}
-
-	private ItemStack flaskWithHarming() {
-		ItemStack itemstack = new ItemStack(TFItems.BRITTLE_FLASK.get());
-		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, new PotionFlaskComponent(new PotionContents(Potions.STRONG_HARMING), 4, 0, false));
-		return itemstack;
-	}
-
 	private Advancement.Builder addTFKillable(HolderLookup.Provider registries, Advancement.Builder builder) {
 		for (EntityType<?> entity : TF_KILLABLE.get()) {
 			builder.addCriterion(EntityType.getKey(entity).getPath(),
@@ -570,11 +599,11 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 		return builder;
 	}
 
-	private Criterion<PlayerTrigger.TriggerInstance> advancementTrigger(AdvancementHolder advancement) {
+	private Criterion<PlayerTrigger.@NotNull TriggerInstance> advancementTrigger(AdvancementHolder advancement) {
 		return this.advancementTrigger(advancement.id().getPath());
 	}
 
-	private Criterion<PlayerTrigger.TriggerInstance> advancementTrigger(String name) {
+	private Criterion<PlayerTrigger.@NotNull TriggerInstance> advancementTrigger(String name) {
 		return CriteriaTriggers.TICK.createCriterion(new PlayerTrigger.TriggerInstance(Optional.of(ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()))));
 	}
 }

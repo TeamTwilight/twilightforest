@@ -1,6 +1,6 @@
 package twilightforest.datagen.data.loot;
 
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -30,6 +31,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
@@ -52,7 +54,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	@Override
 	protected void generate() {
-		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		HolderLookup.RegistryLookup<@NotNull Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
 		dropSelf(TFBlocks.TOWERWOOD.get());
 		dropSelf(TFBlocks.ENCASED_TOWERWOOD.get());
@@ -130,6 +132,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get());
+		dropSelf(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get());
+		dropSelf(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get());
+
+
 		dropSelf(TFBlocks.KNIGHTMETAL_BLOCK.get());
 		dropSelf(TFBlocks.IRONWOOD_BLOCK.get());
 		dropSelf(TFBlocks.FIERY_BLOCK.get());
@@ -161,7 +167,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.add(
 						LootItem.lootTableItem(TFBlocks.MASON_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(DataComponents.CUSTOM_NAME)
 									.include(DataComponents.CONTAINER)
 									.include(DataComponents.LOCK)
@@ -180,7 +186,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.add(
 						LootItem.lootTableItem(TFBlocks.FIREFLY_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(TFDataComponents.JAR_LID.get())
 							)
 					)
@@ -195,7 +201,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.add(
 						LootItem.lootTableItem(TFBlocks.CICADA_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(TFDataComponents.JAR_LID.get())
 							)
 					)
@@ -258,13 +264,13 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 				.include(DataComponents.PROFILE)
 				.include(DataComponents.NOTE_BLOCK_SOUND)
 				.include(DataComponents.CUSTOM_NAME)
 		));
 		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 				.include(DataComponents.PROFILE)
 				.include(DataComponents.NOTE_BLOCK_SOUND)
 				.include(DataComponents.CUSTOM_NAME)
@@ -590,9 +596,43 @@ public class BlockLootTables extends BlockLootSubProvider {
 		ominousCandle(TFBlocks.OMINOUS_GREEN_CANDLE);
 		ominousCandle(TFBlocks.OMINOUS_RED_CANDLE);
 		ominousCandle(TFBlocks.OMINOUS_BLACK_CANDLE);
+
+		add(TFBlocks.IRON_OREBERRY_BUSH.get(), createSingleItemTable(TFItems.IRON_BERRY.get().asItem()));
+		add(TFBlocks.COPPER_OREBERRY_BUSH.get(), createSingleItemTable(TFItems.COPPER_BERRY.get().asItem()));
+		add(TFBlocks.GOLD_OREBERRY_BUSH.get(), createSingleItemTable(TFItems.GOLD_BERRY.get().asItem()));
+		add(TFBlocks.ESSENCE_OREBERRY_BUSH.get(), createSingleItemTable(TFItems.ESSENCE_BERRY.get().asItem()));
+		add(TFBlocks.RASPBERRY_BUSH.get(), createSingleItemTable(TFItems.RASPBERRY.get().asItem()));
+		add(TFBlocks.BLACKBERRY_BUSH.get(), createSingleItemTable(TFItems.BLACKBERRY.get().asItem()));
+		add(TFBlocks.BLIGHTBERRY_BUSH.get(), createSingleItemTable(TFItems.BLIGHTBERRY.get().asItem()));
+		add(TFBlocks.BLUEBERRY_BUSH.get(), createSingleItemTable(TFItems.BLUEBERRY.get().asItem()));
+		add(TFBlocks.DUSKBERRY_BUSH.get(), createSingleItemTable(TFItems.DUSKBERRY.get().asItem()));
+		add(TFBlocks.MALOBERRY_BUSH.get(), createSingleItemTable(TFItems.MALOBERRY.get().asItem()));
+		add(TFBlocks.SKYBERRY_BUSH.get(), createSingleItemTable(TFItems.SKYBERRY.get().asItem()));
+		add(TFBlocks.STINGBERRY_BUSH.get(), createSingleItemTable(TFItems.STINGBERRY.get().asItem()));
+
+		dropSelf(TFBlocks.ACACIA_DRYING_RACK.get());
+		dropSelf(TFBlocks.BAMBOO_DRYING_RACK.get());
+		dropSelf(TFBlocks.BIRCH_DRYING_RACK.get());
+		dropSelf(TFBlocks.CANOPY_DRYING_RACK.get());
+		dropSelf(TFBlocks.CHERRY_DRYING_RACK.get());
+		dropSelf(TFBlocks.CRIMSON_DRYING_RACK.get());
+		dropSelf(TFBlocks.DARK_DRYING_RACK.get());
+		dropSelf(TFBlocks.DARK_OAK_DRYING_RACK.get());
+		dropSelf(TFBlocks.JUNGLE_DRYING_RACK.get());
+		dropSelf(TFBlocks.MANGROVE_DRYING_RACK.get());
+		dropSelf(TFBlocks.MINING_DRYING_RACK.get());
+		dropSelf(TFBlocks.OAK_DRYING_RACK.get());
+		dropSelf(TFBlocks.PALE_OAK_DRYING_RACK.get());
+		dropSelf(TFBlocks.SORTING_DRYING_RACK.get());
+		dropSelf(TFBlocks.SPRUCE_DRYING_RACK.get());
+		dropSelf(TFBlocks.TIME_DRYING_RACK.get());
+		dropSelf(TFBlocks.TRANSFORMATION_DRYING_RACK.get());
+		dropSelf(TFBlocks.TWILIGHT_OAK_DRYING_RACK.get());
+		dropSelf(TFBlocks.VANGROVE_DRYING_RACK.get());
+		dropSelf(TFBlocks.WARPED_DRYING_RACK.get());
 	}
 
-	private void registerLeavesNoSapling(Block leaves, HolderLookup.RegistryLookup<Enchantment> registrylookup) {
+	private void registerLeavesNoSapling(Block leaves, HolderLookup.RegistryLookup<@NotNull Enchantment> registrylookup) {
 		LootPoolEntryContainer.Builder<?> sticks = applyExplosionDecay(leaves, LootItem.lootTableItem(Items.STICK)
 			.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
 			.when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
@@ -600,7 +640,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	}
 
 	private LootTable.Builder hollowLog(Block log) {
-		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		HolderLookup.RegistryLookup<@NotNull Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 		return LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 				.add(LootItem.lootTableItem(log.asItem()).when(this.hasSilkTouch()).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))))
@@ -621,7 +661,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	}
 
 	private LootTable.Builder verticalHollowLog(Block log) {
-		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		HolderLookup.RegistryLookup<@NotNull Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 		return LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 				.add(LootItem.lootTableItem(log.asItem()).when(this.hasSilkTouch()).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
@@ -629,7 +669,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	// [VanillaCopy] super.droppingWithChancesAndSticks, but non-silk touch parameter can be an item instead of a block
 	private LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, float... nonSilkFortune) {
-		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		HolderLookup.RegistryLookup<@NotNull Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when((HAS_SHEARS.or(this.hasSilkTouch())).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
 	}
 
@@ -638,7 +678,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
-					.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))));
+					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))));
 	}
 
 	private static LootTable.Builder casketInfo(Block block) {
@@ -646,7 +686,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
-					.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))
+					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))
 					.apply(CopyBlockState.copyState(block).copy(KeepsakeCasketBlock.BREAKAGE))));
 	}
 
@@ -729,7 +769,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer)))).when(HAS_SHEARS))));
 	}
 
-	protected void ominousCandle(DeferredBlock<OminousCandleBlock> block) {
+	protected void ominousCandle(DeferredBlock<@NotNull OminousCandleBlock> block) {
 		this.add(block.get(), LootTable.lootTable()
 			.withPool(
 				LootPool.lootPool()
@@ -764,12 +804,21 @@ public class BlockLootTables extends BlockLootSubProvider {
 		return createSelfDropDispatchTable(block, HAS_SHEARS.or(this.hasSilkTouch()), builder);
 	}
 
+	@Override
 	protected LootTable.Builder createShearsOnlyDrop(ItemLike p_124287_) {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_SHEARS).add(LootItem.lootTableItem(p_124287_)));
 	}
 
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
-		return TFBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::value).collect(Collectors.toList());
+		return TFBlocks.BLOCKS.getEntries().stream()
+			.map(DeferredHolder::value)
+			.filter(block ->
+				block.asItem() != net.minecraft.world.item.Items.AIR ||
+					block instanceof FlowerPotBlock ||
+					block == TFBlocks.OMINOUS_FIRE.get() ||
+					block.getDescriptionId().contains("ominous")
+			)
+			.collect(Collectors.toList());
 	}
 }

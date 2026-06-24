@@ -80,7 +80,6 @@
     },
     "frame": "goal",
     "icon": {
-      "count": 1,
       "id": "twilightforest:alpha_yeti_fur"
     },
     "title": {
@@ -89,9 +88,15 @@
   },
   "requirements": [
     [
-      "yeti",
-      "trophy",
-      "fur",
+      "yeti"
+    ],
+    [
+      "trophy"
+    ],
+    [
+      "fur"
+    ],
+    [
       "was_in_fight"
     ],
     [

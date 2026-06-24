@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/keepsake_casket",
+    "model": {
+      "type": "twilightforest:item/keepsake_casket"
+    }
+  }
+}

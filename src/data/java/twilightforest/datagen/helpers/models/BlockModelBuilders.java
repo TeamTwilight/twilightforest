@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.client.model.block.CompositeBlockModel;
 import net.neoforged.neoforge.client.model.generators.blockstate.CompositeBlockStateModelBuilder;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
@@ -35,10 +34,7 @@ import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
 import twilightforest.client.renderer.special.TrophySpecialRenderer;
-import twilightforest.datagen.assets.models.TFExtendedModelTemplates;
-import twilightforest.datagen.assets.models.TFModelTemplates;
-import twilightforest.datagen.assets.models.TFTextureMapping;
-import twilightforest.datagen.assets.models.TFTextureSlot;
+import twilightforest.datagen.assets.models.*;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.HugeLilypadPiece;
 import twilightforest.enums.NagastoneVariant;
@@ -63,12 +59,12 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void generateTrophy(TrophyBlock floor, TrophyWallBlock wall, ItemModel.Unbaked backplate, String existingTrophy) {
-		MultiVariant template = plainVariant(ModelLocationUtils.decorateBlockModelLocation("skull"));
+		MultiVariant template = plainVariant(Identifier.withDefaultNamespace("block/skull"));
 		this.blockStateOutput.accept(createSimpleBlock(floor, template));
 		this.blockStateOutput.accept(createSimpleBlock(wall, template));
 		Function<ItemDisplayContext, ItemModel.Unbaked> itemTrophy = ctx -> ItemModelUtils.specialModel(ModelLocationUtils.decorateItemModelLocation("twilightforest:" + existingTrophy), new TrophySpecialRenderer.Unbaked(floor.getVariant(), ctx));
 
-		List<SelectItemModel.SwitchCase<ItemDisplayContext>> cases = new ArrayList<>();
+		List<SelectItemModel.SwitchCase<@NotNull ItemDisplayContext>> cases = new ArrayList<>();
 		for (ItemDisplayContext context : ItemDisplayContext.values()) {
 			if (context == ItemDisplayContext.GUI) {
 				cases.add(new SelectItemModel.SwitchCase<>(List.of(context), ItemModelUtils.composite(backplate, itemTrophy.apply(context))));
@@ -105,30 +101,28 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void giantBlock(Block block, TextureMapping mapping) {
-		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.GIANT_BLOCK.create(block, mapping, this.modelOutput))));
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE.create(block, mapping, this.modelOutput))));
 		this.generateGiantBlockItem(block, mapping);
 	}
 
 	public void generateGiantBlockItem(Block giantBlock, TextureMapping mapping) {
-		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_BLOCK_BASE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput));
-		ItemModel.Unbaked gui = ItemModelUtils.plainModel(TFModelTemplates.GIANT_BLOCK_GUI.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput));
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(ModelTemplates.CUBE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput));
+		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ModelTemplates.CUBE.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput));
 		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 
 	public void giantBlock(Block block, TextureMapping mapping, int tint) {
-		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.GIANT_BLOCK.create(block, mapping, this.modelOutput))));
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE.create(block, mapping, this.modelOutput))));
 		this.generateGiantBlockItem(block, mapping, tint);
 	}
 
 	public void generateGiantBlockItem(Block giantBlock, TextureMapping mapping, int tint) {
-		ItemModel.Unbaked base = ItemModelUtils.tintedModel(TFModelTemplates.GIANT_BLOCK_BASE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
-		ItemModel.Unbaked gui = ItemModelUtils.tintedModel(TFModelTemplates.GIANT_BLOCK_GUI.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
+		ItemModel.Unbaked base = ItemModelUtils.tintedModel(TFModelTemplates.CUBE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
+		ItemModel.Unbaked gui = ItemModelUtils.tintedModel(TFModelTemplates.CUBE.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
 		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 
 	public void nagaStone() {
-		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get());
-
 		TextureMapping solidMapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
 			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_long_side")))
 			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/nagastone_bottom_long")))
@@ -180,7 +174,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), "_mossy");
 		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), "_weathered");
 
-		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), ModelLocationUtils.decorateBlockModelLocation("block/etched_nagastone_left"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
 		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
 		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
 		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
@@ -369,7 +363,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	public void terrorcotta() {
 		this.rotationallySpecialColumn(TFBlocks.TERRORCOTTA_ARCS.get());
 
-		PropertyDispatch.C1<MultiVariant, Direction> directionDispach = PropertyDispatch.initial(GlazedTerracottaBlock.FACING);
+		PropertyDispatch.C1<@NotNull MultiVariant, @NotNull Direction> directionDispach = PropertyDispatch.initial(GlazedTerracottaBlock.FACING);
 		boolean firstCurve = true;
 		for (Direction direction : new Direction[]{Direction.SOUTH, Direction.NORTH, Direction.WEST, Direction.EAST}) {
 			Identifier location = this.makeTerrorcottaCurvesModel("terrorcotta_curves", direction.get2DDataValue());
@@ -406,7 +400,6 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotation * 90)), mapping, this.modelOutput);
 	}
 
-	@NotNull
 	private static String curvesSuffixForFacing(int blockRotation, Direction blockFace) {
 		int rotationForFace = switch (blockFace) {
 			case UP -> 2 - blockRotation;
@@ -507,7 +500,6 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		}
 	}
 
-	@NotNull
 	private static String linesSuffixForFacing(boolean blockRotation, Direction blockFace) {
 		Vec3i normal = blockFace.getUnitVec3i();
 		int axisDirection = normal.getX() + normal.getY() + normal.getZ();
@@ -663,142 +655,140 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		));
 	}
 
-	public void forcefield(Block block, int tint) {
-		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.FORCEFIELD.extend().customLoader(ForceFieldModelBuilder::new, builder -> {
-			builder.tintAll(0).brightnessOverride(15).disableShade()
-			//WEST
-			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.WEST, true).from(0, 7, 7).to(7, 9, 9).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").end()
-				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").end().end()
+	public void forcefield(Block block) {
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.STAINED_GLASS_PANE_NOSIDE.extend().customLoader(ForceFieldModelBuilder::new, builder -> builder.tintAll(0).brightnessOverride(15).disableShade()
+		//WEST
+		.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.WEST, true).from(0, 7, 7).to(7, 9, 9).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").end()
+			.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").end().end()
 
-				//EAST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.EAST, true).from(9, 7, 7).to(16, 9, 9).face(Direction.EAST).cullface(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").end()
-				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").end().end()
+			//EAST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.EAST, true).from(9, 7, 7).to(16, 9, 9).face(Direction.EAST).cullface(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").end()
+			.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").end().end()
 
-				//DOWN
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN, true).from(7, 0, 7).to(9, 7, 9).face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").end()
-				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").end().end()
+			//DOWN
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN, true).from(7, 0, 7).to(9, 7, 9).face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").end()
+			.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").end().end()
 
-				//UP
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP, true).from(7, 9, 7).to(9, 16, 9).face(Direction.UP).cullface(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").end()
-				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").end().end()
+			//UP
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP, true).from(7, 9, 7).to(9, 16, 9).face(Direction.UP).cullface(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").end()
+			.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").end().end()
 
-				//NORTH
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH, true).from(7, 7, 0).to(9, 9, 7).face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").end()
-				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").end().end()
+			//NORTH
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH, true).from(7, 7, 0).to(9, 9, 7).face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").end()
+			.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").end().end()
 
-				//SOUTH
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH, true).from(7, 7, 9).to(9, 9, 16).face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").end()
-				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").end().end()
+			//SOUTH
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH, true).from(7, 7, 9).to(9, 9, 16).face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").end()
+			.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").end().end()
 
-				//DOWN WEST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_WEST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.WEST).from(0, 0, 7).to(7, 7, 9)
-					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(0, 7, 7, 9).end()
-					.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 0, 9, 7).end()
-					.face(Direction.NORTH).uvs(0, 0, 7, 7).end()
-					.face(Direction.SOUTH).uvs(9, 0, 16, 7).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.WEST).uvs(7, 0, 9, 7).texture("#pane").end()
-				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.DOWN).uvs(0, 7, 7, 9).texture("#pane").end().end()
+			//DOWN WEST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_WEST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.WEST).from(0, 0, 7).to(7, 7, 9)
+				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(0, 7, 7, 9).end()
+				.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 0, 9, 7).end()
+				.face(Direction.NORTH).uvs(0, 0, 7, 7).end()
+				.face(Direction.SOUTH).uvs(9, 0, 16, 7).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.WEST).uvs(7, 0, 9, 7).texture("#pane").end()
+			.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.DOWN).uvs(0, 7, 7, 9).texture("#pane").end().end()
 
-				//DOWN EAST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_EAST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.EAST).from(9, 0, 7).to(16, 7, 9)
-					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(9, 7, 16, 9).end()
-					.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 0, 9, 7).end()
-					.face(Direction.NORTH).uvs(9, 0, 16, 7).end()
-					.face(Direction.SOUTH).uvs(0, 0, 7, 7).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.EAST).uvs(7, 0, 9, 7).texture("#pane").end()
-				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.DOWN).uvs(9, 7, 16, 9).texture("#pane").end().end()
+			//DOWN EAST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_EAST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.EAST).from(9, 0, 7).to(16, 7, 9)
+				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(9, 7, 16, 9).end()
+				.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 0, 9, 7).end()
+				.face(Direction.NORTH).uvs(9, 0, 16, 7).end()
+				.face(Direction.SOUTH).uvs(0, 0, 7, 7).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.EAST).uvs(7, 0, 9, 7).texture("#pane").end()
+			.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.DOWN).uvs(9, 7, 16, 9).texture("#pane").end().end()
 
-				//DOWN NORTH
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_NORTH, true).from(7, 0, 0).to(9, 7, 7).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.NORTH)
-					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 0, 9, 7).end()
-					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 0, 9, 7).end()
-					.face(Direction.WEST).uvs(0, 0, 7, 7).end()
-					.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.NORTH).uvs(7, 0, 9, 7).texture("#pane").end()
-				.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.DOWN).uvs(7, 0, 9, 7).texture("#pane").end().end()
+			//DOWN NORTH
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_NORTH, true).from(7, 0, 0).to(9, 7, 7).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.NORTH)
+				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 0, 9, 7).end()
+				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 0, 9, 7).end()
+				.face(Direction.WEST).uvs(0, 0, 7, 7).end()
+				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.NORTH).uvs(7, 0, 9, 7).texture("#pane").end()
+			.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.DOWN).uvs(7, 0, 9, 7).texture("#pane").end().end()
 
-				//DOWN SOUTH
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_SOUTH, true).from(7, 0, 9).to(9, 7, 16).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.SOUTH)
-					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 9, 9, 16).end()
-					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 0, 9, 7).end()
-					.face(Direction.WEST).uvs(9, 0, 16, 7).end()
-					.face(Direction.EAST).uvs(0, 0, 7, 7).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.SOUTH).uvs(7, 0, 9, 7).texture("#pane").end()
-				.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.DOWN).uvs(7, 9, 9, 16).texture("#pane").end().end()
+			//DOWN SOUTH
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_SOUTH, true).from(7, 0, 9).to(9, 7, 16).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.SOUTH)
+				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 9, 9, 16).end()
+				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 0, 9, 7).end()
+				.face(Direction.WEST).uvs(9, 0, 16, 7).end()
+				.face(Direction.EAST).uvs(0, 0, 7, 7).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.SOUTH).uvs(7, 0, 9, 7).texture("#pane").end()
+			.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.DOWN).uvs(7, 9, 9, 16).texture("#pane").end().end()
 
-				//UP WEST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_WEST, true).from(0, 9, 7).to(7, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.WEST)
-					.face(Direction.UP).cullface(Direction.UP).uvs(0, 7, 7, 9).end()
-					.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 9, 9, 16).end()
-					.face(Direction.NORTH).uvs(0, 9, 7, 16).end()
-					.face(Direction.SOUTH).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.WEST).uvs(7, 9, 9, 16).texture("#pane").end()
-				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.UP).uvs(0, 7, 7, 9).texture("#pane").end().end()
+			//UP WEST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_WEST, true).from(0, 9, 7).to(7, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.WEST)
+				.face(Direction.UP).cullface(Direction.UP).uvs(0, 7, 7, 9).end()
+				.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 9, 9, 16).end()
+				.face(Direction.NORTH).uvs(0, 9, 7, 16).end()
+				.face(Direction.SOUTH).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.WEST).uvs(7, 9, 9, 16).texture("#pane").end()
+			.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.UP).uvs(0, 7, 7, 9).texture("#pane").end().end()
 
-				//UP EAST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_EAST, true).from(9, 9, 7).to(16, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.EAST)
-					.face(Direction.UP).cullface(Direction.UP).uvs(9, 7, 16, 9).end()
-					.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 9, 9, 16).end()
-					.face(Direction.NORTH).uvs(9, 9, 16, 16).end()
-					.face(Direction.SOUTH).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.EAST).uvs(7, 9, 9, 16).texture("#pane").end()
-				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.UP).uvs(9, 7, 16, 9).texture("#pane").end().end()
+			//UP EAST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_EAST, true).from(9, 9, 7).to(16, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.EAST)
+				.face(Direction.UP).cullface(Direction.UP).uvs(9, 7, 16, 9).end()
+				.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 9, 9, 16).end()
+				.face(Direction.NORTH).uvs(9, 9, 16, 16).end()
+				.face(Direction.SOUTH).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.EAST).uvs(7, 9, 9, 16).texture("#pane").end()
+			.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.UP).uvs(9, 7, 16, 9).texture("#pane").end().end()
 
-				//UP NORTH
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_NORTH, true).from(7, 9, 0).to(9, 16, 7).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.NORTH)
-					.face(Direction.UP).cullface(Direction.UP).uvs(7, 0, 9, 7).end()
-					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 9, 9, 16).end()
-					.face(Direction.WEST).uvs(0, 9, 7, 16).end()
-					.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.NORTH).uvs(7, 9, 9, 16).texture("#pane").end()
-				.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.UP).uvs(7, 0, 9, 7).texture("#pane").end().end()
+			//UP NORTH
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_NORTH, true).from(7, 9, 0).to(9, 16, 7).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.NORTH)
+				.face(Direction.UP).cullface(Direction.UP).uvs(7, 0, 9, 7).end()
+				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 9, 9, 16).end()
+				.face(Direction.WEST).uvs(0, 9, 7, 16).end()
+				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.NORTH).uvs(7, 9, 9, 16).texture("#pane").end()
+			.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.UP).uvs(7, 0, 9, 7).texture("#pane").end().end()
 
-				//UP SOUTH
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_SOUTH, true).from(7, 9, 9).to(9, 16, 16).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.SOUTH)
-					.face(Direction.UP).cullface(Direction.UP).uvs(7, 9, 9, 16).end()
-					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 9, 9, 16).end()
-					.face(Direction.WEST).uvs(9, 9, 16, 16).end()
-					.face(Direction.EAST).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.SOUTH).uvs(7, 9, 9, 16).texture("#pane").end()
-				.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.UP).uvs(7, 9, 9, 16).texture("#pane").end().end()
+			//UP SOUTH
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_SOUTH, true).from(7, 9, 9).to(9, 16, 16).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.SOUTH)
+				.face(Direction.UP).cullface(Direction.UP).uvs(7, 9, 9, 16).end()
+				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 9, 9, 16).end()
+				.face(Direction.WEST).uvs(9, 9, 16, 16).end()
+				.face(Direction.EAST).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.SOUTH).uvs(7, 9, 9, 16).texture("#pane").end()
+			.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.UP).uvs(7, 9, 9, 16).texture("#pane").end().end()
 
-				//NORTH WEST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_WEST, true).from(0, 7, 0).to(7, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.WEST)
-					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(0, 7, 7, 9).end()
-					.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
-					.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
-					.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").end()
-				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.NORTH).uvs(0, 7, 7, 9).texture("#pane").end().end()
+			//NORTH WEST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_WEST, true).from(0, 7, 0).to(7, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.WEST)
+				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(0, 7, 7, 9).end()
+				.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
+				.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
+				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").end()
+			.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.NORTH).uvs(0, 7, 7, 9).texture("#pane").end().end()
 
-				//NORTH EAST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_EAST, true).from(9, 7, 0).to(16, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.EAST)
-					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(9, 7, 16, 9).end()
-					.face(Direction.EAST).cullface(Direction.EAST).uvs(0, 7, 7, 9).end()
-					.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
-					.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.EAST).uvs(0, 7, 7, 9).texture("#pane").end()
-				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.NORTH).uvs(9, 7, 16, 9).texture("#pane").end().end()
+			//NORTH EAST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_EAST, true).from(9, 7, 0).to(16, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.EAST)
+				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(9, 7, 16, 9).end()
+				.face(Direction.EAST).cullface(Direction.EAST).uvs(0, 7, 7, 9).end()
+				.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
+				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.EAST).uvs(0, 7, 7, 9).texture("#pane").end()
+			.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.NORTH).uvs(9, 7, 16, 9).texture("#pane").end().end()
 
-				//SOUTH WEST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_WEST, true).from(0, 7, 9).to(7, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.WEST)
-					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
-					.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
-					.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
-					.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").end()
-				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end()
+			//SOUTH WEST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_WEST, true).from(0, 7, 9).to(7, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.WEST)
+				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
+				.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
+				.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
+				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").end()
+			.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end()
 
-				//SOUTH EAST
-				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_EAST, true).from(9, 7, 9).to(16, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.EAST)
-					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
-					.face(Direction.EAST).cullface(Direction.EAST).uvs(9, 7, 16, 9).end()
-					.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
-					.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
-				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").end()
-				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end();
-		}).build().create(block, TFTextureMapping.forcefield(), this.modelOutput))));
-		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/forcefield"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
+			//SOUTH EAST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_EAST, true).from(9, 7, 9).to(16, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.EAST)
+				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
+				.face(Direction.EAST).cullface(Direction.EAST).uvs(9, 7, 16, 9).end()
+				.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
+				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
+			.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").end()
+			.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end()).build().create(block, TFTextureMapping.forcefield(block), this.modelOutput))));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(block), this.modelOutput)));
 	}
 
 	public void generatePaneBlock(Block glassBlock, Block paneBlock) {
@@ -858,8 +848,8 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		List<Variant> variants = new ArrayList<>();
 		List<Variant> activeVariants = new ArrayList<>();
 		for (int i = 0; i < variantList.length; i++) {
-			Identifier model = TFModelTemplates.TROPHY_PEDESTAL.createWithSuffix(pedestal, i == 0 ? "" : ("_" + i), TFTextureMapping.trophyPedestal(pedestal, false, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
-			Identifier activeModel = TFModelTemplates.TROPHY_PEDESTAL_ACTIVE.createWithSuffix(pedestal, i == 0 ? "_active" : ("_active_" + i), TFTextureMapping.trophyPedestal(pedestal, true, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
+			Identifier model = TFModelTemplates.TROPHY_PEDESTAL.createWithSuffix(pedestal, i == 0 ? "" : ("_" + i), TFTextureMapping.trophyPedestal(false, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
+			Identifier activeModel = TFModelTemplates.TROPHY_PEDESTAL.createWithSuffix(pedestal, i == 0 ? "_active" : ("_active_" + i), TFTextureMapping.trophyPedestal(true, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
 
 			for (Quadrant rot : Quadrant.values()) {
 				variants.add(plainModel(model).with(VariantMutator.Y_ROT.withValue(rot)));
@@ -913,6 +903,25 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.registerSimpleItemModel(mushroomBlock, TexturedModel.CUBE.createWithSuffix(mushroomBlock, "_inventory", this.modelOutput));
 	}
 
+	public void createMultifaceBlock(Block mushroomBlock, Identifier inside, boolean invertConditions, Identifier mushgloomOutside) {
+		Identifier outside = ModelTemplates.SINGLE_FACE.create(mushroomBlock, TextureMapping.defaultTexture(new Material(mushgloomOutside)), this.modelOutput);
+		this.blockStateOutput.accept(MultiPartGenerator.multiPart(mushroomBlock)
+			.with(condition(BlockStateProperties.NORTH, !invertConditions), plainVariant(outside))
+			.with(condition(BlockStateProperties.EAST, !invertConditions), plainVariant(outside).with(Y_ROT_90).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.SOUTH, !invertConditions), plainVariant(outside).with(Y_ROT_180).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.WEST, !invertConditions), plainVariant(outside).with(Y_ROT_270).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.UP, !invertConditions), plainVariant(outside).with(X_ROT_270).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.DOWN, !invertConditions), plainVariant(outside).with(X_ROT_90).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.NORTH, invertConditions), plainVariant(inside))
+			.with(condition(BlockStateProperties.EAST, invertConditions), plainVariant(inside).with(Y_ROT_90).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.SOUTH, invertConditions), plainVariant(inside).with(Y_ROT_180).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.WEST, invertConditions), plainVariant(inside).with(Y_ROT_270).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.UP, invertConditions), plainVariant(inside).with(X_ROT_270).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.DOWN, invertConditions), plainVariant(inside).with(X_ROT_90).with(VariantMutator.UV_LOCK.withValue(false)))
+		);
+		this.itemModelOutput.accept(mushroomBlock.asItem(), ItemModelUtils.plainModel(ModelTemplates.CUBE_ALL.createWithSuffix(mushroomBlock, "_inventory", TextureMapping.cube(new Material(TwilightForestMod.prefix("block/huge_gloom_cap"))), this.modelOutput)));
+	}
+
 	public void generateHugeLilyPad() {
 		Block block = TFBlocks.HUGE_LILY_PAD.get();
 		Identifier[] models = new Identifier[4];
@@ -922,10 +931,10 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		}
 
 		Map<Direction, Map<HugeLilypadPiece, Identifier>> stateMap = ImmutableMap.of(
-			Direction.NORTH, ImmutableMap.of(HugeLilypadPiece.NW, models[0], HugeLilypadPiece.NE, models[1], HugeLilypadPiece.SE, models[2], HugeLilypadPiece.SW, models[3]),
-			Direction.WEST, ImmutableMap.of(HugeLilypadPiece.NW, models[1], HugeLilypadPiece.NE, models[2], HugeLilypadPiece.SE, models[3], HugeLilypadPiece.SW, models[0]),
-			Direction.SOUTH, ImmutableMap.of(HugeLilypadPiece.NW, models[2], HugeLilypadPiece.NE, models[3], HugeLilypadPiece.SE, models[0], HugeLilypadPiece.SW, models[1]),
-			Direction.EAST, ImmutableMap.of(HugeLilypadPiece.NW, models[3], HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[2])
+			Direction.NORTH, ImmutableMap.of(HugeLilypadPiece.NW, models[2], HugeLilypadPiece.NE, models[3], HugeLilypadPiece.SE, models[0], HugeLilypadPiece.SW, models[1]),
+			Direction.WEST, ImmutableMap.of(HugeLilypadPiece.NW, models[3], HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[2]),
+			Direction.SOUTH, ImmutableMap.of(HugeLilypadPiece.NW, models[0], HugeLilypadPiece.NE, models[1], HugeLilypadPiece.SE, models[2], HugeLilypadPiece.SW, models[3]),
+			Direction.EAST, ImmutableMap.of(HugeLilypadPiece.NW, models[1], HugeLilypadPiece.NE, models[2], HugeLilypadPiece.SE, models[3], HugeLilypadPiece.SW, models[0])
 		);
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> createRotatedVariants(plainModel(stateMap.get(facing).get(piece))))));
@@ -936,7 +945,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		Block base = TFBlocks.AURORA_BLOCK.get();
 		Identifier[] auroras = new Identifier[16];
 		for (int i = 0; i < auroras.length; i++) {
-			auroras[i] = TFModelTemplates.TINTED_BLOCK.createWithSuffix(TFBlocks.AURORA_BLOCK.get(), "_" + i, TextureMapping.cube(TextureMapping.getBlockTexture(base, i == 0 ? "" : "_" + i)), this.modelOutput);
+			auroras[i] = ModelTemplates.CUBE_ALL.createWithSuffix(TFBlocks.AURORA_BLOCK.get(), "_" + i, TextureMapping.cube(TextureMapping.getBlockTexture(base, "_" + i)), this.modelOutput);
 		}
 		this.wrapTintedBlockItem(base, ItemModelUtils.constantTint(-16711758), block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, plainVariant(TFModelTemplates.create("block").extend().customLoader(NoiseVaryingModelBuilder::new, builder -> builder.addAll(auroras)).build().create(block, new TextureMapping(), this.modelOutput)))));
 
@@ -944,14 +953,14 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, plainVariant(TexturedModel.createDefault(block1 -> new TextureMapping()
 				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
 				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
-				.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")), TFModelTemplates.TINTED_CUBE_BOTTOM_TOP)
+				.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")), ModelTemplates.CUBE_BOTTOM_TOP)
 			.create(block, this.modelOutput)))));
 
 		Block slab = TFBlocks.AURORA_SLAB.get();
 		TextureMapping slabMap = new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(pillar))
-			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(pillar, "_top"))
-			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(pillar, "_top"));
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(pillar, "_slab"))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(pillar, "_slab"))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(pillar, "_slab"));
 
 		Identifier bottom = TFModelTemplates.TINTED_SLAB_BOTTOM.create(slab, slabMap, this.modelOutput);
 		Identifier top = TFModelTemplates.TINTED_SLAB_TOP.create(slab, slabMap, this.modelOutput);
@@ -960,18 +969,21 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.wrapTintedBlockItem(TFBlocks.AURORALIZED_GLASS.get(), ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.setOverlayTintIndex(0).connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)))));
 	}
 
-	public void createTFChest(Block chestBlock, Block particleBlock, Identifier texture) {
-		this.createParticleOnlyBlock(chestBlock, particleBlock);
+	public void createTFChest(Block chestBlock, Identifier texture, String material) {
+		Material planks = new Material(TwilightForestMod.prefix("block/wood/planks_" + material + "_0"));
+		this.createParticleOnlyBlock(chestBlock, planks);
 		Item item = chestBlock.asItem();
-		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), this.modelOutput), new ChestSpecialRenderer.Unbaked(texture)));
+		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(planks), this.modelOutput), new ChestSpecialRenderer.Unbaked(texture)));
 	}
 
 	//TODO god I hope this works as I want it to
 	public void generateBush(Block bush) {
-		Identifier small = TFModelTemplates.SMALL_BUSH.createWithSuffix(bush, "_small", TextureMapping.cube(bush), this.modelOutput);
-		MultiVariant medium = plainVariant(TFModelTemplates.MEDIUM_BUSH.create(bush, TextureMapping.cube(bush), this.modelOutput));
-		MultiVariant large = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_large", TextureMapping.cube(bush), this.modelOutput));
-		MultiVariant grown = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush,"_ripe", TextureMapping.cube(TextureMapping.getBlockTexture(bush, "_ripe")), this.modelOutput));
+		TextureMapping bushMapping = getBushMapping(bush, false);
+		TextureMapping ripeMapping = getBushMapping(bush, true);
+		Identifier small = TFModelTemplates.SMALL_BUSH.createWithSuffix(bush, "_small", bushMapping, this.modelOutput);
+		MultiVariant medium = plainVariant(TFModelTemplates.MEDIUM_BUSH.create(bush, bushMapping, this.modelOutput));
+		MultiVariant large = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_large", bushMapping, this.modelOutput));
+		MultiVariant grown = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush,"_ripe", ripeMapping, this.modelOutput));
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(bush).with(PropertyDispatch.initial(TFBushBlock.AGE, TFBushBlock.SNOW_LAYERS).generate((age, snow) -> {
 			MultiVariant bushModel = switch (age) {
@@ -993,5 +1005,62 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			}
 		})));
 		this.itemModelOutput.accept(bush.asItem(), ItemModelUtils.plainModel(small));
+	}
+
+	private TextureMapping getBushMapping(Block bush, boolean ripe) {
+		Identifier id = BuiltInRegistries.BLOCK.getKey(bush);
+		if (id.getPath().contains("oreberry")) {
+			String path = id.getPath().replace("_bush", "");
+			if (ripe) {
+				return TextureMapping.cube(new Material(TwilightForestMod.prefix("block/" + path + "_ripe")));
+			} else {
+				return TextureMapping.cube(new Material(TwilightForestMod.prefix("block/" + path)));
+			}
+		} else {
+			if (ripe) {
+				return TextureMapping.cube(TextureMapping.getBlockTexture(bush, "_ripe"));
+			} else {
+				return TextureMapping.cube(bush);
+			}
+		}
+	}
+
+	private void createStonePillar(Block block, Material side, Material end) {
+		MultiVariant model = plainVariant(ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(side, end), this.modelOutput));
+		MultiVariant horizontalModel = plainVariant(ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(block, TextureMapping.column(side, end), this.modelOutput));
+		this.blockStateOutput.accept(createRotatedPillarWithHorizontalVariant(block, model, horizontalModel));
+	}
+
+	public void createBoldStonePillar(Block block) {
+		Material side = new Material(TwilightForestMod.prefix("block/stone_pillar_side"));
+		Material end = new Material(TwilightForestMod.prefix("block/stone_pillar_end"));
+		createStonePillar(block, side, end);
+	}
+
+	public void createTwistedStone(Block block) {
+		Material side = new Material(TwilightForestMod.prefix("block/twisted_stone_side"));
+		Material end = new Material(TwilightForestMod.prefix("block/twisted_stone_end"));
+		createStonePillar(block, side, end);
+	}
+
+	public void createEncasedCastleBrickPillar(Block block) {
+		Material side = new Material(TwilightForestMod.prefix("block/encased_castle_brick_pillar_side"));
+		Material end = new Material(TwilightForestMod.prefix("block/encased_castle_brick_pillar_end"));
+		createStonePillar(block, side, end);
+	}
+
+	public void createBoldCastleBrickPillar(Block block) {
+		Material side = new Material(TwilightForestMod.prefix("block/bold_castle_brick_pillar_side"));
+		Material end = new Material(TwilightForestMod.prefix("block/bold_castle_brick_pillar_end"));
+		createStonePillar(block, side, end);
+	}
+
+	// [VanillaCopy] this is the copies of super method, but with Material as second argument
+	public void createParticleOnlyBlock(Block block, Material particleMaterial) {
+		this.blockStateOutput.accept(createSimpleBlock(block, this.createParticleOnlyBlockModel(block, particleMaterial)));
+	}
+
+	public MultiVariant createParticleOnlyBlockModel(Block block, Material particleMaterial) {
+		return plainVariant(ModelTemplates.PARTICLE_ONLY.create(block, TextureMapping.particle(particleMaterial), this.modelOutput));
 	}
 }

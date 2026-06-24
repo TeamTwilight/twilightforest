@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/skull_chest",
+    "model": {
+      "type": "twilightforest:item/skull_chest"
+    }
+  }
+}

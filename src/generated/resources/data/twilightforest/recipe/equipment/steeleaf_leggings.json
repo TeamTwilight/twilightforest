@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:ingots/steeleaf"
-    }
+    "#": "#c:ingots/steeleaf"
   },
   "pattern": [
     "###",
@@ -12,14 +10,6 @@
     "# #"
   ],
   "result": {
-    "components": {
-      "minecraft:enchantments": {
-        "levels": {
-          "minecraft:fire_protection": 2
-        }
-      }
-    },
-    "count": 1,
     "id": "twilightforest:steeleaf_leggings"
   }
 }

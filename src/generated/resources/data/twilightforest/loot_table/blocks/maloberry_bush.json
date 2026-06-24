@@ -5,27 +5,13 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "twilightforest:maloberry_bush",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "3"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ],
-      "entries": [
-        {
-          "type": "minecraft:loot_table",
-          "value": "twilightforest:blocks/maloberry_bush_berries"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:maloberry_bush"
+          "name": "twilightforest:maloberry"
         }
       ],
       "rolls": 1.0
