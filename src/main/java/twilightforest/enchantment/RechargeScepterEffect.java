@@ -5,12 +5,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFItems;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.item.recipe.ScepterRepairRecipe;
 
 import java.util.ArrayList;
@@ -52,12 +53,11 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 
 					if (slotsToConsume.size() == recipe.placementInfo().ingredients().size()) {
 						for (int slot : slotsToConsume) {
-							ItemStack stack = player.getInventory().getItem(slot);
+							ItemStack stack = player.getInventory().getNonEquipmentItems().get(slot);
 							stack.shrink(1);
-							if (stack.getCraftingRemainder() != null) {
-								if (!player.getInventory().add(stack.getCraftingRemainder().create())) {
-									player.drop(stack.getCraftingRemainder().create(), false);
-								}
+							ItemStackTemplate remainder = stack.getCraftingRemainder();
+							if (remainder != null) {
+								InventoryUtil.giveItemToPlayer(player, remainder.create());
 							}
 						}
 						item.setDamageValue(item.getDamageValue() - recipe.getRepairDurability());

@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.DryingRackBlockEntity;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -96,7 +97,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 			if (!level.isClientSide()) {
 				ItemStack item = rack.takeTheItem();
 				if (!item.isEmpty()) {
-					if (!player.getInventory().add(item)) player.drop(item, false);
+					InventoryUtil.giveItemToPlayer(player, item);
 					level.playSound(null, pos, TFSounds.DRYING_RACK_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.75F, 0.75F + level.getRandom().nextFloat() * 0.5F);
 					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 				} else return InteractionResult.CONSUME;
