@@ -7,20 +7,38 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SingleItemRecipe;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
 
 public class DryingRecipe extends SingleItemRecipe {
-
 	private final int dryingTime;
+	private final Ingredient ingredient;
 
 	public DryingRecipe(Ingredient ingredient, ItemStack result, int dryingTime) {
-		super(TFRecipes.DRYING_RECIPE.get(), TFRecipes.DRYING_SERIALIZER.get(), "", ingredient, result);
+		super(new CommonInfo(false), ingredient, new ItemStackTemplate(result.getItem()));
 		this.dryingTime = dryingTime;
+		this.ingredient = ingredient;
+	}
+
+	public static final MapCodec<DryingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Ingredient.CODEC.fieldOf("input").forGetter(o -> o.ingredient), ItemStack.CODEC.fieldOf("result").forGetter(o -> o.result().create()), Codec.INT.fieldOf("filter_time").forGetter(o -> o.dryingTime)).apply(instance, DryingRecipe::new));
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> STREAM_CODEC = StreamCodec.composite(Ingredient.CONTENTS_STREAM_CODEC, o -> o.ingredient, ItemStack.STREAM_CODEC, o -> o.result().create(), ByteBufCodecs.INT, o -> o.dryingTime, DryingRecipe::new);
+
+	@Override
+	public RecipeSerializer<? extends SingleItemRecipe> getSerializer() {
+		return TFRecipes.DRYING_SERIALIZER.get();
+	}
+
+	@Override
+	public RecipeType<? extends SingleItemRecipe> getType() {
+		return TFRecipes.DRYING_RECIPE.get();
+	}
+
+	@Override
+	public RecipeBookCategory recipeBookCategory() {
+		return new RecipeBookCategory();
 	}
 
 	@Override
@@ -32,8 +50,8 @@ public class DryingRecipe extends SingleItemRecipe {
 		return this.ingredient;
 	}
 
-	public ItemStack getResult() {
-		return this.result;
+	public ItemStackTemplate getResult() {
+		return this.result();
 	}
 
 	public int getDryingTime() {
@@ -45,28 +63,8 @@ public class DryingRecipe extends SingleItemRecipe {
 		return true;
 	}
 
-	public static class Serializer implements RecipeSerializer<DryingRecipe> {
-
-		public static final MapCodec<DryingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(o -> o.ingredient),
-			ItemStack.STRICT_CODEC.fieldOf("result").forGetter(o -> o.result),
-			Codec.INT.fieldOf("filter_time").forGetter(o -> o.dryingTime)
-		).apply(instance, DryingRecipe::new));
-
-		public static final StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> STREAM_CODEC = StreamCodec.composite(
-			Ingredient.CONTENTS_STREAM_CODEC, o -> o.ingredient,
-			ItemStack.STREAM_CODEC, o -> o.result,
-			ByteBufCodecs.INT, o -> o.dryingTime,
-			DryingRecipe::new);
-
-		@Override
-		public MapCodec<DryingRecipe> codec() {
-			return CODEC;
-		}
-
-		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> streamCodec() {
-			return STREAM_CODEC;
-		}
+	@Override
+	public String group() {
+		return "";
 	}
 }

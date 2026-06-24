@@ -1,16 +1,21 @@
 package twilightforest.item.recipe.travellers;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -19,6 +24,18 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	protected final ShapedRecipePattern pattern;
 	protected final boolean isRotated;
 
+	public static final MapCodec<TravellersGearModifierShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		ShapedRecipePattern.MAP_CODEC
+			.fieldOf("pattern")
+			.forGetter(recipe -> recipe.pattern),
+		ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
+			.fieldOf("modifier_key")
+			.forGetter(recipe -> recipe.travellersModifierKey),
+		Codec.BOOL
+			.fieldOf("is_rotated")
+			.forGetter(recipe -> recipe.isRotated)
+	).apply(instance, TravellersGearModifierShapedRecipe::new));
+
 	public TravellersGearModifierShapedRecipe(ShapedRecipePattern pattern, ResourceKey<TravellersModifier> travellersModifier, boolean isRotated) {
 		super(travellersModifier);
 		this.pattern = pattern;
@@ -26,15 +43,10 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public boolean matches(@NotNull CraftingInput input, @NotNull Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		if (!super.matches(input, level))
 			return false;
 		return pattern.matches(input);
-	}
-
-	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return getHeight() <= height && getWidth() <= width;
 	}
 
 	@Override
@@ -53,33 +65,28 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public NonNullList<Ingredient> getIngredients() {
-		return pattern.ingredients();
-	}
-
-	@Override
 	public Identifier getId() {
 		return super.getId().withSuffix(isRotated ? "_rotated" : "");
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<TravellersGearModifierShapedRecipe> getSerializer() {
 		return TFRecipes.MODIFIER_SHAPED_RECIPE_SERIALIZER.get();
 	}
 
-	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapedRecipe> {
-		public Serializer() {
-			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				ShapedRecipePattern.MAP_CODEC
-					.fieldOf("pattern")
-					.forGetter(recipe -> recipe.pattern),
-				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
-					.fieldOf("modifier_key")
-					.forGetter(recipe -> recipe.travellersModifierKey),
-				Codec.BOOL
-					.fieldOf("is_rotated")
-					.forGetter(recipe -> recipe.isRotated)
-			).apply(instance, TravellersGearModifierShapedRecipe::new)));
-		}
+	public static StreamCodec<RegistryFriendlyByteBuf, TravellersGearModifierShapedRecipe> streamCodec() {
+		return StreamCodec.of(TravellersGearModifierShapedRecipe::toNetwork, TravellersGearModifierShapedRecipe::fromNetwork);
+	}
+
+	private static TravellersGearModifierShapedRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
+		RegistryOps<JsonElement> registryops = buf.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+		JsonElement jsonelementDeserialized = GsonHelper.fromJson(new Gson(), buf.readUtf(), JsonElement.class);
+		return CODEC.codec().decode(registryops, jsonelementDeserialized).getOrThrow().getFirst();
+	}
+
+	private static void toNetwork(RegistryFriendlyByteBuf buf, TravellersGearModifierShapedRecipe recipe) {
+		RegistryOps<JsonElement> registryops = buf.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+		JsonElement jsonelement = CODEC.codec().encodeStart(registryops, recipe).getOrThrow();
+		buf.writeUtf(jsonelement.toString());
 	}
 }

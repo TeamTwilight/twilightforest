@@ -1,9 +1,7 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -15,9 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoonwormQueenRepairRecipe extends CustomRecipe {
+	public MoonwormQueenRepairRecipe() {
+		super();
+	}
 
-	public MoonwormQueenRepairRecipe(CraftingBookCategory category) {
-		super(category);
+	@Override
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+		return TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.get();
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
+	public ItemStack assemble(CraftingInput input) {
 		List<Item> berries = new ArrayList<>();
 		ItemStack queen = null;
 		for (int i = 0; i < input.size(); ++i) {
@@ -72,15 +74,5 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 		}
 
 		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.get();
 	}
 }

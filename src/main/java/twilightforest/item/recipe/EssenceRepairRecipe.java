@@ -1,20 +1,18 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
+import twilightforest.tags.TFItemTags;
 
 public class EssenceRepairRecipe extends CustomRecipe {
 
-	public EssenceRepairRecipe(CraftingBookCategory category) {
-		super(category);
+	public EssenceRepairRecipe() {
+		super();
 	}
 
 	@Override
@@ -25,7 +23,7 @@ public class EssenceRepairRecipe extends CustomRecipe {
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
-				if (stackInQuestion.is(ItemTagGenerator.SCEPTERS) && stackInQuestion.isDamaged()) {
+				if (stackInQuestion.is(TFItemTags.SCEPTERS) && stackInQuestion.isDamaged()) {
 					if (scepter) return false;
 					scepter = true;
 				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE.get())) {
@@ -40,12 +38,12 @@ public class EssenceRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
+	public ItemStack assemble(CraftingInput input) {
 		ItemStack scepter = null;
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack itemstack = input.getItem(i);
 			if (!itemstack.isEmpty()) {
-				if (itemstack.is(ItemTagGenerator.SCEPTERS)) {
+				if (itemstack.is(TFItemTags.SCEPTERS)) {
 					if (scepter == null) {
 						scepter = itemstack;
 					} else {
@@ -66,12 +64,7 @@ public class EssenceRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return TFRecipes.ESSENCE_REPAIR_RECIPE.get();
 	}
 }
