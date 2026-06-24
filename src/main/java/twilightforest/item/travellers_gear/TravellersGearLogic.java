@@ -195,7 +195,7 @@ public class TravellersGearLogic {
 
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
 		if (TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
-			livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), new Vec3(1.0D, 1.0D, 1.0D));
+			livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
