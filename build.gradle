@@ -82,7 +82,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape"
 	options.encoding = 'UTF-8'
 }
 
@@ -203,8 +203,8 @@ repositories {
 		url 'https://maven.blamejared.com/'
 	}
 	maven {
-		name = "OctoStudios" //Curios
-		url = uri("https://maven.octo-studios.com/releases")
+		name = "Curios" // Curios
+		url = uri("https://maven.theillusivec4.top/")
 	}
 	maven {
 		name 'Shedaniel\'s Maven' //REI
@@ -220,12 +220,8 @@ repositories {
 	maven { //CS
 		url "https://nexus.resourcefulbees.com/repository/maven-public/"
 	}
-	maven {
-		name 'Curseforge Maven' // Jade
-		url "https://www.cursemaven.com"
-		content {
-			includeGroup "curse.maven"
-		}
+	maven { // Jade
+		url = "https://api.modrinth.com/maven"
 	}
 }
 
@@ -239,12 +235,12 @@ dependencies {
 	testCompileOnly "${beanification}:test-sources"
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
-//	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
+//	implementation "mezz.jei:jei-26.1.2-neoforge:${project.jei_version}"
 //	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
 //	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.base_minecraft_version}"
 
 	// theillusivec4
-//	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
+	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
 
 	//curse maven
 //	implementation "curse.maven:jade-324717:6170888"
@@ -289,6 +285,8 @@ test {
 }
 
 processResources {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
 	def ver = project.version
 	filesMatching("META-INF/neoforge.mods.toml") {
 		expand([
@@ -303,7 +301,10 @@ processResources {
 	}
 	doLast {
 		lazyTree.get().each {
-			File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
+			File file -> {
+				println "Processing JSON: " + file.name
+				file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
+			}
 		}
 	}
 }

@@ -6,12 +6,12 @@ plugins {
 }
 
 repositories {
+	mavenCentral()
 	maven { url = 'https://maven.neoforged.net/releases' }
 	maven {
 		name 'Mojang'
 		url 'https://libraries.minecraft.net'
 	}
-	mavenCentral()
 }
 
 java {
@@ -23,8 +23,9 @@ java {
 dependencies {
 	compileOnly "org.jetbrains:annotations:24.0.1"
 	compileOnly "net.neoforged.fancymodloader:loader:4.0.8"
+	compileOnly "cpw.mods:modlauncher:10.0.8"
 
-	// This is for javadoc, please do not actually classload anything from the main source set!!!!!!
+	// This is for javadoc...
 	def jankAssShit = IntelliJOutputDirectoryValueSource.getIntellijOutputDirectory(rootProject)
 	if (jankAssShit != null) {
 		jankAssShit = jankAssShit.apply(rootProject).toPath().resolve('production')
