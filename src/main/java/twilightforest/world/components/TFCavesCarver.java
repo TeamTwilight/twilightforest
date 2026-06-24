@@ -11,6 +11,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,13 +26,14 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.function.Function;
 
 //Framework taken from CaveWorldCarver, everything worth knowing is documented for easier changes in the future
-public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
+public class TFCavesCarver extends WorldCarver<@NotNull CaveCarverConfiguration> {
 	private final boolean isHighlands;
 	private final BlockStateProvider wallBlocks;
 	private final ImprovedNoise noise;
@@ -55,7 +57,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	@Override
-	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, RandomSource random, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
+	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<@NotNull Biome>> biomePos, RandomSource random, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
 		if (this.isHighlands && (Mth.clamp(LegacyLandmarkPlacements.manhattanDistanceFromLandmarkCenter(accessPos.x(), accessPos.z()), 0, 0b11) & 0b1) == 1)
 			return false; // If highlands, enforces a binary grid (diagonal range of 4 chunks) of possible placements around the structure center, with center being one of the zero tiles
 
@@ -94,7 +96,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	@Override
-	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, CarvingMask mask, BlockPos.MutableBlockPos posMutable, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
+	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<@NotNull Biome>> biomePos, CarvingMask mask, BlockPos.MutableBlockPos posMutable, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
 		BlockPos pos = posMutable.immutable();
 		BlockState stateBeforeReplacement = access.getBlockState(pos);
 		if (stateBeforeReplacement.is(Blocks.GRASS_BLOCK) || stateBeforeReplacement.is(Blocks.MYCELIUM) || stateBeforeReplacement.is(Blocks.PODZOL) || stateBeforeReplacement.is(Blocks.DIRT_PATH)) {
@@ -122,7 +124,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				if (!access.getFluidState(pos.above(2)).isEmpty()) // Sand doesn't quite generate until after the carvers, so we must look for liquid above possible sand instead
 					blockStateToPlace = randomFromPos.nextBoolean() ? Blocks.ROOTED_DIRT.defaultBlockState() : Blocks.COARSE_DIRT.defaultBlockState(); // normal dirt will get replaced with sand, special ones are required
 
-				boolean blockPlaced = access.setBlockState(pos, blockStateToPlace, false) != null;
+				boolean blockPlaced = access.setBlockState(pos, blockStateToPlace) != null;
 
 				if (aquifer.shouldScheduleFluidUpdate() && !blockStateToPlace.getFluidState().isEmpty()) {
 					access.markPosForPostprocessing(pos);
@@ -132,7 +134,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					BlockPos posDown = pos.relative(Direction.DOWN);
 					if (access.getBlockState(posDown).is(Blocks.DIRT)) {
 						ctx.topMaterial(biomePos, access, posDown, !blockStateToPlace.getFluidState().isEmpty()).ifPresent(state -> {
-							access.setBlockState(posDown, state, false);
+							access.setBlockState(posDown, state);
 							if (!state.getFluidState().isEmpty()) {
 								access.markPosForPostprocessing(posDown);
 							}
@@ -166,7 +168,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 			if (this.isHighlands) {
 				if (rand.nextInt(4) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
+					access.setBlockState(directionalRelative, this.wallBlocks.getState((WorldGenLevel) access.getLevel(), rand, directionalRelative));
 				}
 			} else if (facing != Direction.DOWN && (facing == Direction.UP || access.getBlockState(directionalRelative.above()).isAir() || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
 				// Dirt is never placed below, always on roof, and typically to the sides
@@ -174,7 +176,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				BlockState neighboringBlock = access.getBlockState(directionalRelative);
 
 				if (neighboringBlock.is(BlockTags.BASE_STONE_OVERWORLD) || neighboringBlock.getFluidState().is(FluidTags.WATER)) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
+					access.setBlockState(directionalRelative, this.wallBlocks.getState((WorldGenLevel) access.getLevel(), rand, directionalRelative));
 				}
 			}
 		}
@@ -205,13 +207,13 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		return 1.0D;
 	}
 
-	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, CarvingMask mask, CarveSkipChecker checker) {
+	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<@NotNull Biome>> biomePos, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, CarvingMask mask, CarveSkipChecker checker) {
 		double d0 = 1.5D + (double) (Mth.sin(((float) Math.PI / 2F)) * radius);
 		double d1 = d0 * horizToVertRatio;
 		this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX, posY, posZ, d0, d1, mask, checker);
 	}
 
-	protected void createTunnel(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, double horizMult, double vertMult, float thickness, float yaw, float pitch, int branchIndex, int branchCount, double horizToVertRatio, CarvingMask mask, CarveSkipChecker checker) {
+	protected void createTunnel(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<@NotNull Biome>> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, double horizMult, double vertMult, float thickness, float yaw, float pitch, int branchIndex, int branchCount, double horizToVertRatio, CarvingMask mask, CarveSkipChecker checker) {
 		RandomSource random = RandomSource.create(seed);
 		int i = random.nextInt(branchCount / 2) + branchCount / 4;
 		boolean flag = random.nextInt(6) == 0;

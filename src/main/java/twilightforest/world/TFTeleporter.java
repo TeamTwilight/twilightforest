@@ -42,7 +42,6 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class TFTeleporter {
-
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public static TeleportTransition createTransition(Entity entity, ServerLevel dest, BlockPos pos, boolean forcedEntry) {
