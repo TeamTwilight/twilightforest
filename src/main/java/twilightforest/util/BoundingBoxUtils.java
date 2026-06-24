@@ -51,12 +51,12 @@ public class BoundingBoxUtils {
 
 	public static BoundingBox NBTToBoundingBox(CompoundTag nbt) {
 		return new BoundingBox(
-			nbt.getInt("minX").get(),
-			nbt.getInt("minY").get(),
-			nbt.getInt("minZ").get(),
-			nbt.getInt("maxX").get(),
-			nbt.getInt("maxY").get(),
-			nbt.getInt("maxZ").get()
+			nbt.getIntOr("minX", 0),
+			nbt.getIntOr("minY", 0),
+			nbt.getIntOr("minZ", 0),
+			nbt.getIntOr("maxX", 0),
+			nbt.getIntOr("maxY", 0),
+			nbt.getIntOr("maxZ", 0)
 		);
 	}
 
