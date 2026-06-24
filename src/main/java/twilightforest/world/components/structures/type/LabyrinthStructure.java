@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
@@ -78,7 +78,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.LABYRINTH),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LABYRINTH_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_LABYRINTH_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
 				TerrainAdjustment.BURY
