@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3fc;
 import twilightforest.client.renderer.block.CandelabraRenderer;
 import twilightforest.components.item.CandelabraData;
@@ -21,8 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<BlockModelRenderState>> {
-
+public record CandelabraSpecialRenderer() implements SpecialModelRenderer<@NotNull List<BlockModelRenderState>> {
 	@Override
 	public List<BlockModelRenderState> extractArgument(ItemStack stack) {
 		List<BlockModelRenderState> models = new ArrayList<>();
@@ -46,7 +46,7 @@ public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<B
 
 	}
 
-	public record Unbaked() implements SpecialModelRenderer.Unbaked<List<BlockModelRenderState>> {
+	public record Unbaked() implements SpecialModelRenderer.Unbaked<@NotNull List<BlockModelRenderState>> {
 		public static final MapCodec<CandelabraSpecialRenderer.Unbaked> MAP_CODEC = MapCodec.unit(CandelabraSpecialRenderer.Unbaked::new);
 
 		public MapCodec<CandelabraSpecialRenderer.Unbaked> type() {
@@ -54,7 +54,7 @@ public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<B
 		}
 
 		@Override
-		public SpecialModelRenderer<List<BlockModelRenderState>> bake(BakingContext context) {
+		public SpecialModelRenderer<@NotNull List<BlockModelRenderState>> bake(BakingContext context) {
 			return new CandelabraSpecialRenderer();
 		}
 	}

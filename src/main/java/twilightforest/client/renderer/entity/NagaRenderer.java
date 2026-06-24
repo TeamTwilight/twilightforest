@@ -5,13 +5,16 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
+import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.client.state.entity.NagaRenderState;
+import twilightforest.entity.boss.Hydra;
 import twilightforest.entity.boss.Naga;
 
-public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<NagaRenderState>> {
+public class NagaRenderer extends MobRenderer<@NotNull Naga, @NotNull NagaRenderState, @NotNull NagaModel<NagaRenderState>> {
 
 	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("nagahead.png");
 	public static final Identifier CHARGING_TEXTURE = TwilightForestMod.getModelTexture("nagahead_charging.png");
@@ -61,5 +64,15 @@ public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<N
 		} else {
 			return TEXTURE;
 		}
+	}
+
+	@Override
+	protected boolean affectedByCulling(Naga entity) {
+		return false;
+	}
+
+	@Override
+	protected AABB getBoundingBoxForCulling(Naga entity) {
+		return entity.getBoundingBox().inflate(16.0D, 16.0D, 16.0D);
 	}
 }

@@ -26,6 +26,7 @@ import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.client.state.entity.MagicPaintingRenderState;
 import twilightforest.entity.MagicPainting;
@@ -35,7 +36,7 @@ import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
 
 import javax.annotation.Nullable;
 
-public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPaintingRenderState> {
+public class MagicPaintingRenderer extends EntityRenderer<@NotNull MagicPainting, @NotNull MagicPaintingRenderState> {
 
 	private final TextureAtlas paintingAtlas;
 	public static long lastLightning = 0L;
@@ -261,7 +262,10 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 			}
 			case WEATHER -> a = level.getRainLevel(partialTicks);
 			case STORM -> a = (level.getRainLevel(partialTicks) + level.getThunderLevel(partialTicks)) * 0.5F;
-			case LIGHTNING -> a = level.getSkyFlashTime() * opacityModifier.multiplier();
+			case LIGHTNING -> {
+				float flash = level.isThundering() && (level.getGameTime() % 50 < 4) ? 2.0F : 0.0F;
+				a = flash * opacityModifier.multiplier();
+			}
 			case DAY_TIME -> {
 				float time = level.getDefaultClockTime();
 

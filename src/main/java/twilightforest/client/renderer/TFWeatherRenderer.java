@@ -1,13 +1,14 @@
 package twilightforest.client.renderer;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Camera;
+import net.minecraft.client.GraphicsPreset;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -33,10 +34,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFGameRules;
 import twilightforest.init.custom.Enforcements;
-import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.util.IntervalUtils;
 import twilightforest.util.Restriction;
+import twilightforest.util.landmarks.LandmarkUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +84,7 @@ public class TFWeatherRenderer {
 
 	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, Vec3 camera) {
 		Minecraft mc = Minecraft.getInstance();
-		if (EnforceProgressionStatusPacket.enforcedProgression && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
+		if (LandmarkUtil.isProgressionEnforced(level) && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
 			renderLockedBiome(ticks, partialTicks, level, mc.player, camera);
 
@@ -101,21 +103,14 @@ public class TFWeatherRenderer {
 			int py = Mth.floor(camera.y());
 			int pz = Mth.floor(camera.z());
 
-			RenderSystem.disableCull();
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
-			RenderSystem.enableDepthTest();
-
 			int range = 5;
-			if (Minecraft.useFancyGraphics()) {
+			if (Minecraft.getInstance().options.graphicsPreset().get() != GraphicsPreset.FAST) {
 				range = 10;
 			}
 
-			RenderSystem.depthMask(Minecraft.useShaderTransparency());
 
 			WeatherRenderType currentType = null;
 			float combinedTicks = ticks + partialTicks;
-			RenderSystem.setShader(CoreShaders.PARTICLE);
 			BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
 			for (int dz = pz - range; dz <= pz + range; ++dz) {
@@ -154,7 +149,7 @@ public class TFWeatherRenderer {
 							double zRange = (double) ((float) dz + 0.5F) - camera.z();
 							float distanceToPlayer = Mth.sqrt((float) (xRange * xRange + zRange * zRange)) / (float) range;
 							float alpha = ((1.0F - distanceToPlayer * distanceToPlayer) * 0.3F + 0.5F);
-							int worldBrightness = LevelRenderer.getLightColor(level, pos);
+							int worldBrightness = LevelRenderer.getLightCoords(level, pos);
 							int fullbright = 15 << 20 | 15 << 4;
 
 							switch (currentType) {
@@ -197,15 +192,12 @@ public class TFWeatherRenderer {
 					}
 				}
 			}
-
-			RenderSystem.enableCull();
-			RenderSystem.disableBlend();
 		}
 	}
 
 	@SuppressWarnings("ConstantConditions")
 	private static void renderLockedStructure(int ticks, float partialTicks, Vec3 camera) {
-		int range = Minecraft.useFancyGraphics() ? 10 : 5;
+		int range = Minecraft.getInstance().options.graphicsPreset().get() != GraphicsPreset.FAST ? 10 : 5;
 		int px = Mth.floor(camera.x());
 		int py = Mth.floor(camera.y());
 		int pz = Mth.floor(camera.z());
@@ -223,14 +215,9 @@ public class TFWeatherRenderer {
 			pBoxOld = pBox;
 		}
 
-		RenderSystem.disableCull();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.enableDepthTest();
 
 		float combinedTicks = ticks + partialTicks;
 		int drawFlag = -1;
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		for (int x = pBox.minX(); x <= pBox.maxX(); x++) {
 			for (int z = pBox.minZ(); z <= pBox.maxZ(); z++) {
@@ -243,7 +230,6 @@ public class TFWeatherRenderer {
 					random.setSeed((long) x * x * 3121 + x * 45238971L ^ (long) z * z * 418711 + z * 13761L);
 					if (drawFlag != 0) {
 						drawFlag = 0;
-						RenderSystem.setShader(CoreShaders.PARTICLE);
 					}
 
 					float countFactor = ((ticks & 511) + partialTicks) / 512.0F;
@@ -267,9 +253,6 @@ public class TFWeatherRenderer {
 				}
 			}
 		}
-
-		RenderSystem.enableCull();
-		RenderSystem.disableBlend();
 	}
 
 	private static void updateRainIntervals(BoundingBox pBox) {
@@ -316,7 +299,7 @@ public class TFWeatherRenderer {
 	}
 
 	private static void renderEffect(Identifier type, double rainX, double rainZ, int minY, int maxY, Vec3 camera, int dx, int dz, float countFactor, float uFactor, float vFactor, float[] color, int light) {
-		VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.weather(type, Minecraft.useShaderTransparency()));
+		VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.entityTranslucentEmissive(type, Minecraft.useShaderTransparency()));
 		consumer
 			.addVertex((float) (dx - camera.x() - rainX + 0.5F), (float) (minY - camera.y()), (float) (dz - camera.z() - rainZ + 0.5F))
 			.setUv(0.0F + uFactor, minY * 0.25F + countFactor + vFactor)
@@ -394,7 +377,7 @@ public class TFWeatherRenderer {
 
 	/**
 	 * [VanillaCopy]:<br>
-	 * {@link net.minecraft.client.renderer.WeatherEffectRenderer#tickRainParticles(ClientLevel, Camera, int, ParticleStatus)}<br>
+	 * {@link net.minecraft.client.renderer.WeatherEffectRenderer#tickRainParticles(ClientLevel, Camera, int, ParticleStatus, int)}<br>
 	 */
 	public static boolean tickRain(ClientLevel level, int partialTicks, BlockPos blockpos) {
 		//TF - render rain if the Ur-Ghast is alive as well
@@ -404,7 +387,7 @@ public class TFWeatherRenderer {
 		} else urGhastRain = Math.max(0.0F, urGhastRain - 0.02F);
 
 		//TF - factor in the Ur-Ghast being alive when determining rain level
-		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (Minecraft.useFancyGraphics() ? 1.0F : 2.0F);
+		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (Minecraft.getInstance().options.graphicsPreset().get() != GraphicsPreset.FAST ? 1.0F : 2.0F);
 		if (rainLevel > 0.0F) {
 			RandomSource randomsource = RandomSource.create((long) partialTicks * 312987231L);
 			BlockPos blockpos1 = null;

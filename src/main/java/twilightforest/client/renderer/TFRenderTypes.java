@@ -11,10 +11,8 @@ import twilightforest.client.renderer.entity.LichRenderer;
 
 //TODO check all of these in-game, im bad at writing these
 public class TFRenderTypes {
-
 	public static final RenderType RED_THREAD = RenderType.create("twilightforest:red_thread", RenderSetup.builder(TFRenderPipelines.RED_THREAD)
 		.withTexture("Sampler0", RedThreadRenderer.TEXTURE)
-		.affectsCrumbling()
 		.useLightmap()
 		.useOverlay()
 		.setOutline(RenderSetup.OutlineProperty.AFFECTS_OUTLINE)

@@ -1,8 +1,9 @@
 package twilightforest.client.renderer.tooltip;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -17,15 +18,15 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	private static final int SLOT_WIDTH = 18;
 	private static final int SLOT_HEIGHT = 20;
 
-	private final NonNullList<ItemStack> contents;
+	private final NonNullList<@NotNull ItemStack> contents;
 
 	public ItemDisplayTooltipComponent(TravellersGogglesItem.Tooltip tooltip) {
 		this.contents = tooltip.contents().items();
 	}
 
 	@Override
-	public void renderImage(@NotNull Font font, int x, int y, GuiGraphics guiGraphics) {
-		guiGraphics.blitSprite(BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
+	public void extractImage(@NotNull Font font, int x, int y, int w, int h, GuiGraphicsExtractor guiGraphics) {
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
 		int k = 0;
 
 		for (int gridY = 0; gridY < gridSizeY(); gridY++) {
@@ -37,23 +38,23 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 		}
 	}
 
-	private void renderSlot(int x, int y, int itemIndex, GuiGraphics graphics, Font font) {
-		graphics.blitSprite(SLOT_SPRITE, x, y, 0, SLOT_WIDTH, SLOT_HEIGHT);
+	private void renderSlot(int x, int y, int itemIndex, GuiGraphicsExtractor graphics, Font font) {
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_SPRITE, x, y, 0, SLOT_WIDTH, SLOT_HEIGHT);
 
 		if (itemIndex < this.contents.size()) {
 			ItemStack itemstack = this.contents.get(itemIndex);
 			if (itemstack.isEmpty()) {
 				this.renderBlankSlot(graphics, itemIndex, x, y);
 			} else {
-				graphics.renderItem(itemstack, x + 1, y + 1, itemIndex);
-				graphics.renderItemDecorations(font, itemstack, x + 1, y + 1);
+				graphics.item(itemstack, x + 1, y + 1, itemIndex);
+				graphics.itemDecorations(font, itemstack, x + 1, y + 1);
 			}
 		} else {
 			this.renderBlankSlot(graphics, itemIndex, x, y);
 		}
 	}
 
-	private void renderBlankSlot(GuiGraphics graphics, int index, int x, int y) {
+	private void renderBlankSlot(GuiGraphicsExtractor graphics, int index, int x, int y) {
 		if (index < 0 || index >= ItemDisplayContents.LAYOUT.size()) return;
 		ItemDisplayType type = ItemDisplayContents.LAYOUT.get(index).get();
 		type.slotTexture().ifPresent(identifier -> graphics.blit(identifier, x + 1, y + 1, 0, 0, 16, 16, 16, 16));
@@ -76,7 +77,7 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public int getHeight() {
+	public int getHeight(@NotNull Font font) {
 		return this.backgroundHeight() + 4;
 	}
 

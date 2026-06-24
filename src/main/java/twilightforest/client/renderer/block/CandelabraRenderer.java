@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.CandelabraBlock;
 import twilightforest.block.LightableBlock;
@@ -25,8 +26,7 @@ import twilightforest.components.item.CandelabraData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CandelabraRenderer implements BlockEntityRenderer<CandelabraBlockEntity, CandelabraRenderState> {
-
+public class CandelabraRenderer implements BlockEntityRenderer<@NotNull CandelabraBlockEntity, @NotNull CandelabraRenderState> {
 	private final BlockModelResolver blockModelResolver;
 
 	public CandelabraRenderer(BlockEntityRendererProvider.Context context) {

@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3fc;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
@@ -18,7 +19,7 @@ public record CicadaSpecialRenderer(CicadaModel model) implements NoDataSpecialM
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
-		CicadaRenderer.submitCicada(this.model(), BugModelAnimationHelper.currentYaw, 0.0F, Direction.NORTH, stack, collector, light, overlay, null);
+		CicadaRenderer.submitCicada(this.model(), BugModelAnimationHelper.currentYaw, 0.0F, Direction.NORTH, stack, collector, light, overlay, -1, null);
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public record CicadaSpecialRenderer(CicadaModel model) implements NoDataSpecialM
 		}
 
 		@Override
-		public SpecialModelRenderer<Void> bake(BakingContext context) {
+		public SpecialModelRenderer<@NotNull Void> bake(BakingContext context) {
 			return new CicadaSpecialRenderer(new CicadaModel(context.entityModelSet().bakeLayer(TFModelLayers.CICADA)));
 		}
 	}

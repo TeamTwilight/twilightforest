@@ -1,8 +1,9 @@
 package twilightforest.client.renderer.tooltip;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -26,8 +27,8 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public void renderImage(@NotNull Font font, int x, int y, GuiGraphics guiGraphics) {
-		guiGraphics.blitSprite(BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
+	public void extractImage(@NotNull Font font, int x, int y, int w, int h, GuiGraphicsExtractor guiGraphics) {
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
 		int k = 0;
 
 		for (int gridY = 0; gridY < gridSizeY(); gridY++) {
@@ -39,19 +40,19 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 		}
 	}
 
-	private void renderSlot(int x, int y, int itemIndex, GuiGraphics guiGraphics, Font font) {
+	private void renderSlot(int x, int y, int itemIndex, GuiGraphicsExtractor guiGraphics, Font font) {
 		if (itemIndex >= this.contents.size()) {
 			this.blit(guiGraphics, x, y);
 		} else {
 			ItemStack itemstack = this.contents.get(itemIndex);
 			this.blit(guiGraphics, x, y);
-			guiGraphics.renderItem(itemstack, x + 1, y + 1, itemIndex);
-			guiGraphics.renderItemDecorations(font, itemstack, x + 1, y + 1);
+			guiGraphics.item(itemstack, x + 1, y + 1, itemIndex);
+			guiGraphics.itemDecorations(font, itemstack, x + 1, y + 1);
 		}
 	}
 
-	private void blit(GuiGraphics guiGraphics, int x, int y) {
-		guiGraphics.blitSprite(Texture.SLOT.sprite, x, y, 0, Texture.SLOT.w, Texture.SLOT.h);
+	private void blit(GuiGraphicsExtractor guiGraphics, int x, int y) {
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Texture.SLOT.sprite, x, y, 0, Texture.SLOT.w, Texture.SLOT.h);
 	}
 
 	private int backgroundWidth() {
@@ -71,7 +72,7 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public int getHeight() {
+	public int getHeight(@NotNull Font font) {
 		return this.backgroundHeight() + 4;
 	}
 
