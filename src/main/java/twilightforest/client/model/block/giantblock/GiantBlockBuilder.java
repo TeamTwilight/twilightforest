@@ -1,5 +1,6 @@
 package twilightforest.client.model.block.giantblock;
 
+import com.google.gson.JsonObject;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
 import twilightforest.TwilightForestMod;
 
@@ -16,5 +17,19 @@ public class GiantBlockBuilder extends CustomLoaderBuilder {
 	@Override
 	protected CustomLoaderBuilder copyInternal() {
 		return new GiantBlockBuilder();
+	}
+
+	@Override
+	public JsonObject toJson(JsonObject json) {
+		JsonObject mainJson = super.toJson(json);
+
+		if (mainJson.has("loader")) {
+			mainJson.remove("loader");
+		}
+		if (mainJson.has("type")) {
+			mainJson.remove("type");
+		}
+
+		return mainJson;
 	}
 }

@@ -1,65 +1,60 @@
 package twilightforest.client.model.block.connected;
 
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.ModelState;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelDebugName;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.QuadCollection;
+import net.minecraft.client.resources.model.geometry.UnbakedGeometry;
+import net.minecraft.client.resources.model.sprite.TextureSlots;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.model.data.ModelProperty;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class ConnectedTextureModel implements IDynamicBakedModel {
-
+public class ConnectedTextureModel implements UnbakedGeometry {
 	private final Set<Direction> connectedFaces;
 	private final Set<Direction> unculledFaces;
 	private final boolean renderOverlayOnAllFaces;
 	private final Map<Direction, BakedQuad[]> baseQuads;
 	private final Map<Direction, BakedQuad[][]> connectedQuads;
-	private final TextureAtlasSprite particle;
-	private final boolean usesAO;
-	private final boolean usesBlockLight;
-	private final ItemTransforms transforms;
-	@Nullable
-	private final ChunkRenderTypeSet blockRenderTypes;
-	@Nullable
-	private final RenderType itemRenderType;
 	private final List<Block> validConnectors;
-	private static final ModelProperty<ConnectedTextureData> DATA = new ModelProperty<>();
+	private static final ModelProperty<@NotNull ConnectedTextureData> DATA = new ModelProperty<>();
 
-	public ConnectedTextureModel(Set<Direction> connectedFaces, Set<Direction> unculledFaces, boolean renderOverlayOnAllFaces, List<Block> connectableBlocks, Map<Direction, BakedQuad[]> baseQuads, Map<Direction, BakedQuad[][]> connectedQuads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
+	public ConnectedTextureModel(Set<Direction> connectedFaces, Set<Direction> unculledFaces, boolean renderOverlayOnAllFaces, List<Block> connectableBlocks, Map<Direction, BakedQuad[]> baseQuads, Map<Direction, BakedQuad[][]> connectedQuads) {
 		this.connectedFaces = connectedFaces;
 		this.unculledFaces = unculledFaces;
 		this.renderOverlayOnAllFaces = renderOverlayOnAllFaces;
 		this.validConnectors = connectableBlocks;
 		this.baseQuads = baseQuads;
 		this.connectedQuads = connectedQuads;
-		this.particle = particle;
-		this.usesAO = usesAO;
-		this.usesBlockLight = usesBlockLight;
-		this.transforms = transforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random, ModelData extraData, @Nullable RenderType type) {
-		if (side == null) {
-			List<BakedQuad> quadList = new ArrayList<>();
-			for (Direction direction : this.unculledFaces) quadList.addAll(this.getQuadsForFace(direction, extraData));
-			return quadList;
-		} else return this.getQuadsForFace(side, extraData);
+	public QuadCollection bake(TextureSlots textureSlots, ModelBaker modelBaker, ModelState modelState, ModelDebugName modelDebugName) {
+		QuadCollection.Builder builder = new QuadCollection.Builder();
+
+		for (Direction direction : this.unculledFaces) {
+			List<BakedQuad> unculledQuads = this.getQuadsForFace(direction, ModelData.EMPTY);
+			for (BakedQuad quad : unculledQuads) {
+				builder.addUnculledFace(quad);
+			}
+		}
+
+		for (Direction direction : Direction.values()) {
+			List<BakedQuad> culledQuads = this.getQuadsForFace(direction, ModelData.EMPTY);
+			for (BakedQuad quad : culledQuads) {
+				builder.addCulledFace(direction, quad);
+			}
+		}
+
+		return builder.build();
 	}
 
 	public List<BakedQuad> getQuadsForFace(Direction side, ModelData extraData) {
@@ -79,33 +74,6 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		return quads;
 	}
 
-	@Override
-	public ModelData getModelData(BlockAndTintGetter getter, BlockPos pos, BlockState state, ModelData modelData) {
-		ConnectedTextureData data = new ConnectedTextureData();
-
-		for (Direction face : Direction.values()) {
-			Direction[] directions = ConnectionLogic.AXIS_PLANE_DIRECTIONS[face.getAxis().ordinal()];
-			boolean[] sideStates = new boolean[4];
-
-			int faceIndex;
-			for (faceIndex = 0; faceIndex < directions.length; faceIndex++) {
-				sideStates[faceIndex] = this.shouldConnectSide(getter, pos, face, directions[faceIndex]);
-			}
-
-			faceIndex = face.get3DDataValue();
-
-			for (int dir = 0; dir < directions.length; dir++) {
-				int cornerOffset = (dir + 1) % directions.length;
-				boolean side1 = sideStates[dir];
-				boolean side2 = sideStates[cornerOffset];
-				boolean corner = side1 && side2 && this.isCornerBlockPresent(getter, pos, face, directions[dir], directions[cornerOffset]);
-				data.logic[faceIndex][dir] = dir % 2 == 0 ? ConnectionLogic.of(side1, side2, corner) : ConnectionLogic.of(side2, side1, corner);
-			}
-		}
-
-		return modelData.derive().with(DATA, data).build();
-	}
-
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side));
 		if (this.unculledFaces.contains(face)) return this.validConnectors.stream().anyMatch(neighborState::is);
@@ -116,41 +84,6 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
 		if (this.unculledFaces.contains(face)) return this.validConnectors.stream().anyMatch(neighborState::is);
 		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
-	}
-
-	@Override
-	public boolean useAmbientOcclusion() {
-		return this.usesAO;
-	}
-
-	@Override
-	public boolean isGui3d() {
-		return true;
-	}
-
-	@Override
-	public boolean usesBlockLight() {
-		return this.usesBlockLight;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleIcon() {
-		return this.particle;
-	}
-
-	@Override
-	public ItemTransforms getTransforms() {
-		return this.transforms;
-	}
-
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
-		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
-
-	@Override
-	public RenderType getRenderType(ItemStack stack) {
-		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
 	}
 
 	private static final class ConnectedTextureData {

@@ -6,9 +6,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.client.state.entity.LowerGoblinKnightRenderState;
 
-public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightRenderState> {
+public class LowerGoblinKnightModel extends HumanoidModel<@NotNull LowerGoblinKnightRenderState> {
 
 	private final ModelPart tunic;
 

@@ -9,10 +9,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.client.state.entity.UpperGoblinKnightRenderState;
 
-public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRenderState> {
-
+public class UpperGoblinKnightModel extends HumanoidModel<@NotNull UpperGoblinKnightRenderState> {
 	private final ModelPart breastplate;
 	private final ModelPart shield;
 
@@ -26,8 +26,10 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create(),
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(),
 			PartPose.offset(0.0F, 12.0F, 0.0F));
+
+		head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		var hat = partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(),
 			PartPose.offset(0.0F, 12.0F, 0.0F));

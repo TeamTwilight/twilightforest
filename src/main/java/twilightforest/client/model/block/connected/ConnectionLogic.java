@@ -59,7 +59,16 @@ public enum ConnectionLogic {
 	}
 
 	public float[] remapUVs(float[] uvs) {
-		return new float[]{this.getU(uvs[0]), this.getV(uvs[1]), this.getU(uvs[2]), this.getV(uvs[3])};
+		if (uvs.length == 2) {
+			return new float[]{this.getU(uvs[0]), this.getV(uvs[1])};
+		}
+
+		if (uvs.length >= 4) {
+			// Fallback
+			return new float[]{this.getU(uvs[0]), this.getV(uvs[1]), this.getU(uvs[2]), this.getV(uvs[3])};
+		}
+
+		return uvs;
 	}
 
 	public float getU(float delta) {

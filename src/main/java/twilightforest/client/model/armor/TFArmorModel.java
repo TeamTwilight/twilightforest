@@ -1,43 +1,47 @@
 package twilightforest.client.model.armor;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import org.jetbrains.annotations.NotNull;
 
-public class TFArmorModel extends HumanoidModel<LivingEntity> {
-
+public class TFArmorModel extends HumanoidModel<@NotNull HumanoidRenderState> {
 	public TFArmorModel(ModelPart root) {
 		super(root);
 	}
 
 	@Override
-	public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(HumanoidRenderState state) {
 		// [VanillaCopy] ArmorStandArmorModel
 		// this prevents helmets from always facing south, and the armor "breathing" on the stand
-		if (entity instanceof ArmorStand stand) {
-			this.head.xRot = Mth.DEG_TO_RAD * stand.getHeadPose().getX();
-			this.head.yRot = Mth.DEG_TO_RAD * stand.getHeadPose().getY();
-			this.head.zRot = Mth.DEG_TO_RAD * stand.getHeadPose().getZ();
-			this.body.xRot = Mth.DEG_TO_RAD * stand.getBodyPose().getX();
-			this.body.yRot = Mth.DEG_TO_RAD * stand.getBodyPose().getY();
-			this.body.zRot = Mth.DEG_TO_RAD * stand.getBodyPose().getZ();
-			this.leftArm.xRot = Mth.DEG_TO_RAD * stand.getLeftArmPose().getX();
-			this.leftArm.yRot = Mth.DEG_TO_RAD * stand.getLeftArmPose().getY();
-			this.leftArm.zRot = Mth.DEG_TO_RAD * stand.getLeftArmPose().getZ();
-			this.rightArm.xRot = Mth.DEG_TO_RAD * stand.getRightArmPose().getX();
-			this.rightArm.yRot = Mth.DEG_TO_RAD * stand.getRightArmPose().getY();
-			this.rightArm.zRot = Mth.DEG_TO_RAD * stand.getRightArmPose().getZ();
-			this.leftLeg.xRot = Mth.DEG_TO_RAD * stand.getLeftLegPose().getX();
-			this.leftLeg.yRot = Mth.DEG_TO_RAD * stand.getLeftLegPose().getY();
-			this.leftLeg.zRot = Mth.DEG_TO_RAD * stand.getLeftLegPose().getZ();
-			this.rightLeg.xRot = Mth.DEG_TO_RAD * stand.getRightLegPose().getX();
-			this.rightLeg.yRot = Mth.DEG_TO_RAD * stand.getRightLegPose().getY();
-			this.rightLeg.zRot = Mth.DEG_TO_RAD * stand.getRightLegPose().getZ();
-			this.hat.copyFrom(this.head);
+		if (state.entityType == EntityType.ARMOR_STAND) {
+			ArmorStand stand = (ArmorStand) state.entityType.create(Minecraft.getInstance().level, EntitySpawnReason.NATURAL);
+			this.head.xRot = Mth.DEG_TO_RAD * stand.getHeadPose().x();
+			this.head.yRot = Mth.DEG_TO_RAD * stand.getHeadPose().y();
+			this.head.zRot = Mth.DEG_TO_RAD * stand.getHeadPose().z();
+			this.body.xRot = Mth.DEG_TO_RAD * stand.getBodyPose().x();
+			this.body.yRot = Mth.DEG_TO_RAD * stand.getBodyPose().y();
+			this.body.zRot = Mth.DEG_TO_RAD * stand.getBodyPose().z();
+			this.leftArm.xRot = Mth.DEG_TO_RAD * stand.getLeftArmPose().x();
+			this.leftArm.yRot = Mth.DEG_TO_RAD * stand.getLeftArmPose().y();
+			this.leftArm.zRot = Mth.DEG_TO_RAD * stand.getLeftArmPose().z();
+			this.rightArm.xRot = Mth.DEG_TO_RAD * stand.getRightArmPose().x();
+			this.rightArm.yRot = Mth.DEG_TO_RAD * stand.getRightArmPose().y();
+			this.rightArm.zRot = Mth.DEG_TO_RAD * stand.getRightArmPose().z();
+			this.leftLeg.xRot = Mth.DEG_TO_RAD * stand.getLeftLegPose().x();
+			this.leftLeg.yRot = Mth.DEG_TO_RAD * stand.getLeftLegPose().y();
+			this.leftLeg.zRot = Mth.DEG_TO_RAD * stand.getLeftLegPose().z();
+			this.rightLeg.xRot = Mth.DEG_TO_RAD * stand.getRightLegPose().x();
+			this.rightLeg.yRot = Mth.DEG_TO_RAD * stand.getRightLegPose().y();
+			this.rightLeg.zRot = Mth.DEG_TO_RAD * stand.getRightLegPose().z();
+			this.hat.loadPose(this.head.getInitialPose());
 		} else {
-			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		} // TF - Defer to super otherwise
+			super.setupAnim(state);
+		}
 	}
 }

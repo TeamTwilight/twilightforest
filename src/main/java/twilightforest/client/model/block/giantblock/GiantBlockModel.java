@@ -14,7 +14,6 @@ import twilightforest.block.GiantBlock;
 import java.util.List;
 
 public class GiantBlockModel implements BlockStateModel, DynamicBlockStateModel {
-
 	private final BlockStateModel[] voxels;
 
 	public GiantBlockModel(BlockStateModel[] voxels) {

@@ -1,18 +1,12 @@
 package twilightforest.client.model.block.carpet;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import org.jetbrains.annotations.NotNull;
+import twilightforest.block.GenericModelLoader;
 
-public class RoyalRagsModelLoader implements IGeometryLoader<UnbakedRoyalRagsModel> {
-	@Deprecated // FIXME: Generalize alongside with CastleDoor models
+public class RoyalRagsModelLoader extends GenericModelLoader<@NotNull UnbakedRoyalRagsModel> {
 	public static final RoyalRagsModelLoader INSTANCE = new RoyalRagsModelLoader();
 
 	public RoyalRagsModelLoader() {
-	}
-
-	public UnbakedRoyalRagsModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException {
-		return new UnbakedRoyalRagsModel();
+		super(UnbakedRoyalRagsModel::new);
 	}
 }

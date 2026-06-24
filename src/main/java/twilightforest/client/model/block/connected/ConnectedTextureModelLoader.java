@@ -5,20 +5,21 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedConnectedTextureModel> {
+public class ConnectedTextureModelLoader implements UnbakedModelLoader<@NotNull UnbakedConnectedTextureModel> {
 	public static final ConnectedTextureModelLoader INSTANCE = new ConnectedTextureModelLoader();
 
 	public ConnectedTextureModelLoader() {
@@ -45,7 +46,7 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo, "faces");
 
 		List<Block> connectables = this.parseConnnectableBlocks(jsonObject);
-		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
+		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseEmissivity, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
 	}
 
 	private EnumSet<Direction> parseEnabledFaces(JsonObject object, String key) {
@@ -75,14 +76,14 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 
 			for (JsonElement element : object.getAsJsonArray("connectable_blocks")) {
 				if (element.getAsString().startsWith("#")) {
-					ResourceLocation tag = ResourceLocation.tryParse(element.getAsString().substring(1));
+					Identifier tag = Identifier.tryParse(element.getAsString().substring(1));
 					if (tag != null) {
 						BuiltInRegistries.BLOCK.getTagOrEmpty(TagKey.create(Registries.BLOCK, tag)).forEach(blockHolder -> blocks.add(blockHolder.value()));
 					} else {
 						throw new JsonParseException("Invalid block tag: " + element.getAsString());
 					}
 				} else {
-					Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.tryParse(element.getAsString()));
+					Block block = BuiltInRegistries.BLOCK.getValue(Identifier.tryParse(element.getAsString()));
 					if (block == Blocks.AIR) {
 						throw new JsonParseException("Invalid block: " + element.getAsString());
 					}

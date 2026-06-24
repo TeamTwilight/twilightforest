@@ -5,25 +5,22 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.LoyalZombie;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import org.jetbrains.annotations.NotNull;
 
-/**
- * [VanillaCopy] {@link net.minecraft.client.model.AbstractZombieModel} due to generic restrictions
- */
-public class LoyalZombieModel extends HumanoidModel<LoyalZombie> {
-
+public class LoyalZombieModel extends HumanoidModel<LoyalZombieModel.@NotNull LoyalZombieRenderState> {
 	public LoyalZombieModel(ModelPart part) {
 		super(part);
 	}
 
 	@Override
-	public void setupAnim(LoyalZombie e, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setupAnim(e, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		boolean flag = e.isAggressive();
-		float f = Mth.sin(this.attackTime * Mth.PI);
-		float f1 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);
+	public void setupAnim(LoyalZombieRenderState state) {
+		super.setupAnim(state);
+		boolean flag = state.isAggressive;
+		float f = Mth.sin(state.attackTime * Mth.PI);
+		float f1 = Mth.sin((1.0F - (1.0F - state.attackTime) * (1.0F - state.attackTime)) * Mth.PI);
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 		this.rightArm.yRot = -(0.1F - f * 0.6F);
@@ -33,12 +30,16 @@ public class LoyalZombieModel extends HumanoidModel<LoyalZombie> {
 		this.leftArm.xRot = f2;
 		this.rightArm.xRot += f * 1.2F - f1 * 0.4F;
 		this.leftArm.xRot += f * 1.2F - f1 * 0.4F;
-		AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
+		AnimationUtils.bobArms(this.rightArm, this.leftArm, state.ageScale);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		// GREEEEN
-		super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color(FastColor.ARGB32.alpha(color), (int) (FastColor.ARGB32.red(color) * 0.25F), FastColor.ARGB32.green(color), (int) (FastColor.ARGB32.blue(color) * 0.25F)));
+		int greenColor = ARGB.color(ARGB.alpha(color), (int) (ARGB.red(color) * 0.25F), ARGB.green(color), (int) (ARGB.blue(color) * 0.25F));
+		super.renderToBuffer(stack, builder, light, overlay, greenColor);
+	}
+
+	public static class LoyalZombieRenderState extends HumanoidRenderState {
+		public boolean isAggressive;
 	}
 }

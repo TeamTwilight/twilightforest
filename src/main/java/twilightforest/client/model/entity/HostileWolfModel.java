@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> {
-
+public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<@NotNull T> {
 	private final ModelPart head;
 	private final ModelPart body;
 	private final ModelPart rightHindLeg;
@@ -26,7 +26,7 @@ public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> 
 	}
 
 	public HostileWolfModel(Function<Identifier, RenderType> type, ModelPart root) {
-		super(type, false, 5.0F, 2.0F, 2.0F, 2.0F, 24.0F);
+		super(root, type);
 		this.head = root.getChild("head");
 		this.body = root.getChild("body");
 		this.upperBody = root.getChild("upper_body");

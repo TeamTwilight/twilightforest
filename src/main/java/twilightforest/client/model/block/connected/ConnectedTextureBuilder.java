@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -17,10 +18,9 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class ConnectedTextureBuilder extends CustomLoaderBuilder {
-
 	private List<Direction> connectedFaces = new ArrayList<>();
 	private List<Block> connectableBlocks = new ArrayList<>();
-	private List<TagKey<Block>> connectableTags = new ArrayList<>();
+	private List<TagKey<@NotNull Block>> connectableTags = new ArrayList<>();
 	@Nullable
 	private Pair<Vector3f, Vector3f> element;
 	private boolean renderOverlayOnAllFaces = true;
@@ -80,7 +80,7 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 
 	@SuppressWarnings("varargs")
 	@SafeVarargs
-	public final ConnectedTextureBuilder connectsTo(TagKey<Block>... blocks) {
+	public final ConnectedTextureBuilder connectsTo(TagKey<@NotNull Block>... blocks) {
 		this.connectableTags.addAll(List.of(blocks));
 		return this;
 	}

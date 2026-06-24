@@ -5,13 +5,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.renderer.block.model.BlockElement;
-import net.minecraft.client.renderer.block.model.BlockElementFace;
-import net.minecraft.client.renderer.block.model.BlockElementRotation;
-import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.client.model.ExtraFaceData;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
@@ -26,7 +22,6 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class ForceFieldModelBuilder extends CustomLoaderBuilder {
-
 	private boolean defaultShade = true;
 	private int brightnessOverride = 0;
 	private int tint = -1;
@@ -79,9 +74,8 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 	public JsonObject toJson(JsonObject json) {
 		json = super.toJson(json);
 		if (!this.elements.isEmpty()) {
-			JsonArray elements = new JsonArray();
+			JsonArray elementsArray = new JsonArray();
 			this.elements.forEach(forceFieldElementBuilder -> {
-				BlockElement part = forceFieldElementBuilder.build();
 				JsonObject partObj = new JsonObject();
 
 				if (forceFieldElementBuilder.condition != null) {
@@ -98,55 +92,63 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 					partObj.add("condition", condition);
 				}
 
-				partObj.add("from", serializeVector3f(part.from));
-				partObj.add("to", serializeVector3f(part.to));
+				partObj.add("from", serializeVector3f(forceFieldElementBuilder.from));
+				partObj.add("to", serializeVector3f(forceFieldElementBuilder.to));
 
-				if (part.rotation != null) {
+				if (forceFieldElementBuilder.rotation != null) {
 					JsonObject rotation = new JsonObject();
-					rotation.add("origin", serializeVector3f(part.rotation.origin()));
-					rotation.addProperty("axis", part.rotation.axis().getSerializedName());
-					rotation.addProperty("angle", part.rotation.angle());
-					if (part.rotation.rescale()) {
+					rotation.add("origin", serializeVector3f(forceFieldElementBuilder.rotation.origin));
+					rotation.addProperty("axis", forceFieldElementBuilder.rotation.axis.getSerializedName());
+					rotation.addProperty("angle", forceFieldElementBuilder.rotation.angle);
+					if (forceFieldElementBuilder.rotation.rescale) {
 						rotation.addProperty("rescale", true);
 					}
 					partObj.add("rotation", rotation);
 				}
 
-				if (!part.shade) {
-					partObj.addProperty("shade", part.shade);
+				if (!forceFieldElementBuilder.shade) {
+					partObj.addProperty("shade", forceFieldElementBuilder.shade);
 				}
 
-				if (part.lightEmission != 0) {
-					partObj.addProperty("light_emission", part.lightEmission);
+				if (forceFieldElementBuilder.light != 0) {
+					partObj.addProperty("light", forceFieldElementBuilder.light);
 				}
 
-				JsonObject faces = new JsonObject();
-				for (Direction dir : Direction.values()) {
-					BlockElementFace face = part.faces.get(dir);
-					if (face == null) continue;
+				JsonObject facesObj = new JsonObject();
+
+				for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.values()) {
+					var faceBuilder = forceFieldElementBuilder.faces.get(dir);
+					if (faceBuilder == null) continue;
 
 					JsonObject faceObj = new JsonObject();
-					faceObj.addProperty("texture", serializeLocOrKey(face.texture()));
-					if (!Arrays.equals(face.uv().uvs, part.uvsByFace(dir))) {
-						faceObj.add("uv", new Gson().toJsonTree(face.uv().uvs));
+
+					faceObj.addProperty("texture", serializeLocOrKey(faceBuilder.texture));
+
+					if (faceBuilder.uvs != null) {
+						faceObj.add("uvs", new Gson().toJsonTree(faceBuilder.uvs));
 					}
-					if (face.cullForDirection() != null) {
-						faceObj.addProperty("cullface", face.cullForDirection().getSerializedName());
+
+					if (faceBuilder.cullface != null) {
+						faceObj.addProperty("cullface", faceBuilder.cullface.getSerializedName());
 					}
-					if (face.uv().rotation != 0) {
-						faceObj.addProperty("rotation", face.uv().rotation);
+
+					if (faceBuilder.rotation.rotation != 0) {
+						faceObj.addProperty("rotation", faceBuilder.rotation.rotation);
 					}
-					if (face.tintIndex() != -1) {
-						faceObj.addProperty("tintindex", face.tintIndex());
+
+					if (faceBuilder.tintindex != -1) {
+						faceObj.addProperty("tintindex", faceBuilder.tintindex);
 					}
-					faces.add(dir.getSerializedName(), faceObj);
+
+					facesObj.add(dir.getSerializedName(), faceObj);
 				}
-				if (!part.faces.isEmpty()) {
-					partObj.add("faces", faces);
+
+				if (!forceFieldElementBuilder.faces.isEmpty()) {
+					partObj.add("faces", facesObj);
 				}
-				elements.add(partObj);
+				elementsArray.add(partObj);
 			});
-			json.add("elements", elements);
+			json.add("elements", elementsArray);
 		}
 		return json;
 	}
@@ -155,7 +157,7 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 		if (tex.charAt(0) == '#') {
 			return tex;
 		}
-		return ResourceLocation.parse(tex).toString();
+		return Identifier.parse(tex).toString();
 	}
 
 	private static JsonArray serializeVector3f(Vector3f vec) {
@@ -288,14 +290,6 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 			return (direction, builder) -> builder.texture(texture);
 		}
 
-		BlockElement build() {
-			Map<Direction, BlockElementFace> faces = this.faces.entrySet().stream()
-				.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().build(), (direction, face) -> {
-					throw new IllegalArgumentException();
-				}, LinkedHashMap::new));
-			return new BlockElement(this.from, this.to, faces, this.rotation == null ? null : this.rotation.build(), this.shade, this.light, ExtraFaceData.DEFAULT);
-		}
-
 		public ForceFieldModelBuilder end() {
 			return self();
 		}
@@ -340,13 +334,6 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 				return this;
 			}
 
-			BlockElementFace build() {
-				if (this.texture == null) {
-					throw new IllegalStateException("A model face must have a texture");
-				}
-				return new BlockElementFace(this.cullface, this.tintindex, this.texture, new BlockFaceUV(this.uvs, this.rotation.rotation), ExtraFaceData.DEFAULT, new MutableObject<>());
-			}
-
 			public ForceFieldElementBuilder end() {
 				return ForceFieldElementBuilder.this;
 			}
@@ -382,12 +369,6 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 			public ForceFieldElementBuilder.RotationBuilder rescale(boolean rescale) {
 				this.rescale = rescale;
 				return this;
-			}
-
-			BlockElementRotation build() {
-				Preconditions.checkNotNull(this.origin, "No origin specified");
-				Preconditions.checkNotNull(this.axis, "No axis specified");
-				return new BlockElementRotation(this.origin, this.axis, this.angle, this.rescale);
 			}
 
 			public ForceFieldElementBuilder end() {
