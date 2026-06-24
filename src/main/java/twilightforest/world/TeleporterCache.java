@@ -41,7 +41,7 @@ public class TeleporterCache extends SavedData {
 	public static SavedDataType<@NotNull TeleporterCache> factory() {
 		var id = Identifier.fromNamespaceAndPath("twilightforest", "teleporter_cache");
 
-		return new SavedDataType<>(id, TeleporterCache::new, CODEC, DataFixTypes.LEVEL);
+		return new SavedDataType<>(id, TeleporterCache::new, CODEC, null);
 	}
 
 	private TeleporterCache() {
