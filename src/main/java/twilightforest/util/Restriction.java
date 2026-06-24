@@ -26,6 +26,13 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @param hintStructureKey ResourceKey of a structure that extends the StructureHints interface, so that the correct hint book mob spawns
+ * @param enforcement      ResourceKey of the Enforcement that gets used whenever a player is in a restricted biome
+ * @param multiplier       A value dictating how adverse the negative effect of a restricted area should be
+ * @param lockedBiomeToast Item that is used as an icon for the notification that tells the player that the area is locked
+ * @param advancements     List of advancements that are required to make a biome no longer restricted
+ */
 public record Restriction(@Nullable ResourceKey<@NotNull Structure> hintStructureKey, ResourceKey<@NotNull Enforcement> enforcement,
 						  float multiplier, @Nullable ItemStack lockedBiomeToast, List<Identifier> advancements) {
 	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
