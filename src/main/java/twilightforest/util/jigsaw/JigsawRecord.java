@@ -45,34 +45,34 @@ public record JigsawRecord(int priority, FrontAndTop orientation, BlockPos pos, 
 
 	public static JigsawRecord fromUnconfiguredJigsaw(StructureTemplate.StructureBlockInfo info, StructurePlaceSettings settings) {
 		return new JigsawRecord(
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
+			(int) Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
 			JigsawUtil.process(info.state().getValue(JigsawBlock.ORIENTATION), settings),
 			StructureTemplate.calculateRelativePosition(settings, info.pos()),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty"),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), ""),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "")
+			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty").toString(),
+			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), "").toString(),
+			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "").toString()
 		);
 	}
 
 	public static JigsawRecord fromJigsawBlock(StructureTemplate.StructureBlockInfo info) {
 		return new JigsawRecord(
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
+			(int) Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
 			info.state().getValue(JigsawBlock.ORIENTATION),
 			info.pos(),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty"),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), ""),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "")
+			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty").toString(),
+			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), "").toString(),
+			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "").toString()
 		);
 	}
 
 	public static JigsawRecord fromTag(CompoundTag tag) {
 		return new JigsawRecord(
-			tag.getInt("priority"),
-			FrontAndTop.values()[tag.getInt("facing")],
-			new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z")),
-			tag.getString("pool"),
-			tag.getString("name"),
-			tag.getString("target")
+			tag.getInt("priority").get(),
+			FrontAndTop.values()[tag.getInt("facing").get()],
+			new BlockPos(tag.getInt("x").get(), tag.getInt("y").get(), tag.getInt("z").get()),
+			tag.getString("pool").get(),
+			tag.getString("name").get(),
+			tag.getString("target").get()
 		);
 	}
 

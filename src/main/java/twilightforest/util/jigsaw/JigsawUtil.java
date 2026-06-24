@@ -1,5 +1,6 @@
 package twilightforest.util.jigsaw;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -64,7 +65,11 @@ public class JigsawUtil {
 		if (random != null) {
 			Util.shuffle(returnables, random);
 			// "Stable" sorting - preserves order of "equal" priorities, as arranged by prior shuffling.
-			SinglePoolElement.sortBySelectionPriority(returnables);
+			List<StructureTemplate.JigsawBlockInfo> jigsaws = new ObjectArrayList<>();
+			for (StructureTemplate.StructureBlockInfo returnable : returnables) {
+				jigsaws.add(StructureTemplate.JigsawBlockInfo.of(returnable));
+			}
+			SinglePoolElement.sortBySelectionPriority(jigsaws);
 		}
 
 		return returnables;

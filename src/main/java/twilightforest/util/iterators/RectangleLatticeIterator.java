@@ -1,12 +1,12 @@
 package twilightforest.util.iterators;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -69,7 +69,6 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 		return this.latticeX < this.latticeCountX;
 	}
 
-	@NotNull
 	@Override
 	public Iterator<T> iterator() {
 		return this;
@@ -105,7 +104,7 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 
 		public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.5f);
 
-		public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, Codec.unit(DEFAULT))));
+		public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, MapCodec.unit(DEFAULT).codec())));
 
 		public TriangularLatticeConfig(float spacing) {
 			this(spacing, Mth.cos(Mth.PI / 6f) * spacing, Mth.sin(Mth.PI / 6f) * spacing);
@@ -116,14 +115,14 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 		}
 
 		public static TriangularLatticeConfig fromNBT(CompoundTag tag) {
-			float spacing = tag.getFloat("spacing");
+			float spacing = tag.getFloat("spacing").get();
 			if (spacing <= 0.0000001) spacing = 3.5f;
 
-			float xOffset = tag.contains("x_offset", 5) ? tag.getFloat("x_offset") : Mth.cos(Mth.PI / 6f) * spacing;
-			float zOffset = tag.contains("z_offset", 5) ? tag.getFloat("z_offset") : Mth.sin(Mth.PI / 6f) * spacing;
+			float xOffset = tag.contains("x_offset") ? tag.getFloat("x_offset").get() : Mth.cos(Mth.PI / 6f) * spacing;
+			float zOffset = tag.contains("z_offset") ? tag.getFloat("z_offset").get() : Mth.sin(Mth.PI / 6f) * spacing;
 
-			if (tag.contains("x_spacing", 5) || tag.contains("z_spacing", 5)) {
-				return new TriangularLatticeConfig(spacing, xOffset, zOffset, tag.getFloat("x_spacing"), tag.getFloat("z_spacing"));
+			if (tag.contains("x_spacing") || tag.contains("z_spacing")) {
+				return new TriangularLatticeConfig(spacing, xOffset, zOffset, tag.getFloat("x_spacing").get(), tag.getFloat("z_spacing").get());
 			} else {
 				return new TriangularLatticeConfig(spacing, xOffset, zOffset);
 			}

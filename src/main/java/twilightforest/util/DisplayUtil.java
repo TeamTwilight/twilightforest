@@ -2,14 +2,21 @@ package twilightforest.util;
 
 import com.mojang.math.Transformation;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.ValueInput;
 import org.joml.Matrix4f;
 import tamaized.beanification.Component;
 
@@ -43,7 +50,9 @@ public class DisplayUtil {
 
 		entityNBT.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.BLOCK_DISPLAY).toString());
 
-		Optional<Entity> spawned = EntityType.create(entityNBT, level);
+		ProblemReporter.Collector entitySpawnReporter = new ProblemReporter.Collector();
+		ValueInput valueInput = TagValueInput.create(entitySpawnReporter, level.registryAccess(), entityNBT);
+		Optional<Entity> spawned = EntityType.create(valueInput, level, EntitySpawnReason.LOAD);
 
 		if (spawned.isEmpty()) return false;
 		Entity entity = spawned.get();
@@ -65,7 +74,9 @@ public class DisplayUtil {
 		CompoundTag entityNBT = new CompoundTag();
 
 		entityNBT.put("Pos", this.newDoubleList(x, y, z));
-		entityNBT.putString("text", net.minecraft.network.chat.Component.Serializer.toJson(name, level.registryAccess()));
+		var registryOps = RegistryOps.create(JsonOps.INSTANCE, level.registryAccess());
+		String jsonText = ComponentSerialization.CODEC.encodeStart(registryOps, name).getOrThrow().toString();
+		entityNBT.putString("text", jsonText);
 
 		DataResult<Tag> serializedAlignment = Display.TextDisplay.Align.CODEC.encodeStart(NbtOps.INSTANCE, Display.TextDisplay.Align.CENTER);
 		if (serializedAlignment.isSuccess()) {
@@ -83,7 +94,9 @@ public class DisplayUtil {
 
 		entityNBT.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.TEXT_DISPLAY).toString());
 
-		Optional<Entity> spawned = EntityType.create(entityNBT, level);
+		ProblemReporter.Collector entitySpawnReporter = new ProblemReporter.Collector();
+		ValueInput valueInput = TagValueInput.create(entitySpawnReporter, level.registryAccess(), entityNBT);
+		Optional<Entity> spawned = EntityType.create(valueInput, level, EntitySpawnReason.LOAD);
 
 		if (spawned.isEmpty()) return;
 		Entity entity = spawned.get();

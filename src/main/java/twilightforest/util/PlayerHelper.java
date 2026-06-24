@@ -20,7 +20,7 @@ public class PlayerHelper {
 	@Deprecated
 	public static void grantAdvancement(ServerPlayer player, Identifier id) {
 		PlayerAdvancements advancements = player.getAdvancements();
-		AdvancementHolder holder = player.getServer().getAdvancements().get(id);
+		AdvancementHolder holder = player.level().getServer().getAdvancements().get(id);
 		if (holder != null) {
 			for (String criterion : advancements.getOrStartProgress(holder).getRemainingCriteria()) {
 				advancements.award(holder, criterion);
@@ -31,7 +31,7 @@ public class PlayerHelper {
 	@Deprecated
 	public static void grantCriterion(ServerPlayer player, Identifier id, String criterion) {
 		PlayerAdvancements advancements = player.getAdvancements();
-		AdvancementHolder holder = player.getServer().getAdvancements().get(id);
+		AdvancementHolder holder = player.level().getServer().getAdvancements().get(id);
 		if (holder != null) {
 			advancements.award(holder, criterion);
 		}
@@ -43,7 +43,7 @@ public class PlayerHelper {
 			ClientAdvancements manager = localPlayer.connection.getAdvancements();
 			return manager.get(advancementLocation);
 		} else if (player instanceof ServerPlayer serverPlayer) {
-			ServerLevel world = (ServerLevel) serverPlayer.level();
+			ServerLevel world = serverPlayer.level();
 			return world.getServer().getAdvancements().get(advancementLocation);
 		}
 
@@ -59,13 +59,12 @@ public class PlayerHelper {
 				AdvancementProgress progress = manager.progress.get(holder);
 				return progress != null && progress.isDone();
 			}
-			return false;
 		} else {
 			if (player instanceof ServerPlayer) {
 				return holder != null && ((ServerPlayer) player).getAdvancements().getOrStartProgress(holder).isDone();
 			}
-			return false;
 		}
+		return false;
 	}
 
 	public static boolean doesPlayerHaveRequiredAdvancements(Player player, List<Identifier> requiredAdvancements) {
