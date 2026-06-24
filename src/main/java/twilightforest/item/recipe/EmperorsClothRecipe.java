@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
@@ -30,7 +30,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 				if (stack.is(TFItems.EMPERORS_CLOTH.get()) && !foundCloth) {
 					foundCloth = true;
 				} else if (!foundItem) {
-					if (stack.is(ItemTagGenerator.EMPERORS_CLOTH_APPLICABLE) && !stack.hasCraftingRemainingItem() && stack.get(TFDataComponents.EMPERORS_CLOTH) == null) {
+					if (stack.is(TFItemTags.EMPERORS_CLOTH_APPLICABLE) && !stack.hasCraftingRemainingItem() && stack.get(TFDataComponents.EMPERORS_CLOTH) == null) {
 						foundItem = true;
 					} else {
 						return false;
@@ -50,7 +50,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 
 		for (int i = 0; i < input.size(); i++) {
 			ItemStack stack = input.getItem(i);
-			if (!stack.isEmpty() && stack.is(ItemTagGenerator.EMPERORS_CLOTH_APPLICABLE) && item.isEmpty()) {
+			if (!stack.isEmpty() && stack.is(TFItemTags.EMPERORS_CLOTH_APPLICABLE) && item.isEmpty()) {
 				item = stack;
 			}
 		}

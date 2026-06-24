@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @SuppressWarnings("OptionalIsPresent")
 public final class LandmarkUtil {
@@ -49,7 +50,9 @@ public final class LandmarkUtil {
 		var holders = structureRegistry.get().get(matching);
 		if (holders.isEmpty()) return Optional.empty();
 
-		return locateNearestMatchingLandmark(level, holders.get(), chunkX, chunkZ);
+		HolderSet<Structure> holderSet = HolderSet.direct(StreamSupport.stream(holders.spliterator(), false).toList());
+
+		return locateNearestMatchingLandmark(level, holderSet, chunkX, chunkZ);
 	}
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, HolderSet<@NotNull Structure> matching, int chunkX, int chunkZ) {
