@@ -67,7 +67,7 @@ public class TFEnchantments {
 				EnchantmentTarget.VICTIM,
 				EnchantmentTarget.ATTACKER,
 				AllOf.entityEffects(
-					new ApplyFrostedEffect(LevelBasedValue.constant(200), LevelBasedValue.perLevel(0.0F, 1.0F)),
+					new ApplyFrostedEffect(LevelBasedValue.constant(200), LevelBasedValue.perLevel(1.0F, 1.0F)),
 					new ChangeItemDamage(LevelBasedValue.constant(2.0F))),
 				LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))));
 
@@ -83,7 +83,7 @@ public class TFEnchantments {
 			.withEffect(EnchantmentEffectComponents.HIT_BLOCK, new SmashBlocksEffect(
 				LevelBasedValue.constant(12.0F),
 				LevelBasedValue.constant(1.0F),
-				Optional.of(blocks.get(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS).orElseThrow()),
+				blocks.get(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS).map(set -> set),
 				Optional.empty(),
 				Optional.empty())));
 

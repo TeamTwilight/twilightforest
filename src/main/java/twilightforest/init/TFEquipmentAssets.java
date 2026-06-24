@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class TFEquipmentAssets {
-
 	public static final ResourceKey<EquipmentAsset> IRONWOOD = createId("ironwood");
 	public static final ResourceKey<EquipmentAsset> STEELEAF = createId("steeleaf");
 	public static final ResourceKey<EquipmentAsset> NAGA = createId("naga_scale");

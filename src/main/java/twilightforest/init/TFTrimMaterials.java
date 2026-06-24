@@ -32,7 +32,9 @@ public class TFTrimMaterials {
 	}
 
 	private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, MaterialAssetGroup group, Style color) {
-		TrimMaterial material = new TrimMaterial(group, Component.translatable(Util.makeDescriptionId("trim_material", trimKey.identifier())).withStyle(color));
+		String descriptionId = Util.makeDescriptionId("trim_material", trimKey.identifier());
+		Component materialComponent = Component.translatableEscape(descriptionId).withStyle(color);
+		TrimMaterial material = new TrimMaterial(group, materialComponent);
 		context.register(trimKey, material);
 	}
 }

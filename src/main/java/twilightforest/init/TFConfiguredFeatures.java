@@ -8,7 +8,6 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.Music;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -46,7 +45,6 @@ import twilightforest.world.registration.TreeDecorators;
 import java.util.List;
 
 public final class TFConfiguredFeatures {
-
 	//vanilla features with custom placement code
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_LAVA = registerKey("lava_lake");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = registerKey("water_lake");

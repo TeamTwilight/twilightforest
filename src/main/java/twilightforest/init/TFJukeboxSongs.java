@@ -11,7 +11,6 @@ import net.minecraft.world.item.JukeboxSong;
 import twilightforest.TwilightForestMod;
 
 public class TFJukeboxSongs {
-
 	public static final ResourceKey<JukeboxSong> RADIANCE = registerKey("radiance");
 	public static final ResourceKey<JukeboxSong> STEPS = registerKey("steps");
 	public static final ResourceKey<JukeboxSong> SUPERSTITIOUS = registerKey("superstitious");
