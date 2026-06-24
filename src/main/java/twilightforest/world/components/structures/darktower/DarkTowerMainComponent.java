@@ -32,6 +32,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.tags.TFBlockTags;

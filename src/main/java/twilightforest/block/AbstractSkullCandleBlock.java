@@ -34,6 +34,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.init.TFBlockEntities;
 
 import java.util.HashMap;
@@ -173,9 +174,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					player.getInventory().add(candle);
 				}
 			} else {
-				if (!player.getInventory().add(candle)) {
-					player.drop(candle, false);
-				}
+				InventoryUtil.giveItemToPlayer(player, candle);
 			}
 			return InteractionResult.SUCCESS;
 		}

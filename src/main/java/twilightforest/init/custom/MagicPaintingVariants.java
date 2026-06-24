@@ -17,8 +17,6 @@ import net.minecraft.world.item.Items;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingAtlasInfo;
-import twilightforest.data.AtlasGenerator;
-import twilightforest.data.LangGenerator;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer;
 
