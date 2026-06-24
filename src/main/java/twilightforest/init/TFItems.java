@@ -92,7 +92,7 @@ public class TFItems {
 	public static final DeferredItem<Item> FIERY_BOOTS = register("fiery_boots", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.BOOTS).fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FIERY_SWORD = register("fiery_sword", FierySwordItem::new, () -> new Item.Properties().sword(TFToolMaterials.FIERY, 3.0F, -2.4F).fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FIERY_PICKAXE = register("fiery_pickaxe", FieryPickItem::new, () -> new Item.Properties().pickaxe(TFToolMaterials.FIERY, 1.0F, -2.8F).fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> TRAVELLERS_GOGGLES = register("travellers_goggles", properties -> new TravellersGogglesItem(3, properties), () -> TravellersArmorItem.gogglesProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.HELMET).enchantable(1)));
+	public static final DeferredItem<Item> TRAVELLERS_GOGGLES = register("travellers_goggles", properties -> new TravellersGogglesItem(3, properties), () -> TravellersArmorItem.gogglesProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.HELMET)));
 	public static final DeferredItem<Item> TRAVELLERS_VEST = register("travellers_vest", properties -> new TravellersArmorItem(3, properties), () -> TravellersArmorItem.chestProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.CHESTPLATE)));
 	public static final DeferredItem<Item> TRAVELLERS_GLOVES = register("travellers_gloves", properties -> new TravellersArmorItem(0, properties), () -> TravellersArmorItem.glovesProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.CHESTPLATE).durability(0).stacksTo(1)));
 	public static final DeferredItem<Item> TRAVELLERS_WINGS = register("travellers_wings", properties -> new TravellersArmorBeltItem(3, properties), () -> TravellersArmorItem.wingsProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.LEGGINGS)));
@@ -142,7 +142,6 @@ public class TFItems {
 	public static final DeferredItem<Item> CICADA_JAR = register("cicada_jar", properties -> new JarItem(TFBlocks.CICADA_JAR.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final DeferredItem<Item> ARMOR_SHARD = register("armor_shard", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = register("armor_shard_cluster", Item::new, Item.Properties::new);
-//	public static final DeferredItem<Item> TROLLSTEINN = register("trollsteinn", (properties) -> new BlockItem(TFBlocks.TROLLSTEINN.get(), properties), Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = register("knightmetal_ingot", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_HELMET = register("knightmetal_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.HELMET));
 	public static final DeferredItem<Item> KNIGHTMETAL_CHESTPLATE = register("knightmetal_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.CHESTPLATE));
