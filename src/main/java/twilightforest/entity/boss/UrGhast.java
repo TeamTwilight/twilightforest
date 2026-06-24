@@ -41,6 +41,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.init.*;
 import twilightforest.util.entities.EntityUtil;
+import twilightforest.client.renderer.TFWeatherRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
