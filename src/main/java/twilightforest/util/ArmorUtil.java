@@ -26,4 +26,3 @@ public class ArmorUtil {
 		return armorSlots > 0 ? (float) shroudedArmor / (float) armorSlots : 0.0F;
 	}
 }
-
