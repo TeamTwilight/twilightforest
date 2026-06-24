@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
@@ -16,8 +17,8 @@ import twilightforest.init.custom.TravellersModifiersManager;
 
 public record CycleMapSlotPacket() implements CustomPacketPayload {
 	public static final CycleMapSlotPacket INSTANCE = new CycleMapSlotPacket();
-	public static final Type<CycleMapSlotPacket> TYPE = new Type<>(TwilightForestMod.prefix("cycle_map_slot_packet"));
-	public static final StreamCodec<RegistryFriendlyByteBuf, CycleMapSlotPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+	public static final Type<@NotNull CycleMapSlotPacket> TYPE = new Type<>(TwilightForestMod.prefix("cycle_map_slot_packet"));
+	public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull CycleMapSlotPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	public static void handle(CycleMapSlotPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
@@ -38,13 +39,13 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 				ItemDisplayContents updatedContents = mutable.toImmutable();
 				headStack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
 				serverPlayer.getInventory().setChanged();
-				player.playNotifySound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), player.getSoundSource(), 1F, 1F);
+				player.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), 1F, 1F);
 			}
 		});
 	}
 
 	@Override
-	public Type<? extends CustomPacketPayload> type() {
+	public Type<? extends @NotNull CustomPacketPayload> type() {
 		return TYPE;
 	}
 }

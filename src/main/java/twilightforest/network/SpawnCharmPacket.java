@@ -15,15 +15,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.CharmEffect;
 import twilightforest.init.TFEntities;
 
-public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) implements CustomPacketPayload {
+public record SpawnCharmPacket(ItemStack charm, ResourceKey<@NotNull SoundEvent> event) implements CustomPacketPayload {
 
-	public static final Type<SpawnCharmPacket> TYPE = new Type<>(TwilightForestMod.prefix("spawn_charm"));
-	public static final StreamCodec<RegistryFriendlyByteBuf, SpawnCharmPacket> STREAM_CODEC = CustomPacketPayload.codec(SpawnCharmPacket::write, SpawnCharmPacket::new);
+	public static final Type<@NotNull SpawnCharmPacket> TYPE = new Type<>(TwilightForestMod.prefix("spawn_charm"));
+	public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull SpawnCharmPacket> STREAM_CODEC = CustomPacketPayload.codec(SpawnCharmPacket::write, SpawnCharmPacket::new);
 
 	public SpawnCharmPacket(RegistryFriendlyByteBuf buf) {
 		this(ItemStack.STREAM_CODEC.decode(buf), buf.readResourceKey(Registries.SOUND_EVENT));
@@ -35,7 +36,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 	}
 
 	@Override
-	public Type<? extends CustomPacketPayload> type() {
+	public Type<? extends @NotNull CustomPacketPayload> type() {
 		return TYPE;
 	}
 
@@ -51,13 +52,13 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 					if (TFConfig.spawnCharmAnimationAsTotem) {
 						Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
 						//prefer the camera pos over the player as the player position isnt quite synced to the client yet
-						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm()), 20);
+						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm.getItem()), 20);
 					} else {
 						CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, packet.charm());
 						effect.offset = (float) Math.PI;
 						level.addEntity(effect);
 					}
-					SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event());
+					SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event()).get().value();
 					if (camera != null && event != null) {
 						level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
 					}
