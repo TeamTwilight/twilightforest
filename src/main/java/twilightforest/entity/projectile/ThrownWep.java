@@ -7,26 +7,27 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 
 public class ThrownWep extends TFThrowable {
-
-	private static final EntityDataAccessor<ItemStack> DATA_ITEMSTACK = SynchedEntityData.defineId(ThrownWep.class, EntityDataSerializers.ITEM_STACK);
-	private static final EntityDataAccessor<Float> DATA_VELOCITY = SynchedEntityData.defineId(ThrownWep.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<@NotNull ItemStack> DATA_ITEMSTACK = SynchedEntityData.defineId(ThrownWep.class, EntityDataSerializers.ITEM_STACK);
+	private static final EntityDataAccessor<@NotNull Float> DATA_VELOCITY = SynchedEntityData.defineId(ThrownWep.class, EntityDataSerializers.FLOAT);
 
 	private float projectileDamage = 6;
 
-	public ThrownWep(EntityType<? extends ThrownWep> type, Level world, LivingEntity thrower) {
-		super(type, world, thrower);
+	public ThrownWep(EntityType<? extends @NotNull ThrownWep> type, Level world, LivingEntity thrower) {
+		super(type, world);
 	}
 
-	public ThrownWep(EntityType<? extends ThrownWep> type, Level world) {
+	public ThrownWep(EntityType<? extends @NotNull ThrownWep> type, Level world) {
 		super(type, world);
 	}
 
@@ -41,9 +42,14 @@ public class ThrownWep extends TFThrowable {
 		builder.define(DATA_VELOCITY, 0.001F);
 	}
 
-	public ThrownWep setItem(ItemStack stack) {
+	public ThrownWep setCurrentItem(ItemStack stack) {
 		this.getEntityData().set(DATA_ITEMSTACK, stack);
 		return this;
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return TFItems.KNIGHTMETAL_SWORD.asItem();
 	}
 
 	public ItemStack getItem() {

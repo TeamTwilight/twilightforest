@@ -3,9 +3,6 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,6 +11,8 @@ import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.Troll;
 import twilightforest.init.TFDamageTypes;
@@ -32,15 +32,20 @@ public class ThrownBlock extends TFThrowable {
 
 	private BlockState state = Blocks.STONE.defaultBlockState();
 
-	public ThrownBlock(EntityType<? extends TFThrowable> type, Level worldIn) {
+	public ThrownBlock(EntityType<? extends @NotNull TFThrowable> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public ThrownBlock(Level world, LivingEntity thrower, @Nullable BlockState state) {
-		super(TFEntities.THROWN_BLOCK.get(), world, thrower);
+	public ThrownBlock(Level world, @Nullable BlockState state) {
+		super(TFEntities.THROWN_BLOCK.get(), world);
 		if (state != null) {
 			this.state = state;
 		}
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return Items.STONE;
 	}
 
 	@Override
@@ -93,7 +98,7 @@ public class ThrownBlock extends TFThrowable {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+	public Packet<@NotNull ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
 		return new ClientboundAddEntityPacket(this, entity, Block.getId(this.getBlockState()));
 	}
 
