@@ -15,7 +15,6 @@ import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import twilightforest.config.TFConfig;
-import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.tags.TFEntityTypeTags;
