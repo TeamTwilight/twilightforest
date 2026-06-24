@@ -13,9 +13,6 @@ import twilightforest.asm.ASMUtil;
 
 import java.util.Set;
 
-/**
- * {@link twilightforest.asmhooks.MultipartHooks#sendDirtyEntityData}
- */
 public class SendDirtyEntityDataTransformer implements ITransformer<MethodNode> {
 
 	@Override
