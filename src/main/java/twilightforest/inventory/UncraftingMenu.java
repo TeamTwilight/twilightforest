@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
 import twilightforest.init.TFRecipes;
@@ -622,9 +623,9 @@ public class UncraftingMenu extends RecipeBookMenu {
 	private ItemStack[] getIngredients(Recipe<?> recipe) {
 		ItemStack[] stacks = new ItemStack[recipe.placementInfo().ingredients().size()];
 
-		for (int i = 0; i < recipe.placementInfo().ingredients().size(); i++) {
-			List<Holder<@NotNull Item>> matchingStacks = recipe.placementInfo().ingredients().get(i).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).toList();
-			stacks[i] = !matchingStacks.isEmpty() ? new ItemStack(matchingStacks.get(Math.floorMod(this.ingredientsInCycle, matchingStacks.size())).value()) : ItemStack.EMPTY;
+		for (int i = 0; i < recipe.getIngredients().size(); i++) {
+			ItemStack[] matchingStacks = Arrays.stream(recipe.getIngredients().get(i).getItems()).filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).toArray(ItemStack[]::new);
+			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
 		}
 
 		return stacks;

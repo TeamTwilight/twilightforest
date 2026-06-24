@@ -30,7 +30,7 @@ import twilightforest.compat.jei.util.GrindstoneTravellersRecipesGetter;
 import twilightforest.compat.jei.util.OminousFireRecipe;
 import twilightforest.compat.jei.util.TransformationRecipe;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFMenuTypes;
@@ -73,7 +73,7 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipeCatalyst(new ItemStack(TFItems.EXANIMATE_ESSENCE.get()), OminousFireCategory.OMINOUS_FIRE);
 		registration.addRecipeCatalyst(new ItemStack(TFItems.CRUMBLE_HORN.get()), CrumbleHornCategory.CRUMBLE_HORN);
 
-		for (var block : BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTagGenerator.DRYING_RACKS)) {
+		for (var block : BuiltInRegistries.BLOCK.getTagOrEmpty(TFBlockTags.DRYING_RACKS)) {
 			registration.addRecipeCatalyst(new ItemStack(block.value()), DryingCategory.DRYING);
 		}
 	}

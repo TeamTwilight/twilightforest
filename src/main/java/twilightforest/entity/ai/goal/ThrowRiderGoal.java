@@ -11,7 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.components.entity.YetiThrowAttachment;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.network.MovePlayerPacket;
@@ -30,7 +30,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public boolean canUse() {
 		return this.mob.getPassengers().isEmpty() &&
 			this.mob.getTarget() != null &&
-			!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
+			!this.mob.getTarget().is(Tags.EntityTypes.BOSSES) &&
 			this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
 			super.canUse();
 	}
@@ -61,7 +61,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			if (this.mob.getPassengers().isEmpty()) {
 				var v = victim.getVehicle();
 
-				if (v == null || !v.getType().is(EntityTagGenerator.RIDES_OBSTRUCT_SNATCHING)) {
+				if (v == null || !v.is(TFEntityTypeTags.RIDES_OBSTRUCT_SNATCHING)) {
 					// Pluck them from the boat, minecart, donkey, or whatever
 					victim.stopRiding();
 
