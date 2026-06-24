@@ -6,9 +6,9 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.alchemy.PotionContents;
+import org.jetbrains.annotations.NotNull;
 
 public record PotionFlaskComponent(PotionContents potion, int doses, int breakage, boolean breakable) {
-
 	public static final PotionFlaskComponent EMPTY = new PotionFlaskComponent(PotionContents.EMPTY, 0, 0, true);
 	public static final PotionFlaskComponent EMPTY_UNBREAKABLE = new PotionFlaskComponent(PotionContents.EMPTY, 0, 0, false);
 
@@ -19,7 +19,7 @@ public record PotionFlaskComponent(PotionContents potion, int doses, int breakag
 		Codec.BOOL.optionalFieldOf("breakable", true).forGetter(PotionFlaskComponent::breakable)
 	).apply(instance, PotionFlaskComponent::new));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, PotionFlaskComponent> STREAM_CODEC = StreamCodec.composite(
+	public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull PotionFlaskComponent> STREAM_CODEC = StreamCodec.composite(
 		PotionContents.STREAM_CODEC, PotionFlaskComponent::potion,
 		ByteBufCodecs.INT, PotionFlaskComponent::doses,
 		ByteBufCodecs.INT, PotionFlaskComponent::breakage,
