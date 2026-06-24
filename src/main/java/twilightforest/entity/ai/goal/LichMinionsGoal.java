@@ -1,13 +1,16 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
@@ -16,6 +19,7 @@ import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
+import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffset0Transformer;
 
 import java.util.EnumSet;
 
@@ -90,12 +94,17 @@ public class LichMinionsGoal extends Goal {
 		if (this.lich.getAttackCooldown() == 0) {
 			if (dist < 2.0F) {
 				// melee attack
-				this.lich.doHurtTarget(targetedEntity);
+				if (this.lich.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+					this.lich.doHurtTarget(serverLevel, targetedEntity);
+				}
+
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < ATTACK_RANGE && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
-				if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(this.lich.level(), this.lich));
-				else this.lich.launchProjectileAt(new LichBomb(this.lich.level(), this.lich));
+				if (this.lich.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+					if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(serverLevel, this.lich));
+					else this.lich.launchProjectileAt(new LichBomb(serverLevel, this.lich));
+				}
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setNextAttackType(this.lich.getRandom().nextBoolean() ? 0 : 1);
@@ -129,7 +138,11 @@ public class LichMinionsGoal extends Goal {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.level(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			EventHooks.finalizeMobSpawn(minion, accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), EntitySpawnReason.MOB_SUMMONED, null);
+			Level level = this.lich.level();
+			long time = level.getOverworldClockTime();
+			int phase = (int)(time / 24000L % 8L + 8L) % 8;
+			DifficultyInstance difficultyInstance = new DifficultyInstance(level.getDifficulty(), level.getGameTime(), level.getChunkAt(BlockPos.containing(minionSpot)).getInhabitedTime(), DimensionType.MOON_BRIGHTNESS_PER_PHASE[phase]);
+			EventHooks.finalizeMobSpawn(minion, accessor, difficultyInstance, EntitySpawnReason.MOB_SUMMONED, null);
 			this.lich.level().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);

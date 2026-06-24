@@ -2,6 +2,7 @@ package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -68,15 +69,22 @@ public class NagaMovementPattern extends Goal {
 					}
 					this.naga.zza = 0.1f;
 					if (!this.stunCalculated) {
-						//the stunless charge has a higher chance to happen the lower the naga's health gets
-						//difficulty is also factored in. The higher the difficulty the greater the chance
 						float healthRatio = 1.0F - (this.naga.getHealth() / (this.naga.getMaxHealth())) - 0.25F;
-						float chance = Mth.clamp(healthRatio + (this.naga.level().getCurrentDifficultyAt(this.naga.blockPosition()).getDifficulty().getId() * 0.05F), 0.0F, 0.5F);
+						float difficultyBonus;
+
+						if (this.naga.level() instanceof ServerLevel serverLevel) {
+							difficultyBonus = serverLevel.getCurrentDifficultyAt(this.naga.blockPosition()).getDifficulty().getId() * 0.05F;
+						} else {
+							difficultyBonus = this.naga.level().getDifficulty().getId() * 0.05F;
+						}
+
+						float chance = Mth.clamp(healthRatio + difficultyBonus, 0.0F, 0.5F);
 						float randChance = this.naga.getRandom().nextFloat() * 0.75F;
 						boolean stunless = randChance < chance;
 						this.naga.setStunlessCharging(stunless);
 						this.stunCalculated = true;
 					}
+
 				}
 				case CRUMBLE -> {
 					this.naga.getNavigation().stop();
@@ -176,7 +184,7 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!EventHooks.canEntityGrief(this.naga.level(), this.naga) || naga.getTarget() == null) return;
+		if (!EventHooks.canEntityGrief((ServerLevel) this.naga.level(), this.naga) || naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;

@@ -50,13 +50,15 @@ public class PhantomThrowWeaponGoal extends Goal {
 
 		this.boss.playSound(TFSounds.KNIGHT_PHANTOM_THROW_AXE.get(), 1.0F, (this.boss.getRandom().nextFloat() - this.boss.getRandom().nextFloat()) * 0.2F + 0.4F);
 		this.boss.gameEvent(GameEvent.PROJECTILE_SHOOT);
-		ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.level(), this.boss).setItem(new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
+		ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.level(), this.boss).setCurrentItem(new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
 
 		float speed = 0.75F;
 
 		projectile.shoot(tx, ty, tz, speed, 1.0F);
 
-		projectile.moveTo(sx, sy, sz, this.boss.getYRot(), this.boss.getXRot());
+		projectile.setPos(sx, sy, sz);
+		projectile.setXRot(this.boss.getXRot());
+		projectile.setYRot(this.boss.getYRot());
 
 		this.boss.level().addFreshEntity(projectile);
 	}
@@ -76,11 +78,11 @@ public class PhantomThrowWeaponGoal extends Goal {
 			double vy = 0;
 			double vz = Mth.sin(throwAngle);
 
+			ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.level(), this.boss).setDamage(3).setVelocity(0.015F).setCurrentItem(new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 
-			ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.level(), this.boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
-
-
-			projectile.moveTo(sx, sy, sz, i * 45F, this.boss.getXRot());
+			projectile.setPos(sx, sy, sz);
+			projectile.setXRot(this.boss.getXRot());
+			projectile.setYRot(i * 45F);
 
 			float speed = 0.5F;
 

@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import twilightforest.entity.boss.SnowQueen;
@@ -114,7 +115,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 			// drop!
 			this.dropTimer++;
 			if (this.attacker.getY() > this.dropY) {
-				this.attacker.destroyBlocksInAABB(this.attacker.getBoundingBox().inflate(1, 0.5F, 1));
+				this.attacker.destroyBlocksInAABB((ServerLevel) this.attacker.level(), this.attacker.getBoundingBox().inflate(1, 0.5F, 1));
 			}
 		}
 	}

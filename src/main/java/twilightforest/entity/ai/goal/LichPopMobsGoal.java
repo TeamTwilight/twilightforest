@@ -7,10 +7,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
-import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFSounds;
 import twilightforest.item.LifedrainScepterItem;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.EnumSet;
@@ -49,7 +49,7 @@ public class LichPopMobsGoal extends Goal {
 			this.lich.getPopCooldown() == 0 &&
 			!this.lich.level().getEntitiesOfClass(Mob.class,
 				this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D),
-				e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
+				e -> e.is(TFEntityTypeTags.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class LichPopMobsGoal extends Goal {
 		if (this.lich.getTeleportInvisibility() > 0) return;
 		super.tick();
 		if (this.lich.getScepterTimeLeft() > 0 || this.lich.level().isClientSide()) return;
-		for (Mob mob : this.lich.level().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && e != this.lich)) {
+		for (Mob mob : this.lich.level().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.is(TFEntityTypeTags.LICH_POPPABLES) && e != this.lich)) {
 			if (this.lich.getSensing().hasLineOfSight(mob)) {
 				mob.discard();
 				//rain particles
