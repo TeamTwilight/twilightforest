@@ -27,6 +27,8 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFSounds;
 
@@ -35,7 +37,6 @@ import java.util.List;
 public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	public static final MapCodec<MasonJarBlock> CODEC = simpleCodec(MasonJarBlock::new);
 	private static final int SLOT = 0;
-	private static final int ALL  = Integer.MAX_VALUE;
 
 	public MasonJarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -67,37 +68,84 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	private static void handleEmptyHand(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler) {
-		ItemStack preview = handler.extractItem(SLOT, ALL, true);
-		if (preview.isEmpty()) {
+		int maxAmount = 64;
+
+		ItemStack extractedStack = ItemStack.EMPTY;
+
+		try (Transaction _ = Transaction.openRoot()) {
+			ItemResource resource = handler.getResource(SLOT);
+
+			if (!resource.isEmpty()) {
+				ItemStack preview = resource.toStack(handler.getAmountAsInt(SLOT));
+
+				if (player.isSecondaryUseActive()) {
+					player.sendOverlayMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()));
+					wiggle(server, pos, jar);
+					return;
+				}
+
+				extractedStack = resource.toStack(0);
+			}
+		}
+
+		if (extractedStack.isEmpty()) {
 			wiggle(server, pos, jar);
 			return;
 		}
-		if (player.isSecondaryUseActive()) {
-			player.sendOverlayMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()));
-			wiggle(server, pos, jar);
-			return;
+
+		try (Transaction transaction = Transaction.openRoot()) {
+			ItemResource resourceToExtract = ItemResource.of(extractedStack);
+			int countExtracted = handler.extract(SLOT, resourceToExtract, maxAmount, transaction);
+
+			if (countExtracted > 0) {
+				extractedStack.setCount(countExtracted);
+				transaction.commit();
+				player.setItemInHand(hand, extractedStack);
+				server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+				return;
+			}
 		}
-		ItemStack extracted = handler.extractItem(SLOT, ALL, false);
-		player.setItemInHand(hand, extracted);
-		server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-		server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+
+		wiggle(server, pos, jar);
 	}
 
 	private static void handleInsert(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler, ItemStack stack) {
-		// Simulate insert first; if nothing would go in then just wiggle
-		if (handler.insertItem(SLOT, stack, true).getCount() >= stack.getCount()) {
+		if (stack.isEmpty()) return;
+
+		ItemResource resource = ItemResource.of(stack);
+		int amountToInsert = stack.getCount();
+		int simulatedInserted;
+
+		try (Transaction transaction = Transaction.openRoot()) {
+			simulatedInserted = handler.insert(SLOT, resource, amountToInsert, transaction);
+		}
+
+		if (simulatedInserted <= 0) {
 			wiggle(server, pos, jar);
 			return;
+		}
+
+		int realInserted;
+		try (Transaction transaction = Transaction.openRoot()) {
+			realInserted = handler.insert(SLOT, resource, amountToInsert, transaction);
+			if (realInserted > 0) {
+				transaction.commit();
+			}
 		}
 
 		jar.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F));
 		player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+
 		ItemStack before = stack.copy();
-		ItemStack remainder = handler.insertItem(SLOT, stack, false);
+
+		ItemStack remainder = stack.copy();
+		remainder.shrink(realInserted);
 		player.setItemInHand(hand, player.hasInfiniteMaterials() ? before : remainder);
-		float filledRatio = (float) (before.getCount() - remainder.getCount()) / (float) before.getMaxStackSize();
-		server.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
-		server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+
+		float filledRatio = (float) realInserted / (float) before.getMaxStackSize();
+		server.playSound(null, pos, TFSounds.JAR_INSERT.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
+		server.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE, pos);
 	}
 
 	private static void wiggle(ServerLevel server, BlockPos pos, MasonJarBlockEntity jar) {

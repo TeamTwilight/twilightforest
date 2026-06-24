@@ -25,7 +25,6 @@ import twilightforest.init.TFStats;
 import twilightforest.inventory.UncraftingMenu;
 
 public class UncraftingTableBlock extends Block {
-
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public UncraftingTableBlock(BlockBehaviour.Properties properties) {

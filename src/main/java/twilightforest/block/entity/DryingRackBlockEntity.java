@@ -23,7 +23,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.block.DryingRackBlock;
 import twilightforest.init.TFBlockEntities;
@@ -166,57 +165,5 @@ public class DryingRackBlockEntity extends BlockEntity {
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
 		return this.saveCustomOnly(registries);
-	}
-
-	//TODO oh my goddddddddddddddd
-	public record DryingRackHandler(DryingRackBlockEntity inventory) implements IItemHandlerModifiable {
-		@Override
-		public int getSlots() {
-			return 1;
-		}
-
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			return this.inventory.getTheItem();
-		}
-
-		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (!this.inventory.getTheItem().isEmpty()) {
-				return stack;
-			}
-
-			ItemStack copyStack = stack.copy();
-			ItemStack splitOut = copyStack.split(1);
-			if (!simulate) {
-				this.inventory.setTheItem(splitOut);
-			}
-
-			return copyStack;
-		}
-
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (this.inventory.drying) {
-				return ItemStack.EMPTY;
-			}
-
-			return simulate ? this.inventory.getTheItem() : this.inventory.takeTheItem();
-		}
-
-		@Override
-		public int getSlotLimit(int slot) {
-			return 1;
-		}
-
-		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			return true;
-		}
-
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			this.inventory.setTheItem(stack);
-		}
 	}
 }

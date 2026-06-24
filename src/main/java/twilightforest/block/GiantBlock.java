@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class GiantBlock extends Block {
-
 	private boolean isSelfDestructing;
 
 	public GiantBlock(Properties properties) {
