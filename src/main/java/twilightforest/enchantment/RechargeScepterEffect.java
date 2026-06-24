@@ -27,21 +27,21 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 
 	public static void applyRecharge(ServerLevel level, ItemStack item, Entity entity) {
 		if (entity instanceof Player player && item.getDamageValue() == item.getMaxDamage()) {
-			List<ScepterRepairRecipe> recipes = level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder::value).map(ScepterRepairRecipe.class::cast).toList();
+			List<ScepterRepairRecipe> recipes = level.recipeAccess().recipeMap().byType(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder::value).map(ScepterRepairRecipe.class::cast).toList();
 			List<Integer> slotsToConsume = new ArrayList<>();
 			for (var recipe : recipes) {
 				if (item.is(recipe.getScepter())) {
-					var ingredientCopy = new ArrayList<>(recipe.getIngredients());
+					var ingredientCopy = new ArrayList<>(recipe.placementInfo().ingredients());
 					scepterItemsCheck:
-					for (int i = 0; i < player.getInventory().items.size(); i++) {
-						var stack = player.getInventory().items.get(i);
+					for (int i = 0; i < 36; i++) {
+						var stack = player.getInventory().getItem(i);
 						if (stack.isEmpty()) continue;
 						if (stack.is(TFItems.EXANIMATE_ESSENCE)) {
 							stack.shrink(1);
 							item.setDamageValue(0);
 							return;
 						}
-						for (var ingredient : recipe.getIngredients()) {
+						for (var ingredient : recipe.placementInfo().ingredients()) {
 							if (ingredientCopy.contains(ingredient) && ingredient.test(stack)) {
 								ingredientCopy.remove(ingredient);
 								slotsToConsume.add(i);
@@ -50,13 +50,13 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 						}
 					}
 
-					if (slotsToConsume.size() == recipe.getIngredients().size()) {
+					if (slotsToConsume.size() == recipe.placementInfo().ingredients().size()) {
 						for (int slot : slotsToConsume) {
-							ItemStack stack = player.getInventory().items.get(slot);
+							ItemStack stack = player.getInventory().getItem(slot);
 							stack.shrink(1);
-							if (stack.hasCraftingRemainingItem()) {
-								if (!player.getInventory().add(stack.getCraftingRemainingItem())) {
-									player.drop(stack.getCraftingRemainingItem(), false);
+							if (stack.getCraftingRemainder() != null) {
+								if (!player.getInventory().add(stack.getCraftingRemainder().create())) {
+									player.drop(stack.getCraftingRemainder().create(), false);
 								}
 							}
 						}

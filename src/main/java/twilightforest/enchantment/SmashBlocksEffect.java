@@ -20,12 +20,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.Optional;
 
-public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius, Optional<HolderSet<Block>> immuneBlocks, Optional<HolderSet<Block>> vulnerableBlocks, Optional<Holder<SoundEvent>> smashSound) implements EnchantmentEntityEffect {
+public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius, Optional<HolderSet<@NotNull Block>> immuneBlocks, Optional<HolderSet<@NotNull Block>> vulnerableBlocks, Optional<Holder<@NotNull SoundEvent>> smashSound) implements EnchantmentEntityEffect {
 
 	public static final MapCodec<SmashBlocksEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			LevelBasedValue.CODEC.fieldOf("max_smash").forGetter(SmashBlocksEffect::maxSmash),
@@ -48,7 +49,7 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 				if (blocksSmashed >= maxSmash) break;
 				BlockState state = level.getBlockState(pos);
 				if (!state.isAir()) {
-					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.getBlockHolder())) continue;
+					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.typeHolder())) continue;
 					if (ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && state.canEntityDestroy(level, pos, player)) {
 						if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
 							level.destroyBlock(pos, false);

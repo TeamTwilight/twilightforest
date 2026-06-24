@@ -11,6 +11,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
+import org.jetbrains.annotations.NotNull;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.Configurable;
@@ -21,6 +22,12 @@ import java.util.Optional;
 
 @Configurable
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.TriggerInstance> {
+	public static final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(DrinkFromFlaskTrigger.TriggerInstance::player),
+			MinMaxBounds.Ints.CODEC.optionalFieldOf("doses", MinMaxBounds.Ints.between(0, 4)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::doses),
+			MinMaxBounds.Ints.CODEC.optionalFieldOf("seconds", MinMaxBounds.Ints.exactly(8)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::seconds),
+			BuiltInRegistries.POTION.holderByNameCodec().fieldOf("potion").forGetter(DrinkFromFlaskTrigger.TriggerInstance::potion))
+		.apply(instance, DrinkFromFlaskTrigger.TriggerInstance::new));
 
 	@Autowired
 	private TriggerInstance.DrinkFromFlaskTriggerInstanceFactory factory;
@@ -29,7 +36,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 	private HolderMatcher holderMatcher;
 
 	public Codec<DrinkFromFlaskTrigger.TriggerInstance> codec() {
-		return factory.CODEC;
+		return CODEC;
 	}
 
 	public void trigger(ServerPlayer player, int doses, int seconds, Holder<Potion> potion) {
@@ -37,22 +44,19 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 	}
 
 	public record TriggerInstance(Optional<ContextAwarePredicate> player, MinMaxBounds.Ints doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) implements SimpleInstance {
-
 		public boolean matches(DrinkFromFlaskTrigger parent, int doses, int seconds, Holder<Potion> potion) {
-			return this.doses().matches(doses) && this.seconds().matches(seconds) && parent.holderMatcher.match(this.potion(), potion);
+			boolean matchesPotion = (parent == null || parent.holderMatcher == null)
+				? this.potion().equals(potion)
+				: parent.holderMatcher.match(this.potion(), potion);
+
+			return this.doses().matches(doses) && this.seconds().matches(seconds) && matchesPotion;
 		}
 
 		@Component
 		public static class DrinkFromFlaskTriggerInstanceFactory {
+			public final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = DrinkFromFlaskTrigger.CODEC;
 
-			public final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(DrinkFromFlaskTrigger.TriggerInstance::player),
-					MinMaxBounds.Ints.CODEC.optionalFieldOf("doses", MinMaxBounds.Ints.between(0, 4)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::doses),
-					MinMaxBounds.Ints.CODEC.optionalFieldOf("seconds", MinMaxBounds.Ints.exactly(8)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::seconds),
-					BuiltInRegistries.POTION.holderByNameCodec().fieldOf("potion").forGetter(DrinkFromFlaskTrigger.TriggerInstance::potion))
-				.apply(instance, DrinkFromFlaskTrigger.TriggerInstance::new));
-
-			public Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
+			public Criterion<DrinkFromFlaskTrigger.@NotNull TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
 				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), seconds, potion));
 			}
 
@@ -60,6 +64,5 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), doses, seconds, potion));
 			}
 		}
-
 	}
 }
