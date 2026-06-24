@@ -7,6 +7,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 public class LogCoreParticle extends RisingParticle {
 	LogCoreParticle(ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed, TextureAtlasSprite sprite) {
@@ -56,16 +57,15 @@ public class LogCoreParticle extends RisingParticle {
 		this.alpha = Math.min(f * 1.35F, 1F);
 	}
 
-	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
+	public record Factory(SpriteSet sprite) implements ParticleProvider<@NotNull SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2, RandomSource random) {
-			LogCoreParticle logCoreParticle = new LogCoreParticle(level, x, y, z, x2, y2, z2, this.sprite.get(random));
-			return logCoreParticle;
+			return new LogCoreParticle(level, x, y, z, x2, y2, z2, this.sprite.get(random));
 		}
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(float partialTicks) {
+	public AABB getBoundingBox() {
 		return AABB.INFINITE;
 	}
 }

@@ -5,23 +5,21 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.data.AtlasIds;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFSounds;
 
 public class GhastTearParticle extends SingleQuadParticle {
-
 	public GhastTearParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
 		super(level, x, y, z, 0.0D, 0.0D, 0.0D, sprite);
 		this.rCol = this.gCol = this.bCol = 1.0F;
@@ -56,24 +54,12 @@ public class GhastTearParticle extends SingleQuadParticle {
 		super.tick();
 	}
 
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
+	public static class Factory implements ParticleProvider<@NotNull SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-			TextureAtlasSprite textureatlassprite = this.calculateState(new ItemStack(Items.GHAST_TEAR), level).pickParticleIcon(random);
-
-			if (textureatlassprite == null) {
-				textureatlassprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
-			}
+			TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(Identifier.withDefaultNamespace("item/ghast_tear"));
 
 			return new GhastTearParticle(level, x, y, z, textureatlassprite);
-		}
-
-		protected ItemStackRenderState calculateState(ItemStack stack, ClientLevel level) {
-			var state = new ItemStackRenderState();
-			Minecraft.getInstance()
-				.getItemModelResolver()
-				.updateForTopItem(state, stack, ItemDisplayContext.GROUND, level, null, 0);
-			return state;
 		}
 	}
 }

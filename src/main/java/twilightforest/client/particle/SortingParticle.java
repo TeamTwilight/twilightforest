@@ -7,6 +7,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 public class SortingParticle extends SingleQuadParticle {
 	private final double xStart;
@@ -82,16 +83,15 @@ public class SortingParticle extends SingleQuadParticle {
 		}
 	}
 
-	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
+	public record Factory(SpriteSet sprite) implements ParticleProvider<@NotNull SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2, RandomSource random) {
-			SortingParticle sortingParticle = new SortingParticle(level, x, y, z, x2, y2, z2, this.sprite.get(random));
-			return sortingParticle;
+			return new SortingParticle(level, x, y, z, x2, y2, z2, this.sprite.get(random));
 		}
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(float partialTicks) {
+	public AABB getBoundingBox() {
 		return AABB.INFINITE;
 	}
 }

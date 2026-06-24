@@ -1,124 +1,34 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.shaders.Uniform;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.ShaderInstance;
+import com.mojang.blaze3d.pipeline.DepthStencilState;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.CompareOp;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.ResourceProvider;
-import net.neoforged.neoforge.client.event.RegisterShadersEvent;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.client.renderer.TFRenderPipelines;
 
-import java.io.IOException;
+import java.util.Optional;
 
 public class TFShaders {
+	private static final DepthStencilState TRANSLUCENT_DEPTH = new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, false);
 
-	public static ShaderInstance RED_THREAD;
-	public static PositionAwareShaderInstance AURORA;
+	private static final RenderPipeline AURORA_PIPELINE = RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
+		.withLocation(Identifier.fromNamespaceAndPath("twilightforest", "aurora/aurora"))
+		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS)
+		.withDepthStencilState(Optional.of(TRANSLUCENT_DEPTH))
+		.build();
 
-	public static void registerShaders(RegisterShadersEvent event) {
-		try {
-			event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
-				shader -> RED_THREAD = shader);
-			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
-				shader -> AURORA = (PositionAwareShaderInstance) shader);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	public static final RenderType AURORA = RenderType.create(
+		"twilightforest_aurora",
+		RenderSetup.builder(AURORA_PIPELINE).createRenderSetup()
+	);
 
-	public static class BindableShaderInstance extends ShaderInstance {
-
-		private ShaderInstance last;
-
-		public BindableShaderInstance(ResourceProvider p_173336_, Identifier shaderLocation, VertexFormat p_173338_) throws IOException {
-			super(p_173336_, shaderLocation, p_173338_);
-		}
-
-		ShaderInstance getSelf() {
-			return this;
-		}
-
-		public final void bind(@Nullable Runnable exec) {
-			last = RenderSystem.getShader();
-			RenderSystem.setShader(this::getSelf);
-			if (exec != null)
-				exec.run();
-			apply();
-		}
-
-		public final void runThenClear(Runnable exec) {
-			exec.run();
-			clear();
-			RenderSystem.setShader(() -> last);
-			last = null;
-		}
-
-		public final void invokeThenClear(@Nullable Runnable execBind, Runnable execPost) {
-			bind(execBind);
-			runThenClear(execPost);
-		}
-
-		public final void invokeThenClear(Runnable execPost) {
-			invokeThenClear(null, execPost);
-		}
-
-		public final void invokeThenEndTesselator(@Nullable Runnable execBind, BufferBuilder builder) {
-			invokeThenClear(execBind, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
-		}
-
-		public final void invokeThenEndTesselator(BufferBuilder builder) {
-			invokeThenClear(() -> BufferUploader.drawWithShader(builder.buildOrThrow()));
-		}
-
-	}
-
-	public static class PositionAwareShaderInstance extends BindableShaderInstance {
-
-		@Nullable
-		public final Uniform SEED;
-
-		@Nullable
-		public final Uniform POSITION;
-
-		public PositionAwareShaderInstance(ResourceProvider p_173336_, Identifier shaderLocation, VertexFormat p_173338_) throws IOException {
-			super(p_173336_, shaderLocation, p_173338_);
-			SEED = getUniform("SeedContext");
-			POSITION = getUniform("PositionContext");
-		}
-
-		public final void setValue(int seed, float x, float y, float z) {
-			if (SEED != null) {
-				SEED.set(seed);
-			}
-			if (POSITION != null) {
-				POSITION.set(x, y, z);
-			}
-		}
-
-		public final void setValueBindApply(int seed, float x, float y, float z) {
-			bind(() -> setValue(seed, x, y, z));
-		}
-
-		public final void reset() {
-			setValue(0, 0, 0, 0);
-		}
-
-		public final void resetClear() {
-			runThenClear(this::reset);
-		}
-
-		public final void invokeThenClear(int seed, float x, float y, float z, Runnable exec) {
-			setValueBindApply(seed, x, y, z);
-			exec.run();
-			resetClear();
-		}
-
-		public final void invokeThenEndTesselator(int seed, float x, float y, float z, BufferBuilder builder) {
-			invokeThenClear(seed, x, y, z, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
-		}
-
-	}
-
+	public static final RenderType RED_THREAD = RenderType.create(
+		"twilightforest_red_thread",
+		RenderSetup.builder(TFRenderPipelines.RED_THREAD).createRenderSetup()
+	);
 }
