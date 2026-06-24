@@ -3,7 +3,6 @@ package twilightforest.util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -35,20 +34,13 @@ import java.util.List;
 
 public class TFItemStackUtils {
 	public static boolean consumeInventoryItem(final Player player, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag) {
-		boolean genericConsumeResult = false;
-		boolean armorConsumeResult = false;
-		boolean offhandConsumeResult = false;
-		for (int i = 0; i < 41; i++) {
+		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			ItemStack stack = player.getInventory().getItem(i);
-			if (i <= 35) {
-				genericConsumeResult = genericConsumeResult || consumeInventoryItem(stack, item, persistentTag, saveItemToTag, player.registryAccess());
-			} else if (i < 40) {
-				armorConsumeResult = armorConsumeResult || consumeInventoryItem(stack, item, persistentTag, saveItemToTag, player.registryAccess());
-			} else {
-				offhandConsumeResult = offhandConsumeResult || consumeInventoryItem(stack, item, persistentTag, saveItemToTag, player.registryAccess());
+			if (consumeInventoryItem(stack, item, persistentTag, saveItemToTag, player.registryAccess())) {
+				return true;
 			}
 		}
-		return armorConsumeResult || genericConsumeResult || offhandConsumeResult;
+		return false;
 	}
 
 	public static boolean consumeInventoryItem(final ItemStack stack, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
@@ -130,11 +122,11 @@ public class TFItemStackUtils {
 	//[VanillaCopy] of Inventory.load, but removed clearing all slots
 	//also add a handler to move items to the next available slot if the slot they want to go to isnt available
 	public static void loadNoClear(HolderLookup.Provider registryAccess, ListTag tag, Inventory inventory) {
-		java.util.List<ItemStack> blockedItems = new java.util.ArrayList<>();
+		List<ItemStack> blockedItems = new ArrayList<>();
 
 		for (int i = 0; i < tag.size(); ++i) {
-			CompoundTag compoundtag = tag.getCompound(i).get();
-			int j = compoundtag.getByte("Slot").get() & 255;
+			CompoundTag compoundtag = tag.getCompoundOrEmpty(i);
+			int j = compoundtag.getByteOr("Slot", (byte) 0) & 255;
 			ItemStack itemstack = ItemStack.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, compoundtag).resultOrPartial(_ -> {}).orElse(ItemStack.EMPTY);
 
 			if (!itemstack.isEmpty()) {
