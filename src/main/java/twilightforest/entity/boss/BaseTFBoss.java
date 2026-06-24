@@ -30,6 +30,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.EnforcedHomePoint;
@@ -43,17 +44,17 @@ import java.util.Objects;
 import java.util.Optional;
 
 public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, EnforcedHomePoint {
-	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(BaseTFBoss.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+	private static final EntityDataAccessor<@NotNull Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(BaseTFBoss.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	private final ServerTFBossBar bossEvent;
-	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
+	private final NonNullList<@NotNull ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
-	protected BaseTFBoss(EntityType<? extends Monster> type, Level level) {
+	protected BaseTFBoss(EntityType<? extends @NotNull Monster> type, Level level) {
 		super(type, level);
 		this.bossEvent = this.createBossBar();
 	}
 
-	public abstract ResourceKey<Structure> getHomeStructure();
+	public abstract ResourceKey<@NotNull Structure> getHomeStructure();
 
 	public abstract Block getDeathContainer(RandomSource random);
 
@@ -197,7 +198,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	public NonNullList<ItemStack> getItemStacks() {
+	public NonNullList<@NotNull ItemStack> getItemStacks() {
 		return this.dyingInventory;
 	}
 
@@ -237,7 +238,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	protected ServerTFBossBar createBossBar() {
-		return new ServerTFBossBar(this.getBossBarTitle(), this.getBossBarColor(), this.getBossBarOverlay());
+		return new ServerTFBossBar(this.getUUID(), this.getBossBarTitle(), this.getBossBarColor(), this.getBossBarOverlay());
 	}
 
 	public Component getBossBarTitle() {

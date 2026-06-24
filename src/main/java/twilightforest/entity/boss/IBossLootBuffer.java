@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
@@ -45,16 +44,16 @@ public interface IBossLootBuffer {
 	}
 
 	default void addDeathItemsSaveData(ValueOutput tag, RegistryAccess registryAccess) {
-		ContainerHelper.saveAllItems(tag, this.getItemStacks(), registryAccess);
+		ContainerHelper.saveAllItems(tag, this.getItemStacks(), false);
 	}
 
 	default void readDeathItemsSaveData(ValueInput tag, RegistryAccess registryAccess) {
-		ContainerHelper.loadAllItems(tag, this.getItemStacks(), registryAccess);
+		ContainerHelper.loadAllItems(tag, this.getItemStacks());
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
 		if (TFConfig.bossDropChests) {
-			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable());
+			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable().get());
 			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
 			boss.fill(boss, params, table);
 

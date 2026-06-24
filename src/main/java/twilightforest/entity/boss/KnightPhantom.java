@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -18,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -50,6 +50,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -73,8 +74,8 @@ public class KnightPhantom extends BaseTFBoss {
 	private static final int PARTICLE_TICKS = 70;
 	public static final EntityDimensions UNTOUCHABLE = new EntityDimensions(0.0F, 0.0F, 0.0F, EntityAttachments.createDefault(0.0F, 0.0F), true);
 
-	private static final EntityDataAccessor<Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> IT_IS_OVER = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<@NotNull Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<@NotNull Boolean> IT_IS_OVER = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("charging_attack_boost"), 7, AttributeModifier.Operation.ADD_VALUE);
 	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("inactive_armor_boost"), 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
@@ -88,7 +89,7 @@ public class KnightPhantom extends BaseTFBoss {
 	private final EntityDimensions visibleSize = EntityDimensions.fixed(1.75F, 4.0F);
 
 	@SuppressWarnings("this-escape")
-	public KnightPhantom(EntityType<? extends KnightPhantom> type, Level level) {
+	public KnightPhantom(EntityType<? extends @NotNull KnightPhantom> type, Level level) {
 		super(type, level);
 		this.noPhysics = true;
 		this.currentFormation = Formation.HOVER;
@@ -133,7 +134,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Nullable
 	@Override
-	@SuppressWarnings({"deprecation", "OverrideOnly"})
+	@SuppressWarnings({"deprecation"})
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
@@ -204,7 +205,7 @@ public class KnightPhantom extends BaseTFBoss {
 		List<KnightPhantom> knights = this.getNearbyKnights();
 
 		LootParams params = TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY);
-		Optional<ResourceKey<LootTable>> bossLoot = this.getLootTable();
+		Optional<ResourceKey<@NotNull LootTable>> bossLoot = this.getLootTable();
 
 		if (bossLoot.isPresent()) {
 			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(bossLoot.get());
@@ -230,8 +231,8 @@ public class KnightPhantom extends BaseTFBoss {
 					.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
 
 				if (this.lastHurtByPlayer != null) {
-					builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
-						.withLuck(this.lastHurtByPlayer.getLuck());
+					builder = builder.<Player>withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer.getEntity(level(), Player.class))
+						.withLuck(this.lastHurtByPlayer.getEntity(level(), Player.class).getLuck());
 				}
 
 				if (cause.getEntity() != null) {
@@ -301,9 +302,26 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
-		if (this.isDamageSourceBlocked(source)) {
-			this.playSound(SoundEvents.SHIELD_BLOCK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
-			return false;
+		if (!this.isBlocking()) {
+			return super.hurtServer(server, source, amount);
+		}
+
+		Entity attacker = source.getDirectEntity();
+		if (attacker == null) {
+			attacker = source.getEntity();
+		}
+
+		if (attacker != null) {
+			Vec3 attackerPos = attacker.position();
+			Vec3 mobLook = this.getViewVector(1.0F);
+			Vec3 directionToAttacker = attackerPos.subtract(this.position()).normalize();
+
+			double dotProduct = mobLook.x() * directionToAttacker.x() + mobLook.z() * directionToAttacker.z();
+
+			if (dotProduct > 0.0D) {
+				this.playSound(SoundEvents.SHIELD_BLOCK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+				return false;
+			}
 		}
 
 		return super.hurtServer(server, source, amount);
@@ -316,7 +334,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void knockback(double damage, double xRatio, double zRatio) {
-		this.hasImpulse = true;
+		this.hurtMarked = true;
 		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
 		float distance = 0.2F;
 		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
@@ -337,7 +355,7 @@ public class KnightPhantom extends BaseTFBoss {
 	//[VanillaCopy] of FlyingMob.travel
 	@Override
 	public void travel(Vec3 vec3) {
-		if (this.isControlledByLocalInstance()) {
+		if (this.isLocalInstanceAuthoritative()) {
 			if (this.isInWater()) {
 				this.moveRelative(0.02F, vec3);
 				this.move(MoverType.SELF, this.getDeltaMovement());
@@ -533,11 +551,11 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.totalKnownKnights = compound.getInt("TotalKnownKnights");
-		this.setNumber(compound.getInt("MyNumber"));
-		this.switchToFormationByNumber(compound.getInt("Formation"));
-		this.setTicksProgress(compound.getInt("TicksProgress"));
-		this.getEntityData().set(IT_IS_OVER, compound.getBoolean("IsItOver"));
+		this.totalKnownKnights = compound.getInt("TotalKnownKnights").get();
+		this.setNumber(compound.getInt("MyNumber").get());
+		this.switchToFormationByNumber(compound.getInt("Formation").get());
+		this.setTicksProgress(compound.getInt("TicksProgress").get());
+		this.getEntityData().set(IT_IS_OVER, compound.getBooleanOr("IsItOver", false));
 	}
 
 	@Override
@@ -555,7 +573,7 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	public ResourceKey<Structure> getHomeStructure() {
+	public ResourceKey<@NotNull Structure> getHomeStructure() {
 		return TFStructures.KNIGHT_STRONGHOLD;
 	}
 
@@ -620,7 +638,7 @@ public class KnightPhantom extends BaseTFBoss {
 				double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-				this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		} else if (!this.getNearbyKnights().isEmpty() || this.getEntityData().get(IT_IS_OVER)) {
 			if (this.deathTime == DYING_TICKS) { // Poof when going invisible
@@ -652,7 +670,7 @@ public class KnightPhantom extends BaseTFBoss {
 					double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-					this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}

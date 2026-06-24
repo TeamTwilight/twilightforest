@@ -11,15 +11,17 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 
 public class HydraHead extends HydraPart {
 
 	public static final Identifier RENDERER = TwilightForestMod.prefix("hydra_head");
 
-	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION_LAST = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Byte> DATA_STATE = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<@NotNull Float> DATA_MOUTH_POSITION = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<@NotNull Float> DATA_MOUTH_POSITION_LAST = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<@NotNull Byte> DATA_STATE = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.BYTE);
 
 	public HydraHead(Hydra hydra) {
 		super(hydra, 4F, 4F);
@@ -60,7 +62,7 @@ public class HydraHead extends HydraPart {
 	}
 
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand) {
+	public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
 		ItemStack stack = player.getItemInHand(hand);
 		Component tagName = stack.get(DataComponents.CUSTOM_NAME);
 		if (stack.is(Items.NAME_TAG) && tagName != null) {
@@ -81,6 +83,6 @@ public class HydraHead extends HydraPart {
 
 			return InteractionResult.SUCCESS;
 		}
-		return super.interact(player, hand);
+		return super.interact(player, hand, location);
 	}
 }
