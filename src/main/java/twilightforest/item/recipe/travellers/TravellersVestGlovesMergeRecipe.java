@@ -1,9 +1,7 @@
 package twilightforest.item.recipe.travellers;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,8 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
-	public TravellersVestGlovesMergeRecipe(CraftingBookCategory category) {
-		super(category);
+	public TravellersVestGlovesMergeRecipe() {
+		super();
 	}
 
 	@Override
@@ -30,7 +28,7 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+	public ItemStack assemble(CraftingInput input) {
 		Optional<InputPair> pair = this.resolve(input);
 		if (pair.isEmpty())
 			return ItemStack.EMPTY;
@@ -40,14 +38,8 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 		return vest;
 	}
 
-
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return TFRecipes.TRAVELLERS_VEST_GLOVES_MERGE_RECIPE_SERIALIZER.get();
 	}
 

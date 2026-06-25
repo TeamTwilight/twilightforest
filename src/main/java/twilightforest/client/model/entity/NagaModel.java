@@ -43,4 +43,9 @@ public class NagaModel<T extends EntityRenderState> extends EntityModel<T> imple
 		stack.translate(0.0F, -0.25F, 0.0F);
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(NagaRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
+	}
 }

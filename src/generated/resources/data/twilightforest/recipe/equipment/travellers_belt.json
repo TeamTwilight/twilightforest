@@ -2,20 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "i": {
-      "tag": "c:nuggets/iron"
-    },
-    "l": {
-      "item": "twilightforest:tanned_leather"
-    },
+    "i": "#c:nuggets/iron",
+    "l": "twilightforest:tanned_leather",
     "x": {
-      "type": "neoforge:difference",
-      "base": {
-        "tag": "c:chests/wooden"
-      },
-      "subtracted": {
-        "tag": "c:chests/trapped"
-      }
+      "neoforge:ingredient_type": "neoforge:difference",
+      "base": "#c:chests/wooden",
+      "subtracted": "#c:chests/trapped"
     }
   },
   "pattern": [
@@ -24,7 +16,6 @@
     "lll"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:travellers_belt"
   }
 }

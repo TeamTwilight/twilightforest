@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "twilightforest:block/twisted_stone_horizontal",
+      "model": "twilightforest:block/twisted_stone",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "twilightforest:block/twisted_stone"
     },
     "axis=z": {
-      "model": "twilightforest:block/twisted_stone_horizontal",
+      "model": "twilightforest:block/twisted_stone",
       "x": 90
     }
   }

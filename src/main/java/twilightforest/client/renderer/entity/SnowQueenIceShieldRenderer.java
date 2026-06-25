@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.asmhooks.MultipartHooks;
 import twilightforest.entity.boss.SnowQueenIceShield;
 
 public class SnowQueenIceShieldRenderer extends EntityRenderer<SnowQueenIceShield, FallingBlockRenderState> {
@@ -38,6 +39,7 @@ public class SnowQueenIceShieldRenderer extends EntityRenderer<SnowQueenIceShiel
 	@Override
 	public void extractRenderState(SnowQueenIceShield entity, FallingBlockRenderState state, float partialTicks) {
 		super.extractRenderState(entity, state, partialTicks);
+		MultipartHooks.registerStateRenderer(state, SnowQueenIceShield.RENDERER);
 		BlockPos pos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 		state.movingBlockRenderState.randomSeedPos = pos;
 		state.movingBlockRenderState.blockPos = pos;

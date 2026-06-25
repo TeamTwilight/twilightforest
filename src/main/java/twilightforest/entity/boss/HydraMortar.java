@@ -37,7 +37,7 @@ public class HydraMortar extends ThrowableProjectile {
 
 	@SuppressWarnings("this-escape")
 	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
-		super(type, head.getParent(), world);
+		super(type, world);
 
 		Vec3 vector = head.getLookAngle();
 
@@ -49,6 +49,7 @@ public class HydraMortar extends ThrowableProjectile {
 		this.snapTo(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
 		head.setDeltaMovement(Vec3.ZERO);
+		this.setOwner(head);
 		this.shootFromRotation(head, head.getXRot(), head.getYRot(), -20.0F, 0.5F, 1F);
 
 		//TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getDeltaMovement().x(), head.getDeltaMovement().z());
@@ -127,12 +128,14 @@ public class HydraMortar extends ThrowableProjectile {
 
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = EventHooks.canEntityGrief(this.level(), this);
+		boolean flag = this.level() instanceof ServerLevel serverLevel && EventHooks.canEntityGrief(serverLevel, this);
 		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
-		for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
-				nearby.igniteForSeconds(BURN_FACTOR);
+		if (this.level() instanceof ServerLevel serverLevel) {
+			for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
+				if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurtServer(serverLevel, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
+					nearby.igniteForSeconds(BURN_FACTOR);
+				}
 			}
 		}
 

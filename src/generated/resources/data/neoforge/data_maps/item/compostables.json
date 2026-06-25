@@ -3,24 +3,6 @@
     "twilightforest:beanstalk_leaves": {
       "chance": 0.5
     },
-    "twilightforest:blackberry": {
-      "chance": 0.3
-    },
-    "twilightforest:blackberry_bush": {
-      "chance": 0.5
-    },
-    "twilightforest:blightberry": {
-      "chance": 0.3
-    },
-    "twilightforest:blightberry_bush": {
-      "chance": 0.5
-    },
-    "twilightforest:blueberry": {
-      "chance": 0.3
-    },
-    "twilightforest:blueberry_bush": {
-      "chance": 0.5
-    },
     "twilightforest:canopy_leaves": {
       "chance": 0.3
     },
@@ -35,12 +17,6 @@
     },
     "twilightforest:darkwood_sapling": {
       "chance": 0.3
-    },
-    "twilightforest:duskberry": {
-      "chance": 0.3
-    },
-    "twilightforest:duskberry_bush": {
-      "chance": 0.5
     },
     "twilightforest:experiment_115": {
       "chance": 0.85
@@ -81,12 +57,6 @@
     "twilightforest:magic_beans": {
       "chance": 0.85
     },
-    "twilightforest:maloberry": {
-      "chance": 0.3
-    },
-    "twilightforest:maloberry_bush": {
-      "chance": 0.5
-    },
     "twilightforest:mangrove_leaves": {
       "chance": 0.3
     },
@@ -117,34 +87,16 @@
     "twilightforest:rainbow_oak_sapling": {
       "chance": 0.3
     },
-    "twilightforest:raspberry": {
-      "chance": 0.3
-    },
-    "twilightforest:raspberry_bush": {
-      "chance": 0.5
-    },
     "twilightforest:root": {
       "chance": 0.5
     },
     "twilightforest:root_strand": {
       "chance": 0.3
     },
-    "twilightforest:skyberry": {
-      "chance": 0.3
-    },
-    "twilightforest:skyberry_bush": {
-      "chance": 0.5
-    },
     "twilightforest:sorting_leaves": {
       "chance": 0.3
     },
     "twilightforest:sorting_sapling": {
-      "chance": 0.5
-    },
-    "twilightforest:stingberry": {
-      "chance": 0.3
-    },
-    "twilightforest:stingberry_bush": {
       "chance": 0.5
     },
     "twilightforest:thorn_leaves": {

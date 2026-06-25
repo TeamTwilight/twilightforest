@@ -1,42 +1,50 @@
 package twilightforest.asm.transformers.multipart;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import twilightforest.asm.ASMUtil;
+import twilightforest.asm.SimpleMethodTransformer;
 
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * {@link twilightforest.asmhooks.MultipartHooks#resolveEntitiesForRendering}
+ *
+ * In 26.1.2, entity rendering was moved from renderLevel() to extractVisibleEntities().
+ * This transformer hooks into extractVisibleEntities() to inject TFPart entities
+ * (NagaSegment, HydraHead, HydraNeck, SnowQueenIceShield) into the entity iteration.
  */
-public class ResolveEntitiesForRendereringTransformer implements ITransformer<MethodNode> {
+public class ResolveEntitiesForRendereringTransformer extends SimpleMethodTransformer {
+
+	public ResolveEntitiesForRendereringTransformer() {
+		super(
+			"net.minecraft.client.renderer.LevelRenderer",
+			"extractVisibleEntities",
+			"(Lnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/culling/Frustum;Lnet/minecraft/client/DeltaTracker;Lnet/minecraft/client/renderer/state/level/LevelRenderState;)V"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
-			node,
+			method,
 			Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/client/multiplayer/ClientLevel",
 			"entitiesForRendering",
 			"()Ljava/lang/Iterable;"
 		).map(searchTarget -> ASMUtil.findMethodInstructions(
-			node,
+			method,
 			searchTarget,
 			Opcodes.INVOKEINTERFACE,
 			"java/lang/Iterable",
 			"iterator",
 			"()Ljava/util/Iterator;"
-		).findFirst()).filter(Optional::isPresent).map(Optional::get).forEach(target -> node.instructions.insert(
+		).findFirst()).filter(Optional::isPresent).map(Optional::get).forEach(target -> method.instructions.insert(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/MultipartHooks",
@@ -45,26 +53,6 @@ public class ResolveEntitiesForRendereringTransformer implements ITransformer<Me
 				)
 			)
 		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.client.renderer.LevelRenderer",
-			"renderLevel",
-			"(Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

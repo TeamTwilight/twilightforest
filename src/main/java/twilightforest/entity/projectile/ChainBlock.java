@@ -61,6 +61,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		super(type, thrower.getX(), thrower.getEyeY() - 0.1F, thrower.getZ(), level);
 		this.stack = stack;
 		this.setHand(hand);
+		this.setOwner(thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
 		this.getEntityData().set(IS_FOIL, stack.hasFoil());
 	}

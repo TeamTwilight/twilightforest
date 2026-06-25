@@ -1,259 +1,288 @@
 package twilightforest.client.model.block.forcefield;
 
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BlockModelRotation;
+import com.mojang.math.Quadrant;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.cuboid.CuboidModelElement;
+import net.minecraft.client.resources.model.cuboid.CuboidFace;
+import net.minecraft.client.resources.model.cuboid.CuboidRotation;
+import net.minecraft.client.resources.model.cuboid.FaceBakery;
+import net.minecraft.client.resources.model.cuboid.ItemTransforms;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.BakedQuad.MaterialFlags;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelDebugName;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.client.resources.model.sprite.TextureSlots;
+import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.ForceFieldBlock;
+import twilightforest.client.model.block.forcefield.ForceFieldModelLoader.Condition;
 
 import java.util.*;
-import java.util.function.Function;
 
-public class ForceFieldModel implements IDynamicBakedModel {
-	private static final ModelProperty<ForceFieldData> DATA = new ModelProperty<>();
+public class ForceFieldModel implements BlockStateModel, DynamicBlockStateModel {
 
-	private final Map<BlockElement, ForceFieldModelLoader.Condition> parts;
-	private final Function<String, TextureAtlasSprite> spriteFunction;
-	private final TextureAtlasSprite particle;
-	private final boolean usesAO;
-	private final boolean usesBlockLight;
-	private final ItemTransforms transforms;
-	@Nullable
-	private final ChunkRenderTypeSet blockRenderTypes;
-	@Nullable
-	private final RenderType itemRenderType;
+        private final List<QuadEntry> entries;
+        private final Material.Baked particle;
+        private final boolean usesAO;
+        private final boolean usesBlockLight;
 
-	public ForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> parts, Function<String, TextureAtlasSprite> spriteFunction, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, RenderTypeGroup group) {
-		this.parts = parts;
-		this.spriteFunction = spriteFunction;
-		this.particle = spriteFunction.apply("particle");
-		this.usesAO = useAmbientOcclusion;
-		this.usesBlockLight = usesBlockLight;
-		this.transforms = itemTransforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
-	}
+        public ForceFieldModel(Map<CuboidModelElement, Condition> parts, TextureSlots textures, ModelBaker baker, ModelState modelState, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms) {
+                List<QuadEntry> entries = new ArrayList<>();
 
-	@Override
-	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction cullFace, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
-		List<BakedQuad> quads = new ArrayList<>();
-		ForceFieldData data = extraData.get(DATA);
+                for (Map.Entry<CuboidModelElement, Condition> entry : parts.entrySet()) {
+                        CuboidModelElement element = entry.getKey();
+                        Condition condition = entry.getValue();
 
-		if (data != null) {
-			if (cullFace == null) {
-				for (Direction direction : Direction.values()) {
-					quads = this.getQuads(quads, direction, data, false);
-				}
-			} else return this.getQuads(quads, cullFace, data, true);
-		}
+                        for (Direction side : Direction.values()) {
+                                CuboidFace face = element.faces().get(side);
+                                if (face == null) continue;
 
-		return quads;
-	}
+                                // Convert CuboidFace to CuboidFace
+                                CuboidFace.UVs uvs;
+                                if (face.uvs() != null) {
+                                        uvs = new CuboidFace.UVs(face.uvs().minU(), face.uvs().minV(), face.uvs().maxU(), face.uvs().maxV());
+                                } else {
+                                        uvs = FaceBakery.defaultFaceUV(element.from(), element.to(), side);
+                                }
 
-	public @NotNull List<BakedQuad> getQuads(List<BakedQuad> quads, Direction side, ForceFieldData data, boolean cull) {
-		for (Map.Entry<BlockElement, ForceFieldModelLoader.Condition> entry : this.parts.entrySet()) {
-			BlockElementFace blockelementface = entry.getKey().faces.get(side);
-			if (blockelementface != null && blockelementface.cullForDirection() != null == cull) {
-				if (ForceFieldModel.skipRender(data.directions(), entry.getValue().direction(), entry.getValue().b(), entry.getValue().parents(), side)) continue;
+                                Quadrant rotation = face.rotation();
 
-				TextureAtlasSprite sprite = this.spriteFunction.apply(blockelementface.texture());
-				quads.add(FaceBakery.bakeQuad(
-					entry.getKey().from,
-					entry.getKey().to,
-					blockelementface,
-					sprite,
-					side,
-					BlockModelRotation.X0_Y0,
-					entry.getKey().rotation,
-					entry.getKey().shade,
-					entry.getKey().lightEmission)
-				);
-			}
-		}
-		return quads;
-	}
+                                CuboidFace cuboidFace = new CuboidFace(
+                                        face.cullForDirection(),
+                                        face.tintIndex(),
+                                        face.texture(),
+                                        uvs,
+                                        rotation
+                                );
 
-	protected static boolean skipRender(Map<ExtraDirection, List<Direction>> directions, @Nullable ExtraDirection direction, boolean supposedToBe, List<ExtraDirection> parents, Direction side) {
-		if (direction == null) return false;
-		for (ExtraDirection parent : parents) if (!directions.containsKey(parent)) return true;
-		boolean hasKey = directions.containsKey(direction);
-		if (hasKey != supposedToBe) return true;
-		if (hasKey) return directions.get(direction).contains(side);
-		return false;
-	}
+                                Material.Baked material = baker.materials().get(textures.getMaterial(face.texture()), () -> "twilightforest:force_field");
 
-	@Override
-	public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
-		if (modelData == ModelData.EMPTY) {
-			Map<ExtraDirection, List<Direction>> map = new HashMap<>();
-			for (ExtraDirection extraDirection : getExtraDirections(state, level, pos)) {
-				List<Direction> directionList = new ArrayList<>();
-				for (Direction dir : Direction.values()) {
-					ExtraDirection mirrored = extraDirection.mirrored(dir.getAxis());
-					if (mirrored != extraDirection) {
-						BlockState other = level.getBlockState(pos.relative(dir));
-						if (other.getBlock() instanceof ForceFieldBlock) {
-							if (getExtraDirections(other, level, pos.relative(dir)).contains(mirrored)) directionList.add(dir);
-						}
-					}
-				}
-				map.put(extraDirection, directionList);
-			}
+                                BakedQuad quad = FaceBakery.bakeQuad(
+                                        baker, element.from(), element.to(), cuboidFace, material,
+                                        side, modelState, element.rotation(), element.shade(), element.lightEmission()
+                                );
 
-			modelData = ModelData.builder().with(DATA, new ForceFieldData(map)).build();
-		}
-		return modelData;
-	}
+                                entries.add(new QuadEntry(quad, side, condition.direction(), condition.b(), condition.parents()));
+                        }
+                }
 
-	public static List<ExtraDirection> getExtraDirections(BlockState state, BlockGetter level, BlockPos pos) {
-		List<ExtraDirection> directions = new ArrayList<>();
+                this.particle = baker.materials().get(textures.getMaterial("particle"), () -> "twilightforest:force_field");
+                this.entries = entries;
+                this.usesAO = useAmbientOcclusion;
+                this.usesBlockLight = usesBlockLight;
+        }
 
-		boolean down = state.getValue(ForceFieldBlock.DOWN);
-		boolean up = state.getValue(ForceFieldBlock.UP);
-		boolean north = state.getValue(ForceFieldBlock.NORTH);
-		boolean south = state.getValue(ForceFieldBlock.SOUTH);
-		boolean west = state.getValue(ForceFieldBlock.WEST);
-		boolean east = state.getValue(ForceFieldBlock.EAST);
+        @Override
+        public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+                @SuppressWarnings({"unchecked", "rawtypes"})
+				List<BakedQuad>[] quadsByDirection = new List[6];
+                for (int i = 0; i < 6; i++) quadsByDirection[i] = new ArrayList<>();
 
-		if (down) {
-			directions.add(ExtraDirection.DOWN);
-			if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.NORTH)) directions.add(ExtraDirection.DOWN_NORTH);
-			if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.SOUTH)) directions.add(ExtraDirection.DOWN_SOUTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.WEST)) directions.add(ExtraDirection.DOWN_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.EAST)) directions.add(ExtraDirection.DOWN_EAST);
-		}
-		if (up) {
-			directions.add(ExtraDirection.UP);
-			if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.NORTH)) directions.add(ExtraDirection.UP_NORTH);
-			if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.SOUTH)) directions.add(ExtraDirection.UP_SOUTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.WEST)) directions.add(ExtraDirection.UP_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.EAST)) directions.add(ExtraDirection.UP_EAST);
-		}
-		if (north) {
-			directions.add(ExtraDirection.NORTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.WEST)) directions.add(ExtraDirection.NORTH_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.EAST)) directions.add(ExtraDirection.NORTH_EAST);
-		}
-		if (south) {
-			directions.add(ExtraDirection.SOUTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.WEST)) directions.add(ExtraDirection.SOUTH_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.EAST)) directions.add(ExtraDirection.SOUTH_EAST);
-		}
-		if (west) directions.add(ExtraDirection.WEST);
-		if (east) directions.add(ExtraDirection.EAST);
+                Map<ExtraDirection, List<Direction>> directions = new HashMap<>();
+                for (ExtraDirection extraDirection : getExtraDirections(state, level, pos)) {
+                        List<Direction> directionList = new ArrayList<>();
+                        for (Direction dir : Direction.values()) {
+                                ExtraDirection mirrored = extraDirection.mirrored(dir.getAxis());
+                                if (mirrored != extraDirection) {
+                                        BlockState other = level.getBlockState(pos.relative(dir));
+                                        if (other.getBlock() instanceof ForceFieldBlock) {
+                                                if (getExtraDirections(other, level, pos.relative(dir)).contains(mirrored)) directionList.add(dir);
+                                        }
+                                }
+                        }
+                        directions.put(extraDirection, directionList);
+                }
 
-		return directions;
-	}
+                for (QuadEntry entry : this.entries) {
+                        if (skipRender(directions, entry.direction, entry.supposedToBe, entry.parents, entry.side)) continue;
+                        quadsByDirection[entry.side.get3DDataValue()].add(entry.quad);
+                }
 
-	@Override
-	public boolean useAmbientOcclusion() {
-		return this.usesAO;
-	}
+                parts.add(new ForceFieldPart(quadsByDirection, this.particle, this.usesAO));
+        }
 
-	@Override
-	public boolean isGui3d() {
-		return false;
-	}
+        protected static boolean skipRender(Map<ExtraDirection, List<Direction>> directions, @Nullable ExtraDirection direction, boolean supposedToBe, List<ExtraDirection> parents, Direction side) {
+                if (direction == null) return false;
+                for (ExtraDirection parent : parents) if (!directions.containsKey(parent)) return true;
+                boolean hasKey = directions.containsKey(direction);
+                if (hasKey != supposedToBe) return true;
+                if (hasKey) return directions.get(direction).contains(side);
+                return false;
+        }
 
-	@Override
-	public boolean usesBlockLight() {
-		return this.usesBlockLight;
-	}
+        public static List<ExtraDirection> getExtraDirections(BlockState state, BlockGetter level, BlockPos pos) {
+                List<ExtraDirection> directions = new ArrayList<>();
 
-	@Override
-	public TextureAtlasSprite getParticleIcon() {
-		return this.particle;
-	}
+                boolean down = state.getValue(ForceFieldBlock.DOWN);
+                boolean up = state.getValue(ForceFieldBlock.UP);
+                boolean north = state.getValue(ForceFieldBlock.NORTH);
+                boolean south = state.getValue(ForceFieldBlock.SOUTH);
+                boolean west = state.getValue(ForceFieldBlock.WEST);
+                boolean east = state.getValue(ForceFieldBlock.EAST);
 
-	@NotNull
-	@Override
-	public ItemTransforms getTransforms() {
-		return this.transforms;
-	}
+                if (down) {
+                        directions.add(ExtraDirection.DOWN);
+                        if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.NORTH)) directions.add(ExtraDirection.DOWN_NORTH);
+                        if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.SOUTH)) directions.add(ExtraDirection.DOWN_SOUTH);
+                        if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.WEST)) directions.add(ExtraDirection.DOWN_WEST);
+                        if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.EAST)) directions.add(ExtraDirection.DOWN_EAST);
+                }
+                if (up) {
+                        directions.add(ExtraDirection.UP);
+                        if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.NORTH)) directions.add(ExtraDirection.UP_NORTH);
+                        if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.SOUTH)) directions.add(ExtraDirection.UP_SOUTH);
+                        if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.WEST)) directions.add(ExtraDirection.UP_WEST);
+                        if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.EAST)) directions.add(ExtraDirection.UP_EAST);
+                }
+                if (north) {
+                        directions.add(ExtraDirection.NORTH);
+                        if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.WEST)) directions.add(ExtraDirection.NORTH_WEST);
+                        if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.EAST)) directions.add(ExtraDirection.NORTH_EAST);
+                }
+                if (south) {
+                        directions.add(ExtraDirection.SOUTH);
+                        if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.WEST)) directions.add(ExtraDirection.SOUTH_WEST);
+                        if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.EAST)) directions.add(ExtraDirection.SOUTH_EAST);
+                }
+                if (west) directions.add(ExtraDirection.WEST);
+                if (east) directions.add(ExtraDirection.EAST);
 
-	@NotNull
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
+                return directions;
+        }
 
-	@Override
-	public RenderType getRenderType(ItemStack stack) {
-		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
-	}
+        @Override
+        public Material.Baked particleMaterial(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+                return this.particle;
+        }
 
-	public enum ExtraDirection implements StringRepresentable {
-		DOWN("down", 0, 1, 0),
-		UP("up", 1, 0, 1),
-		NORTH("north", 2, 2, 3),
-		SOUTH("south", 3, 3, 2),
-		WEST("west", 5, 4, 4),
-		EAST("east", 4, 5, 5),
+        @Override
+        public Material.Baked particleMaterial() {
+                return this.particle;
+        }
 
-		DOWN_NORTH("down_north", 6, 10, 7),
-		DOWN_SOUTH("down_south", 7, 11, 6),
-		DOWN_WEST("down_west", 9, 12, 8),
-		DOWN_EAST("down_east", 8, 13, 9),
+        @Override
+        public @MaterialFlags int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+                return BakedQuad.FLAG_TRANSLUCENT;
+        }
 
-		UP_NORTH("up_north", 10, 6, 11),
-		UP_SOUTH("up_south", 11, 7, 10),
-		UP_WEST("up_west", 13, 8, 12),
-		UP_EAST("up_east", 12, 9, 13),
+        @Override
+        public @MaterialFlags int materialFlags() {
+                return BakedQuad.FLAG_TRANSLUCENT;
+        }
 
-		NORTH_WEST("north_west", 15, 14, 16),
-		NORTH_EAST("north_east", 14, 15, 17),
-		SOUTH_WEST("south_west", 17, 16, 14),
-		SOUTH_EAST("south_east", 16, 17, 15);
+        @Override
+        @Deprecated
+        public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
+        }
 
-		@SuppressWarnings("deprecation")
-		public static final EnumCodec<ExtraDirection> CODEC = StringRepresentable.fromEnum(ExtraDirection::values);
-		private final String name;
-		private final int xAxisMirror;
-		private final int yAxisMirror;
-		private final int zAxisMirror;
+        public enum ExtraDirection implements StringRepresentable {
+                DOWN("down", 0, 1, 0),
+                UP("up", 1, 0, 1),
+                NORTH("north", 2, 2, 3),
+                SOUTH("south", 3, 3, 2),
+                WEST("west", 5, 4, 4),
+                EAST("east", 4, 5, 5),
 
-		ExtraDirection(String name, int xAxisMirror, int yAxisMirror, int zAxisMirror) {
-			this.name = name;
-			this.xAxisMirror = xAxisMirror;
-			this.yAxisMirror = yAxisMirror;
-			this.zAxisMirror = zAxisMirror;
-		}
+                DOWN_NORTH("down_north", 6, 10, 7),
+                DOWN_SOUTH("down_south", 7, 11, 6),
+                DOWN_WEST("down_west", 9, 12, 8),
+                DOWN_EAST("down_east", 8, 13, 9),
 
-		@Override
-		public String getSerializedName() {
-			return this.name;
-		}
+                UP_NORTH("up_north", 10, 6, 11),
+                UP_SOUTH("up_south", 11, 7, 10),
+                UP_WEST("up_west", 13, 8, 12),
+                UP_EAST("up_east", 12, 9, 13),
 
-		public ExtraDirection mirrored(Direction.Axis axis) {
-			return switch (axis) {
-				case X -> ExtraDirection.values()[this.xAxisMirror];
-				case Y -> ExtraDirection.values()[this.yAxisMirror];
-				case Z -> ExtraDirection.values()[this.zAxisMirror];
-			};
-		}
+                NORTH_WEST("north_west", 15, 14, 16),
+                NORTH_EAST("north_east", 14, 15, 17),
+                SOUTH_WEST("south_west", 17, 16, 14),
+                SOUTH_EAST("south_east", 16, 17, 15);
 
-		@Nullable
-		public static ExtraDirection byName(@Nullable String name) {
-			return CODEC.byName(name);
-		}
-	}
+                @SuppressWarnings("deprecation")
+                public static final EnumCodec<ExtraDirection> CODEC = StringRepresentable.fromEnum(ExtraDirection::values);
+                private final String name;
+                private final int xAxisMirror;
+                private final int yAxisMirror;
+                private final int zAxisMirror;
 
-	//modeldata holder
-	public record ForceFieldData(Map<ExtraDirection, List<Direction>> directions) {
-	}
+                ExtraDirection(String name, int xAxisMirror, int yAxisMirror, int zAxisMirror) {
+                        this.name = name;
+                        this.xAxisMirror = xAxisMirror;
+                        this.yAxisMirror = yAxisMirror;
+                        this.zAxisMirror = zAxisMirror;
+                }
+
+                @Override
+                public String getSerializedName() {
+                        return this.name;
+                }
+
+                public ExtraDirection mirrored(Direction.Axis axis) {
+                        return switch (axis) {
+                                case X -> ExtraDirection.values()[this.xAxisMirror];
+                                case Y -> ExtraDirection.values()[this.yAxisMirror];
+                                case Z -> ExtraDirection.values()[this.zAxisMirror];
+                        };
+                }
+
+                @Nullable
+                public static ExtraDirection byName(@Nullable String name) {
+                        return CODEC.byName(name);
+                }
+        }
+
+        //modeldata holder
+        public record ForceFieldData(Map<ExtraDirection, List<Direction>> directions) {
+        }
+
+        // Pre-baked quad with condition metadata
+        private record QuadEntry(BakedQuad quad, Direction side, @Nullable ExtraDirection direction, boolean supposedToBe, List<ExtraDirection> parents) {
+        }
+
+        // BlockStateModelPart implementation that holds quads for each direction
+        private static final class ForceFieldPart implements BlockStateModelPart {
+                private final List<BakedQuad>[] quadsByDirection;
+                private final Material.Baked particle;
+                private final boolean usesAO;
+
+                @SuppressWarnings("unchecked")
+                private ForceFieldPart(List<BakedQuad>[] quadsByDirection, Material.Baked particle, boolean usesAO) {
+                        this.quadsByDirection = quadsByDirection;
+                        this.particle = particle;
+                        this.usesAO = usesAO;
+                }
+
+                @Override
+                public List<BakedQuad> getQuads(@Nullable Direction direction) {
+                        if (direction == null) return List.of();
+                        List<BakedQuad> quads = this.quadsByDirection[direction.get3DDataValue()];
+                        return quads != null ? quads : List.of();
+                }
+
+                @Override
+                public boolean useAmbientOcclusion() {
+                        return this.usesAO;
+                }
+
+                @Override
+                public Material.Baked particleMaterial() {
+                        return this.particle;
+                }
+
+                @Override
+                public @MaterialFlags int materialFlags() {
+                        return BakedQuad.FLAG_TRANSLUCENT;
+                }
+        }
 }

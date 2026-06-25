@@ -151,7 +151,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
-		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
+		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() > 0 && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}
 
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
@@ -182,21 +182,27 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			super(TFModelLayers.TRAVELLERS_ARMOR_HELMET, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM, TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS, TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
 		}
 
-		//TODO I dont know how to check the entity for this anymore.
-		//we dont even have access to the renderstate which wouldve been a way around it, but alas
 		@Nullable
 		@Override
 		public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier def) {
-			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
+			LivingEntity entity = net.minecraft.client.Minecraft.getInstance().player;
+			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && entity != null && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
 				TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
 				super.getArmorTexture(stack, type, layer, def);
 		}
 
 		@Override
+		@SuppressWarnings("rawtypes")
 		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, Model model) {
 			if (stack.has(DataComponents.EQUIPPABLE)) {
 				EquipmentSlot slot = stack.get(DataComponents.EQUIPPABLE).slot();
 				ModelPart root = switch (slot) {
+					case HEAD -> {
+						ModelPart headLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
+						headLayer.getAllParts().forEach(part -> part.skipDraw = true);
+						headLayer.getChild("head").skipDraw = false;
+						yield headLayer;
+					}
 					case CHEST -> {
 						ModelPart chestLayer = this.getModelPart(this.isModelSlim(model) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 						chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
@@ -219,7 +225,13 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 
 						yield leggingsLayer;
 					}
-					case FEET -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
+					case FEET -> {
+						ModelPart bootsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
+						bootsLayer.getAllParts().forEach(part -> part.skipDraw = true);
+						bootsLayer.getChild("right_leg").skipDraw = false;
+						bootsLayer.getChild("left_leg").skipDraw = false;
+						yield bootsLayer;
+					}
 					default -> null;
 				};
 
@@ -234,6 +246,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		}
 
 		@Override
+		@SuppressWarnings("rawtypes")
 		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (model instanceof TravellersWingsModel wingsModel)
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

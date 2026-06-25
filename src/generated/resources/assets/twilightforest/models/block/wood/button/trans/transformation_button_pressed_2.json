@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/button_pressed",
-  "textures": {
-    "texture": "twilightforest:block/wood/planks_trans_2"
-  }
-}

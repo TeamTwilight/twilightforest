@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -42,7 +41,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 
 	public MagicPaintingRenderer(EntityRendererProvider.Context context) {
 		super(context);
-		this.paintingAtlas = context.getAtlas(MagicPaintingAtlasInfo.ATLAS_LOCATION);
+		this.paintingAtlas = context.getAtlas(MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION);
 	}
 
 	@Override
@@ -64,7 +63,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 		return this.paintingAtlas.getSprite(variant.withPrefix(MagicPaintingAtlasInfo.MAGIC_PAINTING_PATH + "/").withSuffix("/" + layer.path()));
 	}
 
-	private void renderPainting(MagicPaintingRenderState state, CameraRenderState cameraState, PoseStack stack, SubmitNodeCollector collector, RenderType renderType, int[] worldLight, int width, int height, TextureAtlasSprite backSprite) {
+	private void renderPainting(MagicPaintingRenderState state, CameraRenderState cameraState, PoseStack stack, SubmitNodeCollector collector, net.minecraft.client.renderer.rendertype.RenderType renderType, int[] worldLight, int width, int height, TextureAtlasSprite backSprite) {
 		collector.submitCustomGeometry(stack, renderType, (pose, consumer) -> {
 			Identifier textureLocation = state.texture;
 
@@ -261,7 +260,10 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 			}
 			case WEATHER -> a = level.getRainLevel(partialTicks);
 			case STORM -> a = (level.getRainLevel(partialTicks) + level.getThunderLevel(partialTicks)) * 0.5F;
-			case LIGHTNING -> a = level.getSkyFlashTime() * opacityModifier.multiplier();
+			case LIGHTNING -> {
+				var flashState = level.endFlashState();
+				a = flashState != null ? flashState.getIntensity(partialTicks) * opacityModifier.multiplier() : 0.0F;
+			}
 			case DAY_TIME -> {
 				float time = level.getDefaultClockTime();
 

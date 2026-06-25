@@ -10,6 +10,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.MoonPhase;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -26,10 +27,10 @@ public class MoonDialItem extends Item {
 	}
 
 	public static MutableComponent getMoonPhase(@Nullable Level level) {
-		String phaseType;
-		if (level != null && !level.dimensionType().hasFixedTime()) {
-			MoonPhase phase = level.environmentAttributes().getDimensionValue(EnvironmentAttributes.MOON_PHASE);
-			phaseType = phase.getSerializedName();
+		String phaseType = "error";
+		if (level != null) {
+			MoonPhase phase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, Vec3.ZERO, null);
+			phaseType = String.valueOf(phase.index());
 		} else {
 			boolean aprilFools = LocalDate.of(LocalDate.now().getYear(), 4, 1).equals(LocalDate.now());
 			phaseType = aprilFools ? "unknown_fools" : "unknown";

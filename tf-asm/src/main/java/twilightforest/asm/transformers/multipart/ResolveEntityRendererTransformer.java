@@ -1,47 +1,51 @@
 package twilightforest.asm.transformers.multipart;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
+import twilightforest.asm.SimpleMethodTransformer;
 
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * {@link twilightforest.asmhooks.MultipartHooks#resolveEntityRenderer}
  */
-public class ResolveEntityRendererTransformer implements ITransformer<MethodNode> {
+public class ResolveEntityRendererTransformer extends SimpleMethodTransformer {
+
+	public ResolveEntityRendererTransformer() {
+		super(
+			"net.minecraft.client.renderer.entity.EntityRenderDispatcher",
+			"getRenderer",
+			"(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findFieldInstructions(
-				node,
+				method,
 				Opcodes.GETFIELD,
 				"net/minecraft/client/renderer/entity/EntityRenderDispatcher",
 				"renderers"
 			).map(searchTarget -> ASMUtil.findMethodInstructions(
-				node,
+				method,
 				searchTarget,
 				Opcodes.INVOKEINTERFACE,
 				"java/util/Map",
 				"get",
 				"(Ljava/lang/Object;)Ljava/lang/Object;"
 			).findFirst().flatMap(searchTarget2 -> ASMUtil.findInstructions(
-				node,
+				method,
 				searchTarget2,
 				Opcodes.CHECKCAST
 			).findFirst())).filter(Optional::isPresent).map(Optional::get)
-			.forEach(target -> node.instructions.insert(
+			.forEach(target -> method.instructions.insert(
 				target,
-				ASMAPI.listOf(
+				ASMUtil.listOf(
 					new VarInsnNode(Opcodes.ALOAD, 1),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
@@ -51,26 +55,6 @@ public class ResolveEntityRendererTransformer implements ITransformer<MethodNode
 					)
 				)
 			));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.client.renderer.entity.EntityRenderDispatcher",
-			"getRenderer",
-			"(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

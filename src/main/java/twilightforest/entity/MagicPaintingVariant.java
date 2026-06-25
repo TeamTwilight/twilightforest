@@ -7,6 +7,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
@@ -34,8 +37,8 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 		ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(MagicPaintingVariant::width),
 		ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(MagicPaintingVariant::height),
 		ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers),
-		ComponentSerialization.CODEC.fieldOf("title").forGetter(MagicPaintingVariant::title),
-		ComponentSerialization.CODEC.fieldOf("author").forGetter(MagicPaintingVariant::author),
+		ComponentSerialization.CODEC.optionalFieldOf("title", Component.empty()).forGetter(MagicPaintingVariant::title),
+		ComponentSerialization.CODEC.optionalFieldOf("author", Component.empty()).forGetter(MagicPaintingVariant::author),
 		Identifier.CODEC.fieldOf("back_texture").forGetter(MagicPaintingVariant::backTexture)
 	).apply(recordCodecBuilder, MagicPaintingVariant::new));
 
@@ -127,6 +130,23 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 			//Just so we can access MobEffectCategory in json
 			public static final Codec<MobEffectCategory> MOB_EFFECT_CATEGORY_CODEC = Codec.stringResolver(MobEffectCategory::toString, MobEffectCategory::valueOf);
 
+			private static final Codec<ItemStack> SAFE_ITEM_CODEC = RecordCodecBuilder.<ItemStack>create(instance -> instance.group(
+				Item.CODEC.fieldOf("id").forGetter(stack -> stack.typeHolder()),
+				ExtraCodecs.intRange(1, 99).fieldOf("count").orElse(1).forGetter(ItemStack::getCount),
+				DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(ItemStack::getComponentsPatch)
+			).apply(instance, (item, count, patch) -> createItemStackSafely(item, count, patch)));
+
+			@SuppressWarnings("deprecation")
+			private static ItemStack createItemStackSafely(Holder<Item> item, int count, DataComponentPatch patch) {
+				try {
+					java.lang.reflect.Constructor<ItemStack> constructor = ItemStack.class.getDeclaredConstructor(Holder.class, int.class, PatchedDataComponentMap.class);
+					constructor.setAccessible(true);
+					return constructor.newInstance(item, count, PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, patch));
+				} catch (Exception e) {
+					throw new RuntimeException("Failed to create ItemStack without components validation", e);
+				}
+			}
+
 			public static final Codec<OpacityModifier> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 				OpacityModifier.Type.CODEC.fieldOf("type").forGetter(OpacityModifier::type),
 				ExtraCodecs.POSITIVE_FLOAT.fieldOf("multiplier").forGetter(OpacityModifier::multiplier),
@@ -135,7 +155,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 				ExtraCodecs.POSITIVE_FLOAT.fieldOf("max").forGetter(OpacityModifier::max),
 				Codec.FLOAT.optionalFieldOf("from").forGetter((modifier) -> Float.isNaN(modifier.from()) ? Optional.empty() : Optional.of(modifier.from())),
 				Codec.FLOAT.optionalFieldOf("to").forGetter((modifier) -> Float.isNaN(modifier.to()) ? Optional.empty() : Optional.of(modifier.to())),
-				ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> modifier.item().isEmpty() ? Optional.empty() : Optional.of(modifier.item())),
+				SAFE_ITEM_CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> modifier.item().isEmpty() ? Optional.empty() : Optional.of(modifier.item())),
 				MOB_EFFECT_CATEGORY_CODEC.optionalFieldOf("effect_category").forGetter((modifier) -> modifier.effectCategory().isEmpty() ? Optional.empty() : modifier.effectCategory())
 			).apply(recordCodecBuilder, OpacityModifier::create));
 

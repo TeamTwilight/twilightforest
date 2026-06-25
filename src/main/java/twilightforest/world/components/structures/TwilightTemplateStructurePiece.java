@@ -126,10 +126,10 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 			for (StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo : this.template
 				.filterBlocks(this.templatePosition, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
 				if (structuretemplate$structureblockinfo.nbt() != null) {
-					StructureMode structuremode = StructureMode.valueOf(structuretemplate$structureblockinfo.nbt().getString("mode").orElseThrow());
+					StructureMode structuremode = structuretemplate$structureblockinfo.nbt().read("mode", StructureMode.LEGACY_CODEC).orElseThrow();
 					if (structuremode == StructureMode.DATA) {
 						this.handleDataMarker(
-							structuretemplate$structureblockinfo.nbt().getString("metadata").orElseThrow(),
+							structuretemplate$structureblockinfo.nbt().getStringOr("metadata", ""),
 							structuretemplate$structureblockinfo.pos(),
 							level,
 							random,

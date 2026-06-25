@@ -77,6 +77,13 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		return twilightJigsawPiece;
 	}
 
+	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList randomizedProcessors) {
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance, randomizedProcessors);
+		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+		return twilightJigsawPiece;
+	}
+
 	public TwilightJigsawPiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings placeSettings) {
 		super(structurePieceType, compoundTag, ctx, placeSettings);
 
@@ -104,6 +111,20 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.processors = Optional.empty();
 		this.markerHandlers = Optional.empty();
 		this.beardifierGroundDelta = 0;
+	}
+
+	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList randomizedProcessors) {
+		super(type, genDepth, structureManager, templateLocation, jigsawContext.placementSettings(), jigsawContext.templatePos());
+
+		this.sourceJigsaw = jigsawContext.seedJigsaw();
+		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
+		this.terrainAdjustment = templatePoolInstance.terrainAdjustment();
+		this.processors = templatePoolInstance.processors();
+		this.markerHandlers = templatePoolInstance.markerHandlers();
+		this.beardifierGroundDelta = templatePoolInstance.beardifierGroundDelta().map(TemplatePoolInstance.HeightAdjustment::beardifierGroundDelta).orElse(0);
+		if (templatePoolInstance.ignoreWorldWaterlog()) this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
+		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
+		randomizedProcessors.list().forEach(this.placeSettings::addProcessor);
 	}
 
 	protected static JigsawRecord readSourceFromNBT(CompoundTag structureTag) {
@@ -182,18 +203,19 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	}
 
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
-//		Identifier templatePool = Identifier.parse(this.poolAliases.getOrDefault(connection.pool(), connection.pool()));
-//		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
-//		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
-//
-//		if (jigsawPiece == null)
-//			return;
-//
-//		if (pieceAccessor.findCollisionPiece(jigsawPiece.boundingBox) != null)
-//			return;
-//
-//		pieceAccessor.addPiece(jigsawPiece);
-//		jigsawPiece.addJigsaws(this, pieceAccessor, context);
+		Identifier templatePool = Identifier.parse(connection.pool());
+		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
+		boolean parentProjectsTerrain = this.terrainAdjustment != TerrainAdjustment.NONE;
+		TwilightJigsawPiece jigsawPiece = StructureTemplateDefinitions.INSTANCE.initializeTemplateFromPool(templatePool, parentJunctionPos.mutable(), connection.orientation(), connection.target(), context, this.genDepth + 1, parentProjectsTerrain);
+
+		if (jigsawPiece == null)
+			return;
+
+		if (pieceAccessor.findCollisionPiece(jigsawPiece.boundingBox) != null)
+			return;
+
+		pieceAccessor.addPiece(jigsawPiece);
+		jigsawPiece.addJigsaws(this, pieceAccessor, context);
 	}
 
 	@Override

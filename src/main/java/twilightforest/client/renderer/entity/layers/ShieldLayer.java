@@ -2,31 +2,28 @@ package twilightforest.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.state.entity.LichRenderState;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDataAttachments;
 
 public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
 
-	public static final Identifier LOC = TwilightForestMod.prefix("item/shield");
-	private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
+	private static final Identifier SHIELD_FRAME = TwilightForestMod.prefix("textures/item/lich_shield_frame.png");
+	private static final Identifier SHIELD_FILL = TwilightForestMod.prefix("textures/item/lich_shield_fill.png");
+	private static final net.minecraft.client.renderer.rendertype.RenderType FRAME_RENDER_TYPE = RenderTypes.entityCutout(SHIELD_FRAME);
+	private static final net.minecraft.client.renderer.rendertype.RenderType FILL_RENDER_TYPE = RenderTypes.entityTranslucent(SHIELD_FILL);
 
 	public static ContextKey<Integer> SHIELD_COUNT_KEY = new ContextKey<>(TwilightForestMod.prefix("shield_count"));
 
@@ -35,11 +32,19 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 	}
 
 	@Override
-	public void render(PoseStack stack, MultiBufferSource source, int light, S state, float netHeadYaw, float headPitch) {
-		Integer count = state.getRenderData(SHIELD_COUNT_KEY);
-		if (count != null && count > 0) {
-			this.renderShields(stack, source, state, count);
+	public void submit(PoseStack stack, SubmitNodeCollector submitNodeCollector, int light, S state, float netHeadYaw, float headPitch) {
+		int count = getShieldCountFromState(state);
+		if (count > 0) {
+			this.renderShields(stack, submitNodeCollector, state, count, light);
 		}
+	}
+
+	private static int getShieldCountFromState(LivingEntityRenderState state) {
+		if (state instanceof LichRenderState lichState) {
+			return lichState.shieldCount;
+		}
+		Integer count = state.getRenderData(SHIELD_COUNT_KEY);
+		return count != null ? count : 0;
 	}
 
 	public static int getShieldCount(LivingEntity entity) {
@@ -48,7 +53,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 			: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 
-	private void renderShields(PoseStack stack, MultiBufferSource buffer, S state, int count) {
+	private void renderShields(PoseStack stack, SubmitNodeCollector submitNodeCollector, S state, int count, int light) {
 		float age = state.ageInTicks;
 		float rotateAngleY = age / -5.0F;
 		float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
@@ -57,29 +62,30 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 		for (int c = 0; c < count; c++) {
 			stack.pushPose();
 
-			// perform the rotations, accounting for the fact that baked models are corner-based
-			// Z gets extra 180 degrees to flip visual upside-down, since scaling y by -1 will cause back-faces to render instead
-			stack.mulPose(Axis.ZP.rotationDegrees(180.0F + rotateAngleZ * (180.0F / Mth.PI)));
 			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180.0F / Mth.PI) + (c * (360.0F / count))));
 			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180.0F / Mth.PI)));
-			stack.translate(-0.5F, -0.65F, -0.5F);
+			stack.mulPose(Axis.ZP.rotationDegrees(rotateAngleZ * (180.0F / Mth.PI)));
 
-			// push the shields outwards from the center of rotation
-			stack.translate(0.0F, 0.0F, -0.7F);
+			stack.translate(0.0F, 0.4F, -0.7F);
 
-			BakedModel model = Minecraft.getInstance().getModelManager().getStandaloneModel(LOC);
-			for (Direction dir : DIRS) {
-				ItemRenderer.renderQuadList(
-					stack,
-					buffer.getBuffer(Sheets.translucentItemSheet()),
-					model.getQuads(null, dir, Minecraft.getInstance().font.random, ModelData.EMPTY, Sheets.translucentItemSheet()),
-					new int[0],
-					0xF000F0,
-					OverlayTexture.NO_OVERLAY
-				);
-			}
+			renderShieldQuad(stack, submitNodeCollector, FILL_RENDER_TYPE, 0xF000F0);
+			renderShieldQuad(stack, submitNodeCollector, FRAME_RENDER_TYPE, 0xF000F0);
 
 			stack.popPose();
 		}
+	}
+
+	private static void renderShieldQuad(PoseStack stack, SubmitNodeCollector submitNodeCollector, net.minecraft.client.renderer.rendertype.RenderType renderType, int light) {
+		submitNodeCollector.submitCustomGeometry(stack, renderType, (pose, buffer) -> {
+			buffer.addVertex(pose, -0.5F, 0.5F, 0.0F).setColor(-1).setUv(0.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
+			buffer.addVertex(pose, 0.5F, 0.5F, 0.0F).setColor(-1).setUv(1.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
+			buffer.addVertex(pose, 0.5F, -0.5F, 0.0F).setColor(-1).setUv(1.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
+			buffer.addVertex(pose, -0.5F, -0.5F, 0.0F).setColor(-1).setUv(0.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, 1.0F);
+
+			buffer.addVertex(pose, -0.5F, -0.5F, 0.0F).setColor(-1).setUv(0.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
+			buffer.addVertex(pose, 0.5F, -0.5F, 0.0F).setColor(-1).setUv(1.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
+			buffer.addVertex(pose, 0.5F, 0.5F, 0.0F).setColor(-1).setUv(1.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
+			buffer.addVertex(pose, -0.5F, 0.5F, 0.0F).setColor(-1).setUv(0.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 0.0F, -1.0F);
+		});
 	}
 }

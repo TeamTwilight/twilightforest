@@ -4,16 +4,17 @@ import com.google.common.collect.Maps;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Spider;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
+import net.minecraft.world.entity.monster.spider.Spider;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -29,7 +30,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.IBlockCapabilityProvider;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -54,7 +55,7 @@ import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
-import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
+//import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.RovingCube;
@@ -75,6 +76,7 @@ import twilightforest.util.Restriction;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
+import twilightforest.world.components.speleothem.StalactiteReloadListener;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
@@ -87,9 +89,6 @@ public class RegistrationEvents {
 
 	@Autowired
 	private HolidayEvent holidayEvent;
-
-	@Autowired
-	private StructureTemplateDefinitions structureTemplateDefinitions;
 
 	@PostConstruct
 	private void setup(IEventBus bus) {
@@ -110,10 +109,10 @@ public class RegistrationEvents {
 		bus.addListener(ConfigSetup::reloadConfigs);
 
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(AddReloadListenerEvent.class, event -> event.addListener(new QuestReloadListener()));
-		NeoForge.EVENT_BUS.addListener(AddReloadListenerEvent.class, event -> event.addListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
-		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
-		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("quests"), new QuestReloadListener()));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("travellers_modifiers"), TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("stalactites"), StalactiteReloadListener.INSTANCE));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("structure_template_definitions"), StructureTemplateDefinitions.INSTANCE));
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 	}
 
@@ -221,8 +220,8 @@ public class RegistrationEvents {
 		registrar.playToClient(MissingAdvancementToastPacket.TYPE, MissingAdvancementToastPacket.STREAM_CODEC, MissingAdvancementToastPacket::handle);
 		registrar.playToClient(MovePlayerPacket.TYPE, MovePlayerPacket.STREAM_CODEC, MovePlayerPacket::handle);
 		registrar.playToClient(ParticlePacket.TYPE, ParticlePacket.STREAM_CODEC, ParticlePacket::handle);
-		registrar.playBidirectional(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC, GogglesZoomPacket::handle);
-		registrar.playBidirectional(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC, GradualGlidePacket::handle);
+		registrar.playBidirectional(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC, GogglesZoomPacket::handle, GogglesZoomPacket::handle);
+		registrar.playBidirectional(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC, GradualGlidePacket::handle, GradualGlidePacket::handle);
 		registrar.playToServer(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket.STREAM_CODEC, PerformDoubleJumpPacket::handle);
 		registrar.playToServer(SwapHotbarPacket.TYPE, SwapHotbarPacket.STREAM_CODEC, SwapHotbarPacket::handle);
 		registrar.playToServer(PerformSidestepPacket.TYPE, PerformSidestepPacket.STREAM_CODEC, PerformSidestepPacket::handle);
@@ -249,10 +248,11 @@ public class RegistrationEvents {
 			TFDispenserBehaviors.init();
 			TFStats.init();
 
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_LEGGINGS.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_BOOTS.get(), CauldronInteraction.DYED_ITEM);
+			// Arctic armor dye washing in cauldrons (26.1.2: CauldronInteractions.WATER + dyedItemIteration)
+			CauldronInteractions.WATER.put(TFItems.ARCTIC_HELMET.get(), CauldronInteractions::dyedItemIteration);
+			CauldronInteractions.WATER.put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteractions::dyedItemIteration);
+			CauldronInteractions.WATER.put(TFItems.ARCTIC_LEGGINGS.get(), CauldronInteractions::dyedItemIteration);
+			CauldronInteractions.WATER.put(TFItems.ARCTIC_BOOTS.get(), CauldronInteractions::dyedItemIteration);
 
 			AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
 			AxeItem.STRIPPABLES.put(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());

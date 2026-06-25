@@ -57,7 +57,7 @@ public class PeacockFanItem extends Item {
 						ParticlePacket packet = new ParticlePacket();
 
 						for (int i = 0; i < 30; i++) {
-							packet.queueParticle(ParticleTypes.CLOUD, true, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
+							packet.queueParticle(ParticleTypes.CLOUD, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
 								fanBox.minY + level.getRandom().nextFloat() * (fanBox.maxY - fanBox.minY),
 								fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
 								lookVec.x(), lookVec.y(), lookVec.z());
@@ -151,7 +151,7 @@ public class PeacockFanItem extends Item {
 		BlockState state = level.getBlockState(pos);
 		if (state.getBlock() instanceof FlowerBlock) {
 			if (level.getRandom().nextInt(3) == 0) {
-				if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
+				if (!NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.level.block.BreakBlockEvent(level, pos, state, player)).isCanceled()) {
 					level.destroyBlock(pos, true);
 					cost++;
 				}

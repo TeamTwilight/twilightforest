@@ -1,0 +1,12 @@
+{
+  "parent": "twilightforest:item/giant_block_gui",
+  "textures": {
+    "particle": "twilightforest:block/castle_brick",
+    "down": "minecraft:block/cobblestone",
+    "east": "minecraft:block/cobblestone",
+    "north": "minecraft:block/cobblestone",
+    "south": "minecraft:block/cobblestone",
+    "up": "minecraft:block/cobblestone",
+    "west": "minecraft:block/cobblestone"
+  }
+}

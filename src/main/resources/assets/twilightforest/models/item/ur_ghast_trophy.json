@@ -1,0 +1,30 @@
+{
+  "parent": "twilightforest:item/template_trophy",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 45, 135, 0 ],
+      "translation": [ 0, 4, 3.6 ],
+      "scale": [ 0.5, 0.5, 0.5 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 11, 0 ],
+      "scale": [ 1, 1, 1 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 13, 0 ],
+      "scale": [ 1, 1, 1 ]
+    },
+    "fixed": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 14, -2 ],
+      "scale": [ 1, 1, 1 ]
+    },
+    "head": {
+      "rotation": [ 180, 0, 180 ],
+      "translation": [ 0, 18, 0 ],
+      "scale": [ 1.6, 1.6, 1.6 ]
+    }
+  }
+}

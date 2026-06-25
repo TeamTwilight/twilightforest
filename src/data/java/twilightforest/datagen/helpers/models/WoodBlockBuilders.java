@@ -17,6 +17,7 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -44,6 +45,13 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 
 	@Override
 	public abstract void run();
+
+	@Override
+	public void registerSimpleItemModel(Block block, Identifier model) {
+		if (block.asItem() != Items.AIR) {
+			super.registerSimpleItemModel(block, model);
+		}
+	}
 
 	public void generateSortingLeaves() {
 		Block block = TFBlocks.SORTING_LEAVES.get();
@@ -139,15 +147,23 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	}
 
 	public void generateStairs(Block stairs, TextureMapping mapping) {
-		MultiVariant inner = plainVariant(ModelTemplates.STAIRS_INNER.createWithSuffix(stairs, "_inner", mapping, this.modelOutput));
+		MultiVariant inner = plainVariant(ModelTemplates.STAIRS_INNER.createWithSuffix(stairs, "", mapping, this.modelOutput));
 		Identifier straight = ModelTemplates.STAIRS_STRAIGHT.create(stairs, mapping, this.modelOutput);
-		MultiVariant outer = plainVariant(ModelTemplates.STAIRS_OUTER.createWithSuffix(stairs, "_outer", mapping, this.modelOutput));
+		MultiVariant outer = plainVariant(ModelTemplates.STAIRS_OUTER.createWithSuffix(stairs, "", mapping, this.modelOutput));
 		this.blockStateOutput.accept(BlockModelGenerators.createStairs(stairs, inner, plainVariant(straight), outer));
 		this.registerSimpleItemModel(stairs, straight);
 	}
 
 	public void generateTrapdoor(Block trapdoor, boolean orientable) {
 		TextureMapping texturemapping = TextureMapping.defaultTexture(trapdoor);
+		MultiVariant top = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).create(trapdoor, texturemapping, this.modelOutput));
+		Identifier bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).create(trapdoor, texturemapping, this.modelOutput);
+		MultiVariant open = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).create(trapdoor, texturemapping, this.modelOutput));
+		this.blockStateOutput.accept(createTrapdoor(trapdoor, top, plainVariant(bottom), open));
+		this.registerSimpleItemModel(trapdoor, bottom);
+	}
+
+	public void generateTrapdoor(Block trapdoor, TextureMapping texturemapping, boolean orientable) {
 		MultiVariant top = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).create(trapdoor, texturemapping, this.modelOutput));
 		Identifier bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).create(trapdoor, texturemapping, this.modelOutput);
 		MultiVariant open = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).create(trapdoor, texturemapping, this.modelOutput));
@@ -166,6 +182,19 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		MultiVariant topLeftOpen = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).create(door, texturemapping, this.modelOutput));
 		MultiVariant topRight = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).create(door, texturemapping, this.modelOutput));
 		MultiVariant topRightOpen = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).create(door, texturemapping, this.modelOutput));
+		this.registerSimpleFlatItemModel(door.asItem());
+		this.blockStateOutput.accept(createDoor(door, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen));
+	}
+
+	public void generateDoor(Block door, TextureMapping texturemapping, boolean flag) {
+		MultiVariant bottomLeft = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).create(door, texturemapping, this.modelOutput));
+		MultiVariant bottomLeftOpen = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).create(door, texturemapping, this.modelOutput));
+		MultiVariant bottomRight = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).create(door, texturemapping, this.modelOutput));
+		MultiVariant bottomRightOpen = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT_OPEN : ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN).create(door, texturemapping, this.modelOutput));
+		MultiVariant topLeft = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT : ModelTemplates.DOOR_TOP_LEFT).create(door, texturemapping, this.modelOutput));
+		MultiVariant topLeftOpen = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).create(door, texturemapping, this.modelOutput));
+		MultiVariant topRight = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).create(door, texturemapping, this.modelOutput));
+		MultiVariant topRightOpen = plainVariant((flag ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).create(door, texturemapping, this.modelOutput));
 		this.registerSimpleFlatItemModel(door.asItem());
 		this.blockStateOutput.accept(createDoor(door, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen));
 	}
@@ -198,11 +227,16 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	public void generateDryingRack(Block rack, TextureMapping mapping) {
 		Identifier rackModel = TFModelTemplates.DRYING_RACK.create(rack, mapping, this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(rack, plainVariant(rackModel)).with(ROTATION_HORIZONTAL_FACING_ALT));
-		this.registerSimpleItemModel(rack, rackModel);
+		if (rack.asItem() != net.minecraft.world.item.Items.AIR) {
+			this.registerSimpleItemModel(rack, rackModel);
+		}
 	}
 
 	public void generateHollowLog(Block log, Block stripped, Block horizontal, Block vertical, Block climbable) {
-		TextureMapping base = TextureMapping.logColumn(log).put(TextureSlot.INSIDE, TextureMapping.getBlockTexture(stripped));
+		TextureMapping base = new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(log))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(log, "_top"))
+			.put(TFTextureSlot.INNER, TextureMapping.getBlockTexture(stripped));
 		Identifier horizModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG.create(horizontal, base, this.modelOutput);
 		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
 		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
@@ -262,9 +296,9 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		);
 		this.blockStateOutput.accept(multipartgenerator);
 		this.registerSimpleItemModel(shelf, ModelTemplates.CUBE_ORIENTABLE.createWithSuffix(shelf, "_inventory", new TextureMapping()
-			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(shelf, "_side"))
-			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(shelf, "_empty"))
-			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(shelf, "_top")), this.modelOutput));
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/wood/" + BuiltInRegistries.BLOCK.getKey(shelf).getPath() + "_side")))
+			.put(TextureSlot.FRONT, new Material(TwilightForestMod.prefix("block/wood/" + BuiltInRegistries.BLOCK.getKey(shelf).getPath() + "_empty")))
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/wood/" + BuiltInRegistries.BLOCK.getKey(shelf).getPath() + "_top"))), this.modelOutput));
 		CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.clear();
 	}
 
@@ -287,7 +321,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 
 	public void addBookSlotModel(Block shelf, MultiPartGenerator generator, Condition condition, VariantMutator rotation, BooleanProperty property, ModelTemplate template, boolean occupied) {
 		String suffix = occupied ? "_occupied" : "_empty";
-		TextureMapping texturemapping = new TextureMapping().put(TextureSlot.TEXTURE, TextureMapping.getBlockTexture(shelf, suffix));
+		TextureMapping texturemapping = new TextureMapping().put(TextureSlot.TEXTURE, new Material(TwilightForestMod.prefix("block/wood/" + BuiltInRegistries.BLOCK.getKey(shelf).getPath() + suffix)));
 		BlockModelGenerators.BookSlotModelCacheKey cache = new BlockModelGenerators.BookSlotModelCacheKey(template, suffix);
 		MultiVariant variant = plainVariant(CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, key -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput)));
 		generator.with(

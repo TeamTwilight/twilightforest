@@ -1,6 +1,7 @@
 package twilightforest.inventory.slot;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -9,7 +10,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.inventory.InventoryUtil;
@@ -43,10 +46,15 @@ public class UncraftingResultSlot extends ResultSlot {
 		//clear the temp map, just in case
 		this.tempRemainderMap.clear();
 
-		for (RecipeHolder<CraftingRecipe> recipe : player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix.asCraftInput(), this.player.level())) {
-			if (ItemStack.isSameItemSameComponents(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
-				combined = false;
-				break;
+		if (player.level() instanceof ServerLevel serverLevel) {
+			RecipeManager recipeManager = serverLevel.recipeAccess();
+			for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
+				if (recipe.value() instanceof CraftingRecipe craftingRecipe && craftingRecipe.matches(this.assemblyMatrix.asCraftInput(), player.level())) {
+					if (ItemStack.isSameItemSameComponents(craftingRecipe.assemble(this.assemblyMatrix.asCraftInput()), stack)) {
+						combined = false;
+						break;
+					}
+				}
 			}
 		}
 
@@ -78,7 +86,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		int i = positioned.left();
 		int j = positioned.top();
 		CommonHooks.setCraftingPlayer(player);
-		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, input, player.level());
+		NonNullList<ItemStack> remainingItems = getRemainingItems(input, player.level());
 		CommonHooks.setCraftingPlayer(null);
 
 		for (int k = 0; k < input.height(); k++) {
@@ -104,5 +112,23 @@ public class UncraftingResultSlot extends ResultSlot {
 		if (!this.tempRemainderMap.isEmpty()) {
 			this.tempRemainderMap.forEach(this.assemblyMatrix::setItem);
 		}
+	}
+
+	private static NonNullList<ItemStack> getRemainingItems(CraftingInput input, Level level) {
+		if (level instanceof ServerLevel serverLevel) {
+			return serverLevel.recipeAccess()
+				.getRecipeFor(RecipeType.CRAFTING, input, serverLevel)
+				.map(recipe -> recipe.value().getRemainingItems(input))
+				.orElseGet(() -> copyAllInputItems(input));
+		}
+		return CraftingRecipe.defaultCraftingReminder(input);
+	}
+
+	private static NonNullList<ItemStack> copyAllInputItems(CraftingInput input) {
+		NonNullList<ItemStack> result = NonNullList.withSize(input.size(), ItemStack.EMPTY);
+		for (int slot = 0; slot < result.size(); slot++) {
+			result.set(slot, input.getItem(slot));
+		}
+		return result;
 	}
 }

@@ -20,6 +20,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRules;
@@ -46,6 +47,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	private final PackOutput output;
 	private final CompletableFuture<HolderLookup.Provider> registries;
 	public final Map<String, String> upsideDownEntries = new HashMap<>();
+	private final Map<String, String> localData = new java.util.TreeMap<>();
 
 	public TFLangProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, TwilightForestMod.ID, "en_us");
@@ -56,6 +58,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	@Override
 	public void add(String key, String value) {
 		super.add(key, value);
+		this.localData.put(key, value);
 		List<LangFormatSplitter.Component> splitEnglish = LangFormatSplitter.split(value);
 		this.upsideDownEntries.put(key, LangConversionHelper.convertComponents(splitEnglish));
 	}
@@ -145,9 +148,9 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + itemKey + "_hoe", item + " Hoe");
 	}
 
-	public void addMusicDisc(DeferredItem<Item> disc, String description) {
+	public void addMusicDisc(DeferredItem<Item> disc, ResourceKey<JukeboxSong> songKey, String description) {
 		this.addItem(disc, "Music Disc");
-		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().getKey().identifier()), description);
+		this.add(Util.makeDescriptionId("jukebox_song", songKey.identifier()), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {
@@ -210,12 +213,12 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(keyMapping.getName(), name);
 	}
 
-	public void addTravellersModifier(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String name) {
-		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
+	public void addTravellersModifier(ResourceKey<TravellersModifier> modifier, String name) {
+		this.add(modifier.identifier().toLanguageKey("travellers_gear.modifier"), name);
 	}
 
-	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
-		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
+	public void addTravellersDescription(ResourceKey<TravellersModifier> modifier, String description) {
+		this.add(modifier.identifier().toLanguageKey("travellers_gear.modifier", "description"), description);
 	}
 
 	public void createTip(String key, String translation) {
@@ -244,8 +247,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 		//generate normal lang file
 		CompletableFuture<?> languageGen = this.registries.thenCompose(provider -> {
 			this.addTranslations(provider);
-			if (!this.data.isEmpty())
-				return this.save(cache, this.output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(TwilightForestMod.ID).resolve("lang").resolve("en_us.json"));
+			if (!this.localData.isEmpty()) {
+				JsonObject langJson = new JsonObject();
+				this.localData.forEach(langJson::addProperty);
+				return DataProvider.saveStable(cache, langJson, this.output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(TwilightForestMod.ID).resolve("lang").resolve("en_us.json"));
+			}
 			return null;
 		});
 

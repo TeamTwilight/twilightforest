@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:item/template_trophy",
+  "textures": {
+    "particle": "twilightforest:item/trophy_minor"
+  }
+}

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:maze_slime_block"
-    }
+    "twilightforest:maze_slime_block"
   ],
   "result": {
     "count": 9,

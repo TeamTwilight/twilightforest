@@ -66,13 +66,19 @@
           "generation": 3,
           "pages": [
             {
-              "raw": "{\"translate\":\"twilightforest.book.trollcave.1\"}"
+              "raw": {
+                "translate": "twilightforest.book.trollcave.1"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.trollcave.2\"}"
+              "raw": {
+                "translate": "twilightforest.book.trollcave.2"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.trollcave.3\"}"
+              "raw": {
+                "translate": "twilightforest.book.trollcave.3"
+              }
             }
           ],
           "resolved": true,

@@ -1,6 +1,7 @@
 {
   "variants": {
     "": {
+      "type": "twilightforest:force_field",
       "model": "twilightforest:block/violet_force_field"
     }
   }

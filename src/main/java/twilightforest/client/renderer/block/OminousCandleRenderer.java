@@ -47,7 +47,7 @@ public class OminousCandleRenderer implements BlockEntityRenderer<OminousCandleB
 			stack.pushPose();
 			Vec3 offset = state.offsets.get(i);
 			stack.translate(offset.x, offset.y, offset.z);
-			state.candles.get(i).submit(stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+			state.candles.get(i).submitMultiLayer(stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 			stack.popPose();
 		}
 		stack.popPose();

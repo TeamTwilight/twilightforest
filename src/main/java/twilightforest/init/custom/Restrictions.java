@@ -2,10 +2,15 @@ package twilightforest.init.custom;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.TFRegistries;
@@ -48,6 +53,12 @@ public class Restrictions {
 	}
 
 	public static ItemStack asStack(ItemLike itemLike) {
-		return new ItemStack(itemLike);
+		try {
+			java.lang.reflect.Constructor<ItemStack> constructor = ItemStack.class.getDeclaredConstructor(Holder.class, int.class, PatchedDataComponentMap.class);
+			constructor.setAccessible(true);
+			return constructor.newInstance(BuiltInRegistries.ITEM.wrapAsHolder(itemLike.asItem()), 1, new PatchedDataComponentMap(DataComponentMap.EMPTY));
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to create ItemStack without components validation", e);
+		}
 	}
 }

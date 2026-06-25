@@ -3,15 +3,12 @@
   "category": "misc",
   "group": "drying_rack",
   "key": {
-    "-": {
-      "item": "minecraft:warped_slab"
-    }
+    "-": "minecraft:warped_slab"
   },
   "pattern": [
     "---"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:warped_drying_rack"
   }
 }

@@ -1,0 +1,94 @@
+{
+  "parent": "builtin/entity",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        0.0,
+        180.0,
+        -5.0
+      ],
+      "scale": [
+        1.25,
+        1.25,
+        1.25
+      ],
+      "translation": [
+        5.0,
+        5.0,
+        -11.0
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0.0,
+        180.0,
+        -5.0
+      ],
+      "scale": [
+        1.25,
+        1.25,
+        1.25
+      ],
+      "translation": [
+        -15.0,
+        3.25,
+        -11.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        15.0,
+        -25.0,
+        -5.0
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "translation": [
+        3.0,
+        2.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        45.0,
+        135.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        13.51,
+        3.0,
+        5.0
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        45.0,
+        135.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        3.51,
+        11.0,
+        -2.0
+      ]
+    }
+  },
+  "gui_light": "front",
+  "textures": {
+    "particle": "twilightforest:block/towerwood"
+  }
+}

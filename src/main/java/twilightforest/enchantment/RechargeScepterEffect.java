@@ -32,7 +32,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 			List<Integer> slotsToConsume = new ArrayList<>();
 			for (var recipe : recipes) {
 				if (item.is(recipe.getScepter())) {
-					var ingredientCopy = new ArrayList<>(recipe.getIngredients());
+					var ingredientCopy = new ArrayList<>(recipe.getRepairItems());
 					scepterItemsCheck:
 					for (int i = 0; i < player.getInventory().getNonEquipmentItems().size(); i++) {
 						var stack = player.getInventory().getNonEquipmentItems().get(i);
@@ -42,7 +42,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 							item.setDamageValue(0);
 							return;
 						}
-						for (var ingredient : recipe.getIngredients()) {
+						for (var ingredient : recipe.getRepairItems()) {
 							if (ingredientCopy.contains(ingredient) && ingredient.test(stack)) {
 								ingredientCopy.remove(ingredient);
 								slotsToConsume.add(i);
@@ -51,7 +51,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 						}
 					}
 
-					if (slotsToConsume.size() == recipe.getIngredients().size()) {
+					if (slotsToConsume.size() == recipe.getRepairItems().size()) {
 						for (int slot : slotsToConsume) {
 							ItemStack stack = player.getInventory().getNonEquipmentItems().get(slot);
 							stack.shrink(1);

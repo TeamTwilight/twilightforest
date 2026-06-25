@@ -18,7 +18,8 @@ public record CicadaSpecialRenderer(CicadaModel model) implements NoDataSpecialM
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
-		CicadaRenderer.submitCicada(this.model(), BugModelAnimationHelper.currentYaw, 0.0F, Direction.NORTH, stack, collector, light, overlay, null);
+		// TODO: 26.1.2 - Parameter order may have changed in submitCicada
+		CicadaRenderer.submitCicada(this.model(), BugModelAnimationHelper.currentYaw, 0.0F, Direction.NORTH, stack, collector, light, overlay, 0, null);
 	}
 
 	@Override

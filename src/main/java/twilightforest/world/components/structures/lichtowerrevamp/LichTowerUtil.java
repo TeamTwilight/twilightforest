@@ -33,9 +33,6 @@ public class LichTowerUtil {
 	@Autowired
 	private LichTowerPieces lichRoomPieces;
 
-	@Autowired
-	private StructureTemplateDefinitions structureTemplateDefinitions;
-
 	private final Supplier<StructureProcessor> roomSpawners = Suppliers.memoize(() -> SpawnerProcessor.compile(2, 0.8f, Object2IntMaps.unmodifiable(Util.make(new Object2IntArrayMap<>(), map -> {
 		// 1/3 chance for any spider variant, 1/3 chance for skeleton, 1/3 chance for zombie
 		map.put(EntityType.SPIDER, 1);
@@ -135,15 +132,15 @@ public class LichTowerUtil {
 	}
 
 	public Iterable<Identifier> shuffledCenterBridges(RandomSource randomSource) {
-		return this.structureTemplateDefinitions.getShuffledSequence(randomSource, LichTowerPieces.BRIDGE_FROM_CENTRAL);
+		return StructureTemplateDefinitions.INSTANCE.getShuffledSequence(randomSource, LichTowerPieces.BRIDGE_FROM_CENTRAL);
 	}
 
 	public Iterable<Identifier> shuffledRoomBridges(RandomSource randomSource) {
-		return this.structureTemplateDefinitions.getShuffledSequence(randomSource, LichTowerPieces.ROOM_BRIDGE);
+		return StructureTemplateDefinitions.INSTANCE.getShuffledSequence(randomSource, LichTowerPieces.ROOM_BRIDGE);
 	}
 
 	public Iterable<Identifier> shuffledEndBridges(RandomSource randomSource) {
-		return this.structureTemplateDefinitions.getShuffledSequence(randomSource, LichTowerPieces.END_BRIDGE);
+		return StructureTemplateDefinitions.INSTANCE.getShuffledSequence(randomSource, LichTowerPieces.END_BRIDGE);
 	}
 
 	public Iterable<Identifier> shuffledRoofs(RandomSource randomSource, int size, boolean sideRoof) {
@@ -157,7 +154,7 @@ public class LichTowerUtil {
 
 		if (pool == null) return List.of();
 
-		return this.structureTemplateDefinitions.getShuffledSequence(randomSource, pool);
+		return StructureTemplateDefinitions.INSTANCE.getShuffledSequence(randomSource, pool);
 	}
 
 	public Iterable<Identifier> shuffledBeards(RandomSource randomSource, int size) {
@@ -170,7 +167,7 @@ public class LichTowerUtil {
 
 		if (pool == null) return List.of();
 
-		return this.structureTemplateDefinitions.getShuffledSequence(randomSource, pool);
+		return StructureTemplateDefinitions.INSTANCE.getShuffledSequence(randomSource, pool);
 	}
 
 	@Nullable

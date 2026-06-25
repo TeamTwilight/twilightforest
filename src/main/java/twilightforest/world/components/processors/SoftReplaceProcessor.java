@@ -40,9 +40,10 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 	}
 
 	private boolean isFullBlock(BlockState state) {
-		// the BlockState#isSolid() is not reliable in checking for a full block
 		Block block = state.getBlock();
-		return !(block instanceof FenceBlock || block instanceof WallBlock || block instanceof SlabBlock || block instanceof StairBlock);
+		return !(block instanceof FenceBlock || block instanceof WallBlock || block instanceof SlabBlock || block instanceof StairBlock
+			|| block instanceof DoorBlock || block instanceof TrapDoorBlock || block instanceof FenceGateBlock
+			|| block instanceof IronBarsBlock || block instanceof StainedGlassBlock);
 	}
 
 	@Override

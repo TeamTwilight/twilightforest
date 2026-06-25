@@ -1,19 +1,15 @@
 package twilightforest.datagen.data.custom.stalactites;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
+import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TwilightForestMod;
-import twilightforest.world.components.spelothem.SpeleothemVarietyConfig;
-import twilightforest.world.components.spelothem.Stalactite;
-import twilightforest.world.components.spelothem.StalactiteReloadListener;
+import twilightforest.world.components.speleothem.SpeleothemVarietyConfig;
+import twilightforest.world.components.speleothem.Stalactite;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -26,50 +22,54 @@ public abstract class StalactiteProvider implements DataProvider {
 
 	private final PackOutput generator;
 	private final String modid;
-	private final PackOutput.PathProvider entryPath;
 	protected final List<HillInformation> builder = new ArrayList<>();
 
 	public StalactiteProvider(PackOutput generator, String modid) {
 		this.generator = generator;
 		this.modid = modid;
-		this.entryPath = generator.createPathProvider(PackOutput.Target.DATA_PACK, StalactiteReloadListener.STALACTITE_DIRECTORY);
 	}
 
 	@Override
 	public CompletableFuture<?> run(CachedOutput output) {
-		List<SpeleothemVarietyConfig> configs = new ArrayList<>();
-		Map<Identifier, Stalactite> map = Maps.newHashMap();
-
-		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
-
 		this.builder.clear();
 		this.createStalactites();
-		this.builder.forEach(info -> {
-			configs.add(info.config());
-			this.checkForIncorrectEntries(map, info.baseStalactites());
-			this.checkForIncorrectEntries(map, info.oreStalactites());
-			this.checkForIncorrectEntries(map, info.stalagmites());
-		});
 
-		map.forEach((identifier, stalactite) -> {
-			Path path = this.entryPath.json(identifier);
-			futuresBuilder.add(DataProvider.saveStable(output, Stalactite.CODEC.encodeStart(JsonOps.INSTANCE, stalactite).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), path));
-		});
-		configs.forEach(hillConfig -> {
-			Path hillPath = this.generator.getOutputFolder().resolve(String.format("data/%s/%s/%s.json", this.modid, StalactiteReloadListener.STALACTITE_DIRECTORY, hillConfig.type()));
-			futuresBuilder.add(DataProvider.saveStable(output, SpeleothemVarietyConfig.CODEC.encodeStart(JsonOps.INSTANCE, hillConfig).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), hillPath));
-		});
-		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
+		List<CompletableFuture<?>> futures = new ArrayList<>();
+
+		for (HillInformation hillInfo : this.builder) {
+			Path configPath = this.generator.getOutputFolder(PackOutput.Target.DATA_PACK)
+				.resolve(this.modid)
+				.resolve("twilight/stalactites")
+				.resolve(hillInfo.config.type() + ".json");
+
+			futures.add(DataProvider.saveStable(output, SpeleothemVarietyConfig.CODEC, hillInfo.config, configPath));
+
+			futures.addAll(this.saveStalactites(output, hillInfo.baseStalactites()));
+			futures.addAll(this.saveStalactites(output, hillInfo.oreStalactites()));
+			futures.addAll(this.saveStalactites(output, hillInfo.stalagmites()));
+		}
+
+		return CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
 	}
 
-	//checks for improper duplicate entries in the map. This will prevent you from registering multiple stalactites under the same name that have different properties.
-	private void checkForIncorrectEntries(Map<Identifier, Stalactite> insertMap, Map<Identifier, Stalactite> entries) {
-		for (Map.Entry<Identifier, Stalactite> entry : entries.entrySet()) {
-			if (insertMap.containsKey(entry.getKey()) && !insertMap.get(entry.getKey()).toString().equals(entry.getValue().toString())) {
-				throw new IllegalArgumentException("A stalactite with the name " + entry.getKey() + " already exists!");
-			}
-			insertMap.put(entry.getKey(), entry.getValue());
+	private List<CompletableFuture<?>> saveStalactites(CachedOutput output, Map<Identifier, Stalactite> stalactites) {
+		List<CompletableFuture<?>> futures = new ArrayList<>();
+
+		for (Map.Entry<Identifier, Stalactite> entry : stalactites.entrySet()) {
+			Path stalactitePath = this.generator.getOutputFolder(PackOutput.Target.DATA_PACK)
+				.resolve(this.modid)
+				.resolve("twilight/stalactites")
+				.resolve(entry.getKey().getPath() + ".json");
+
+			futures.add(DataProvider.saveStable(output, Stalactite.CODEC, entry.getValue(), stalactitePath));
 		}
+
+		return futures;
+	}
+
+	@Override
+	public String getName() {
+		return this.modid + " Hollow Hill Stalactites";
 	}
 
 	protected abstract void createStalactites();
@@ -82,21 +82,11 @@ public abstract class StalactiteProvider implements DataProvider {
 		return new Stalactite(Either.right(ore), sizeVariation, maxLength, weight);
 	}
 
-	public Stalactite buildStalactite(List<Pair<Block, Integer>> ores, float sizeVariation, int maxLength, int weight) {
-		return new Stalactite(Either.left(ores), sizeVariation, maxLength, weight);
-	}
-
 	protected void buildConfig(HillBuilder builder) {
 		this.builder.add(builder.build());
 	}
 
-	@Override
-	public String getName() {
-		return this.modid + " Hollow Hill Stalactites";
-	}
-
 	public static class HillBuilder {
-
 		private final SpeleothemVarietyConfig config;
 		private final Map<Identifier, Stalactite> baseStalactites = new HashMap<>();
 		private final Map<Identifier, Stalactite> oreStalactites = new HashMap<>();
@@ -129,16 +119,9 @@ public abstract class StalactiteProvider implements DataProvider {
 		}
 
 		public HillInformation build() {
-			if (this.baseStalactites.isEmpty() && this.oreStalactites.isEmpty() && this.config.stalactiteChance() > 0) {
-				throw new IllegalArgumentException("HillBuilder must define at least one stalactite type when placement chance is set above 0.");
-			}
-			if (this.stalagmites.isEmpty() && this.config.stalagmiteChance() > 0) {
-				throw new IllegalArgumentException("HillBuilder must define at least one stalagmite type when placement chance is set above 0.");
-			}
 			return new HillInformation(this.config, this.baseStalactites, this.oreStalactites, this.stalagmites);
 		}
 	}
 
-	private record HillInformation(SpeleothemVarietyConfig config, Map<Identifier, Stalactite> baseStalactites, Map<Identifier, Stalactite> oreStalactites, Map<Identifier, Stalactite> stalagmites) {
-	}
+	protected record HillInformation(SpeleothemVarietyConfig config, Map<Identifier, Stalactite> baseStalactites, Map<Identifier, Stalactite> oreStalactites, Map<Identifier, Stalactite> stalagmites) {}
 }

@@ -4,13 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -31,6 +34,17 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 		this.gson = gson;
 		this.codec = codec;
+	}
+
+	protected DynamicOps<JsonElement> initDynamicOps() {
+		try {
+			if (ServerLifecycleHooks.getCurrentServer() != null) {
+				return RegistryOps.create(JsonOps.INSTANCE, ServerLifecycleHooks.getCurrentServer().registryAccess());
+			}
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.warn("Failed to get registry access for reload listener {}, falling back to JsonOps", this.getName(), e);
+		}
+		return JsonOps.INSTANCE;
 	}
 
 	@Override
@@ -60,7 +74,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 	protected void deserialize(ResourceManager manager, Identifier location, JsonElement jsonElement) {
 		try {
-			Optional<T> checkFile = this.codec.parse(JsonOps.INSTANCE, jsonElement).result();
+			Optional<T> checkFile = this.codec.parse(this.initDynamicOps(), jsonElement).result();
 			if (checkFile.isPresent()) {
 				this.forLocation(manager, location, checkFile.get());
 			} else {
@@ -72,11 +86,4 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 	}
 
 	protected abstract void forLocation(ResourceManager manager, Identifier location, T element);
-
-	/**
-	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
-	 */
-//	public void registerListener(AddReloadListenerEvent event) {
-//		event.addListener(this);
-//	}
 }

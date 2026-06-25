@@ -1,66 +1,40 @@
 package twilightforest.asm.transformers.beardifier;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
- * {@link twilightforest.asmhooks.WorldgenHooks#getCustomDensity}
+ * After each {@link Beardifier#compute} returns, inject a call to {@link twilightforest.asmhooks.WorldgenHooks#getCustomDensity}
+ * to sum the densities of custom structure-provided density functions.
+ * <br/>
+ * Injection target is right before DRETURN.
  */
-public class BeardifierComputeTransformer implements ITransformer<MethodNode> {
+public class BeardifierComputeTransformer extends SimpleMethodTransformer {
+	public BeardifierComputeTransformer() {
+		super("net.minecraft.world.level.levelgen.Beardifier", "compute", "(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D");
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		ASMUtil.findInstructions(
-			node,
-			Opcodes.DRETURN
-		).forEach(target -> node.instructions.insertBefore(
-			target,
-			ASMAPI.listOf(
-				new VarInsnNode(Opcodes.ALOAD, 1), // DensityFunction$FunctionContext from params
-				new VarInsnNode(Opcodes.ALOAD, 0), // Beardifier.this
-				new FieldInsnNode(
-					Opcodes.GETFIELD,
-					"net/minecraft/world/level/levelgen/Beardifier",
-					"twilightforest_customStructureDensities",
-					"Lit/unimi/dsi/fastutil/objects/ObjectListIterator;"
-				),
-				new MethodInsnNode(
-					Opcodes.INVOKESTATIC,
-					"twilightforest/asmhooks/WorldgenHooks",
-					"getCustomDensity",
-					"(DLnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;Lit/unimi/dsi/fastutil/objects/ObjectListIterator;)D"
-				)
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
+		ASMUtil.findInstructions(method, Opcodes.DRETURN).forEach(target -> method.instructions.insertBefore(target, ASMUtil.listOf(
+			new VarInsnNode(Opcodes.ALOAD, 1),
+			new VarInsnNode(Opcodes.ALOAD, 0),
+			new FieldInsnNode(
+				Opcodes.GETFIELD,
+				"net/minecraft/world/level/levelgen/Beardifier",
+				"twilightforest_customStructureDensities",
+				"Lit/unimi/dsi/fastutil/objects/ObjectList;"
+			),
+			new MethodInsnNode(
+				Opcodes.INVOKESTATIC,
+				"twilightforest/asmhooks/WorldgenHooks",
+				"getCustomDensity",
+				"(DLnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;Lit/unimi/dsi/fastutil/objects/ObjectList;)D",
+				false
 			)
-		));
-		return node;
+		)));
 	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.level.levelgen.Beardifier",
-			"compute",
-			"(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
-	}
-
 }

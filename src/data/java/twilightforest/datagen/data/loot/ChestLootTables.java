@@ -37,7 +37,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					.add(LootItem.lootTableItem(Items.SUSPICIOUS_STEW).apply(SetStewEffectFunction.stewEffect()
-						.withEffect(MobEffects.JUMP, UniformGenerator.between(7, 10))
+						.withEffect(MobEffects.JUMP_BOOST, UniformGenerator.between(7, 10))
 						.withEffect(MobEffects.WEAKNESS, UniformGenerator.between(6, 8))
 						.withEffect(MobEffects.BLINDNESS, UniformGenerator.between(5, 7))
 						.withEffect(MobEffects.POISON, UniformGenerator.between(10, 20))
@@ -641,7 +641,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 
 		register.accept(TFLootTables.TOWER_JARS, LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-				.add(LootItem.lootTableItem(Items.CHAIN))
+				.add(LootItem.lootTableItem(Items.IRON_CHAIN))
 				.add(LootItem.lootTableItem(Items.ENDER_PEARL))
 				.add(LootItem.lootTableItem(Items.SPIDER_EYE))
 				.add(LootItem.lootTableItem(Items.FERMENTED_SPIDER_EYE))

@@ -90,9 +90,8 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, Either<List<Pair<Block, Integer>>, Block> ore, int length, int dY, RandomSource random, boolean hang) {
-		int diameter = (int) (length / 4.5F); // diameter of the base
+		int diameter = (int) (length / 4.5F);
 
-		//only place spikes on solid ground, not on the tops of trees
 		if (!hang) {
 			BlockPos below = startPos.below(2);
 			BlockState belowState = level.getBlockState(below);
@@ -100,10 +99,13 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 				(!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState))) return false;
 		}
 
-		// let's see...
+		WeightedList<Block> weightedOres = null;
+		if (ore.left().isPresent()) {
+			weightedOres = WeightedList.of(ore.left().get().stream().map(pair -> new Weighted<>(pair.getFirst(), pair.getSecond())).toList());
+		}
+
 		for (int dx = -diameter; dx <= diameter; dx++) {
 			for (int dz = -diameter; dz <= diameter; dz++) {
-				// determine how long this spike will be.
 				int absx = Math.abs(dx);
 				int absz = Math.abs(dz);
 				int dist = (int) (Math.max(absx, absz) + Math.min(absx, absz) * 0.5F);
@@ -112,16 +114,18 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 				if (dist <= 0) spikeLength = length;
 				else spikeLength = random.nextInt((int) (length / (dist + 0.25F)));
 
+				BlockState baseBlock = ore.right().isPresent()
+					? ore.right().get().defaultBlockState()
+					: null;
+
 				for (int i = -1; i < spikeLength; i++) {
 					BlockPos placement = startPos.offset(dx, i * dY, dz);
 
 					if (FeatureLogic.worldGenReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 2)) {
-						if (ore.right().isPresent()) {
-							level.setBlock(placement, ore.right().get().defaultBlockState(), Block.UPDATE_ALL);
-						} else {
-							// FIXME Deduplicate this construction of the weightedlist, tt is constructed many times per generation
-							WeightedList<Block> entries = WeightedList.of(ore.left().get().stream().map(pair -> new Weighted<>(pair.getFirst(), pair.getSecond())).toList());
-							level.setBlock(placement, entries.getRandom(random).orElse(Blocks.STONE).defaultBlockState(), Block.UPDATE_ALL);
+						if (baseBlock != null) {
+							level.setBlock(placement, baseBlock, Block.UPDATE_ALL);
+						} else if (weightedOres != null) {
+							level.setBlock(placement, weightedOres.getRandom(random).orElse(Blocks.STONE).defaultBlockState(), Block.UPDATE_ALL);
 						}
 					}
 				}

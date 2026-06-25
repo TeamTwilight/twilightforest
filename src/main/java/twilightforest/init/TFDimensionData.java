@@ -1,15 +1,18 @@
 package twilightforest.init;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TimelineTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.TriState;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.*;
+import net.minecraft.world.clock.WorldClock;
+import net.minecraft.world.clock.WorldClocks;
 import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -40,8 +43,13 @@ public class TFDimensionData {
 
 	public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM = ResourceKey.create(Registries.LEVEL_STEM, TFDimension.DIMENSION);
 
+	public static final TagKey<Timeline> TWILIGHT_TIMELINES = TagKey.create(Registries.TIMELINE, TwilightForestMod.prefix("twilight"));
+
 	public static void bootstrapType(BootstrapContext<DimensionType> context) {
 		HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
+		Optional<Holder<WorldClock>> overworldClock = context.lookup(Registries.WORLD_CLOCK)
+			.get(WorldClocks.OVERWORLD)
+			.map(h -> (Holder<WorldClock>) h);
 		context.register(TWILIGHT_DIM_TYPE, new DimensionType(
 			true, //fixed time
 			true, //skylight
@@ -66,10 +74,17 @@ public class TFDimensionData {
 				.set(EnvironmentAttributes.CAN_START_RAID, false)
 				.set(EnvironmentAttributes.CREAKING_ACTIVE, true)
 				.set(EnvironmentAttributes.EYEBLOSSOM_OPEN, TriState.TRUE)
+				.set(EnvironmentAttributes.SUN_ANGLE, 93.2F)
+				.set(EnvironmentAttributes.MOON_ANGLE, 273.2F)
 				.set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
+				.set(EnvironmentAttributes.SKY_LIGHT_LEVEL, 0.62F)
+				.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.38F)
+				.set(EnvironmentAttributes.SKY_LIGHT_COLOR, 0x9292FF)
+				.set(EnvironmentAttributes.SKY_COLOR, 0x7B7B7B)
+				.set(EnvironmentAttributes.FOG_COLOR, 0x838387)
 				.build(),
-			timelines.getOrThrow(TimelineTags.UNIVERSAL), //timelines
-			Optional.empty() //clock
+			timelines.getOrThrow(TWILIGHT_TIMELINES), //timelines
+			overworldClock //clock - overworld clock so time flows for moon phase and clock item
 		));
 	}
 

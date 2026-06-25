@@ -2,10 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -34,9 +31,11 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
+import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.WorldUtil;
 
@@ -90,7 +89,8 @@ public class Hydra extends BaseTFBoss {
 
 		this.partArray = parts.toArray(new HydraPart[0]);
 
-		this.noCulling = true;
+		this.setId(ENTITY_COUNTER.getAndAdd(this.partArray.length + 1) + 1);
+
 		this.xpReward = 511;
 	}
 
@@ -116,12 +116,11 @@ public class Hydra extends BaseTFBoss {
 		super.checkDespawn();
 	}
 
-	@Override
-	protected float tickHeadTurn(float yRot, float yTurnDelta) {
-		float f = Mth.wrapDegrees(yRot - this.yBodyRot);
+	protected void tickHeadTurn(float yBodyRotT) {
+		float targetYaw = this.getTarget() != null ? this.getYRot() : yBodyRotT;
+		float f = Mth.wrapDegrees(targetYaw - this.yBodyRot);
 		this.yBodyRot += f * 0.3F;
 		float f1 = Mth.wrapDegrees(this.getYRot() - this.yBodyRot);
-		boolean flag = f1 < -90.0F || f1 >= 90.0F;
 
 		if (f1 < -75.0F) {
 			f1 = -75.0F;
@@ -136,12 +135,6 @@ public class Hydra extends BaseTFBoss {
 		if (f1 * f1 > 2500.0F) {
 			this.yBodyRot += f1 * 0.2F;
 		}
-
-		if (flag) {
-			yTurnDelta *= -1.0F;
-		}
-
-		return yTurnDelta;
 	}
 
 	@Override
@@ -175,6 +168,10 @@ public class Hydra extends BaseTFBoss {
 		// update all heads
 		for (int i = 0; i < MAX_HEADS; i++) {
 			this.hc[i].tick();
+		}
+
+		if (!this.level().isClientSide()) {
+			PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateTFMultipartPacket(this));
 		}
 
 		if (this.hurtTime > 0) {
@@ -222,25 +219,22 @@ public class Hydra extends BaseTFBoss {
 			}
 		}
 		compound.putByte("NumHeads", headData);
-		ListTag headNames = new ListTag();
+		var headNames = compound.list("HeadNames", com.mojang.serialization.Codec.STRING);
 		for (int i = 0; i < MAX_HEADS; i++) {
-			headNames.add(StringTag.valueOf(this.getEntityData().get(HEAD_NAMES).get(i)));
+			headNames.add(this.getEntityData().get(HEAD_NAMES).get(i));
 		}
-		compound.put("HeadNames", headNames);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.activateHeadsOnLoad(compound.getByte("NumHeads"));
-		if (compound.contains("HeadNames", Tag.TAG_LIST)) {
-			List<String> names = new ArrayList<>();
-			ListTag list = compound.getList("HeadNames", Tag.TAG_STRING);
-			for (int i = 0; i < list.size(); i++) {
-				String name = list.getString(i);
-				names.add(name);
-				this.hc[i].headEntity.setCustomName(Component.literal(name));
+		this.activateHeadsOnLoad(compound.getByteOr("NumHeads", (byte) 0));
+		List<String> names = new ArrayList<>();
+		compound.listOrEmpty("HeadNames", com.mojang.serialization.Codec.STRING).forEach(names::add);
+		if (!names.isEmpty()) {
+			for (int i = 0; i < Math.min(names.size(), MAX_HEADS); i++) {
+				this.hc[i].headEntity.setCustomName(Component.literal(names.get(i)));
 			}
 			this.getEntityData().set(HEAD_NAMES, names);
 		}
@@ -608,12 +602,13 @@ public class Hydra extends BaseTFBoss {
 		}
 
 		boolean tookDamage;
+		ServerLevel serverLevel = (ServerLevel) this.level();
 		if (headCon != null && headCon.getCurrentMouthOpen() > 0.5) {
-			tookDamage = super.hurtServer(source, damage);
+			tookDamage = super.hurtServer(serverLevel, source, damage);
 			headCon.addDamage(damage);
 		} else {
 			int armoredDamage = Math.round(damage / ARMOR_MULTIPLIER);
-			tookDamage = super.hurtServer(source, armoredDamage);
+			tookDamage = super.hurtServer(serverLevel, source, armoredDamage);
 
 			if (headCon != null) {
 				headCon.addDamage(armoredDamage);
@@ -656,9 +651,17 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
+	public void setId(int id) {
+		super.setId(id);
+		for (int i = 0; i < this.partArray.length; i++) {
+			this.partArray[i].setId(id + i); // TFPart.setId adds +1, resulting in id + i + 1 (same as EnderDragon pattern)
+		}
+	}
+
+	@Override
 	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
 		super.recreateFromPacket(packet);
-		TFPart.assignPartIDs(this);
+		// Part IDs are set in setId() which is called by super.recreateFromPacket()
 	}
 
 	/**

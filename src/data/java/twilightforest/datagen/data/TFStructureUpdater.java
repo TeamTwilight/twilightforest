@@ -7,8 +7,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import com.mojang.serialization.Dynamic;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
@@ -71,9 +73,9 @@ public class TFStructureUpdater implements DataProvider {
 	}
 
 	private static CompoundTag updateNBT(CompoundTag nbt) {
-		final CompoundTag updatedNBT = DataFixTypes.STRUCTURE.updateToCurrentVersion(
-			DataFixers.getDataFixer(), nbt, nbt.getInt("DataVersion")
-		);
+		final CompoundTag updatedNBT = (CompoundTag) DataFixTypes.STRUCTURE.updateToCurrentVersion(
+			DataFixers.getDataFixer(), new Dynamic<>(NbtOps.INSTANCE, nbt), nbt.getIntOr("DataVersion", 0)
+		).getValue();
 		StructureTemplate template = new StructureTemplate();
 		template.load(BuiltInRegistries.BLOCK, updatedNBT);
 		return template.save(new CompoundTag());

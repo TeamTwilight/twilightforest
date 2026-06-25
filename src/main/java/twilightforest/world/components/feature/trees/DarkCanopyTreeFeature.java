@@ -13,6 +13,7 @@ import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import twilightforest.util.features.FeaturePlacers;
 
 import java.util.List;
@@ -39,6 +42,8 @@ import java.util.function.BiConsumer;
 
 //Lots of things from TreeFeature, but we're checking for dirt to place on
 public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DarkCanopyTreeFeature.class);
 
 	public DarkCanopyTreeFeature(Codec<TreeConfiguration> config) {
 		super(config);
@@ -58,28 +63,45 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 				// yes!
 				foundDirt = true;
 				pos = new BlockPos(pos.getX(), dy, pos.getZ());
+				LOGGER.trace("[TF-DarkForest] Found dirt at {} for tree placement (origin was {})", pos, ctx.origin());
 				break;
 			} else if (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SAND)) {
 				// nope
+				LOGGER.trace("[TF-DarkForest] Hit stone/sand at y={}, stopping dirt search (origin={})", dy - 1, ctx.origin());
 				break;
 			}
 		}
 
 		if (!foundDirt) {
+			LOGGER.warn("[TF-DarkForest] No dirt found for tree at origin={}", ctx.origin());
 			return false;
+		}
+
+		if (!reader.isEmptyBlock(pos)) {
+			pos = pos.above();
+			if (!reader.isEmptyBlock(pos)) {
+				return false;
+			}
 		}
 
 		for (int i = 0; i < 4; i++) {
 			//We check against the TreeFeature's validTreePos method, to see if the tree can grow here, cuz the trunk placer uses this as well
 			//If we don't, some trees end up growing only one or two blocks tall
-			if (!FeaturePlacers.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
+			if (!FeaturePlacers.validTreePos(reader, pos.relative(Direction.UP, i))) {
+				LOGGER.trace("[TF-DarkForest] Invalid tree pos at {} offset +{}", pos, i);
+				return false;
+			}
 		}
 
 		// do not grow next to another tree
 		for (Direction e : Direction.Plane.HORIZONTAL) {
-			if (reader.getBlockState(pos.relative(e)).is(BlockTags.LOGS))
+			if (reader.getBlockState(pos.relative(e)).is(BlockTags.LOGS)) {
+				LOGGER.trace("[TF-DarkForest] Adjacent log found at {}, skipping", pos.relative(e));
 				return false;
+			}
 		}
+
+		LOGGER.trace("[TF-DarkForest] Placing tree at {}", pos);
 
 		//Taken from TreeFeature.generate, adjusting our BoundingBox to fit where the dirt is
 		TreeConfiguration treeconfiguration = ctx.config();
@@ -139,7 +161,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(pos, random)).orElse(pos);
 		int i1 = Math.min(pos.getY(), blockpos.getY());
 		int j1 = Math.max(pos.getY(), blockpos.getY()) + i + 1;
-		if (i1 >= level.getMinY() + 1 && j1 <= level.getMaxY()) {
+		if (i1 >= level.getMinY() + 1 && j1 <= level.getMaxY() + 1) {
 			OptionalInt optionalint = config.minimumSize.minClippedHeight();
 			int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
 			if (k1 >= i || optionalint.isPresent() && k1 >= optionalint.getAsInt()) {
@@ -161,7 +183,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 	}
 
 	//everything beyond this point is a [VanillaCopy] of TreeFeature
-	private int getMaxFreeTreeHeight(LevelSimulatedReader level, int trunkHeight, BlockPos pos, TreeConfiguration config) {
+	private int getMaxFreeTreeHeight(WorldGenLevel level, int trunkHeight, BlockPos pos, TreeConfiguration config) {
 		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
 		for (int i = 0; i <= trunkHeight + 1; ++i) {
@@ -170,7 +192,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			for (int k = -j; k <= j; ++k) {
 				for (int l = -j; l <= j; ++l) {
 					mutable.setWithOffset(pos, k, i, l);
-					if (!validTreePos(level, mutable) || !config.ignoreVines) {
+					if (!FeaturePlacers.validTreePos(level, mutable) || !config.ignoreVines && isVine(level, mutable)) {
 						return i - 2;
 					}
 				}
@@ -178,6 +200,10 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		}
 
 		return trunkHeight;
+	}
+
+	public static boolean isVine(LevelSimulatedReader level, BlockPos pos) {
+		return level.isStateAtPosition(pos, state -> state.is(Blocks.VINE));
 	}
 
 	@Override

@@ -77,7 +77,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			for (int j = 0; j < 9; j++) {
 				float angle = rand.nextFloat() * 360.0F;
 				Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
-				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
+				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), xyz.add(offset), Vec3.ZERO.subtract(offset));
 			}
 			PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 			break;

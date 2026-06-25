@@ -11,7 +11,7 @@ import twilightforest.entity.monster.DeathTome;
 
 public class DeathTomeRenderer extends MobRenderer<DeathTome, DeathTomeRenderState, DeathTomeModel> {
 
-	private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchanting_table_book.png");
+	private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchantment/enchanting_table_book.png");
 
 	public DeathTomeRenderer(EntityRendererProvider.Context context) {
 		super(context, new DeathTomeModel(context.bakeLayer(TFModelLayers.DEATH_TOME)), 0.3F);

@@ -1,13 +1,13 @@
 package twilightforest.asm;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import net.neoforged.neoforgespi.coremod.ICoreMod;
+import net.neoforged.neoforgespi.transformation.ClassProcessorProvider;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelElytraRenderingTransformer;
 import twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
+import twilightforest.asm.transformers.beardifier.BeardifierFillArrayTransformer;
 import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
@@ -28,80 +28,79 @@ import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStruc
 import twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
+import twilightforest.asm.transformers.multipart.ResolveEntityStateRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
 import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
 import twilightforest.asm.transformers.snow.KeepGrassSnowyForSnowloggableBlocksTransformer;
 
-import java.util.List;
-
-public class TFCoreMod implements ICoreMod {
+public class TFCoreMod implements ClassProcessorProvider {
 	@Override
-	public Iterable<? extends ITransformer<?>> getTransformers() {
-		return List.of(
-			// armor
-			new ArmorVisibilityRenderingTransformer(),
-			new CancelArmorRenderingTransformer(),
-			new CancelElytraRenderingTransformer(),
-			new FixCapeUnrenderingTransformer(),
+	public void createProcessors(Context context, Collector collector) {
+		// armor
+		collector.add(new ArmorVisibilityRenderingTransformer());
+		collector.add(new CancelArmorRenderingTransformer());
+		collector.add(new CancelElytraRenderingTransformer());
+		collector.add(new FixCapeUnrenderingTransformer());
 
-			// beardifier
-			new BeardifierClassTransformer(),
-			new BeardifierComputeTransformer(),
-			new InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer(),
+		// beardifier
+		collector.add(new BeardifierClassTransformer());
+		collector.add(new BeardifierComputeTransformer());
+		collector.add(new BeardifierFillArrayTransformer());
+		collector.add(new InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer());
 
-			// book
-			new ModifyWrittenBookNameTransformer(),
+		// book
+		collector.add(new ModifyWrittenBookNameTransformer());
 
-			//block
-			new SlimeBlockMomentumTransformer(),
-			new SlimeBlockBounceUpTransformer(),
-			new UnrestrainedFrictionTransformer(),
+		//block
+		collector.add(new SlimeBlockMomentumTransformer());
+		collector.add(new SlimeBlockBounceUpTransformer());
+		collector.add(new UnrestrainedFrictionTransformer());
 
-			// chunk
-			new ChunkStatusTaskTransformer(),
+		// chunk
+		collector.add(new ChunkStatusTaskTransformer());
 
-			// cloud
-			new IsRainingAtTransformer(),
+		// cloud
+		collector.add(new IsRainingAtTransformer());
 
-			// conquered
-			new StructureStartLoadStaticTransformer(),
+		// conquered
+		collector.add(new StructureStartLoadStaticTransformer());
 
-			// damagesources
-			new DamageSourcesTransformer(),
+		// damagesources
+		collector.add(new DamageSourcesTransformer());
 
-			// entity
-			new WaterWalkTransformer(),
-			new WaterSprintTransformer(),
-			new PathFinderUnrestrainedByLeashTransformer(),
-			new UnrestrainedBlockSpeedAndJumpFactorTransformer(),
-			new ResetStuckUnrestrainedTransformer(),
+		// entity
+		collector.add(new WaterWalkTransformer());
+		collector.add(new WaterSprintTransformer());
+		collector.add(new PathFinderUnrestrainedByLeashTransformer());
+		collector.add(new UnrestrainedBlockSpeedAndJumpFactorTransformer());
+		collector.add(new ResetStuckUnrestrainedTransformer());
 
-			// foliage
-			new FoliageColorResolverTransformer(),
+		// foliage
+		collector.add(new FoliageColorResolverTransformer());
 
-			// lead
-			new LeashFenceKnotSurvivesTransformer(),
+		// lead
+		collector.add(new LeashFenceKnotSurvivesTransformer());
 
-			// map
-			new ResolveNearestNonRandomSpreadMapStructureTransformer(),
-			new UpdateMapsInGogglesTransformer(),
+		// map
+		collector.add(new ResolveNearestNonRandomSpreadMapStructureTransformer());
+		collector.add(new UpdateMapsInGogglesTransformer());
 
-			// multipart
-			new ResolveEntitiesForRendereringTransformer(),
-			new ResolveEntityRendererTransformer(),
-			new SendDirtyEntityDataTransformer(),
+		// multipart
+		collector.add(new ResolveEntitiesForRendereringTransformer());
+		collector.add(new ResolveEntityRendererTransformer());
+		collector.add(new ResolveEntityStateRendererTransformer());
+		collector.add(new SendDirtyEntityDataTransformer());
 
-			// player
-			new GetFieldOfViewModifierTransformer(),
-			new ReduceMovementFoodExhaustionTransformer(),
+		// player
+		collector.add(new GetFieldOfViewModifierTransformer());
+		collector.add(new ReduceMovementFoodExhaustionTransformer());
 
-			// shroom
-			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer(),
+		// shroom
+		collector.add(new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer());
 
-			//snow
-			new KeepGrassSnowyForSnowloggableBlocksTransformer()
-		);
+		//snow
+		collector.add(new KeepGrassSnowyForSnowloggableBlocksTransformer());
 	}
 }

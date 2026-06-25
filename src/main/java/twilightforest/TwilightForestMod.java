@@ -14,8 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tamaized.beanification.BeanContext;
 import tamaized.beanification.Configurable;
-import twilightforest.compat.CosmeticArmorCompat;
-import twilightforest.compat.curios.CuriosCompat;
+// TODO: Port compat modules
+//import twilightforest.compat.CosmeticArmorCompat;
+//import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
@@ -37,10 +38,12 @@ public final class TwilightForestMod {
 
 	static {
 		BeanContext.init(ID);
+		LOGGER.info("[TF-DEBUG] TwilightForestMod static init called!");
 	}
 
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
+		LOGGER.info("[TF-DEBUG] TwilightForestMod constructor called!");
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
 
@@ -56,7 +59,6 @@ public final class TwilightForestMod {
 		TFFeatures.FEATURES.register(bus);
 		TFCreativeTabs.TABS.register(bus);
 		TFLoot.CONDITIONALS.register(bus);
-		TFEntities.SPAWN_EGGS.register(bus);
 		ItemDisplays.DISPLAYS.register(bus);
 		TFMenuTypes.CONTAINERS.register(bus);
 		TFRecipes.RECIPE_TYPES.register(bus);
@@ -93,16 +95,21 @@ public final class TwilightForestMod {
 
 		TFRemapper.addRegistryAliases();
 
-		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
-		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
+		if (dist.isClient()) {
+			bus.addListener(net.neoforged.neoforge.client.event.ModelEvent.ModifyBakingResult.class, twilightforest.client.event.ClockModelHandler::onModifyBakingResult);
+		}
+
+		//TODO: Port compat modules
+		//if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
+		//if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
 	}
 
-	private static void loadCuriosCompat(IEventBus bus) {
-		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		bus.addListener(CuriosCompat::registerCurioRenderers);
-		bus.addListener(CuriosCompat::registerCurioLayers);
-	}
+//	private static void loadCuriosCompat(IEventBus bus) {
+//		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+//		bus.addListener(CuriosCompat::registerCuriosCapabilities);
+//		bus.addListener(CuriosCompat::registerCurioRenderers);
+//		bus.addListener(CuriosCompat::registerCurioLayers);
+//	}
 
 	public static Identifier prefix(String name) {
 		return Identifier.fromNamespaceAndPath(ID, name.toLowerCase(Locale.ROOT));

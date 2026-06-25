@@ -17,6 +17,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
@@ -88,12 +90,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
-		this.roomSize = compoundTag.getInt("room_size");
-		this.generateGround = compoundTag.getBoolean("gen_ground");
-		this.ladderIndex = compoundTag.getInt("ladder_index");
+		this.roomSize = compoundTag.getIntOr("room_size", 0);
+		this.generateGround = compoundTag.getBooleanOr("gen_ground", false);
+		this.ladderIndex = compoundTag.getIntOr("ladder_index", -1);
 		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
-		this.roofFallback = compoundTag.getInt("roof_index");
-		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements");
+		this.roofFallback = compoundTag.getIntOr("roof_index", -1);
+		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements").orElse(new int[0]);
 	}
 
 	public LichTowerWingRoom(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, Identifier roomId, int roomSize, boolean generateGround, boolean canGenerateLadder, RandomSource random) {
@@ -124,7 +126,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		blockInfos.removeIf(info -> {
 			CompoundTag nbt = info.nbt();
 			if (nbt == null || nbt.isEmpty()) return false;
-			String metadata = nbt.getString("metadata");
+			String metadata = nbt.getStringOr("metadata", "");
 			return !(metadata.startsWith("rope") || metadata.startsWith("chain"));
 		});
 
@@ -165,10 +167,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private static boolean filterMetadata(RandomSource random, CompoundTag nbt) {
-		if (nbt.isEmpty() || !nbt.contains("metadata", Tag.TAG_STRING))
+		if (nbt.isEmpty() || !nbt.contains("metadata"))
 			return true;
 
-		String metadata = nbt.getString("metadata").split("%", 1)[0];
+		String metadata = nbt.getStringOr("metadata", "").split("%", 1)[0];
 		String chance = metadata.startsWith("rope") ? metadata.substring("rope".length()) : metadata.substring("chain".length());
 
 		return chance.isBlank() || StringUtils.isNumeric(chance) && random.nextFloat() > Integer.parseInt(chance) * 0.01f;
@@ -551,7 +553,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				BlockState blockState = this.blockFromLabel(parameters[0]).rotate(stateRotation);
 				if (!blockState.isAir()) {
 					level.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
-				} else if (!FMLLoader.isProduction()) {
+				} else if (!FMLEnvironment.getDist().isDedicatedServer()) {
 					TwilightForestMod.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
 				}
 			}
@@ -575,7 +577,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				};
 				if (!jarEntity.fillFromLootTable(lootTableId, random.nextLong(), level.getLevel())) {
 					Identifier itemId = Identifier.bySeparator(label, '.');
-					jarEntity.getItemHandler().setItem(new ItemStack(level.registryAccess().lookup(Registries.ITEM).<Function<Identifier, Item>>map(reg -> reg::get).orElse($ -> Items.AIR).apply(itemId)));
+					jarEntity.getItemHandler().setItem(new ItemStack(level.registryAccess().lookup(Registries.ITEM).flatMap(reg -> reg.get(itemId)).map(Holder.Reference::value).orElse(Items.AIR)));
 				}
 				int itemRotation = this.placeSettings.getRotation().ordinal() * 4 + (parameters.length == 3 ? this.getHeadRotation(parameters[2], random) : 0);
 				jarEntity.setItemRotation(Math.floorMod(itemRotation, 16));

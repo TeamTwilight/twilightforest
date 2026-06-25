@@ -23,9 +23,9 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate CUBE_BOTTOM_2_LAYER_TOP = create("twilightforest:util/cube_bottom_2_layer_top", TextureSlot.BOTTOM, TextureSlot.TOP, TFTextureSlot.TOP_2, TextureSlot.SIDE);
 	public static final ModelTemplate TWO_LAYER_COLUMN_NO_BOTTOM = create("twilightforest:util/two_layer_column_no_bottom", TextureSlot.BOTTOM, TextureSlot.TOP, TFTextureSlot.TOP_2, TextureSlot.SIDE, TFTextureSlot.SIDE_2);
 
-	public static final ModelTemplate BISECTED_STAIRS_STRAIGHT = create("twilightforest:util/bisected_stairs", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
-	public static final ModelTemplate BISECTED_STAIRS_INNER = create("twilightforest:util/bisected_inner_stairs", "_inner", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
-	public static final ModelTemplate BISECTED_STAIRS_OUTER = create("twilightforest:util/bisected_outer_stairs", "_outer", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
+	public static final ModelTemplate BISECTED_STAIRS_STRAIGHT = create("twilightforest:util/bisected_stairs", TextureSlot.END, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
+	public static final ModelTemplate BISECTED_STAIRS_INNER = create("twilightforest:util/bisected_inner_stairs", "_inner", TextureSlot.END, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
+	public static final ModelTemplate BISECTED_STAIRS_OUTER = create("twilightforest:util/bisected_outer_stairs", "_outer", TextureSlot.END, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
 
 	public static final ModelTemplate CUBE_COLUMN_ROTATIONALLY_SPECIAL_X = create("twilightforest:util/cube_column_rotationally_special_x", "_special_x", TextureSlot.END, TFTextureSlot.SIDE_A, TFTextureSlot.SIDE_B);
 	public static final ModelTemplate CUBE_COLUMN_ROTATIONALLY_SPECIAL_Z = create("twilightforest:util/cube_column_rotationally_special_z", "_special_z", TextureSlot.END, TFTextureSlot.SIDE_A, TFTextureSlot.SIDE_B);
@@ -34,8 +34,9 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate FULLBRIGHT_BLOCK = create("twilightforest:util/fullbright_cube", TextureSlot.ALL);
 
 	public static final ModelTemplate CTM_NO_BASE = create("twilightforest:ctm_no_base", TextureSlot.PARTICLE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
+	public static final ModelTemplate CARPET = create("minecraft:carpet", TextureSlot.WOOL).extend().parent(Identifier.withDefaultNamespace("block/carpet")).build();
 	public static final ModelTemplate CTM = create("twilightforest:ctm", TextureSlot.PARTICLE, TFTextureSlot.CTM_BASE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
-	public static final ModelTemplate GIANT_BLOCK = create("twilightforest:giant_block", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN).extend().parent(Identifier.withDefaultNamespace("block/block")).customLoader(GiantBlockBuilder::new, builder -> {}).build();
+	public static final ModelTemplate GIANT_BLOCK = create("twilightforest:giant_block", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN).extend().parent(Identifier.withDefaultNamespace("block/cube")).customLoader(GiantBlockBuilder::new, builder -> {}).build();
 
 	public static final ModelTemplate BANISTER_CONNECTED = create("twilightforest:banister_connected", "_connected", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_CONNECTED_EXTENDED = create("twilightforest:banister_connected_extended", "_connected_extended", TextureSlot.TEXTURE);
@@ -55,11 +56,11 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate CORRECTED_DOOR_TOP_RIGHT = create("twilightforest:util/corrected_door_top_right", "_top_right", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
 	public static final ModelTemplate CORRECTED_DOOR_TOP_RIGHT_OPEN = create("twilightforest:util/corrected_door_top_right_open", "_top_right_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
 
-	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG = create("twilightforest:horizontal_hollow_log", TextureSlot.SIDE, TextureSlot.END, TextureSlot.INSIDE);
-	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG_CARPET = create("twilightforest:horizontal_hollow_log_carpet", TextureSlot.SIDE, TextureSlot.END, TextureSlot.INSIDE, TFTextureSlot.CARPET, TFTextureSlot.OVERHANG);
-	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG_PLANT = create("twilightforest:horizontal_hollow_log_plant", "_inventory", TextureSlot.SIDE, TextureSlot.END, TextureSlot.INSIDE, TFTextureSlot.CARPET, TFTextureSlot.OVERHANG, TextureSlot.PLANT);
-	public static final ModelTemplate VERTICAL_HOLLOW_LOG = create("twilightforest:vertical_hollow_log", TextureSlot.SIDE, TextureSlot.END, TextureSlot.INSIDE);
-	public static final ModelTemplate CLIMBABLE_HOLLOW_LOG = create("twilightforest:climbable_hollow_log", TextureSlot.SIDE, TextureSlot.END, TextureSlot.INSIDE, TFTextureSlot.CLIMBABLE);
+	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG = create("twilightforest:horizontal_hollow_log", TextureSlot.SIDE, TextureSlot.TOP, TFTextureSlot.INNER);
+	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG_CARPET = create("twilightforest:horizontal_hollow_log_carpet", TextureSlot.SIDE, TextureSlot.TOP, TFTextureSlot.INNER, TFTextureSlot.CARPET, TFTextureSlot.OVERHANG);
+	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG_PLANT = create("twilightforest:horizontal_hollow_log_plant", "_inventory", TextureSlot.SIDE, TextureSlot.TOP, TFTextureSlot.INNER, TFTextureSlot.CARPET, TFTextureSlot.OVERHANG, TextureSlot.PLANT);
+	public static final ModelTemplate VERTICAL_HOLLOW_LOG = create("twilightforest:vertical_hollow_log", TextureSlot.SIDE, TextureSlot.TOP, TFTextureSlot.INNER);
+	public static final ModelTemplate CLIMBABLE_HOLLOW_LOG = create("twilightforest:climbable_hollow_log", TextureSlot.SIDE, TextureSlot.TOP, TFTextureSlot.INNER, TFTextureSlot.CLIMBABLE);
 
 	public static final ModelTemplate THORNS_MAIN = create("twilightforest:thorns_main", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_main")).build();
 	public static final ModelTemplate THORNS = create("twilightforest:thorns", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns")).build();
@@ -82,11 +83,15 @@ public class TFModelTemplates extends ModelTemplates {
 
 	public static final ModelTemplate GIANT_BLOCK_BASE = createItem("twilightforest:giant_block_base", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
 	public static final ModelTemplate GIANT_BLOCK_GUI = createItem("twilightforest:giant_block_gui", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
+	public static final ModelTemplate GIANT_BLOCK_TINTED_BASE = createItem("twilightforest:giant_block_tinted_base", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
+	public static final ModelTemplate GIANT_BLOCK_TINTED_GUI = createItem("twilightforest:giant_block_tinted_gui", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
 	public static final ModelTemplate GIANT_TOOL = createItem("twilightforest:giant_tool_base", TextureSlot.LAYER0);
 	public static final ModelTemplate MOON_DIAL = createItem("twilightforest:moon_dial_template", TextureSlot.LAYER0);
 	public static final ModelTemplate SPECIAL_HANDHELD = createItem("twilightforest:special_handheld", TextureSlot.LAYER0);
 	public static final ModelTemplate TWO_LAYERED_HANDHELD = createItem("handheld", TextureSlot.LAYER0, TextureSlot.LAYER1);
 	public static final ModelTemplate TWO_LAYERED_BOW = createItem("bow", TextureSlot.LAYER0, TextureSlot.LAYER1);
+
+	public static final ModelTemplate CHISELED_BOOKSHELF = create("minecraft:block/chiseled_bookshelf", TextureSlot.SIDE, TextureSlot.TOP);
 
 	public static final ModelTemplate JAR_LID = create("twilightforest:jar_lid", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/jar_lid")).build();
 

@@ -1,7 +1,9 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.projectile.IceBomb;
@@ -72,11 +74,13 @@ public class YetiRampageGoal extends Goal {
 			this.yeti.gameEvent(GameEvent.HIT_GROUND);
 		}
 
-		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().inflate(1, 2, 1).move(0, 2, 0));
+		if (this.yeti.level() instanceof ServerLevel server) {
+			this.yeti.destroyBlocksInAABB(server, this.yeti.getBoundingBox().inflate(1, 2, 1).move(0, 2, 0));
+		}
 
 		// regular falling blocks, twice a second
-		if (this.currentDuration % 10 == 0) {
-			this.yeti.makeRandomBlockFall(30, 80);
+		if (this.currentDuration % 10 == 0 && this.yeti.level() instanceof ServerLevel server) {
+			this.yeti.makeRandomBlockFall(server, 30, 80);
 		}
 
 		// blocks target players, one every second
@@ -85,12 +89,12 @@ public class YetiRampageGoal extends Goal {
 		}
 
 		// blocks that fall close to the yeti, twice a second near the end of the rampage
-		if (this.currentDuration < 40 && this.currentDuration % 10 == 0) {
-			this.yeti.makeRandomBlockFall(15, 40);
+		if (this.currentDuration < 40 && this.currentDuration % 10 == 0 && this.yeti.level() instanceof ServerLevel server) {
+			this.yeti.makeRandomBlockFall(server, 15, 40);
 		}
 
 		if (this.currentDuration % 20 == 0) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.yeti.level(), this.yeti);
+			IceBomb ice = new IceBomb(this.yeti.level(), this.yeti, ItemStack.EMPTY);
 			Vec3 vec = new Vec3(0.5F + this.yeti.getRandom().nextFloat() * 0.5F, 0.5F + this.yeti.getRandom().nextFloat() * 0.3F, 0).yRot(this.yeti.getRandom().nextFloat() * 360F);
 			ice.shoot(vec.x(), vec.y(), vec.z(), 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
 			this.yeti.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.yeti.getRandom().nextFloat() * 0.4F + 0.8F));

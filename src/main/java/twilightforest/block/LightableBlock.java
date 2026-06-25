@@ -37,7 +37,7 @@ public interface LightableBlock {
 			return InteractionResult.SUCCESS;
 		} else if (this.canBeLit(state)) {
 			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
-				return InteractionResult.SUCCESS;
+				return InteractionResult.PASS;
 			}
 		}
 		return InteractionResult.TRY_WITH_EMPTY_HAND;

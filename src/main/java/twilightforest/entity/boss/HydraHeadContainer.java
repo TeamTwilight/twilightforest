@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -139,6 +140,11 @@ public class HydraHeadContainer {
 	private int damageTaken;
 	private int respawnCounter;
 	private int deathTime;
+	private State lastSyncedState;
+	private State clientPrevState;
+	private State clientCurrentState;
+	private int clientTicksProgress;
+	private int clientTicksNeeded;
 
 	private final Hydra hydra;
 
@@ -625,12 +631,20 @@ public class HydraHeadContainer {
 		// head1 is above
 		// head2 is to the right
 		// head3 is to the left
-		//setupStateRotations(); // temporary, for debugging
 
-		float neckLength = this.getCurrentNeckLength();
-		float xRotation = this.getCurrentHeadXRotation();
-		float yRotation = this.getCurrentHeadYRotation();
+		float[] idleXRot = {60.0F, 10.0F, 10.0F, 50.0F, 50.0F, -10.0F, -10.0F};
+		float[] idleYRot = {0.0F, 60.0F, -60.0F, 90.0F, -90.0F, 90.0F, -90.0F};
+		float[] idleNeck = {7.0F, 9.0F, 9.0F, 8.0F, 8.0F, 9.0F, 9.0F};
+		int idx = Math.min(this.headNum, idleNeck.length - 1);
 
+		float neckLength = idleNeck[idx];
+		float xRotation = idleXRot[idx];
+		float yRotation = idleYRot[idx];
+
+		State curState = this.currentState;
+		if (curState != State.IDLE && curState != State.ATTACK_COOLDOWN && curState != State.DEAD && curState != State.DYING) {
+			neckLength += 0.5F;
+		}
 
 		float periodX = (this.headNum == 0 || this.headNum == 3) ? 20F : ((this.headNum == 1 || this.headNum == 4) ? 5.0f : 7.0F);
 		float periodY = (this.headNum == 0 || this.headNum == 4) ? 10F : ((this.headNum == 1 || this.headNum == 6) ? 6.0f : 5.0F);
@@ -687,7 +701,7 @@ public class HydraHeadContainer {
 					}
 
 					// bite it!
-					nearby.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.get()), BITE_DAMAGE);
+					nearby.hurtServer((ServerLevel) living.level(), TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.get()), BITE_DAMAGE);
 
 					//knockback!
 					if (living instanceof Player player) {
@@ -703,7 +717,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
-				if (!target.fireImmune() && target.hurtServer(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
+				if (!target.fireImmune() && target.hurtServer((ServerLevel) target.level(), TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.igniteForSeconds(FLAME_BURN_FACTOR);
 				}
 			}
@@ -770,35 +784,43 @@ public class HydraHeadContainer {
 	}
 
 	private float getCurrentNeckLength() {
-		float prevLength = this.stateNeckLength[this.headNum].get(this.prevState);
-		float curLength = this.stateNeckLength[this.headNum].get(this.currentState);
-		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
+		Float prevLength = this.prevState != null ? this.stateNeckLength[this.headNum].get(this.prevState) : null;
+		Float curLength = this.stateNeckLength[this.headNum].get(this.currentState);
+		float prev = prevLength != null ? prevLength : (curLength != null ? curLength : 7.0F);
+		float cur = curLength != null ? curLength : 7.0F;
+		float progress = this.ticksNeeded > 0 ? (float) this.ticksProgress / (float) this.ticksNeeded : 1.0F;
 
-		return Mth.clampedLerp(prevLength, curLength, progress);
+		return Mth.clampedLerp(prev, cur, progress);
 	}
 
 	private float getCurrentHeadXRotation() {
-		float prevRotation = this.stateXRotations[this.headNum].get(this.prevState);
-		float currentRotation = this.stateXRotations[this.headNum].get(this.currentState);
-		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
+		Float prevRotation = this.prevState != null ? this.stateXRotations[this.headNum].get(this.prevState) : null;
+		Float currentRotation = this.stateXRotations[this.headNum].get(this.currentState);
+		float prev = prevRotation != null ? prevRotation : (currentRotation != null ? currentRotation : 60.0F);
+		float cur = currentRotation != null ? currentRotation : 60.0F;
+		float progress = this.ticksNeeded > 0 ? (float) this.ticksProgress / (float) this.ticksNeeded : 1.0F;
 
-		return Mth.clampedLerp(prevRotation, currentRotation, progress);
+		return Mth.clampedLerp(prev, cur, progress);
 	}
 
 	private float getCurrentHeadYRotation() {
-		float prevRotation = this.stateYRotations[this.headNum].get(this.prevState);
-		float currentRotation = this.stateYRotations[this.headNum].get(this.currentState);
-		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
+		Float prevRotation = this.prevState != null ? this.stateYRotations[this.headNum].get(this.prevState) : null;
+		Float currentRotation = this.stateYRotations[this.headNum].get(this.currentState);
+		float prev = prevRotation != null ? prevRotation : (currentRotation != null ? currentRotation : 0.0F);
+		float cur = currentRotation != null ? currentRotation : 0.0F;
+		float progress = this.ticksNeeded > 0 ? (float) this.ticksProgress / (float) this.ticksNeeded : 1.0F;
 
-		return Mth.clampedLerp(prevRotation, currentRotation, progress);
+		return Mth.clampedLerp(prev, cur, progress);
 	}
 
 	protected float getCurrentMouthOpen() {
-		float prevOpen = this.stateMouthOpen[this.headNum].get(this.prevState);
-		float curOpen = this.stateMouthOpen[this.headNum].get(this.currentState);
-		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
+		Float prevOpen = this.prevState != null ? this.stateMouthOpen[this.headNum].get(this.prevState) : null;
+		Float curOpen = this.stateMouthOpen[this.headNum].get(this.currentState);
+		float prev = prevOpen != null ? prevOpen : (curOpen != null ? curOpen : 0.0F);
+		float cur = curOpen != null ? curOpen : 0.0F;
+		float progress = this.ticksNeeded > 0 ? (float) this.ticksProgress / (float) this.ticksNeeded : 1.0F;
 
-		return Mth.clampedLerp(prevOpen, curOpen, progress);
+		return Mth.clampedLerp(prev, cur, progress);
 	}
 
 	/**

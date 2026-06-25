@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/abstract_bush_large_7",
-  "textures": {
-    "all": "twilightforest:block/blueberry_bush"
-  }
-}

@@ -1,13 +1,13 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
@@ -38,20 +38,19 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 				public void run() {
 					Level level = ctx.player().level();
 					// [VanillaCopy] ClientPacketListener#handleMapItemData with our own mapdatas
-					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
-					String s = MagicMapItem.getMapName(message.inner.mapId().id());
-					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(level, s);
+					MapId mapId = message.inner.mapId();
+					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(level, mapId);
 					if (mapdata == null) {
 						mapdata = new TFMagicMapData(0, 0, message.inner.scale(), false, false, message.inner.locked(), level.dimension());
-						TFMagicMapData.registerMagicMapData(level, mapdata, s);
+						TFMagicMapData.registerMagicMapData(level, mapdata, mapId);
 					}
 
 					message.inner.applyToMap(mapdata);
 					//TF: sync conquered structures for map
 					mapdata.conqueredStructures.clear();
 					mapdata.conqueredStructures.addAll(message.conqueredStructures());
-
-					mapitemrenderer.update(message.inner.mapId(), mapdata);
+					//TF: update map texture from received color data
+					Minecraft.getInstance().getMapTextureManager().update(message.inner.mapId(), mapdata);
 				}
 			});
 		}

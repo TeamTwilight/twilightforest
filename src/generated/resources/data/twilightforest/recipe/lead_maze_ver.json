@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "O": {
-      "item": "twilightforest:maze_slime_ball"
-    },
-    "~": {
-      "item": "minecraft:string"
-    }
+    "O": "twilightforest:maze_slime_ball",
+    "~": "minecraft:string"
   },
   "pattern": [
     "~~ ",

@@ -14,6 +14,9 @@ import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -37,7 +40,7 @@ public class ThrownBlock extends TFThrowable {
 	}
 
 	public ThrownBlock(Level world, LivingEntity thrower, @Nullable BlockState state) {
-		super(TFEntities.THROWN_BLOCK.get(), world, thrower);
+		super(TFEntities.THROWN_BLOCK.get(), world, thrower, ItemStack.EMPTY);
 		if (state != null) {
 			this.state = state;
 		}
@@ -86,6 +89,11 @@ public class ThrownBlock extends TFThrowable {
 			this.gameEvent(GameEvent.BLOCK_DESTROY, this.getOwner());
 			this.discard();
 		}
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return Items.AIR;
 	}
 
 	public BlockState getBlockState() {

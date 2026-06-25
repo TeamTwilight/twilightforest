@@ -138,4 +138,9 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(SnowQueenRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
+	}
 }

@@ -10,36 +10,32 @@ import net.minecraft.util.Mth;
  * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
  * Better rank ordering method for 4D by Stefan Gustavson in 2012.
  * <p>
- * This could be speeded up even further, but it's useful as it is.
- * <p>
- * Version 2012-03-09
- * <p>
  * This code was placed in the public domain by its original author,
  * Stefan Gustavson. You may use it as you see fit, but
  * attribution is appreciated.
  * <p>
  * <a href="https://github.com/SRombauts/SimplexNoise/blob/master/references/SimplexNoise.java">https://github.com/SRombauts/SimplexNoise/blob/master/references/SimplexNoise.java</a>
- * <p>
- * TODO There's multiple SimplexNoise classes, would be great to benchmark all 3 implementations and see which one's the fastest
- *  @see org.joml.SimplexNoise
- *  @see net.minecraft.world.level.levelgen.synth.SimplexNoise
  */
-public class SimplexNoiseHelper {  // Simplex noise in 2D, 3D and 4D
+public class SimplexNoiseHelper {
 	public static float rippleFractalNoise(int iterations, float size, BlockPos pos, float minimum, float maximum, float frequency) {
 		float i = maximum - minimum;
-		return Math.abs(((getFractalNoise(iterations, size, pos) * frequency) % (2 * i)) - i) + minimum;
-	}
-
-	public static float getFractalNoise(int iteration, float size, BlockPos pos) {
-		return iteration == 0 ? 0 : ((noise(
-			(pos.getX() + (iteration * size)) / size,
-			(pos.getY() + (iteration * size)) / size,
-			(pos.getZ() + (iteration * size)) / size)
-			+ 1.0f) * 0.5f) + getFractalNoise(iteration - 1, size, pos);
+		return Math.abs(((fractalNoiseRaw(iterations, size, pos) * frequency) % (2 * i)) - i) + minimum;
 	}
 
 	public static float fractalNoise(int iterations, float size, BlockPos pos) {
-		return getFractalNoise(iterations, size, pos) / iterations;
+		return fractalNoiseRaw(iterations, size, pos) / iterations;
+	}
+
+	private static float fractalNoiseRaw(int iterations, float size, BlockPos pos) {
+		float result = 0.0f;
+		for (int iter = iterations; iter > 0; iter--) {
+			result += (noise(
+				(pos.getX() + (iter * size)) / size,
+				(pos.getY() + (iter * size)) / size,
+				(pos.getZ() + (iter * size)) / size)
+				+ 1.0f) * 0.5f;
+		}
+		return result;
 	}
 
 	public static int calcVariant(BlockPos pos, int variants) {

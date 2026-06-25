@@ -3,23 +3,19 @@ package twilightforest.client.model.block.patch;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.realmsclient.util.JsonUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
+import net.minecraft.util.GsonHelper;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
 
 public final class PatchModelLoader implements UnbakedModelLoader<UnbakedPatchModel> {
-	public static final PatchModelLoader INSTANCE = new PatchModelLoader();
+        public static final PatchModelLoader INSTANCE = new PatchModelLoader();
 
-	private PatchModelLoader() {
-	}
+        private PatchModelLoader() {
+        }
 
-	@Override
-	public UnbakedPatchModel read(JsonObject object, JsonDeserializationContext deserializationContext) throws JsonParseException {
-//		if (!object.has("texture"))
-//			throw new JsonParseException("Patch model missing value for 'texture'.");
-
-		return new UnbakedPatchModel(JsonUtils.getBooleanOr("shaggify", object, false), StandardModelParameters.parse(object, deserializationContext));
-	}
+        @Override
+        public UnbakedPatchModel read(JsonObject object, JsonDeserializationContext deserializationContext) throws JsonParseException {
+                boolean shaggify = GsonHelper.getAsBoolean(object, "shaggify", false);
+                return new UnbakedPatchModel(shaggify, StandardModelParameters.parse(object, deserializationContext));
+        }
 }

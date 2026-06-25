@@ -1,31 +1,34 @@
 package twilightforest.asm.transformers.armor;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 
 /**
  * {@link twilightforest.asmhooks.ArmorHooks#modifyArmorVisibility}
  */
-public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodNode> {
+public class ArmorVisibilityRenderingTransformer extends SimpleMethodTransformer {
+
+	public ArmorVisibilityRenderingTransformer() {
+		super(
+			"net.minecraft.world.entity.LivingEntity",
+			"getVisibilityPercent",
+			"(Lnet/minecraft/world/entity/Entity;)D"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		ASMUtil.findVarInstructions(node, Opcodes.FSTORE, 4)
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
+		ASMUtil.findVarInstructions(method, Opcodes.FSTORE, 4)
 			.findFirst()
-			.ifPresent(target -> node.instructions.insertBefore(
+			.ifPresent(target -> method.instructions.insertBefore(
 				target,
-				ASMAPI.listOf(
+				ASMUtil.listOf(
 					new VarInsnNode(Opcodes.ALOAD, 0),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
@@ -35,26 +38,6 @@ public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodN
 					)
 				)
 			));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.entity.LivingEntity",
-			"getVisibilityPercent",
-			"(Lnet/minecraft/world/entity/Entity;)D"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

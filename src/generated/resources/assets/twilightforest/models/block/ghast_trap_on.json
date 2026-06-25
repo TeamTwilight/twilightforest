@@ -1,0 +1,12 @@
+{
+  "parent": "twilightforest:block/util/three_layer_device_active",
+  "textures": {
+    "bottom": "twilightforest:block/encased_towerwood",
+    "side": "twilightforest:block/towerdev_ghasttrap_on",
+    "side2": "twilightforest:block/tower_device_level_1/towerdev_ghasttrap_on_1",
+    "side3": "twilightforest:block/tower_device_level_2/towerdev_ghasttrap_on_2",
+    "top": "twilightforest:block/towerdev_ghasttraplid_on",
+    "top2": "twilightforest:block/tower_device_level_2/towerdev_ghasttraplid_on_1",
+    "top3": "twilightforest:block/tower_device_level_3/towerdev_ghasttraplid_on_2"
+  }
+}

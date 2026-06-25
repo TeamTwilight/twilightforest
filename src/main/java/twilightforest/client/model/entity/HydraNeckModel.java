@@ -7,7 +7,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.util.Mth;
 import twilightforest.client.state.entity.HydraNeckRenderState;
 
 public class HydraNeckModel extends EntityModel<HydraNeckRenderState> {
@@ -35,7 +34,9 @@ public class HydraNeckModel extends EntityModel<HydraNeckRenderState> {
 
 	@Override
 	public void setupAnim(HydraNeckRenderState entity) {
-		this.neck.yRot = entity.yRot * Mth.DEG_TO_RAD;
-		this.neck.xRot = entity.xRot * Mth.DEG_TO_RAD;
+		// The HydraNeckRenderer already applies the neck's yaw rotation to the pose stack
+		// (via stack.mulPose(Axis.YN.rotationDegrees(yaw2 + 180))).
+		// The model should NOT apply yaw/xRot here, matching the old 1.21.1 behavior
+		// where netHeadYaw came from renderYawOffset (always 0 for PartEntity).
 	}
 }

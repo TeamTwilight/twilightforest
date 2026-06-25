@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_banister",
   "key": {
-    "-": {
-      "item": "twilightforest:sorting_slab"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "-": "twilightforest:sorting_slab",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "---",

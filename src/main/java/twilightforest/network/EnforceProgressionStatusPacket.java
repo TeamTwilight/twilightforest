@@ -28,8 +28,11 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 	}
 
 	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() ->
-			Minecraft.getInstance().level.getGameRules().getRule(TFGameRules.ENFORCED_PROGRESSION_RULE.get()).set(message.enforce(), null)
-		);
+		ctx.enqueueWork(() -> {
+			var server = Minecraft.getInstance().getSingleplayerServer();
+			if (server != null) {
+				server.getGameRules().set(TFGameRules.ENFORCED_PROGRESSION_RULE.get(), message.enforce(), server);
+			}
+		});
 	}
 }

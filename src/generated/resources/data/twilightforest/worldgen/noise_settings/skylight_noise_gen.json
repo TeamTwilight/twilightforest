@@ -22,8 +22,8 @@
     "final_density": "twilightforest:skylight_terrain",
     "fluid_level_floodedness": 0.0,
     "fluid_level_spread": 0.0,
-    "initial_density_without_jaggedness": "twilightforest:skylight_terrain",
     "lava": 0.0,
+    "preliminary_surface_level": "twilightforest:skylight_terrain",
     "ridges": 0.0,
     "temperature": 0.0,
     "vegetation": 0.0,
@@ -260,9 +260,22 @@
                   "surface_type": "floor"
                 },
                 "then_run": {
-                  "type": "minecraft:block",
-                  "result_state": {
-                    "Name": "minecraft:dirt"
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:vertical_gradient",
+                    "false_at_and_above": {
+                      "absolute": -3
+                    },
+                    "random_name": "minecraft:snowy_dirt",
+                    "true_at_and_below": {
+                      "absolute": 0
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:dirt"
+                    }
                   }
                 }
               }

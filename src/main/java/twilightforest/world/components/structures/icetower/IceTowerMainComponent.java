@@ -19,7 +19,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 
 	public IceTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFITMai.get(), nbt);
-		this.hasBossWing = nbt.getBoolean("hasBossWing");
+		this.hasBossWing = nbt.getBooleanOr("hasBossWing", false);
 	}
 
 	public IceTowerMainComponent(RandomSource rand, int index, int x, int y, int z) {

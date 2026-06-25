@@ -38,7 +38,7 @@ public class DataGenerator {
 		generator.addProvider(true, new DamageTypeTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new DimensionTypeTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new EntityTypeTagGenerator(output, lookupProvider));
-		generator.addProvider(true, new ItemTagGenerator(output, lookupProvider, blocktags.contentsGetter()));
+		generator.addProvider(true, new ItemTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new PaintingVariantTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new StructureTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new WoodPaletteTagGenerator(output, lookupProvider));

@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/small_cube",
+  "textures": {
+    "all": "twilightforest:block/towerdev_reappearing_trace_on"
+  }
+}

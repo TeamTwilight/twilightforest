@@ -27,6 +27,8 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFSounds;
 
@@ -67,7 +69,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	private static void handleEmptyHand(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler) {
-		ItemStack preview = handler.extractItem(SLOT, ALL, true);
+		ItemStack preview = handler.getItem();
 		if (preview.isEmpty()) {
 			wiggle(server, pos, jar);
 			return;
@@ -77,25 +79,43 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			wiggle(server, pos, jar);
 			return;
 		}
-		ItemStack extracted = handler.extractItem(SLOT, ALL, false);
-		player.setItemInHand(hand, extracted);
+		ItemResource resource = handler.getResource(SLOT);
+		try (Transaction tx = Transaction.openRoot()) {
+			int extracted = handler.extract(SLOT, resource, ALL, tx);
+			tx.commit();
+			player.setItemInHand(hand, resource.toStack(extracted));
+		}
 		server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 	}
 
 	private static void handleInsert(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler, ItemStack stack) {
-		// Simulate insert first; if nothing would go in then just wiggle
-		if (handler.insertItem(SLOT, stack, true).getCount() >= stack.getCount()) {
-			wiggle(server, pos, jar);
-			return;
+		// Check if anything can be inserted; if not, just wiggle
+		if (!handler.isEmpty()) {
+			ItemStack existing = handler.getItem();
+			if (!ItemStack.isSameItemSameComponents(existing, stack) || existing.getCount() >= existing.getMaxStackSize()) {
+				wiggle(server, pos, jar);
+				return;
+			}
 		}
 
 		jar.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F));
 		player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 		ItemStack before = stack.copy();
-		ItemStack remainder = handler.insertItem(SLOT, stack, false);
+		int canInsert;
+		if (handler.isEmpty()) {
+			canInsert = Math.min(before.getCount(), before.getMaxStackSize());
+			handler.setItem(before.copy());
+			handler.getItem().setCount(canInsert);
+		} else {
+			ItemStack existing = handler.getItem();
+			canInsert = Math.min(before.getCount(), existing.getMaxStackSize() - existing.getCount());
+			existing.grow(canInsert);
+		}
+		ItemStack remainder = before.copy();
+		remainder.shrink(canInsert);
 		player.setItemInHand(hand, player.hasInfiniteMaterials() ? before : remainder);
-		float filledRatio = (float) (before.getCount() - remainder.getCount()) / (float) before.getMaxStackSize();
+		float filledRatio = (float) canInsert / (float) before.getMaxStackSize();
 		server.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
 		server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 	}

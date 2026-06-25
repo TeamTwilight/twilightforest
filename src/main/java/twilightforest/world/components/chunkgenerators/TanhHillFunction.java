@@ -66,10 +66,17 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 	}
 
 	private double getHeight(double dist) {
-		double tanhExp = Math.exp(2 * (2 - 2 * dist / radius));  // use tanh(x) = (exp(2x) - 1) / (exp(2x) + 1) because exp is more likely be jit optimized
-		double height =  // simple example without biases https://www.wolframalpha.com/input?i=tanh%282+-+2+*+d+%2F+3%29+-+d+*+%281+-+exp%28-d+*+3+*+0.01%29%29+plot+d+%3D+0..10
-			((tanhExp - 1) / (tanhExp + 1))  // Make tanh shaped mound with angle and axis biases
-			- dist * (1 - Math.exp(-dist * radius * 0.01));  // Make beardifier weaker and weaker with distance (slant asymptote k ≈ -1)
+		double distOverR = dist / this.radius;
+		double tanhExp = Math.exp(4 - 4 * distOverR);
+		double height = ((tanhExp - 1) / (tanhExp + 1));
+
+		double beardArg = -dist * this.radius * 0.01f;
+		if (beardArg < -10) {
+			height -= dist;
+		} else {
+			height -= dist * (1 - Math.exp(beardArg));
+		}
+
 		return height;
 	}
 

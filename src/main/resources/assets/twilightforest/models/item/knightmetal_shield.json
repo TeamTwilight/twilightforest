@@ -17,7 +17,7 @@
     },
     "firstperson_righthand": {
       "rotation": [ 0, 180, 5 ],
-      "translation": [ -10, 2, -10 ],
+      "translation": [ -10, 1.75, -10 ],
       "scale": [ 1.25, 1.25, 1.25 ]
     },
     "firstperson_lefthand": {
@@ -40,9 +40,5 @@
       "translation": [ 4, 4, 2],
       "scale":[ 0.25, 0.25, 0.25]
     }
-  },
-  "overrides": [{
-    "predicate": { "blocking": 1 },
-    "model": "twilightforest:item/knightmetal_shield_blocking"
-  }]
+  }
 }

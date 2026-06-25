@@ -9,10 +9,15 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -34,6 +39,7 @@ import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 public class MagicMapItem extends MapItem {
@@ -46,6 +52,7 @@ public class MagicMapItem extends MapItem {
 
 	public static ItemStack setupNewMap(ServerLevel level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
 		ItemStack itemstack = new ItemStack(TFItems.FILLED_MAGIC_MAP.get());
+		itemstack.set(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.MAP_ID, true));
 		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension());
 		return itemstack;
 	}
@@ -53,7 +60,7 @@ public class MagicMapItem extends MapItem {
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level level) {
 		MapId mapid = stack.get(DataComponents.MAP_ID);
-		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(mapid.id()));
+		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, mapid);
 	}
 
 	@Nullable
@@ -89,7 +96,7 @@ public class MagicMapItem extends MapItem {
 		ColumnPos pos = getMagicMapCenter(x, z);
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
+		TFMagicMapData.registerMagicMapData(level, mapdata, freeMapId);
 		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
@@ -184,20 +191,20 @@ public class MagicMapItem extends MapItem {
 		return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
 	}
 
-//	@Override
-//	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-//		MapId mapId = stack.get(DataComponents.MAP_ID);
-//		if (mapId != null) {
-//			if (flag.isAdvanced()) {
-//				MapItemSavedData mapitemsaveddata = TFMagicMapData.getClientMagicMapData(getMapName(mapId.id()));
-//				if (mapitemsaveddata != null) {
-//					builder.accept((Component.translatable("filled_map.id", mapId.id())).withStyle(ChatFormatting.GRAY));
-//					builder.accept((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
-//					builder.accept((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
-//				} else {
-//					builder.accept((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
-//				}
-//			}
-//		}
-//	}
+	@Override
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		if (mapId != null) {
+			TFMagicMapData mapdata = TFMagicMapData.getClientMagicMapData(getMapName(mapId.id()));
+			if (mapdata != null) {
+				builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+				if (flag.isAdvanced()) {
+					builder.accept(Component.translatable("filled_map.scale", 1 << mapdata.scale).withStyle(ChatFormatting.GRAY));
+					builder.accept(Component.translatable("filled_map.level", mapdata.scale, 4).withStyle(ChatFormatting.GRAY));
+				}
+			} else {
+				builder.accept(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
+			}
+		}
+	}
 }

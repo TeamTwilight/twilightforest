@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
@@ -25,21 +24,29 @@ public interface EnforcedHomePoint {
 
 	default void saveHomePointToNbt(ValueOutput tag) {
 		if (this.getRestrictionPoint() != null) {
-			GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, this.getRestrictionPoint()).resultOrPartial(TwilightForestMod.LOGGER::error).ifPresent(tag1 -> tag.put("HomePos", tag1));
+			tag.store("HomePos", GlobalPos.CODEC, this.getRestrictionPoint());
 		}
 	}
 
 	default void loadHomePointFromNbt(ValueInput tag) {
 		//properly load old home points, just assume theyre set in TF
-		if (tag.contains("Home", 9)) {
-			ListTag nbttaglist = tag.getList("Home", 6);
-			double hx = nbttaglist.getDouble(0);
-			double hy = nbttaglist.getDouble(1);
-			double hz = nbttaglist.getDouble(2);
+		if (tag.childrenList("Home").isPresent()) {
+			ValueInput.ValueInputList nbttaglist = tag.childrenListOrEmpty("Home");
+			double hx = 0.0;
+			double hy = 0.0;
+			double hz = 0.0;
+			int i = 0;
+			for (ValueInput element : nbttaglist) {
+				if (i >= 3) break;
+				if (i == 0) hx = element.getDoubleOr("", 0.0);
+				if (i == 1) hy = element.getDoubleOr("", 0.0);
+				if (i == 2) hz = element.getDoubleOr("", 0.0);
+				i++;
+			}
 			this.setRestrictionPoint(GlobalPos.of(TFDimension.DIMENSION_KEY, BlockPos.containing(hx, hy, hz)));
 		} else {
-			if (tag.contains("HomePos")) {
-				this.setRestrictionPoint(GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("HomePos")).resultOrPartial(TwilightForestMod.LOGGER::error).orElse(null));
+			if (tag.child("HomePos").isPresent()) {
+				this.setRestrictionPoint(tag.read("HomePos", GlobalPos.CODEC).orElse(null));
 			}
 		}
 	}

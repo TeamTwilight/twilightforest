@@ -151,7 +151,7 @@ public class CastleDoorBlock extends Block {
 			for (int dx = 0; dx < 4; ++dx) {
 				for (int dy = 0; dy < 4; ++dy) {
 					for (int dz = 0; dz < 4; ++dz) {
-						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(),
 							pos.getX() + (dx + 0.5D) / 4,
 							pos.getY() + (dy + 0.5D) / 4,
 							pos.getZ() + (dz + 0.5D) / 4,

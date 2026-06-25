@@ -84,9 +84,9 @@ public record TransferableComponentModifier(
 	}
 
 	public List<ItemStack[]> findDataComponentProviders(List<Ingredient> input) {
-		return input.stream().map(Ingredient::getItems)
-			.filter(itemStacks -> Arrays.stream(itemStacks)
-				.anyMatch(itemStack -> itemStack.has(transferableComponent.type())))
+		return input.stream().map(Ingredient::items)
+			.filter(holders -> holders.anyMatch(holder -> new ItemStack(holder.value()).has(transferableComponent.type())))
+			.map(holders -> holders.map(holder -> new ItemStack(holder.value())).toArray(ItemStack[]::new))
 			.toList();
 	}
 

@@ -1,8 +1,6 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -12,8 +10,8 @@ import twilightforest.init.TFRecipes;
 
 public class MagicMapCloningRecipe extends CustomRecipe {
 
-	public MagicMapCloningRecipe(CraftingBookCategory category) {
-		super(category);
+	public MagicMapCloningRecipe() {
+		super();
 	}
 
 	@Override
@@ -44,7 +42,7 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
+	public ItemStack assemble(CraftingInput input) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
@@ -77,12 +75,7 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int x, int y) {
-		return x >= 3 && y >= 3;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return TFRecipes.MAGIC_MAP_CLONING_RECIPE.get();
 	}
 }

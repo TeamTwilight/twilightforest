@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_banister",
   "key": {
-    "-": {
-      "item": "minecraft:dark_oak_slab"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "-": "minecraft:dark_oak_slab",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "---",

@@ -3,6 +3,7 @@ package twilightforest.entity.ai.goal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -20,7 +21,7 @@ public class NagaSmashGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.naga.horizontalCollision && EventHooks.canEntityGrief(this.naga.level(), this.naga);
+		return this.naga.horizontalCollision && this.naga.level() instanceof ServerLevel serverLevel && EventHooks.canEntityGrief(serverLevel, this.naga);
 	}
 
 	@Override

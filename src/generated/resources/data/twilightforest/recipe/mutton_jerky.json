@@ -1,11 +1,8 @@
 {
   "type": "twilightforest:drying",
   "filter_time": 6000,
-  "input": {
-    "item": "minecraft:mutton"
-  },
+  "input": "minecraft:mutton",
   "result": {
-    "count": 1,
     "id": "twilightforest:mutton_jerky"
   }
 }

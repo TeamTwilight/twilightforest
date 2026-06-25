@@ -1,11 +1,8 @@
 {
   "type": "twilightforest:drying",
   "filter_time": 6000,
-  "input": {
-    "item": "minecraft:beef"
-  },
+  "input": "minecraft:beef",
   "result": {
-    "count": 1,
     "id": "twilightforest:beef_jerky"
   }
 }

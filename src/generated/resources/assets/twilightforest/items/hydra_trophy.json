@@ -1,0 +1,149 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "none",
+            "kind": "hydra"
+          }
+        },
+        "when": "none"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "thirdperson_lefthand",
+            "kind": "hydra"
+          }
+        },
+        "when": "thirdperson_lefthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "thirdperson_righthand",
+            "kind": "hydra"
+          }
+        },
+        "when": "thirdperson_righthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "firstperson_lefthand",
+            "kind": "hydra"
+          }
+        },
+        "when": "firstperson_lefthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "firstperson_righthand",
+            "kind": "hydra"
+          }
+        },
+        "when": "firstperson_righthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "head",
+            "kind": "hydra"
+          }
+        },
+        "when": "head"
+      },
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/major_boss_trophy"
+            },
+            {
+              "type": "minecraft:special",
+              "base": "twilightforest:item/hydra_trophy",
+              "model": {
+                "type": "twilightforest:trophy",
+                "display": "gui",
+                "kind": "hydra"
+              }
+            }
+          ]
+        },
+        "when": "gui"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "ground",
+            "kind": "hydra"
+          }
+        },
+        "when": "ground"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "fixed",
+            "kind": "hydra"
+          }
+        },
+        "when": "fixed"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "on_shelf",
+            "kind": "hydra"
+          }
+        },
+        "when": "on_shelf"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/hydra_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "twilightforest:jarred",
+            "kind": "hydra"
+          }
+        },
+        "when": "twilightforest:jarred"
+      }
+    ],
+    "property": "minecraft:display_context"
+  }
+}

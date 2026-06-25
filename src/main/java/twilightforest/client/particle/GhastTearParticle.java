@@ -6,12 +6,12 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -57,23 +57,18 @@ public class GhastTearParticle extends SingleQuadParticle {
 	}
 
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
+		private final ItemStackRenderState scratchRenderState = new ItemStackRenderState();
+
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-			TextureAtlasSprite textureatlassprite = this.calculateState(new ItemStack(Items.GHAST_TEAR), level).pickParticleIcon(random);
-
-			if (textureatlassprite == null) {
-				textureatlassprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
-			}
-
-			return new GhastTearParticle(level, x, y, z, textureatlassprite);
+			TextureAtlasSprite sprite = this.getSprite(new ItemStackTemplate(Items.GHAST_TEAR), level, random);
+			return new GhastTearParticle(level, x, y, z, sprite);
 		}
 
-		protected ItemStackRenderState calculateState(ItemStack stack, ClientLevel level) {
-			var state = new ItemStackRenderState();
-			Minecraft.getInstance()
-				.getItemModelResolver()
-				.updateForTopItem(state, stack, ItemDisplayContext.GROUND, level, null, 0);
-			return state;
+		private TextureAtlasSprite getSprite(ItemStackTemplate item, ClientLevel level, RandomSource random) {
+			Minecraft.getInstance().getItemModelResolver().updateForTopItem(this.scratchRenderState, item.create(), ItemDisplayContext.GROUND, level, null, 0);
+			Material.Baked material = this.scratchRenderState.pickParticleMaterial(random);
+			return material != null ? material.sprite() : Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.ITEMS).missingSprite();
 		}
 	}
 }

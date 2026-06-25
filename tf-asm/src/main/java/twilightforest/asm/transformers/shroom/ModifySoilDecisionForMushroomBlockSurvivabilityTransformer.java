@@ -1,35 +1,38 @@
 package twilightforest.asm.transformers.shroom;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.BlockHooks#modifySoilDecisionForMushroomBlockSurvivability}
  */
-public class ModifySoilDecisionForMushroomBlockSurvivabilityTransformer implements ITransformer<MethodNode> {
+public class ModifySoilDecisionForMushroomBlockSurvivabilityTransformer extends SimpleMethodTransformer {
+
+	public ModifySoilDecisionForMushroomBlockSurvivabilityTransformer() {
+		super(
+			"net.minecraft.world.level.block.MushroomBlock",
+			"canSurvive",
+			"(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
-			node,
+			method,
 			Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/world/level/block/state/BlockState",
 			"canSustainPlant",
 			"(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/neoforged/neoforge/common/util/TriState;"
-		).forEach(target -> node.instructions.insert(
+		).forEach(target -> method.instructions.insert(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 2),
 				new VarInsnNode(Opcodes.ALOAD, 3),
 				new MethodInsnNode(
@@ -40,26 +43,6 @@ public class ModifySoilDecisionForMushroomBlockSurvivabilityTransformer implemen
 				)
 			)
 		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.level.block.MushroomBlock",
-			"canSurvive",
-			"(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

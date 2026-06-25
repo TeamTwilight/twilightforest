@@ -1,9 +1,13 @@
 {
-  "parent": "minecraft:block/block",
+  "parent": "minecraft:block/cube",
   "loader": "twilightforest:giant_block",
-  "parent_block": "minecraft:cobblestone",
   "textures": {
-    "all": "minecraft:block/cobblestone",
-    "particle": "minecraft:block/cobblestone"
+    "down": "minecraft:block/cobblestone",
+    "east": "minecraft:block/cobblestone",
+    "north": "minecraft:block/cobblestone",
+    "particle": "minecraft:block/cobblestone",
+    "south": "minecraft:block/cobblestone",
+    "up": "minecraft:block/cobblestone",
+    "west": "minecraft:block/cobblestone"
   }
 }

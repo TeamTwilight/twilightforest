@@ -1,17 +1,21 @@
 package twilightforest.client.model.block.carpet;
 
-import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import com.google.gson.JsonObject;
+import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
 import twilightforest.TwilightForestMod;
 
-public class RoyalRagsBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {
+public class RoyalRagsBuilder extends CustomLoaderBuilder {
 
-	protected RoyalRagsBuilder(T parent, ExistingFileHelper existingFileHelper) {
-		super(TwilightForestMod.prefix("royal_rags"), parent, existingFileHelper, false);
+	protected RoyalRagsBuilder() {
+		super(TwilightForestMod.prefix("royal_rags"), false);
 	}
 
-	public static <T extends ModelBuilder<T>> RoyalRagsBuilder<T> begin(T parent, ExistingFileHelper helper) {
-		return new RoyalRagsBuilder<>(parent, helper);
+	public static RoyalRagsBuilder begin() {
+		return new RoyalRagsBuilder();
+	}
+
+	@Override
+	public CustomLoaderBuilder copyInternal() {
+		return new RoyalRagsBuilder();
 	}
 }

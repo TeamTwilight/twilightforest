@@ -150,4 +150,9 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, overlay, null);
 		}
 	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
+	}
 }

@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+
+import java.net.URI;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -20,12 +22,15 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
+import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LeadItem;
@@ -57,31 +62,31 @@ import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.util.datamaps.EntityTransformation;
 import org.jetbrains.annotations.Nullable;
+import tamaized.beanification.Autowired;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
-import tamaized.beanification.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.config.TFConfig;
-import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
-import twilightforest.item.YetiArmorItem;
+import twilightforest.item.OreMeterItem;
 import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
-import twilightforest.util.datamaps.EntityTransformation;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.entities.OminousFireDamageSource;
 import twilightforest.world.components.structures.SpawnIndexProvider;
@@ -90,7 +95,9 @@ import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.type.HollowHillStructure;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @tamaized.beanification.Component
@@ -99,16 +106,14 @@ public class EntityEvents {
 	@Autowired
 	private QuestingRamCurrentContext questingRamCurrentContext;
 
-	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
-
 	@PostConstruct
 	private void setup() {
 		NeoForge.EVENT_BUS.addListener(this::ominousFireConversion);
 		NeoForge.EVENT_BUS.addListener(this::zombifiedPlayerAttacks);
+		NeoForge.EVENT_BUS.addListener(this::entityHurts);
 		NeoForge.EVENT_BUS.addListener(this::alertPlayerCastleIsWIP);
 		NeoForge.EVENT_BUS.addListener(this::attachLeadToWroughtFence);
 		NeoForge.EVENT_BUS.addListener(this::wipeOreMeterOnLeftClick);
-		NeoForge.EVENT_BUS.addListener(this::entityHurts);
 		NeoForge.EVENT_BUS.addListener(this::onCasketBreak);
 		NeoForge.EVENT_BUS.addListener(this::reduceFrostedEffectIfOnFire);
 		NeoForge.EVENT_BUS.addListener(this::onParryProjectile);
@@ -131,13 +136,13 @@ public class EntityEvents {
 			EntityTransformation dataMap = event.getEntity().getType().builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
 
 			if (event.getEntity() instanceof ServerPlayer player) {
-				var zombie = EntityType.ZOMBIE.create(player.level());
+				var zombie = EntityType.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
 				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 				zombie.setCustomName(player.getName());
 				zombie.copyPosition(player);
 				zombie.setCanPickUpLoot(true);
 				zombie.setBaby(false);
-				EventHooks.finalizeMobSpawn(zombie, player.serverLevel(), player.level().getCurrentDifficultyAt(player.blockPosition()), EntitySpawnReason.CONVERSION, null);
+				EventHooks.finalizeMobSpawn(zombie, player.level(), player.level().getCurrentDifficultyAt(player.blockPosition()), EntitySpawnReason.CONVERSION, null);
 				player.level().addFreshEntity(zombie);
 			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
 				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
@@ -155,7 +160,7 @@ public class EntityEvents {
 
 	private void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
 		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
-			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
+			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent.OpenUrl(URI.create("https://discord.experiment115.com/"))))));
 		}
 	}
 
@@ -178,7 +183,7 @@ public class EntityEvents {
 	private void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		ItemStack item = event.getItemStack();
 		if (item.is(TFItems.ORE_METER.get()) && (item.has(TFDataComponents.ORE_DATA) || item.has(TFDataComponents.ORE_FILTER))) {
-			PacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
+			ClientPacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
 			item.remove(TFDataComponents.ORE_DATA);
 			item.remove(TFDataComponents.ORE_FILTER);
 			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.get(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
@@ -214,14 +219,15 @@ public class EntityEvents {
 	}
 
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them
-	private void onCasketBreak(BlockEvent.BreakEvent event) {
+	private void onCasketBreak(BreakBlockEvent event) {
 		Player player = event.getPlayer();
 		if (event.getState().getBlock() instanceof SkullChestBlock) {
 			BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
 			if (te instanceof SkullChestBlockEntity casket) {
 				ResolvableProfile checker = casket.owner;
 				if (checker != null && !casket.isEmpty()) {
-					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.gameProfile())) {
+					// GameProfile now uses record accessor .id(); ResolvableProfile uses .partialProfile()
+					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().id().equals(checker.partialProfile().id())) {
 						event.setCanceled(true);
 					}
 				}
@@ -249,13 +255,13 @@ public class EntityEvents {
 	private void onParryProjectile(ProjectileImpactEvent event) {
 		final Projectile projectile = event.getProjectile();
 
-		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
+		if (!projectile.level().isClientSide() && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
 			if (event.getRayTraceResult() instanceof EntityHitResult result) {
 				Entity entity = result.getEntity();
 
 				if (entity instanceof LivingEntity entityBlocking) {
 					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
-						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, entityBlocking, true);
+						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, EntityReference.of(entityBlocking), true);
 						event.setCanceled(true);
 					}
 				}
@@ -328,9 +334,7 @@ public class EntityEvents {
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE));
 		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(),
 			newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE),
-			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
-		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)));
 	}
 
 	/**
@@ -339,8 +343,9 @@ public class EntityEvents {
 	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
 		int amount = 0;
 
-		for (ItemStack armor : entity.getArmorSlots()) {
-			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
+		for (EquipmentSlot slot : EquipmentSlot.VALUES) {
+			ItemStack armor = entity.getItemBySlot(slot);
+			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof twilightforest.item.YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
 				amount++;
 			}
 		}
@@ -366,11 +371,19 @@ public class EntityEvents {
 		return highestFoundIndex;
 	}
 
+	private static final int STRUCTURE_STARTS_CACHE_MAX_SIZE = 64;
+	private static final Map<Long, List<StructureStart>> STRUCTURE_STARTS_CACHE = new LinkedHashMap<>() {
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<Long, List<StructureStart>> eldest) {
+			return size() > STRUCTURE_STARTS_CACHE_MAX_SIZE;
+		}
+	};
+
 	@Nullable
 	public static WeightedList<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		List<StructureStart> structureStarts = structureManager.startsForStructure(ChunkPos.containing(pos), s -> s instanceof ControlledSpawns);
+		ChunkPos chunkPos = ChunkPos.containing(pos);
+		List<StructureStart> structureStarts = STRUCTURE_STARTS_CACHE.computeIfAbsent(ChunkPos.pack(chunkPos.x(), chunkPos.z()), k -> structureManager.startsForStructure(chunkPos, s -> s instanceof ControlledSpawns));
 
-		// This is wretched FIXME make this method return void instead, make one of parameters the SpawnerData consumer (eg LevelEvent.PotentialSpawns::addSpawnerData or List::add)
 		for (StructureStart start : structureStarts) {
 			if (start.getStructure() instanceof ControlledSpawns landmark) {
 
@@ -383,7 +396,6 @@ public class EntityEvents {
 				if (start instanceof TFStructureStart s && s.isConquered())
 					return null;
 
-				// FIXME Make interface for this method?
 				if (landmark instanceof HollowHillStructure hollowHill && !hollowHill.canSpawnMob(pos, start.getBoundingBox()))
 					return null;
 
@@ -412,7 +424,7 @@ public class EntityEvents {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
 		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
-			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+			&& interaction.entityTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
 			AABB bounds = interaction.getBoundingBox();
 			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
 			interaction.discard();
@@ -490,22 +502,21 @@ public class EntityEvents {
 	private void stopEndermenFromGrabbingBlocksInTF(EntityJoinLevelEvent event) {
 		if (event.getEntity() instanceof EnderMan enderMan) {
 			enderMan.goalSelector.getAvailableGoals().stream()
-				.filter(g -> g.getGoal() instanceof EnderMan.EndermanTakeBlockGoal)
+				.filter(g -> g.getGoal().getClass().getName().contains("EndermanTakeBlockGoal"))
 				.findAny()
 				.ifPresent(g -> {
 					enderMan.goalSelector.removeGoal(g.getGoal());
-					enderMan.goalSelector.addGoal(g.getPriority(), new ExtendedEndermanTakeBlockGoal((EnderMan.EndermanTakeBlockGoal) g.getGoal(), enderMan));
+					enderMan.goalSelector.addGoal(g.getPriority(), new ExtendedEndermanTakeBlockGoal(g.getGoal(), enderMan));
 				});
 		}
 	}
 
-	static class ExtendedEndermanTakeBlockGoal extends EnderMan.EndermanTakeBlockGoal {
+	static class ExtendedEndermanTakeBlockGoal extends Goal {
 
-		private final EnderMan.EndermanTakeBlockGoal delegate;
+		private final Goal delegate;
 		private final EnderMan enderman;
 
-		public ExtendedEndermanTakeBlockGoal(EnderMan.EndermanTakeBlockGoal delegate, EnderMan enderman) {
-			super(enderman);
+		public ExtendedEndermanTakeBlockGoal(Goal delegate, EnderMan enderman) {
 			this.delegate = delegate;
 			this.enderman = enderman;
 		}

@@ -22,7 +22,7 @@ public class AdherentModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(32, 0)

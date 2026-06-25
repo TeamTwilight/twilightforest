@@ -1,32 +1,35 @@
 package twilightforest.asm.transformers.snow;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.BlockHooks#keepSnowyStateForSnowloggableBlocks}
  */
-public class KeepGrassSnowyForSnowloggableBlocksTransformer implements ITransformer<MethodNode> {
+public class KeepGrassSnowyForSnowloggableBlocksTransformer extends SimpleMethodTransformer {
+
+	public KeepGrassSnowyForSnowloggableBlocksTransformer() {
+		super(
+			"net.minecraft.world.level.block.SnowyDirtBlock",
+			"isSnowySetting",
+			"(Lnet/minecraft/world/level/block/state/BlockState;)Z"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findInstructions(
-			node,
+			method,
 			Opcodes.IRETURN
-		).forEach(target -> node.instructions.insertBefore(
+		).forEach(target -> method.instructions.insertBefore(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
@@ -36,25 +39,6 @@ public class KeepGrassSnowyForSnowloggableBlocksTransformer implements ITransfor
 				)
 			)
 		));
-		return node;
 	}
 
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.level.block.SnowyDirtBlock",
-			"isSnowySetting",
-			"(Lnet/minecraft/world/level/block/state/BlockState;)Z"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
-	}
 }

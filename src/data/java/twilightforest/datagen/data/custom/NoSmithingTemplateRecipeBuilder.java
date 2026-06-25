@@ -4,7 +4,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -56,8 +56,8 @@ public class NoSmithingTemplateRecipeBuilder {
 			.rewards(AdvancementRewards.Builder.recipe(id))
 			.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
-		NoTemplateSmithingRecipe smithingtrimrecipe = new NoTemplateSmithingRecipe(Optional.of(this.base), Optional.of(this.addition), this.additionalData);
-		output.accept(id, smithingtrimrecipe, advancement$builder.build(id.location().withPrefix("recipes/" + this.category.getFolderName() + "/")));
+		NoTemplateSmithingRecipe smithingtrimrecipe = new NoTemplateSmithingRecipe(this.base, this.addition, this.additionalData);
+		output.accept(id, smithingtrimrecipe, advancement$builder.build(id.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
 	}
 
 	private void ensureValid(ResourceKey<Recipe<?>> location) {

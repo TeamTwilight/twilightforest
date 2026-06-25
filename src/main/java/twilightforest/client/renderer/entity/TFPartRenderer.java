@@ -93,6 +93,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntitySt
 	@Override
 	public void extractRenderState(T entity, S state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
+		state.partRendererId = entity.renderer();
 		state.yRot = entity.getYRot();
 		state.yRotO = entity.yRotO;
 		state.xRot = entity.getXRot(partialTick);

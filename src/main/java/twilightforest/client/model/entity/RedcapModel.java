@@ -29,7 +29,7 @@ public class RedcapModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(4.5F, -6.0F, -0.5F, 1.0F, 2.0F, 1.0F),
 			PartPose.offset(0.0F, 8.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create()
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-2.0F, -8.5F, -3.0F, 4.0F, 5.0F, 7.0F),
 			PartPose.offset(0.0F, 6.0F, 0.0F));

@@ -8,13 +8,10 @@
       "min_inclusive": 2
     },
     "state_provider": {
-      "fallback": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "minecraft:dirt"
-        }
-      },
-      "rules": []
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:dirt"
+      }
     },
     "target": {
       "type": "minecraft:matching_blocks",

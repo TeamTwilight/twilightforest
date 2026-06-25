@@ -1,54 +1,32 @@
 {
+  "parent": "minecraft:block/block",
   "elements": [
     {
       "faces": {
         "down": {
-          "texture": "#all",
+          "cullface": "down",
+          "texture": "#texture",
           "tintindex": 0
         },
         "east": {
-          "texture": "#all",
-          "tintindex": 0,
-          "uv": [
-            0.0,
-            0.0,
-            16.0,
-            12.0
-          ]
+          "texture": "#texture",
+          "tintindex": 0
         },
         "north": {
-          "texture": "#all",
-          "tintindex": 0,
-          "uv": [
-            0.0,
-            0.0,
-            16.0,
-            12.0
-          ]
+          "texture": "#texture",
+          "tintindex": 0
         },
         "south": {
-          "texture": "#all",
-          "tintindex": 0,
-          "uv": [
-            0.0,
-            0.0,
-            16.0,
-            12.0
-          ]
+          "texture": "#texture",
+          "tintindex": 0
         },
         "up": {
-          "texture": "#all",
+          "texture": "#texture",
           "tintindex": 0
         },
         "west": {
-          "texture": "#all",
-          "tintindex": 0,
-          "uv": [
-            0.0,
-            0.0,
-            16.0,
-            12.0
-          ]
+          "texture": "#texture",
+          "tintindex": 0
         }
       },
       "from": [
@@ -63,9 +41,8 @@
       ]
     }
   ],
-  "render_type": "minecraft:cutout",
   "textures": {
-    "all": "minecraft:block/oak_leaves",
-    "particle": "#all"
+    "particle": "minecraft:block/oak_leaves",
+    "texture": "minecraft:block/oak_leaves"
   }
 }

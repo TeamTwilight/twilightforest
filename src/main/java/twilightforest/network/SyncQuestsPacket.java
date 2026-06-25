@@ -17,7 +17,7 @@ public record SyncQuestsPacket(QuestingRamContext ram) implements CustomPacketPa
 
 	public static final Type<SyncQuestsPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_quests"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncQuestsPacket> STREAM_CODEC = StreamCodec.composite(
-		ByteBufCodecs.fromCodec(QuestingRamContext.CODEC), SyncQuestsPacket::ram,
+		ByteBufCodecs.fromCodecWithRegistries(QuestingRamContext.CODEC), SyncQuestsPacket::ram,
 		SyncQuestsPacket::new
 	);
 

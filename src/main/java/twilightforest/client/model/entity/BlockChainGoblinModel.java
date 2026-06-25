@@ -22,7 +22,7 @@ public class BlockChainGoblinModel extends HumanoidModel<BlockChainGoblinRenderS
 				.addBox(0.0F, -10.0F, 0.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.offset(0.0F, 10.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("helmet", CubeListBuilder.create()
 				.texOffs(0, 0)

@@ -1,12 +1,9 @@
 package twilightforest.datagen.data.tags;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.tags.TFBiomeTags;
@@ -114,7 +111,6 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 
 		//other vanilla tags
 		this.tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addTag(TFBiomeTags.IS_TWILIGHT);
-		this.tag(BiomeTags.WITHOUT_PATROL_SPAWNS).addTag(TFBiomeTags.IS_TWILIGHT);
 		this.tag(BiomeTags.WITHOUT_ZOMBIE_SIEGES).addTag(TFBiomeTags.IS_TWILIGHT);
 
 		//even though we won't spawn vanilla frogs, we'll still add support for the variants
@@ -123,9 +119,6 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 
 		this.tag(BiomeTags.SPAWNS_SNOW_FOXES).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
 		this.tag(BiomeTags.SPAWNS_WHITE_RABBITS).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
-		this.tag(BiomeTags.SNOW_GOLEM_MELTS).add(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP);
-
-		this.tag(BiomeTags.HAS_CLOSER_WATER_FOG).add(TFBiomes.SPOOKY_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP);
 	}
 
 	@Override

@@ -1,0 +1,10 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log_carpet",
+  "textures": {
+    "carpet": "minecraft:block/snow",
+    "inner": "minecraft:block/stripped_pale_oak_log",
+    "overhang": "twilightforest:block/snow_overhang",
+    "side": "minecraft:block/pale_oak_log",
+    "top": "minecraft:block/pale_oak_log_top"
+  }
+}

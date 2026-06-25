@@ -185,17 +185,19 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		}
 
 		data.forEach(info -> {
-			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
-			if (info.nbt() != null && mode == StructureMode.DATA) {
-				String s = info.nbt().getString("metadata").orElseThrow();
-				BlockPos p = info.pos();
-				if ("spawner".equals(s)) {
-					world.removeBlock(p, false);
-					if (rand.nextInt(4) == 0) {
-						if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), Block.UPDATE_ALL)) {
-							SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(p);
-							if (ms != null)
-								ms.setEntityId(TFEntities.RISING_ZOMBIE.get(), rand);
+			if (info.nbt() != null) {
+				StructureMode mode = info.nbt().read("mode", StructureMode.LEGACY_CODEC).orElseThrow();
+				if (mode == StructureMode.DATA) {
+					String s = info.nbt().getStringOr("metadata", "");
+					BlockPos p = info.pos();
+					if ("spawner".equals(s)) {
+						world.removeBlock(p, false);
+						if (rand.nextInt(4) == 0) {
+							if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), Block.UPDATE_ALL)) {
+								SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(p);
+								if (ms != null)
+									ms.setEntityId(TFEntities.RISING_ZOMBIE.get(), rand);
+							}
 						}
 					}
 				}

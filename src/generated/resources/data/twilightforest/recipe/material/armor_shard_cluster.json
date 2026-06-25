@@ -2,36 +2,17 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    },
-    {
-      "item": "twilightforest:armor_shard"
-    }
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:armor_shard_cluster"
   }
 }

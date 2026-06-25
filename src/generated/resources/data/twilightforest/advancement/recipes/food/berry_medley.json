@@ -1,36 +1,6 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_blackberry": {
-      "conditions": {
-        "items": [
-          {
-            "items": "twilightforest:blackberry"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_blueberry": {
-      "conditions": {
-        "items": [
-          {
-            "items": "twilightforest:blueberry"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_maloberry": {
-      "conditions": {
-        "items": [
-          {
-            "items": "twilightforest:maloberry"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_raspberry": {
       "conditions": {
         "items": [
@@ -51,10 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_raspberry",
-      "has_blueberry",
-      "has_blackberry",
-      "has_maloberry"
+      "has_raspberry"
     ]
   ],
   "rewards": {

@@ -64,7 +64,6 @@ public class LogCoreParticle extends RisingParticle {
 		}
 	}
 
-	@Override
 	public AABB getRenderBoundingBox(float partialTicks) {
 		return AABB.INFINITE;
 	}

@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import java.util.List;
+import org.objectweb.asm.tree.InsnList;
 
 public class ASMUtil {
 
@@ -86,6 +88,17 @@ public class ASMUtil {
 
 	public static Stream<VarInsnNode> findVarInstructions(MethodNode node, AbstractInsnNode startIndex, int opcode, int index) {
 		return findVarInstructions(streamInstructions(node, startIndex), opcode, index);
+	}
+
+	/**
+	 * Creates an InsnList from the given instructions. Replaces ASMAPI.listOf() from old coremod API.
+	 */
+	public static InsnList listOf(AbstractInsnNode... instructions) {
+		InsnList list = new InsnList();
+		for (AbstractInsnNode instruction : instructions) {
+			list.add(instruction);
+		}
+		return list;
 	}
 
 }

@@ -1,6 +1,6 @@
 package twilightforest.datagen.data.loot;
 
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -98,8 +99,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.TROLLVIDR.get(), createShearsOnlyDrop(TFBlocks.TROLLVIDR.get()));
 		add(TFBlocks.UNRIPE_TROLLBER.get(), createShearsOnlyDrop(TFBlocks.UNRIPE_TROLLBER.get()));
 		add(TFBlocks.TROLLBER.get(), createShearsDispatchTable(TFBlocks.TROLLBER.get(), LootItem.lootTableItem(TFItems.TORCHBERRIES.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 8.0F))).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))));
-		dropSelf(TFBlocks.HUGE_LILY_PAD.get());
-		dropSelf(TFBlocks.HUGE_WATER_LILY.get());
+		add(TFBlocks.HUGE_LILY_PAD.get(), createSingleItemTable(TFItems.HUGE_LILY_PAD.get()));
+		add(TFBlocks.HUGE_WATER_LILY.get(), createSingleItemTable(TFItems.HUGE_WATER_LILY.get()));
 		dropSelf(TFBlocks.CASTLE_BRICK.get());
 		dropSelf(TFBlocks.WORN_CASTLE_BRICK.get());
 		dropSelf(TFBlocks.CRACKED_CASTLE_BRICK.get());
@@ -130,6 +131,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get());
+		add(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(), noDrop());
+		add(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), noDrop());
 		dropSelf(TFBlocks.KNIGHTMETAL_BLOCK.get());
 		dropSelf(TFBlocks.IRONWOOD_BLOCK.get());
 		dropSelf(TFBlocks.FIERY_BLOCK.get());
@@ -159,9 +162,9 @@ public class BlockLootTables extends BlockLootSubProvider {
 				LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1.0F))
 					.add(
-						LootItem.lootTableItem(TFBlocks.MASON_JAR.get())
+						LootItem.lootTableItem(TFItems.MASON_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(DataComponents.CUSTOM_NAME)
 									.include(DataComponents.CONTAINER)
 									.include(DataComponents.LOCK)
@@ -178,9 +181,9 @@ public class BlockLootTables extends BlockLootSubProvider {
 				LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1.0F))
 					.add(
-						LootItem.lootTableItem(TFBlocks.FIREFLY_JAR.get())
+						LootItem.lootTableItem(TFItems.FIREFLY_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(TFDataComponents.JAR_LID.get())
 							)
 					)
@@ -193,9 +196,9 @@ public class BlockLootTables extends BlockLootSubProvider {
 				LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1.0F))
 					.add(
-						LootItem.lootTableItem(TFBlocks.CICADA_JAR.get())
+						LootItem.lootTableItem(TFItems.CICADA_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(TFDataComponents.JAR_LID.get())
 							)
 					)
@@ -208,6 +211,18 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.CLOVER_PATCH.get(), createShearsOnlyDrop(TFBlocks.CLOVER_PATCH.get()));
 		add(TFBlocks.FIDDLEHEAD.get(), createShearsOnlyDrop(TFBlocks.FIDDLEHEAD.get()));
 		dropSelf(TFBlocks.MUSHGLOOM.get());
+		add(TFBlocks.IRON_OREBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.GOLD_OREBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.COPPER_OREBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.ESSENCE_OREBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.RASPBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.BLUEBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.BLACKBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.MALOBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.BLIGHTBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.DUSKBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.SKYBERRY_BUSH.get(), noDrop());
+		add(TFBlocks.STINGBERRY_BUSH.get(), noDrop());
 		add(TFBlocks.TORCHBERRY_PLANT.get(), torchberryPlant(TFBlocks.TORCHBERRY_PLANT.get()));
 		add(TFBlocks.ROOT_STRAND.get(), block -> createShearsDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))));
 		add(TFBlocks.FALLEN_LEAVES.get(), this.fallenLeaves());
@@ -230,24 +245,24 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get());
 		dropSelf(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get());
 		dropSelf(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get());
-		add(TFBlocks.NAGA_TROPHY.get(), createSingleItemTable(TFBlocks.NAGA_TROPHY.get().asItem()));
-		add(TFBlocks.NAGA_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.NAGA_TROPHY.get().asItem()));
-		add(TFBlocks.LICH_TROPHY.get(), createSingleItemTable(TFBlocks.LICH_TROPHY.get().asItem()));
-		add(TFBlocks.LICH_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.LICH_TROPHY.get().asItem()));
-		add(TFBlocks.MINOSHROOM_TROPHY.get(), createSingleItemTable(TFBlocks.MINOSHROOM_TROPHY.get().asItem()));
-		add(TFBlocks.MINOSHROOM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.MINOSHROOM_TROPHY.get().asItem()));
-		add(TFBlocks.HYDRA_TROPHY.get(), createSingleItemTable(TFBlocks.HYDRA_TROPHY.get().asItem()));
-		add(TFBlocks.HYDRA_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.HYDRA_TROPHY.get().asItem()));
-		add(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), createSingleItemTable(TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem()));
-		add(TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem()));
-		add(TFBlocks.UR_GHAST_TROPHY.get(), createSingleItemTable(TFBlocks.UR_GHAST_TROPHY.get().asItem()));
-		add(TFBlocks.UR_GHAST_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.UR_GHAST_TROPHY.get().asItem()));
-		add(TFBlocks.ALPHA_YETI_TROPHY.get(), createSingleItemTable(TFBlocks.ALPHA_YETI_TROPHY.get().asItem()));
-		add(TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.ALPHA_YETI_TROPHY.get().asItem()));
-		add(TFBlocks.SNOW_QUEEN_TROPHY.get(), createSingleItemTable(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem()));
-		add(TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem()));
-		add(TFBlocks.QUEST_RAM_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
-		add(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
+		add(TFBlocks.NAGA_TROPHY.get(), createSingleItemTable(TFItems.NAGA_TROPHY.get()));
+		add(TFBlocks.NAGA_WALL_TROPHY.get(), createSingleItemTable(TFItems.NAGA_TROPHY.get()));
+		add(TFBlocks.LICH_TROPHY.get(), createSingleItemTable(TFItems.LICH_TROPHY.get()));
+		add(TFBlocks.LICH_WALL_TROPHY.get(), createSingleItemTable(TFItems.LICH_TROPHY.get()));
+		add(TFBlocks.MINOSHROOM_TROPHY.get(), createSingleItemTable(TFItems.MINOSHROOM_TROPHY.get()));
+		add(TFBlocks.MINOSHROOM_WALL_TROPHY.get(), createSingleItemTable(TFItems.MINOSHROOM_TROPHY.get()));
+		add(TFBlocks.HYDRA_TROPHY.get(), createSingleItemTable(TFItems.HYDRA_TROPHY.get()));
+		add(TFBlocks.HYDRA_WALL_TROPHY.get(), createSingleItemTable(TFItems.HYDRA_TROPHY.get()));
+		add(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), createSingleItemTable(TFItems.KNIGHT_PHANTOM_TROPHY.get()));
+		add(TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), createSingleItemTable(TFItems.KNIGHT_PHANTOM_TROPHY.get()));
+		add(TFBlocks.UR_GHAST_TROPHY.get(), createSingleItemTable(TFItems.UR_GHAST_TROPHY.get()));
+		add(TFBlocks.UR_GHAST_WALL_TROPHY.get(), createSingleItemTable(TFItems.UR_GHAST_TROPHY.get()));
+		add(TFBlocks.ALPHA_YETI_TROPHY.get(), createSingleItemTable(TFItems.ALPHA_YETI_TROPHY.get()));
+		add(TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), createSingleItemTable(TFItems.ALPHA_YETI_TROPHY.get()));
+		add(TFBlocks.SNOW_QUEEN_TROPHY.get(), createSingleItemTable(TFItems.SNOW_QUEEN_TROPHY.get()));
+		add(TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), createSingleItemTable(TFItems.SNOW_QUEEN_TROPHY.get()));
+		add(TFBlocks.QUEST_RAM_TROPHY.get(), createSingleItemTable(TFItems.QUEST_RAM_TROPHY.get()));
+		add(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), createSingleItemTable(TFItems.QUEST_RAM_TROPHY.get()));
 
 		add(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
 		add(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
@@ -258,13 +273,13 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 				.include(DataComponents.PROFILE)
 				.include(DataComponents.NOTE_BLOCK_SOUND)
 				.include(DataComponents.CUSTOM_NAME)
 		));
 		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 				.include(DataComponents.PROFILE)
 				.include(DataComponents.NOTE_BLOCK_SOUND)
 				.include(DataComponents.CUSTOM_NAME)
@@ -280,9 +295,9 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.get());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());
 		add(TFBlocks.SKULL_CHEST.get(), skullChestInfo(TFBlocks.SKULL_CHEST.get()));
-		add(TFBlocks.KEEPSAKE_CASKET.get(), casketInfo(TFBlocks.KEEPSAKE_CASKET.get()));
+		add(TFBlocks.KEEPSAKE_CASKET.get(), casketInfo(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.KEEPSAKE_CASKET.get()));
 		dropSelf(TFBlocks.CANDELABRA.get());
-		dropSelf(TFBlocks.WROUGHT_IRON_FENCE.get());
+		add(TFBlocks.WROUGHT_IRON_FENCE.get(), createSingleItemTable(TFItems.WROUGHT_IRON_FENCE.get()));
 		dropSelf(TFBlocks.TERRORCOTTA_ARCS.value());
 		dropSelf(TFBlocks.TERRORCOTTA_CURVES.value());
 		dropSelf(TFBlocks.TERRORCOTTA_LINES.value());
@@ -317,6 +332,27 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.BAMBOO_BANISTER.get());
 		dropSelf(TFBlocks.CHERRY_BANISTER.get());
 		dropSelf(TFBlocks.PALE_OAK_BANISTER.get());
+
+		add(TFBlocks.OAK_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.SPRUCE_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.BIRCH_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.JUNGLE_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.ACACIA_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.DARK_OAK_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.CRIMSON_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.WARPED_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.VANGROVE_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.BAMBOO_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.CHERRY_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.PALE_OAK_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.TWILIGHT_OAK_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.CANOPY_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.MANGROVE_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.DARK_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.TIME_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.TRANSFORMATION_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.MINING_DRYING_RACK.get(), noDrop());
+		add(TFBlocks.SORTING_DRYING_RACK.get(), noDrop());
 
 		add(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get()));
@@ -397,10 +433,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_OAK_PLATE.get());
 		add(TFBlocks.TWILIGHT_OAK_DOOR.get(), createSinglePropConditionTable(TFBlocks.TWILIGHT_OAK_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get());
-		add(TFBlocks.TWILIGHT_OAK_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_SIGN.get().asItem()));
-		add(TFBlocks.TWILIGHT_WALL_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_SIGN.get().asItem()));
-		add(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.TWILIGHT_OAK_SIGN.get(), createSingleItemTable(TFItems.TWILIGHT_OAK_SIGN.get()));
+		add(TFBlocks.TWILIGHT_WALL_SIGN.get(), createSingleItemTable(TFItems.TWILIGHT_OAK_SIGN.get()));
+		add(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), createSingleItemTable(TFItems.TWILIGHT_OAK_HANGING_SIGN.get()));
+		add(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.TWILIGHT_OAK_HANGING_SIGN.get()));
 		dropSelf(TFBlocks.TWILIGHT_OAK_BANISTER.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_CHEST.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get());
@@ -420,10 +456,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.CANOPY_PLATE.get());
 		add(TFBlocks.CANOPY_DOOR.get(), createSinglePropConditionTable(TFBlocks.CANOPY_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.CANOPY_TRAPDOOR.get());
-		add(TFBlocks.CANOPY_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_SIGN.get().asItem()));
-		add(TFBlocks.CANOPY_WALL_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_SIGN.get().asItem()));
-		add(TFBlocks.CANOPY_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.CANOPY_SIGN.get(), createSingleItemTable(TFItems.CANOPY_SIGN.get()));
+		add(TFBlocks.CANOPY_WALL_SIGN.get(), createSingleItemTable(TFItems.CANOPY_SIGN.get()));
+		add(TFBlocks.CANOPY_HANGING_SIGN.get(), createSingleItemTable(TFItems.CANOPY_HANGING_SIGN.get()));
+		add(TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.CANOPY_HANGING_SIGN.get()));
 		add(TFBlocks.CANOPY_BOOKSHELF.get(), createSingleItemTableWithSilkTouch(TFBlocks.CANOPY_BOOKSHELF.get(), Items.BOOK, ConstantValue.exactly(2.0F)));
 		dropSelf(TFBlocks.CHISELED_CANOPY_BOOKSHELF.get());
 		dropSelf(TFBlocks.CANOPY_BANISTER.get());
@@ -445,10 +481,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MANGROVE_PLATE.get());
 		add(TFBlocks.MANGROVE_DOOR.get(), createSinglePropConditionTable(TFBlocks.MANGROVE_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.MANGROVE_TRAPDOOR.get());
-		add(TFBlocks.MANGROVE_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_SIGN.get().asItem()));
-		add(TFBlocks.MANGROVE_WALL_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_SIGN.get().asItem()));
-		add(TFBlocks.MANGROVE_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.MANGROVE_SIGN.get(), createSingleItemTable(TFItems.MANGROVE_SIGN.get()));
+		add(TFBlocks.MANGROVE_WALL_SIGN.get(), createSingleItemTable(TFItems.MANGROVE_SIGN.get()));
+		add(TFBlocks.MANGROVE_HANGING_SIGN.get(), createSingleItemTable(TFItems.MANGROVE_HANGING_SIGN.get()));
+		add(TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.MANGROVE_HANGING_SIGN.get()));
 		dropSelf(TFBlocks.MANGROVE_BANISTER.get());
 		dropSelf(TFBlocks.MANGROVE_CHEST.get());
 		dropSelf(TFBlocks.MANGROVE_TRAPPED_CHEST.get());
@@ -469,10 +505,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.DARK_PLATE.get());
 		add(TFBlocks.DARK_DOOR.get(), createSinglePropConditionTable(TFBlocks.DARK_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.DARK_TRAPDOOR.get());
-		add(TFBlocks.DARK_SIGN.get(), createSingleItemTable(TFBlocks.DARK_SIGN.get().asItem()));
-		add(TFBlocks.DARK_WALL_SIGN.get(), createSingleItemTable(TFBlocks.DARK_SIGN.get().asItem()));
-		add(TFBlocks.DARK_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.DARK_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.DARK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.DARK_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.DARK_SIGN.get(), createSingleItemTable(TFItems.DARK_SIGN.get()));
+		add(TFBlocks.DARK_WALL_SIGN.get(), createSingleItemTable(TFItems.DARK_SIGN.get()));
+		add(TFBlocks.DARK_HANGING_SIGN.get(), createSingleItemTable(TFItems.DARK_HANGING_SIGN.get()));
+		add(TFBlocks.DARK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.DARK_HANGING_SIGN.get()));
 		dropSelf(TFBlocks.DARK_BANISTER.get());
 		dropSelf(TFBlocks.DARK_CHEST.get());
 		dropSelf(TFBlocks.DARK_TRAPPED_CHEST.get());
@@ -493,10 +529,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TIME_PLATE.get());
 		add(TFBlocks.TIME_DOOR.get(), createSinglePropConditionTable(TFBlocks.TIME_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.TIME_TRAPDOOR.get());
-		add(TFBlocks.TIME_SIGN.get(), createSingleItemTable(TFBlocks.TIME_SIGN.get().asItem()));
-		add(TFBlocks.TIME_WALL_SIGN.get(), createSingleItemTable(TFBlocks.TIME_SIGN.get().asItem()));
-		add(TFBlocks.TIME_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TIME_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.TIME_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TIME_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.TIME_SIGN.get(), createSingleItemTable(TFItems.TIME_SIGN.get()));
+		add(TFBlocks.TIME_WALL_SIGN.get(), createSingleItemTable(TFItems.TIME_SIGN.get()));
+		add(TFBlocks.TIME_HANGING_SIGN.get(), createSingleItemTable(TFItems.TIME_HANGING_SIGN.get()));
+		add(TFBlocks.TIME_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.TIME_HANGING_SIGN.get()));
 		dropSelf(TFBlocks.TIME_BANISTER.get());
 		dropSelf(TFBlocks.TIME_CHEST.get());
 		dropSelf(TFBlocks.TIME_TRAPPED_CHEST.get());
@@ -517,10 +553,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TRANSFORMATION_PLATE.get());
 		add(TFBlocks.TRANSFORMATION_DOOR.get(), createSinglePropConditionTable(TFBlocks.TRANSFORMATION_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.TRANSFORMATION_TRAPDOOR.get());
-		add(TFBlocks.TRANSFORMATION_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_SIGN.get().asItem()));
-		add(TFBlocks.TRANSFORMATION_WALL_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_SIGN.get().asItem()));
-		add(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.TRANSFORMATION_SIGN.get(), createSingleItemTable(TFItems.TRANSFORMATION_SIGN.get()));
+		add(TFBlocks.TRANSFORMATION_WALL_SIGN.get(), createSingleItemTable(TFItems.TRANSFORMATION_SIGN.get()));
+		add(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), createSingleItemTable(TFItems.TRANSFORMATION_HANGING_SIGN.get()));
+		add(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.TRANSFORMATION_HANGING_SIGN.get()));
 		dropSelf(TFBlocks.TRANSFORMATION_BANISTER.get());
 		dropSelf(TFBlocks.TRANSFORMATION_CHEST.get());
 		dropSelf(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get());
@@ -541,10 +577,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MINING_PLATE.get());
 		add(TFBlocks.MINING_DOOR.get(), createSinglePropConditionTable(TFBlocks.MINING_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.MINING_TRAPDOOR.get());
-		add(TFBlocks.MINING_SIGN.get(), createSingleItemTable(TFBlocks.MINING_SIGN.get().asItem()));
-		add(TFBlocks.MINING_WALL_SIGN.get(), createSingleItemTable(TFBlocks.MINING_SIGN.get().asItem()));
-		add(TFBlocks.MINING_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MINING_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.MINING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MINING_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.MINING_SIGN.get(), createSingleItemTable(TFItems.MINING_SIGN.get()));
+		add(TFBlocks.MINING_WALL_SIGN.get(), createSingleItemTable(TFItems.MINING_SIGN.get()));
+		add(TFBlocks.MINING_HANGING_SIGN.get(), createSingleItemTable(TFItems.MINING_HANGING_SIGN.get()));
+		add(TFBlocks.MINING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.MINING_HANGING_SIGN.get()));
 		dropSelf(TFBlocks.MINING_BANISTER.get());
 		dropSelf(TFBlocks.MINING_CHEST.get());
 		dropSelf(TFBlocks.MINING_TRAPPED_CHEST.get());
@@ -565,10 +601,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.SORTING_PLATE.get());
 		add(TFBlocks.SORTING_DOOR.get(), createSinglePropConditionTable(TFBlocks.SORTING_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.SORTING_TRAPDOOR.get());
-		add(TFBlocks.SORTING_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_SIGN.get().asItem()));
-		add(TFBlocks.SORTING_WALL_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_SIGN.get().asItem()));
-		add(TFBlocks.SORTING_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_HANGING_SIGN.get().asItem()));
-		add(TFBlocks.SORTING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.SORTING_SIGN.get(), createSingleItemTable(TFItems.SORTING_SIGN.get()));
+		add(TFBlocks.SORTING_WALL_SIGN.get(), createSingleItemTable(TFItems.SORTING_SIGN.get()));
+		add(TFBlocks.SORTING_HANGING_SIGN.get(), createSingleItemTable(TFItems.SORTING_HANGING_SIGN.get()));
+		add(TFBlocks.SORTING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFItems.SORTING_HANGING_SIGN.get()));
 		dropSelf(TFBlocks.SORTING_BANISTER.get());
 		dropSelf(TFBlocks.SORTING_CHEST.get());
 		dropSelf(TFBlocks.SORTING_TRAPPED_CHEST.get());
@@ -638,15 +674,15 @@ public class BlockLootTables extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
-					.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))));
+					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))));
 	}
 
-	private static LootTable.Builder casketInfo(Block block) {
+	private static LootTable.Builder casketInfo(Block block, ItemLike item) {
 		return LootTable.lootTable()
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
-				.add(LootItem.lootTableItem(block)
-					.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))
+				.add(LootItem.lootTableItem(item)
+					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))
 					.apply(CopyBlockState.copyState(block).copy(KeepsakeCasketBlock.BREAKAGE))));
 	}
 
@@ -704,7 +740,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	protected LootTable.Builder rope() {
 		return LootTable.lootTable()
 			.withPool(LootPool.lootPool()
-				.add(this.applyExplosionDecay(TFBlocks.ROPE.get(), LootItem.lootTableItem(TFBlocks.ROPE.get())
+				.add(this.applyExplosionDecay(TFBlocks.ROPE.get(), LootItem.lootTableItem(TFItems.ROPE.get())
 					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
 						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
 							.setProperties(StatePropertiesPredicate.Builder.properties()
@@ -723,7 +759,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	protected LootTable.Builder fallenLeaves() {
 		return LootTable.lootTable().withPool(LootPool.lootPool()
 			.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FallenLeavesBlock.LAYERS.getPossibleValues(), layer ->
-				LootItem.lootTableItem(TFBlocks.FALLEN_LEAVES.get())
+				LootItem.lootTableItem(TFItems.FALLEN_LEAVES.get())
 					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES.get())
 						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
 					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer)))).when(HAS_SHEARS))));

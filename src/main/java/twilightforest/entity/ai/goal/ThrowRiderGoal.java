@@ -65,7 +65,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 					// Pluck them from the boat, minecart, donkey, or whatever
 					victim.stopRiding();
 
-					victim.startRiding(this.mob, true);
+					victim.startRiding(this.mob, true, false);
 				}
 			}
 		}

@@ -8,6 +8,8 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemInstance;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
@@ -99,14 +101,18 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 		return this;
 	}
 
+	public ItemInstance getResult() {
+		return new ItemStackTemplate(this.input.getValues().get(0), this.count);
+	}
+
 	@Override
-	public Item getResult() {
-		return this.input.getValues().get(0).value();
+	public ResourceKey<Recipe<?>> defaultId() {
+		return ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("uncrafting/" + RecipeBuilder.getDefaultRecipeId(this.getResult()).identifier().getPath()));
 	}
 
 	@Override
 	public void save(RecipeOutput output) {
-		this.save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("uncrafting/" + RecipeBuilder.getDefaultRecipeId(this.getResult()).getPath())));
+		this.save(output, this.defaultId());
 	}
 
 	@Override

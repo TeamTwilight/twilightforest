@@ -32,9 +32,9 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 	@Override
 	protected void apply(Map<Identifier, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
 		HILL_CONFIGS.clear();
+		STALACTITES_PER_HILL.clear();
 		ORE_STALACTITES_PER_HILL.clear();
 		STALAGMITES_PER_HILL.clear();
-		HILL_CONFIGS.clear();
 
 		super.apply(map, manager, profiler);
 	}

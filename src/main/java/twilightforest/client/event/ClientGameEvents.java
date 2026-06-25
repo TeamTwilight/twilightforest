@@ -1,7 +1,6 @@
 package twilightforest.client.event;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -11,7 +10,12 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -21,10 +25,12 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
@@ -35,7 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.CustomBlockOutlineRenderer;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
@@ -51,7 +57,6 @@ import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFShaders;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
@@ -93,16 +98,18 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::handleGameBootup);
 		NeoForge.EVENT_BUS.addListener(this::killVignette);
 		NeoForge.EVENT_BUS.addListener(this::removeHostileMountHealth);
-		NeoForge.EVENT_BUS.addListener(this::renderAurora);
+		NeoForge.EVENT_BUS.addListener(RenderLevelStageEvent.AfterTranslucentParticles.class, this::renderAurora);
 		NeoForge.EVENT_BUS.addListener(this::renderCustomBossbars);
 		NeoForge.EVENT_BUS.addListener(this::renderGiantBlockOutlines);
 		NeoForge.EVENT_BUS.addListener(this::setMusicInDimension);
 		NeoForge.EVENT_BUS.addListener(this::shakeCamera);
 		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
-		NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
+		// TODO: 26.1.2 - Trophy head hiding via RenderLivingEvent.Pre is too fragile with the new render state system.
+		// Player's head model disappears even when not wearing a trophy. Needs a different approach.
+		//NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
 
-		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
+		NeoForge.EVENT_BUS.addListener(RenderLevelStageEvent.AfterTranslucentParticles.class, CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
 
 		NeoForge.EVENT_BUS.addListener(FogHandler::renderFog);
@@ -143,7 +150,7 @@ public class ClientGameEvents {
 	private void setMusicInDimension(SelectMusicEvent event) {
 		Music music = event.getOriginalMusic();
 		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
-			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
+			event.setMusic(Minecraft.getInstance().gameRenderer.getMainCamera().attributeProbe().getValue(EnvironmentAttributes.BACKGROUND_MUSIC, 1.0F).select(Minecraft.getInstance().player.getAbilities().instabuild && Minecraft.getInstance().player.getAbilities().mayfly, Minecraft.getInstance().player.isUnderWater()).orElse(Musics.GAME));
 		}
 	}
 
@@ -164,27 +171,30 @@ public class ClientGameEvents {
 	private void renderAurora(RenderLevelStageEvent event) {
 		if (Minecraft.getInstance().level == null) return;
 
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
+		if (event instanceof RenderLevelStageEvent.AfterTranslucentParticles && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
 			Tesselator tesselator = Tesselator.getInstance();
 			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
-			Vec3 pos = event.getCamera().getPosition();
+			final float scale = 2048F * (Minecraft.getInstance().options.getEffectiveRenderDistance() / 32F);
+			Vec3 pos = event.getLevelRenderState().cameraRenderState.pos;
 			float y = (float) (256F - pos.y());
 			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
 			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
 			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
 			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
-			RenderSystem.enableBlend();
-			RenderSystem.enableDepthTest();
-			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
+			// Compute the aurora alpha from the smooth transition and bake it directly into vertex colors.
+			// RenderSystem.setShaderColor (used in 1.21.1) has been removed in 26.1.2.
+			// The Aurora pipeline is configured with TRANSLUCENT blending, so vertex alpha is respected.
+			float alpha = (Mth.lerp(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false), lastAurora, aurora)) / 60F * 0.5F;
+			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, alpha);
+			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, alpha);
+			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, alpha);
+			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, alpha);
+
 			TFShaders.AURORA.invokeThenEndTesselator(
 				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
 				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
-			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-			RenderSystem.disableDepthTest();
-			RenderSystem.disableBlend();
 		}
 	}
 
@@ -207,9 +217,9 @@ public class ClientGameEvents {
 			time++;
 
 			lastAurora = aurora;
-			if (mc.level != null && mc.cameraEntity != null && !TFConfig.getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
+			if (mc.level != null && mc.getCameraEntity() != null && !TFConfig.getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
 				RegistryAccess access = mc.level.registryAccess();
-				Holder<Biome> biome = mc.level.getBiome(mc.cameraEntity.blockPosition());
+				Holder<Biome> biome = mc.level.getBiome(mc.getCameraEntity().blockPosition());
 				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> holderMatcher.match(c, biome)))
 					aurora++;
 				else
@@ -222,7 +232,8 @@ public class ClientGameEvents {
 			BugModelAnimationHelper.animate();
 
 			if (mc.level != null) {
-				if (mc.level.getSkyFlashTime() > 0) {
+				var flashState = mc.level.endFlashState();
+				if (flashState != null && flashState.flashStartedThisTick()) {
 					MagicPaintingRenderer.lastLightning = mc.level.getGameTime();
 				}
 
@@ -243,9 +254,8 @@ public class ClientGameEvents {
 								Player player = mc.player;
 								shakeIntensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
 								if (shakeIntensity > 0) {
-									player.moveTo(player.getX(), player.getY(), player.getZ(),
-										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * shakeIntensity,
-										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * shakeIntensity);
+									player.setYRot(player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * shakeIntensity);
+									player.setXRot(player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * shakeIntensity);
 									shakeIntensity = 0.0F;
 									break;
 								}
@@ -293,26 +303,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
-		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
-		boolean visible = !(stack.getItem() instanceof TrophyItem) && !areCuriosEquipped(event.getEntity());
-		boolean isPlayer = event.getEntity() instanceof Player;
-		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
-			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
-			}
-		}
-	}
-
-	private boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem);
-		}
-		return false;
-	}
-
-	private void translateBookAuthor(ItemTooltipEvent event) {
+		private void translateBookAuthor(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
 		if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
 			if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
@@ -327,9 +318,9 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void renderGiantBlockOutlines(RenderHighlightEvent.Block event) {
-		BlockPos pos = event.getTarget().getBlockPos();
-		BlockState state = event.getCamera().getEntity().level().getBlockState(pos);
+	private void renderGiantBlockOutlines(ExtractBlockOutlineRenderStateEvent event) {
+		BlockPos pos = event.getBlockPos();
+		BlockState state = event.getBlockState();
 
 		if (state.getBlock() instanceof MiniatureStructureBlock) {
 			event.setCanceled(true);
@@ -338,12 +329,17 @@ public class ClientGameEvents {
 
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
-			event.setCanceled(true);
-			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
+			if (!state.isAir() && event.getLevel().getWorldBorder().isWithinBounds(pos)) {
 				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-				VertexConsumer consumer = event.getMultiBufferSource().getBuffer(RenderType.lines());
-				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().getPosition());
-				LevelRenderer.renderShape(event.getPoseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
+				event.addCustomRenderer(new CustomBlockOutlineRenderer() {
+					@Override
+					public boolean render(BlockOutlineRenderState renderState, MultiBufferSource.BufferSource buffer, PoseStack poseStack, boolean translucentPass, LevelRenderState levelRenderState) {
+						VertexConsumer consumer = buffer.getBuffer(RenderTypes.lines());
+						Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(levelRenderState.cameraRenderState.pos);
+						ShapeRenderer.renderShape(poseStack, consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), ARGB.colorFromFloat(0.45F, 0.0F, 0.0F, 0.0F), 1.0F);
+						return true; // Suppress vanilla outline rendering
+					}
+				});
 			}
 		}
 	}

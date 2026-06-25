@@ -84,12 +84,10 @@ public class UncraftingContainer implements Container {
 		return !TFConfig.disableEntireTable;
 	}
 
-	@Override
-	public void startOpen(Player player) {
+	public void startOpen(Player user) {
 	}
 
-	@Override
-	public void stopOpen(Player player) {
+	public void stopOpen(Player user) {
 	}
 
 	@Override

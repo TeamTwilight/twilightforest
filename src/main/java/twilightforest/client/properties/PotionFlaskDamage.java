@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.BrittleFlaskItem;
 import twilightforest.item.PotionFlaskItem;
 
 public record PotionFlaskDamage(boolean normalize) implements RangeSelectItemModelProperty {

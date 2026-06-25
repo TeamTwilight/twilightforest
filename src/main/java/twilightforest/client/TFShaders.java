@@ -1,58 +1,74 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.shaders.Uniform;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.ResourceProvider;
-import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
-import java.io.IOException;
-
 public class TFShaders {
 
-	public static ShaderInstance RED_THREAD;
+	public static RenderPipeline RED_THREAD;
 	public static PositionAwareShaderInstance AURORA;
 
-	public static void registerShaders(RegisterShadersEvent event) {
-		try {
-			event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
-				shader -> RED_THREAD = shader);
-			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
-				shader -> AURORA = (PositionAwareShaderInstance) shader);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public static void registerRenderPipelines(RegisterRenderPipelinesEvent event) {
+		RED_THREAD = RenderPipeline.builder(RenderPipelines.BLOCK_SNIPPET)
+			.withLocation(TwilightForestMod.prefix("red_thread/red_thread"))
+			.build();
+		event.registerPipeline(RED_THREAD);
+
+		RenderPipeline auroraPipeline = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET, RenderPipelines.GLOBALS_SNIPPET)
+			.withLocation(TwilightForestMod.prefix("aurora/aurora"))
+			.withVertexShader(TwilightForestMod.prefix("core/aurora/aurora"))
+			.withFragmentShader(TwilightForestMod.prefix("core/aurora/aurora"))
+			.withUniform("AuroraSettings", UniformType.UNIFORM_BUFFER)
+			.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS)
+			.withCull(false)
+			.withColorTargetState(new com.mojang.blaze3d.pipeline.ColorTargetState(com.mojang.blaze3d.pipeline.BlendFunction.TRANSLUCENT))
+			.build();
+		event.registerPipeline(auroraPipeline);
+		AURORA = new PositionAwareShaderInstance(auroraPipeline);
 	}
 
-	public static class BindableShaderInstance extends ShaderInstance {
+	@Nullable
+	private static RenderPipeline activePipeline;
 
-		private ShaderInstance last;
+	@Nullable
+	public static RenderPipeline getActivePipeline() {
+		return activePipeline;
+	}
 
-		public BindableShaderInstance(ResourceProvider p_173336_, Identifier shaderLocation, VertexFormat p_173338_) throws IOException {
-			super(p_173336_, shaderLocation, p_173338_);
+	static void setActivePipeline(@Nullable RenderPipeline pipeline) {
+		activePipeline = pipeline;
+	}
+
+	public static class BindableShaderInstance {
+
+		protected final RenderPipeline pipeline;
+		@Nullable
+		private RenderPipeline last;
+
+		public BindableShaderInstance(RenderPipeline pipeline) {
+			this.pipeline = pipeline;
 		}
 
-		ShaderInstance getSelf() {
-			return this;
+		RenderPipeline getPipeline() {
+			return this.pipeline;
 		}
 
 		public final void bind(@Nullable Runnable exec) {
-			last = RenderSystem.getShader();
-			RenderSystem.setShader(this::getSelf);
+			this.last = activePipeline;
+			activePipeline = this.pipeline;
 			if (exec != null)
 				exec.run();
-			apply();
 		}
 
 		public final void runThenClear(Runnable exec) {
 			exec.run();
-			clear();
-			RenderSystem.setShader(() -> last);
-			last = null;
+			activePipeline = this.last;
+			this.last = null;
 		}
 
 		public final void invokeThenClear(@Nullable Runnable execBind, Runnable execPost) {
@@ -65,36 +81,35 @@ public class TFShaders {
 		}
 
 		public final void invokeThenEndTesselator(@Nullable Runnable execBind, BufferBuilder builder) {
-			invokeThenClear(execBind, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
+			invokeThenClear(execBind, () -> {
+				builder.buildOrThrow();
+			});
 		}
 
 		public final void invokeThenEndTesselator(BufferBuilder builder) {
-			invokeThenClear(() -> BufferUploader.drawWithShader(builder.buildOrThrow()));
+			invokeThenClear(() -> {
+				builder.buildOrThrow();
+			});
 		}
 
 	}
 
 	public static class PositionAwareShaderInstance extends BindableShaderInstance {
 
-		@Nullable
-		public final Uniform SEED;
+		private int seedValue;
+		private float posX;
+		private float posY;
+		private float posZ;
 
-		@Nullable
-		public final Uniform POSITION;
-
-		public PositionAwareShaderInstance(ResourceProvider p_173336_, Identifier shaderLocation, VertexFormat p_173338_) throws IOException {
-			super(p_173336_, shaderLocation, p_173338_);
-			SEED = getUniform("SeedContext");
-			POSITION = getUniform("PositionContext");
+		public PositionAwareShaderInstance(RenderPipeline pipeline) {
+			super(pipeline);
 		}
 
 		public final void setValue(int seed, float x, float y, float z) {
-			if (SEED != null) {
-				SEED.set(seed);
-			}
-			if (POSITION != null) {
-				POSITION.set(x, y, z);
-			}
+			this.seedValue = seed;
+			this.posX = x;
+			this.posY = y;
+			this.posZ = z;
 		}
 
 		public final void setValueBindApply(int seed, float x, float y, float z) {
@@ -116,7 +131,9 @@ public class TFShaders {
 		}
 
 		public final void invokeThenEndTesselator(int seed, float x, float y, float z, BufferBuilder builder) {
-			invokeThenClear(seed, x, y, z, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
+			invokeThenClear(seed, x, y, z, () -> {
+				builder.buildOrThrow();
+			});
 		}
 
 	}

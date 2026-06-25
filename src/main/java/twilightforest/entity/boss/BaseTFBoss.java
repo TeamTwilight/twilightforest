@@ -89,14 +89,14 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void addAdditionalSaveData(ValueOutput compound) {
 		this.saveHomePointToNbt(compound);
-		this.addDeathItemsSaveData(compound, this.registryAccess());
+		this.addDeathItemsSaveData(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.readDeathItemsSaveData(compound, this.registryAccess());
+		this.readDeathItemsSaveData(compound);
 		this.loadHomePointFromNbt(compound);
 	}
 

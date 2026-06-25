@@ -14,14 +14,18 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
+import twilightforest.TwilightForestMod;
 
 import java.util.Comparator;
 import java.util.Optional;
 
 // Landmark structure without progression lock; Hollow Hills/Hedge Maze/Naga Courtyard/Quest Grove
 public abstract class LandmarkStructure extends Structure implements DecorationClearance {
+	private static final Logger LOGGER = LoggerFactory.getLogger(LandmarkStructure.class);
 
 	protected static <S extends LandmarkStructure> Products.P3<RecordCodecBuilder.Mu<S>, Optional<DecorationConfig>, Boolean, Optional<Holder<MapDecorationType>>> landmarkCodecNoSettings(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
@@ -77,6 +81,8 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		int z = (chunkPos.z() << 4) + (this.centerInChunk ? 7 : 0);
 		int y = this.adjustForTerrain(context, x, z);
 
+		TwilightForestMod.LOGGER.error("TF-LandmarkStructure: findGenerationPoint for {} at ({},{}), adjustForTerrain returned y={}, seaLevel={}", this.getClass().getSimpleName(), x, z, y, context.chunkGenerator().getSeaLevel());
+
 		return Optional
 			.ofNullable(this.getFirstPiece(context, RandomSource.create(context.seed() + chunkPos.x() * 25117L + chunkPos.z() * 151121L), chunkPos, x, y, z))
 			.map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
@@ -116,8 +122,10 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 
 	@Override
 	public Optional<GenerationStub> findValidGenerationPoint(GenerationContext context) {
-		if (!(context.biomeSource() instanceof TFBiomeProvider twilightBiomeProvider))
+		if (!(context.biomeSource() instanceof TFBiomeProvider twilightBiomeProvider)) {
+			LOGGER.debug("[TF-STRUCTURE] BiomeSource is not TFBiomeProvider, using super.findValidGenerationPoint");
 			return super.findValidGenerationPoint(context);
+		}
 
 		ChunkPos chunkPos = context.chunkPos();
 		// set biomeX and biomeZ to center of the biome-grid tile.
@@ -126,7 +134,16 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		int biomeZ = (Math.round(chunkPos.z() / 16F) << 6) + 2;
 
 		Holder<Biome> biomeAt = twilightBiomeProvider.getMainBiome(biomeX, biomeZ);
+		boolean validBiome = context.validBiome().test(biomeAt);
 
-		return context.validBiome().test(biomeAt) ? this.findGenerationPoint(context) : Optional.empty();
+		biomeAt.unwrapKey().ifPresent(biomeKey -> {
+			LOGGER.debug("[TF-STRUCTURE] Chunk [{}, {}], biome at center: {}, valid: {}", chunkPos.x(), chunkPos.z(), biomeKey.identifier(), validBiome);
+		});
+
+		if (!validBiome) {
+			LOGGER.debug("[TF-STRUCTURE] Biome check failed for chunk [{}, {}], skipping structure generation", chunkPos.x(), chunkPos.z());
+		}
+
+		return validBiome ? this.findGenerationPoint(context) : Optional.empty();
 	}
 }

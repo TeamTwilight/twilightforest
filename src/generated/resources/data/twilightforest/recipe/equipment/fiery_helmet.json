@@ -3,16 +3,13 @@
   "category": "equipment",
   "group": "fiery_helmet",
   "key": {
-    "#": {
-      "tag": "c:ingots/fiery"
-    }
+    "#": "#c:ingots/fiery"
   },
   "pattern": [
     "###",
     "# #"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:fiery_helmet"
   }
 }

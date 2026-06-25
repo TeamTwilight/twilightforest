@@ -27,6 +27,7 @@ import twilightforest.entity.MagicPaintingVariant;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class TFCreativeTabs {
 
@@ -426,6 +427,12 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.KNIGHTMETAL_BLOCK);
 			output.accept(TFBlocks.CARMINITE_BLOCK);
 			output.accept(TFBlocks.ARCTIC_FUR_BLOCK);
+
+			output.accept(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE);
+			output.accept(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE);
+			output.accept(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE);
+			output.accept(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE);
+			output.accept(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE);
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
@@ -651,8 +658,7 @@ public class TFCreativeTabs {
 	}
 
 	private static void createSpawnEggsAlphabetical(CreativeModeTab.Output output) {
-		Collection<? extends Item> eggs = TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::value).toList();
-		eggs.forEach(output::accept);
+		TFEntities.SPAWN_EGGS.stream().map(Supplier::get).forEach(output::accept);
 	}
 
 	private static void createDefaultSkullCandle(CreativeModeTab.Output output, ItemLike item) {

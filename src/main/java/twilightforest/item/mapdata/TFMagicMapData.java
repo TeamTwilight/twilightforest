@@ -10,12 +10,15 @@ import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
+import net.minecraft.world.level.saveddata.maps.MapBanner;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
+import net.minecraft.world.level.saveddata.maps.MapFrame;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +27,7 @@ import twilightforest.item.MagicMapItem;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.util.Codecs;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,16 +36,21 @@ import java.util.Map;
 public class TFMagicMapData extends MapItemSavedData {
 	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
 	public final List<String> conqueredStructures = new ArrayList<>();
+	// redundant copies of parent's private fields, needed for CODEC serialization
+	private boolean trackingPosition;
+	private boolean unlimitedTracking;
 
 	public TFMagicMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
+		this.trackingPosition = trackpos;
+		this.unlimitedTracking = unlimited;
 	}
 
 	public static TFMagicMapData load(CompoundTag nbt, HolderLookup.Provider provider) {
-		MapItemSavedData data = MapItemSavedData.load(nbt, provider);
-		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
-		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
-		final boolean locked = nbt.getBoolean("locked");
+		MapItemSavedData data = MapItemSavedData.CODEC.parse(provider.createSerializationContext(NbtOps.INSTANCE), nbt).getOrThrow();
+		final boolean trackingPosition = !nbt.contains("trackingPosition") || nbt.getBooleanOr("trackingPosition", false);
+		final boolean unlimitedTracking = nbt.getBooleanOr("unlimitedTracking", false);
+		final boolean locked = nbt.getBooleanOr("locked", false);
 		TFMagicMapData tfdata = new TFMagicMapData(data.centerX, data.centerZ, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
 
 		tfdata.colors = data.colors;
@@ -66,19 +75,16 @@ public class TFMagicMapData extends MapItemSavedData {
 			}
 		}
 
-		if (nbt.contains("conquered_structures", Tag.TAG_LIST)) {
+		if (nbt.contains("conquered_structures")) {
 			tfdata.conqueredStructures.clear();
-			ListTag tag = nbt.getList("conquered_structures", Tag.TAG_STRING);
-			tag.forEach(tag1 -> tfdata.conqueredStructures.add(tag1.getAsString()));
+			ListTag tag = nbt.getList("conquered_structures").orElse(new ListTag());
+			tag.forEach(tag1 -> tfdata.conqueredStructures.add(((StringTag) tag1).value()));
 		}
 
 		return tfdata;
 	}
 
-	@Override
 	public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
-		tag = super.save(tag, provider);
-
 		List<DecorationHolder> holders = new ArrayList<>();
 		this.decorations.forEach((s, decoration) -> {
 			if (decoration.type().value().showOnItemFrame()) {
@@ -98,11 +104,56 @@ public class TFMagicMapData extends MapItemSavedData {
 		return tag;
 	}
 
+	public static final Codec<TFMagicMapData> TF_CODEC = RecordCodecBuilder.create(
+		instance -> instance.group(
+			Level.RESOURCE_KEY_CODEC.fieldOf("dimension").forGetter(m -> m.dimension),
+			Codec.INT.fieldOf("xCenter").forGetter(m -> m.centerX),
+			Codec.INT.fieldOf("zCenter").forGetter(m -> m.centerZ),
+			Codec.BYTE.optionalFieldOf("scale", (byte)0).forGetter(m -> m.scale),
+			Codec.BYTE_BUFFER.fieldOf("colors").forGetter(m -> ByteBuffer.wrap(m.colors)),
+			Codec.BOOL.optionalFieldOf("trackingPosition", true).forGetter(m -> m.trackingPosition),
+			Codec.BOOL.optionalFieldOf("unlimitedTracking", false).forGetter(m -> m.unlimitedTracking),
+			Codec.BOOL.optionalFieldOf("locked", false).forGetter(m -> m.locked),
+			MapBanner.CODEC.listOf().optionalFieldOf("banners", List.of()).forGetter(m -> List.copyOf(m.bannerMarkers.values())),
+			MapFrame.CODEC.listOf().optionalFieldOf("frames", List.of()).forGetter(m -> List.copyOf(m.frameMarkers.values())),
+			DecorationHolder.CODEC.listOf().optionalFieldOf("decorations", List.of()).forGetter(m -> {
+				List<DecorationHolder> list = new ArrayList<>();
+				m.decorations.forEach((s, deco) -> {
+					if (deco.type().value().showOnItemFrame()) {
+						list.add(new DecorationHolder(s, deco));
+					}
+				});
+				return list;
+			}),
+			Codec.STRING.listOf().optionalFieldOf("conquered_structures", List.of()).forGetter(m -> List.copyOf(m.conqueredStructures))
+		).apply(instance, (dim, x, z, scale, colors, tracking, unlimited, locked, banners, frames, decorations, conquered) -> {
+			TFMagicMapData data = new TFMagicMapData(x, z, (byte) Mth.clamp(scale, 0, 4), tracking, unlimited, locked, dim);
+			if (colors.array().length == 16384) data.colors = colors.array();
+			for (MapBanner b : banners) data.bannerMarkers.put(b.getId(), b);
+			for (MapFrame f : frames) data.frameMarkers.put(f.getId(), f);
+			for (DecorationHolder dh : decorations) {
+				data.decorations.put(dh.id(), dh.decoration());
+				if (dh.decoration().type().value().trackCount()) data.trackedDecorationCount++;
+			}
+			data.conqueredStructures.addAll(conquered);
+			return data;
+		})
+	);
+
+	public static SavedDataType<TFMagicMapData> mapDataType(MapId mapId) {
+		return new SavedDataType<>(
+			TwilightForestMod.prefix(MagicMapItem.STR_ID + "_" + mapId.id()),
+			() -> { throw new IllegalStateException("Should never create an empty map saved data"); },
+			TF_CODEC,
+			DataFixTypes.SAVED_DATA_MAP_DATA
+		);
+	}
+
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
-	public static TFMagicMapData getMagicMapData(Level level, String name) {
-		if (level instanceof ServerLevel serverLevel) return (TFMagicMapData) serverLevel.getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
-		else return CLIENT_DATA.get(name);
+	public static TFMagicMapData getMagicMapData(Level level, MapId mapId) {
+		if (level instanceof ServerLevel serverLevel) return serverLevel.getServer().getDataStorage().get(mapDataType(mapId));
+		else return CLIENT_DATA.get(MagicMapItem.getMapName(mapId.id()));
 	}
 
 	// Like the method above, but if we know we're on client
@@ -112,15 +163,9 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMagicMapData(Level level, TFMagicMapData data, String id) {
-		if (level instanceof ServerLevel serverLevel) serverLevel.getServer().overworld().getDataStorage().set(id, data);
-		else CLIENT_DATA.put(id, data);
-	}
-
-	public static Factory<MapItemSavedData> factory() {
-		return new SavedData.Factory<>(() -> {
-			throw new IllegalStateException("Should never create an empty map saved data");
-		}, TFMagicMapData::load, DataFixTypes.SAVED_DATA_MAP_DATA);
+	public static void registerMagicMapData(Level level, TFMagicMapData data, MapId mapId) {
+		if (level instanceof ServerLevel serverLevel) serverLevel.getServer().getDataStorage().set(mapDataType(mapId), data);
+		else CLIENT_DATA.put(MagicMapItem.getMapName(mapId.id()), data);
 	}
 
 	@Nullable

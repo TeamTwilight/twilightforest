@@ -57,14 +57,17 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 				PartEntity<?>[] parts = ent.getParts();
 				if (parts == null)
 					return;
-				for (PartEntity<?> part : parts) {
+				PartEntity<?>[] serverParts = null;
+				if (message.entity != null) {
+					serverParts = message.entity.getParts();
+				}
+				for (int i = 0; i < parts.length; i++) {
+					PartEntity<?> part = parts[i];
 					if (part instanceof TFPart<?> tfPart) {
-						if (message.data == null && message.entity != null) // Account for Singleplayer
-							Arrays.stream(message.entity.getParts())
-								.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
-								.map(p -> (TFPart<?>) p)
-								.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
-						else if (message.data != null) {
+						if (serverParts != null && i < serverParts.length && serverParts[i] instanceof TFPart<?> serverTfPart) {
+							// Singleplayer: match by index directly from server entity
+							tfPart.readData(serverTfPart.writeData());
+						} else if (message.data != null) {
 							PartDataHolder data = message.data.get(tfPart.getId());
 							if (data != null)
 								tfPart.readData(data);

@@ -3,15 +3,12 @@
   "category": "misc",
   "group": "drying_rack",
   "key": {
-    "-": {
-      "item": "minecraft:spruce_slab"
-    }
+    "-": "minecraft:spruce_slab"
   },
   "pattern": [
     "---"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:spruce_drying_rack"
   }
 }

@@ -1,8 +1,6 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -12,8 +10,8 @@ import twilightforest.init.TFRecipes;
 
 public class MazeMapCloningRecipe extends CustomRecipe {
 
-	public MazeMapCloningRecipe(CraftingBookCategory category) {
-		super(category);
+	public MazeMapCloningRecipe() {
+		super();
 	}
 
 	@Override
@@ -24,14 +22,14 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		for (int j = 0; j < input.size(); j++) {
 			ItemStack itemstack1 = input.getItem(j);
 			if (!itemstack1.isEmpty()) {
-				if (itemstack1.is(TFItems.FILLED_MAZE_MAP.get())) {
+				if (itemstack1.is(TFItems.FILLED_MAZE_MAP)) {
 					if (!itemstack.isEmpty()) {
 						return false;
 					}
 
 					itemstack = itemstack1;
 				} else {
-					if (!itemstack1.is(TFItems.MAZE_MAP.get())) {
+					if (!itemstack1.is(TFItems.MAZE_MAP)) {
 						return false;
 					}
 
@@ -44,7 +42,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
+	public ItemStack assemble(CraftingInput input) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
@@ -77,12 +75,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int x, int y) {
-		return x >= 3 && y >= 3;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return TFRecipes.MAZE_MAP_CLONING_RECIPE.get();
 	}
 }

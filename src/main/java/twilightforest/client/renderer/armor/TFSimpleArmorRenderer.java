@@ -23,7 +23,8 @@ public class TFSimpleArmorRenderer extends TFArmorRenderer {
 		this.CREATE_MODEL_INSTANCE = createModelInstance;
 	}
 
-	@Override
+	// getHumanoidArmorModel removed from IClientItemExtensions in 26.1.2.
+	// The model is still fetched from the layer location via getModelPart().
 	public @NotNull HumanoidModel<?> getHumanoidArmorModel(@NotNull LivingEntity living, @NotNull ItemStack stack, @NotNull EquipmentSlot slot, @NotNull HumanoidModel<?> model) {
 		return slot == EquipmentSlot.LEGS ?
 			CREATE_MODEL_INSTANCE.apply(getModelPart(INNER_ARMOR_MODEL)) :

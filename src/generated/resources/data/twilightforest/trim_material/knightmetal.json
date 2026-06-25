@@ -1,9 +1,7 @@
 {
-  "asset_name": "knightmetal",
+  "asset_name": "twilightforest_knightmetal",
   "description": {
     "color": "#808C72",
     "translate": "trim_material.twilightforest.knightmetal"
-  },
-  "ingredient": "twilightforest:knightmetal_ingot",
-  "item_model_index": 0.1
+  }
 }

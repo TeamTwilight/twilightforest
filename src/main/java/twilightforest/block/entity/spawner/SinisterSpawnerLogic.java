@@ -117,7 +117,7 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 				RandomSource randomsource = serverLevel.getRandom();
 				SpawnData spawndata = this.getOrCreateNextSpawnData(serverLevel, randomsource, blockEntityPos);
 
-				for (BlockPos spawnAt : this.spawnBuffer) {
+				for (BlockPos spawnAt : new java.util.ArrayList<>(this.spawnBuffer)) {
 					CompoundTag entityData = spawndata.getEntityToSpawn();
 					try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TwilightForestMod.LOGGER)) {
 						ValueInput input = TagValueInput.create(reporter, serverLevel.registryAccess(), entityData);

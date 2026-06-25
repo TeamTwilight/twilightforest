@@ -1,0 +1,10 @@
+{
+  "parent": "twilightforest:block/util/two_layer_column_no_bottom",
+  "textures": {
+    "bottom": "minecraft:block/jungle_planks",
+    "side": "twilightforest:block/uncrafting_side",
+    "side2": "twilightforest:block/uncrafting_glow_side",
+    "top": "twilightforest:block/uncrafting_top",
+    "top2": "twilightforest:block/uncrafting_glow"
+  }
+}

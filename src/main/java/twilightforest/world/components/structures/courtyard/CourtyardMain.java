@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
@@ -42,13 +41,10 @@ public class CourtyardMain extends StructureMazeGenerator {
 	@Deprecated // TODO remove in 1.22
 	private final boolean placeSpawner;
 
-	@Autowired
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
-
 	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
 
-		this.placeSpawner = nbt.contains("placeSpawner") ? nbt.getBoolean("placeSpawner") : true; // For old versions of the courtyard that didn't place the naga spawner template
+		this.placeSpawner = nbt.getBooleanOr("placeSpawner", true); // For old versions of the courtyard that didn't place the naga spawner template
 	}
 
 	@SuppressWarnings("this-escape")
@@ -60,7 +56,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -RADIUS / 2, -1, -RADIUS / 2, RADIUS, 10, RADIUS, this.getOrientation(), false);
 		this.sizeConstraints = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getOrientation(), false);
 
-		this.placeSpawner = false;
+		this.placeSpawner = true;
 	}
 
 	@Override

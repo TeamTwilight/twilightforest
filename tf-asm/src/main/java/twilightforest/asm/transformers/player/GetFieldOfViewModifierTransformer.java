@@ -1,36 +1,32 @@
 package twilightforest.asm.transformers.player;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Optional;
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.PlayerHooks#straightAheadNullify}
  * {@link twilightforest.asmhooks.PlayerHooks#straightAheadRestore}
  */
-public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNode> {
+public class GetFieldOfViewModifierTransformer extends SimpleMethodTransformer {
 
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
+	public GetFieldOfViewModifierTransformer() {
+		super(
+			"net.minecraft.client.player.AbstractClientPlayer",
+			"getFieldOfViewModifier",
+			"()F"
+		);
 	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		ASMUtil.findInstructions(node, Opcodes.FCONST_1).findFirst().ifPresent(target -> {
-			node.instructions.insertBefore(target, ASMAPI.listOf(
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
+		ASMUtil.findInstructions(method, Opcodes.FCONST_1).findFirst().ifPresent(target -> {
+			method.instructions.insertBefore(target, ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/PlayerHooks",
@@ -39,8 +35,8 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 					false)
 			));
 
-			ASMUtil.findInstructions(node, Opcodes.FRETURN).forEach(insn ->
-				node.instructions.insertBefore(insn, ASMAPI.listOf(
+			ASMUtil.findInstructions(method, Opcodes.FRETURN).forEach(insn ->
+				method.instructions.insertBefore(insn, ASMUtil.listOf(
 					new VarInsnNode(Opcodes.ALOAD, 0),
 					new MethodInsnNode(Opcodes.INVOKESTATIC,
 						"twilightforest/asmhooks/PlayerHooks",
@@ -50,23 +46,6 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 				))
 			);
 		});
-
-		return node;
 	}
 
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(
-			Target.targetMethod(
-				"net/minecraft/client/player/AbstractClientPlayer",
-				"getFieldOfViewModifier",
-				"()F"
-			)
-		);
-	}
 }

@@ -26,7 +26,7 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightRende
 				.addBox(-2.5F, -5.0F, -3.5F, 5.0F, 5.0F, 5.0F),
 			PartPose.offset(0.0F, 10.0F, 1.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(),
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(),
 			PartPose.ZERO);
 
 		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()

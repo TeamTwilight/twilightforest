@@ -127,10 +127,17 @@ public class UrGhastModel extends TFGhastModel<TFGhastRenderState> implements Tr
 
 	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
-		if (context == ItemDisplayContext.NONE) {
+		if (context == ItemDisplayContext.GUI) {
+			stack.translate(0.0F, -0.65F, 0.0F);
+		} else if (context == ItemDisplayContext.NONE) {
 			stack.translate(0.0F, -1.0F, 0.0F);
 		}
 		stack.scale(0.5F, 0.5F, 0.5F);
 		collector.submitModelPart(this.body, stack, RenderTypes.entityCutout(UrGhastRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
 	}
 }

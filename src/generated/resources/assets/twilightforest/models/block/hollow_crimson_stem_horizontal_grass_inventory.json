@@ -1,0 +1,11 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log_plant",
+  "textures": {
+    "carpet": "twilightforest:block/moss_patch",
+    "inner": "minecraft:block/stripped_crimson_stem",
+    "overhang": "twilightforest:block/moss_overhang",
+    "plant": "minecraft:block/short_grass",
+    "side": "minecraft:block/crimson_stem",
+    "top": "minecraft:block/crimson_stem_top"
+  }
+}

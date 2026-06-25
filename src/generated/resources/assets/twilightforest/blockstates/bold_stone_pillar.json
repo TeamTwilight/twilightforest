@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "twilightforest:block/bold_stone_pillar_horizontal",
+      "model": "twilightforest:block/bold_stone_pillar",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "twilightforest:block/bold_stone_pillar"
     },
     "axis=z": {
-      "model": "twilightforest:block/bold_stone_pillar_horizontal",
+      "model": "twilightforest:block/bold_stone_pillar",
       "x": 90
     }
   }

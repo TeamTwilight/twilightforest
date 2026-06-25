@@ -63,7 +63,7 @@ public class HydraLairComponent extends HollowHillComponent {
 
 			if (distSq > rand.nextFloat() * 0.9f * radiusSq) continue;
 
-			dest.setY(Mth.floor(Mth.cos(Mth.sqrt(distSq) / this.hdiam * Mth.PI) * (this.hdiam / 4f)));
+			dest.setY(this.getWorldY(Mth.floor(Mth.cos(Mth.sqrt(distSq) / this.hdiam * Mth.PI) * (this.hdiam / 4f))));
 
 			if (this.speleothemConfig.shouldDoAStalactite(rand)) {
 				this.generateSpeleothem(world, dest, writeableBounds, true);
@@ -72,7 +72,7 @@ public class HydraLairComponent extends HollowHillComponent {
 			if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
 				if ((rand.nextFloat() * 0.667f + 0.333f) * distSq / radiusSq < 0.333f) continue;
 
-				dest.setY(1);
+				dest.setY(this.getWorldY(1));
 
 				this.generateSpeleothem(world, dest, writeableBounds, false);
 			}

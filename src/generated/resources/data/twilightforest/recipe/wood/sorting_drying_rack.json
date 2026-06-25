@@ -3,15 +3,12 @@
   "category": "misc",
   "group": "drying_rack",
   "key": {
-    "-": {
-      "item": "twilightforest:sorting_slab"
-    }
+    "-": "twilightforest:sorting_slab"
   },
   "pattern": [
     "---"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:sorting_drying_rack"
   }
 }

@@ -1,35 +1,38 @@
 package twilightforest.asm.transformers.chunk;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.WorldgenHooks#chunkBlanketing}
  */
-public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
+public class ChunkStatusTaskTransformer extends SimpleMethodTransformer {
+
+	public ChunkStatusTaskTransformer() {
+		super(
+			"net.minecraft.world.level.chunk.status.ChunkStatusTasks",
+			"generateSurface",
+			"(Lnet/minecraft/world/level/chunk/status/WorldGenContext;Lnet/minecraft/world/level/chunk/status/ChunkStep;Lnet/minecraft/util/StaticCache2D;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
-			node,
+			method,
 			Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/world/level/chunk/ChunkGenerator",
 			"buildSurface",
 			"(Lnet/minecraft/server/level/WorldGenRegion;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/chunk/ChunkAccess;)V"
-		).findFirst().ifPresent(target -> node.instructions.insert(
+		).findFirst().ifPresent(target -> method.instructions.insert(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 3), // ChunkAccess param
 				new VarInsnNode(Opcodes.ALOAD, 5), // WorldGenRegion variable
 				new MethodInsnNode(
@@ -40,26 +43,6 @@ public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 				)
 			)
 		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.level.chunk.status.ChunkStatusTasks",
-			"generateSurface",
-			"(Lnet/minecraft/world/level/chunk/status/WorldGenContext;Lnet/minecraft/world/level/chunk/status/ChunkStep;Lnet/minecraft/util/StaticCache2D;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

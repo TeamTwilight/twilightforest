@@ -1,8 +1,8 @@
 package twilightforest.entity.boss.bar;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.network.chat.Component;
@@ -35,26 +35,22 @@ public class ClientTFBossBar extends LerpingBossEvent {
 	private static final Identifier BAR_BACKGROUND = Identifier.withDefaultNamespace("boss_bar/white_background");
 	private static final Identifier BAR_PROGRESS = Identifier.withDefaultNamespace("boss_bar/white_progress");
 
-	public void renderBossBar(GuiGraphics guiGraphics, int x, int y) {
-		RenderSystem.enableBlend();
-		RenderSystem.setShaderColor(((this.color >> 16) & 255) / 255F, ((this.color >> 8) & 255) / 255F, (this.color & 255) / 255F, 1.0F);
+	public void renderBossBar(GuiGraphicsExtractor GuiGraphicsExtractor, int x, int y) {
+		// 26.1.2: RenderSystem.setShaderColor removed; use blitSprite color parameter for tinting
+		int tintColor = 0xFF000000 | (this.color & 0x00FFFFFF);
 
-		guiGraphics.blitSprite(BAR_BACKGROUND, 182, 5, 0, 0, x, y, 182, 5);
-		if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) guiGraphics.blitSprite(BossHealthOverlay.OVERLAY_BACKGROUND_SPRITES[this.overlay.ordinal() - 1], 182, 5, 0, 0, x, y, 182, 5);
+		GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, BAR_BACKGROUND, x, y, 182, 5, tintColor);
+		if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, BossHealthOverlay.OVERLAY_BACKGROUND_SPRITES[this.overlay.ordinal() - 1], 182, 5, 0, 0, x, y, 182, 5);
 		int i = Mth.lerpDiscrete(this.getProgress(), 0, 182);
 		if (i > 0) {
-			guiGraphics.blitSprite(BAR_PROGRESS, 182, 5, 0, 0, x, y, i, 5);
-			if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) guiGraphics.blitSprite(BossHealthOverlay.OVERLAY_PROGRESS_SPRITES[this.overlay.ordinal() - 1], 182, 5, 0, 0, x, y, i, 5);
+			GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, BAR_PROGRESS, x, y, i, 5, tintColor);
+			if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, BossHealthOverlay.OVERLAY_PROGRESS_SPRITES[this.overlay.ordinal() - 1], 182, 5, 0, 0, x, y, i, 5);
 		}
-
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		Component title = this.getName();
 		int l = Minecraft.getInstance().font.width(title);
-		int i1 = guiGraphics.guiWidth() / 2 - l / 2;
+		int i1 = GuiGraphicsExtractor.guiWidth() / 2 - l / 2;
 		int j1 = y - 9;
-		guiGraphics.drawString(Minecraft.getInstance().font, title, i1, j1, 16777215);
-
-		RenderSystem.disableBlend();
+		GuiGraphicsExtractor.text(Minecraft.getInstance().font, title, i1, j1, -1);
 	}
 }

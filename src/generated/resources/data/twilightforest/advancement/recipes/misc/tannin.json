@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_block": {
+    "has_sapling": {
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:twilight_oak_leaves"
+            "items": "twilightforest:twilight_oak_sapling"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_block"
+      "has_sapling"
     ]
   ],
   "rewards": {

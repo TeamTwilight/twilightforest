@@ -5,15 +5,16 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinition;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.StructureTemplateDefinition;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<StructureTemplateDefinition> {
-	private final Map<Identifier, Map<Identifier, Integer>> poolsForTemplateWeights = new HashMap<>();
+	private final Map<Identifier, Map<Identifier, TemplatePoolInstance>> poolsForTemplateWeights = new HashMap<>();
 
 	public StructureTemplateDefinitionProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId) {
 		super(output, PackOutput.Target.DATA_PACK, StructureTemplateDefinitions.DIRECTORY, StructureTemplateDefinition.CODEC, lookupProvider, modId);
@@ -25,7 +26,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	protected void gather() {
 		this.generatePools();
 
-		for(Map.Entry<Identifier, Map<Identifier, Integer>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
+		for(Map.Entry<Identifier, Map<Identifier, TemplatePoolInstance>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
 			Identifier templateId = poolWeightsForTemplate.getKey();
 
 			this.unconditional(templateId, new StructureTemplateDefinition(poolWeightsForTemplate.getValue()));
@@ -49,8 +50,8 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected void add(Identifier templateId, Identifier poolId, int weight) {
-		Map<Identifier, Integer> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
+		Map<Identifier, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
 
-		poolWeightsForTemplate.put(poolId, weight);
+		poolWeightsForTemplate.put(poolId, TemplatePoolInstance.defaultsWithWeight(weight));
 	}
 }

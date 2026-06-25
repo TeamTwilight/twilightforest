@@ -7,6 +7,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.joml.Vector3f;
@@ -18,7 +19,7 @@ import twilightforest.util.TFMathUtil;
 import java.util.Collections;
 import java.util.List;
 
-public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
+public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
 	private static final Vector3f SMALL_SWING = new Vector3f(8.0F, 8.0F, 8.0F);
@@ -167,9 +168,10 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		);
 	}
 
+	// TODO: 26.1.2 - adapt to new render system - called separately from renderer with entity reference
 	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
 		this.bodyParts().forEach(modelPart -> modelPart.getAllParts().forEach(ModelPart::resetPose));
-		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
+		super.setupAnim(new HumanoidRenderState() {}); // Dummy state, actual pose set below
 		TravellersWingsAnimAttachment animAttachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
 		TravellersWingsAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS);
 
@@ -196,7 +198,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 			case SPRINT -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, BIG_SWING);
 			case SIDESTEP -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, attachment.sidestepLeft ? -0.6F : 0.4F, 0.0F, BIG_SWING);
 			default -> {
-				float phaseDivisor = entity.walkAnimation.speed() > 0.1 ? 4.0F : 20.0F;  // use 0.1 instead of isMoving to avoid increasing animation speed when legs barely move
+				float phaseDivisor = entity.walkAnimation.speed() > 0.1 ? 4.0F : 20.0F;
 				rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, phaseDivisor, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
 			}
 		}
@@ -220,7 +222,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		animAttachment.zRotOld = this.wingBaseRight.zRot;
 
 		// If the wing model keeps a non-changing offset then looking at it with a spyglass even 4 chunks away will reveal Z-fighting.
-		float distance = (float) (Math.sqrt(entity.distanceToSqr(this.mainCamera.getPosition())) * PART_OFFSET);
+		float distance = (float) (Math.sqrt(entity.distanceToSqr(this.mainCamera.position())) * PART_OFFSET);
 		// The below solution is to animate its offset based off of camera distance. The animation is not time-based.
 		int partCount = Math.min(this.wingPartsLeft.size(), this.wingPartsRight.size());
 		for (int partIndex = 0; partIndex < partCount; partIndex++) {
@@ -240,14 +242,12 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		);
 	}
 
-	@Override
-	protected Iterable<ModelPart> headParts() {
-		return Collections.emptyList();
+	protected List<ModelPart> headParts() {
+		return List.of();
 	}
 
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(body, leftLeg, rightLeg);
+	protected List<ModelPart> bodyParts() {
+		return List.of(body, leftLeg, rightLeg);
 	}
 
 	public static void skipWings(ModelPart leggingsLayer, boolean skip) {

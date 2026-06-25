@@ -2,6 +2,7 @@
   "values": [
     "minecraft:farmland",
     "minecraft:dirt_path",
-    "#minecraft:dirt"
+    "#minecraft:dirt",
+    "#minecraft:grass_blocks"
   ]
 }

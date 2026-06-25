@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/experiment_115_4_8",
+  "textures": {
+    "top2": "twilightforest:block/experiment115/experiment115_sprinkle"
+  }
+}

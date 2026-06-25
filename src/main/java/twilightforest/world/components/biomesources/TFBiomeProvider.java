@@ -7,6 +7,8 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import twilightforest.TFRegistries;
 import twilightforest.world.components.layer.BiomeDensitySource;
 
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class TFBiomeProvider extends BiomeSource {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TFBiomeProvider.class);
+
 	public static final MapCodec<TFBiomeProvider> TF_CODEC = RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).xmap(TFBiomeProvider::new, TFBiomeProvider::getBiomeConfig).fieldOf("terrain_data");
 
 	private final Holder<BiomeDensitySource> biomeTerrainDataHolder;
@@ -22,6 +26,7 @@ public class TFBiomeProvider extends BiomeSource {
 		super();
 
 		this.biomeTerrainDataHolder = biomeTerrainDataHolder;
+		LOGGER.info("[TF-BIOME] TFBiomeProvider created with terrain data: {}", biomeTerrainDataHolder.unwrapKey().map(k -> k.identifier().toString()).orElse("unknown"));
 	}
 
 	private Holder<BiomeDensitySource> getBiomeConfig() {
@@ -30,7 +35,13 @@ public class TFBiomeProvider extends BiomeSource {
 
 	@Override
 	protected Stream<Holder<Biome>> collectPossibleBiomes() {
-		return this.biomeTerrainDataHolder.value().collectPossibleBiomes();
+		Stream<Holder<Biome>> biomes = this.biomeTerrainDataHolder.value().collectPossibleBiomes();
+		List<Holder<Biome>> biomeList = biomes.toList();
+		LOGGER.info("[TF-BIOME] collectPossibleBiomes() returned {} biomes:", biomeList.size());
+		for (Holder<Biome> biome : biomeList) {
+			biome.unwrapKey().ifPresent(key -> LOGGER.info("[TF-BIOME]   - {} (type: {})", key.identifier(), biome.kind()));
+		}
+		return biomeList.stream();
 	}
 
 	@Override

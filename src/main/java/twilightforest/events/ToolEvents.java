@@ -3,6 +3,7 @@ package twilightforest.events;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.HolderSet;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -33,7 +34,7 @@ import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -82,7 +83,7 @@ public class ToolEvents {
 				player.invulnerableTime = 40;
 				player.level().broadcastEntityEvent(player, (byte) 46);
 				if (living.isPassenger() && living.getVehicle() != null) {
-					player.startRiding(living.getVehicle(), true);
+					player.startRiding(living.getVehicle());
 					living.stopRiding();
 				}
 				player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
@@ -92,7 +93,7 @@ public class ToolEvents {
 				living.teleportTo(sourceX, sourceY, sourceZ);
 				living.level().broadcastEntityEvent(player, (byte) 46);
 				if (playerVehicle != null) {
-					living.startRiding(playerVehicle, true);
+					living.startRiding(playerVehicle);
 					player.stopRiding();
 				}
 				living.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
@@ -123,11 +124,11 @@ public class ToolEvents {
 							container.setNewDamage(container.getNewDamage() + KNIGHTMETAL_BONUS_DAMAGE);
 						}
 						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
 					} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
 						container.setNewDamage(container.getOriginalDamage() + KNIGHTMETAL_BONUS_DAMAGE);
 						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
 					}
 				}
 			}
@@ -143,13 +144,13 @@ public class ToolEvents {
 				if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
 					container.setNewDamage(container.getNewDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
 					// enchantment attack sparkles
-					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+					((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
 				}
 			}
 		}
 	}
 
-	private void damageNonMazebreakerToolsMore(BlockEvent.BreakEvent event) {
+	private void damageNonMazebreakerToolsMore(BreakBlockEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
 		if (event.getState().is(TFBlockTags.MAZEBREAKER_ACCELERATED)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
@@ -159,12 +160,12 @@ public class ToolEvents {
 	}
 
 	private void preventFatigueWithPocketWatch(MobEffectEvent.Applicable event) {
-		if (event.getApplicationResult() && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
+		if (event.getApplicationResult() && event.getEffectInstance().is(MobEffects.MINING_FATIGUE) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
 			event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
 		}
 	}
 
-	private void handleGiantPickaxeMining(BlockEvent.BreakEvent event) {
+	private void handleGiantPickaxeMining(BreakBlockEvent event) {
 		BlockPos pos = event.getPos();
 		BlockState state = event.getState();
 
@@ -174,7 +175,7 @@ public class ToolEvents {
 			if (shouldBreakGiantBlock(player, attachment)) {
 				attachment.setBreaking(true); // Tell the capability that a block breaking loop is happening, so it knows to fail the if check above. Otherwise, this would go on forever
 
-				LootParams.Builder builder = new LootParams.Builder(player.serverLevel())
+				LootParams.Builder builder = new LootParams.Builder(player.level())
 					.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
 					.withParameter(LootContextParams.BLOCK_STATE, state)
 					.withOptionalParameter(LootContextParams.THIS_ENTITY, player)
@@ -224,13 +225,13 @@ public class ToolEvents {
 		OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
 
 		//collect all tags
-		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).toList()) {
+		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTags().map(HolderSet.Named::key).filter(location -> location.location().getNamespace().equals("c")).toList()) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later
 				String oreground = tag.location().getPath().substring(15);
 				//check if a tag for ore grounds matches up with our ores in ground tag
-				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
+				if (BuiltInRegistries.BLOCK.getTags().map(HolderSet.Named::key).filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
 					BuiltInRegistries.BLOCK.get(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
 						BuiltInRegistries.BLOCK.get(tag).get().forEach(ore -> {

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "twilightforest:thick_castle_brick"
-    }
+    "#": "twilightforest:thick_castle_brick"
   },
   "pattern": [
     "##",

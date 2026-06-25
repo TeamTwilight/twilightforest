@@ -18,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -88,7 +89,7 @@ public class Naga extends BaseTFBoss {
 	public Naga(EntityType<? extends Naga> type, Level level) {
 		super(type, level);
 		this.xpReward = 217;
-		this.noCulling = true;
+
 
 		for (int i = 0; i < this.bodySegments.length; i++) {
 			this.bodySegments[i] = new NagaSegment(this);
@@ -351,8 +352,8 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		if (super.hurt(source, amount)) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		if (super.hurtServer(level, source, amount)) {
 			this.ticksSinceDamaged = 0;
 			if (this.isDazed()) {
 				this.damageDuringCurrentStun += (int) amount;
@@ -364,35 +365,35 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity toAttack) {
+	public boolean doHurtTarget(ServerLevel serverLevel, Entity toAttack) {
 		if (toAttack instanceof LivingEntity living && living.isBlocking()) {
 			if (this.getMovementPattern().getState() == NagaMovementPattern.MovementState.CHARGE) {
 				Vec3 motion = this.getDeltaMovement();
 				toAttack.push(motion.x() * 1.5D, 0.5D, motion.z() * 1.5D);
 				this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
 				if (toAttack instanceof ServerPlayer player) {
-					player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
+					player.getUseItem().hurtAndBreak(5, player, player.getUsedItemHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 					PacketDistributor.sendToPlayer(player, new MovePlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
 				}
-				this.hurt(this.damageSources().generic(), 2.0F);
-				this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+				this.hurtServer(serverLevel, this.damageSources().generic(), 2.0F);
+				this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK.value(), SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 				this.getMovementPattern().doDaze();
 				return false;
 			} else if (this.getMovementPattern().getState() == NagaMovementPattern.MovementState.STUNLESS_CHARGE) {
 				if (toAttack instanceof ServerPlayer player) {
-					player.getUseItem().hurtAndBreak(10, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
-					player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+					player.getUseItem().hurtAndBreak(10, player, player.getUsedItemHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+					player.getCooldowns().addCooldown(player.getUseItem(), 200);
 					player.stopUsingItem();
 					this.level().broadcastEntityEvent(player, (byte) 30);
 				}
-				living.hurt(this.damageSources().mobAttack(this), 4.0F);
+				living.hurtServer(serverLevel, this.damageSources().mobAttack(this), 4.0F);
 				this.playSound(SoundEvents.FOX_BITE, 2.0F, 0.5F);
 				this.getMovementPattern().doCircle();
 				return false;
 			}
 		}
 		if (!this.isDazed()) {
-			boolean result = super.doHurtTarget(toAttack);
+			boolean result = super.doHurtTarget(serverLevel, toAttack);
 
 			if (result) {
 				// charging, apply extra pushback
@@ -416,11 +417,11 @@ public class Naga extends BaseTFBoss {
 	@Override
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
-		if (this.level() instanceof ServerLevel) {
+		if (this.level() instanceof ServerLevel serverLevel) {
 			for (NagaSegment seg : this.bodySegments) {
 				// must use this instead of setDead
 				// since multiparts are not added to the world tick list which is what checks isDead
-				seg.kill();
+				seg.kill(serverLevel);
 			}
 		}
 	}
@@ -450,7 +451,7 @@ public class Naga extends BaseTFBoss {
 		for (int i = 0; i < this.currentSegmentCount; i++) {
 			NagaSegment segment = this.bodySegments[i];
 			segment.activate();
-			segment.moveTo(getX() + 0.1 * i, getY() + 0.5D, getZ() + 0.1 * i, this.getRandom().nextFloat() * 360.0F, 0.0F);
+			segment.absSnapTo(getX() + 0.1 * i, getY() + 0.5D, getZ() + 0.1 * i, this.getRandom().nextFloat() * 360.0F, 0.0F);
 			for (int j = 0; j < 20; j++) {
 				double d0 = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
@@ -576,7 +577,7 @@ public class Naga extends BaseTFBoss {
                     Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
                     BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
                     particlePos = blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D);
-					this.level().addParticle(ParticleTypes.COMPOSTER, false, particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.COMPOSTER, particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
                 }
             }
         }

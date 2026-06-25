@@ -100,7 +100,7 @@ public class CrumbleHornItem extends Item {
 		if (state.isAir() || crumbleMap == null) return false;
 
 		if (living instanceof Player) {
-			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living)).isCanceled())
+			if (NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.level.block.BreakBlockEvent(serverLevel, pos, state, (Player) living)).isCanceled())
 				return false;
 		}
 

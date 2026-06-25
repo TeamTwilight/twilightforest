@@ -32,7 +32,7 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create()
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-4.0F, -12.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
 			PartPose.ZERO);
@@ -136,7 +136,16 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 
 	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
-		stack.translate(0.0F, 0.25F, 0.0F);
+		if (context == ItemDisplayContext.GUI) {
+			stack.translate(0.0F, 0.1F, 0.0F);
+		} else {
+			stack.translate(0.0F, 0.25F, 0.0F);
+		}
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(LichRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
 	}
 }

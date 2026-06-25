@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import twilightforest.init.TFStructureProcessors;
@@ -24,16 +25,17 @@ public class StateTransfiguringProcessor extends StructureProcessor {
 		this.rules = Collections.unmodifiableList(rules);
 	}
 
+	private static final ThreadLocal<XoroshiroRandomSource> REUSABLE_RANDOM = ThreadLocal.withInitial(() -> new XoroshiroRandomSource(0L));
+
 	@Nullable
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
 		BlockState state = level.getBlockState(modifiedBlockInfo.pos());
 
-		RandomSource random = RandomSource.create(Mth.getSeed(modifiedBlockInfo.pos()));
+		XoroshiroRandomSource random = REUSABLE_RANDOM.get();
+		random.setSeed(Mth.getSeed(modifiedBlockInfo.pos()));
 		long i = random.nextLong();
-		// Re-seed the random source for each loop iteration, the positional seed defines the initial random value
 		for (ProcessorRule processorRule : this.rules) {
-			// For better randomness while maintaining determinism, especially for 'binary' outcomes depending on 50% chances
 			random.setSeed(i * 3);
 			i += 115;
 

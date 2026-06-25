@@ -1,8 +1,9 @@
 {
-  "parent": "twilightforest:block/hollow_log_moss",
-  "render_type": "minecraft:cutout",
+  "parent": "twilightforest:block/horizontal_hollow_log_carpet",
   "textures": {
+    "carpet": "twilightforest:block/moss_patch",
     "inner": "minecraft:block/stripped_warped_stem",
+    "overhang": "twilightforest:block/moss_overhang",
     "side": "minecraft:block/warped_stem",
     "top": "minecraft:block/warped_stem_top"
   }

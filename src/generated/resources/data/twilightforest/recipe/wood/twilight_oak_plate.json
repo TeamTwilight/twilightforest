@@ -3,15 +3,12 @@
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": {
-      "item": "twilightforest:twilight_oak_planks"
-    }
+    "#": "twilightforest:twilight_oak_planks"
   },
   "pattern": [
     "##"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:twilight_oak_pressure_plate"
   }
 }

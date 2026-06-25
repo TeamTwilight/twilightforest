@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -229,9 +228,10 @@ public class KnightPhantom extends BaseTFBoss {
 					.withParameter(LootContextParams.ORIGIN, this.getEyePosition())
 					.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
 
-				if (this.lastHurtByPlayer != null) {
-					builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
-						.withLuck(this.lastHurtByPlayer.getLuck());
+				Player lastHurtByPlayerResolved = this.lastHurtByPlayer != null ? this.lastHurtByPlayer.getEntity(serverLevel, Player.class) : null;
+				if (lastHurtByPlayerResolved != null) {
+					builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, lastHurtByPlayerResolved)
+						.withLuck(lastHurtByPlayerResolved.getLuck());
 				}
 
 				if (cause.getEntity() != null) {
@@ -301,7 +301,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
-		if (this.isDamageSourceBlocked(source)) {
+		if (this.isBlocking()) {
 			this.playSound(SoundEvents.SHIELD_BLOCK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 			return false;
 		}
@@ -316,7 +316,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void knockback(double damage, double xRatio, double zRatio) {
-		this.hasImpulse = true;
+		super.knockback(damage, xRatio, zRatio);
 		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
 		float distance = 0.2F;
 		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
@@ -337,7 +337,7 @@ public class KnightPhantom extends BaseTFBoss {
 	//[VanillaCopy] of FlyingMob.travel
 	@Override
 	public void travel(Vec3 vec3) {
-		if (this.isControlledByLocalInstance()) {
+		if (this.isEffectiveAi()) {
 			if (this.isInWater()) {
 				this.moveRelative(0.02F, vec3);
 				this.move(MoverType.SELF, this.getDeltaMovement());
@@ -533,11 +533,11 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.totalKnownKnights = compound.getInt("TotalKnownKnights");
-		this.setNumber(compound.getInt("MyNumber"));
-		this.switchToFormationByNumber(compound.getInt("Formation"));
-		this.setTicksProgress(compound.getInt("TicksProgress"));
-		this.getEntityData().set(IT_IS_OVER, compound.getBoolean("IsItOver"));
+		this.totalKnownKnights = compound.getIntOr("TotalKnownKnights", 0);
+		this.setNumber(compound.getIntOr("MyNumber", 0));
+		this.switchToFormationByNumber(compound.getIntOr("Formation", 0));
+		this.setTicksProgress(compound.getIntOr("TicksProgress", 0));
+		this.getEntityData().set(IT_IS_OVER, compound.getBooleanOr("IsItOver", false));
 	}
 
 	@Override
@@ -620,7 +620,7 @@ public class KnightPhantom extends BaseTFBoss {
 				double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-				this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		} else if (!this.getNearbyKnights().isEmpty() || this.getEntityData().get(IT_IS_OVER)) {
 			if (this.deathTime == DYING_TICKS) { // Poof when going invisible
@@ -652,7 +652,7 @@ public class KnightPhantom extends BaseTFBoss {
 					double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-					this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}

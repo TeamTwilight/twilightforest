@@ -1,6 +1,7 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -90,7 +91,7 @@ public class LichMinionsGoal extends Goal {
 		if (this.lich.getAttackCooldown() == 0) {
 			if (dist < 2.0F) {
 				// melee attack
-				this.lich.doHurtTarget(targetedEntity);
+				this.lich.doHurtTarget((ServerLevel) this.lich.level(), targetedEntity);
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < ATTACK_RANGE && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
@@ -129,7 +130,7 @@ public class LichMinionsGoal extends Goal {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.level(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			EventHooks.finalizeMobSpawn(minion, accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), EntitySpawnReason.MOB_SUMMONED, null);
+			EventHooks.finalizeMobSpawn(minion, accessor, accessor.getCurrentDifficultyAt(BlockPos.containing(minionSpot)), EntitySpawnReason.MOB_SUMMONED, null);
 			this.lich.level().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);

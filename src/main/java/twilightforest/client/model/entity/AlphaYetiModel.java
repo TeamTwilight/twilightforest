@@ -29,7 +29,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 				.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create()
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.ZERO);
@@ -215,5 +215,10 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 		stack.scale(0.2F, 0.2F, 0.2F);
 		stack.translate(0.0F, -1.5F, 0.0F);
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(AlphaYetiRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
 	}
 }

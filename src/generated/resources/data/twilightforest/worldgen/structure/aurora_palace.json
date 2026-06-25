@@ -45,13 +45,19 @@
           "generation": 3,
           "pages": [
             {
-              "raw": "{\"translate\":\"twilightforest.book.icetower.1\"}"
+              "raw": {
+                "translate": "twilightforest.book.icetower.1"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.icetower.2\"}"
+              "raw": {
+                "translate": "twilightforest.book.icetower.2"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.icetower.3\"}"
+              "raw": {
+                "translate": "twilightforest.book.icetower.3"
+              }
             }
           ],
           "resolved": true,

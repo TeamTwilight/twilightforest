@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.player;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleClassProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 import twilightforest.asm.ASMUtil;
@@ -16,28 +13,54 @@ import java.util.stream.Stream;
 /**
  * {@link twilightforest.asmhooks.PlayerHooks#getFoodExhaustion}
  */
-public class ReduceMovementFoodExhaustionTransformer implements ITransformer<MethodNode> {
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
+public class ReduceMovementFoodExhaustionTransformer extends SimpleClassProcessor {
+
+	private final Set<Target> targets;
+	private final ProcessorName name;
+
+	public ReduceMovementFoodExhaustionTransformer() {
+		this.targets = Set.of(
+			new Target("net.minecraft.server.level.ServerPlayer"),
+			new Target("net.minecraft.world.entity.player.Player")
+		);
+		this.name = new ProcessorName("twilightforest", "player");
 	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public ProcessorName name() {
+		return this.name;
+	}
+
+	@Override
+	public Set<Target> targets() {
+		return this.targets;
+	}
+
+	@Override
+	public void transform(ClassNode classNode, SimpleTransformationContext context) {
+		for (MethodNode method : classNode.methods) {
+			if (("checkMovementStatistics".equals(method.name) && "(DDD)V".equals(method.desc)) ||
+				("jumpFromGround".equals(method.name) && "()V".equals(method.desc))) {
+				transformMethod(method);
+			}
+		}
+	}
+
+	private void transformMethod(MethodNode method) {
 		Stream.concat(
-			ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+			ASMUtil.findMethodInstructions(method, Opcodes.INVOKEVIRTUAL,
 				"net/minecraft/world/entity/player/Player",
 				"causeFoodExhaustion",
 				"(F)V"
 			),
-			ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+			ASMUtil.findMethodInstructions(method, Opcodes.INVOKEVIRTUAL,
 				"net/minecraft/server/level/ServerPlayer",
 				"causeFoodExhaustion",
 				"(F)V"
 			)
-		).forEach(target -> node.instructions.insertBefore(
+		).forEach(target -> method.instructions.insertBefore(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
@@ -47,27 +70,5 @@ public class ReduceMovementFoodExhaustionTransformer implements ITransformer<Met
 				)
 			)
 		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(
-			Target.targetMethod(
-				"net/minecraft/server/level/ServerPlayer",
-				"checkMovementStatistics",
-				"(DDD)V"
-			),
-			Target.targetMethod(
-				"net/minecraft/world/entity/player/Player",
-				"jumpFromGround",
-				"()V"
-			)
-		);
 	}
 }

@@ -248,5 +248,8 @@
       "path": "frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.lucid_lands.title"
+  },
   "width": 48
 }

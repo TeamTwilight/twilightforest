@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -155,14 +156,18 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
-						this.attacker.doBreathAttack(possibleEntity);
+						if (this.attacker.level() instanceof ServerLevel server) {
+							this.attacker.doBreathAttack(server, possibleEntity);
+						}
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos.isPresent()) {
 					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
-						this.attacker.doBreathAttack(possibleEntity);
+						if (this.attacker.level() instanceof ServerLevel server) {
+							this.attacker.doBreathAttack(server, possibleEntity);
+						}
 						hitDist = possibleDist;
 					}
 				}

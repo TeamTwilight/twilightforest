@@ -44,9 +44,6 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 
 	@Override
 	public void doPostHurtEffects(LivingEntity target) {
-		if (this.parentArrow != null) {
-			this.parentArrow.doPostHurtEffects(target);
-		}
 		super.doPostHurtEffects(target);
 	}
 }

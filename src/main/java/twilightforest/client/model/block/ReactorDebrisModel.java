@@ -1,39 +1,68 @@
 package twilightforest.client.model.block;
 
-import com.google.common.base.MoreObjects;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.DelegateBakedModel;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
 import twilightforest.client.renderer.block.ReactorDebrisRenderer;
 
+import java.util.List;
 
-public class ReactorDebrisModel extends DelegateBakedModel {
-	public static final ModelProperty<ResourceLocation> TEXTURE_FOR_PARTICLE = new ModelProperty<>();
-	public ReactorDebrisModel(BakedModel defaultModel) {
-		super(defaultModel);
+public class ReactorDebrisModel implements DynamicBlockStateModel {
+
+	private final BlockStateModel wrappedModel;
+
+	public ReactorDebrisModel(BlockStateModel wrappedModel) {
+		this.wrappedModel = wrappedModel;
 	}
 
 	@Override
-	public @NotNull ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData) {
-		if (!(level.getBlockEntity(pos) instanceof ReactorDebrisBlockEntity reactorDebrisBlockEntity)
-			|| !(level instanceof ClientLevel clientLevel))
-			return modelData.derive().with(TEXTURE_FOR_PARTICLE, ReactorDebrisBlockEntity.DEFAULT_TEXTURE).build();
-		final ResourceLocation textureForParticle = reactorDebrisBlockEntity.textures[clientLevel.random.nextInt(reactorDebrisBlockEntity.textures.length)];
-		return modelData.derive().with(TEXTURE_FOR_PARTICLE, textureForParticle).build();
+	public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+		// Determine the particle texture from the block entity
+		Identifier textureForParticle = ReactorDebrisBlockEntity.DEFAULT_TEXTURE;
+		if (level.getBlockEntity(pos) instanceof ReactorDebrisBlockEntity reactorDebrisBlockEntity
+			&& level instanceof ClientLevel clientLevel) {
+			textureForParticle = reactorDebrisBlockEntity.textures[clientLevel.getRandom().nextInt(reactorDebrisBlockEntity.textures.length)];
+		}
+		Material.Baked particleMaterial = new Material.Baked(ReactorDebrisRenderer.getSprite(textureForParticle), false);
+
+		// Delegate to the wrapped model
+		this.wrappedModel.collectParts(level, pos, state, random, parts);
 	}
 
 	@Override
-	public @NotNull TextureAtlasSprite getParticleIcon(ModelData data) {
-		ResourceLocation texturePath = MoreObjects.firstNonNull(data.get(TEXTURE_FOR_PARTICLE), ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
-		return ReactorDebrisRenderer.getSprite(texturePath);
+	@Deprecated
+	public void collectParts(RandomSource random, @NotNull List<BlockStateModelPart> parts) {
+		this.wrappedModel.collectParts(random, parts);
+	}
+
+	@Override
+	public Material.Baked particleMaterial(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return this.wrappedModel.particleMaterial(level, pos, state);
+	}
+
+	@Override
+	@Deprecated
+	public Material.Baked particleMaterial() {
+		return this.wrappedModel.particleMaterial();
+	}
+
+	@Override
+	public int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return this.wrappedModel.materialFlags(level, pos, state);
+	}
+
+	@Override
+	@Deprecated
+	public int materialFlags() {
+		return this.wrappedModel.materialFlags();
 	}
 }

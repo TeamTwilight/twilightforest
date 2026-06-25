@@ -390,7 +390,10 @@ public abstract class BiomeHelper {
 			.downfall(0.1F)
 			.putAttributes(defaultEnvironmentBuilderNoParticles())
 			.specialEffects(defaultAmbientBuilder().build())
-			.mobSpawnSettings(new MobSpawnSettings.Builder().build())
+			.mobSpawnSettings(new MobSpawnSettings.Builder()
+				.addSpawn(MobCategory.WATER_CREATURE, 2, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 1, 4))
+				.addSpawn(MobCategory.WATER_AMBIENT, 5, new MobSpawnSettings.SpawnerData(EntityType.SALMON, 1, 5))
+				.build())
 			.generationSettings(biome.build());
 	}
 
@@ -410,7 +413,10 @@ public abstract class BiomeHelper {
 			.downfall(0.1F)
 			.putAttributes(defaultEnvironmentBuilderNoParticles())
 			.specialEffects(defaultAmbientBuilder().build())
-			.mobSpawnSettings(new MobSpawnSettings.Builder().build())
+			.mobSpawnSettings(new MobSpawnSettings.Builder()
+				.addSpawn(MobCategory.WATER_CREATURE, 2, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 1, 4))
+				.addSpawn(MobCategory.WATER_AMBIENT, 5, new MobSpawnSettings.SpawnerData(EntityType.SALMON, 1, 5))
+				.build())
 			.generationSettings(biome.build());
 	}
 
@@ -735,7 +741,7 @@ public abstract class BiomeHelper {
 
 	public static EnvironmentAttributeMap.Builder defaultEnvironmentBuilderNoParticles() {
 		return EnvironmentAttributeMap.builder()
-			.set(EnvironmentAttributes.FOG_COLOR, 0xC0FFD8)
+			.set(EnvironmentAttributes.FOG_COLOR, 0x3A4E42)
 			.set(EnvironmentAttributes.WATER_FOG_COLOR, 0x050533)
 			.set(EnvironmentAttributes.SKY_COLOR, 0x20224A);
 	}

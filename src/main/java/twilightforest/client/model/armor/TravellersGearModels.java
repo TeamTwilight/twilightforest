@@ -13,7 +13,7 @@ public class TravellersGearModels {
 		MeshDefinition mesh = HumanoidModel.createMesh(deform, 0);
 		PartDefinition root = mesh.getRoot();
 
-		root.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		root.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		return mesh;
 	}

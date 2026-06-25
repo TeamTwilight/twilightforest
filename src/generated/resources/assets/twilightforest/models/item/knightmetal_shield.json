@@ -1,0 +1,128 @@
+{
+  "parent": "builtin/entity",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        0.0,
+        180.0,
+        5.0
+      ],
+      "scale": [
+        1.25,
+        1.25,
+        1.25
+      ],
+      "translation": [
+        10.0,
+        0.0,
+        -10.0
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0.0,
+        180.0,
+        5.0
+      ],
+      "scale": [
+        1.25,
+        1.25,
+        1.25
+      ],
+      "translation": [
+        -10.0,
+        1.75,
+        -10.0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0.0,
+        180.0,
+        0.0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "translation": [
+        -2.0,
+        4.0,
+        -5.0
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        4.0,
+        4.0,
+        2.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        15.0,
+        -25.0,
+        -5.0
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "translation": [
+        3.0,
+        2.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        10.51,
+        6.0,
+        12.0
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        10.51,
+        6.0,
+        -4.0
+      ]
+    }
+  },
+  "gui_light": "front",
+  "textures": {
+    "particle": "twilightforest:block/towerwood"
+  }
+}

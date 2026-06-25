@@ -7,6 +7,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +32,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.Component;
@@ -74,7 +76,7 @@ public class ProgressionEvents {
 	/**
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
 	 */
-	private void preventLockedAreaBlockBreaking(BlockEvent.BreakEvent event) {
+	private void preventLockedAreaBlockBreaking(BreakBlockEvent event) {
 		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
 
 		BlockPos pos = event.getPos();
@@ -230,8 +232,8 @@ public class ProgressionEvents {
 
 			for (ItemEntity entityItem : itemList) {
 				if (entityItem.getItem().is(TFItemTags.PORTAL_ACTIVATOR) &&
-					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(level.getBlockState(entityItem.blockPosition())) &&
-					Objects.equals(entityItem.getOwner(), player)) {
+				TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(level.getBlockState(entityItem.blockPosition())) &&
+				Objects.equals(entityItem.getOwner(), player)) {
 
 					qualified = entityItem;
 					break;
@@ -248,7 +250,7 @@ public class ProgressionEvents {
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(net.minecraft.network.chat.Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(net.minecraft.network.chat.Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), new ItemStack(info.getIcon().item(), info.getIcon().count())));
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
@@ -263,7 +265,7 @@ public class ProgressionEvents {
 				double vy = rand.nextGaussian() * 0.02D;
 				double vz = rand.nextGaussian() * 0.02D;
 
-				level.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				level.addParticle(SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1.0F), qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
 
 			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))

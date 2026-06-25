@@ -7,11 +7,10 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// FIXME Using IDs to enumerate lists of mob spawn tables is a bad idea... Using String for now in the config, will transition this implementation detail later
 public interface ControlledSpawns {
 
 	String CODEC_NAME = "controlled_spawns";
@@ -68,7 +67,7 @@ public interface ControlledSpawns {
 
 		private static Map<String, WeightedList<MobSpawnSettings.SpawnerData>> convertMonsterList(List<WeightedList<MobSpawnSettings.SpawnerData>> lists) {
 			int i = 0;
-			Map<String, WeightedList<MobSpawnSettings.SpawnerData>> map = new HashMap<>();
+			Map<String, WeightedList<MobSpawnSettings.SpawnerData>> map = new LinkedHashMap<>();
 
 			for (WeightedList<MobSpawnSettings.SpawnerData> list : lists) {
 				map.put(String.valueOf(i), list);

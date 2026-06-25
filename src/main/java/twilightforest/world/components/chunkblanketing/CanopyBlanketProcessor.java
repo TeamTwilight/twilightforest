@@ -84,7 +84,6 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
 				int qz = dZ >> 2;
 
 				final int topOccupiedBlock = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
-				// We can use the Deltas here as they are offsets from chunk origin
 				BlockPos surfacePos = chunkOrigin.offset(dX, topOccupiedBlock, dZ);
 
 				if (chunk.getFluidState(surfacePos).is(FluidTags.WATER)) continue;
@@ -109,20 +108,16 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
 				}
 
 				if (thickness > 1) {
-					// We can use the Delta here as it is offset from chunk origin
-					final int dY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
-					BlockPos pos = surfacePos.atY(dY);
+					BlockPos pos = surfacePos.atY(topOccupiedBlock);
 
-					// Skip any blocks over water
 					if (chunk.getBlockState(pos).liquid())
 						continue;
 
-					// manipulate top and bottom
 					int treeBottom = pos.getY() + height - (int) (thickness * 0.5F);
 					int treeTop = treeBottom + (int) (thickness);
 
 					for (int y = treeBottom; y < treeTop; y++) {
-						chunk.setBlockState(pos.atY(y), canopyBlock.getState(level, random, pos), 3); //TODO Idk, verify this.
+						chunk.setBlockState(pos.atY(y), canopyBlock.getState(level, random, pos), 3);
 					}
 				}
 			}

@@ -3,7 +3,7 @@ package twilightforest.datagen.data.tags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlockEntities;
@@ -11,7 +11,7 @@ import twilightforest.tags.TFBlockEntityTypeTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BlockEntityTypeTagGenerator extends TagsProvider<BlockEntityType<?>> {
+public class BlockEntityTypeTagGenerator extends KeyTagProvider<BlockEntityType<?>> {
 
 	public BlockEntityTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, Registries.BLOCK_ENTITY_TYPE, provider, TwilightForestMod.ID);

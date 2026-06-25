@@ -1,5 +1,7 @@
 package twilightforest.util;
 
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.DataResult;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -7,10 +9,12 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -34,15 +38,33 @@ import java.util.function.Consumer;
 public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(final Player player, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag) {
-		return consumeInventoryItem(player.getInventory().armor, item, persistentTag, saveItemToTag, player.registryAccess())
-			|| consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag, player.registryAccess())
-			|| consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag, player.registryAccess());
+		return consumeInventoryItem(getArmorItems(player), item, persistentTag, saveItemToTag, player.registryAccess())
+			|| consumeInventoryItem(player.getInventory().getNonEquipmentItems(), item, persistentTag, saveItemToTag, player.registryAccess())
+			|| consumeInventoryItem(getOffhandItems(player), item, persistentTag, saveItemToTag, player.registryAccess());
+	}
+
+	private static NonNullList<ItemStack> getArmorItems(Player player) {
+		NonNullList<ItemStack> armor = NonNullList.create();
+		armor.add(player.getItemBySlot(EquipmentSlot.FEET));
+		armor.add(player.getItemBySlot(EquipmentSlot.LEGS));
+		armor.add(player.getItemBySlot(EquipmentSlot.CHEST));
+		armor.add(player.getItemBySlot(EquipmentSlot.HEAD));
+		return armor;
+	}
+
+	private static NonNullList<ItemStack> getOffhandItems(Player player) {
+		NonNullList<ItemStack> offhand = NonNullList.create();
+		offhand.add(player.getItemBySlot(EquipmentSlot.OFFHAND));
+		return offhand;
 	}
 
 	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		for (ItemStack stack : stacks) {
 			if (stack.is(item.asItem())) {
-				if (saveItemToTag) persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, stack.save(provider));
+				if (saveItemToTag) {
+					DataResult<net.minecraft.nbt.Tag> result = ItemStack.OPTIONAL_CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack);
+					result.result().ifPresent(tag -> persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, tag));
+				}
 				BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 				if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
 					String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
@@ -60,13 +82,17 @@ public class TFItemStackUtils {
 	}
 
 	public static NonNullList<ItemStack> sortArmorForCasket(Player player) {
-		NonNullList<ItemStack> armor = player.getInventory().armor;
+		NonNullList<ItemStack> armor = NonNullList.create();
+		armor.add(player.getItemBySlot(EquipmentSlot.FEET));
+		armor.add(player.getItemBySlot(EquipmentSlot.LEGS));
+		armor.add(player.getItemBySlot(EquipmentSlot.CHEST));
+		armor.add(player.getItemBySlot(EquipmentSlot.HEAD));
 		Collections.reverse(armor);
 		return armor;
 	}
 
 	public static NonNullList<ItemStack> sortInvForCasket(Player player) {
-		NonNullList<ItemStack> inv = player.getInventory().items;
+		NonNullList<ItemStack> inv = player.getInventory().getNonEquipmentItems();
 		NonNullList<ItemStack> sorted = NonNullList.create();
 		//hotbar at the bottom
 		sorted.addAll(inv.subList(9, 36));
@@ -88,18 +114,8 @@ public class TFItemStackUtils {
 		return result;
 	}
 
-	public static boolean hasToolMaterial(ItemStack stack, Tier tier) {
-
-		Item item = stack.getItem();
-
-		// see TileEntityFurnace.getItemBurnTime
-		if (item instanceof TieredItem tieredItem && tier.equals(tieredItem.getTier())) {
-			return true;
-		}
-		if (item instanceof SwordItem sword && tier.equals(sword.getTier())) {
-			return true;
-		}
-		return item instanceof HoeItem hoe && tier.equals(hoe.getTier());
+	public static boolean hasToolMaterial(ItemStack stack) {
+		return stack.has(DataComponents.TOOL);
 	}
 
 
@@ -131,25 +147,33 @@ public class TFItemStackUtils {
 		List<ItemStack> blockedItems = new ArrayList<>();
 
 		for (int i = 0; i < tag.size(); ++i) {
-			CompoundTag compoundtag = tag.getCompound(i);
-			int j = compoundtag.getByte("Slot") & 255;
-			ItemStack itemstack = ItemStack.parseOptional(registryAccess, compoundtag);
+			CompoundTag compoundtag = tag.getCompound(i).orElse(new CompoundTag());
+			int j = compoundtag.getByte("Slot").orElse((byte)0) & 255;
+			ItemStack itemstack = ItemStack.OPTIONAL_CODEC.decode(registryAccess.createSerializationContext(NbtOps.INSTANCE), compoundtag).result().map(Pair::getFirst).orElse(ItemStack.EMPTY);
 			if (!itemstack.isEmpty()) {
-				if (j < inventory.items.size()) {
-					if (inventory.items.get(j).isEmpty()) {
-						inventory.items.set(j, itemstack);
+				if (j < inventory.getNonEquipmentItems().size()) {
+					if (inventory.getNonEquipmentItems().get(j).isEmpty()) {
+						inventory.getNonEquipmentItems().set(j, itemstack);
 					} else {
 						blockedItems.add(itemstack);
 					}
-				} else if (j >= 100 && j < inventory.armor.size() + 100) {
-					if (inventory.armor.get(j - 100).isEmpty()) {
-						inventory.armor.set(j - 100, itemstack);
+				} else if (j >= 100 && j < 104) {
+					// Map old armor slot numbers (100-103) to equipment slots
+					EquipmentSlot slot = switch (j - 100) {
+						case 0 -> EquipmentSlot.FEET;
+						case 1 -> EquipmentSlot.LEGS;
+						case 2 -> EquipmentSlot.CHEST;
+						case 3 -> EquipmentSlot.HEAD;
+						default -> null;
+					};
+					if (slot != null && inventory.getItem(j).isEmpty()) {
+						inventory.setItem(j, itemstack);
 					} else {
 						blockedItems.add(itemstack);
 					}
-				} else if (j >= 150 && j < inventory.offhand.size() + 150) {
-					if (inventory.offhand.get(j - 150).isEmpty()) {
-						inventory.offhand.set(j - 150, itemstack);
+				} else if (j >= 150 && j < 151) {
+					if (inventory.getItem(40).isEmpty()) {
+						inventory.setItem(40, itemstack);
 					} else {
 						blockedItems.add(itemstack);
 					}

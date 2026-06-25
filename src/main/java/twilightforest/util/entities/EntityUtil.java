@@ -14,10 +14,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.entity.decoration.Painting;
-import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.entity.decoration.painting.Painting;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,6 +32,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -138,11 +142,13 @@ public class EntityUtil {
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
 	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
 		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		boolean flag;
 		if (entity.level() instanceof ServerLevel serverlevel) {
 			f = EnchantmentHelper.modifyDamage(serverlevel, entity.getWeaponItem(), entity, source, f);
+			flag = victim.hurtServer(serverlevel, source, f);
+		} else {
+			flag = false;
 		}
-
-		boolean flag = victim.hurt(source, f);
 		if (flag) {
 			float f1 = getKnockback(entity, victim, source);
 			if (f1 > 0.0F && victim instanceof LivingEntity livingentity) {
@@ -172,7 +178,7 @@ public class EntityUtil {
 	@Nullable
 	private static <T extends Entity> T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
 		try {
-			return type.create(levelAccessor.getLevel());
+			return type.create(levelAccessor.getLevel(), EntitySpawnReason.LOAD);
 		} catch (Exception exception) {
 			return null;
 		}
@@ -181,17 +187,7 @@ public class EntityUtil {
 	public static boolean tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
 		if (chosenPainting == null) return false;
 
-		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
-
-		painting.setPos(pos.getX(), pos.getY(), pos.getZ());
-		try {
-			handle_HangingEntity_setDirection.invoke(painting, direction);
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-
-			return false;
-		}
-		painting.setVariant(chosenPainting);
+		Painting painting = new Painting(world.getLevel(), pos, direction, chosenPainting);
 
 		if (checkValidPaintingPosition(world, painting)) {
 			world.addFreshEntity(painting);
@@ -210,7 +206,7 @@ public class EntityUtil {
 	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).holders().toList()) {
+		for (Holder<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).listElements().toList()) {
 			if (exactMeasurements) {
 				if (art.value().width() == width && art.value().height() == height) {
 					valid.add(art);
@@ -232,7 +228,7 @@ public class EntityUtil {
 	public static List<Holder<PaintingVariant>> getPaintingsOfSizeOrSmaller(WorldGenLevel level, TagKey<PaintingVariant> lichTowerPaintings, int width, int height) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
+		for (Holder<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
 			if (art.value().width() <= width && art.value().height() <= height) {
 				valid.add(art);
 			}
@@ -275,7 +271,7 @@ public class EntityUtil {
 				ChunkAccess chunk = world.getChunk(i1, j1, ChunkStatus.STRUCTURE_STARTS);
 				if (chunk instanceof ProtoChunk proto) {
 					proto.getEntities().forEach(nbt -> {
-						Entity entity = EntityType.loadEntityRecursive(nbt, world.getLevel(), e -> e);
+						Entity entity = EntityType.loadEntityRecursive(nbt, world.getLevel(), EntitySpawnReason.LOAD, e -> e);
 						if (entity != null && boundingBox.intersects(entity.getBoundingBox())) {
 							list.add(entity);
 						}
@@ -290,12 +286,13 @@ public class EntityUtil {
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
-		var newEntity = newType.create(level);
+		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
 		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
-				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
+				ConversionParams params = ConversionParams.single(mob, true, true);
+				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), params, m -> {});
 			} else {
 				newEntity.copyPosition(oldEntity);
 
@@ -305,7 +302,7 @@ public class EntityUtil {
 							ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
 							if (!itemstack.isEmpty()) {
 								mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
-								mob.setDropChance(equipmentslot, oldMob.getEquipmentDropChance(equipmentslot));
+								mob.setDropChance(equipmentslot, oldMob.getDropChances().byEquipment(equipmentslot));
 							}
 						}
 					}
@@ -318,7 +315,7 @@ public class EntityUtil {
 			}
 			try { // try copying what can be copied
 				UUID uuid = newEntity.getUUID();
-				newEntity.load(oldEntity.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+				newEntity.restoreFrom(oldEntity);
 				newEntity.setUUID(uuid);
 				if (newEntity instanceof LivingEntity living) {
 					living.setHealth(living.getMaxHealth());
@@ -327,8 +324,8 @@ public class EntityUtil {
 				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
 			}
 
-			if (oldEntity instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
-				newEntity.spawnAtLocation(Items.SADDLE);
+			if (oldEntity instanceof Mob oldMob && oldMob.isSaddled() && newEntity instanceof Mob newMobEntity && !newMobEntity.isSaddled()) {
+				newEntity.spawnAtLocation(level, Items.SADDLE);
 			}
 
 			if (newEntity instanceof Mob mob) {
@@ -337,13 +334,13 @@ public class EntityUtil {
 
 				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
 					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
-					mob.spawnAtLocation(itemstack);
+					mob.spawnAtLocation(level, itemstack);
 				}
 			}
 
 			if (!passengerSave.isEmpty()) {
 				for (var entity : passengerSave) {
-					entity.startRiding(newEntity, true);
+					entity.startRiding(newEntity, true, true);
 				}
 			}
 
@@ -357,7 +354,7 @@ public class EntityUtil {
 	@Nullable
 	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
 		try {
-			return type.create(level.getLevel());
+			return type.create(level.getLevel(), EntitySpawnReason.LOAD);
 		} catch (Exception exception) {
 			return null;
 		}

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:arctic_fur_block"
+            "items": "#c:storage_blocks/arctic_fur"
           }
         ]
       },

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_fence",
   "key": {
-    "#": {
-      "item": "twilightforest:dark_planks"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "twilightforest:dark_planks",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     "#S#",

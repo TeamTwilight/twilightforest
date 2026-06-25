@@ -1,13 +1,18 @@
 {
-  "parent": "builtin/entity",
+  "gui_light": "front",
   "textures": {
     "particle": "block/soul_sand"
   },
   "display": {
+    "gui": {
+      "rotation": [ 30, 45, 0 ],
+      "translation": [ 0, 1.5, 10 ],
+      "scale": [ 0.9, 0.9, 0.9 ]
+    },
     "head": {
       "rotation": [ 180, 0, 180 ],
       "translation": [ 0, 6, 0 ],
-      "scale": [ 1.6, 1.6, 1.6 ]
+      "scale": [ 2.0, 2.0, 2.0 ]
     },
     "fixed": {
       "rotation": [ 0, 180, 0 ],

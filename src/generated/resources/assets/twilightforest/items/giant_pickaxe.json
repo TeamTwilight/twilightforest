@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/giant_pickaxe_gui"
+        },
+        "when": "gui"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/giant_pickaxe"
+    },
+    "property": "minecraft:display_context"
+  }
+}

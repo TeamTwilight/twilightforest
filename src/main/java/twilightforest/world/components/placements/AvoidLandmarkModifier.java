@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -91,13 +92,12 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 			return false;
 
 		for (long packedChunkCoord : coordsForStarts) {
-			int startChunkX = (int) packedChunkCoord;
-			int startChunkZ = (int) (packedChunkCoord >> 32);
+			int startChunkX = ChunkPos.getX(packedChunkCoord);
+			int startChunkZ = ChunkPos.getZ(packedChunkCoord);
 
 			ChunkAccess startChunk = worldDecoratingHelper.getLevel().getChunk(startChunkX, startChunkZ);
-			//noinspection ConstantValue
-			if (startChunk == null) { // Underlying LevelReader's getChunk() is nullable
-				continue; // FIXME Is the chunk actually never null? Is it possible for the start's chunk to be unloaded? Leave break-point here to find out!
+			if (startChunk == null) {
+				continue;
 			}
 
 			StructureStart startForStructure = startChunk.getStartForStructure(structure);

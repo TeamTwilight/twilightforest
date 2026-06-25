@@ -2,21 +2,22 @@ package twilightforest.client.model.armor;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 
-public class TFArmorModel extends HumanoidModel<LivingEntity> {
+public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 
 	public TFArmorModel(ModelPart root) {
 		super(root);
 	}
 
 	@Override
-	public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		// [VanillaCopy] ArmorStandArmorModel
-		// this prevents helmets from always facing south, and the armor "breathing" on the stand
-		if (entity instanceof ArmorStand stand) {
+	public void setupAnim(HumanoidRenderState state) {
+		// TODO: 26.1.2 - HumanoidRenderState no longer has getEntity(); ArmorStand pose handling needs rework
+		/*
+		if (state.getEntity() instanceof ArmorStand stand) {
 			this.head.xRot = Mth.DEG_TO_RAD * stand.getHeadPose().getX();
 			this.head.yRot = Mth.DEG_TO_RAD * stand.getHeadPose().getY();
 			this.head.zRot = Mth.DEG_TO_RAD * stand.getHeadPose().getZ();
@@ -37,7 +38,9 @@ public class TFArmorModel extends HumanoidModel<LivingEntity> {
 			this.rightLeg.zRot = Mth.DEG_TO_RAD * stand.getRightLegPose().getZ();
 			this.hat.copyFrom(this.head);
 		} else {
-			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		} // TF - Defer to super otherwise
+			super.setupAnim(state);
+		}
+		*/
+		super.setupAnim(state);
 	}
 }

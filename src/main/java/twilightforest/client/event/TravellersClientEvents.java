@@ -1,15 +1,17 @@
 package twilightforest.client.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.Input;
+import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
@@ -17,6 +19,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,15 +27,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.phys.Vec2;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.*;
@@ -41,6 +45,8 @@ import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
+
+import java.lang.reflect.Field;
 
 @Component(dist = Dist.CLIENT)
 public class TravellersClientEvents {
@@ -66,6 +72,26 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::renderGlovesInFirstPerson);
 	}
 
+	// Reflection-based helper to set the protected moveVector field on ClientInput
+	private static final Field MOVE_VECTOR_FIELD;
+
+	static {
+		try {
+			MOVE_VECTOR_FIELD = ClientInput.class.getDeclaredField("moveVector");
+			MOVE_VECTOR_FIELD.setAccessible(true);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException("Failed to find ClientInput.moveVector field", e);
+		}
+	}
+
+	private static void setMoveVector(ClientInput input, Vec2 vec) {
+		try {
+			MOVE_VECTOR_FIELD.set(input, vec);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("Failed to set ClientInput.moveVector", e);
+		}
+	}
+
 	private void handleAgileRanger(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
@@ -76,9 +102,10 @@ public class TravellersClientEvents {
 		ItemStack stack = localPlayer.getUseItem();
 		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
 		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && isLegalItem) {
-			Input input = event.getInput();
-			input.leftImpulse *= agileRangerModifier;
-			input.forwardImpulse *= agileRangerModifier;
+			ClientInput input = event.getInput();
+			// In 26.1.2, ClientInput.moveVector is protected -- use reflection to modify it
+			Vec2 old = input.getMoveVector();
+			setMoveVector(input, new Vec2(old.x * agileRangerModifier, old.y * agileRangerModifier));
 		}
 	}
 
@@ -91,42 +118,46 @@ public class TravellersClientEvents {
 		if (attributeInstance == null)
 			return;
 
-		Input input = localPlayer.input;
-		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.forwardImpulse <= 0)
+		ClientInput input = localPlayer.input;
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.getMoveVector().y <= 0)
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-		input.leftImpulse /= multiplier;
+		// In 26.1.2, ClientInput.moveVector is protected -- use reflection to modify it
+		Vec2 old = input.getMoveVector();
+		setMoveVector(input, new Vec2((float)(old.x / multiplier), old.y));
 	}
 
 	private void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getData(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
-		localPlayer.input.forwardImpulse /= 0.2F;
-		localPlayer.input.leftImpulse /= 0.2F;
+		// In 26.1.2, ClientInput.moveVector is protected -- use reflection to modify it
+		Vec2 old = localPlayer.input.getMoveVector();
+		setMoveVector(localPlayer.input, new Vec2(old.x / 0.2F, old.y / 0.2F));
 	}
 
 	private void handleSidestep(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.onGround())
 			return;
 
-		Input input = localPlayer.input;
+		ClientInput input = localPlayer.input;
+		float leftImpulse = input.getMoveVector().x;
 		boolean lastImpulseZero = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
-		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.leftImpulse);
+		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(leftImpulse);
 		int currentTime = localPlayer.tickCount;
 		int lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
-		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.leftImpulse != 0) {
-			boolean isLeftSidestep = input.leftImpulse > 0;
+		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && leftImpulse != 0) {
+			boolean isLeftSidestep = leftImpulse > 0;
 			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
 				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
 			}
 		}
 
-		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.leftImpulse);
-		if (input.leftImpulse != 0) {
+		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, leftImpulse);
+		if (leftImpulse != 0) {
 			localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
-			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.leftImpulse);
+			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, leftImpulse);
 		}
 	}
 
@@ -239,25 +270,70 @@ public class TravellersClientEvents {
 	}
 
 	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
-		return !key.matches(event.getKey(), event.getScanCode()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
+		// 26.1.2: KeyMapping.matches now takes a single KeyEvent parameter instead of (int key, int scancode)
+		return !key.matches(new net.minecraft.client.input.KeyEvent(event.getKey(), event.getScanCode(), event.getModifiers())) || Minecraft.getInstance().screen != null;
 	}
 
-	@SuppressWarnings("unchecked") //meh
 	private void renderGlovesInFirstPerson(RenderArmEvent event) {
 		if (TFConfig.firstPersonGloveOverlay) {
 			AbstractClientPlayer player = event.getPlayer();
 			ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
 			if (chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) && !chestStack.has(TFDataComponents.EMPERORS_CLOTH)) {
-				PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-				HumanoidModel<AbstractClientPlayer> model = (HumanoidModel<AbstractClientPlayer>) IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(player, chestStack, EquipmentSlot.CHEST, renderer.getModel());
-				ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
-				model.attackTime = 0.0F;
-				model.crouching = false;
-				model.swimAmount = 0.0F;
-				model.setupAnim(player, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-				armPart.xRot = 0.0F;
+				event.setCanceled(true);
+				boolean rightArm = event.getArm() == HumanoidArm.RIGHT;
+				SubmitNodeCollector collector = event.getSubmitNodeCollector();
+				PoseStack poseStack = event.getPoseStack();
+
+				// Get player model for arm pose setup (same as AvatarRenderer.renderHand)
+				AvatarRenderer<AbstractClientPlayer> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getPlayerRenderer(player);
+				PlayerModel playerModel = renderer.getModel();
+				ModelPart armPart = rightArm ? playerModel.rightArm : playerModel.leftArm;
+				armPart.resetPose();
+				armPart.visible = true;
+				playerModel.leftSleeve.visible = player.isModelPartShown(PlayerModelPart.LEFT_SLEEVE);
+				playerModel.rightSleeve.visible = player.isModelPartShown(PlayerModelPart.RIGHT_SLEEVE);
+				playerModel.leftArm.zRot = -0.1F;
+				playerModel.rightArm.zRot = 0.1F;
+
+				// Get the player's skin texture
+				Identifier skinTexture = player.getSkin().body().texturePath();
+
+				// Render the player's arm skin FIRST
+				collector.submitModelPart(
+					armPart,
+					poseStack,
+					RenderTypes.entityTranslucent(skinTexture),
+					event.getPackedLight(),
+					OverlayTexture.NO_OVERLAY,
+					null
+				);
+
+				// Get the glove model part from the baked armor model layer
+				boolean slim = playerModel.slim;
+				ModelPart gloveRoot = Minecraft.getInstance().getEntityModels().bakeLayer(
+					slim ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES
+				);
+				gloveRoot.getAllParts().forEach(part -> part.skipDraw = true);
+				String armName = rightArm ? "right_arm" : "left_arm";
+				ModelPart gloveArmPart = gloveRoot.getChild(armName);
+				gloveArmPart.skipDraw = false;
+				gloveArmPart.visible = true;
+
+				// Copy the pose from the vanilla arm to the glove arm
+				gloveArmPart.xRot = armPart.xRot;
+				gloveArmPart.yRot = armPart.yRot;
+				gloveArmPart.zRot = armPart.zRot;
+
+				// Render the glove ON TOP of the arm skin
 				Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
-				armPart.render(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.armorCutoutNoCull(gloveLocation)), event.getPackedLight(), OverlayTexture.NO_OVERLAY);
+				collector.submitModelPart(
+					gloveArmPart,
+					poseStack,
+					RenderTypes.armorCutoutNoCull(gloveLocation),
+					event.getPackedLight(),
+					OverlayTexture.NO_OVERLAY,
+					null
+				);
 			}
 		}
 	}

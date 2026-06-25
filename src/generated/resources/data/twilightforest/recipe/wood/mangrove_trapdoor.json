@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "wooden_trapdoor",
   "key": {
-    "#": {
-      "item": "twilightforest:mangrove_planks"
-    }
+    "#": "twilightforest:mangrove_planks"
   },
   "pattern": [
     "###",

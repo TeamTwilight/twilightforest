@@ -76,26 +76,26 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	public HollowTreeTrunk(StructurePieceSerializationContext context, CompoundTag tag) {
 		super(TFStructurePieceTypes.TFHTTr.value(), tag);
 
-		this.height = tag.getInt("trunkHeight");
-		this.radius = tag.getInt("trunkRadius");
+		this.height = tag.getIntOr("trunkHeight", 0);
+		this.radius = tag.getIntOr("trunkRadius", 0);
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 
-		this.log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log")).result().orElse(HollowTreePiece.DEFAULT_LOG);
-		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
-		this.root = BlockStateProvider.CODEC.parse(ops, tag.getCompound("root")).result().orElse(HollowTreePiece.DEFAULT_ROOT);
-		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
-		this.vine = BlockStateProvider.CODEC.parse(ops, tag.getCompound("vine")).result().orElse(HollowTreePiece.DEFAULT_VINE);
-		this.bug = BlockStateProvider.CODEC.parse(ops, tag.getCompound("bug")).result().orElse(HollowTreePiece.DEFAULT_BUG);
-		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
-		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
-		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
+		this.log = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("log")).result().orElse(HollowTreePiece.DEFAULT_LOG);
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.root = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("root")).result().orElse(HollowTreePiece.DEFAULT_ROOT);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
+		this.vine = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("vine")).result().orElse(HollowTreePiece.DEFAULT_VINE);
+		this.bug = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("bug")).result().orElse(HollowTreePiece.DEFAULT_BUG);
+		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
+		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
-		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("dungeon_loot_table")));
+		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getStringOr("dungeon_loot_table", "")));
 
-		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.parse(tag.getString("dungeon_monster")));
-		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.parse(tag.getStringOr("dungeon_monster", "")));
+		this.dungeonMonster = context.registryAccess().lookup(Registries.ENTITY_TYPE)
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.get(dungeonMonster))
 			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 

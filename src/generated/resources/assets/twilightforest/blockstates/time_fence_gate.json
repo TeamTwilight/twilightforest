@@ -1,372 +1,80 @@
 {
   "variants": {
-    "facing=east,in_wall=false,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_2",
-        "uvlock": true,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_3",
-        "uvlock": true,
-        "y": 270
-      }
-    ],
-    "facing=east,in_wall=false,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_2",
-        "uvlock": true,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_3",
-        "uvlock": true,
-        "y": 270
-      }
-    ],
-    "facing=east,in_wall=true,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_2",
-        "uvlock": true,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_3",
-        "uvlock": true,
-        "y": 270
-      }
-    ],
-    "facing=east,in_wall=true,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_2",
-        "uvlock": true,
-        "y": 270
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_3",
-        "uvlock": true,
-        "y": 270
-      }
-    ],
-    "facing=north,in_wall=false,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_2",
-        "uvlock": true,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_3",
-        "uvlock": true,
-        "y": 180
-      }
-    ],
-    "facing=north,in_wall=false,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_2",
-        "uvlock": true,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_3",
-        "uvlock": true,
-        "y": 180
-      }
-    ],
-    "facing=north,in_wall=true,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_2",
-        "uvlock": true,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_3",
-        "uvlock": true,
-        "y": 180
-      }
-    ],
-    "facing=north,in_wall=true,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_2",
-        "uvlock": true,
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_3",
-        "uvlock": true,
-        "y": 180
-      }
-    ],
-    "facing=south,in_wall=false,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_1",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_2",
-        "uvlock": true
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_3",
-        "uvlock": true
-      }
-    ],
-    "facing=south,in_wall=false,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_1",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_2",
-        "uvlock": true
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_3",
-        "uvlock": true
-      }
-    ],
-    "facing=south,in_wall=true,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_1",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_2",
-        "uvlock": true
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_3",
-        "uvlock": true
-      }
-    ],
-    "facing=south,in_wall=true,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_1",
-        "uvlock": true,
-        "weight": 10
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_2",
-        "uvlock": true
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_3",
-        "uvlock": true
-      }
-    ],
-    "facing=west,in_wall=false,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_2",
-        "uvlock": true,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_3",
-        "uvlock": true,
-        "y": 90
-      }
-    ],
-    "facing=west,in_wall=false,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_2",
-        "uvlock": true,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_open_3",
-        "uvlock": true,
-        "y": 90
-      }
-    ],
-    "facing=west,in_wall=true,open=false": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_2",
-        "uvlock": true,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_3",
-        "uvlock": true,
-        "y": 90
-      }
-    ],
-    "facing=west,in_wall=true,open=true": [
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_1",
-        "uvlock": true,
-        "weight": 10,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_2",
-        "uvlock": true,
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/wood/fence_gate/time/time_fence_gate_wall_open_3",
-        "uvlock": true,
-        "y": 90
-      }
-    ]
+    "facing=east,in_wall=false,open=false": {
+      "model": "twilightforest:block/time_fence_gate",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,in_wall=false,open=true": {
+      "model": "twilightforest:block/time_fence_gate_open",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,in_wall=true,open=false": {
+      "model": "twilightforest:block/time_fence_gate_wall",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,in_wall=true,open=true": {
+      "model": "twilightforest:block/time_fence_gate_wall_open",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=north,in_wall=false,open=false": {
+      "model": "twilightforest:block/time_fence_gate",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,in_wall=false,open=true": {
+      "model": "twilightforest:block/time_fence_gate_open",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,in_wall=true,open=false": {
+      "model": "twilightforest:block/time_fence_gate_wall",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,in_wall=true,open=true": {
+      "model": "twilightforest:block/time_fence_gate_wall_open",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=south,in_wall=false,open=false": {
+      "model": "twilightforest:block/time_fence_gate",
+      "uvlock": true
+    },
+    "facing=south,in_wall=false,open=true": {
+      "model": "twilightforest:block/time_fence_gate_open",
+      "uvlock": true
+    },
+    "facing=south,in_wall=true,open=false": {
+      "model": "twilightforest:block/time_fence_gate_wall",
+      "uvlock": true
+    },
+    "facing=south,in_wall=true,open=true": {
+      "model": "twilightforest:block/time_fence_gate_wall_open",
+      "uvlock": true
+    },
+    "facing=west,in_wall=false,open=false": {
+      "model": "twilightforest:block/time_fence_gate",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,in_wall=false,open=true": {
+      "model": "twilightforest:block/time_fence_gate_open",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,in_wall=true,open=false": {
+      "model": "twilightforest:block/time_fence_gate_wall",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,in_wall=true,open=true": {
+      "model": "twilightforest:block/time_fence_gate_wall_open",
+      "uvlock": true,
+      "y": 90
+    }
   }
 }

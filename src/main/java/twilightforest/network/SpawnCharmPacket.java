@@ -51,13 +51,13 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 					if (TFConfig.spawnCharmAnimationAsTotem) {
 						Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
 						//prefer the camera pos over the player as the player position isnt quite synced to the client yet
-						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm()), 20);
+						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
 					} else {
 						CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, packet.charm());
 						effect.offset = (float) Math.PI;
 						level.addEntity(effect);
 					}
-					SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event());
+					SoundEvent event = BuiltInRegistries.SOUND_EVENT.getValue(packet.event());
 					if (camera != null && event != null) {
 						level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
 					}

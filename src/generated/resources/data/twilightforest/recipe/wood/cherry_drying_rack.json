@@ -3,15 +3,12 @@
   "category": "misc",
   "group": "drying_rack",
   "key": {
-    "-": {
-      "item": "minecraft:cherry_slab"
-    }
+    "-": "minecraft:cherry_slab"
   },
   "pattern": [
     "---"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:cherry_drying_rack"
   }
 }

@@ -3,8 +3,8 @@ package twilightforest.client;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.SkyRenderer;
+import net.minecraft.client.renderer.Lightmap;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
@@ -26,6 +26,8 @@ import java.util.Optional;
 
 public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWeatherEffectRenderer {
 
+	public static final TwilightForestRenderInfo INSTANCE = new TwilightForestRenderInfo();
+
 	@Nullable
 	private TFSkyRenderer skyRenderer;
 
@@ -42,7 +44,6 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 //		return biomeFogColor.multiply(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
 //	}
 
-	@Override
 	public boolean isFoggyAt(int x, int y) { // true = nearFog
 		Player player = Minecraft.getInstance().player;
 
@@ -74,11 +75,12 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 
 	@Override
 	public boolean renderSnowAndRain(LevelRenderState levelRenderState, WeatherRenderState weatherRenderState, MultiBufferSource bufferSource, Vec3 camPos) {
-		return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, new Vec3(camX, camY, camZ));
+		Minecraft mc = Minecraft.getInstance();
+		return TFWeatherRenderer.renderSnowAndRain(mc.level, (int) mc.level.getGameTime(), mc.getDeltaTracker().getGameTimeDeltaPartialTick(false), camPos);
 	}
 
 	@Override
 	public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
-		return TFWeatherRenderer.tickRain(level, ticks, camera.getBlockPosition());
+		return TFWeatherRenderer.tickRain(level, ticks, camera.blockPosition());
 	}
 }

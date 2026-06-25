@@ -1,0 +1,22 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "twilightforest:travellers_gear",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/travellers_boots"
+      },
+      "modifier_directory": "twilightforest:travellers_modifiers/boots"
+    },
+    "on_true": {
+      "type": "twilightforest:travellers_gear",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/travellers_boots_broken"
+      },
+      "modifier_directory": "twilightforest:travellers_modifiers/boots/broken"
+    },
+    "property": "minecraft:broken"
+  }
+}

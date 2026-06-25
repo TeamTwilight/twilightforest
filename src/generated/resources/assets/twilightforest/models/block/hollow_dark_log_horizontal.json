@@ -1,6 +1,5 @@
 {
   "parent": "twilightforest:block/horizontal_hollow_log",
-  "render_type": "minecraft:cutout",
   "textures": {
     "inner": "twilightforest:block/stripped_dark_log",
     "side": "twilightforest:block/dark_log",

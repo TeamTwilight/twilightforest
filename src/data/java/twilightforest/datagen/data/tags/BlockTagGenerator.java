@@ -229,7 +229,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		this.tag(Tags.Blocks.STORAGE_BLOCKS).addTags(TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR, TFBlockTags.STORAGE_BLOCKS_CARMINITE, TFBlockTags.STORAGE_BLOCKS_FIERY, TFBlockTags.STORAGE_BLOCKS_IRONWOOD, TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL, TFBlockTags.STORAGE_BLOCKS_STEELEAF);
 
 		this.tag(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
-		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.DIRT);
+		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.DIRT, BlockTags.GRASS_BLOCKS);
 		this.tag(TFBlockTags.PORTAL_POOL).add(Blocks.WATER);
 		this.tag(TFBlockTags.PORTAL_DECO).add(
 				Blocks.BAMBOO,
@@ -377,15 +377,15 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.GHAST_TRAP.get(),
 			TFBlocks.FAKE_DIAMOND.get(),
 			TFBlocks.FAKE_GOLD.get()
-		).addTag(TFBlockTags.COMMON_PROTECTIONS).addOptional(Identifier.parse("gravestone:gravestone"));
+		).addTag(TFBlockTags.COMMON_PROTECTIONS);//.addOptional(Identifier.parse("gravestone:gravestone"));
 
 		this.tag(TFBlockTags.STRUCTURE_BANNED_INTERACTIONS).add(Blocks.LEVER).add(TFBlocks.ANTIBUILDER.get()).addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS);
 
 		// TODO add more grave mods to this list
 		this.tag(TFBlockTags.PROGRESSION_ALLOW_BREAKING)
 			.add(TFBlocks.SKULL_CHEST.get())
-			.add(TFBlocks.KEEPSAKE_CASKET.get())
-			.addOptional(Identifier.fromNamespaceAndPath("gravestone", "gravestone"));
+			.add(TFBlocks.KEEPSAKE_CASKET.get());
+			//.addOptional(Identifier.fromNamespaceAndPath("gravestone", "gravestone"))
 
 		this.tag(TFBlockTags.CANNOT_TROLL_CAVE_HOLLOW)
 			.add(Blocks.RED_MUSHROOM_BLOCK)
@@ -426,7 +426,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		this.tag(BlockTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		this.tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 
-		this.tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
+		this.tag(BlockTags.SUPPORTS_SMALL_DRIPLEAF).add(TFBlocks.UBEROUS_SOIL.get());
 
 		this.tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(TFBlockTags.COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.SINISTER_SPAWNER.get());
 		// For anything that permits replacement during Worldgen
@@ -625,7 +625,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TFBlocks.AURORA_BLOCK.get()).addTags(TFBlockTags.CASTLE_BLOCKS, TFBlockTags.MAZESTONE, TFBlockTags.DEADROCK);
 
-		this.tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
+		this.tag(BlockTags.HUGE_BROWN_MUSHROOM_CAN_PLACE_ON).add(TFBlocks.UBEROUS_SOIL.get());
+		this.tag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON).add(TFBlocks.UBEROUS_SOIL.get());
 
 		this.tag(BlockTags.MOSS_REPLACEABLE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.TROLLSTEINN.get());
 

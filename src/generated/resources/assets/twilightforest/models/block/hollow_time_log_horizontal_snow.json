@@ -1,8 +1,9 @@
 {
-  "parent": "twilightforest:block/hollow_log_snow",
-  "render_type": "minecraft:cutout",
+  "parent": "twilightforest:block/horizontal_hollow_log_carpet",
   "textures": {
+    "carpet": "minecraft:block/snow",
     "inner": "twilightforest:block/stripped_time_log",
+    "overhang": "twilightforest:block/snow_overhang",
     "side": "twilightforest:block/time_log",
     "top": "twilightforest:block/time_log_top"
   }

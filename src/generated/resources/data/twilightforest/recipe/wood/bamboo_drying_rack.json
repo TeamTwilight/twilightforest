@@ -3,15 +3,12 @@
   "category": "misc",
   "group": "drying_rack",
   "key": {
-    "-": {
-      "item": "minecraft:bamboo_slab"
-    }
+    "-": "minecraft:bamboo_slab"
   },
   "pattern": [
     "---"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:bamboo_drying_rack"
   }
 }

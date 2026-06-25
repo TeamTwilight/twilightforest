@@ -143,7 +143,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		boolean isBigTree = piece.radius == radiuses.get(2);
 		int minMounds = 1;
 		int maxMounds = 2;
-		return new TrunkUnderDensityFunction(objectlist.iterator(), piece, isBigTree, minMounds, maxMounds);  // big trees are a special case
+		return new TrunkUnderDensityFunction(objectlist, piece, isBigTree, minMounds, maxMounds);  // big trees are a special case
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 {
   "variants": {
     "": {
+      "type": "twilightforest:patch",
       "model": "twilightforest:block/clover_patch"
     }
   }

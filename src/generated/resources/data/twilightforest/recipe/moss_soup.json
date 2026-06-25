@@ -2,18 +2,19 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
+    "twilightforest:moss_patch",
+    "minecraft:bowl",
     {
-      "item": "twilightforest:moss_patch"
-    },
-    {
-      "item": "minecraft:bowl"
-    },
-    {
-      "item": "minecraft:potion"
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minecraft:water"
+        }
+      },
+      "items": "minecraft:potion"
     }
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:moss_soup"
   }
 }

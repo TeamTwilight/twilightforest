@@ -1,43 +1,6 @@
 {
-  "parent": "minecraft:item/stone_sword",
-  "base": {
-    "parent": "twilightforest:item/giant_tool_base",
-    "textures": {
-      "layer0": "minecraft:item/stone_sword"
-    }
-  },
-  "loader": "neoforge:separate_transforms",
-  "perspectives": {
-    "gui": {
-      "elements": [
-        {
-          "faces": {
-            "south": {
-              "texture": "#all",
-              "tintindex": 0,
-              "uv": [
-                3.0,
-                5.0,
-                11.0,
-                13.0
-              ]
-            }
-          },
-          "from": [
-            0,
-            0,
-            0
-          ],
-          "to": [
-            16,
-            16,
-            0
-          ]
-        }
-      ],
-      "textures": {
-        "all": "minecraft:item/stone_sword"
-      }
-    }
+  "parent": "twilightforest:item/giant_tool_base",
+  "textures": {
+    "layer0": "minecraft:item/stone_sword"
   }
 }

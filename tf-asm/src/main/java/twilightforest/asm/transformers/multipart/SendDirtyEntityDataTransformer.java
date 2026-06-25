@@ -1,61 +1,52 @@
 package twilightforest.asm.transformers.multipart;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import org.objectweb.asm.tree.VarInsnNode;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.MultipartHooks#sendDirtyEntityData}
  */
-public class SendDirtyEntityDataTransformer implements ITransformer<MethodNode> {
+public class SendDirtyEntityDataTransformer extends SimpleMethodTransformer {
 
-	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		ASMUtil.findFieldInstructions(
-			node,
-			Opcodes.GETFIELD,
-			"net/minecraft/server/level/ServerEntity",
-			"entity"
-		).findFirst().ifPresent(target -> node.instructions.insert(
-			target,
-			ASMAPI.listOf(
-				new MethodInsnNode(
-					Opcodes.INVOKESTATIC,
-					"twilightforest/asmhooks/MultipartHooks",
-					"sendDirtyEntityData",
-					"(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/Entity;"
-				)
-			)
-		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public SendDirtyEntityDataTransformer() {
+		super(
 			"net.minecraft.server.level.ServerEntity",
 			"sendDirtyEntityData",
 			"()V"
-		));
+		);
 	}
 
 	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
+		// Insert at the beginning of sendDirtyEntityData():
+		//   ALOAD 0
+		//   GETFIELD net/minecraft/server/level/ServerEntity.entity:Lnet/minecraft/world/entity/Entity;
+		//   INVOKESTATIC twilightforest/asmhooks/MultipartHooks.sendDirtyEntityData(Lnet/minecraft/world/entity/Entity;)V
+		// We don't use the return value; just call it for its side effect (sending the multipart packet).
+		// This is safer than inserting before getEntityData() because it runs regardless of code path.
+		InsnList toInject = new InsnList();
+		toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
+		toInject.add(new FieldInsnNode(
+			Opcodes.GETFIELD,
+			"net/minecraft/server/level/ServerEntity",
+			"entity",
+			"Lnet/minecraft/world/entity/Entity;"
+		));
+		toInject.add(new MethodInsnNode(
+			Opcodes.INVOKESTATIC,
+			"twilightforest/asmhooks/MultipartHooks",
+			"sendDirtyEntityData",
+			"(Lnet/minecraft/world/entity/Entity;)V",
+			false
+		));
+		method.instructions.insert(toInject);
 	}
 
 }

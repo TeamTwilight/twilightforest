@@ -2,12 +2,15 @@ package twilightforest.client;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.TextAlignment;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
 import org.jetbrains.annotations.Nullable;
+
+import java.net.URI;
 
 public class OptifineWarningScreen extends Screen {
 
@@ -16,7 +19,7 @@ public class OptifineWarningScreen extends Screen {
 	private MultiLineLabel message = MultiLineLabel.EMPTY;
 	private MultiLineLabel suggestions = MultiLineLabel.EMPTY;
 	private static final Component text = Component.translatable("gui.twilightforest.optifine.message");
-	private static final MutableComponent url = Component.translatable("gui.twilightforest.optifine.suggestions").withStyle(style -> style.withColor(ChatFormatting.GREEN).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/NordicGamerFE/usefulmods")));
+	private static final MutableComponent url = Component.translatable("gui.twilightforest.optifine.suggestions").withStyle(style -> style.withColor(ChatFormatting.GREEN).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent.OpenUrl(URI.create("https://github.com/NordicGamerFE/usefulmods"))));
 	private Button exitButton;
 
 	public OptifineWarningScreen(Screen screen) {
@@ -40,14 +43,21 @@ public class OptifineWarningScreen extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
-		graphics.drawCenteredString(this.font, this.title, this.width / 2, 30, 16777215);
-		this.message.renderCentered(graphics, this.width / 2, 70);
-		this.suggestions.renderCentered(graphics, this.width / 2, 160);
-		super.render(graphics, mouseX, mouseY, partialTicks);
+	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		// TODO: 26.1.2 - drawCenteredString no longer exists, manually center
+		int titleWidth = this.font.width(this.title);
+		graphics.text(this.font, this.title, this.width / 2 - titleWidth / 2, 30, 16777215);
+		// TODO: 26.1.2 - renderCentered removed from MultiLineLabel; use visitLines with TextAlignment.CENTER
+		this.message.visitLines(TextAlignment.CENTER, this.width / 2, 70, this.font.lineHeight, graphics.textRenderer());
+		this.suggestions.visitLines(TextAlignment.CENTER, this.width / 2, 160, this.font.lineHeight, graphics.textRenderer());
+		super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
 
-		this.exitButton.render(graphics, mouseX, mouseY, partialTicks);
+		this.exitButton.extractRenderState(graphics, mouseX, mouseY, partialTicks);
+	}
+
+	@Override
+	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractBackground(graphics, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
@@ -69,23 +79,7 @@ public class OptifineWarningScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-		if (pMouseY > 160 && pMouseY < 170) {
-			Style style = this.getClickedComponentStyleAt((int) pMouseX);
-			if (style != null && style.getClickEvent() != null && style.getClickEvent().getAction() == ClickEvent.Action.OPEN_URL) {
-				this.handleComponentClicked(style);
-				return false;
-			}
-		}
-
-		return super.mouseClicked(pMouseX, pMouseY, pButton);
-	}
-
-	@Nullable
-	private Style getClickedComponentStyleAt(int xPos) {
-		int wid = Minecraft.getInstance().font.width(url);
-		int left = this.width / 2 - wid / 2;
-		int right = this.width / 2 + wid / 2;
-		return xPos >= left && xPos <= right ? Minecraft.getInstance().font.getSplitter().componentStyleAtWidth(url, xPos - left) : null;
+	public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event, boolean doubleClick) {
+		return super.mouseClicked(event, doubleClick);
 	}
 }

@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -58,7 +57,8 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 		this.placeSettings.addProcessor(JigsawReplacementProcessor.INSTANCE);
 		this.placeSettings.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
-		this.leashPos = NbtUtils.readBlockPos(compoundTag, "leash_pos").orElse(null);
+		long leashPosVal = compoundTag.getLong("leash_pos").orElse(0L);
+		this.leashPos = leashPosVal == 0L ? null : BlockPos.of(leashPosVal);
 	}
 
 	public LichPerimeterFence(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, Identifier templateId, RandomSource random) {
@@ -80,7 +80,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		super.addAdditionalSaveData(ctx, structureTag);
 
 		if (this.leashPos != null) {
-			structureTag.put("leash_pos", NbtUtils.writeBlockPos(this.leashPos));
+			structureTag.putLong("leash_pos", this.leashPos.asLong());
 		}
 	}
 

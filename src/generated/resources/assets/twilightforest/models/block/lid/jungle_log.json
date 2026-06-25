@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/jar_lid",
   "textures": {
-    "1": "minecraft:block/jungle_log_top",
-    "2": "minecraft:block/jungle_log"
+    "end": "minecraft:block/jungle_log_top",
+    "side": "minecraft:block/jungle_log"
   }
 }

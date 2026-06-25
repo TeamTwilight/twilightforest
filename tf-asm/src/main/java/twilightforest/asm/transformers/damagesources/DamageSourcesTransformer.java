@@ -1,12 +1,10 @@
 package twilightforest.asm.transformers.damagesources;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleClassProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -17,13 +15,41 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.DamageSourceHooks#getCustomDamageSource}
  */
-public class DamageSourcesTransformer implements ITransformer<MethodNode> {
+public class DamageSourcesTransformer extends SimpleClassProcessor {
+
+	private final Set<Target> targets;
+	private final ProcessorName name;
+
+	public DamageSourcesTransformer() {
+		this.targets = Set.of(new Target("net.minecraft.world.damagesource.DamageSources"));
+		this.name = new ProcessorName("twilightforest", "damagesources");
+	}
+
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public ProcessorName name() {
+		return this.name;
+	}
+
+	@Override
+	public Set<Target> targets() {
+		return this.targets;
+	}
+
+	@Override
+	public void transform(ClassNode classNode, SimpleTransformationContext context) {
+		for (MethodNode method : classNode.methods) {
+			if (("mobAttack".equals(method.name) && "(Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/damagesource/DamageSource;".equals(method.desc)) ||
+				("playerAttack".equals(method.name) && "(Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/damagesource/DamageSource;".equals(method.desc))) {
+				transformMethod(method);
+			}
+		}
+	}
+
+	private void transformMethod(MethodNode method) {
 		ASMUtil.findInstructions(
-			node,
+			method,
 			Opcodes.ARETURN
-		).forEach(target -> node.instructions.insertBefore(target, ASMAPI.listOf(
+		).forEach(target -> method.instructions.insertBefore(target, ASMUtil.listOf(
 			// First in stack should be a DamageSource
 			new VarInsnNode(Opcodes.ALOAD, 1), // Also add the parameter, a LivingEntity
 			new MethodInsnNode(
@@ -33,30 +59,5 @@ public class DamageSourcesTransformer implements ITransformer<MethodNode> {
 				"(Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/damagesource/DamageSource;"
 			)
 		)));
-
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext iTransformerVotingContext) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.damagesource.DamageSources",
-			"mobAttack",
-			"(Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/damagesource/DamageSource;"
-		), Target.targetMethod(
-			"net.minecraft.world.damagesource.DamageSources",
-			"playerAttack",
-			"(Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/damagesource/DamageSource;"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 }

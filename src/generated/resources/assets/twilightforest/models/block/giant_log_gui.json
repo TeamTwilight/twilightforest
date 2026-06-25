@@ -1,0 +1,12 @@
+{
+  "parent": "twilightforest:item/giant_block_gui",
+  "textures": {
+    "particle": "twilightforest:block/dark_log",
+    "down": "minecraft:block/oak_log_top",
+    "east": "minecraft:block/oak_log",
+    "north": "minecraft:block/oak_log",
+    "south": "minecraft:block/oak_log",
+    "up": "minecraft:block/oak_log_top",
+    "west": "minecraft:block/oak_log"
+  }
+}

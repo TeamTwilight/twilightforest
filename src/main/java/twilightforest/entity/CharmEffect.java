@@ -2,9 +2,11 @@ package twilightforest.entity;
 
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +20,11 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 
 public class CharmEffect extends Entity implements ItemSupplier {
+	@Override
+	public boolean hurtServer(ServerLevel level, net.minecraft.world.damagesource.DamageSource source, float amount) {
+		return false; // CharmEffect cannot be hurt
+	}
+
 	private static final double DISTANCE = 0.75D;
 	private double interpTargetX;
 	private double interpTargetY;
@@ -42,7 +49,9 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		this.orbiter = owner;
 		this.displayItem = item;
 
-		this.moveTo(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.getYRot(), owner.getXRot());
+		this.setPos(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ());
+		this.setYRot(owner.getYRot());
+		this.setXRot(owner.getXRot());
 
 		Vec3 look = new Vec3(DISTANCE, 0, 0);
 		double x = getX() + (look.x() * DISTANCE);
@@ -73,7 +82,7 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		if (this.orbiter != null) {
 			float rotation = this.tickCount / 10.0F + this.offset;
 			Vec3 look = new Vec3(DISTANCE, 0, 0).yRot(rotation);
-			this.moveTo(this.orbiter.getX() + look.x(), this.orbiter.getY() + this.orbiter.getEyeHeight(), this.orbiter.getZ() + look.z(), this.orbiter.getYRot(), this.orbiter.getXRot());
+			this.absSnapTo(this.orbiter.getX() + look.x(), this.orbiter.getY() + this.orbiter.getEyeHeight(), this.orbiter.getZ() + look.z(), this.orbiter.getYRot(), this.orbiter.getXRot());
 		}
 
 		if (!this.displayItem.isEmpty()) {
@@ -81,7 +90,7 @@ public class CharmEffect extends Entity implements ItemSupplier {
 			double dy = getY() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 			double dz = getZ() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 
-			this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.displayItem), dx, dy, dz, 0, 0.2, 0);
+			this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.displayItem.getItem()), dx, dy, dz, 0, 0.2, 0);
 		}
 
 		if (this.tickCount > 200 || (this.orbiter != null && (!this.orbiter.isAlive() || this.orbiter.isInvisible()))) {
@@ -89,8 +98,7 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		}
 	}
 
-	@Override
-	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
+	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 		this.interpTargetX = x;
 		this.interpTargetY = y;
 		this.interpTargetZ = z;
@@ -105,11 +113,11 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag cmp) {
+	protected void readAdditionalSaveData(ValueInput cmp) {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag cmp) {
+	protected void addAdditionalSaveData(ValueOutput cmp) {
 	}
 
 	@Nonnull

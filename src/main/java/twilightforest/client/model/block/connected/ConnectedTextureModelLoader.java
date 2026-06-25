@@ -5,7 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
@@ -42,10 +42,11 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		int tintIndex = GsonHelper.getAsInt(overlayInfo, "tint_index", -1);
 		int emissivity = GsonHelper.getAsInt(overlayInfo, "emissivity", 0);
 		boolean renderDisabled = GsonHelper.getAsBoolean(overlayInfo, "always_render_overlay", true);
+		boolean translucent = GsonHelper.getAsBoolean(jsonObject, "translucent", false);
 		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo, "faces");
 
 		List<Block> connectables = this.parseConnnectableBlocks(jsonObject);
-		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
+		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, translucent, StandardModelParameters.parse(jsonObject, deserializationContext));
 	}
 
 	private EnumSet<Direction> parseEnabledFaces(JsonObject object, String key) {
@@ -75,14 +76,14 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 
 			for (JsonElement element : object.getAsJsonArray("connectable_blocks")) {
 				if (element.getAsString().startsWith("#")) {
-					ResourceLocation tag = ResourceLocation.tryParse(element.getAsString().substring(1));
+					Identifier tag = Identifier.tryParse(element.getAsString().substring(1));
 					if (tag != null) {
 						BuiltInRegistries.BLOCK.getTagOrEmpty(TagKey.create(Registries.BLOCK, tag)).forEach(blockHolder -> blocks.add(blockHolder.value()));
 					} else {
 						throw new JsonParseException("Invalid block tag: " + element.getAsString());
 					}
 				} else {
-					Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.tryParse(element.getAsString()));
+					Block block = BuiltInRegistries.BLOCK.getValue(Identifier.tryParse(element.getAsString()));
 					if (block == Blocks.AIR) {
 						throw new JsonParseException("Invalid block: " + element.getAsString());
 					}

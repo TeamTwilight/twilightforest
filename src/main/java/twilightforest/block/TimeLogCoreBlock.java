@@ -66,7 +66,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 					Vec3 xyz = Vec3.atCenterOf(dPos);
 					ParticlePacket particlePacket = new ParticlePacket();
 					double yOffset = state.getOcclusionShape().max(Direction.Axis.Y);
-					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
+					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
 					PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 				}
 			}

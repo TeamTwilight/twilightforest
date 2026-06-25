@@ -37,4 +37,6 @@ public class TFTextureSlot {
 
 	public static final TextureSlot SOIL = TextureSlot.create("soil");
 	public static final TextureSlot PLANT = TextureSlot.create("plant");
+
+	public static final TextureSlot INNER = TextureSlot.create("inner");
 }

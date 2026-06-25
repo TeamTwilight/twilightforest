@@ -13,6 +13,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.client.properties.PotionFlaskTintSource;
+import twilightforest.client.properties.SpawnEggTintSource;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
@@ -287,5 +288,7 @@ public class ColorHandler {
 
 	protected static void registerItemColors(RegisterColorHandlersEvent.ItemTintSources event) {
 		event.register(TwilightForestMod.prefix("potion_flask"), PotionFlaskTintSource.TYPE);
+		event.register(TwilightForestMod.prefix("spawn_egg_primary"), SpawnEggTintSource.Primary.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("spawn_egg_secondary"), SpawnEggTintSource.Secondary.MAP_CODEC);
 	}
 }

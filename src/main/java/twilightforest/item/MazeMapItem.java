@@ -4,16 +4,21 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +36,7 @@ import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.util.datamaps.OreMapOreColor;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 public class MazeMapItem extends MapItem {
@@ -47,6 +53,7 @@ public class MazeMapItem extends MapItem {
 
 	public static ItemStack setupNewMap(ServerLevel level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
 		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.get() : TFItems.FILLED_MAZE_MAP.get());
+		itemstack.set(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.MAP_ID, true));
 		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension(), worldY, mapOres);
 		return itemstack;
 	}
@@ -54,7 +61,7 @@ public class MazeMapItem extends MapItem {
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level level) {
 		MapId id = stack.get(DataComponents.MAP_ID);
-		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id.id()));
+		return id == null ? null : TFMazeMapData.getMazeMapData(level, id);
 	}
 
 	@Nullable
@@ -81,7 +88,7 @@ public class MazeMapItem extends MapItem {
 		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
 		mapdata.ore = ore;
-		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i.id())); // call our own register method
+		TFMazeMapData.registerMazeMapData(level, mapdata, i);
 		stack.set(DataComponents.MAP_ID, i);
 		return mapdata;
 	}
@@ -218,6 +225,24 @@ public class MazeMapItem extends MapItem {
 				if (!mapdata.locked && slot != null && slot.getType() == EquipmentSlot.Type.HAND) {
 					this.update(level, owner, mapdata);
 				}
+			}
+		}
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		if (mapId != null) {
+			TFMazeMapData mapdata = TFMazeMapData.getClientMagicMapData(getMapName(mapId.id()));
+			if (mapdata != null) {
+				builder.accept(Component.translatable("item.twilightforest.maze_map.y_level", mapdata.yCenter).withStyle(ChatFormatting.GRAY));
+				builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+				if (flag.isAdvanced()) {
+					builder.accept(Component.translatable("filled_map.scale", 1 << mapdata.scale).withStyle(ChatFormatting.GRAY));
+					builder.accept(Component.translatable("filled_map.level", mapdata.scale, 4).withStyle(ChatFormatting.GRAY));
+				}
+			} else {
+				builder.accept(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}

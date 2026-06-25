@@ -10,6 +10,7 @@ import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
@@ -38,7 +39,7 @@ public class DryingRackBlockEntity extends BlockEntity {
 
 	public static final int DEFAULT_DRYING_TIME = 20 * 60 * 5; //5 Minutes
 	private ItemStack stack = ItemStack.EMPTY;
-	private final RecipeManager.CachedCheck<SingleRecipeInput, DryingRecipe> quickCheck = RecipeManager.createCheck(TFRecipes.DRYING_RECIPE.get());
+	private final RecipeManager.CachedCheck<RecipeInput, DryingRecipe> quickCheck = RecipeManager.createCheck(TFRecipes.DRYING_RECIPE.get());
 
 	protected boolean drying;
 	protected int dryTime;

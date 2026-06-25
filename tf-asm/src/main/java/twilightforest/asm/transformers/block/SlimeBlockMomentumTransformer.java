@@ -1,35 +1,38 @@
 package twilightforest.asm.transformers.block;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.BlockHooks#resetSlimeMomentumWithUnrestrained}
  */
-public class SlimeBlockMomentumTransformer implements ITransformer<MethodNode> {
+public class SlimeBlockMomentumTransformer extends SimpleMethodTransformer {
+
+	public SlimeBlockMomentumTransformer() {
+		super(
+			"net.minecraft.world.level.block.SlimeBlock",
+			"stepOn",
+			"(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/Entity;)V"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
-			node,
+			method,
 			Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/world/entity/Entity",
 			"isSteppingCarefully",
 			"()Z"
-		).forEach(target -> node.instructions.insert(
+		).forEach(target -> method.instructions.insert(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 4),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
@@ -39,25 +42,5 @@ public class SlimeBlockMomentumTransformer implements ITransformer<MethodNode> {
 				)
 			)
 		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.level.block.SlimeBlock",
-			"stepOn",
-			"(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/Entity;)V"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 }

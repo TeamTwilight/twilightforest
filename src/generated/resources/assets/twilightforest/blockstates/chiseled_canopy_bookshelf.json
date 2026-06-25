@@ -11,13 +11,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_left",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_left"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_0_occupied": "true"
           }
         ]
@@ -25,13 +26,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_left",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_left"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_0_occupied": "false"
           }
         ]
@@ -39,13 +41,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_mid",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_mid"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_1_occupied": "true"
           }
         ]
@@ -53,13 +56,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_mid",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_mid"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_1_occupied": "false"
           }
         ]
@@ -67,13 +71,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_right",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_right"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_2_occupied": "true"
           }
         ]
@@ -81,13 +86,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_right",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_right"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_2_occupied": "false"
           }
         ]
@@ -95,13 +101,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_left",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_left"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_3_occupied": "true"
           }
         ]
@@ -109,13 +116,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_left",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_left"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_3_occupied": "false"
           }
         ]
@@ -123,13 +131,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_mid",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_mid"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_4_occupied": "true"
           }
         ]
@@ -137,13 +146,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_mid",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_mid"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_4_occupied": "false"
           }
         ]
@@ -151,13 +161,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_right",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_right"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_5_occupied": "true"
           }
         ]
@@ -165,13 +176,14 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_right",
-        "uvlock": true
+        "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_right"
       },
       "when": {
         "AND": [
           {
-            "facing": "north",
+            "facing": "north"
+          },
+          {
             "slot_5_occupied": "false"
           }
         ]
@@ -190,13 +202,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_left",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_0_occupied": "true"
           }
         ]
@@ -205,13 +218,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_left",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_0_occupied": "false"
           }
         ]
@@ -220,13 +234,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_mid",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_1_occupied": "true"
           }
         ]
@@ -235,13 +250,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_mid",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_1_occupied": "false"
           }
         ]
@@ -250,13 +266,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_right",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_2_occupied": "true"
           }
         ]
@@ -265,13 +282,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_right",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_2_occupied": "false"
           }
         ]
@@ -280,13 +298,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_left",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_3_occupied": "true"
           }
         ]
@@ -295,13 +314,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_left",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_3_occupied": "false"
           }
         ]
@@ -310,13 +330,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_mid",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_4_occupied": "true"
           }
         ]
@@ -325,13 +346,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_mid",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_4_occupied": "false"
           }
         ]
@@ -340,13 +362,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_right",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_5_occupied": "true"
           }
         ]
@@ -355,13 +378,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_right",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "facing": "east",
+            "facing": "east"
+          },
+          {
             "slot_5_occupied": "false"
           }
         ]
@@ -380,13 +404,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_left",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_0_occupied": "true"
           }
         ]
@@ -395,13 +420,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_left",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_0_occupied": "false"
           }
         ]
@@ -410,13 +436,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_mid",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_1_occupied": "true"
           }
         ]
@@ -425,13 +452,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_mid",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_1_occupied": "false"
           }
         ]
@@ -440,13 +468,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_right",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_2_occupied": "true"
           }
         ]
@@ -455,13 +484,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_right",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_2_occupied": "false"
           }
         ]
@@ -470,13 +500,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_left",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_3_occupied": "true"
           }
         ]
@@ -485,13 +516,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_left",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_3_occupied": "false"
           }
         ]
@@ -500,13 +532,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_mid",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_4_occupied": "true"
           }
         ]
@@ -515,13 +548,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_mid",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_4_occupied": "false"
           }
         ]
@@ -530,13 +564,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_right",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_5_occupied": "true"
           }
         ]
@@ -545,13 +580,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_right",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "facing": "south",
+            "facing": "south"
+          },
+          {
             "slot_5_occupied": "false"
           }
         ]
@@ -570,13 +606,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_left",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_0_occupied": "true"
           }
         ]
@@ -585,13 +622,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_left",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_0_occupied": "false"
           }
         ]
@@ -600,13 +638,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_mid",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_1_occupied": "true"
           }
         ]
@@ -615,13 +654,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_mid",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_1_occupied": "false"
           }
         ]
@@ -630,13 +670,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_top_right",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_2_occupied": "true"
           }
         ]
@@ -645,13 +686,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_top_right",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_2_occupied": "false"
           }
         ]
@@ -660,13 +702,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_left",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_3_occupied": "true"
           }
         ]
@@ -675,13 +718,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_left",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_3_occupied": "false"
           }
         ]
@@ -690,13 +734,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_mid",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_4_occupied": "true"
           }
         ]
@@ -705,13 +750,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_mid",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_4_occupied": "false"
           }
         ]
@@ -720,13 +766,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_occupied_slot_bottom_right",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_5_occupied": "true"
           }
         ]
@@ -735,13 +782,14 @@
     {
       "apply": {
         "model": "twilightforest:block/chiseled_canopy_bookshelf_empty_slot_bottom_right",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "facing": "west",
+            "facing": "west"
+          },
+          {
             "slot_5_occupied": "false"
           }
         ]

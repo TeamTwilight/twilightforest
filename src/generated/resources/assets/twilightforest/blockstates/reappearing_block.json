@@ -4,13 +4,13 @@
       "model": "twilightforest:block/reappearing_block"
     },
     "active=false,vanished=true": {
-      "model": "twilightforest:block/reappearing_block_vanished"
+      "model": "twilightforest:block/reappearing_blockinvis"
     },
     "active=true,vanished=false": {
-      "model": "twilightforest:block/reappearing_block_active"
+      "model": "twilightforest:block/reappearing_block_on"
     },
     "active=true,vanished=true": {
-      "model": "twilightforest:block/reappearing_block_vanished_active"
+      "model": "twilightforest:block/reappearing_blockinvis_on"
     }
   }
 }

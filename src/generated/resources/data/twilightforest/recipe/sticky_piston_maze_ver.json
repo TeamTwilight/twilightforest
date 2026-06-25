@@ -2,19 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "P": {
-      "item": "minecraft:piston"
-    },
-    "S": {
-      "item": "twilightforest:maze_slime_ball"
-    }
+    "P": "minecraft:piston",
+    "S": "twilightforest:maze_slime_ball"
   },
   "pattern": [
     "S",
     "P"
   ],
   "result": {
-    "count": 1,
     "id": "minecraft:sticky_piston"
   }
 }

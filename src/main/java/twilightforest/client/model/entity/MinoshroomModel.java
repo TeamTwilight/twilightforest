@@ -41,7 +41,7 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.offset(0.0F, -6.0F, -9.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
 				.texOffs(105, 28)
@@ -166,5 +166,10 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		stack.translate(0.0F, 0.375F, 0.56F);
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
 	}
 }

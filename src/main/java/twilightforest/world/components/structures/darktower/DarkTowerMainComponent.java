@@ -1095,7 +1095,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
+				if (world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).get().value().place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
 					break;
 				}
 			}

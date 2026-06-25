@@ -148,7 +148,7 @@ public class CloudBlock extends Block {
 			double xSpeed = xSpd * 0.0035D * maxI;
 			double zSpeed = zSpd * 0.0035D * maxI;
 
-			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), false, x, y, z, xSpeed, ySpeed, zSpeed);
+			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, xSpeed, ySpeed, zSpeed);
 		}
 
 		PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos.containing(pos), particlePacket);

@@ -53,15 +53,17 @@ public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
 		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
-			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
-			if (info.nbt() != null && mode == StructureMode.DATA)
-				this.processMarkers(info, world, rotation, mirror, random);
+			if (info.nbt() != null) {
+				StructureMode mode = info.nbt().read("mode", StructureMode.LEGACY_CODEC).orElseThrow();
+				if (mode == StructureMode.DATA)
+					this.processMarkers(info, world, rotation, mirror, random);
+			}
 		}
 	}
 
 	@Override
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-		String s = info.nbt().getString("metadata").orElseThrow();
+		String s = info.nbt().getStringOr("metadata", "");
 		BlockPos blockPos = info.pos();
 
 		// removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used

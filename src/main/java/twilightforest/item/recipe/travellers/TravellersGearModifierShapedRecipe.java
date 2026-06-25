@@ -6,6 +6,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
@@ -33,11 +34,6 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return getHeight() <= height && getWidth() <= width;
-	}
-
-	@Override
 	public int getWidth() {
 		return pattern.width();
 	}
@@ -54,7 +50,11 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return pattern.ingredients();
+		NonNullList<Ingredient> list = NonNullList.create();
+		for (var opt : pattern.ingredients()) {
+			list.add(opt.orElse(Ingredient.of()));
+		}
+		return list;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return TFRecipes.MODIFIER_SHAPED_RECIPE_SERIALIZER.get();
 	}
 
@@ -82,4 +82,6 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 			).apply(instance, TravellersGearModifierShapedRecipe::new)));
 		}
 	}
+
+	public static final RecipeSerializer<TravellersGearModifierShapedRecipe> SERIALIZER = new RecipeSerializer<>(new Serializer().codec(), new Serializer().streamCodec());
 }

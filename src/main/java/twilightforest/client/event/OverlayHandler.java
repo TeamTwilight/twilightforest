@@ -1,19 +1,19 @@
 package twilightforest.client.event;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,9 +22,10 @@ import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+//import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
@@ -57,9 +58,7 @@ public class OverlayHandler {
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
 			if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
-				RenderSystem.enableBlend();
 				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
-				RenderSystem.disableBlend();
 			}
 		});
 		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
@@ -69,7 +68,6 @@ public class OverlayHandler {
 			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
 				int xPos = graphics.guiWidth() / 2 + 91;
 				int yPos = graphics.guiHeight() - gui.rightHeight;
-				gui.renderFood(graphics, player, yPos, xPos);
 				gui.rightHeight += 10;
 			}
 		});
@@ -99,16 +97,9 @@ public class OverlayHandler {
 			if (player != null) {
 				TFPortalAttachment portal = player.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
 				if (portal.getPortalTimer() > 0) {
-					RenderSystem.disableDepthTest();
-					RenderSystem.depthMask(false);
-					RenderSystem.enableBlend();
-					graphics.setColor(1.0F, 1.0F, 1.0F, (float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS);
-					TextureAtlasSprite textureatlassprite = minecraft.getBlockRenderer().getBlockModelShaper().getParticleIcon(TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState());
-					graphics.blit(0, 0, -90, window.getGuiScaledWidth(), window.getGuiScaledHeight(), textureatlassprite);
-					RenderSystem.disableBlend();
-					RenderSystem.depthMask(true);
-					RenderSystem.enableDepthTest();
-					graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+					float alpha = (float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS;
+					int color = ((int)(alpha * 100.0F) << 24) | 0x000000;
+					graphics.fill(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), color);
 				}
 			}
 		});
@@ -120,21 +111,19 @@ public class OverlayHandler {
 		});
 	}
 
-	private static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
+	private static void renderIndicator(Minecraft minecraft, GuiGraphicsExtractor graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
 		if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
-			ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
+			ItemStack stack = player.getInventory().getItem(player.getInventory().getSelectedSlot());
 			if (!stack.isEmpty()) {
 				for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
 					if (questEntry.getValue().test(stack)) {
-						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 						int j = ((screenHeight - 1) / 2) - 11;
 						int k = ((screenWidth - 1) / 2) - 3;
 						if (!ram.isColorPresent(questEntry.getKey())) {
-							graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
+							graphics.blitSprite(RenderPipelines.GUI_TEXTURED, QUESTING_RAM_X_SPRITE, k, j, 7, 7);
 						} else {
-							graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
+							graphics.blitSprite(RenderPipelines.GUI_TEXTURED, QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
 						}
-						RenderSystem.defaultBlendFunc();
 						break;
 					}
 				}
@@ -142,14 +131,14 @@ public class OverlayHandler {
 		}
 	}
 
-	private static void renderShieldCount(GuiGraphics graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
+	private static void renderShieldCount(GuiGraphicsExtractor graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
 		}
 		gui.leftHeight += 10;
 	}
 
-	private static void renderOreMeterStats(GuiGraphics graphics, Player player) {
+	private static void renderOreMeterStats(GuiGraphicsExtractor graphics, Player player) {
 		if (player.isHolding(TFItems.ORE_METER.get())) {
 			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 			ItemStack selectedMeter = player.getItemInHand(handToUse);
@@ -160,7 +149,7 @@ public class OverlayHandler {
 					component = component.copy().append(".");
 				}
 				graphics.fill(0, 0, 56, 16, 0x9b000000);
-				graphics.drawString(Minecraft.getInstance().font, component, 4, 4, 16777215, false);
+				graphics.text(Minecraft.getInstance().font, component, 4, 4, 16777215, false);
 			} else {
 				OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
 
@@ -189,22 +178,21 @@ public class OverlayHandler {
 		int totalScanned = data.totalScannedBlocks();
 
 		List<Component> headerRowTexts = ImmutableList.of(
-			Component.translatable("misc.twilightforest.ore_meter_range", range, pos.x, pos.z),
+			Component.translatable("misc.twilightforest.ore_meter_range", range, pos.x(), pos.z()),
 			Component.translatable("misc.twilightforest.ore_meter_total", totalScanned)
 		);
 
 		ArrayList<ComponentColumn> columns = new ArrayList<>();
 
-		List<Pair<String, Integer>> scanData = data.counts().entrySet().stream()
-			.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
-			.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
+		List<Map.Entry<String, Integer>> scanData = data.counts().entrySet().stream()
+			.sorted(Comparator.comparing(Map.Entry::getValue)) // Sort by quantity
 			.toList(); // Make sorted immutable list
 
 		if (TFConfig.prettifyOreMeterGui) {
 			ComponentColumn padding = ComponentColumn.padding(1);
-			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
+			List<Integer> counts = scanData.stream().map(Map.Entry::getValue).toList();
 
-			columns.add(nameColumn(scanData.stream().map(Pair::getFirst).toList()));
+			columns.add(nameColumn(scanData.stream().map(Map.Entry::getKey).toList()));
 			columns.add(padding);
 			columns.add(dashColumn(scanData.size()));
 			columns.add(padding);
@@ -218,15 +206,15 @@ public class OverlayHandler {
 		ORE_METER_STAT_CACHE.put(id, OreMeterInfoCache.build(headerRowTexts, columns));
 	}
 
-	private static ComponentColumn withoutPrettyPrinting(int totalScanned, List<Pair<String, Integer>> entries) {
+	private static ComponentColumn withoutPrettyPrinting(int totalScanned, List<Map.Entry<String, Integer>> entries) {
 		List<Component> tooltips = new ArrayList<>();
 
-		for (Pair<String, Integer> entry : entries) {
-			String percentage = FORMAT.format(entry.getSecond() * 100.0F / totalScanned);
-			Component formattedEntry = Component.translatable(entry.getFirst())
+		for (Map.Entry<String, Integer> entry : entries) {
+			String percentage = FORMAT.format(entry.getValue() * 100.0F / totalScanned);
+			Component formattedEntry = Component.translatable(entry.getKey())
 				.append(Component.literal(" "))
 				.append(Component.translatable("misc.twilightforest.ore_meter_separator"))
-				.append(Component.literal(" " + entry.getSecond() + " "))
+				.append(Component.literal(" " + entry.getValue() + " "))
 				.append(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
 
 			tooltips.add(formattedEntry);
@@ -294,11 +282,11 @@ public class OverlayHandler {
 			return new ComponentColumn(List.of(), forcedExtraMaxWidthBySpaces * Minecraft.getInstance().font.width(" "), ComponentAlignment.LEFT);
 		}
 
-		private int renderColumn(GuiGraphics graphics, ComponentColumn column, int xOff, int yOff, int verticalTextPixelsAdvance) {
+		private int renderColumn(GuiGraphicsExtractor graphics, ComponentColumn column, int xOff, int yOff, int verticalTextPixelsAdvance) {
 			for (Component rowText : column.textRows) {
 				int textPixelWidth = Minecraft.getInstance().font.width(rowText);
 				int textXPos = xOff + this.textAlignment.getTextOffset(textPixelWidth, this.maxPixelWidth);
-				graphics.drawString(Minecraft.getInstance().font, rowText, textXPos, yOff, 0x00_ff_ff_ff, false);
+				graphics.text(Minecraft.getInstance().font, rowText, textXPos, yOff, 0x00_ff_ff_ff, false);
 				yOff += verticalTextPixelsAdvance;
 			}
 
@@ -320,7 +308,7 @@ public class OverlayHandler {
 			return new OreMeterInfoCache(maxPixelWidth, totalRowCount, ImmutableList.copyOf(headers), ImmutableList.copyOf(columns));
 		}
 
-		public void renderData(GuiGraphics graphics) {
+		public void renderData(GuiGraphicsExtractor graphics) {
 			int verticalTextPixelsAdvance = Minecraft.getInstance().font.lineHeight + 1;
 
 			graphics.fill(0, 0, this.totalPixelWidth + 8, this.totalRowCount * verticalTextPixelsAdvance + 6, 0x9b_00_00_00);
@@ -329,7 +317,7 @@ public class OverlayHandler {
 			int yOff = 4;
 
 			for (Component headerRowText : this.headerRows) {
-				graphics.drawString(Minecraft.getInstance().font, headerRowText, xOff, yOff, 0x00_ff_ff_ff, false);
+				graphics.text(Minecraft.getInstance().font, headerRowText, xOff, yOff, 0x00_ff_ff_ff, false);
 				yOff += verticalTextPixelsAdvance;
 			}
 

@@ -3,6 +3,9 @@ package twilightforest.init.custom;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -12,8 +15,10 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingAtlasInfo;
@@ -63,11 +68,11 @@ public class MagicPaintingVariants {
 			new Layer("mookaite_mesa", null, null, true, true),
 			new Layer("agate_jungle", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), null, true, true),
 			new Layer("crystal_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), null, true, true),
-			new Layer("background_gold", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("clouds_gold", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("golden_hills", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("golden_forest", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("golden_sands", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
+			new Layer("background_gold", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, safeStack(Items.GOLD_INGOT)), true, true),
+			new Layer("clouds_gold", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, safeStack(Items.GOLD_INGOT)), true, true),
+			new Layer("golden_hills", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, safeStack(Items.GOLD_INGOT)), true, true),
+			new Layer("golden_forest", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, safeStack(Items.GOLD_INGOT)), true, true),
+			new Layer("golden_sands", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, safeStack(Items.GOLD_INGOT)), true, true),
 			new Layer("background_corrupt", null, new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), true, true),
 			new Layer("clouds_corrupt", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false, true),
 			new Layer("goldstone_peaks", null, new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false, true),
@@ -113,6 +118,16 @@ public class MagicPaintingVariants {
 			new Layer("bl_greeblings_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, 0.015F, 74, 48), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F / 7.0F, false, 0.0F, 1.0F), false, true),
 			new Layer("bl_frame", null, null, false, false)
 		));
+	}
+
+	private static ItemStack safeStack(ItemLike itemLike) {
+		try {
+			java.lang.reflect.Constructor<ItemStack> constructor = ItemStack.class.getDeclaredConstructor(Holder.class, int.class, PatchedDataComponentMap.class);
+			constructor.setAccessible(true);
+			return constructor.newInstance(BuiltInRegistries.ITEM.wrapAsHolder(itemLike.asItem()), 1, new PatchedDataComponentMap(DataComponentMap.EMPTY));
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to create ItemStack without components validation", e);
+		}
 	}
 
 	@SuppressWarnings("SameParameterValue")

@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import twilightforest.init.TFFeatureModifiers;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -47,7 +46,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 
 	@Override
 	public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos placement) {
-		ArrayList<BlockPos> coordinates = new ArrayList<>();
+		Stream.Builder<BlockPos> coordinates = Stream.builder();
 
 		WorldGenLevel level = context.getLevel();
 		ChunkAccess chunk = level.getChunk(placement);
@@ -68,7 +67,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 			}
 		}
 
-		return coordinates.stream();
+		return coordinates.build();
 	}
 
 	@Override

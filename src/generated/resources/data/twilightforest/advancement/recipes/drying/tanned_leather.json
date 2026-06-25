@@ -1,27 +1,27 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_leather": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:leather"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "twilightforest:tanned_leather"
       },
       "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_treated": {
-      "conditions": {
-        "items": [
-          {
-            "items": "twilightforest:treated_leather"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_treated"
+      "has_leather"
     ]
   ],
   "rewards": {

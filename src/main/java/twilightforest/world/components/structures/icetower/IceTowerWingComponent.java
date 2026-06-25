@@ -52,8 +52,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	public IceTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.hasBase = nbt.getBoolean("hasBase");
-		this.treasureFloor = nbt.getInt("treasureFloor");
+		this.hasBase = nbt.getBooleanOr("hasBase", false);
+		this.treasureFloor = nbt.getIntOr("treasureFloor", -1);
 	}
 
 	protected IceTowerWingComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

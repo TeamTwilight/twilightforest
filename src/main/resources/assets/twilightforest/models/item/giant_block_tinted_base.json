@@ -1,0 +1,40 @@
+{
+	"parent": "minecraft:block/cube",
+	"display": {
+		"firstperson_lefthand": {
+			"rotation": [1, 225, 0],
+			"scale": [1.6, 1.6, 1.6],
+			"translation": [0, -10, -10]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [1.6, 1.6, 1.6],
+			"translation": [0, -10, -10]
+		},
+		"fixed": {
+			"scale": [1.25, 1.25, 1.25]
+		},
+		"ground": {
+			"translation": [0, 3, 0]
+		},
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"scale": [1.5, 1.5, 1.5],
+			"translation": [0, 10, 0]
+		}
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"down":  { "texture": "#down", "tintindex": 0 },
+				"up":    { "texture": "#up", "tintindex": 0 },
+				"north": { "texture": "#north", "tintindex": 0 },
+				"south": { "texture": "#south", "tintindex": 0 },
+				"west":  { "texture": "#west", "tintindex": 0 },
+				"east":  { "texture": "#east", "tintindex": 0 }
+			}
+		}
+	]
+}

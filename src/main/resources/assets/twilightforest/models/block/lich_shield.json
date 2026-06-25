@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "from": [0, 0, 7.5],
+      "to": [16, 16, 7.5],
+      "faces": {
+        "north": {
+          "texture": "#fill",
+          "uv": [0, 0, 16, 16]
+        },
+        "south": {
+          "texture": "#fill",
+          "uv": [16, 0, 0, 16]
+        }
+      }
+    },
+    {
+      "from": [0, 0, 8],
+      "to": [16, 16, 8],
+      "faces": {
+        "north": {
+          "texture": "#frame",
+          "uv": [0, 0, 16, 16]
+        },
+        "south": {
+          "texture": "#frame",
+          "uv": [16, 0, 0, 16]
+        }
+      }
+    }
+  ],
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "frame": "twilightforest:item/lich_shield_frame",
+    "fill": "twilightforest:item/lich_shield_fill",
+    "particle": "#frame"
+  }
+}

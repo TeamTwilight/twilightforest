@@ -218,16 +218,22 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 	public void setupAnim(HydraRenderState entity) {
 		super.setupAnim(entity);
 		if (entity.renderFakeHeads) {
-			this.root.getAllParts().forEach(part -> part.visible = true);
+			this.setPartAndDescendantsVisible(this.root, true);
 		} else {
-			this.root.getAllParts().forEach(part -> part.visible = false);
-			this.rightLeg.visible = true;
-			this.leftLeg.visible = true;
-			this.body.visible = true;
-			this.tail.visible = true;
+			this.setPartAndDescendantsVisible(this.root, true);
+			this.setPartAndDescendantsVisible(this.root.getChild("head_1"), false);
+			this.setPartAndDescendantsVisible(this.root.getChild("head_2"), false);
+			this.setPartAndDescendantsVisible(this.root.getChild("head_3"), false);
+			this.setPartAndDescendantsVisible(this.root.getChild("neck_1a"), false);
+			this.setPartAndDescendantsVisible(this.root.getChild("neck_2a"), false);
+			this.setPartAndDescendantsVisible(this.root.getChild("neck_3a"), false);
 		}
 
 		this.rightLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
 		this.leftLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
+	}
+
+	private void setPartAndDescendantsVisible(ModelPart part, boolean visible) {
+		part.getAllParts().forEach(p -> p.visible = visible);
 	}
 }

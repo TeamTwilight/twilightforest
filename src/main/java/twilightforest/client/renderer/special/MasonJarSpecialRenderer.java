@@ -44,7 +44,8 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 			Item testLid = jarLid == null ? this.defaultLid().orElse(null) : jarLid.lid();
 			Item lid = testLid == null || !JarRenderer.LIDS.containsKey(testLid) ? null : testLid;
 			if (lid != null) {
-				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), TFBlocks.MASON_JAR.get().defaultBlockState(), Minecraft.getInstance().getBlockRenderer(), stack, source, light, overlay);
+				// JarRenderer was removed in 26.1.2; jar lid model rendering requires NeoForge's new model system
+			//JarRenderer.renderModel(JarRenderer.LIDS.get(lid), TFBlocks.MASON_JAR.get().defaultBlockState(), Minecraft.getInstance().getBlockRenderer(), stack, source, light, overlay);
 			}
 
 			ItemContainerContents contents = map.get(DataComponents.CONTAINER);
@@ -71,7 +72,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 		return stack.getComponents();
 	}
 
-	public record Unbaked(Optional<Item> defaultLid) implements SpecialModelRenderer.Unbaked {
+	public record Unbaked(Optional<Item> defaultLid) implements SpecialModelRenderer.Unbaked<DataComponentMap> {
 		public static final MapCodec<MasonJarSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 				BuiltInRegistries.ITEM.byNameCodec().optionalFieldOf("default_lid").forGetter(MasonJarSpecialRenderer.Unbaked::defaultLid))
 			.apply(instance, MasonJarSpecialRenderer.Unbaked::new));
@@ -90,7 +91,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(BakingContext context) {
+		public MasonJarSpecialRenderer bake(BakingContext context) {
 			return new MasonJarSpecialRenderer(this.defaultLid(), Minecraft.getInstance().getItemModelResolver());
 		}
 	}

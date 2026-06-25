@@ -7,7 +7,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -23,11 +25,16 @@ public class ThrownWep extends TFThrowable {
 	private float projectileDamage = 6;
 
 	public ThrownWep(EntityType<? extends ThrownWep> type, Level world, LivingEntity thrower) {
-		super(type, world, thrower);
+		super(type, world, thrower, ItemStack.EMPTY);
 	}
 
 	public ThrownWep(EntityType<? extends ThrownWep> type, Level world) {
 		super(type, world);
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return Items.AIR;
 	}
 
 	public ThrownWep setDamage(float damage) {
@@ -37,13 +44,13 @@ public class ThrownWep extends TFThrowable {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
 		builder.define(DATA_ITEMSTACK, ItemStack.EMPTY);
 		builder.define(DATA_VELOCITY, 0.001F);
 	}
 
-	public ThrownWep setItem(ItemStack stack) {
+	public void setItem(ItemStack stack) {
 		this.getEntityData().set(DATA_ITEMSTACK, stack);
-		return this;
 	}
 
 	public ItemStack getItem() {
@@ -102,3 +109,4 @@ public class ThrownWep extends TFThrowable {
 		return this.getEntityData().get(DATA_VELOCITY);
 	}
 }
+

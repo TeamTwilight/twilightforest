@@ -26,6 +26,7 @@ import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 import twilightforest.world.components.structures.CustomDensitySource;

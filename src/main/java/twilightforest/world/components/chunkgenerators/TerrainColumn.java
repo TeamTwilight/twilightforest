@@ -79,7 +79,15 @@ public final class TerrainColumn {
 	}
 
 	private Holder<Biome> reduce(BinaryOperator<Double2ObjectMap.Entry<Holder<Biome>>> reducer, Holder<Biome> other) {
-		return this.biomes.double2ObjectEntrySet().stream().reduce(reducer).map(Map.Entry::getValue).orElse(other);
+		Double2ObjectMap.Entry<Holder<Biome>> result = null;
+		for (Double2ObjectMap.Entry<Holder<Biome>> entry : this.biomes.double2ObjectEntrySet()) {
+			if (result == null) {
+				result = entry;
+			} else {
+				result = reducer.apply(result, entry);
+			}
+		}
+		return result != null ? result.getValue() : other;
 	}
 
 	public double depth(DensityFunction.FunctionContext context) {

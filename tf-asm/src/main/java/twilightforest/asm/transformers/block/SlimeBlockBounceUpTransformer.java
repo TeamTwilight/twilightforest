@@ -1,33 +1,35 @@
 package twilightforest.asm.transformers.block;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.BlockHooks#stopBouncing}
  */
-public final class SlimeBlockBounceUpTransformer implements ITransformer<MethodNode> {
+public final class SlimeBlockBounceUpTransformer extends SimpleMethodTransformer {
+
+	public SlimeBlockBounceUpTransformer() {
+		super(
+			"net.minecraft.world.level.block.SlimeBlock",
+			"bounceUp",
+			"(Lnet/minecraft/world/entity/Entity;)V"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
-			node,
+			method,
 			Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/world/entity/Entity",
 			"getDeltaMovement",
 			"()Lnet/minecraft/world/phys/Vec3;"
-		).findFirst().ifPresent(target -> node.instructions.insertBefore(
+		).findFirst().ifPresent(target -> method.instructions.insertBefore(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 1),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
@@ -38,25 +40,5 @@ public final class SlimeBlockBounceUpTransformer implements ITransformer<MethodN
 				)
 			)
 		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.world.level.block.SlimeBlock",
-			"bounceUp",
-			"(Lnet/minecraft/world/entity/Entity;)V"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 }

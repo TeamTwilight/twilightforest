@@ -3,12 +3,7 @@ package twilightforest.client.model.entity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.WolfRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-
-import java.util.function.Function;
 
 public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> {
 
@@ -22,11 +17,7 @@ public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> 
 	private final ModelPart upperBody;
 
 	public HostileWolfModel(ModelPart root) {
-		this(RenderTypes::entityCutout, root);
-	}
-
-	public HostileWolfModel(Function<Identifier, RenderType> type, ModelPart root) {
-		super(type, false, 5.0F, 2.0F, 2.0F, 2.0F, 24.0F);
+		super(root);
 		this.head = root.getChild("head");
 		this.body = root.getChild("body");
 		this.upperBody = root.getChild("upper_body");

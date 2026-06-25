@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/thorns_no_section_alt",
-  "render_type": "minecraft:cutout",
   "textures": {
+    "end": "twilightforest:block/burnt_thorns_top",
     "side": "twilightforest:block/burnt_thorns_side"
   }
 }

@@ -1,10 +1,10 @@
 {
   "variants": {
     "active=false": {
-      "model": "twilightforest:block/built_block"
+      "model": "twilightforest:block/built_block_off"
     },
     "active=true": {
-      "model": "twilightforest:block/built_block_active"
+      "model": "twilightforest:block/built_block_on"
     }
   }
 }

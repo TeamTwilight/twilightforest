@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:block/cube",
+  "display": {
+    "gui": {
+      "rotation": [30, 45, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down":  { "texture": "#down",  "cullface": "down",  "uv": [0, 0, 4, 4] },
+        "up":    { "texture": "#up",    "cullface": "up",    "uv": [0, 0, 4, 4] },
+        "north": { "texture": "#north", "cullface": "north", "uv": [0, 0, 4, 4] },
+        "south": { "texture": "#south", "cullface": "south", "uv": [0, 0, 4, 4] },
+        "west":  { "texture": "#west",  "cullface": "west",  "uv": [0, 0, 4, 4] },
+        "east":  { "texture": "#east",  "cullface": "east",  "uv": [0, 0, 4, 4] }
+      }
+    }
+  ]
+}

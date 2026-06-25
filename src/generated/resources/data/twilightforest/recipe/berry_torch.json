@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "|": {
-      "tag": "c:rods/wooden"
-    },
-    "∴": {
-      "item": "twilightforest:torchberries"
-    }
+    "|": "#c:rods/wooden",
+    "∴": "twilightforest:torchberries"
   },
   "pattern": [
     "∴",

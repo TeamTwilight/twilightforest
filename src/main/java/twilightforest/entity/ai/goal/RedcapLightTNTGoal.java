@@ -2,6 +2,7 @@ package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +29,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!EventHooks.canEntityGrief(this.redcap.level(), this.redcap)) {
+		if (!(this.redcap.level() instanceof ServerLevel serverLevel) || !EventHooks.canEntityGrief(serverLevel, this.redcap)) {
 			return false;
 		}
 

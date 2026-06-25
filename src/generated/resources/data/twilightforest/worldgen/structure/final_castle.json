@@ -29,10 +29,14 @@
           "generation": 3,
           "pages": [
             {
-              "raw": "{\"translate\":\"twilightforest.book.unknown.1\"}"
+              "raw": {
+                "translate": "twilightforest.book.unknown.1"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.unknown.2\"}"
+              "raw": {
+                "translate": "twilightforest.book.unknown.2"
+              }
             }
           ],
           "resolved": true,

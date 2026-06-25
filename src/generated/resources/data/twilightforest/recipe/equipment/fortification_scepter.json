@@ -2,9 +2,7 @@
   "type": "twilightforest:scepter_repair",
   "durability": 9,
   "repair_ingredients": [
-    {
-      "item": "minecraft:golden_apple"
-    }
+    "minecraft:golden_apple"
   ],
   "scepter": "twilightforest:fortification_scepter"
 }

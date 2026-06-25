@@ -2,6 +2,7 @@ package twilightforest.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -46,7 +48,14 @@ public record SkullCandleSpecialRenderer(PlayerSkinRenderCache playerSkinRenderC
 		if (rendertype == null) {
 			rendertype = info.getFirst() != null ? info.getFirst().renderType() : PlayerSkinRenderCache.DEFAULT_PLAYER_SKIN_RENDER_TYPE;
 		}
-		SkullBlockRenderer.submitSkull(this.animation(), stack, collector, light, this.model(), rendertype, outlineColor, null);
+		stack.pushPose();
+		stack.translate(0.5F, 0.0F, 0.5F);
+		stack.scale(-1.0F, -1.0F, 1.0F);
+		SkullModelBase.State modelState = new SkullModelBase.State();
+		modelState.animationPos = this.animation();
+		modelState.yRot = 180.0F;
+		collector.submitModel(this.model(), modelState, stack, rendertype, light, OverlayTexture.NO_OVERLAY, outlineColor, null);
+		stack.popPose();
 
 		SkullCandles skullCandles = info.getSecond();
 
@@ -61,6 +70,11 @@ public record SkullCandleSpecialRenderer(PlayerSkinRenderCache playerSkinRenderC
 	@Override
 	public void getExtents(Consumer<Vector3fc> output) {
 		PoseStack poseStack = new PoseStack();
+		poseStack.translate(0.5F, 0.0F, 0.5F);
+		poseStack.scale(-1.0F, -1.0F, 1.0F);
+		SkullModelBase.State modelState = new SkullModelBase.State();
+		modelState.yRot = 180.0F;
+		this.model.setupAnim(modelState);
 		this.model.root().getExtentsForGui(poseStack, output);
 	}
 

@@ -1,10 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:terrorcotta_lines"
-  },
+  "ingredient": "twilightforest:terrorcotta_lines",
   "result": {
-    "count": 1,
     "id": "twilightforest:terrorcotta_arcs"
   }
 }

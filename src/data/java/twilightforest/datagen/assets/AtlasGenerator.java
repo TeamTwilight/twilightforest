@@ -21,7 +21,7 @@ public class AtlasGenerator extends SpriteSourceProvider {
 
 	@Override
 	protected void gather() {
-		this.atlas(AtlasIds.SHIELD_PATTERNS).addSource(new SingleFile(TwilightForestMod.prefix("entity/knightmetal_shield"), Optional.empty()));
+		this.atlas(AtlasIds.SHIELD_PATTERNS).addSource(new SingleFile(TwilightForestMod.prefix("entity/shield/knightmetal_shield"), Optional.empty()));
 		this.atlas(MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION).addSource(new SingleFile(MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, Optional.empty()));
 
 		MagicPaintingVariants.MAGIC_PAINTING_ATLAS_HELPER.forEach((location, parallaxVariant) -> {

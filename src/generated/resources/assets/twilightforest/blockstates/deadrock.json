@@ -1,21 +1,7 @@
 {
   "variants": {
-    "": [
-      {
-        "model": "twilightforest:block/deadrock"
-      },
-      {
-        "model": "twilightforest:block/deadrock",
-        "y": 180
-      },
-      {
-        "model": "twilightforest:block/deadrock",
-        "y": 90
-      },
-      {
-        "model": "twilightforest:block/deadrock",
-        "y": 270
-      }
-    ]
+    "": {
+      "model": "twilightforest:block/deadrock"
+    }
   }
 }

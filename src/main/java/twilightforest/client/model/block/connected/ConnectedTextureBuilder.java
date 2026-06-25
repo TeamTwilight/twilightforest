@@ -29,6 +29,7 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 	private int baseEmissivity = 0;
 	private int tintIndex = -1;
 	private int emissivity = 0;
+	private boolean translucent;
 
 	public ConnectedTextureBuilder() {
 		super(TwilightForestMod.prefix("connected_texture_block"), false);
@@ -73,6 +74,11 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 		return this;
 	}
 
+	public ConnectedTextureBuilder setTranslucent() {
+		this.translucent = true;
+		return this;
+	}
+
 	public final ConnectedTextureBuilder connectsTo(Block... blocks) {
 		this.connectableBlocks.addAll(List.of(blocks));
 		return this;
@@ -97,12 +103,16 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 		builder.baseEmissivity = this.baseEmissivity;
 		builder.tintIndex = this.tintIndex;
 		builder.emissivity = this.emissivity;
+		builder.translucent = this.translucent;
 		return builder;
 	}
 
 	@Override
 	public JsonObject toJson(JsonObject json) {
 		json = super.toJson(json);
+		if (this.translucent) {
+			json.addProperty("translucent", true);
+		}
 		if (this.baseTintIndex > -1 || this.baseEmissivity != 0) {
 			JsonObject baseInfo = new JsonObject();
 			if (this.baseTintIndex > -1) {

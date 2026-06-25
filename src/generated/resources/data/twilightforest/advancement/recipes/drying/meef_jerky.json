@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_meat": {
+    "has_cooked_porkchop": {
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:raw_meef"
+            "items": "minecraft:cooked_porkchop"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_meat"
+      "has_cooked_porkchop"
     ]
   ],
   "rewards": {

@@ -1,32 +1,35 @@
 package twilightforest.asm.transformers.foliage;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
-
-import java.util.Set;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.BlockHooks#resolveFoliageColor}
  */
-public class FoliageColorResolverTransformer implements ITransformer<MethodNode> {
+public class FoliageColorResolverTransformer extends SimpleMethodTransformer {
+
+	public FoliageColorResolverTransformer() {
+		super(
+			"net.minecraft.client.renderer.BiomeColors",
+			"lambda$static$0",
+			"(Lnet/minecraft/world/level/biome/Biome;DD)I"
+		);
+	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
 		ASMUtil.findInstructions(
-			node,
+			method,
 			Opcodes.IRETURN
-		).findFirst().ifPresent(target -> node.instructions.insertBefore(
+		).findFirst().ifPresent(target -> method.instructions.insertBefore(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new VarInsnNode(Opcodes.DLOAD, 1),
 				new VarInsnNode(Opcodes.DLOAD, 3),
@@ -38,26 +41,6 @@ public class FoliageColorResolverTransformer implements ITransformer<MethodNode>
 				)
 			)
 		));
-		return node;
-	}
-
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
-			"net.minecraft.client.renderer.BiomeColors",
-			"lambda$static$0", // FOLIAGE_COLOR_RESOLVER
-			"(Lnet/minecraft/world/level/biome/Biome;DD)I"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

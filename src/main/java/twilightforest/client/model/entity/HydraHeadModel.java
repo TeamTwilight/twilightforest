@@ -76,7 +76,16 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 	@Override
 	public void setupAnim(HydraHeadRenderState state) {
 		super.setupAnim(state);
-		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
+
+		float yawDiff = state.yRot - state.yRotO;
+		if (yawDiff > 180) {
+			yawDiff -= 360;
+		} else if (yawDiff < -180) {
+			yawDiff += 360;
+		}
+		float yaw = state.yRotO + yawDiff * state.partialTick;
+
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
 		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
 
 		this.head.xRot -= state.mouthAngle * (Mth.PI / 12.0F);
@@ -101,5 +110,10 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 		}
 		stack.translate(0.0F, -1.0F, itemForm ? -1.0F : 0.0F);
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(HydraRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+	}
+
+	@Override
+	public ModelPart getTrophyRoot() {
+		return this.root();
 	}
 }

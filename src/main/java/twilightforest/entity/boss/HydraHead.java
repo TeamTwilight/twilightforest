@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 
 public class HydraHead extends HydraPart {
@@ -20,6 +21,9 @@ public class HydraHead extends HydraPart {
 	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION_LAST = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Byte> DATA_STATE = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Float> DATA_HEAD_POS_X = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_HEAD_POS_Y = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_HEAD_POS_Z = SynchedEntityData.defineId(HydraHead.class, EntityDataSerializers.FLOAT);
 
 	public HydraHead(Hydra hydra) {
 		super(hydra, 4F, 4F);
@@ -36,6 +40,9 @@ public class HydraHead extends HydraPart {
 		builder.define(DATA_MOUTH_POSITION, 0F);
 		builder.define(DATA_MOUTH_POSITION_LAST, 0F);
 		builder.define(DATA_STATE, (byte) 0);
+		builder.define(DATA_HEAD_POS_X, 0F);
+		builder.define(DATA_HEAD_POS_Y, 0F);
+		builder.define(DATA_HEAD_POS_Z, 0F);
 	}
 
 	public float getMouthOpen() {
@@ -59,8 +66,26 @@ public class HydraHead extends HydraPart {
 		this.getEntityData().set(DATA_STATE, (byte) state.ordinal());
 	}
 
+	public float getHeadPosX() {
+		return this.getEntityData().get(DATA_HEAD_POS_X);
+	}
+
+	public float getHeadPosY() {
+		return this.getEntityData().get(DATA_HEAD_POS_Y);
+	}
+
+	public float getHeadPosZ() {
+		return this.getEntityData().get(DATA_HEAD_POS_Z);
+	}
+
+	public void setHeadPos(float x, float y, float z) {
+		this.getEntityData().set(DATA_HEAD_POS_X, x);
+		this.getEntityData().set(DATA_HEAD_POS_Y, y);
+		this.getEntityData().set(DATA_HEAD_POS_Z, z);
+	}
+
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand) {
+	public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
 		ItemStack stack = player.getItemInHand(hand);
 		Component tagName = stack.get(DataComponents.CUSTOM_NAME);
 		if (stack.is(Items.NAME_TAG) && tagName != null) {
@@ -81,6 +106,6 @@ public class HydraHead extends HydraPart {
 
 			return InteractionResult.SUCCESS;
 		}
-		return super.interact(player, hand);
+		return super.interact(player, hand, location);
 	}
 }

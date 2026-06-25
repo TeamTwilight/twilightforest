@@ -28,6 +28,7 @@ public class NagaSegment extends TFPart<Naga> {
 	public NagaSegment(Naga naga) {
 		super(naga);
 		this.setPos(naga.getX(), naga.getY(), naga.getZ());
+		this.setOldPosAndRot();
 		this.deactivate();
 	}
 
@@ -43,7 +44,7 @@ public class NagaSegment extends TFPart<Naga> {
 
 	@Override
 	public boolean hurtServer(ServerLevel server, DamageSource src, float damage) {
-		return !this.isInvisible() && this.getParent().hurt(src, damage * 2.0F / 3.0F);
+		return !this.isInvisible() && this.getParent().hurtServer(server, src, damage * 2.0F / 3.0F);
 	}
 
 	@Override

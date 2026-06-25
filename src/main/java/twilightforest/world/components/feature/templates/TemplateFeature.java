@@ -71,9 +71,11 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
 		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
-			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
-			if (info.nbt() != null && mode == StructureMode.DATA)
-				this.processMarkers(info, world, rotation, mirror, random);
+			if (info.nbt() != null) {
+				StructureMode mode = info.nbt().read("mode", StructureMode.LEGACY_CODEC).orElseThrow();
+				if (mode == StructureMode.DATA)
+					this.processMarkers(info, world, rotation, mirror, random);
+			}
 		}
 
 		this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos, config);
@@ -143,6 +145,6 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 	}
 
 	private static boolean isDataBlock(StructureTemplate.StructureBlockInfo info) {
-		return StructureMode.DATA.name().equals(info.nbt().getString("mode"));
+		return info.nbt() != null && "data".equals(info.nbt().getStringOr("mode", ""));
 	}
 }

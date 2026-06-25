@@ -3,7 +3,7 @@ package twilightforest.client.overlay;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ItemDisplayOverlay {
-	public static void render(GuiGraphics graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
+	public static void render(GuiGraphicsExtractor graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
 		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui)
 			return;
 
@@ -41,20 +41,11 @@ public class ItemDisplayOverlay {
 		renderHolders(graphics, minecraft, gui, player, typesToRender, widest);
 	}
 
-	private static void renderHolders(GuiGraphics graphics, Minecraft minecraft, Gui gui, Player player, List<DisplayHolder> typesToRender, int widest) {
-		graphics.pose().pushPose();
-		graphics.pose().translate(TFConfig.itemDisplayXOffs, TFConfig.itemDisplayYOffs, 0.0D);
-		graphics.pose().scale((float) TFConfig.itemDisplayScale, (float) TFConfig.itemDisplayScale, (float) TFConfig.itemDisplayScale);
+	private static void renderHolders(GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, Player player, List<DisplayHolder> typesToRender, int widest) {
 		typesToRender.sort(Comparator.comparing(holder -> holder.display().displayPosition()));
 		for (DisplayHolder holder : typesToRender) {
-			graphics.pose().pushPose();
 			holder.display().render(holder.stack(), graphics, minecraft, gui, player, widest);
-			//debug fill to see widget sizes
-			//graphics.fill(holder.bounds().startX(), holder.bounds().startY(), holder.bounds().startX() + holder.bounds().width(), holder.bounds().startY() + holder.bounds().height(), 0x80FF0000);
-			graphics.pose().popPose();
-			graphics.pose().translate(0.0F, holder.bounds().height(), 0.0F);
 		}
-		graphics.pose().popPose();
 	}
 
 	private static int fillDisplayHolders(List<DisplayHolder> typesToRender, ItemDisplayContents contents, Minecraft minecraft, Gui gui, Player player) {

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "twilightforest:naga_scale"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "twilightforest:naga_scale"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "twilightforest:naga_scale"
+      }
+    ]
+  }
+}

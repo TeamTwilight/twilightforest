@@ -19,18 +19,17 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.LightableBlock;
+import twilightforest.block.SkullCandleBlock;
+import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.client.state.block.SkullCandleRenderState;
 import twilightforest.components.item.SkullCandles;
@@ -59,15 +58,16 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		stack.pushPose();
 		stack.mulPose(state.transformation);
 		SkullBlockRenderer.submitSkull(state.animationProgress, stack, collector, state.lightCoords, model, state.renderType, 0, state.breakProgress);
+		stack.popPose();
 
+		stack.pushPose();
 		stack.mulPose(state.candleTransformation);
 		submitCandles(state.candle, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 		stack.popPose();
-
 	}
 
 	public static void submitCandles(BlockModelRenderState state, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, int outline) {
-		state.submit(stack, collector, light, overlay, outline);
+		state.submitMultiLayer(stack, collector, light, overlay, outline);
 	}
 
 	@Override
@@ -80,16 +80,16 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 		state.animationProgress = blockEntity.getAnimation(partialTicks);
 		BlockState blockState = blockEntity.getBlockState();
-		if (blockState.getBlock() instanceof WallSkullBlock) {
-			Direction facing = blockState.getValue(WallSkullBlock.FACING);
+		if (blockState.getBlock() instanceof WallSkullCandleBlock wallBlock) {
+			Direction facing = blockState.getValue(WallSkullCandleBlock.FACING);
 			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.wallTransformation(facing);
 			state.candleTransformation = CANDLE_TRANSFORMS.wallTransformation(facing);
 		} else {
-			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.freeTransformations(blockState.getValue(SkullBlock.ROTATION));
+			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.freeTransformations(blockState.getValue(SkullCandleBlock.ROTATION));
 			state.candleTransformation = CANDLE_TRANSFORMS.freeTransformations(0);
 		}
 
-		state.skullType = ((AbstractSkullBlock)blockState.getBlock()).getType();
+		state.skullType = ((AbstractSkullCandleBlock)blockState.getBlock()).getType();
 		state.renderType = this.resolveSkullRenderType(state.skullType, blockEntity);
 
 		updateSkullCandle(blockEntity.candleInfo, this.blockResolver, state.candle, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE);
@@ -105,7 +105,7 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 	}
 
 	private static Transformation createWallTransformation(Direction wallDirection) {
-		return new Transformation(new Matrix4f().translation(wallDirection.getStepX() * 0.25F, 0.75F, wallDirection.getStepZ() * 0.25F));
+		return new Transformation(new Matrix4f().translation(-wallDirection.getStepX() * 0.25F, 0.75F, -wallDirection.getStepZ() * 0.25F));
 	}
 
 	private static Transformation createGroundTransformation(int segment) {

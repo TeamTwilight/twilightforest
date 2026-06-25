@@ -1,29 +1,34 @@
 package twilightforest.asm.transformers.entity;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
+import twilightforest.asm.SimpleMethodTransformer;
 
 /**
  * {@link twilightforest.asmhooks.EntityHooks#unrestrainedSprintingInWater}
  * {@link twilightforest.asmhooks.EntityHooks#unrestrainedSwimPredicate}
  */
-public class WaterSprintTransformer implements ITransformer<MethodNode> {
+public class WaterSprintTransformer extends SimpleMethodTransformer {
 
-	private static void injectIsInWater(MethodNode node) {
-		ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+	public WaterSprintTransformer() {
+		super(
+			"net.minecraft.client.player.LocalPlayer",
+			"aiStep",
+			"()V"
+		);
+	}
+
+	private static void injectIsInWater(MethodNode method) {
+		ASMUtil.findMethodInstructions(method, Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/client/player/LocalPlayer",
 			"isInWater",
 			"()Z"
-		).forEach(m -> node.instructions.insert(m, ASMAPI.listOf(
+		).forEach(m -> method.instructions.insert(m, ASMUtil.listOf(
 			new VarInsnNode(Opcodes.ALOAD, 0),
 			new MethodInsnNode(
 				Opcodes.INVOKESTATIC,
@@ -35,12 +40,12 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 		)));
 	}
 
-	private static void injectIsInFluidType(MethodNode node) {
-		ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+	private static void injectIsInFluidType(MethodNode method) {
+		ASMUtil.findMethodInstructions(method, Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/client/player/LocalPlayer",
 			"isInFluidType",
 			"(Ljava/util/function/BiPredicate;)Z"
-		).forEach(call -> node.instructions.insertBefore(call, ASMAPI.listOf(
+		).forEach(call -> method.instructions.insertBefore(call, ASMUtil.listOf(
 			new VarInsnNode(Opcodes.ALOAD, 0),
 			new MethodInsnNode(
 				Opcodes.INVOKESTATIC,
@@ -53,28 +58,9 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		injectIsInWater(node);
-		injectIsInFluidType(node);
-		return node;
+	protected void transform(ClassNode classNode, MethodNode method, SimpleTransformationContext context) {
+		injectIsInWater(method);
+		injectIsInFluidType(method);
 	}
 
-	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull java.util.Set<Target<MethodNode>> targets() {
-		return java.util.Set.of(Target.targetMethod(
-			"net.minecraft.client.player.LocalPlayer",
-			"aiStep",
-			"()V"
-		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
-	}
 }

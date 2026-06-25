@@ -1,6 +1,21 @@
-#version 150
+#version 330
 
-#moj_import <fog.glsl>
+#moj_import <minecraft:fog.glsl>
+
+layout(std140) uniform Globals {
+    ivec3 CameraPosition;
+    vec3  CameraFraction;
+    vec2  ScreenSize;
+    float GlintAlpha;
+    float GameTime;
+    int   MenuBlurRadius;
+    int   UseRgss;
+};
+
+layout(std140) uniform AuroraSettings {
+    int seedContext;
+    vec3 positionContext;
+};
 
 //////////////// K.jpg's Re-oriented 4-Point BCC Noise (OpenSimplex2) ////////////////
 ////////////////////// Output: vec4(dF/dx, dF/dy, dF/dz, value) //////////////////////
@@ -102,14 +117,6 @@ vec4 openSimplex2_ImproveXY(vec3 X) {
 
 //////////////////////////////// End noise code ////////////////////////////////
 
-uniform vec4 ColorModulator;
-uniform float GameTime;
-uniform float FogStart;
-uniform float FogEnd;
-uniform vec4 FogColor;
-uniform int SeedContext;
-uniform vec3 PositionContext;
-
 out vec4 fragColor;
 
 in vec4 pixelPos;
@@ -120,8 +127,8 @@ const float FSTEPS = 16.0;
 const float PRECISION = 0.000001;
 
 float genNoise(float x, float z, float speed) {
-    float xx = x + PositionContext.x + (SeedContext / 360);
-    float zz = z + PositionContext.z + (SeedContext % 360);
+    float xx = x + positionContext.x + (seedContext / 360);
+    float zz = z + positionContext.z + (seedContext % 360);
     return openSimplex2_ImproveXY(vec3(xx / 512.0, zz / 512.0, GameTime * speed)).a;
 }
 
@@ -164,6 +171,12 @@ void main() {
 
     colorNoise = ((colorNoise + 1.0) / 2.0) * 0.5;
     vec4 color = vec4(0.0, 0.5 + colorNoise, 1.0 - colorNoise, noise);
-    float fogFade = linear_fog_fade(length(pixelPos.xz / 2.75), FogStart, FogEnd);
-    fragColor = linear_fog(vec4(vertexColor.rgb * ColorModulator.rgb * color.rgb, vertexColor.a * ColorModulator.a * color.a * fogFade), length(pixelPos.xz / 2.5), FogStart, FogEnd, FogColor);
+    fragColor = apply_fog(
+        vec4(vertexColor.rgb * color.rgb, vertexColor.a * color.a),
+        fog_spherical_distance(pixelPos.xyz / 2.5),
+        fog_cylindrical_distance(pixelPos.xyz / 2.5),
+        FogEnvironmentalStart, FogEnvironmentalEnd,
+        FogRenderDistanceStart, FogRenderDistanceEnd,
+        FogColor
+    );
 }

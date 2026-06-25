@@ -3,20 +3,14 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": {
-      "item": "twilightforest:dark_planks"
-    },
-    "C": {
-      "item": "minecraft:chest"
-    }
+    "#": "twilightforest:dark_planks"
   },
   "pattern": [
     "###",
-    "#C#",
+    "# #",
     "###"
   ],
   "result": {
-    "count": 2,
     "id": "twilightforest:dark_chest"
   }
 }

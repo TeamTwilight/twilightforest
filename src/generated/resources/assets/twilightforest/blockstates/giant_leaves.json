@@ -1,7 +1,10 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/giant_leaves"
+      "type": "twilightforest:giant_block",
+      "source_model": {
+        "model": "minecraft:block/oak_leaves"
+      }
     }
   }
 }

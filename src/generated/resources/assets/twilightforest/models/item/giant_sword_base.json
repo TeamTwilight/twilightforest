@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:item/giant_tool_base",
-  "textures": {
-    "layer0": "minecraft:item/stone_sword"
-  }
-}

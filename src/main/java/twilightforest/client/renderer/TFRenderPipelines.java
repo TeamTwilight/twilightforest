@@ -18,6 +18,8 @@ public class TFRenderPipelines {
 
 	public static final RenderPipeline RED_THREAD = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
 		.withLocation(TwilightForestMod.prefix("pipeline/red_thread"))
+		.withVertexShader("core/block")
+		.withFragmentShader("core/block")
 		.withSampler("Sampler0")
 		.withVertexFormat(DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS)
 		.withCull(true)

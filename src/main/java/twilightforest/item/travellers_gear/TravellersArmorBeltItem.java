@@ -69,10 +69,12 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 				if (!beltStack.equals(inventoryStack))
 					hasChanged = true;
 			} else {
-				hotbarStacks.set(slotIndex, beltStack);  // keep the same item in belt inventory
+				hotbarStacks.set(slotIndex, beltStack);
 			}
 		}
-		legArmor.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(hotbarStacks));
+		ItemStack modifiedBelt = legArmor.copy();
+		modifiedBelt.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(hotbarStacks));
+		player.getInventory().setItem(EquipmentSlot.LEGS.getIndex(Inventory.INVENTORY_SIZE), modifiedBelt);
 		if (hasChanged)
 			player.level().playSound(null, player, TFSounds.SWAP_HOTBAR.get(), SoundSource.PLAYERS, 1F, 1F);
 	}

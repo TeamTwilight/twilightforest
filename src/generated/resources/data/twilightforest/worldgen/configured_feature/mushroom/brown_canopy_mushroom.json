@@ -1,6 +1,10 @@
 {
   "type": "twilightforest:canopy_brown_mushroom",
   "config": {
+    "can_place_on": {
+      "type": "minecraft:matching_block_tag",
+      "tag": "minecraft:huge_brown_mushroom_can_place_on"
+    },
     "cap_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {

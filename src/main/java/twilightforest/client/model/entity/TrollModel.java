@@ -23,7 +23,7 @@ public class TrollModel extends HumanoidModel<TrollRenderState> {
 				.addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 10.0F),
 			PartPose.offset(0.0F, -9.0F, -6.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("nose", CubeListBuilder.create()
 				.texOffs(0, 21)

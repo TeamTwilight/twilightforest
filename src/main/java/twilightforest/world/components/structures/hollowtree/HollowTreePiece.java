@@ -63,7 +63,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 
 		if (!sbb.isInside(worldPos) || (!forcedPlace && !FeatureLogic.treesReplaceable(world.getBlockState(worldPos)))) return;
 
-		BlockState state = possibleBlocks.getState(random, worldPos);
+		BlockState state = possibleBlocks.getState(world, random, worldPos);
 
 		if (state.hasProperty(LeavesBlock.DISTANCE)) {
 			int distance = leafHack ? 1 : Mth.clamp(origin.distManhattan(worldPos), 1, 7);
@@ -80,7 +80,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 		if (!pBox.isInside(worldPos)) return;
 
 		while (this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinY() + 1) {
-			pLevel.setBlock(worldPos, possibleBlocks.getState(random, worldPos), PLACE_FLAG);
+			pLevel.setBlock(worldPos, possibleBlocks.getState(pLevel, random, worldPos), PLACE_FLAG);
 			worldPos.move(Direction.DOWN);
 		}
 	}
@@ -92,7 +92,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 		if (!pBox.isInside(worldPos)) return;
 
 		while (this.nonFluidAndReplaceableByStructures(pLevel, worldPos) && worldPos.getY() > pLevel.getMinY() + 1) {
-			pLevel.setBlock(worldPos, possibleBlocks.getState(random, worldPos).setValue(VineBlock.getPropertyForFace(direction), true), PLACE_FLAG);
+			pLevel.setBlock(worldPos, possibleBlocks.getState(pLevel, random, worldPos).setValue(VineBlock.getPropertyForFace(direction), true), PLACE_FLAG);
 			worldPos.move(Direction.DOWN);
 		}
 	}
@@ -108,7 +108,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 	protected void drawBresehnam(WorldGenLevel level, BoundingBox writeableBounds, BlockPos startPos, BlockPos endPos, BlockStateProvider stateProvider, RandomSource random) {
 		for (BlockPos worldPos : new VoxelBresenhamIterator(startPos, endPos))
 			if (writeableBounds.isInside(worldPos) && FeatureLogic.treesReplaceable(level.getBlockState(worldPos)))
-				level.setBlock(worldPos, stateProvider.getState(random, worldPos), PLACE_FLAG);
+				level.setBlock(worldPos, stateProvider.getState(level, random, worldPos), PLACE_FLAG);
 	}
 
 	/**

@@ -25,8 +25,8 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 
 	public IceTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFITBri.get(), nbt);
-		this.length = nbt.getInt("bridgeLength");
-		this.extraZlength = nbt.getInt("extraZlength");
+		this.length = nbt.getIntOr("bridgeLength", 0);
+		this.extraZlength = nbt.getIntOr("extraZlength", 0);
 	}
 
 	@SuppressWarnings("this-escape")

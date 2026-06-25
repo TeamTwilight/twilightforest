@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_banister",
   "key": {
-    "-": {
-      "item": "twilightforest:twilight_oak_slab"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "-": "twilightforest:twilight_oak_slab",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "---",

@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -13,14 +12,17 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +51,7 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		builder.define(MAGIC_PAINTING_VARIANT, this.getReg().getHolderOrThrow(MagicPaintingVariants.DEFAULT));
+		builder.define(MAGIC_PAINTING_VARIANT, this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT));
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class MagicPainting extends HangingEntity {
 	public static Optional<MagicPainting> create(Level level, BlockPos pos, Direction direction) {
 		MagicPainting magicPainting = new MagicPainting(level, pos);
 		List<Holder<MagicPaintingVariant>> list = new ArrayList<>();
-		level.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).holders().forEach(list::add);
+		level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).listElements().forEach(list::add);
 		if (list.isEmpty()) {
 			return Optional.empty();
 		} else {
@@ -105,29 +107,28 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag) {
+	public void addAdditionalSaveData(ValueOutput tag) {
 		Identifier location = this.getReg().getKey(this.getVariant().value());
 		if (location != null) tag.putString("variant", location.toString());
-		tag.putByte("facing", (byte) this.direction.get2DDataValue());
+		tag.putByte("facing", (byte) this.getDirection().get2DDataValue());
 		super.addAdditionalSaveData(tag);
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {
-		if (tag.contains("variant")) {
-			Identifier location = Identifier.tryParse(tag.getString("variant"));
+	public void readAdditionalSaveData(ValueInput tag) {
+		if (tag.getString("variant").isPresent()) {
+			Identifier location = Identifier.tryParse(tag.getString("variant").orElse(""));
 			if (location != null) {
-				this.setVariant(this.getReg().getHolder(location).orElse(this.getReg().getHolderOrThrow(MagicPaintingVariants.DEFAULT)));
+				this.setVariant(this.getReg().get(location).orElse(this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT)));
 			}
 		}
 
-		this.direction = Direction.from2DDataValue(tag.getByte("facing"));
+		this.setDirection(Direction.from2DDataValue(tag.getByteOr("facing", (byte) 0)));
 		super.readAdditionalSaveData(tag);
-		this.setDirection(this.direction);
 	}
 
 	protected Registry<MagicPaintingVariant> getReg() {
-		return this.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS);
+		return this.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS);
 	}
 
 	@Override
@@ -150,8 +151,8 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	@Override
-	public void dropItem(@Nullable Entity entity) {
-		if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+	public void dropItem(ServerLevel level, @Nullable Entity entity) {
+		if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
 			this.playSound(SoundEvents.PAINTING_BREAK, 1.0F, 1.0F);
 			if (entity instanceof Player player) {
 				if (player.getAbilities().instabuild) {
@@ -159,7 +160,7 @@ public class MagicPainting extends HangingEntity {
 				}
 			}
 
-			this.spawnAtLocation(this.getPickResult());
+			this.spawnAtLocation(level, this.getPickResult());
 		}
 	}
 
@@ -168,24 +169,21 @@ public class MagicPainting extends HangingEntity {
 		this.playSound(SoundEvents.PAINTING_PLACE, 1.0F, 1.0F);//FIXME
 	}
 
-	@Override
-	public void moveTo(double x, double y, double z, float yaw, float pitch) {
+	public void absSnapTo(double x, double y, double z, float yaw, float pitch) {
 		this.setPos(x, y, z);
 	}
 
-	@Override
-	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
+	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 		this.setPos(x, y, z);
 	}
 
-	@Override
 	public Vec3 trackingPosition() {
 		return Vec3.atLowerCornerOf(this.pos);
 	}
 
 	@Override
 	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
-		return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
+		return new ClientboundAddEntityPacket(this, this.getDirection().get3DDataValue(), this.getPos());
 	}
 
 	@Override

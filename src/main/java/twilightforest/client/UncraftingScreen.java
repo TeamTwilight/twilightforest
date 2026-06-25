@@ -1,23 +1,25 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
@@ -26,11 +28,12 @@ import twilightforest.network.UncraftingGuiPacket;
 
 public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> implements RecipeUpdateListener {
 	private static final Identifier TEXTURE = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
-	private final RecipeBookComponent recipeBookComponent = new UncraftingRecipeBookComponent();
+	private final UncraftingRecipeBookComponent recipeBookComponent;
 	private boolean widthTooNarrow;
 
 	public UncraftingScreen(UncraftingMenu container, Inventory player, Component name) {
 		super(container, player, name);
+		this.recipeBookComponent = new UncraftingRecipeBookComponent(container);
 	}
 
 	@Override
@@ -38,7 +41,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		super.init();
 
 		this.widthTooNarrow = this.width < 379;
-		this.recipeBookComponent.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.menu);
+		this.recipeBookComponent.init(this.width, this.height, this.minecraft, this.widthTooNarrow);
 		this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
 		this.addRenderableWidget(new ImageButton(this.leftPos + 145, this.topPos + 7, 20, 18, RecipeBookComponent.RECIPE_BUTTON_SPRITES, button -> {
 			this.recipeBookComponent.toggleVisibility();
@@ -48,36 +51,36 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		this.setInitialFocus(this.recipeBookComponent);
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 22, true, button -> {
-			PacketDistributor.sendToServer(new UncraftingGuiPacket(0));
+			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(0));
 			this.menu.unrecipeInCycle++;
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_next_uncraft")));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 55, false, button -> {
-			PacketDistributor.sendToServer(new UncraftingGuiPacket(1));
+			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(1));
 			this.menu.unrecipeInCycle--;
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_back_uncraft")));
 
 		if (!TFConfig.disableIngredientSwitching) {
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button -> {
-				PacketDistributor.sendToServer(new UncraftingGuiPacket(2));
+				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(2));
 				this.menu.ingredientsInCycle++;
 				this.menu.slotsChanged(this.menu.tinkerInput);
 			}, Component.translatable("container.twilightforest.uncrafting_table.cycle_next_ingredient")));
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, button -> {
-				PacketDistributor.sendToServer(new UncraftingGuiPacket(3));
+				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(3));
 				this.menu.ingredientsInCycle--;
 				this.menu.slotsChanged(this.menu.tinkerInput);
 			}, Component.translatable("container.twilightforest.uncrafting_table.cycle_back_ingredient")));
 		}
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, button -> {
-			PacketDistributor.sendToServer(new UncraftingGuiPacket(4));
+			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(4));
 			this.menu.recipeInCycle++;
 			this.menu.slotsChanged(this.menu.assemblyMatrix);
 		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_next_recipe")));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 55, false, button -> {
-			PacketDistributor.sendToServer(new UncraftingGuiPacket(5));
+			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(5));
 			this.menu.recipeInCycle--;
 			this.menu.slotsChanged(this.menu.assemblyMatrix);
 		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_back_recipe")));
@@ -97,10 +100,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		if (!TFConfig.disableIngredientSwitching) {
 			if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
 				if (vertScroll > 0) {
-					PacketDistributor.sendToServer(new UncraftingGuiPacket(2));
+					ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(2));
 					this.menu.ingredientsInCycle++;
 				} else {
-					PacketDistributor.sendToServer(new UncraftingGuiPacket(3));
+					ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(3));
 					this.menu.ingredientsInCycle--;
 				}
 				this.menu.slotsChanged(this.menu.tinkerInput);
@@ -110,10 +113,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		//uncrafting recipe buttons
 		if (x > this.leftPos + 40 && x < this.leftPos + 54 && y > this.topPos + 22 && y < this.topPos + 64) {
 			if (vertScroll > 0) {
-				PacketDistributor.sendToServer(new UncraftingGuiPacket(0));
+				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(0));
 				this.menu.unrecipeInCycle++;
 			} else {
-				PacketDistributor.sendToServer(new UncraftingGuiPacket(1));
+				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(1));
 				this.menu.unrecipeInCycle--;
 			}
 			this.menu.slotsChanged(this.menu.tinkerInput);
@@ -122,10 +125,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		//recrafting recipe buttons
 		if (x > this.leftPos + 121 && x < this.leftPos + 135 && y > this.topPos + 22 && y < this.topPos + 64) {
 			if (vertScroll > 0) {
-				PacketDistributor.sendToServer(new UncraftingGuiPacket(4));
+				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(4));
 				this.menu.recipeInCycle++;
 			} else {
-				PacketDistributor.sendToServer(new UncraftingGuiPacket(5));
+				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(5));
 				this.menu.recipeInCycle--;
 			}
 			this.menu.slotsChanged(this.menu.assemblyMatrix);
@@ -135,41 +138,47 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
-			this.renderBackground(graphics, mouseX, mouseY, partialTicks);
-			this.recipeBookComponent.render(graphics, mouseX, mouseY, partialTicks);
+			this.recipeBookComponent.extractRenderState(graphics, mouseX, mouseY, partialTicks);
 		} else {
-			super.render(graphics, mouseX, mouseY, partialTicks);
-			this.recipeBookComponent.render(graphics, mouseX, mouseY, partialTicks);
-			this.recipeBookComponent.renderGhostRecipe(graphics, this.leftPos, this.topPos, true, partialTicks);
+			super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
+			this.recipeBookComponent.extractRenderState(graphics, mouseX, mouseY, partialTicks);
+			this.recipeBookComponent.extractGhostRecipe(graphics, true);
 		}
-
-		this.renderTooltip(graphics, mouseX, mouseY);
-		this.recipeBookComponent.renderTooltip(graphics, this.leftPos, this.topPos, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		graphics.drawString(this.font, this.title, 6, 6, 4210752, false);
+	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractBackground(graphics, mouseX, mouseY, partialTicks);
+		if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
+			// background is handled by extractBackground
+		}
+	}
+
+	@Override
+	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		super.extractLabels(graphics, mouseX, mouseY);
+		graphics.text(this.font, this.title, 6, 6, 4210752, false);
 		if (TFConfig.disableUncraftingOnly) {
-			graphics.drawString(this.font, Component.translatable("container.twilightforest.uncrafting_table.uncrafting_disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752, false);
+			graphics.text(this.font, Component.translatable("container.twilightforest.uncrafting_table.uncrafting_disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752, false);
 		} else {
-			graphics.drawString(this.font, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752, false);
+			graphics.text(this.font, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752, false);
 		}
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+	public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 		int frameX = this.leftPos;
 		int frameY = (this.height - this.imageHeight) / 2;
-		graphics.blit(TEXTURE, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight);
+		super.extractContents(graphics, mouseX, mouseY, partialTicks);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, frameX, frameY, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
 		UncraftingMenu tfContainer = this.menu;
 
 		// show uncrafting ingredients as background
-		graphics.pose().pushPose();
-		graphics.pose().translate(this.leftPos, this.topPos, 0);
+		graphics.pose().pushMatrix();
+		graphics.pose().translate(this.leftPos, this.topPos);
 
 		for (int i = 0; i < 9; i++) {
 			Slot uncrafting = tfContainer.getSlot(2 + i);
@@ -179,7 +188,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 				this.drawSlotAsBackground(graphics, uncrafting, assembly);
 			}
 		}
-		graphics.pose().popPose();
+		graphics.pose().popMatrix();
 
 		int costVal = tfContainer.getUncraftingCost();
 		if (costVal > 0) {
@@ -190,7 +199,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 			} else {
 				color = 0x80FF20;
 			}
-			graphics.drawString(this.font, cost, frameX + 48 - this.font.width(cost), frameY + 38, color);
+			graphics.text(this.font, cost, frameX + 48 - this.font.width(cost), frameY + 38, color);
 		}
 
 		costVal = tfContainer.getRecraftingCost();
@@ -202,7 +211,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 			} else {
 				color = 0x80FF20;
 			}
-			graphics.drawString(this.font, cost, frameX + 130 - this.font.width(cost), frameY + 38, color);
+			graphics.text(this.font, cost, frameX + 130 - this.font.width(cost), frameY + 38, color);
 		}
 	}
 
@@ -212,60 +221,57 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (this.recipeBookComponent.mouseClicked(mouseX, mouseY, button)) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (this.recipeBookComponent.mouseClicked(event, doubleClick)) {
 			this.setFocused(this.recipeBookComponent);
 			return true;
 		} else {
-			return this.widthTooNarrow && this.recipeBookComponent.isVisible() || super.mouseClicked(mouseX, mouseY, button);
+			return this.widthTooNarrow && this.recipeBookComponent.isVisible() || super.mouseClicked(event, doubleClick);
 		}
 	}
 
 	@Override
-	protected boolean hasClickedOutside(double mouseX, double mouseY, int guiLeft, int guiTop, int mouseButton) {
-		return this.recipeBookComponent.hasClickedOutside(mouseX, mouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, mouseButton) && super.hasClickedOutside(mouseX, mouseY, guiLeft, guiTop, mouseButton);
+	protected boolean hasClickedOutside(double mouseX, double mouseY, int guiLeft, int guiTop) {
+		return this.recipeBookComponent.hasClickedOutside(mouseX, mouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight) && super.hasClickedOutside(mouseX, mouseY, guiLeft, guiTop);
 	}
 
-	private void drawSlotAsBackground(GuiGraphics graphics, Slot backgroundSlot, Slot appearSlot) {
+	private void drawSlotAsBackground(GuiGraphicsExtractor graphics, Slot backgroundSlot, Slot appearSlot) {
 
 		int screenX = appearSlot.x;
 		int screenY = appearSlot.y;
 		ItemStack itemStackToRender = backgroundSlot.getItem();
-
-		graphics.renderFakeItem(itemStackToRender, screenX, screenY);
+				graphics.item(itemStackToRender, screenX, screenY);
 
 		boolean itemBroken = UncraftingMenu.isMarked(itemStackToRender);
 
 		// draw 50% gray rectangle over the item
-		RenderSystem.disableDepthTest();
-		graphics.pose().pushPose();
-		graphics.pose().translate(0.0D, 0.0D, 200.0D);
+		graphics.pose().pushMatrix();
+		graphics.pose().translate(0.0f, 0.0f);
 		graphics.fill(appearSlot.x, appearSlot.y, appearSlot.x + 16, appearSlot.y + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
-		graphics.pose().popPose();
-		RenderSystem.enableDepthTest();
+		graphics.pose().popMatrix();
 	}
 
 	@Override
-	protected void renderTooltip(GuiGraphics graphics, int pX, int pY) {
+	protected void extractTooltip(GuiGraphicsExtractor graphics, int pX, int pY) {
 		UncraftingMenu container = this.menu;
 
 		for (int i = 0; i < 9; i++) {
 			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i) && !container.slots.get(11 + i).hasItem()) {
-				graphics.renderTooltip(this.font, container.slots.get(2 + i).getItem(), pX, pY);
+				graphics.setTooltipForNextFrame(this.font, java.util.List.of(Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED)), java.util.Optional.empty(), pX, pY);
 			}
 		}
 
 		//check if we're hovering over a banned uncraftable item
 		if (container.slots.getFirst().hasItem() && container.slots.getFirst().getItem().is(TFItemTags.BANNED_UNCRAFTABLES) && container.slots.getFirst().equals(this.hoveredSlot)) {
-			graphics.renderTooltip(this.font, Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
+			graphics.setTooltipForNextFrame(this.font, java.util.List.of(Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED)), java.util.Optional.empty(), pX, pY);
 		} else {
-			super.renderTooltip(graphics, pX, pY);
+			super.extractTooltip(graphics, pX, pY);
 		}
 	}
 
 	@Override
-	protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
-		super.slotClicked(slot, slotId, mouseButton, type);
+	protected void slotClicked(Slot slot, int slotId, int mouseButton, ContainerInput containerInput) {
+		super.slotClicked(slot, slotId, mouseButton, containerInput);
 		this.recipeBookComponent.slotClicked(slot);
 	}
 
@@ -275,7 +281,11 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 	}
 
 	@Override
-	public RecipeBookComponent getRecipeBookComponent() {
+	public void fillGhostRecipe(RecipeDisplay display) {
+		this.recipeBookComponent.fillGhostRecipe(display);
+	}
+
+	public RecipeBookComponent<?> getRecipeBookComponent() {
 		return this.recipeBookComponent;
 	}
 
@@ -289,7 +299,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		}
 
 		@Override
-		public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
@@ -301,7 +311,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				graphics.blit(TEXTURE, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
+                                                                graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.getX(), this.getY(), (float)textureX, (float)textureY, this.width, this.height, 256, 256);
 			}
 		}
 	}
@@ -316,7 +326,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		}
 
 		@Override
-		public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
@@ -328,7 +338,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				graphics.blit(TEXTURE, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
+                                                                graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.getX(), this.getY(), (float)textureX, (float)textureY, this.width, this.height, 256, 256);
 			}
 		}
 	}

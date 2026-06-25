@@ -95,7 +95,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			if (!blocksChecked.containsKey(positionCheck)) {
 				BlockState state = level.getBlockState(positionCheck);
 
-				if (state == poolBlock && level.getBlockState(positionCheck.below()).isFaceSturdy(level, pos, Direction.UP)) {
+				if (state.is(poolBlock.getBlock()) && level.getBlockState(positionCheck.below()).isFaceSturdy(level, positionCheck.below(), Direction.UP)) {
 					blocksChecked.put(positionCheck, true);
 					if (isPoolProbablyEnclosed) {
 						isPoolProbablyEnclosed = recursivelyValidatePortal(level, positionCheck, blocksChecked, portalSize, poolBlock);

@@ -90,8 +90,6 @@ public class TransformationParticle extends SingleQuadParticle {
 		}
 	}
 
-	@Override
-	public AABB getRenderBoundingBox(float partialTicks) {
-		return AABB.INFINITE;
-	}
+	// 26.1.2: getRenderBoundingBox removed from Particle base class, no longer overridable
 }
+

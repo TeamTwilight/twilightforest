@@ -3,15 +3,12 @@
   "category": "misc",
   "group": "drying_rack",
   "key": {
-    "-": {
-      "item": "twilightforest:transformation_slab"
-    }
+    "-": "twilightforest:transformation_slab"
   },
   "pattern": [
     "---"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:transformation_drying_rack"
   }
 }

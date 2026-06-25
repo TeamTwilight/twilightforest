@@ -89,7 +89,7 @@ public class UncraftingSlot extends Slot {
 			}
 			if (inputStack.has(DataComponents.CONTAINER)) {
 				inputStack.get(DataComponents.CONTAINER).nonEmptyItems().forEach(stack1 -> {
-					InventoryUtil.giveItemToPlayer(player, stack1);
+					InventoryUtil.giveItemToPlayer(player, stack1.create());
 				});
 			}
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);

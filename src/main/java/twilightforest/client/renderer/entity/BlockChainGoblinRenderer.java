@@ -53,7 +53,7 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 		stack.mulPose(Axis.XP.rotationDegrees(state.xRot));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		collector.submitModel(this.model, STATE, stack, this.model.renderType(BLOCK_AND_CHAIN_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
+		collector.submitModel(this.model, STATE, stack, this.model.renderType(BLOCK_AND_CHAIN_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 		stack.popPose();
 
 		if (state.deathTime <= 0) {

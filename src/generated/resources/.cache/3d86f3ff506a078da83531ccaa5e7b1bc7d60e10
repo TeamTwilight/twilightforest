@@ -1,4 +1,3 @@
-// 1.21.1	2025-08-31T23:30:29.066507	Global Loot Modifiers : twilightforest
-e7df41dc6ad38b1a486aaf9550a09d89936207e3 data/neoforge/loot_modifiers/global_loot_modifiers.json
-389326cc4dbb4e20d34dd6355c0769af4de9e356 data/twilightforest/loot_modifiers/fiery_pick_smelting.json
-7110d07feb8fa62ed414ad72b2f0644a5cda469f data/twilightforest/loot_modifiers/giant_pick_grouping.json
+// 26.1.2	2026-06-27T02:30:36.5724332	Global Loot Modifiers : twilightforest
+4779b48d1cebb237881c2fa6feec3de1aaafb915 data/twilightforest/loot_modifiers/fiery_pick_smelting.json
+137e2a635870b1da9e694b85fbe1d4cdd3618da0 data/twilightforest/loot_modifiers/giant_pick_grouping.json

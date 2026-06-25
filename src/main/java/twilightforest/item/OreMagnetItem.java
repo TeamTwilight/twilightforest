@@ -158,7 +158,7 @@ public class OreMagnetItem extends Item {
 								ParticlePacket particlePacket = new ParticlePacket();
 								for (int i = 0; i < 16; i++) {
 									Vec3 offset = new Vec3((level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D);
-									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
+									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
 								}
 								PacketDistributor.sendToPlayer(serverplayer, particlePacket);
 							}

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/boss_spawner"
+      "model": "twilightforest:block/minoshroom_boss_spawner"
     }
   }
 }

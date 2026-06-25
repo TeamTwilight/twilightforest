@@ -1,14 +1,15 @@
 package twilightforest.entity.passive.quest;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.entity.passive.quest.ram.QuestingRamContext;
@@ -30,9 +31,13 @@ public class QuestReloadListener extends SimpleJsonResourceReloadListener<JsonEl
 		boolean found = false;
 		for (var entry : object.entrySet()) {
 			if (entry.getKey().getPath().equals("questing_ram")) {
-				questingRamCurrentContext.setContext(QuestingRamContext.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).getOrThrow(JsonParseException::new));
-				TwilightForestMod.LOGGER.debug("Questing Ram quest set by mod {}", entry.getKey().getNamespace());
-				found = true;
+				var server = ServerLifecycleHooks.getCurrentServer();
+				if (server != null) {
+					RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, server.registryAccess());
+					questingRamCurrentContext.setContext(QuestingRamContext.CODEC.parse(ops, entry.getValue()).getOrThrow(RuntimeException::new));
+					TwilightForestMod.LOGGER.debug("Questing Ram quest set by mod {}", entry.getKey().getNamespace());
+					found = true;
+				}
 			}
 		}
 

@@ -1,24 +1,13 @@
 {
-  "carvers": {},
-  "creature_spawn_probability": 0.15,
+  "attributes": {
+    "minecraft:visual/fog_color": "#3a4e42",
+    "minecraft:visual/sky_color": "#20224a",
+    "minecraft:visual/water_fog_color": "#050533"
+  },
+  "carvers": [],
   "downfall": 0.1,
   "effects": {
-    "fog_color": 12648408,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
-    "sky_color": 2105930,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_color": "#3f76e4"
   },
   "features": [
     [],
@@ -46,8 +35,7 @@
     ],
     [],
     [
-      "minecraft:seagrass_normal",
-      "minecraft:seagrass_simple"
+      "minecraft:seagrass_normal"
     ],
     [
       "minecraft:freeze_top_layer"
@@ -58,67 +46,26 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [
-      {
-        "type": "twilightforest:bighorn_sheep",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 12
-      },
-      {
-        "type": "twilightforest:boar",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:chicken",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:deer",
-        "maxCount": 5,
-        "minCount": 4,
-        "weight": 15
-      },
-      {
-        "type": "minecraft:wolf",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 5
-      },
-      {
-        "type": "twilightforest:tiny_bird",
-        "maxCount": 8,
-        "minCount": 4,
-        "weight": 15
-      },
-      {
-        "type": "twilightforest:squirrel",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:dwarf_rabbit",
-        "maxCount": 5,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:raven",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      }
-    ],
+    "creature": [],
     "misc": [],
     "monster": [],
     "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
+    "water_ambient": [
+      {
+        "type": "minecraft:salmon",
+        "maxCount": 5,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "minecraft:squid",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 2
+      }
+    ]
   },
   "temperature": 0.5
 }

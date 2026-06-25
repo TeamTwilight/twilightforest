@@ -8,10 +8,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Vector3fc;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.model.entity.TrophyBlockModel;
 import twilightforest.client.renderer.block.TrophyRenderer;
 import twilightforest.config.TFConfig;
@@ -21,22 +22,36 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trophy, BossVariant variant, Optional<Integer> fixedRotation, ItemDisplayContext context) implements NoDataSpecialModelRenderer {
+public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trophy, BossVariant variant, Optional<Integer> fixedRotation, ItemDisplayContext context) implements SpecialModelRenderer<Float> {
 
 	@Override
-	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
+	public Float extractArgument(ItemStack stack) {
+		if (this.context() == ItemDisplayContext.GUI && TFConfig.rotateTrophyHeadsGui && !Minecraft.getInstance().isPaused()) {
+			return (float) (Util.getMillis() / 35);
+		}
+		return 0.0F;
+	}
+
+	@Override
+	public void submit(@Nullable Float rotationArg, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
 		TrophyBlockModel model = this.trophy().apply(this.variant());
 		float animation = !Minecraft.getInstance().isPaused() ? (int) (Util.getMillis() / 30) + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks() : 0;
 		if (model != null) {
-			float rotation = this.fixedRotation.orElse(TFConfig.rotateTrophyHeadsGui && !Minecraft.getInstance().isPaused() ? (int) (Util.getMillis() / 35) : 0);
+			float rotation = this.fixedRotation().isPresent() ? this.fixedRotation().get().floatValue() : (rotationArg != null ? rotationArg : 0.0F);
 			if (this.context() == ItemDisplayContext.GUI) {
 				stack.pushPose();
-				stack.translate(0.5F, 0.5F, 0.5F);
-				stack.mulPose(Axis.YN.rotationDegrees(rotation));
-				stack.translate(-0.5F, -0.5F, -0.5F);
+				stack.translate(0.5F, 0.1F, 0.5F);
+				stack.scale(-1.0F, -1.0F, 1.0F);
+				stack.mulPose(Axis.YP.rotationDegrees(rotation));
 				TrophyRenderer.submitTrophy(false, model, animation, stack, collector, light, overlay, null, this.context());
 				stack.popPose();
+			} else if (this.context() == ItemDisplayContext.HEAD) {
+				stack.translate(0.5F, 0.0F, 0.5F);
+				stack.scale(-1.0F, -1.0F, -1.0F);
+				TrophyRenderer.submitTrophy(false, model, animation, stack, collector, light, overlay, null, this.context());
 			} else {
+				stack.translate(0.5F, 0.0F, 0.5F);
+				stack.scale(-1.0F, -1.0F, 1.0F);
 				TrophyRenderer.submitTrophy(false, model, animation, stack, collector, light, overlay, null, this.context());
 			}
 		}
@@ -44,9 +59,25 @@ public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trop
 
 	@Override
 	public void getExtents(Consumer<Vector3fc> output) {
+		TrophyBlockModel model = this.trophy().apply(this.variant());
+		if (model != null) {
+			PoseStack poseStack = new PoseStack();
+			if (this.context() == ItemDisplayContext.GUI) {
+				poseStack.translate(0.5F, 0.12F, 0.5F);
+				poseStack.scale(-1.0F, -1.0F, 1.0F);
+			} else if (this.context() == ItemDisplayContext.HEAD) {
+				poseStack.translate(0.5F, 0.0F, 0.5F);
+				poseStack.scale(-1.0F, -1.0F, -1.0F);
+			} else {
+				poseStack.translate(0.5F, 0.0F, 0.5F);
+				poseStack.scale(-1.0F, -1.0F, 1.0F);
+			}
+			model.setupRotationsForTrophy(0.0F, this.context() == ItemDisplayContext.GUI ? 0.35F : 0.0F);
+			model.getTrophyRoot().getExtentsForGui(poseStack, output);
+		}
 	}
 
-	public record Unbaked(BossVariant variant, Optional<Integer> fixedRotation, ItemDisplayContext context) implements NoDataSpecialModelRenderer.Unbaked {
+	public record Unbaked(BossVariant variant, Optional<Integer> fixedRotation, ItemDisplayContext context) implements SpecialModelRenderer.Unbaked<Float> {
 		public static final MapCodec<TrophySpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 				BossVariant.CODEC.fieldOf("kind").forGetter(TrophySpecialRenderer.Unbaked::variant),
 				Codec.INT.optionalFieldOf("fixed_rotation").forGetter(TrophySpecialRenderer.Unbaked::fixedRotation),
@@ -63,7 +94,7 @@ public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trop
 		}
 
 		@Override
-		public SpecialModelRenderer<Void> bake(BakingContext context) {
+		public SpecialModelRenderer<Float> bake(BakingContext context) {
 			Function<BossVariant, TrophyBlockModel> model = Util.memoize(variant -> TrophyRenderer.createTrophyModel(context.entityModelSet(), variant));
 			return new TrophySpecialRenderer(model, this.variant(), this.fixedRotation(), this.context());
 		}

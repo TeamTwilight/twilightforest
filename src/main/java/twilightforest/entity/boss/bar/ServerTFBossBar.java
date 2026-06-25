@@ -1,5 +1,6 @@
 package twilightforest.entity.boss.bar;
 
+import java.util.UUID;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +10,7 @@ public class ServerTFBossBar extends ServerBossEvent {
 	private int color;
 
 	public ServerTFBossBar(Component name, int color, BossBarOverlay overlay) {
-		super(name, BossBarColor.WHITE, overlay);
+		super(UUID.randomUUID(), name, BossBarColor.WHITE, overlay);
 		this.color = color;
 	}
 

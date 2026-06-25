@@ -2,36 +2,17 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    },
-    {
-      "tag": "c:nuggets/copper"
-    }
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget",
+    "twilightforest:copper_nugget"
   ],
   "result": {
-    "count": 1,
     "id": "minecraft:copper_ingot"
   }
 }

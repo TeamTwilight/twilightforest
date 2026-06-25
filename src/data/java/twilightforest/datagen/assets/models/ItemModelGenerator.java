@@ -1,5 +1,6 @@
 package twilightforest.datagen.assets.models;
 
+import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.*;
@@ -26,11 +27,17 @@ import twilightforest.datagen.helpers.ItemModelBuilders;
 import twilightforest.init.*;
 import twilightforest.item.ArcticArmorItem;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.mojang.math.Transformation;
+import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
 public class ItemModelGenerator extends ItemModelBuilders {
+
+	private static final Transformation SHIELD_TRANSFORMATION = new Transformation(null, null, new Vector3f(1.0f, -1.0f, -1.0f), null);
 
 	public ItemModelGenerator(ItemModelOutput output, BiConsumer<Identifier, ModelInstance> modelOutput) {
 		super(output, modelOutput);
@@ -82,7 +89,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		Identifier empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/blank"))), this.modelOutput);
 		this.generatePotionFlask(TFItems.BRITTLE_FLASK.get(), true, empty);
 		this.generatePotionFlask(TFItems.GREATER_FLASK.get(), false, empty);
-		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE.get(), "_flames", ModelTemplates.TWO_LAYERED_ITEM);
+		this.itemModelOutput.accept(TFItems.EXANIMATE_ESSENCE.get(), ItemModelUtils.plainModel(ModelTemplates.TWO_LAYERED_ITEM.create(TFItems.EXANIMATE_ESSENCE.get(),
+			TextureMapping.layered(new Material(TwilightForestMod.prefix("item/exanimate_powder")), new Material(TwilightForestMod.prefix("item/exanimate_flames"))), this.modelOutput)));
 		this.generateFlatItem(TFItems.CROWN_SPLINTER.get(), ModelTemplates.FLAT_ITEM);
 		this.itemModelOutput.accept(TFBlocks.RED_THREAD.asItem(), ItemModelUtils.rangeSelect(new Count(true), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), ModelTemplates.FLAT_ITEM)), List.of(
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_0", ModelTemplates.FLAT_ITEM)), 4.0F / 64.0F),
@@ -206,7 +214,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.LIFEDRAIN_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.ZOMBIE_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.FORTIFICATION_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.itemModelOutput.accept(TFItems.LAMP_OF_CINDERS.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFItems.LAMP_OF_CINDERS.get())));
+		this.generateFlatItem(TFItems.LAMP_OF_CINDERS.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.EMPERORS_CLOTH.get(), ModelTemplates.FLAT_ITEM);
 		this.generateOreMagnet(TFItems.ORE_MAGNET.get());
 		this.itemModelOutput.accept(TFItems.ORE_METER.get(), ItemModelUtils.conditional(new OreMeterFlash(),
@@ -254,11 +262,14 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.SALMON_JERKY.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TROPICAL_FISH_JERKY.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FUGU_JERKY.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.SHIKA_SENBEI.get(), ModelTemplates.FLAT_ITEM);
 
 		this.generateFlatItem(TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.GELATINOUS_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateLayeredItem(TFItems.BERRY_MEDLEY.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.BERRY_MEDLEY.get()));
+		this.itemModelOutput.accept(TFItems.BERRY_MEDLEY.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFItems.BERRY_MEDLEY.get())));
 		this.generateLayeredItem(TFItems.MOSS_SOUP.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.MOSS_SOUP.get()));
+		this.itemModelOutput.accept(TFItems.MOSS_SOUP.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFItems.MOSS_SOUP.get())));
 
 		this.generateFlatItem(TFItems.MAZE_SLIME_BALL.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TANNIN.get(), ModelTemplates.FLAT_ITEM);
@@ -329,8 +340,11 @@ public class ItemModelGenerator extends ItemModelBuilders {
 
 	private void generateSpawnEgg(String entityName, int primary, int secondary) {
 		Item item = BuiltInRegistries.ITEM.getValue(TwilightForestMod.prefix(entityName + "_spawn_egg"));
-		Identifier model = this.generateLayeredItem(item, new Material(TwilightForestMod.prefix("item/spawn_egg_base")), new Material(TwilightForestMod.prefix("item/spawn_egg_overlay")));
-		this.itemModelOutput.accept(item, ItemModelUtils.tintedModel(model, ItemModelUtils.constantTint(primary), ItemModelUtils.constantTint(secondary)));
+		this.itemModelOutput.accept(item, ItemModelUtils.tintedModel(
+			TwilightForestMod.prefix("item/template_spawn_egg"),
+			new Constant(primary),
+			new Constant(secondary)
+		));
 	}
 
 	public void generatePattern(Item item) {
@@ -339,18 +353,63 @@ public class ItemModelGenerator extends ItemModelBuilders {
 
 	public void generateGiantTool(Item tool, Item baseTool) {
 		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, TextureMapping.layer0(baseTool), this.modelOutput));
-		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(tool).withSuffix("_gui"));
+		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(tool, "_gui"), TextureMapping.layer0(baseTool), this.modelOutput));
 		this.itemModelOutput.accept(tool, ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 
 	public void generateChestBoat(Item boat) {
-		this.itemModelOutput.accept(boat, ItemModelUtils.plainModel(ModelTemplates.TWO_LAYERED_ITEM.create(boat, TextureMapping.layered(new Material(ModelLocationUtils.getModelLocation(Items.OAK_CHEST_BOAT)), new Material(ModelLocationUtils.getModelLocation(boat))), this.modelOutput)));
+		this.itemModelOutput.accept(boat, ItemModelUtils.plainModel(ModelTemplates.TWO_LAYERED_ITEM.create(ModelLocationUtils.getModelLocation(boat), TextureMapping.layered(new Material(Identifier.withDefaultNamespace("item/oak_chest_boat")), new Material(ModelLocationUtils.getModelLocation(boat))), this.modelOutput)));
 	}
 
 	public void generateKnightmetalShield(Item shieldItem) {
+		this.createShieldModel(ModelLocationUtils.getModelLocation(shieldItem), false);
+		this.createShieldModel(ModelLocationUtils.getModelLocation(shieldItem, "_blocking"), true);
 		var normal = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem), new KnightmetalShieldSpecialRenderer.Unbaked());
 		var blocking = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem, "_blocking"), new KnightmetalShieldSpecialRenderer.Unbaked());
-		this.generateBooleanDispatch(shieldItem, ItemModelUtils.isUsingItem(), blocking, normal);
+		this.itemModelOutput.accept(shieldItem, ItemModelUtils.conditional(SHIELD_TRANSFORMATION, ItemModelUtils.isUsingItem(), blocking, normal));
+	}
+
+	private void createShieldModel(Identifier location, boolean isBlocking) {
+		JsonObject json = new JsonObject();
+		json.addProperty("parent", "builtin/entity");
+		json.addProperty("gui_light", "front");
+		JsonObject textures = new JsonObject();
+		textures.addProperty("particle", "twilightforest:block/towerwood");
+		json.add("textures", textures);
+		JsonObject display = new JsonObject();
+		if (isBlocking) {
+			addDisplayEntry(display, "thirdperson_righthand", new float[]{45, 135, 0}, new float[]{3.51f, 11, -2}, new float[]{1, 1, 1});
+			addDisplayEntry(display, "thirdperson_lefthand", new float[]{45, 135, 0}, new float[]{13.51f, 3, 5}, new float[]{1, 1, 1});
+			addDisplayEntry(display, "firstperson_righthand", new float[]{0, 180, -5}, new float[]{-15, 3.25f, -11}, new float[]{1.25f, 1.25f, 1.25f});
+			addDisplayEntry(display, "firstperson_lefthand", new float[]{0, 180, -5}, new float[]{5, 5, -11}, new float[]{1.25f, 1.25f, 1.25f});
+			addDisplayEntry(display, "gui", new float[]{15, -25, -5}, new float[]{3, 2, 0}, new float[]{0.65f, 0.65f, 0.65f});
+		} else {
+			addDisplayEntry(display, "thirdperson_righthand", new float[]{0, 90, 0}, new float[]{10.51f, 6, -4}, new float[]{1, 1, 1});
+			addDisplayEntry(display, "thirdperson_lefthand", new float[]{0, 90, 0}, new float[]{10.51f, 6, 12}, new float[]{1, 1, 1});
+			addDisplayEntry(display, "firstperson_righthand", new float[]{0, 180, 5}, new float[]{-10, 1.75f, -10}, new float[]{1.25f, 1.25f, 1.25f});
+			addDisplayEntry(display, "firstperson_lefthand", new float[]{0, 180, 5}, new float[]{10, 0, -10}, new float[]{1.25f, 1.25f, 1.25f});
+			addDisplayEntry(display, "gui", new float[]{15, -25, -5}, new float[]{3, 2, 0}, new float[]{0.65f, 0.65f, 0.65f});
+			addDisplayEntry(display, "fixed", new float[]{0, 180, 0}, new float[]{-2, 4, -5}, new float[]{0.5f, 0.5f, 0.5f});
+			addDisplayEntry(display, "ground", new float[]{0, 0, 0}, new float[]{4, 4, 2}, new float[]{0.25f, 0.25f, 0.25f});
+		}
+		json.add("display", display);
+		this.modelOutput.accept(location, () -> json);
+	}
+
+	private static void addDisplayEntry(JsonObject display, String name, float[] rotation, float[] translation, float[] scale) {
+		JsonObject entry = new JsonObject();
+		entry.add("rotation", toJsonArray(rotation));
+		entry.add("translation", toJsonArray(translation));
+		entry.add("scale", toJsonArray(scale));
+		display.add(name, entry);
+	}
+
+	private static JsonArray toJsonArray(float[] values) {
+		JsonArray array = new JsonArray();
+		for (float v : values) {
+			array.add(v);
+		}
+		return array;
 	}
 
 	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix) {
@@ -389,15 +448,16 @@ public class ItemModelGenerator extends ItemModelBuilders {
 
 	public void generateMoonDial(Item dial) {
 		List<RangeSelectItemModel.Entry> list = new ArrayList<>();
-		ItemModel.Unbaked itemmodel$unbaked = ItemModelUtils.plainModel(this.createFlatItemModel(dial, TFModelTemplates.MOON_DIAL));
-		list.add(ItemModelUtils.override(itemmodel$unbaked, 0.0F));
+		ItemModel.Unbaked full = ItemModelUtils.plainModel(TFModelTemplates.MOON_DIAL.create(ModelLocationUtils.getModelLocation(dial, "_full"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/moon_dial/full"))), this.modelOutput));
+		list.add(ItemModelUtils.override(full, 0.0F));
 
-		for (int i = 1; i < 8; i++) {
-			ItemModel.Unbaked phase = ItemModelUtils.plainModel(this.createFlatItemModel(dial, "_" + i, TFModelTemplates.MOON_DIAL));
-			list.add(ItemModelUtils.override(phase, (float) i - 0.5F));
+		String[] phases = {"waning_gibbous", "third_quarter", "waning_cresent", "new", "waxing_cresent", "first_quarter", "waxing_gibbous"};
+		for (int i = 0; i < phases.length; i++) {
+			ItemModel.Unbaked phase = ItemModelUtils.plainModel(TFModelTemplates.MOON_DIAL.create(ModelLocationUtils.getModelLocation(dial, "_" + phases[i]), TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/moon_dial/" + phases[i]))), this.modelOutput));
+			list.add(ItemModelUtils.override(phase, (float) i + 0.5F));
 		}
 
-		list.add(ItemModelUtils.override(itemmodel$unbaked, 7.5F));
+		list.add(ItemModelUtils.override(full, 7.5F));
 		this.itemModelOutput.accept(dial, ItemModelUtils.rangeSelect(new Time(false, Time.TimeSource.MOON_PHASE), 8.0F, list));
 	}
 
@@ -453,7 +513,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			new TravellersGearItemModel.Unbaked(ItemModelUtils.plainModel(this.createFlatItemModel(item, ModelTemplates.FLAT_ITEM)), modifierDirectory));
 		ItemModel.Unbaked baseOverlay = ItemModelUtils.plainModel(this.createFlatItemModel(overlay, ModelTemplates.FLAT_ITEM));
 		ItemModel.Unbaked overlayModel = ItemModelUtils.conditional(new Broken(),
-			ItemModelUtils.plainModel(this.createFlatItemModel(overlay, "_broken", ModelTemplates.FLAT_ITEM)),
+			ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(overlay, "_broken"), TextureMapping.layer0(TextureMapping.getItemTexture(overlay)), this.modelOutput)),
 			baseOverlay);
 		this.itemModelOutput.accept(overlay, baseOverlay);
 		this.itemModelOutput.accept(item, ItemModelUtils.conditional(property, ItemModelUtils.composite(gearModel, overlayModel), gearModel));

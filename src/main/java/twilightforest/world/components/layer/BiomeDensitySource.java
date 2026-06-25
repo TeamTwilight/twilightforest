@@ -101,6 +101,7 @@ public class BiomeDensitySource {
 	// Thanks k.jpg!
 
 	private static final double BLEND_RADIUS = 8.75;
+	private static final double BLEND_RADIUS_SQUARED = BLEND_RADIUS * BLEND_RADIUS;
 	private static final int BLEND_RADIUS_INT = Mth.floor(BLEND_RADIUS + 1.0);
 	private static final int BLOCK_XYZ_OFFSET = QuartPos.SIZE / 2;
 
@@ -117,44 +118,43 @@ public class BiomeDensitySource {
 		int zQuartStart = (blockZWithOffset - BLEND_RADIUS_INT) >> QuartPos.BITS;
 		int xQuartEnd = (blockXWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
 		int zQuartEnd = (blockZWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
-		int xCount = xQuartEnd - xQuartStart + 1;
-		int zCount = zQuartEnd - zQuartStart + 1;
 
 		double xQuartDelta = (blockXWithOffset - (xQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
 		double zQuartDelta = (blockZWithOffset - (zQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
 
-		for (int cz = 0, cx = 0; ; ) {
-			double dX = xQuartDelta - cx;
-			double dZ = zQuartDelta - cz;
+		for (int cx = 0; cx <= xQuartEnd - xQuartStart; cx++) {
+			for (int cz = 0; cz <= zQuartEnd - zQuartStart; cz++) {
+				double dX = xQuartDelta - cx;
+				double dZ = zQuartDelta - cz;
 
-			double distSq = dX * dX + dZ * dZ;
+				double distSq = dX * dX + dZ * dZ;
 
-			if (distSq < BLEND_RADIUS * BLEND_RADIUS) {
-				Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
-				if (terrainColumn.isPresent()) {
-					double falloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
-					double scaleFalloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
+				if (distSq < BLEND_RADIUS_SQUARED) {
+					Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
+					if (terrainColumn.isPresent()) {
+						TerrainColumn column = terrainColumn.get();
+						double weight = column.weight(context);
+						double falloff = BLEND_RADIUS_SQUARED * weight;
+						double scaleFalloff = falloff;
 
-					double neighborDepth = terrainColumn.get().depth(context);
-					double neighborScale = terrainColumn.get().scale(context);
+						double neighborDepth = column.depth(context);
+						double neighborScale = column.scale(context);
 
-					falloff *= Math.exp((distSq * 2f + neighborDepth) * -0.4f);
-					totalMappedDepth += neighborDepth * falloff;
-					totalContribution += falloff;
+						falloff *= Math.exp((distSq * 2f + neighborDepth) * -0.4f);
+						totalMappedDepth += neighborDepth * falloff;
+						totalContribution += falloff;
 
-					scaleFalloff *= Math.exp((distSq * 2f + neighborScale) * -0.4f);
-					totalScale += neighborScale * scaleFalloff;
-					totalScaleContribution += scaleFalloff;
+						scaleFalloff *= Math.exp((distSq * 2f + neighborScale) * -0.4f);
+						totalScale += neighborScale * scaleFalloff;
+						totalScaleContribution += scaleFalloff;
+					}
 				}
 			}
-
-			cz++;
-			if (cz < zCount) continue;
-			cz = 0;
-			cx++;
-			if (cx >= xCount) break;
 		}
 
-		return new DensityData(totalMappedDepth / totalContribution, totalScale / totalScaleContribution);
+		return new DensityData(
+			totalContribution != 0 ? totalMappedDepth / totalContribution : 0,
+			totalScaleContribution != 0 ? totalScale / totalScaleContribution : 0
+		);
 	}
 }

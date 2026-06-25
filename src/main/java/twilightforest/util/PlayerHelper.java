@@ -46,7 +46,7 @@ public class PlayerHelper {
 			ClientAdvancements manager = localPlayer.connection.getAdvancements();
 			return manager.get(advancementLocation);
 		} else if (player instanceof ServerPlayer serverPlayer) {
-			ServerLevel world = (ServerLevel) serverPlayer.level();
+			ServerLevel world = serverPlayer.level();
 			return world.getServer().getAdvancements().get(advancementLocation);
 		}
 

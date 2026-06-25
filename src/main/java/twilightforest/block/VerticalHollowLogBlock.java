@@ -75,7 +75,7 @@ public class VerticalHollowLogBlock extends Block implements SimpleWaterloggedBl
 	}
 
 	@Override
-	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!isInside(hit, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
 		if (stack.is(Blocks.VINE.asItem())) {

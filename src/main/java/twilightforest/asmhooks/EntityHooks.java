@@ -34,7 +34,7 @@ public class EntityHooks {
 			return o;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
-		if (livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
+		if (livingEntity.getFluidHeight(FluidTags.WATER) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
 			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
 		return isWaterWalking;
 	}
@@ -99,9 +99,9 @@ public class EntityHooks {
 	 * {@link net.minecraft.world.entity.Entity#move(MoverType, Vec3)}<br/>
 	 */
 	public static Entity resetStuckUnrestrained(Entity entity) {
-		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+		if (!(entity instanceof LivingEntity) || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return entity;
-		living.stuckSpeedMultiplier = Vec3.ZERO;
+		entity.makeStuckInBlock(entity.getBlockStateOn(), Vec3.ZERO);
 
 		return entity;
 	}

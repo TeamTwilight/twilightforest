@@ -5,10 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:arctic_boots",
-            "predicates": {
-              "twilightforest:color": {}
-            }
+            "items": "twilightforest:arctic_boots"
           }
         ]
       },
@@ -18,10 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:arctic_chestplate",
-            "predicates": {
-              "twilightforest:color": {}
-            }
+            "items": "twilightforest:arctic_chestplate"
           }
         ]
       },
@@ -31,10 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:arctic_helmet",
-            "predicates": {
-              "twilightforest:color": {}
-            }
+            "items": "twilightforest:arctic_helmet"
           }
         ]
       },
@@ -44,10 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:arctic_leggings",
-            "predicates": {
-              "twilightforest:color": {}
-            }
+            "items": "twilightforest:arctic_leggings"
           }
         ]
       },
@@ -59,7 +47,6 @@
       "translate": "advancement.twilightforest.arctic_dyed.desc"
     },
     "icon": {
-      "count": 1,
       "id": "twilightforest:arctic_chestplate"
     },
     "title": {

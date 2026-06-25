@@ -265,7 +265,6 @@ public class TreeConfigurations {
 		new TwoLayersFeatureSize(1, 1, 1)
 	)
 		.ignoreVines()
-		.forceDirt()
 		.decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
 		.build();
 

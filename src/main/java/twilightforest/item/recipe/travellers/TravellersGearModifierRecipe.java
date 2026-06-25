@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
@@ -15,20 +16,19 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.data.helpers.TFLangProvider;
+//import twilightforest.data.helpers.TFLangProvider; // TODO: package doesn't exist in 26.1.2
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	protected final ResourceKey<TravellersModifier> travellersModifierKey;
 	public TravellersGearModifierRecipe(ResourceKey<TravellersModifier> travellersModifier) {
-		super(CraftingBookCategory.EQUIPMENT);
+		super();
 		this.travellersModifierKey = travellersModifier;
 	}
 
@@ -42,17 +42,18 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			slots = travellersModifiableItem.getModifierSlots();
 		return TravellersModifiersManager.countInsertableModifiers(level.registryAccess(), stack) < slots
 			&& !TravellersModifiersManager.hasTravellersModifier(level.registryAccess(), stack, this.travellersModifierKey)
-			&& TravellersModifiersManager.getModifierDataComponentProviders(level.registryAccess(), input.items().stream().map(Ingredient::of).toList(), this.travellersModifierKey) <= 1;
+			&& TravellersModifiersManager.getModifierDataComponentProviders(level.registryAccess(), input.items().stream().map(stack1 -> Ingredient.of(stack1.getItem())).toList(), this.travellersModifierKey) <= 1;
 	}
 
 	@Override
-	public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
+	public @NotNull ItemStack assemble(@NotNull CraftingInput input) {
 		ItemStack travellerArmorStack = getModifiableArmor(input);
 		if (travellerArmorStack == null)
 			return ItemStack.EMPTY;  // Should never happen
 
 		ItemStack stack = travellerArmorStack.copy();
-		return applyModifier(registries, stack, input.items().stream().map(Ingredient::of).toList());
+		HolderLookup.Provider registries = net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer().registryAccess();
+		return applyModifier(registries, stack, input.items().stream().map(stack1 -> Ingredient.of(stack1.getItem())).toList());
 	}
 
 	public ItemStack applyModifier(HolderLookup.Provider registries, ItemStack stack, List<Ingredient> inputs) {
@@ -68,6 +69,8 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 	public abstract int getHeight();
 
+	public abstract NonNullList<Ingredient> getIngredients();
+
 	protected static @Nullable ItemStack getModifiableArmor(CraftingInput input) {
 		return getModifiableArmor(input.items());
 	}
@@ -79,13 +82,13 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 	public static ItemStack getModifiableArmorFromIngredients(Iterable<Ingredient> ingredients) {
 		return StreamSupport.stream(ingredients.spliterator(), false)
-			.flatMap(ingredient -> Arrays.stream(ingredient.getItems()))
+			.flatMap(ingredient -> ingredient.items().map(h -> new ItemStack(h.value())))
 			.filter(stack -> stack.getItem() instanceof TravellersModifiable).findFirst().orElseThrow();
 	}
 
 	public Identifier getId() {
-		return travellersModifierKey.location()
-			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
+		return travellersModifierKey.identifier()
+			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(getIngredients()).getItem().getDescriptionId(), '.') + "/")
 			.withPrefix("add_modifier_to_travellers_gear/")
 			.withSuffix("_modifier");
 	}
@@ -94,26 +97,24 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		return travellersModifierKey;
 	}
 
-	public static class AbstractModifierRecipeSerializer<T extends TravellersGearModifierRecipe> implements RecipeSerializer<T> {
+	public static class AbstractModifierRecipeSerializer<T extends TravellersGearModifierRecipe> {
 		protected final MapCodec<T> codec;
 
 		protected AbstractModifierRecipeSerializer(MapCodec<T> codec) {
 			this.codec = codec;
 		}
 
-		@Override
 		public @NotNull MapCodec<T> codec() {
 			return codec;
 		}
 
-		@Override
 		public @NotNull StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
 			return StreamCodec.of(this::toNetwork, this::fromNetwork);
 		}
 
 		public T fromNetwork(RegistryFriendlyByteBuf buf) {
 			RegistryOps<JsonElement> registryops = buf.registryAccess().createSerializationContext(JsonOps.INSTANCE);
-			JsonElement jsonelementDeserialized = GsonHelper.fromJson(TFLangProvider.GSON, buf.readUtf(), JsonElement.class);
+			JsonElement jsonelementDeserialized = GsonHelper.fromJson(new com.google.gson.Gson(), buf.readUtf(), JsonElement.class);
 			return codec.codec().decode(registryops, jsonelementDeserialized).getOrThrow().getFirst();
 		}
 

@@ -128,11 +128,11 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 
 	@Override
 	public void resolveDependencies(Resolver resolver) {
-
+		this.sourceModel.resolveDependencies(resolver);
 	}
 
 	@Override
 	public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
-		return null;
+		return MAP_CODEC;
 	}
 }

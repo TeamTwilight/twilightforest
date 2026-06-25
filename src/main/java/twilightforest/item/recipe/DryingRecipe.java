@@ -7,66 +7,87 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SingleItemRecipe;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
 
-public class DryingRecipe extends SingleItemRecipe {
+public class DryingRecipe implements Recipe<RecipeInput> {
 
-	private final int dryingTime;
+private final Ingredient ingredient;
+private final ItemStackTemplate result;
+private final int dryingTime;
 
-	public DryingRecipe(Ingredient ingredient, ItemStack result, int dryingTime) {
-		super(TFRecipes.DRYING_RECIPE.get(), TFRecipes.DRYING_SERIALIZER.get(), "", ingredient, result);
-		this.dryingTime = dryingTime;
-	}
+public DryingRecipe(Ingredient ingredient, ItemStackTemplate result, int dryingTime) {
+this.ingredient = ingredient;
+this.result = result;
+this.dryingTime = dryingTime;
+}
 
-	@Override
-	public boolean matches(SingleRecipeInput input, Level level) {
-		return this.ingredient.test(input.item());
-	}
+@Override
+public boolean matches(RecipeInput input, Level level) {
+return this.ingredient.test(input.getItem(0));
+}
 
-	public Ingredient getInput() {
-		return this.ingredient;
-	}
+@Override
+public ItemStack assemble(RecipeInput input) {
+return this.result.create().copy();
+}
 
-	public ItemStack getResult() {
-		return this.result;
-	}
+@Override
+public RecipeSerializer<? extends Recipe<RecipeInput>> getSerializer() {
+return TFRecipes.DRYING_SERIALIZER.get();
+}
 
-	public int getDryingTime() {
-		return this.dryingTime;
-	}
+@Override
+public RecipeType<? extends Recipe<RecipeInput>> getType() {
+return TFRecipes.DRYING_RECIPE.get();
+}
 
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
+@Override
+public boolean showNotification() {
+return false;
+}
 
-	public static class Serializer implements RecipeSerializer<DryingRecipe> {
+@Override
+public String group() {
+return "";
+}
 
-		public static final MapCodec<DryingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(o -> o.ingredient),
-			ItemStack.STRICT_CODEC.fieldOf("result").forGetter(o -> o.result),
-			Codec.INT.fieldOf("filter_time").forGetter(o -> o.dryingTime)
-		).apply(instance, DryingRecipe::new));
+@Override
+public PlacementInfo placementInfo() {
+return PlacementInfo.create(this.ingredient);
+}
 
-		public static final StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> STREAM_CODEC = StreamCodec.composite(
-			Ingredient.CONTENTS_STREAM_CODEC, o -> o.ingredient,
-			ItemStack.STREAM_CODEC, o -> o.result,
-			ByteBufCodecs.INT, o -> o.dryingTime,
-			DryingRecipe::new);
+@Override
+public RecipeBookCategory recipeBookCategory() {
+return RecipeBookCategories.FURNACE_MISC;
+}
 
-		@Override
-		public MapCodec<DryingRecipe> codec() {
-			return CODEC;
-		}
+public Ingredient getInput() {
+return this.ingredient;
+}
 
-		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> streamCodec() {
-			return STREAM_CODEC;
-		}
-	}
+public ItemStack getResult() {
+return this.result.create();
+}
+
+public int getDryingTime() {
+return this.dryingTime;
+}
+
+public static final MapCodec<DryingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+Ingredient.CODEC.fieldOf("input").forGetter(o -> o.ingredient),
+ItemStackTemplate.MAP_CODEC.fieldOf("result").forGetter(o -> o.result),
+Codec.INT.fieldOf("filter_time").forGetter(o -> o.dryingTime)
+).apply(instance, DryingRecipe::new));
+
+public static final StreamCodec<RegistryFriendlyByteBuf, DryingRecipe> STREAM_CODEC = StreamCodec.composite(
+	Ingredient.CONTENTS_STREAM_CODEC, o -> o.ingredient,
+	ItemStackTemplate.STREAM_CODEC, o -> o.result,
+	ByteBufCodecs.INT, o -> o.dryingTime,
+	DryingRecipe::new
+);
+
+public static final RecipeSerializer<DryingRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 }

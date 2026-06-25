@@ -3,15 +3,12 @@
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": {
-      "item": "twilightforest:mining_planks"
-    }
+    "#": "twilightforest:mining_planks"
   },
   "pattern": [
     "##"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:mining_pressure_plate"
   }
 }

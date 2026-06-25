@@ -1,7 +1,8 @@
 package twilightforest.datagen.data;
 
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -9,7 +10,11 @@ import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -21,8 +26,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
-import twilightforest.advancements.predicate.ItemColorPredicate;
-import tamaized.beanification.Autowired;
 import twilightforest.block.Experiment115Block;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.util.AdvancementDataMultiRequirements;
@@ -49,11 +52,9 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 		TFBlocks.ROOT_BLOCK, TFBlocks.ROOT_STRAND, TFBlocks.LIVEROOT_BLOCK, TFItems.LIVEROOT, TFBlocks.HOLLOW_OAK_SAPLING, TFBlocks.RAINBOW_OAK_SAPLING, TFBlocks.RAINBOW_OAK_LEAVES, TFBlocks.GIANT_LOG, TFBlocks.GIANT_LEAVES, TFBlocks.HUGE_STALK, TFBlocks.BEANSTALK_LEAVES, TFBlocks.THORN_LEAVES, TFBlocks.THORN_ROSE, TFBlocks.HEDGE, TFBlocks.FALLEN_LEAVES, TFBlocks.MANGROVE_ROOT,
 	});
 
-	@Autowired
-	private static AdvancementDataMultiRequirements advancementDataMultiRequirements;
+	private static final AdvancementDataMultiRequirements advancementDataMultiRequirements = new AdvancementDataMultiRequirements();
 
-	@Autowired
-	private static DrinkFromFlaskTrigger.TriggerInstance.DrinkFromFlaskTriggerInstanceFactory drinkFromFlaskTriggerInstanceFactory;
+	private static final DrinkFromFlaskTrigger.TriggerInstance.DrinkFromFlaskTriggerInstanceFactory drinkFromFlaskTriggerInstanceFactory = new DrinkFromFlaskTrigger.TriggerInstance.DrinkFromFlaskTriggerInstanceFactory();
 
 	@Override
 	public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer) {
@@ -443,7 +444,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.save(consumer, "twilightforest:lich_scepters");
 
 		Advancement.Builder.advancement().parent(lich).display(
-				this.flaskWithHarming(),
+				ItemStackTemplate.fromNonEmptyStack(this.flaskWithHarming()),
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist"),
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
@@ -495,7 +496,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.save(consumer, "twilightforest:experiment_115");
 
 		Advancement.Builder.advancement().parent(e115).display(
-				e115Tag("think"),
+				ItemStackTemplate.fromNonEmptyStack(e115Tag("think")),
 				Component.translatable("advancement.twilightforest.experiment_115_3"),
 				Component.translatable("advancement.twilightforest.experiment_115_3.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
@@ -503,7 +504,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.save(consumer, "twilightforest:experiment_115_115");
 
 		Advancement.Builder.advancement().parent(e115).display(
-				e115Tag("full"),
+				ItemStackTemplate.fromNonEmptyStack(e115Tag("full")),
 				Component.translatable("advancement.twilightforest.experiment_115_2"),
 				Component.translatable("advancement.twilightforest.experiment_115_2.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
@@ -515,10 +516,10 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 						Component.translatable("advancement.twilightforest.arctic_dyed"),
 						Component.translatable("advancement.twilightforest.arctic_dyed.desc"),
 						null, AdvancementType.TASK, true, true, false)
-				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
+				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).build()))
+				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).build()))
+				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).build()))
+				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).build()))
 				.rewards(AdvancementRewards.Builder.experience(25))
 				.save(consumer, "twilightforest:arctic_armor_dyed");
 
@@ -543,15 +544,25 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 	}
 
 	private ItemStack e115Tag(String key) {
-		ItemStack itemstack = new ItemStack(TFItems.EXPERIMENT_115.get());
+		ItemStack itemstack = safeStack(TFItems.EXPERIMENT_115.get());
 		itemstack.set(TFDataComponents.EXPERIMENT_115_VARIANTS, key);
 		return itemstack;
 	}
 
 	private ItemStack flaskWithHarming() {
-		ItemStack itemstack = new ItemStack(TFItems.BRITTLE_FLASK.get());
+		ItemStack itemstack = safeStack(TFItems.BRITTLE_FLASK.get());
 		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, new PotionFlaskComponent(new PotionContents(Potions.STRONG_HARMING), 4, 0, false));
 		return itemstack;
+	}
+
+	private static ItemStack safeStack(ItemLike itemLike) {
+		try {
+			java.lang.reflect.Constructor<ItemStack> constructor = ItemStack.class.getDeclaredConstructor(Holder.class, int.class, PatchedDataComponentMap.class);
+			constructor.setAccessible(true);
+			return constructor.newInstance(BuiltInRegistries.ITEM.wrapAsHolder(itemLike.asItem()), 1, new PatchedDataComponentMap(DataComponentMap.EMPTY));
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to create ItemStack without components validation", e);
+		}
 	}
 
 	private Advancement.Builder addTFKillable(HolderLookup.Provider registries, Advancement.Builder builder) {

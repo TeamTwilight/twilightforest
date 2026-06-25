@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
@@ -42,6 +42,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	@SuppressWarnings("this-escape")
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower, ItemStack stack) {
 		super(type, thrower.getX(), thrower.getEyeY() - 0.1F, thrower.getZ(), world);
+		this.setOwner(thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
 		this.stack = stack;
 	}
@@ -101,7 +102,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			BlockState state = this.level().getBlockState(pos);
 			if (!state.isAir()) {
 				if (this.getOwner() instanceof ServerPlayer player) {
-					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
+					if (!NeoForge.EVENT_BUS.post(new BreakBlockEvent(this.level(), pos, state, player)).isCanceled()) {
 						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
@@ -132,7 +133,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			for (int dx = 0; dx < 3; dx++) {
 				for (int dy = 0; dy < 3; dy++) {
 					for (int dz = 0; dz < 3; dz++) {
-						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(),
 							pos.getX() + (dx + 0.5D) / 4,
 							pos.getY() + (dy + 0.5D) / 4,
 							pos.getZ() + (dz + 0.5D) / 4,

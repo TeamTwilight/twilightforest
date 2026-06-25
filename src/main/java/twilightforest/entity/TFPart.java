@@ -141,6 +141,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		if (data.data() != null)
 			getEntityData().assignValues(data.data());
 		this.refreshDimensions();
+		this.setPos(this.getX(), this.getY(), this.getZ());
 	}
 
 	public static void assignPartIDs(Entity parent) {

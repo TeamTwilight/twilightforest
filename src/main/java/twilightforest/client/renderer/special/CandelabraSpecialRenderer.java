@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3fc;
 import twilightforest.client.renderer.block.CandelabraRenderer;
@@ -18,27 +19,36 @@ import twilightforest.init.TFDataComponents;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 
-public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<BlockModelRenderState>> {
+public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<BlockState>> {
 
 	@Override
-	public List<BlockModelRenderState> extractArgument(ItemStack stack) {
-		List<BlockModelRenderState> models = new ArrayList<>();
+	public List<BlockState> extractArgument(ItemStack stack) {
+		List<BlockState> candles = new ArrayList<>();
 		for (int i = 0; i < stack.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY).ordered().size(); i++) {
-			BlockModelRenderState state = new BlockModelRenderState();
 			BlockState candle = CandelabraData.getItem(stack.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY).ordered(), i).orElse(Blocks.AIR).defaultBlockState();
-			Minecraft.getInstance().getBlockModelResolver().update(state, candle, BlockDisplayContext.create());
-			models.add(state);
+			if (candle.hasProperty(CandleBlock.LIT)) {
+				candle = candle.setValue(CandleBlock.LIT, false);
+			}
+			candles.add(candle);
 		}
-
-		return models;
+		return candles;
 	}
 
 	@Override
-	public void submit(List<BlockModelRenderState> data, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
-		CandelabraRenderer.submitCandles(Direction.NORTH, false, data, stack, collector, light, overlay);
+	public void submit(List<BlockState> data, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
+		List<BlockModelRenderState> candleStates = new ArrayList<>();
+		var modelSet = Minecraft.getInstance().getModelManager().getBlockModelSet();
+		for (BlockState candle : data) {
+			BlockModelRenderState modelState = new BlockModelRenderState();
+			if (!candle.isAir()) {
+				var model = modelSet.get(candle);
+				model.update(modelState, candle, BlockDisplayContext.create(), 42L);
+			}
+			candleStates.add(modelState);
+		}
+		CandelabraRenderer.submitCandles(Direction.NORTH, false, candleStates, stack, collector, light, overlay);
 	}
 
 	@Override
@@ -46,7 +56,7 @@ public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<B
 
 	}
 
-	public record Unbaked() implements SpecialModelRenderer.Unbaked<List<BlockModelRenderState>> {
+	public record Unbaked() implements SpecialModelRenderer.Unbaked<List<BlockState>> {
 		public static final MapCodec<CandelabraSpecialRenderer.Unbaked> MAP_CODEC = MapCodec.unit(CandelabraSpecialRenderer.Unbaked::new);
 
 		public MapCodec<CandelabraSpecialRenderer.Unbaked> type() {
@@ -54,7 +64,7 @@ public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<B
 		}
 
 		@Override
-		public SpecialModelRenderer<List<BlockModelRenderState>> bake(BakingContext context) {
+		public SpecialModelRenderer<List<BlockState>> bake(BakingContext context) {
 			return new CandelabraSpecialRenderer();
 		}
 	}

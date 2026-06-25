@@ -1,7 +1,7 @@
 {
-  "parent": "twilightforest:block/vertical_hollow_log_vine",
-  "render_type": "minecraft:cutout",
+  "parent": "twilightforest:block/climbable_hollow_log",
   "textures": {
+    "climbable": "minecraft:block/vine",
     "inner": "twilightforest:block/stripped_sorting_log",
     "side": "twilightforest:block/sorting_log",
     "top": "twilightforest:block/sorting_log_top"

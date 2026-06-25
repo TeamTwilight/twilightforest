@@ -335,7 +335,7 @@
     "sounds": [
       {
         "type": "event",
-        "name": "block.dispenser.dispense"
+        "name": "entity.item.pickup"
       }
     ],
     "subtitle": "subtitles.twilightforest.block.reappearing_block.reappear"

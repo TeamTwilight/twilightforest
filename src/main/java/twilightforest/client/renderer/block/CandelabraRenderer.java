@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -22,7 +22,6 @@ import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.client.state.block.CandelabraRenderState;
 import twilightforest.components.item.CandelabraData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CandelabraRenderer implements BlockEntityRenderer<CandelabraBlockEntity, CandelabraRenderState> {
@@ -40,6 +39,8 @@ public class CandelabraRenderer implements BlockEntityRenderer<CandelabraBlockEn
 
 	public static void submitCandles(Direction facing, boolean onWall, List<BlockModelRenderState> candleStates, PoseStack stack, SubmitNodeCollector collector, int light, int overlay) {
 		for (int i = 0; i < candleStates.size(); i++) {
+			BlockModelRenderState candleState = candleStates.get(i);
+
 			stack.pushPose();
 			float offset = (0.315F - 0.315F * i);
 			if (onWall) {
@@ -47,7 +48,9 @@ public class CandelabraRenderer implements BlockEntityRenderer<CandelabraBlockEn
 			} else {
 				stack.translate(-Math.abs(facing.getStepZ()) * offset, 0.44F, -Math.abs(facing.getStepX()) * offset);
 			}
-			candleStates.get(i).submit(stack, collector, light, overlay, -1);
+
+			candleState.submitMultiLayer(stack, collector, light, overlay, 0);
+
 			stack.popPose();
 		}
 	}
@@ -58,20 +61,38 @@ public class CandelabraRenderer implements BlockEntityRenderer<CandelabraBlockEn
 	}
 
 	@Override
-	public void extractRenderState(CandelabraBlockEntity entity, CandelabraRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
-		BlockEntityRenderer.super.extractRenderState(entity, state, partialTicks, cameraPosition, breakProgress);
-		state.facing = entity.getBlockState().getValue(CandelabraBlock.FACING);
-		state.onWall = entity.getBlockState().getValue(CandelabraBlock.ON_WALL);
-		state.candleStates = new ArrayList<>();
-		for (int i = 0; i < entity.getCandles().ordered().size(); i++) {
-			BlockModelRenderState modelState = new BlockModelRenderState();
-			BlockState candle = CandelabraData.getItem(entity.getCandles().ordered(), i).orElse(Blocks.AIR).defaultBlockState();
-			if (candle.hasProperty(CandleBlock.LIT))
-				candle = candle.setValue(CandleBlock.LIT, entity.getBlockState().getValue(CandelabraBlock.LIGHTING) == LightableBlock.Lighting.NORMAL);
-			if (!candle.isAir()) {
+	public void extractRenderState(CandelabraBlockEntity entity, CandelabraRenderState state, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+		BlockEntityRenderer.super.extractRenderState(entity, state, partialTick, cameraPosition, breakProgress);
+		BlockState bs = entity.getBlockState();
+		if (bs.getBlock() instanceof CandelabraBlock) {
+			state.facing = bs.getValue(CandelabraBlock.FACING);
+			state.onWall = bs.getValue(CandelabraBlock.ON_WALL);
+		} else {
+			state.facing = Direction.NORTH;
+			state.onWall = false;
+		}
+
+		CandelabraData data = entity.getCandles();
+		List<Block> candles = data.ordered();
+
+		if (state.candleStates.size() != candles.size()) {
+			state.candleStates = new java.util.ArrayList<>();
+			for (int i = 0; i < candles.size(); i++) {
+				state.candleStates.add(new BlockModelRenderState());
+			}
+		}
+
+		for (int i = 0; i < candles.size(); i++) {
+			Block candleBlock = candles.get(i);
+			BlockModelRenderState modelState = state.candleStates.get(i);
+			modelState.clear();
+			if (!candleBlock.defaultBlockState().isAir()) {
+				BlockState candle = candleBlock.defaultBlockState().setValue(CandleBlock.CANDLES, 1);
+				if (bs.getBlock() instanceof LightableBlock lightable) {
+					candle = candle.setValue(CandleBlock.LIT, bs.getValue(LightableBlock.LIGHTING) != LightableBlock.Lighting.NONE);
+				}
 				this.blockModelResolver.update(modelState, candle, BlockDisplayContext.create());
 			}
-			state.candleStates.add(modelState);
 		}
 	}
 }

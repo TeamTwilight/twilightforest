@@ -3,15 +3,12 @@
   "category": "misc",
   "group": "drying_rack",
   "key": {
-    "-": {
-      "item": "twilightforest:canopy_slab"
-    }
+    "-": "twilightforest:canopy_slab"
   },
   "pattern": [
     "---"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:canopy_drying_rack"
   }
 }

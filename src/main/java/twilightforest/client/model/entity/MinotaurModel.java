@@ -22,7 +22,7 @@ public class MinotaurModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
 				.texOffs(9, 12)

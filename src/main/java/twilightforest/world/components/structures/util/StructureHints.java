@@ -4,20 +4,26 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.Filterable;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
@@ -132,8 +138,28 @@ public interface StructureHints {
 	Mob createHintMonster(Level world);
 
 	record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
+		// Custom codec that avoids Item.CODEC_WITH_BOUND_COMPONENTS validation
+		// This is needed because ItemStack.CODEC uses CODEC_WITH_BOUND_COMPONENTS which fails
+		// during registry loading when item components haven't been bound yet
+		private static final Codec<ItemStack> SAFE_ITEM_CODEC = RecordCodecBuilder.<ItemStack>create(instance -> instance.group(
+			Item.CODEC.fieldOf("id").forGetter(stack -> stack.typeHolder()),
+			ExtraCodecs.intRange(1, 99).fieldOf("count").orElse(1).forGetter(ItemStack::getCount),
+			DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(ItemStack::getComponentsPatch)
+		).apply(instance, (item, count, patch) -> createItemStackSafely(item, count, patch)));
+
+		@SuppressWarnings("deprecation")
+		private static ItemStack createItemStackSafely(Holder<Item> item, int count, DataComponentPatch patch) {
+			try {
+				java.lang.reflect.Constructor<ItemStack> constructor = ItemStack.class.getDeclaredConstructor(Holder.class, int.class, PatchedDataComponentMap.class);
+				constructor.setAccessible(true);
+				return constructor.newInstance(item, count, PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, patch));
+			} catch (Exception e) {
+				throw new RuntimeException("Failed to create ItemStack without components validation", e);
+			}
+		}
+
 		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
+			SAFE_ITEM_CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
 			BuiltInRegistries.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
 		).apply(instance, HintConfig::new));
 
@@ -150,7 +176,7 @@ public interface StructureHints {
 		}
 
 		public static ItemStack book(String name, int pageCount) {
-			ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+			ItemStack book = createItemStackSafely(BuiltInRegistries.ITEM.wrapAsHolder(Items.WRITTEN_BOOK), 1, DataComponentPatch.EMPTY);
 			StructureHints.addBookInformationStatic(book, name, pageCount);
 			return book;
 		}

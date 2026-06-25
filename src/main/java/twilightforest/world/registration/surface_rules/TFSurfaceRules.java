@@ -83,14 +83,14 @@ public class TFSurfaceRules {
 			DIRT
 		);
 
-		//snowy forest is all snow on the top layers
 		SurfaceRules.RuleSource snowySoil = SurfaceRules.sequence(
 			SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, snowFloor),
 			SurfaceRules.ifTrue(
 				SurfaceRules.waterStartCheck(-6, -1),
-				// This used to be dirt, but was changed to snow under the first block in later versions. Should this be kept to snow?
-				// FIXME Why is the dirt only going 1~2 blocks deep? Should be 3. Looks ugly on Yeti Caves
-				SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT)
+				SurfaceRules.ifTrue(
+					SurfaceRules.UNDER_FLOOR,
+					SurfaceRules.ifTrue(SurfaceRules.verticalGradient("snowy_dirt", VerticalAnchor.absolute(0), VerticalAnchor.absolute(-3)), DIRT)
+				)
 			)
 		);
 

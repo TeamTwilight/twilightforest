@@ -158,5 +158,8 @@
       "path": "bl_frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.music_in_the_mire.title"
+  },
   "width": 64
 }
