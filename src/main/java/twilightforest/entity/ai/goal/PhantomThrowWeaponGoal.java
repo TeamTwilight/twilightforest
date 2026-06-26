@@ -57,7 +57,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 
 		projectile.shoot(tx, ty, tz, speed, 1.0F);
 
-		projectile.moveOrInterpolateTo(new Vec3(sx, sy, sz), this.boss.getXRot(), this.boss.getYRot());
+		projectile.snapTo(new Vec3(sx, sy, sz), this.boss.getXRot(), this.boss.getYRot());
 
 		this.boss.level().addFreshEntity(projectile);
 	}
@@ -79,7 +79,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 
 			ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.level(), this.boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 
-			projectile.moveOrInterpolateTo(new Vec3(sx, sy, sz), this.boss.getXRot(), i * 45);
+			projectile.snapTo(new Vec3(sx, sy, sz), this.boss.getXRot(), i * 45);
 
 			float speed = 0.5F;
 
