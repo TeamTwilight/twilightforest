@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.monster.LichMinion;
@@ -94,14 +95,14 @@ public class LichMinionsGoal extends Goal {
 		if (this.lich.getAttackCooldown() == 0) {
 			if (dist < 2.0F) {
 				// melee attack
-				if (this.lich.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				if (this.lich.level() instanceof ServerLevel serverLevel) {
 					this.lich.doHurtTarget(serverLevel, targetedEntity);
 				}
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < ATTACK_RANGE && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
-				if (this.lich.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+				if (this.lich.level() instanceof ServerLevel serverLevel) {
 					if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(serverLevel, this.lich));
 					else this.lich.launchProjectileAt(new LichBomb(serverLevel, this.lich));
 				}
