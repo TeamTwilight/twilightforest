@@ -14,11 +14,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeatureUtil;
 
-public class FallenHollowLogFeature extends Feature<@NotNull NoneFeatureConfiguration> {
+public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 
 	private final BlockState mossPatch;
 	private final BlockState oakLeaves;
@@ -38,7 +37,7 @@ public class FallenHollowLogFeature extends Feature<@NotNull NoneFeatureConfigur
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<@NotNull NoneFeatureConfiguration> ctx) {
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
 		RandomSource rand = ctx.random();
