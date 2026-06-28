@@ -31,7 +31,7 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 			this.x = (float) this.wearer.getX();
 			this.y = (float) this.wearer.getY();
 			this.z = (float) this.wearer.getZ();
-		} else {
+		} else if (this.isWearingCicadaCurio()) {
 			this.stop();
 		}
 	}
