@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.world.components.layer.vanillalegacy.Area;
@@ -71,7 +70,7 @@ public enum StabilizeLayer implements AreaTransformer1 {
 //		return output;
 //	}
 	@Override
-	public ResourceKey<@NotNull Biome> applyPixel(RandomContext randomContext, Area layer, int x, int z) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area layer, int x, int z) {
 		int offX = getParentX(x << 4);
 		int offZ = getParentY(z << 4);
 		int centerX = ((x + offX + 1) & -4) - offX;
@@ -92,7 +91,7 @@ public enum StabilizeLayer implements AreaTransformer1 {
 		}
 	}
 
-	public record Factory(long salt, Holder<@NotNull BiomeLayerFactory> parent) implements BiomeLayerFactory {
+	public record Factory(long salt, Holder<BiomeLayerFactory> parent) implements BiomeLayerFactory {
 		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
 			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
