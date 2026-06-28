@@ -102,16 +102,7 @@ public class TFDamageTypes {
 		context.register(YEETED, new DamageType("twilightforest.yeeted", 0.1F));
 		context.register(ANT, new DamageType("twilightforest.ant", 0.1F));
 		context.register(HAUNT, new DamageType("twilightforest.haunt", 0.1F));
-
-		DamageEffects clampingEffect;
-		try {
-			clampingEffect = DamageEffects.valueOf("TWILIGHTFOREST_PINCH");
-		} catch (IllegalArgumentException e) {
-			// Fallback
-			clampingEffect = DamageEffects.HURT;
-		}
-		context.register(CLAMPED, new DamageType("twilightforest.clamped", 0.1F, clampingEffect));
-
+		context.register(CLAMPED, new DamageType("twilightforest.clamped", 0.1F, tfDamageEffectsEnumExtension.PINCH));
 		context.register(SCORCHED, new DamageType("twilightforest.scorched", 0.1F, DamageEffects.BURNING));
 		context.register(FROZEN, new DamageType("twilightforest.frozen", 0.1F, DamageEffects.FREEZING));
 		context.register(SPIKED, new DamageType("twilightforest.spiked", 0.1F));
