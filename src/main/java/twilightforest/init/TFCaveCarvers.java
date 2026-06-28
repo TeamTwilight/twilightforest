@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,6 +29,7 @@ import java.util.List;
 
 //this was all put into 1 class because it seems like a waste to have it in 2
 public class TFCaveCarvers {
+	
 	public static final DeferredRegister<WorldCarver<?>> CARVER_TYPES = DeferredRegister.create(Registries.CARVER, TwilightForestMod.ID);
 
 	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> TF_CAVES = CARVER_TYPES.register("tf_caves", () -> new TFCavesCarver(
@@ -56,7 +56,7 @@ public class TFCaveCarvers {
 		true,
 		new WeightedStateProvider(
 			WeightedList.<BlockState>builder()
-				.add(Blocks.SMOOTH_STONE.defaultBlockState(), 1)
+				.add(TFBlocks.TROLLSTEINN.value().defaultBlockState(), 1)
 				.add(Blocks.STONE.defaultBlockState(), 3)
 				.build()
 		)
