@@ -226,6 +226,7 @@ repositories {
 		content {
 			includeGroup "curse.maven"
 		}
+	}
 }
 
 dependencies {
