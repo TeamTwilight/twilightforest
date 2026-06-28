@@ -139,11 +139,7 @@ public class LichMinionsGoal extends Goal {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.level(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			Level level = this.lich.level();
-			long time = level.getOverworldClockTime();
-			int phase = (int)(time / 24000L % 8L + 8L) % 8;
-			DifficultyInstance difficultyInstance = new DifficultyInstance(level.getDifficulty(), level.getGameTime(), level.getChunkAt(BlockPos.containing(minionSpot)).getInhabitedTime(), DimensionType.MOON_BRIGHTNESS_PER_PHASE[phase]);
-			EventHooks.finalizeMobSpawn(minion, accessor, difficultyInstance, EntitySpawnReason.MOB_SUMMONED, null);
+			EventHooks.finalizeMobSpawn(minion, accessor, accessor.getCurrentDifficultyAt(BlockPos.containing(minionSpot)), EntitySpawnReason.MOB_SUMMONED, null);
 			this.lich.level().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);
