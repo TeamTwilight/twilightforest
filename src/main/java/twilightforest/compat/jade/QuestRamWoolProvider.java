@@ -17,7 +17,6 @@ import twilightforest.util.ColorUtil;
 import java.util.Map;
 
 public enum QuestRamWoolProvider implements IEntityComponentProvider {
-
 	INSTANCE;
 
 	@Override

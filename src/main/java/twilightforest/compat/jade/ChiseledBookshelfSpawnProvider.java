@@ -19,7 +19,6 @@ import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.init.TFBlocks;
 
 public enum ChiseledBookshelfSpawnProvider implements IBlockComponentProvider {
-
 	INSTANCE;
 
 	@Override
