@@ -29,7 +29,7 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 
 	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
-			// I am not entirely sure that this approach is reliable or safe, it seems that the level no longer has access to game rules
+			// FIXME level no longer has access to game rules
 
 			MinecraftServer server = ctx.player().level().getServer();
 
