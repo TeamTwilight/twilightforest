@@ -115,10 +115,9 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 			.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)));
-		level.setBlockEntity(new SkullCandleBlockEntity(pos,
-			newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
+		level.setBlockEntity(new SkullCandleBlockEntity(pos, newBlock.defaultBlockState()
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+			.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
 			sc.setOwnerProfile(profile);
@@ -132,10 +131,9 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 			.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)));
-		level.setBlockEntity(new SkullCandleBlockEntity(pos,
-			newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
+		level.setBlockEntity(new SkullCandleBlockEntity(pos, newBlock.defaultBlockState()
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+			.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
 			sc.setOwnerProfile(profile);
