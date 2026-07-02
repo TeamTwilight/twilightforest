@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-// TODO: Deal with TFLangProvider change and port to 26.1.X
+// TODO: Port to 26.1.X
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	protected final ResourceKey<TravellersModifier> travellersModifierKey;
 	public TravellersGearModifierRecipe(ResourceKey<TravellersModifier> travellersModifier) {

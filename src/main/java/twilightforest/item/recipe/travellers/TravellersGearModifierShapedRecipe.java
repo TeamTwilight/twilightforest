@@ -11,7 +11,6 @@ import twilightforest.TFRegistries;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
-// TODO: Deal with serialization changes and port to 26.1.X
 public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRecipe {
 	protected final ShapedRecipePattern pattern;
 	protected final boolean isRotated;
