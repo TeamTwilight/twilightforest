@@ -3,6 +3,7 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -17,7 +18,6 @@ import twilightforest.init.TFDataComponents;
 
 public class SkullCandleBlockEntity extends SkullBlockEntity {
 	private SkullCandles candleInfo = SkullCandles.DEFAULT;
-	private @Nullable ResolvableProfile owner;
 
 	public SkullCandleBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
@@ -73,7 +73,21 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		return this.owner;
 	}
 
+	public void setOwnerProfile(ResolvableProfile newProfile) {
+		DataComponentPatch patch = DataComponentPatch.builder()
+			.set(DataComponents.PROFILE, newProfile)
+			.build();
+		applyComponents(collectComponents(), patch);
+	}
+
 	public SkullCandles getCandleInfo() {
 		return this.candleInfo;
+	}
+
+	public void setCandleInfo(SkullCandles newInfo) {
+		DataComponentPatch patch = DataComponentPatch.builder()
+			.set(TFDataComponents.SKULL_CANDLES.get(), newInfo)
+			.build();
+		applyComponents(collectComponents(), patch);
 	}
 }
