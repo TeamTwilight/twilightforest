@@ -41,6 +41,7 @@ public class ParticlePacket implements CustomPacketPayload {
 			buf.writeInt(d);
 			ParticleTypes.STREAM_CODEC.encode(buf, queuedParticle.particleOptions);
 			buf.writeBoolean(queuedParticle.b);
+			buf.writeBoolean(queuedParticle.b2);
 			buf.writeDouble(queuedParticle.x);
 			buf.writeDouble(queuedParticle.y);
 			buf.writeDouble(queuedParticle.z);
@@ -63,8 +64,6 @@ public class ParticlePacket implements CustomPacketPayload {
 		this.queuedParticles.add(new QueuedParticle(particleOptions, b, b2, xyz.x, xyz.y, xyz.z, xyz2.x, xyz2.y, xyz2.z));
 	}
 
-
-	// Important to note that b2 is equivalent to b on the old call sites, b now represents the new parameter 'overrideLimiter'
 	private record QueuedParticle(ParticleOptions particleOptions, boolean b, boolean b2, double x, double y, double z, double x2,
 								  double y2, double z2) {
 	}
