@@ -1,8 +1,6 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +20,6 @@ import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDataComponents;
 
 public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
@@ -123,11 +120,8 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			DataComponentPatch patch = DataComponentPatch.builder()
-				.set(TFDataComponents.SKULL_CANDLES.get(), new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()))
-				.set(DataComponents.PROFILE, profile)
-				.build();
-			sc.applyComponents(sc.collectComponents(), patch);
+			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
+			sc.setOwnerProfile(profile);
 			sc.setChanged();
 		}
 	}
@@ -143,11 +137,8 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			DataComponentPatch patch = DataComponentPatch.builder()
-				.set(TFDataComponents.SKULL_CANDLES.get(), new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()))
-				.set(DataComponents.PROFILE, profile)
-				.build();
-			sc.applyComponents(sc.collectComponents(), patch);
+			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
+			sc.setOwnerProfile(profile);
 			sc.setChanged();
 		}
 	}
