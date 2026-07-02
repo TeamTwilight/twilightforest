@@ -38,7 +38,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 				if (stack.is(TFItems.EMPERORS_CLOTH.get()) && !foundCloth) {
 					foundCloth = true;
 				} else if (!foundItem) {
-					if (stack.is(TFItemTags.EMPERORS_CLOTH_APPLICABLE) && !stack.hasCraftingRemainingItem() && stack.get(TFDataComponents.EMPERORS_CLOTH) == null) {
+					if (stack.is(TFItemTags.EMPERORS_CLOTH_APPLICABLE) && stack.getCraftingRemainder() == null && stack.get(TFDataComponents.EMPERORS_CLOTH) == null) {
 						foundItem = true;
 					} else {
 						return false;
@@ -53,7 +53,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput craftingInput) {
+	public ItemStack assemble(CraftingInput input) {
 		ItemStack item = ItemStack.EMPTY;
 		for (int i = 0; i < input.size(); i++) {
 			ItemStack stack = input.getItem(i);
