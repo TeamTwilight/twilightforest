@@ -12,7 +12,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 
-
 import java.util.List;
 import java.util.stream.StreamSupport;
 
