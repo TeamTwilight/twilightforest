@@ -14,7 +14,6 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Deal with serialization changes and port to 26.1.X
 public class TravellersGearModifierShapelessRecipe extends TravellersGearModifierRecipe {
 	protected final NonNullList<Ingredient> ingredients;
 
@@ -65,7 +64,7 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapelessRecipe> {
 		public Serializer() {
 			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				NonNullList.codecOf(Ingredient.CODEC_NONEMPTY)
+				NonNullList.codecOf(Ingredient.CODEC)
 					.fieldOf("ingredients")
 					.forGetter(recipe -> recipe.ingredients),
 				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
