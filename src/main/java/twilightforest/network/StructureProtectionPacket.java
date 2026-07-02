@@ -6,9 +6,13 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.neoforged.neoforge.client.CustomEnvironmentEffectsRendererManager;
+import net.neoforged.neoforge.client.CustomWeatherEffectRenderer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
+import twilightforest.init.TFDimension;
 import twilightforest.util.Codecs;
 
 import java.util.List;
@@ -31,9 +35,12 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 	}
 
 	public static void handle(StructureProtectionPacket message, IPayloadContext ctx) {
-		// Probably more work to be done here, the entire dimension effect system seems to have changed
-		ctx.enqueueWork(() ->
-			TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null))
-		);
+		CustomWeatherEffectRenderer info = CustomEnvironmentEffectsRendererManager.getCustomWeatherEffectRenderer(TFDimension.DIMENSION_RENDERER);
+
+		if (info instanceof TwilightForestRenderInfo) {
+			ctx.enqueueWork(() ->
+				TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null))
+			);
+		}
 	}
 }
