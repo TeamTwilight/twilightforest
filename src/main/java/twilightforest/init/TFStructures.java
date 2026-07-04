@@ -10,6 +10,7 @@ import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.type.*;
 
 public class TFStructures {
+
 	public static final ResourceKey<Structure> HEDGE_MAZE = registerKey("hedge_maze");
 	public static final ResourceKey<Structure> QUEST_GROVE = registerKey("quest_grove");
 	public static final ResourceKey<Structure> HOLLOW_HILL_SMALL = registerKey("small_hollow_hill");

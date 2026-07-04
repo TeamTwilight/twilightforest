@@ -40,6 +40,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class TFItems {
+
 	@Autowired
 	private static TFRarityEnumExtension tfRarityEnumExtension;
 

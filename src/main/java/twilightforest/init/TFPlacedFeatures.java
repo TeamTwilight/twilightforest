@@ -32,6 +32,7 @@ import twilightforest.world.components.placements.ChunkCenterModifier;
 import java.util.List;
 
 public class TFPlacedFeatures {
+
 	public static final ResourceKey<PlacedFeature> PLACED_LAKE_LAVA = registerKey("lava_lake");
 	public static final ResourceKey<PlacedFeature> PLACED_LAKE_WATER = registerKey("water_lake");
 	public static final ResourceKey<PlacedFeature> PLACED_LAKE_FROZEN = registerKey("frozen_lake");

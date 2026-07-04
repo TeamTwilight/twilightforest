@@ -45,6 +45,7 @@ import twilightforest.world.registration.TreeDecorators;
 import java.util.List;
 
 public final class TFConfiguredFeatures {
+
 	//vanilla features with custom placement code
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_LAVA = registerKey("lava_lake");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = registerKey("water_lake");
