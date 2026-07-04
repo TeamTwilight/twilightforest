@@ -1,7 +1,6 @@
 package twilightforest.world.components.structures.fallentrunk;
 
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -22,7 +21,6 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	private final RandomSource random;  // used to create dirt mounds
 	private final BoundingBox boundingBox;
 	private final List<TanhHillFunction> tanhHillFunctions;
-	private final ObjectListIterator<Rigid> pieceIterator;
 	protected final BoundingBox moundBase;
 	private final int groundLevelDelta;
 	protected static final float MOUND_RADIUS = 3F;
@@ -34,7 +32,6 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	public TrunkUnderDensityFunction(ObjectList<Rigid> pieceIterator, FallenTrunkPiece piece, boolean isBigTree, int minMounds, int maxMounds, BoundingBox box) {
 		super(pieceIterator, List.of(), box);
 		this.isBigTree = isBigTree;
-		this.pieceIterator = pieceIterator.iterator();
 		Rigid first = pieceIterator.getFirst();
 		this.groundLevelDelta = first.groundLevelDelta();
 		boundingBox = first.box();
@@ -136,13 +133,6 @@ public class TrunkUnderDensityFunction extends Beardifier {
 
 		float moundBiasAngle = Mth.TWO_PI * random.nextFloat();
 		return new TanhHillFunction(baseBlockPos.getX(), baseBlockPos.getY(), baseBlockPos.getZ(), moundRadius, moundHeight, moundBiasAngle, isXOriented, isOnRightSide);
-	}
-
-
-	protected Beardifier.Rigid getFallenTrunkPiece() {
-		Beardifier.Rigid piece = pieceIterator.next();
-		this.pieceIterator.back(Integer.MAX_VALUE);
-		return piece;
 	}
 
 	private static int getRadius(BoundingBox box) {
