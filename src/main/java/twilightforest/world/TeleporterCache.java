@@ -26,12 +26,7 @@ public class TeleporterCache extends SavedData {
 	private final Map<ResourceKey<Level>, Map<ColumnPos, TFTeleporter.PortalPosition>> destinationCoordinateCache = new HashMap<>();
 
 	public static final Codec<TeleporterCache> CODEC = CompoundTag.CODEC.xmap(TeleporterCache::load, cache -> cache.save(new CompoundTag()));
-
-	public static SavedDataType<TeleporterCache> factory() {
-		Identifier id = TwilightForestMod.prefix("teleporter_cache");
-
-		return new SavedDataType<>(id, TeleporterCache::new, CODEC, null);
-	}
+	public static final SavedDataType<TeleporterCache> FACTORY = new SavedDataType<>(TwilightForestMod.prefix("teleporter_cache"), TeleporterCache::new, CODEC, null);
 
 	private TeleporterCache() {
 		this.setDirty();
@@ -40,7 +35,7 @@ public class TeleporterCache extends SavedData {
 	public static TeleporterCache get(ServerLevel level) {
 		ServerLevel server = level.getServer().overworld();
 		SavedDataStorage storage = server.getDataStorage();
-		return storage.computeIfAbsent(TeleporterCache.factory());
+		return storage.computeIfAbsent(TeleporterCache.FACTORY);
 	}
 
 	void addBlockToCache(ResourceKey<Level> dimension, ColumnPos columnPos, TFTeleporter.PortalPosition position) {
@@ -94,7 +89,7 @@ public class TeleporterCache extends SavedData {
 		ListTag destList = tag.getListOrEmpty("dest");
 
 		for (int i = 0; i < destList.size(); i++) {
-			CompoundTag dest = destList.getCompound(i).get();
+			CompoundTag dest = destList.getCompoundOrEmpty(i);
 			Identifier name = Identifier.parse(dest.getString("name").get());
 			ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, name);
 
