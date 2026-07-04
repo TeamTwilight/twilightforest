@@ -10,36 +10,25 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.SavedDataStorage;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TeleporterCache extends SavedData {
-	private final Map<ResourceKey<@NotNull Level>, Map<ColumnPos, TFTeleporter.PortalPosition>> destinationCoordinateCache = new HashMap<>();
 
-	public static final Codec<TeleporterCache> CODEC =
-		CompoundTag.CODEC.xmap(
-			nbt -> {
-				TeleporterCache cache = new TeleporterCache();
-				load(nbt);
-				return cache;
-			},
-			cache -> {
-				CompoundTag nbt = new CompoundTag();
-				cache.save(nbt);
-				return nbt;
-			}
-		);
+	// destinationCoordinateCache is (src -> dest) [DestWorld, [SrcPos, DestPos]]
+	private final Map<ResourceKey<Level>, Map<ColumnPos, TFTeleporter.PortalPosition>> destinationCoordinateCache = new HashMap<>();
 
-	public static SavedDataType<@NotNull TeleporterCache> factory() {
-		var id = Identifier.fromNamespaceAndPath("twilightforest", "teleporter_cache");
+	public static final Codec<TeleporterCache> CODEC = CompoundTag.CODEC.xmap(TeleporterCache::load, cache -> cache.save(new CompoundTag()));
+
+	public static SavedDataType<TeleporterCache> factory() {
+		Identifier id = TwilightForestMod.prefix("teleporter_cache");
 
 		return new SavedDataType<>(id, TeleporterCache::new, CODEC, null);
 	}
@@ -54,7 +43,7 @@ public class TeleporterCache extends SavedData {
 		return storage.computeIfAbsent(TeleporterCache.factory());
 	}
 
-	void addBlockToCache(ResourceKey<@NotNull Level> dimension, ColumnPos columnPos, TFTeleporter.PortalPosition position) {
+	void addBlockToCache(ResourceKey<Level> dimension, ColumnPos columnPos, TFTeleporter.PortalPosition position) {
 		this.destinationCoordinateCache.putIfAbsent(dimension, Maps.newHashMapWithExpectedSize(4096));
 		this.destinationCoordinateCache.get(dimension).put(columnPos, position);
 		this.setDirty();
@@ -62,14 +51,13 @@ public class TeleporterCache extends SavedData {
 
 	@Nullable
 	TFTeleporter.PortalPosition getPortalPosition(Identifier dimension, ColumnPos pos) {
-		ResourceKey<@NotNull Level> levelKey = ResourceKey.create(Registries.DIMENSION, dimension);
+		ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, dimension);
 
 		if (this.destinationCoordinateCache.containsKey(levelKey)) {
 			return this.destinationCoordinateCache.get(levelKey).get(pos);
 		}
 		return null;
 	}
-
 
 	public void removeInvalidPos(Identifier dimension, ColumnPos pos) {
 		this.destinationCoordinateCache.get(ResourceKey.create(Registries.DIMENSION, dimension)).remove(pos);
@@ -108,7 +96,7 @@ public class TeleporterCache extends SavedData {
 		for (int i = 0; i < destList.size(); i++) {
 			CompoundTag dest = destList.getCompound(i).get();
 			Identifier name = Identifier.parse(dest.getString("name").get());
-			ResourceKey<@NotNull Level> levelKey = ResourceKey.create(Registries.DIMENSION, name);
+			ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, name);
 
 			cache.destinationCoordinateCache.putIfAbsent(levelKey, Maps.newHashMapWithExpectedSize(4096));
 

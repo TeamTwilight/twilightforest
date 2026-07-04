@@ -18,6 +18,7 @@ import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
 public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
+
 	private static final Identifier WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
 	private static final Identifier WELL_BOTTOM = TwilightForestMod.prefix("feature/well/fancy_well_bottom");
 

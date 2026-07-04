@@ -23,7 +23,6 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TrunkVineDecora
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.GiantTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.block.FireflyBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
@@ -32,9 +31,10 @@ import twilightforest.world.components.feature.trees.treeplacers.*;
 import java.util.OptionalInt;
 
 public class TreeConfigurations {
+
 	private static final int canopyDistancing = 5;
 
-	static WeightedList.Builder<@NotNull BlockState> createBlockList() {
+	static WeightedList.Builder<BlockState> createBlockList() {
 		return WeightedList.builder();
 	}
 
