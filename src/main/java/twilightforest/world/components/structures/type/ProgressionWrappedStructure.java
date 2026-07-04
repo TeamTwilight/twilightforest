@@ -11,7 +11,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.util.ProgressionStructure;
@@ -46,7 +45,7 @@ public class ProgressionWrappedStructure extends ProgressionStructure {
 	}
 
 	@Override
-	public HolderSet<@NotNull Biome> biomes() {
+	public HolderSet<Biome> biomes() {
 		return this.wrappedStructure.biomes();
 	}
 

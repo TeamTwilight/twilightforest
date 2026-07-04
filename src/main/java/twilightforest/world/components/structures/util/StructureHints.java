@@ -25,7 +25,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDataComponents;
@@ -56,9 +55,9 @@ public interface StructureHints {
 	static void addBookInformationStatic(ItemStack book, @Nullable String name, int pageCount) {
 		String key = name == null ? "unknown" : name;
 
-		Function<Integer, Filterable<@NotNull Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + (index + 1)));
+		Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + (index + 1)));
 
-		List<Filterable<@NotNull Component>> list = Stream.iterate(0, index -> index + 1)
+		List<Filterable<Component>> list = Stream.iterate(0, index -> index + 1)
 			.limit(pageCount)
 			.map(pageGenerationFunc)
 			.toList();
@@ -86,8 +85,8 @@ public interface StructureHints {
 	 */
 	void trySpawnHintMonster(Level world, Player player, BlockPos pos);
 
-	static void tryHintForStructure(Player player, ServerLevel level, ResourceKey<@NotNull Structure> forStructure) {
-		Optional<Registry<@NotNull Structure>> optStructureReg = level.registryAccess().lookup(Registries.STRUCTURE);
+	static void tryHintForStructure(Player player, ServerLevel level, ResourceKey<Structure> forStructure) {
+		Optional<Registry<Structure>> optStructureReg = level.registryAccess().lookup(Registries.STRUCTURE);
 
 		if (optStructureReg.isEmpty() || !(optStructureReg.get().get(forStructure).get() instanceof StructureHints structureHints))
 			return;
@@ -134,7 +133,7 @@ public interface StructureHints {
 	@Nullable
 	Mob createHintMonster(Level world);
 
-	record HintConfig(ItemStack hintItem, EntityType<? extends @NotNull Mob> hintMob) {
+	record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
 		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.PASSTHROUGH.fieldOf("hint_item").xmap(
 				dynamic -> {
@@ -164,10 +163,10 @@ public interface StructureHints {
 		).apply(instance, HintConfig::new));
 
 		@SuppressWarnings("unchecked")
-		private static DataResult<EntityType<? extends @NotNull Mob>> checkCastMob(EntityType<?> entityType) {
+		private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
 			if (!entityType.getBaseClass().isAssignableFrom(Mob.class))
 				return DataResult.error(() -> "Configured Hint Entity " + entityType.toShortString() + " does not have a `Mob` superclass!");
-			return DataResult.success((EntityType<? extends @NotNull Mob>) entityType);
+			return DataResult.success((EntityType<? extends Mob>) entityType);
 		}
 
 		public static ItemStack defaultBook() {
@@ -175,7 +174,9 @@ public interface StructureHints {
 		}
 
 		public static ItemStack book(String name, int pageCount) {
-			return ItemStack.EMPTY;
+			ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+			StructureHints.addBookInformationStatic(book, name, pageCount);
+			return book;
 		}
 	}
 }

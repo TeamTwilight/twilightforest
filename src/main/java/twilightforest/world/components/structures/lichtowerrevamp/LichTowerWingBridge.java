@@ -37,7 +37,7 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 		super(TFStructurePieceTypes.LICH_WING_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
-		this.fromCentral = compoundTag.getBoolean("from_central").get();
+		this.fromCentral = compoundTag.getBooleanOr("from_central", false);
 	}
 
 	public LichTowerWingBridge(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, Identifier templateLocation, boolean fromCentral) {

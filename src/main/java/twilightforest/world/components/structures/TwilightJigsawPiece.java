@@ -35,6 +35,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
+
 	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
 
 	private static final String NBT_JIGSAW_SOURCE = "source";

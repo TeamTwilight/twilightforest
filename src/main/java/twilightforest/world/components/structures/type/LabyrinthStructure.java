@@ -17,14 +17,12 @@ import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
@@ -62,7 +60,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 		return TFStructureTypes.LABYRINTH.get();
 	}
 
-	public static LabyrinthStructure buildLabyrinthConfig(BootstrapContext<@NotNull Structure> context) {
+	public static LabyrinthStructure buildLabyrinthConfig(BootstrapContext<Structure> context) {
 		return new LabyrinthStructure(
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR.get(), 2, 3), 20)

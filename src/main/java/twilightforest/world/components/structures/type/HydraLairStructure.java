@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -26,7 +25,6 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -46,12 +44,12 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 			.apply(instance, HydraLairStructure::new)
 	);
 
-	private final Holder.Reference<@NotNull StructureSpeleothemConfig> speleothemConfig;
+	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public HydraLairStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<@NotNull StructureSpeleothemConfig> speleothemConfig) {
+	public HydraLairStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
-		this.speleothemConfig = (Holder.Reference<@NotNull StructureSpeleothemConfig>) speleothemConfig;
+		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
 	}
 
 	@Override
@@ -64,7 +62,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 		return TFStructureTypes.HYDRA_LAIR.get();
 	}
 
-	public static HydraLairStructure buildHydraLairConfig(BootstrapContext<@NotNull Structure> context) {
+	public static HydraLairStructure buildHydraLairConfig(BootstrapContext<Structure> context) {
 		return new HydraLairStructure(
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_labyrinth"))),
 			Optional.of(new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.get())),

@@ -13,12 +13,10 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.trollcave.CloudCastleComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
 import twilightforest.world.components.structures.util.ControlledSpawns;
@@ -60,7 +58,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 		return this.controlledSpawningConfig;
 	}
 
-	public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<@NotNull Structure> context) {
+	public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<Structure> context) {
 		return new GiantHouseStructure(
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
 			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),

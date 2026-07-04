@@ -14,7 +14,6 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -24,7 +23,6 @@ import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
@@ -47,13 +45,13 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 	);
 
 	private final ControlledSpawningConfig controlledSpawningConfig;
-	private final Holder.Reference<@NotNull StructureSpeleothemConfig> speleothemConfig;
+	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<@NotNull StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.controlledSpawningConfig = controlledSpawningConfig;
-		this.speleothemConfig = (Holder.Reference<@NotNull StructureSpeleothemConfig>) speleothemConfig;
+		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
 	}
 
 	@Override
@@ -71,7 +69,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 		return this.controlledSpawningConfig;
 	}
 
-	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<@NotNull Structure> context) {
+	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {
 		return new TrollCaveStructure(
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 5)

@@ -12,14 +12,12 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.finalcastle.FinalCastleMainComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -48,7 +46,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 		return TFStructureTypes.FINAL_CASTLE.get();
 	}
 
-	public static FinalCastleStructure buildFinalCastleConfig(BootstrapContext<@NotNull Structure> context) {
+	public static FinalCastleStructure buildFinalCastleConfig(BootstrapContext<Structure> context) {
 		return new FinalCastleStructure( // TODO Re-enable mob spawns when proper castle mobs are created
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				// plain parts of the castle, like the tower maze

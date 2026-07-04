@@ -16,7 +16,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -41,7 +40,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
@@ -67,7 +65,6 @@ import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public final class LichTowerWingRoom extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
@@ -87,11 +84,11 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
-		this.roomSize = compoundTag.getInt("room_size").get();
-		this.generateGround = compoundTag.getBoolean("gen_ground").get();
-		this.ladderIndex = compoundTag.getInt("ladder_index").get();
+		this.roomSize = compoundTag.getIntOr("room_size", 0);
+		this.generateGround = compoundTag.getBooleanOr("gen_ground", false);
+		this.ladderIndex = compoundTag.getIntOr("ladder_index", 0);
 		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
-		this.roofFallback = compoundTag.getInt("roof_index").get();
+		this.roofFallback = compoundTag.getIntOr("roof_index", 0);
 		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements").get();
 	}
 
@@ -123,7 +120,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		blockInfos.removeIf(info -> {
 			CompoundTag nbt = info.nbt();
 			if (nbt == null || nbt.isEmpty()) return false;
-			String metadata = nbt.getString("metadata").get();
+			String metadata = nbt.getStringOr("metadata", "");
 			return !(metadata.startsWith("rope") || metadata.startsWith("chain"));
 		});
 
@@ -563,7 +560,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (parameters.length >= 2) {
 			if (level.getBlockEntity(pos) instanceof MasonJarBlockEntity jarEntity) {
 				String label = parameters[1];
-				ResourceKey<@NotNull LootTable> lootTableId = switch (label) {
+				ResourceKey<LootTable> lootTableId = switch (label) {
 					case "jar" -> TFLootTables.TOWER_JARS;
 					case "room" -> TFLootTables.TOWER_ROOM;
 					case "library" -> TFLootTables.TOWER_LIBRARY;
@@ -574,12 +571,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 				if (!jarEntity.fillFromLootTable(lootTableId, random.nextLong(), level.getLevel())) {
 					Identifier itemId = Identifier.bySeparator(label, '.');
-					Item item = level.registryAccess().lookup(Registries.ITEM)
-						.flatMap(reg -> reg.get(ResourceKey.create(Registries.ITEM, itemId)))
+					level.registryAccess()
+						.lookupOrThrow(Registries.ITEM)
+						.get(itemId)
 						.map(Holder.Reference::value)
-						.orElse(Items.AIR);
-
-					jarEntity.getItemHandler().setItem(new ItemStack(item));
+						.map(ItemStack::new)
+						.ifPresent(jarEntity.getItemHandler()::setItem);
 				}
 
 				int itemRotation = this.placeSettings.getRotation().ordinal() * 4 + (parameters.length == 3 ? this.getHeadRotation(parameters[2], random) : 0);
@@ -759,7 +756,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.setBlock(pos, chest, Block.UPDATE_CLIENTS);
 
 		if (parameters.length == 2 && level.getBlockEntity(pos) instanceof RandomizableContainer lootBlock) {
-			ResourceKey<@NotNull LootTable> lootTableId = switch (parameters[1]) {
+			ResourceKey<LootTable> lootTableId = switch (parameters[1]) {
 				case "room" -> TFLootTables.TOWER_ROOM;
 				case "library" -> TFLootTables.TOWER_LIBRARY;
 				case "potion" -> TFLootTables.TOWER_POTION;

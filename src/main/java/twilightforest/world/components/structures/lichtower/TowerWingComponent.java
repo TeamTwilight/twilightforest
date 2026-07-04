@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
@@ -14,23 +13,16 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
-import twilightforest.tags.TFBlockTags;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.RotationUtil;
@@ -40,7 +32,6 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings({"deprecation", "unused"})
 public class TowerWingComponent extends TFStructureComponentOld {
@@ -52,17 +43,17 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	public TowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 
-		this.size = nbt.getInt("towerSize").get();
-		this.height = nbt.getInt("towerHeight").get();
+		this.size = nbt.getIntOr("towerSize", 0);
+		this.height = nbt.getIntOr("towerHeight", 0);
 
 		this.readOpeningsFromArray(nbt.getIntArray("doorInts").get());
 
-		this.highestOpening = nbt.getInt("highestOpening").get();
+		this.highestOpening = nbt.getIntOr("highestOpening", 0);
 		// too lazy to do this as a loop
-		this.openingTowards[0] = nbt.getBoolean("openingTowards0").get();
-		this.openingTowards[1] = nbt.getBoolean("openingTowards1").get();
-		this.openingTowards[2] = nbt.getBoolean("openingTowards2").get();
-		this.openingTowards[3] = nbt.getBoolean("openingTowards3").get();
+		this.openingTowards[0] = nbt.getBooleanOr("openingTowards0", false);
+		this.openingTowards[1] = nbt.getBooleanOr("openingTowards1", false);
+		this.openingTowards[2] = nbt.getBooleanOr("openingTowards2", false);
+		this.openingTowards[3] = nbt.getBooleanOr("openingTowards3", false);
 	}
 
 	public int size;
@@ -1260,18 +1251,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		final BlockPos pos = getBlockPosWithOffset(cx, 2, cx);
 
-		var configuredFeatureHolder = world.registryAccess()
+		boolean treePlaced = i > 4 && world.registryAccess()
 			.lookupOrThrow(Registries.CONFIGURED_FEATURE)
-			.getOrThrow(TFStructureHelper.randomTree(rand.nextInt(4)));
+			.getOrThrow(TFStructureHelper.randomTree(rand.nextInt(4)))
+			.value()
+			.place(world, generator, world.getRandom(), pos);
 
-		boolean treePlaced = false;
-		if (i > 4) {
-			treePlaced = tryPlaceTree(configuredFeatureHolder.value(), world, generator, pos);
-		}
-
-		if (i > 4 && !treePlaced) {
-			this.placeBlock(world, plant, cx, 2, cx, sbb);
-		} else {
+		if (!treePlaced) {
 			this.placeBlock(world, plant, cx, 2, cx, sbb);
 		}
 	}
@@ -1893,12 +1879,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			}
 		}
 	}
-
-	private <FC extends FeatureConfiguration> boolean tryPlaceTree(ConfiguredFeature<@NotNull FC, ?> configuredFeature, WorldGenLevel world, ChunkGenerator generator, BlockPos pos) {
-		var context = new FeaturePlaceContext<>(Optional.empty(), world, generator, world.getRandom(), pos, configuredFeature.config());
-		return configuredFeature.feature().place(context);
-	}
-
 
 	@Override
 	public int getGroundLevelDelta() {

@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerMainComponent;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
@@ -40,7 +39,7 @@ public class MushroomTowerStructure extends LandmarkStructure {
 		return TFStructureTypes.MUSHROOM_TOWER.get();
 	}
 
-	public static MushroomTowerStructure buildStructureConfig(BootstrapContext<@NotNull Structure> context) {
+	public static MushroomTowerStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new MushroomTowerStructure(
 			Optional.of(new DecorationConfig(2, true, true, true)),
 			true, Optional.empty(),

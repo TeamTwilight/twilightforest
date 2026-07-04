@@ -24,6 +24,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	private final List<TanhHillFunction> tanhHillFunctions;
 	private final ObjectListIterator<Rigid> pieceIterator;
 	protected final BoundingBox moundBase;
+	private final int groundLevelDelta;
 	protected static final float MOUND_RADIUS = 3F;
 	protected static final int MAX_RANDOM_RADIUS_INCREASE_BIG_TREE = 4;
 	protected static final int MAX_RANDOM_RADIUS_INCREASE_NON_BIG_TREE = 2;
@@ -34,7 +35,9 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		super(pieceIterator, List.of(), box);
 		this.isBigTree = isBigTree;
 		this.pieceIterator = pieceIterator.iterator();
-		boundingBox = getFallenTrunkPiece().box();
+		Rigid first = pieceIterator.getFirst();
+		this.groundLevelDelta = first.groundLevelDelta();
+		boundingBox = first.box();
 		random = RandomSource.create(boundingBox.minX() * 14413411L + boundingBox.minZ() * 43387781L);
 		isXOriented = boundingBox.maxX() - boundingBox.minX() > boundingBox.maxZ() - boundingBox.minZ();
 		int length = isXOriented ? boundingBox.getXSpan() : boundingBox.getZSpan();
@@ -57,7 +60,6 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		int y = context.blockY();
 		int z = context.blockZ();
 
-		int groundLevelDelta = getFallenTrunkPiece().groundLevelDelta();
 		int horizontalDistanceX = Math.max(0, Math.max(boundingBox.minX() - x, x - boundingBox.maxX()));
 		int horizontalDistanceZ = Math.max(0, Math.max(boundingBox.minZ() - z, z - boundingBox.maxZ()));
 		int adjustedGroundLevel = boundingBox.minY() + groundLevelDelta + (isBigTree ? 1 : 0);

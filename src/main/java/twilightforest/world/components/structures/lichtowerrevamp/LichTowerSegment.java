@@ -40,9 +40,9 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
 
-		this.putMobBridge = compoundTag.getBoolean("put_bridge").get();
-		this.putWings = compoundTag.getBoolean("put_wings").get();
-		this.putGallery = compoundTag.getBoolean("put_gallery").get();
+		this.putMobBridge = compoundTag.getBooleanOr("put_bridge", false);
+		this.putWings = compoundTag.getBooleanOr("put_wings", false);
+		this.putGallery = compoundTag.getBooleanOr("put_gallery", false);
 	}
 
 	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery, Identifier template) {

@@ -26,7 +26,7 @@ public class FinalCastleRoof13ConicalComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof13ConicalComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFFCRo13Con.get(), nbt);
-		this.slope = nbt.getInt("slope").get();
+		this.slope = nbt.getIntOr("slope", 2);
 	}
 
 	@SuppressWarnings("this-escape")

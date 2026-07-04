@@ -17,14 +17,12 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
@@ -53,7 +51,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 		return TFStructureTypes.KNIGHT_STRONGHOLD.get();
 	}
 
-	public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<@NotNull Structure> context) {
+	public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<Structure> context) {
 		return new KnightStrongholdStructure(
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 1, 2), 10)
@@ -118,7 +116,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 		@Override
 		public void loadFromTag(CompoundTag nbt) {
 			super.loadFromTag(nbt);
-			this.startY = nbt.getInt("knight_y").get();
+			this.startY = nbt.getIntOr("knight_y", 0);
 		}
 	}
 }

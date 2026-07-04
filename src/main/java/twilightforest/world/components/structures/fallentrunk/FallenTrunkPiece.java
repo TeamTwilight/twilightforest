@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -48,11 +47,11 @@ public class FallenTrunkPiece extends StructurePiece {
 	protected final BlockStateProvider log;
 	public final int length;
 	public final int radius;
-	protected final ResourceKey<@NotNull LootTable> chestLootTable;
+	protected final ResourceKey<LootTable> chestLootTable;
 	private final long holeSeed;
 	protected final Hole hole;
 
-	public FallenTrunkPiece(int length, int radius, BlockStateProvider log, ResourceKey<@NotNull LootTable> chestLootTable, Direction orientation, BoundingBox boundingBox, long seed) {
+	public FallenTrunkPiece(int length, int radius, BlockStateProvider log, ResourceKey<LootTable> chestLootTable, Direction orientation, BoundingBox boundingBox, long seed) {
 		super(TFStructurePieceTypes.TFFallenTrunk.value(), 0, boundingBox);
 		this.length = length;
 		this.radius = radius;
@@ -65,18 +64,18 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	public FallenTrunkPiece(StructurePieceSerializationContext context, CompoundTag tag) {
 		super(TFStructurePieceTypes.TFFallenTrunk.value(), tag);
-		this.length = tag.getInt("length").get();
-		this.radius = tag.getInt("radius").get();
+		this.length = tag.getIntOr("length", 0);
+		this.radius = tag.getIntOr("radius", 0);
 
-		RegistryOps<@NotNull Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
-		log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log").get()).result().orElse(DEFAULT_LOG);
-		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("chest_loot_table").get()));
-		this.holeSeed = tag.getInt("hole_seed").get();
+		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
+		log = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("log")).result().orElse(DEFAULT_LOG);
+		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getStringOr("chest_loot_table", "")));
+		this.holeSeed = tag.getIntOr("hole_seed", 0);
 		this.hole = new Hole(this, RandomSource.create(holeSeed));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@NotNull StructurePieceSerializationContext context, CompoundTag tag) {
+	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putInt("length", this.length);
 		tag.putInt("radius", this.radius);
 		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
@@ -85,7 +84,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	}
 
 	@Override
-	public void addChildren(@NotNull StructurePiece parent, StructurePieceAccessor list, @NotNull RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(TERRAFORM_PIECE_SIZE));
 		list.addPiece(terraformingPiece);
 
@@ -94,8 +93,8 @@ public class FallenTrunkPiece extends StructurePiece {
 	}
 
 	@Override
-	public void postProcess(@NotNull WorldGenLevel level, @NotNull StructureManager structureManager, @NotNull ChunkGenerator generator, @NotNull RandomSource randomSource,
-							@NotNull BoundingBox box, @NotNull ChunkPos chunkPos, @NotNull BlockPos pos) {
+	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource randomSource,
+							BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
 		RandomSource random = RandomSource.create(pos.asLong());
 		if (radius == FallenTrunkStructure.radiuses.get(0))
 			generateSmallFallenTrunk(level, random, box, pos, random.nextBoolean());
@@ -229,7 +228,6 @@ public class FallenTrunkPiece extends StructurePiece {
 		}
 	}
 
-	@NotNull
 	@Override
 	public Direction getOrientation() {
 		return Objects.requireNonNull(orientation);  // orientation is always not null, just to remove warnings

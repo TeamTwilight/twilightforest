@@ -28,7 +28,6 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.world.components.structures.TreeGrowerStartable;
@@ -75,8 +74,8 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	private final BlockStateProvider dungeonWood;
 	private final BlockStateProvider dungeonAir;
 	private final BlockStateProvider dungeonLootBlock;
-	private final ResourceKey<@NotNull LootTable> dungeonLootTable;
-	private final Holder<@NotNull EntityType<?>> dungeonMonster;
+	private final ResourceKey<LootTable> dungeonLootTable;
+	private final Holder<EntityType<?>> dungeonMonster;
 
 	private final boolean allowInWater;
 
@@ -94,8 +93,8 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		BlockStateProvider dungeonWood,
 		BlockStateProvider dungeonAir,
 		BlockStateProvider dungeonLootBlock,
-		ResourceKey<@NotNull LootTable> dungeonLootTable,
-		Holder<@NotNull EntityType<?>> dungeonMonster,
+		ResourceKey<LootTable> dungeonLootTable,
+		Holder<EntityType<?>> dungeonMonster,
 		boolean allowInWater
 	) {
 		super(settings);
@@ -223,7 +222,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		return this.decorationConfig.chunkClearanceRadius();
 	}
 
-	public static HollowTreeStructure buildStructureConfig(boolean allowInWater, HolderSet<@NotNull Biome> biomes) {
+	public static HollowTreeStructure buildStructureConfig(boolean allowInWater, HolderSet<Biome> biomes) {
 		return new HollowTreeStructure(
 			new Structure.StructureSettings(
 				biomes,

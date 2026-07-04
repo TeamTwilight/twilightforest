@@ -16,7 +16,6 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
@@ -44,7 +43,7 @@ public class NagaCourtyardStructure extends ConquerableStructure implements Cust
 		return TFStructureTypes.NAGA_COURTYARD.get();
 	}
 
-	public static NagaCourtyardStructure buildStructureConfig(BootstrapContext<@NotNull Structure> context) {
+	public static NagaCourtyardStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new NagaCourtyardStructure(
 			Optional.of(new DecorationConfig(3, false, true, true)),
 			true, Optional.of(TFMapDecorations.NAGA_COURTYARD),

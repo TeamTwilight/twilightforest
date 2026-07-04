@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
@@ -27,7 +26,6 @@ import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -56,13 +54,13 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 
 	private final int size;
 	private final ControlledSpawningConfig controlledSpawningConfig;
-	private final Holder.Reference<@NotNull StructureSpeleothemConfig> speleothemConfig;
+	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, Holder<@NotNull StructureSpeleothemConfig> speleothemConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 		this.size = size;
 		this.controlledSpawningConfig = controlledSpawningConfig;
-		this.speleothemConfig = (Holder.Reference<@NotNull StructureSpeleothemConfig>) speleothemConfig;
+		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
 	}
 
 	// "Cuts" the box into a half-dome
@@ -93,7 +91,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 		return this.controlledSpawningConfig;
 	}
 
-	public static HollowHillStructure buildSmallHillConfig(BootstrapContext<@NotNull Structure> context) {
+	public static HollowHillStructure buildSmallHillConfig(BootstrapContext<Structure> context) {
 		return new HollowHillStructure(
 			1,
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
@@ -116,7 +114,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 		);
 	}
 
-	public static HollowHillStructure buildMediumHillConfig(BootstrapContext<@NotNull Structure> context) {
+	public static HollowHillStructure buildMediumHillConfig(BootstrapContext<Structure> context) {
 		return new HollowHillStructure(
 			2,
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
@@ -144,7 +142,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 		);
 	}
 
-	public static HollowHillStructure buildLargeHillConfig(BootstrapContext<@NotNull Structure> context) {
+	public static HollowHillStructure buildLargeHillConfig(BootstrapContext<Structure> context) {
 		return new HollowHillStructure(
 			3,
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()

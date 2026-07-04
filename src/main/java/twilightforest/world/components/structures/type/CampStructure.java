@@ -16,7 +16,6 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.tags.TFBiomeTags;
@@ -68,7 +67,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 		return TFStructureTypes.CAMP.value();
 	}
 
-	public static CampStructure buildStructureConfig(BootstrapContext<@NotNull Structure> context) {
+	public static CampStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new CampStructure(new StructureSettings(
 			context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_CAMP_BIOMES),
 			Map.of(),

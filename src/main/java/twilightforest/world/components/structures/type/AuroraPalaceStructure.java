@@ -13,7 +13,6 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
@@ -47,7 +46,7 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 		return TFStructureTypes.AURORA_PALACE.get();
 	}
 
-	public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstrapContext<@NotNull Structure> context) {
+	public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstrapContext<Structure> context) {
 		return new AuroraPalaceStructure(
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.SNOW_GUARDIAN.get(), 1, 2), 10)

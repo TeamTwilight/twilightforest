@@ -21,13 +21,11 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.chunkgenerators.BoxDensityFunction;
@@ -84,12 +82,12 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 	}
 
 	@SuppressWarnings("unchecked")
-	public static LichTowerStructure buildLichTowerConfig(BootstrapContext<@NotNull Structure> context) {
+	public static LichTowerStructure buildLichTowerConfig(BootstrapContext<Structure> context) {
 		final ControlledSpawningConfig monsters;
-		WeightedList<MobSpawnSettings.@NotNull SpawnerData> yardSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
+		WeightedList<MobSpawnSettings.SpawnerData> yardSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
 			.add(new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), 1, 2), 2)
 			.build();
-		WeightedList<MobSpawnSettings.@NotNull SpawnerData> interiorSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
+		WeightedList<MobSpawnSettings.SpawnerData> interiorSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
 			.add(new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 1, 2), 10)
 			.add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
 			.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 1)
