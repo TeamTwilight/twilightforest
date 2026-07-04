@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class JigsawUtil {
@@ -65,11 +66,7 @@ public class JigsawUtil {
 		if (random != null) {
 			Util.shuffle(returnables, random);
 			// "Stable" sorting - preserves order of "equal" priorities, as arranged by prior shuffling.
-			List<StructureTemplate.JigsawBlockInfo> jigsaws = new ObjectArrayList<>();
-			for (StructureTemplate.StructureBlockInfo returnable : returnables) {
-				jigsaws.add(StructureTemplate.JigsawBlockInfo.of(returnable));
-			}
-			SinglePoolElement.sortBySelectionPriority(jigsaws);
+			returnables.sort(Comparator.<StructureTemplate.StructureBlockInfo>comparingInt(info -> info.nbt() == null ? 0 : info.nbt().getIntOr("selection_priority", 0)).reversed());
 		}
 
 		return returnables;

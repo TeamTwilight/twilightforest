@@ -45,23 +45,23 @@ public record JigsawRecord(int priority, FrontAndTop orientation, BlockPos pos, 
 
 	public static JigsawRecord fromUnconfiguredJigsaw(StructureTemplate.StructureBlockInfo info, StructurePlaceSettings settings) {
 		return new JigsawRecord(
-			(int) Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
+			info.nbt().getIntOr("selection_priority", 0),
 			JigsawUtil.process(info.state().getValue(JigsawBlock.ORIENTATION), settings),
 			StructureTemplate.calculateRelativePosition(settings, info.pos()),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty").toString(),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), "").toString(),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "").toString()
+			info.nbt().getStringOr("pool", "minecraft:empty"),
+			info.nbt().getStringOr("name", ""),
+			info.nbt().getStringOr("target", "")
 		);
 	}
 
 	public static JigsawRecord fromJigsawBlock(StructureTemplate.StructureBlockInfo info) {
 		return new JigsawRecord(
-			(int) Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
+			info.nbt().getIntOr("selection_priority", 0),
 			info.state().getValue(JigsawBlock.ORIENTATION),
 			info.pos(),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty").toString(),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), "").toString(),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "").toString()
+			info.nbt().getStringOr("pool", "minecraft:empty"),
+			info.nbt().getStringOr("name", ""),
+			info.nbt().getStringOr("target", "")
 		);
 	}
 

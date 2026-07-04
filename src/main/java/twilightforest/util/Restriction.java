@@ -1,22 +1,16 @@
 package twilightforest.util;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TFRegistries;
@@ -32,35 +26,16 @@ import java.util.Optional;
  * @param lockedBiomeToast Item that is used as an icon for the notification that tells the player that the area is locked
  * @param advancements     List of advancements that are required to make a biome no longer restricted
  */
-public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement, float multiplier, @Nullable ItemStack lockedBiomeToast, List<Identifier> advancements) {
+public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement, float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
 
-	//TODO: refactor this CODEC
+	//TODO: test that the itemstacktemplate works in datagen
 	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
 		ResourceKey.codec(TFRegistries.Keys.ENFORCEMENT).fieldOf("enforcement").forGetter(Restriction::enforcement),
 		Codec.FLOAT.fieldOf("multiplier").forGetter(Restriction::multiplier),
-		Codec.PASSTHROUGH.optionalFieldOf("locked_biome_toast").xmap(
-			optionalDynamic -> optionalDynamic.map(dynamic -> {
-				JsonElement json = (JsonElement) dynamic.getValue();
-				DynamicOps<JsonElement> ops = RegistryOps.create(
-					JsonOps.INSTANCE,
-					RegistryAccess.EMPTY
-				);
-				return ItemStack.CODEC.parse(ops, json).result().orElse(ItemStack.EMPTY);
-			}),
-			optionalStack -> optionalStack.map(stack -> {
-				DynamicOps<JsonElement> ops = RegistryOps.create(
-					JsonOps.INSTANCE,
-					RegistryAccess.EMPTY
-				);
-				JsonElement json = ItemStack.CODEC.encodeStart(ops, stack).result().orElse(new JsonObject());
-				return new Dynamic<>(JsonOps.INSTANCE, json);
-			})
-		).forGetter((restriction) -> Optional.ofNullable(restriction.lockedBiomeToast())),
-
+		ItemStackTemplate.CODEC.optionalFieldOf("locked_biome_toast").forGetter(restriction -> Optional.ofNullable(restriction.lockedBiomeToast())),
 		ExtraCodecs.nonEmptyList(Identifier.CODEC.listOf()).fieldOf("advancements").forGetter(Restriction::advancements)
 	).apply(recordCodecBuilder, Restriction::create));
-
 
 	public static Optional<Restriction> getRestrictionForBiome(Biome biome, Entity entity) {
 		if (!(entity instanceof Player player))
@@ -88,7 +63,7 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 	}
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStack> lockedBiomeToast, List<Identifier> advancements) {
+	private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStackTemplate> lockedBiomeToast, List<Identifier> advancements) {
 		return new Restriction(hintStructureKey.orElse(null), enforcer, multiplier, lockedBiomeToast.orElse(null), advancements);
 	}
 

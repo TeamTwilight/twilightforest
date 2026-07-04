@@ -105,7 +105,7 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 
 		public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.5f);
 
-		public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, MapCodec.unit(DEFAULT).codec())));
+		public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, MapCodec.unitCodec(DEFAULT))));
 
 		public TriangularLatticeConfig(float spacing) {
 			this(spacing, Mth.cos(Mth.PI / 6f) * spacing, Mth.sin(Mth.PI / 6f) * spacing);
@@ -123,7 +123,7 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 			float zOffset = tag.getFloatOr("z_offset", Mth.sin(Mth.PI / 6f) * spacing);
 
 			if (tag.contains("x_spacing") || tag.contains("z_spacing")) {
-				return new TriangularLatticeConfig(spacing, xOffset, zOffset, tag.getFloat("x_spacing").get(), tag.getFloat("z_spacing").get());
+				return new TriangularLatticeConfig(spacing, xOffset, zOffset, tag.getFloatOr("x_spacing", 0.0F), tag.getFloatOr("z_spacing", 0.0F));
 			} else {
 				return new TriangularLatticeConfig(spacing, xOffset, zOffset);
 			}

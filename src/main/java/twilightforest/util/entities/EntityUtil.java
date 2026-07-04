@@ -47,6 +47,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
 
+import java.awt.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
@@ -218,14 +219,14 @@ public class EntityUtil {
 	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (PaintingVariant art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).stream().toList()) {
+		for (Holder.Reference<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).listElements().toList()) {
 			if (exactMeasurements) {
-				if (art.width() == width && art.height() == height) {
-					valid.add(Holder.direct(art));
+				if (art.value().width() == width && art.value().height() == height) {
+					valid.add(art);
 				}
 			} else {
-				if (art.width() >= width || art.height() >= height) {
-					valid.add(Holder.direct(art));
+				if (art.value().width() >= width || art.value().height() >= height) {
+					valid.add(art);
 				}
 			}
 		}

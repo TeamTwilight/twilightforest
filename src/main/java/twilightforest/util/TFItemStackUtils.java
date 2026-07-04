@@ -7,6 +7,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -30,6 +31,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class TFItemStackUtils {
 
@@ -45,8 +47,9 @@ public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(final ItemStack stack, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		if (stack.is(item.asItem())) {
-			if (saveItemToTag) {
-				ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack).resultOrPartial(TwilightForestMod.LOGGER::error).ifPresent(tag -> persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, tag));
+			Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TwilightForestMod.LOGGER::error);
+			if (tag.isPresent()) {
+				persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, tag.get());
 			}
 			BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 			if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
