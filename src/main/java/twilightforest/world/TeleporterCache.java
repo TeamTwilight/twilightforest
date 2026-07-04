@@ -41,7 +41,7 @@ public class TeleporterCache extends SavedData {
 	public static SavedDataType<@NotNull TeleporterCache> factory() {
 		var id = Identifier.fromNamespaceAndPath("twilightforest", "teleporter_cache");
 
-		return new SavedDataType<>(id, TeleporterCache::new, CODEC, DataFixTypes.LEVEL);
+		return new SavedDataType<>(id, TeleporterCache::new, CODEC, null);
 	}
 
 	private TeleporterCache() {
@@ -103,7 +103,7 @@ public class TeleporterCache extends SavedData {
 
 	public static TeleporterCache load(CompoundTag tag) {
 		TeleporterCache cache = new TeleporterCache();
-		ListTag destList = tag.getList("dest").get();
+		ListTag destList = tag.getListOrEmpty("dest");
 
 		for (int i = 0; i < destList.size(); i++) {
 			CompoundTag dest = destList.getCompound(i).get();
@@ -112,7 +112,7 @@ public class TeleporterCache extends SavedData {
 
 			cache.destinationCoordinateCache.putIfAbsent(levelKey, Maps.newHashMapWithExpectedSize(4096));
 
-			ListTag linksList = dest.getList("links").get();
+			ListTag linksList = dest.getListOrEmpty("links");
 
 			for (int j = 0; j < linksList.size(); j++) {
 				CompoundTag link = linksList.getCompound(j).get();

@@ -286,13 +286,13 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * Make a root
 	 */
-	protected static void makeRoot(WorldGenLevel genLevel, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, TFTreeFeatureConfig config) {
+	protected static void makeRoot(WorldGenLevel world, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, TFTreeFeatureConfig config) {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		FeaturePlacers.traceExposedRoot(genLevel, new RootPlacer((checkedPos, state) -> {
-			genLevel.setBlock(checkedPos, state, Block.UPDATE_ALL);
-			genLevel.setBlock(checkedPos.below(), state, Block.UPDATE_ALL);
+		FeaturePlacers.traceExposedRoot(world, new RootPlacer((checkedPos, state) -> {
+			world.setBlock(checkedPos, state, Block.UPDATE_ALL);
+			world.setBlock(checkedPos.below(), state, Block.UPDATE_ALL);
 		}, 2), random, config.branchProvider, config.rootsProvider, new VoxelBresenhamIterator(src, dest));
 	}
 
