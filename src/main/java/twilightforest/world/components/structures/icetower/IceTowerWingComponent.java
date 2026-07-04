@@ -602,7 +602,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private void decorateWraparoundWallStepsPillars(WorldGenLevel world, int bottom, int top, Rotation ladderUpDir, Rotation rotation, boolean hasTreasure, BoundingBox sbb) {
+	private void decorateWraparoundWallStepsPillars(WorldGenLevel world, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
+		Rotation rotation = ladderDownDir;
 		final BlockState pillarEW = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 

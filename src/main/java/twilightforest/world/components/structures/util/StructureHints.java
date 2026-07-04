@@ -21,6 +21,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.Level;
@@ -135,37 +136,19 @@ public interface StructureHints {
 
 	record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
 		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.PASSTHROUGH.fieldOf("hint_item").xmap(
-				dynamic -> {
-					JsonElement json = (JsonElement) dynamic.getValue();
-					DynamicOps<JsonElement> ops = net.minecraft.resources.RegistryOps.create(
-						JsonOps.INSTANCE,
-						RegistryAccess.EMPTY
-					);
-					return ItemStack.CODEC.parse(ops, json).result().orElse(ItemStack.EMPTY);
-				},
-				item -> {
-					JsonObject obj = new JsonObject();
-					obj.addProperty("id", "minecraft:written_book");
-					obj.addProperty("count", 1);
-					JsonObject components = new JsonObject();
-					JsonObject content = new JsonObject();
-					content.addProperty("title", "Hint Book");
-					content.addProperty("author", "Lich");
-					content.addProperty("generation", 0);
-					content.add("pages", new JsonArray());
-					components.add("minecraft:written_book_content", content);
-					obj.add("components", components);
-					return new Dynamic<>(JsonOps.INSTANCE, obj);
-				}
-			).forGetter(HintConfig::hintItem),
+			ItemStackTemplate.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItemTemplate),
 			BuiltInRegistries.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
 		).apply(instance, HintConfig::new));
+
+		public HintConfig(ItemStackTemplate hintItemTemplate, EntityType<? extends Mob> hintMob) {
+			this(hintItemTemplate.create(), hintMob);
+		}
 
 		@SuppressWarnings("unchecked")
 		private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
 			if (!entityType.getBaseClass().isAssignableFrom(Mob.class))
 				return DataResult.error(() -> "Configured Hint Entity " + entityType.toShortString() + " does not have a `Mob` superclass!");
+			//noinspection unchecked
 			return DataResult.success((EntityType<? extends Mob>) entityType);
 		}
 
@@ -177,6 +160,10 @@ public interface StructureHints {
 			ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
 			StructureHints.addBookInformationStatic(book, name, pageCount);
 			return book;
+		}
+
+		public ItemStackTemplate hintItemTemplate() {
+			return ItemStackTemplate.fromNonEmptyStack(this.hintItem);
 		}
 	}
 }
