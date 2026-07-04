@@ -21,7 +21,6 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
 import org.codehaus.plexus.util.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
@@ -33,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class TFItemStackUtils {
+
 	public static boolean consumeInventoryItem(final Player player, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag) {
 		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			ItemStack stack = player.getInventory().getItem(i);
@@ -63,8 +63,8 @@ public class TFItemStackUtils {
 		return false;
 	}
 
-	public static NonNullList<@NotNull ItemStack> sortArmorForCasket(Player player) {
-		NonNullList<@NotNull ItemStack> armor = NonNullList.create();
+	public static NonNullList<ItemStack> sortArmorForCasket(Player player) {
+		NonNullList<ItemStack> armor = NonNullList.create();
 		for (int i = 36; i < 41; i++) {
 			armor.add(player.getInventory().getItem(i));
 		}
@@ -72,12 +72,12 @@ public class TFItemStackUtils {
 		return armor;
 	}
 
-	public static NonNullList<@NotNull ItemStack> sortInvForCasket(Player player) {
-		NonNullList<@NotNull ItemStack> inv = NonNullList.create();
+	public static NonNullList<ItemStack> sortInvForCasket(Player player) {
+		NonNullList<ItemStack> inv = NonNullList.create();
 		for (int i = 0; i < 36; i++) {
 			inv.add(player.getInventory().getItem(i));
 		}
-		NonNullList<@NotNull ItemStack> sorted = NonNullList.create();
+		NonNullList<ItemStack> sorted = NonNullList.create();
 		//hotbar at the bottom
 		sorted.addAll(inv.subList(9, 36));
 		sorted.addAll(inv.subList(0, 9));
@@ -85,9 +85,9 @@ public class TFItemStackUtils {
 		return sorted;
 	}
 
-	public static NonNullList<@NotNull ItemStack> splitToSize(ItemStack stack) {
+	public static NonNullList<ItemStack> splitToSize(ItemStack stack) {
 
-		NonNullList<@NotNull ItemStack> result = NonNullList.create();
+		NonNullList<ItemStack> result = NonNullList.create();
 
 		int size = stack.getMaxStackSize();
 

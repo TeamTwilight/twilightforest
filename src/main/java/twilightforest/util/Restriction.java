@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 
 import javax.annotation.Nullable;
@@ -33,8 +32,8 @@ import java.util.Optional;
  * @param lockedBiomeToast Item that is used as an icon for the notification that tells the player that the area is locked
  * @param advancements     List of advancements that are required to make a biome no longer restricted
  */
-public record Restriction(@Nullable ResourceKey<@NotNull Structure> hintStructureKey, ResourceKey<@NotNull Enforcement> enforcement,
-						  float multiplier, @Nullable ItemStack lockedBiomeToast, List<Identifier> advancements) {
+public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement, float multiplier, @Nullable ItemStack lockedBiomeToast, List<Identifier> advancements) {
+
 	//TODO: refactor this CODEC
 	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
@@ -72,7 +71,7 @@ public record Restriction(@Nullable ResourceKey<@NotNull Structure> hintStructur
 		if (biomeLocation == null)
 			return Optional.empty();
 
-		Optional<Registry<@NotNull Restriction>> restrictionsRegistry = access.lookup(TFRegistries.Keys.RESTRICTIONS);
+		Optional<Registry<Restriction>> restrictionsRegistry = access.lookup(TFRegistries.Keys.RESTRICTIONS);
 		if (restrictionsRegistry.isEmpty())
 			return Optional.empty();
 
@@ -89,7 +88,7 @@ public record Restriction(@Nullable ResourceKey<@NotNull Structure> hintStructur
 	}
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private static Restriction create(Optional<ResourceKey<@NotNull Structure>> hintStructureKey, ResourceKey<@NotNull Enforcement> enforcer, float multiplier, Optional<ItemStack> lockedBiomeToast, List<Identifier> advancements) {
+	private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStack> lockedBiomeToast, List<Identifier> advancements) {
 		return new Restriction(hintStructureKey.orElse(null), enforcer, multiplier, lockedBiomeToast.orElse(null), advancements);
 	}
 

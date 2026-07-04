@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDimensionData;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
@@ -101,12 +100,12 @@ public final class WorldUtil {
 			: TFDimensionData.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
 	}
 
-	public static Optional<Pair<BlockPos, Holder<@NotNull Structure>>> findNearestMapLandmark(ServerLevel level, HolderSet<@NotNull Structure> targetStructures, BlockPos pos, int chunkSearchRadius, boolean skipKnownStructures) {
+	public static Optional<Pair<BlockPos, Holder<Structure>>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, boolean skipKnownStructures) {
 		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
 
-		Map<LandmarkGridPlacement, Set<Holder<@NotNull Structure>>> seekStructures = new Object2ObjectArrayMap<>();
+		Map<LandmarkGridPlacement, Set<Holder<Structure>>> seekStructures = new Object2ObjectArrayMap<>();
 
-		for (Holder<@NotNull Structure> holder : targetStructures) {
+		for (Holder<Structure> holder : targetStructures) {
 			for (StructurePlacement structureplacement : state.getPlacementsForStructure(holder)) {
 				if (structureplacement instanceof LandmarkGridPlacement landmarkPlacement) {
 					seekStructures.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
@@ -118,17 +117,17 @@ public final class WorldUtil {
 
 		double distance = Double.MAX_VALUE;
 
-		@Nullable Pair<BlockPos, Holder<@NotNull Structure>> nearest = null;
+		@Nullable Pair<BlockPos, Holder<Structure>> nearest = null;
 		StructureManager structureManager = level.structureManager();
 
 		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, chunkSearchRadius)) {
-			for (Map.Entry<LandmarkGridPlacement, Set<Holder<@NotNull Structure>>> landmarkPlacement : seekStructures.entrySet()) {
+			for (Map.Entry<LandmarkGridPlacement, Set<Holder<Structure>>> landmarkPlacement : seekStructures.entrySet()) {
 				if (!landmarkPlacement.getKey().isStructureChunk(state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4))
 					continue;
 
-				for (Holder<@NotNull Structure> targetStructure : targetStructures) {
+				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {
-						Holder<@NotNull Biome> biome = level.getBiome(landmarkCenterPosition);
+						Holder<Biome> biome = level.getBiome(landmarkCenterPosition);
 
 						if (targetStructure.value().biomes().contains(biome)) {
 							if (skipKnownStructures && structureManager.checkStructurePresence(ChunkPos.containing(landmarkCenterPosition), targetStructure.value(), landmarkPlacement.getKey(), true) == StructureCheckResult.START_PRESENT)

@@ -42,7 +42,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
@@ -57,6 +56,7 @@ import java.util.UUID;
 import java.util.function.DoubleUnaryOperator;
 
 public class EntityUtil {
+
 	public static <T extends Mob & EnforcedHomePoint> BlockPos bossChestLocation(T boss) {
 		return !boss.isRestrictionPointValid(boss.level().dimension()) ? boss.blockPosition() : boss.getRestrictionPoint().pos().below();
 	}
@@ -178,7 +178,7 @@ public class EntityUtil {
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException
 	@Nullable
-	private static <T extends Entity> T createEntityIgnoreException(EntityType<@NotNull T> type, ServerLevelAccessor levelAccessor) {
+	private static <T extends Entity> T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
 		try {
 			return type.create(levelAccessor.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {
@@ -186,7 +186,7 @@ public class EntityUtil {
 		}
 	}
 
-	public static boolean tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<@NotNull PaintingVariant> chosenPainting) {
+	public static boolean tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
 		if (chosenPainting == null) return false;
 
 		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
@@ -210,13 +210,13 @@ public class EntityUtil {
 	}
 
 	@Nullable
-	public static Holder<@NotNull PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
+	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
 		return getPaintingOfSize(level, rand, minSize, minSize, false);
 	}
 
 	@Nullable
-	public static Holder<@NotNull PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
-		List<Holder<@NotNull PaintingVariant>> valid = new ArrayList<>();
+	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
+		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
 		for (PaintingVariant art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).stream().toList()) {
 			if (exactMeasurements) {
@@ -237,10 +237,10 @@ public class EntityUtil {
 		}
 	}
 
-	public static List<Holder<@NotNull PaintingVariant>> getPaintingsOfSizeOrSmaller(WorldGenLevel level, TagKey<@NotNull PaintingVariant> lichTowerPaintings, int width, int height) {
-		List<Holder<@NotNull PaintingVariant>> valid = new ArrayList<>();
+	public static List<Holder<PaintingVariant>> getPaintingsOfSizeOrSmaller(WorldGenLevel level, TagKey<PaintingVariant> lichTowerPaintings, int width, int height) {
+		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<@NotNull PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
+		for (Holder<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
 			if (art.value().width() <= width && art.value().height() <= height) {
 				valid.add(art);
 			}
@@ -300,10 +300,10 @@ public class EntityUtil {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
 		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
-		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends @NotNull LivingEntity>) living.getType(), timer -> {})) {
+		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
-				newEntity = mob.convertTo((EntityType<? extends @NotNull Mob>) newMob.getType(), ConversionParams.single(newMob, false, false), (ConversionParams.AfterConversion) _ -> {});
+				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, false, false), (ConversionParams.AfterConversion) _ -> {});
 			} else {
 				newEntity.copyPosition(oldEntity);
 
@@ -378,7 +378,7 @@ public class EntityUtil {
 	}
 
 	@Nullable
-	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<@NotNull T> type) {
+	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
 		try {
 			return type.create(level.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {

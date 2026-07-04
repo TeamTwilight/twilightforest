@@ -9,6 +9,7 @@ import twilightforest.init.TFDataComponents;
 
 @Component
 public class ArmorUtil {
+
 	public float getShroudedArmorPercentage(LivingEntity entity) {
 		int shroudedArmor = 0;
 		int armorSlots = 0;

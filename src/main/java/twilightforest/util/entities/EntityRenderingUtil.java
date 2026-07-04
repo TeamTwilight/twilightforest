@@ -30,6 +30,7 @@ import twilightforest.TwilightForestMod;
 import java.util.*;
 
 public class EntityRenderingUtil {
+
 	private static final Set<EntityType<?>> IGNORED_ENTITIES = new HashSet<>();
 	public static final Map<EntityType<?>, Entity> ENTITY_MAP = new HashMap<>();
 
