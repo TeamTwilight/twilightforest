@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//TODO I ideally want to move the jar lids to be data driven
 public class JarRenderer implements BlockEntityRenderer<JarBlockEntity, JarRenderer.JarRenderState> {
 	public static final Map<Item, BlockModel> LIDS = new HashMap<>();
 
