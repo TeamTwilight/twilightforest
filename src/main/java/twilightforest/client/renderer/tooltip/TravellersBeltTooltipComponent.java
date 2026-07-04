@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public void extractImage(@NotNull Font font, int x, int y, int w, int h, GuiGraphicsExtractor guiGraphics) {
+	public void extractImage(Font font, int x, int y, int w, int h, GuiGraphicsExtractor guiGraphics) {
 		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
 		int k = 0;
 
@@ -72,12 +71,12 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public int getHeight(@NotNull Font font) {
+	public int getHeight(Font font) {
 		return this.backgroundHeight() + 4;
 	}
 
 	@Override
-	public int getWidth(@NotNull Font font) {
+	public int getWidth(Font font) {
 		return this.backgroundWidth();
 	}
 

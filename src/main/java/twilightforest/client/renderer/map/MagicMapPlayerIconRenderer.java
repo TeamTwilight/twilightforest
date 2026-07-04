@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class MagicMapPlayerIconRenderer implements IMapDecorationRenderer {
+
 	//[VanillaCopy] of MapRenderer.RenderInstance.draw, but with a set depth offset instead of relying on index.
 	//this allows the icon to render on top of everything else instead of sometimes on top, sometimes behind
 	@Override

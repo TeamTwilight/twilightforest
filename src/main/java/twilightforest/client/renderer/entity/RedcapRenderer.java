@@ -13,13 +13,12 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedcapModel;
 import twilightforest.entity.monster.Redcap;
 
-public class RedcapRenderer extends HumanoidMobRenderer<@NotNull Redcap, @NotNull HumanoidRenderState, @NotNull RedcapModel> {
+public class RedcapRenderer extends HumanoidMobRenderer<Redcap, HumanoidRenderState, RedcapModel> {
 
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("redcap.png");
 
@@ -38,9 +37,9 @@ public class RedcapRenderer extends HumanoidMobRenderer<@NotNull Redcap, @NotNul
 		return TEXTURE;
 	}
 
-	public static class RedcapArmorLayer<S extends HumanoidRenderState, M extends HumanoidModel<@NotNull S>, A extends HumanoidModel<@NotNull S>> extends HumanoidArmorLayer<@NotNull S, @NotNull M, @NotNull A> {
+	public static class RedcapArmorLayer<S extends HumanoidRenderState, M extends HumanoidModel<S>, A extends HumanoidModel<S>> extends HumanoidArmorLayer<S, M, A> {
 
-		public RedcapArmorLayer(RenderLayerParent<@NotNull S, @NotNull M> renderer, ArmorModelSet<@NotNull A> modelSet, EquipmentLayerRenderer equipmentRenderer) {
+		public RedcapArmorLayer(RenderLayerParent<S, M> renderer, ArmorModelSet<A> modelSet, EquipmentLayerRenderer equipmentRenderer) {
 			super(renderer, modelSet, equipmentRenderer);
 		}
 

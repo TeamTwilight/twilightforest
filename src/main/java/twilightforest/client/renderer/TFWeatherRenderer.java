@@ -34,7 +34,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFGameRules;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.util.IntervalUtils;
 import twilightforest.util.Restriction;

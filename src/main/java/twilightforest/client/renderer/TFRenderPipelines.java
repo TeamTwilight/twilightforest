@@ -15,6 +15,7 @@ import twilightforest.TwilightForestMod;
 import java.util.Optional;
 
 public class TFRenderPipelines {
+
 	private static final BlendFunction SHADOW = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
 	public static final RenderPipeline RED_THREAD = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)

@@ -19,15 +19,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -40,8 +37,9 @@ import twilightforest.components.item.SkullCandles;
 import java.util.function.Function;
 
 //[VanillaCopy] of SkullBlockRenderer, but render a candle or candles on top of the skull/head
-public class SkullCandleRenderer implements BlockEntityRenderer<@NotNull SkullCandleBlockEntity, @NotNull SkullCandleRenderState> {
-	public static final WallAndGroundTransformations<@NotNull Transformation> CANDLE_TRANSFORMS = new WallAndGroundTransformations<>(
+public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlockEntity, SkullCandleRenderState> {
+
+	public static final WallAndGroundTransformations<Transformation> CANDLE_TRANSFORMS = new WallAndGroundTransformations<>(
 		SkullCandleRenderer::createWallTransformation, SkullCandleRenderer::createGroundTransformation, 16
 	);
 	private final Function<SkullBlock.Type, SkullModelBase> modelByType;

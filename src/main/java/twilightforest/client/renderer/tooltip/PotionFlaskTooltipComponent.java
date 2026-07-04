@@ -9,7 +9,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.alchemy.PotionContents;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.item.PotionFlaskItem;
@@ -33,12 +32,12 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public int getHeight(@NotNull Font font) {
+	public int getHeight(Font font) {
 		return this.getDescriptionHeight(Minecraft.getInstance().font) + 13 + 8;
 	}
 
 	@Override
-	public int getWidth(@NotNull Font font) {
+	public int getWidth(Font font) {
 		return WIDTH;
 	}
 
@@ -72,7 +71,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public void extractImage(@NotNull Font font, int x, int y, int w, int h, @NotNull GuiGraphicsExtractor graphics) {
+	public void extractImage(Font font, int x, int y, int w, int h, GuiGraphicsExtractor graphics) {
 		int offs = 113; //TODO replace with 4th param in 1.21.2+ so things properly center
 		if (this.component.potion().potion().isEmpty()) {
 			graphics.textWithWordWrap(font, EMPTY_DESCRIPTION, x, y, WIDTH, 11184810);

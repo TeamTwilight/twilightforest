@@ -7,7 +7,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.util.Lazy;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 public abstract class TFArmorRenderer implements IClientItemExtensions {
 	public static final List<TFSimpleArmorRenderer> INSTANCES = new ArrayList<>();
-	protected final Map<ModelLayerLocation, Lazy<@NotNull ModelPart>> ARMOR_MODELS = new HashMap<>();
+	protected final Map<ModelLayerLocation, Lazy<ModelPart>> ARMOR_MODELS = new HashMap<>();
 
 	public TFArmorRenderer(ModelLayerLocation... layerLocations) {
 		for (ModelLayerLocation layerLocation : layerLocations) {
@@ -41,7 +40,7 @@ public abstract class TFArmorRenderer implements IClientItemExtensions {
 
 	public static final class ResourceReloadListener implements ResourceManagerReloadListener {
 		@Override
-		public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
+		public void onResourceManagerReload(ResourceManager resourceManager) {
 			TFArmorRenderer.resetAllModelCache();
 		}
 	}

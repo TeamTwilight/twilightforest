@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
@@ -18,14 +17,14 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	private static final int SLOT_WIDTH = 18;
 	private static final int SLOT_HEIGHT = 20;
 
-	private final NonNullList<@NotNull ItemStack> contents;
+	private final NonNullList<ItemStack> contents;
 
 	public ItemDisplayTooltipComponent(TravellersGogglesItem.Tooltip tooltip) {
 		this.contents = tooltip.contents().items();
 	}
 
 	@Override
-	public void extractImage(@NotNull Font font, int x, int y, int w, int h, GuiGraphicsExtractor guiGraphics) {
+	public void extractImage(Font font, int x, int y, int w, int h, GuiGraphicsExtractor guiGraphics) {
 		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
 		int k = 0;
 
@@ -77,12 +76,12 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public int getHeight(@NotNull Font font) {
+	public int getHeight(Font font) {
 		return this.backgroundHeight() + 4;
 	}
 
 	@Override
-	public int getWidth(@NotNull Font font) {
+	public int getWidth(Font font) {
 		return this.backgroundWidth();
 	}
 }

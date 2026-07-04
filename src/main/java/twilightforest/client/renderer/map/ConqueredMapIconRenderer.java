@@ -10,12 +10,12 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.neoforged.neoforge.client.gui.map.IMapDecorationRenderer;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class ConqueredMapIconRenderer implements IMapDecorationRenderer {
+
 	@Override
-	public boolean render(MapRenderState.MapDecorationRenderState decorationRenderState, @NotNull PoseStack poseStack, @NotNull SubmitNodeCollector submitNodeCollector, @NotNull MapRenderState mapRenderState, @NotNull TextureAtlas decorationSprites, boolean inItemFrame, int packedLight, int index) {
+	public boolean render(MapRenderState.MapDecorationRenderState decorationRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, MapRenderState mapRenderState, TextureAtlas decorationSprites, boolean inItemFrame, int packedLight, int index) {
 		if (decorationRenderState.type == MapDecorationTypes.RED_X) {
 			poseStack.pushPose();
 

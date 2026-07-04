@@ -19,7 +19,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import org.apache.commons.lang3.ArrayUtils;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDataAttachments;
@@ -68,7 +67,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 			// push the shields outwards from the center of rotation
 			stack.translate(0.0F, 0.0F, -0.7F);
 
-			StandaloneModelKey<@NotNull BlockModel> modelKey = new StandaloneModelKey<>(LOC::toDebugFileName);
+			StandaloneModelKey<BlockModel> modelKey = new StandaloneModelKey<>(LOC::toDebugFileName);
 			BlockModel shieldModel =
 				Minecraft.getInstance()
 				.getModelManager()
