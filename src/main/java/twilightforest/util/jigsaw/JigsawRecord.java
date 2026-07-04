@@ -1,6 +1,5 @@
 package twilightforest.util.jigsaw;
 
-import net.minecraft.Optionull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
@@ -67,12 +66,12 @@ public record JigsawRecord(int priority, FrontAndTop orientation, BlockPos pos, 
 
 	public static JigsawRecord fromTag(CompoundTag tag) {
 		return new JigsawRecord(
-			tag.getInt("priority").get(),
-			FrontAndTop.values()[tag.getInt("facing").get()],
-			new BlockPos(tag.getInt("x").get(), tag.getInt("y").get(), tag.getInt("z").get()),
-			tag.getString("pool").get(),
-			tag.getString("name").get(),
-			tag.getString("target").get()
+			tag.getIntOr("priority", 0),
+			FrontAndTop.values()[tag.getIntOr("facing", 0)],
+			new BlockPos(tag.getIntOr("x", 0), tag.getIntOr("y", 0), tag.getIntOr("z", 0)),
+			tag.getStringOr("pool", ""),
+			tag.getStringOr("name", ""),
+			tag.getStringOr("target", "")
 		);
 	}
 
