@@ -19,6 +19,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.joml.Matrix4f;
 
 public class MapDisplay implements ItemDisplay {
+
 	private static final RenderType MAP_BACKGROUND = RenderTypes.text(Identifier.withDefaultNamespace("textures/map/map_background.png"));
 	private static final RenderType MAP_BACKGROUND_CHECKERBOARD = RenderTypes.text(Identifier.withDefaultNamespace("textures/map/map_background_checkerboard.png"));
 
@@ -53,6 +54,7 @@ public class MapDisplay implements ItemDisplay {
 
 		//render map data
 		stack.pushPose();
+		//these transformations are very important, otherwise icons render behind the map graphics
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 		stack.translate(-4.75F, -4.75F, -1.0F);
 		stack.translate(-start, 0.0F, 0.0F);

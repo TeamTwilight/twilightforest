@@ -16,6 +16,7 @@ import twilightforest.entity.passive.QuestRam;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 
 public class QuestingRamIndicatorOverlay {
+
 	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final Identifier QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 

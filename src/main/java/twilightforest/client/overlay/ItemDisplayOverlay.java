@@ -8,7 +8,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.client.overlay.display.ItemDisplay;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.config.TFConfig;
@@ -61,7 +60,7 @@ public class ItemDisplayOverlay {
 	private static int fillDisplayHolders(List<DisplayHolder> typesToRender, ItemDisplayContents contents, Minecraft minecraft, Gui gui, Player player) {
 		int widest = 0;
 
-		NonNullList<@NotNull ItemStack> items = contents.items();
+		NonNullList<ItemStack> items = contents.items();
 		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
 		int activeMapSlot = contents.findActiveMapSlot();
 
