@@ -9,7 +9,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ import java.util.List;
 
 public class ParticlePacket implements CustomPacketPayload {
 
-	public static final Type<@NotNull ParticlePacket> TYPE = new Type<>(TwilightForestMod.prefix("particle_queue"));
-	public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull ParticlePacket> STREAM_CODEC = CustomPacketPayload.codec(ParticlePacket::write, ParticlePacket::new);
+	public static final Type<ParticlePacket> TYPE = new Type<>(TwilightForestMod.prefix("particle_queue"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, ParticlePacket> STREAM_CODEC = CustomPacketPayload.codec(ParticlePacket::write, ParticlePacket::new);
 
 	private final List<QueuedParticle> queuedParticles = new ArrayList<>();
 
@@ -52,7 +51,7 @@ public class ParticlePacket implements CustomPacketPayload {
 	}
 
 	@Override
-	public Type<? extends @NotNull CustomPacketPayload> type() {
+	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 

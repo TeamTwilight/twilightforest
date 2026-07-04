@@ -10,16 +10,15 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.mapdata.TFMazeMapData;
 
 // Rewraps vanilla ClientboundMapItemDataPacket to properly add our own data
 public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter) implements CustomPacketPayload {
 
-	public static final Type<@NotNull MazeMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("maze_map"));
+	public static final Type<MazeMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("maze_map"));
 
-	public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull MazeMapPacket> STREAM_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, MazeMapPacket> STREAM_CODEC = StreamCodec.composite(
 		ClientboundMapItemDataPacket.STREAM_CODEC, MazeMapPacket::inner,
 		ByteBufCodecs.BOOL, MazeMapPacket::ore,
 		ByteBufCodecs.INT, MazeMapPacket::yCenter,
@@ -27,7 +26,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 	);
 
 	@Override
-	public Type<? extends @NotNull CustomPacketPayload> type() {
+	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 

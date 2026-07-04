@@ -5,12 +5,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 
 public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
-	public static final Type<@NotNull EnforceProgressionStatusPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_progression_status"));
-	public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull EnforceProgressionStatusPacket> STREAM_CODEC = CustomPacketPayload.codec(EnforceProgressionStatusPacket::write, EnforceProgressionStatusPacket::new);
+	public static final Type<EnforceProgressionStatusPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_progression_status"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, EnforceProgressionStatusPacket> STREAM_CODEC = CustomPacketPayload.codec(EnforceProgressionStatusPacket::write, EnforceProgressionStatusPacket::new);
 
 	public static boolean CLIENT_ENFORCE_PROGRESSION = true;
 
@@ -23,7 +22,7 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 	}
 
 	@Override
-	public Type<? extends @NotNull CustomPacketPayload> type() {
+	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 
