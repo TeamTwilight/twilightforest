@@ -51,9 +51,9 @@ public class TFBiomes {
 	public static void bootstrap(BootstrapContext<Biome> context) {
 		HolderGetter<PlacedFeature> featureGetter = context.lookup(Registries.PLACED_FEATURE);
 		HolderGetter<ConfiguredWorldCarver<?>> carverGetter = context.lookup(Registries.CONFIGURED_CARVER);
-		context.register(FOREST, BiomeHelper.twilightForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(DENSE_FOREST, BiomeHelper.denseForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(FIREFLY_FOREST, BiomeHelper.fireflyForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(FOREST, BiomeHelper.twilightForest(featureGetter, carverGetter).build());
+		context.register(DENSE_FOREST, BiomeHelper.denseForest(featureGetter, carverGetter).build());
+		context.register(FIREFLY_FOREST, BiomeHelper.fireflyForest(featureGetter, carverGetter).build());
 		context.register(CLEARING, BiomeHelper.clearing(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
 		context.register(OAK_SAVANNAH, BiomeHelper.oakSavanna(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
 

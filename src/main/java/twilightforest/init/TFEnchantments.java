@@ -83,7 +83,7 @@ public class TFEnchantments {
 			.withEffect(EnchantmentEffectComponents.HIT_BLOCK, new SmashBlocksEffect(
 				LevelBasedValue.constant(12.0F),
 				LevelBasedValue.constant(1.0F),
-				blocks.get(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS).map(set -> set),
+				Optional.of(blocks.get(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS).orElseThrow()),
 				Optional.empty(),
 				Optional.empty())));
 
