@@ -23,6 +23,7 @@ import twilightforest.init.TFSounds;
 import java.util.List;
 
 public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
+
 	boolean fired = false;
 
 	@Override
