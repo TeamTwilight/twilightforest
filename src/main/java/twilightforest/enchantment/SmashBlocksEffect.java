@@ -20,13 +20,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.Optional;
 
-public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius, Optional<HolderSet<@NotNull Block>> immuneBlocks, Optional<HolderSet<@NotNull Block>> vulnerableBlocks, Optional<Holder<@NotNull SoundEvent>> smashSound) implements EnchantmentEntityEffect {
+public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius, Optional<HolderSet<Block>> immuneBlocks, Optional<HolderSet<Block>> vulnerableBlocks, Optional<Holder<SoundEvent>> smashSound) implements EnchantmentEntityEffect {
 
 	public static final MapCodec<SmashBlocksEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			LevelBasedValue.CODEC.fieldOf("max_smash").forGetter(SmashBlocksEffect::maxSmash),

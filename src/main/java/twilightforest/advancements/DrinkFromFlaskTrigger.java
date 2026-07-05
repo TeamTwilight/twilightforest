@@ -11,7 +11,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
-import org.jetbrains.annotations.NotNull;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.Configurable;
@@ -44,6 +43,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 	}
 
 	public record TriggerInstance(Optional<ContextAwarePredicate> player, MinMaxBounds.Ints doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) implements SimpleInstance {
+
 		public boolean matches(DrinkFromFlaskTrigger parent, int doses, int seconds, Holder<Potion> potion) {
 			boolean matchesPotion = (parent == null || parent.holderMatcher == null)
 				? this.potion().equals(potion)
@@ -56,7 +56,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 		public static class DrinkFromFlaskTriggerInstanceFactory {
 			public final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = DrinkFromFlaskTrigger.CODEC;
 
-			public Criterion<DrinkFromFlaskTrigger.@NotNull TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
+			public Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
 				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), seconds, potion));
 			}
 
@@ -64,5 +64,6 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), doses, seconds, potion));
 			}
 		}
+
 	}
 }
