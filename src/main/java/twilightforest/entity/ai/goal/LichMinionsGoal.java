@@ -1,16 +1,13 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.event.EventHooks;
@@ -20,7 +17,6 @@ import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffset0Transformer;
 
 import java.util.EnumSet;
 

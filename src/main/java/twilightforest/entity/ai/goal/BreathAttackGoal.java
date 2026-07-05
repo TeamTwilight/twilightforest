@@ -1,7 +1,5 @@
 package twilightforest.entity.ai.goal;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -9,13 +7,11 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 
 import java.awt.*;
 import java.util.*;
