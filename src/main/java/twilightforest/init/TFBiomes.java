@@ -54,31 +54,31 @@ public class TFBiomes {
 		context.register(FOREST, BiomeHelper.twilightForest(featureGetter, carverGetter).build());
 		context.register(DENSE_FOREST, BiomeHelper.denseForest(featureGetter, carverGetter).build());
 		context.register(FIREFLY_FOREST, BiomeHelper.fireflyForest(featureGetter, carverGetter).build());
-		context.register(CLEARING, BiomeHelper.clearing(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(OAK_SAVANNAH, BiomeHelper.oakSavanna(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(CLEARING, BiomeHelper.clearing(featureGetter, carverGetter).build());
+		context.register(OAK_SAVANNAH, BiomeHelper.oakSavanna(featureGetter, carverGetter).build());
 
-		context.register(MUSHROOM_FOREST, BiomeHelper.mushroomForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(DENSE_MUSHROOM_FOREST, BiomeHelper.denseMushroomForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(MUSHROOM_FOREST, BiomeHelper.mushroomForest(featureGetter, carverGetter).build());
+		context.register(DENSE_MUSHROOM_FOREST, BiomeHelper.denseMushroomForest(featureGetter, carverGetter).build());
 
-		context.register(SPOOKY_FOREST, BiomeHelper.spookyForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(ENCHANTED_FOREST, BiomeHelper.enchantedForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(STREAM, BiomeHelper.stream(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(LAKE, BiomeHelper.lake(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(SPOOKY_FOREST, BiomeHelper.spookyForest(featureGetter, carverGetter).build());
+		context.register(ENCHANTED_FOREST, BiomeHelper.enchantedForest(featureGetter, carverGetter).build());
+		context.register(STREAM, BiomeHelper.stream(featureGetter, carverGetter).build());
+		context.register(LAKE, BiomeHelper.lake(featureGetter, carverGetter).build());
 
-		context.register(SWAMP, BiomeHelper.swamp(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(FIRE_SWAMP, BiomeHelper.fireSwamp(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(SWAMP, BiomeHelper.swamp(featureGetter, carverGetter).build());
+		context.register(FIRE_SWAMP, BiomeHelper.fireSwamp(featureGetter, carverGetter).build());
 
-		context.register(DARK_FOREST, BiomeHelper.darkForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(DARK_FOREST_CENTER, BiomeHelper.darkForestCenter(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(DARK_FOREST, BiomeHelper.darkForest(featureGetter, carverGetter).build());
+		context.register(DARK_FOREST_CENTER, BiomeHelper.darkForestCenter(featureGetter, carverGetter).build());
 
-		context.register(SNOWY_FOREST, BiomeHelper.snowyForest(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(GLACIER, BiomeHelper.glacier(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(SNOWY_FOREST, BiomeHelper.snowyForest(featureGetter, carverGetter).build());
+		context.register(GLACIER, BiomeHelper.glacier(featureGetter, carverGetter).build());
 
-		context.register(HIGHLANDS, BiomeHelper.highlands(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(HIGHLANDS_UNDERGROUND, BiomeHelper.highlandsUnderground(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(THORNLANDS, BiomeHelper.thornlands(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
-		context.register(FINAL_PLATEAU, BiomeHelper.finalPlateau(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(HIGHLANDS, BiomeHelper.highlands(featureGetter, carverGetter).build());
+		context.register(HIGHLANDS_UNDERGROUND, BiomeHelper.highlandsUnderground(featureGetter, carverGetter).build());
+		context.register(THORNLANDS, BiomeHelper.thornlands(featureGetter, carverGetter).build());
+		context.register(FINAL_PLATEAU, BiomeHelper.finalPlateau(featureGetter, carverGetter).build());
 
-		context.register(UNDERGROUND, BiomeHelper.underground(featureGetter, carverGetter).setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false).build());
+		context.register(UNDERGROUND, BiomeHelper.underground(featureGetter, carverGetter).build());
 	}
 }
