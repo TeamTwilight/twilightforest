@@ -23,7 +23,7 @@ public class BeardifierClassTransformer implements ITransformer<ClassNode> {
 			Opcodes.ACC_PUBLIC,
 			"twilightforest_customStructureDensities",
 			"Lit/unimi/dsi/fastutil/objects/ObjectListIterator;",
-			"Lit/unimi/dsi/fastutil/objects/ObjectListIterator<net.minecraft.world.level.levelgen.DensityFunction>;",
+			"Lit/unimi/dsi/fastutil/objects/ObjectListIterator<Lnet/minecraft/world/level/levelgen/DensityFunction;>;",
 			null
 		));
 		return node;

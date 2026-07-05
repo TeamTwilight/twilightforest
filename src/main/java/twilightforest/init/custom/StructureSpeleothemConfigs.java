@@ -15,12 +15,12 @@ import twilightforest.world.components.structures.StructureSpeleothemConfig;
 public class StructureSpeleothemConfigs {
 	public static final RegistryFileCodec<StructureSpeleothemConfig> CODEC = RegistryFileCodec.create(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC, false);
 
-	public static final ResourceKey<StructureSpeleothemConfig> SMALL_HILL = makeKey(TFStructures.HOLLOW_HILL_SMALL.location());
-	public static final ResourceKey<StructureSpeleothemConfig> MEDIUM_HILL = makeKey(TFStructures.HOLLOW_HILL_MEDIUM.location());
-	public static final ResourceKey<StructureSpeleothemConfig> LARGE_HILL = makeKey(TFStructures.HOLLOW_HILL_LARGE.location());
-	public static final ResourceKey<StructureSpeleothemConfig> HYDRA_LAIR = makeKey(TFStructures.HYDRA_LAIR.location());
-	public static final ResourceKey<StructureSpeleothemConfig> YETI_CAVE = makeKey(TFStructures.YETI_CAVE.location());
-	public static final ResourceKey<StructureSpeleothemConfig> TROLL_CAVE = makeKey(TFStructures.TROLL_CAVE.location());
+	public static final ResourceKey<StructureSpeleothemConfig> SMALL_HILL = makeKey(TFStructures.HOLLOW_HILL_SMALL.identifier());
+	public static final ResourceKey<StructureSpeleothemConfig> MEDIUM_HILL = makeKey(TFStructures.HOLLOW_HILL_MEDIUM.identifier());
+	public static final ResourceKey<StructureSpeleothemConfig> LARGE_HILL = makeKey(TFStructures.HOLLOW_HILL_LARGE.identifier());
+	public static final ResourceKey<StructureSpeleothemConfig> HYDRA_LAIR = makeKey(TFStructures.HYDRA_LAIR.identifier());
+	public static final ResourceKey<StructureSpeleothemConfig> YETI_CAVE = makeKey(TFStructures.YETI_CAVE.identifier());
+	public static final ResourceKey<StructureSpeleothemConfig> TROLL_CAVE = makeKey(TFStructures.TROLL_CAVE.identifier());
 
 	private static ResourceKey<StructureSpeleothemConfig> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, name);
@@ -36,7 +36,7 @@ public class StructureSpeleothemConfigs {
 	}
 
 	private static void bootstrapRegister(BootstrapContext<StructureSpeleothemConfig> context, ResourceKey<StructureSpeleothemConfig> configKey, RectangleLatticeIterator.TriangularLatticeConfig latticeConfig) {
-		context.register(configKey, StructureSpeleothemConfig.fromLocation(latticeConfig, configKey.location().getPath()));
+		context.register(configKey, StructureSpeleothemConfig.fromLocation(latticeConfig, configKey.identifier().getPath()));
 	}
 
 	@NotNull
