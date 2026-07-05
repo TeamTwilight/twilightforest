@@ -9,6 +9,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
 public class MazeMapCloningRecipe extends CustomRecipe {
+
 	public MazeMapCloningRecipe() {
 		super();
 	}

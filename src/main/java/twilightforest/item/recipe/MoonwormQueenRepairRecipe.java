@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoonwormQueenRepairRecipe extends CustomRecipe {
+
 	public MoonwormQueenRepairRecipe() {
 		super();
 	}

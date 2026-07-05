@@ -10,6 +10,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
 public class CasketRepairRecipe extends CustomRecipe {
+
 	public CasketRepairRecipe() {
 		super();
 	}

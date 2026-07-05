@@ -15,6 +15,7 @@ import twilightforest.init.TFRecipes;
 import java.util.Arrays;
 
 public class UncraftingRecipe extends ShapedRecipe {
+
 	private final int cost;
 	private final Ingredient input;
 	private final int count;

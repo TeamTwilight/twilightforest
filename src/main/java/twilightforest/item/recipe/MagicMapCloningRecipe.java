@@ -9,6 +9,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
 public class MagicMapCloningRecipe extends CustomRecipe {
+
 	public MagicMapCloningRecipe() {
 		super();
 	}

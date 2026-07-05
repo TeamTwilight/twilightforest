@@ -19,6 +19,7 @@ import twilightforest.init.TFRecipes;
 import java.util.List;
 
 public class ScepterRepairRecipe extends CustomRecipe {
+
 	public static final MapCodec<ScepterRepairRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BuiltInRegistries.ITEM.byNameCodec().fieldOf("scepter").forGetter(o -> o.scepter),
 			Ingredient.CODEC.listOf().fieldOf("repair_ingredients").forGetter(o -> o.repairItems),

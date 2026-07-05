@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class NoTemplateSmithingRecipe implements SmithingRecipe {
+
 	private final Ingredient base;
 	private final Ingredient addition;
 	private final List<TypedDataComponent<?>> additionalData;

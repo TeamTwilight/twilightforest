@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
 
 public class DryingRecipe extends SingleItemRecipe {
+
 	private final int dryingTime;
 	private final Ingredient ingredient;
 

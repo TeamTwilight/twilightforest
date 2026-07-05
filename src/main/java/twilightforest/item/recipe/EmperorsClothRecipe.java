@@ -12,6 +12,7 @@ import twilightforest.init.TFRecipes;
 import twilightforest.tags.TFItemTags;
 
 public class EmperorsClothRecipe extends CustomRecipe {
+
 	public EmperorsClothRecipe() {
 		super();
 	}
