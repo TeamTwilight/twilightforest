@@ -5,6 +5,7 @@ import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuild
 import twilightforest.TwilightForestMod;
 
 public class PatchBuilder extends CustomLoaderBuilder {
+
 	private boolean shaggify = false;
 
 	public PatchBuilder() {

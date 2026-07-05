@@ -10,7 +10,6 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import twilightforest.components.entity.TravellersWingsAnimAttachment;
 import twilightforest.components.entity.TravellersWingsAttachment;
@@ -19,7 +18,7 @@ import twilightforest.util.TFMathUtil;
 
 import java.util.List;
 
-public class TravellersWingsModel extends HumanoidModel<@NotNull HumanoidRenderState> {
+public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
 	private static final Vector3f SMALL_SWING = new Vector3f(8.0F, 8.0F, 8.0F);

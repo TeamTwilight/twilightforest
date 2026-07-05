@@ -21,6 +21,7 @@ public class ForceFieldModelLoader implements UnbakedModelLoader<UnbakedForceFie
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public UnbakedForceFieldModel read(JsonObject json, JsonDeserializationContext context) throws JsonParseException {
+
 		Map<String, Condition> elementsAndConditions = new HashMap<>();
 
 		if (json.has("elements")) {

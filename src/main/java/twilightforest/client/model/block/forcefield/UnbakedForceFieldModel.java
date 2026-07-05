@@ -5,6 +5,7 @@ import net.minecraft.client.resources.model.cuboid.ItemTransforms;
 import net.minecraft.client.resources.model.geometry.UnbakedGeometry;
 import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
+
 import java.util.Map;
 
 public class UnbakedForceFieldModel extends AbstractUnbakedModel {

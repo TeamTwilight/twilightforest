@@ -5,6 +5,7 @@ import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 
 public class UnbakedPatchModel extends AbstractUnbakedModel {
+
 	private final boolean shaggify;
 
 	public UnbakedPatchModel(boolean shaggify, StandardModelParameters parameters) {

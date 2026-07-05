@@ -9,9 +9,7 @@ import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.client.model.ExtraFaceData;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
-import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -19,9 +17,9 @@ import twilightforest.client.model.block.forcefield.ForceFieldModel.ExtraDirecti
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 public class ForceFieldModelBuilder extends CustomLoaderBuilder {
+
 	private boolean defaultShade = true;
 	private int brightnessOverride = 0;
 	private int tint = -1;

@@ -19,6 +19,7 @@ import org.joml.Vector3f;
 import java.util.*;
 
 public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
+
 	protected final boolean renderOverlayOnAllFaces;
 	protected final Set<Direction> connectedFaces;
 	protected final List<Block> connectableBlocks;

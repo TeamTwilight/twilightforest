@@ -9,10 +9,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.client.state.entity.UpperGoblinKnightRenderState;
 
-public class UpperGoblinKnightModel extends HumanoidModel<@NotNull UpperGoblinKnightRenderState> {
+public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRenderState> {
+
 	private final ModelPart breastplate;
 	private final ModelPart shield;
 

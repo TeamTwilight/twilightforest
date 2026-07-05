@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class ConnectedTextureModel implements UnbakedGeometry {
+
 	private final Set<Direction> connectedFaces;
 	private final Set<Direction> unculledFaces;
 	private final boolean renderOverlayOnAllFaces;

@@ -12,14 +12,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class ConnectedTextureModelLoader implements UnbakedModelLoader<@NotNull UnbakedConnectedTextureModel> {
+public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedConnectedTextureModel> {
 	public static final ConnectedTextureModelLoader INSTANCE = new ConnectedTextureModelLoader();
 
 	public ConnectedTextureModelLoader() {

@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.quad.MutableQuad;
 import net.neoforged.neoforge.model.data.ModelData;
 import net.neoforged.neoforge.model.data.ModelProperty;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.ForceFieldBlock;
 
@@ -128,7 +127,7 @@ public class ForceFieldModel implements UnbakedGeometry {
 		return false;
 	}
 
-	public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
+	public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData) {
 		if (modelData == ModelData.EMPTY) {
 			Map<ExtraDirection, List<Direction>> map = new HashMap<>();
 			for (ExtraDirection extraDirection : getExtraDirections(state, level, pos)) {
@@ -213,7 +212,7 @@ public class ForceFieldModel implements UnbakedGeometry {
 		SOUTH_WEST("south_west", 17, 16, 14),
 		SOUTH_EAST("south_east", 16, 17, 15);
 
-		public static final EnumCodec<@NotNull ExtraDirection> CODEC = StringRepresentable.fromEnum(ExtraDirection::values);
+		public static final EnumCodec<ExtraDirection> CODEC = StringRepresentable.fromEnum(ExtraDirection::values);
 		private final String name;
 		private final int xAxisMirror;
 		private final int yAxisMirror;

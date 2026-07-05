@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<@NotNull T> {
+public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> {
+
 	private final ModelPart head;
 	private final ModelPart body;
 	private final ModelPart rightHindLeg;

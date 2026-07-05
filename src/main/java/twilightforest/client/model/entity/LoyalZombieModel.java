@@ -8,9 +8,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import org.jetbrains.annotations.NotNull;
 
-public class LoyalZombieModel extends HumanoidModel<LoyalZombieModel.@NotNull LoyalZombieRenderState> {
+/**
+ * [VanillaCopy] {@link net.minecraft.client.model.monster.zombie.AbstractZombieModel} due to generic restrictions
+ */
+public class LoyalZombieModel extends HumanoidModel<LoyalZombieModel.LoyalZombieRenderState> {
+
 	public LoyalZombieModel(ModelPart part) {
 		super(part);
 	}

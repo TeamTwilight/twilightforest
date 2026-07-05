@@ -8,9 +8,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import org.jetbrains.annotations.NotNull;
 
-public class TFArmorModel extends HumanoidModel<@NotNull HumanoidRenderState> {
+public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
+
 	public TFArmorModel(ModelPart root) {
 		super(root);
 	}

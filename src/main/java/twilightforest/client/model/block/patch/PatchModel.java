@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatchModel implements UnbakedGeometry {
+
 	private final boolean shaggify;
 
 	private TextureAtlasSprite texture;
