@@ -99,7 +99,6 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 	}
 
-
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level level, TFMagicMapData data, MapId id) {
 		if (level instanceof ServerLevel serverLevel) serverLevel.getServer().overworld().getDataStorage().set(type(id), data);

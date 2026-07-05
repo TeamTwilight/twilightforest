@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 
 //TODO data component-itize this
 public class CustomDamageSwordItem extends Item implements CustomDamageProvider {
+
 	private final ResourceKey<DamageType> damageType;
 
 	public CustomDamageSwordItem(ResourceKey<DamageType> damageType, Properties properties) {

@@ -4,6 +4,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 
 public class TFFoods extends Foods {
+
 	public static final FoodProperties TORCHBERRIES = new FoodProperties.Builder().alwaysEdible().build();
 	public static final FoodProperties RAW_VENISON = new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build();
 	public static final FoodProperties VENISON_STEAK = new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build();
