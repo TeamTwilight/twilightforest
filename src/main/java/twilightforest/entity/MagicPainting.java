@@ -26,7 +26,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDataSerializers;
@@ -40,11 +39,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class MagicPainting extends HangingEntity {
-	private static final EntityDataAccessor<@NotNull Holder<@NotNull MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT.value());
+	private static final EntityDataAccessor<Holder<MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT.value());
 
 	private Direction direction;
 
-	public MagicPainting(EntityType<? extends @NotNull MagicPainting> entityType, Level level) {
+	public MagicPainting(EntityType<? extends MagicPainting> entityType, Level level) {
 		super(entityType, level);
 	}
 
@@ -64,17 +63,17 @@ public class MagicPainting extends HangingEntity {
 		}
 	}
 
-	public void setVariant(Holder<@NotNull MagicPaintingVariant> variant) {
+	public void setVariant(Holder<MagicPaintingVariant> variant) {
 		this.getEntityData().set(MAGIC_PAINTING_VARIANT, variant);
 	}
 
-	public Holder<@NotNull MagicPaintingVariant> getVariant() {
+	public Holder<MagicPaintingVariant> getVariant() {
 		return this.getEntityData().get(MAGIC_PAINTING_VARIANT);
 	}
 
 	public static Optional<MagicPainting> create(Level level, BlockPos pos, Direction direction) {
 		MagicPainting magicPainting = new MagicPainting(level, pos);
-		List<Holder.Reference<@NotNull MagicPaintingVariant>> list = new ArrayList<>();
+		List<Holder.Reference<MagicPaintingVariant>> list = new ArrayList<>();
 		level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).listElements().forEach(list::add);
 		if (list.isEmpty()) {
 			return Optional.empty();
@@ -89,7 +88,7 @@ public class MagicPainting extends HangingEntity {
 			} else {
 				int biggestPossibleArea = list.stream().mapToInt(MagicPainting::variantArea).max().orElse(0);
 				list.removeIf((variant) -> variantArea(variant) < biggestPossibleArea);
-				Optional<Holder.Reference<@NotNull MagicPaintingVariant>> optional = Util.getRandomSafe(list, magicPainting.random);
+				Optional<Holder.Reference<MagicPaintingVariant>> optional = Util.getRandomSafe(list, magicPainting.random);
 				if (optional.isEmpty()) {
 					return Optional.empty();
 				} else {
@@ -101,7 +100,7 @@ public class MagicPainting extends HangingEntity {
 		}
 	}
 
-	private static int variantArea(Holder<@NotNull MagicPaintingVariant> variant) {
+	private static int variantArea(Holder<MagicPaintingVariant> variant) {
 		return variantArea(variant.value());
 	}
 
@@ -131,7 +130,7 @@ public class MagicPainting extends HangingEntity {
 		this.setDirection(this.direction);
 	}
 
-	protected Registry<@NotNull MagicPaintingVariant> getReg() {
+	protected Registry<MagicPaintingVariant> getReg() {
 		return this.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS);
 	}
 
@@ -194,7 +193,7 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	@Override
-	public Packet<@NotNull ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
 		return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
 	}
 

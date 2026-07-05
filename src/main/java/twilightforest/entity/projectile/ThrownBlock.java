@@ -22,7 +22,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.Troll;
 import twilightforest.init.TFDamageTypes;
@@ -32,7 +31,7 @@ public class ThrownBlock extends TFThrowable {
 
 	private BlockState state = Blocks.STONE.defaultBlockState();
 
-	public ThrownBlock(EntityType<? extends @NotNull TFThrowable> type, Level worldIn) {
+	public ThrownBlock(EntityType<? extends TFThrowable> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
@@ -98,7 +97,7 @@ public class ThrownBlock extends TFThrowable {
 	}
 
 	@Override
-	public Packet<@NotNull ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
 		return new ClientboundAddEntityPacket(this, entity, Block.getId(this.getBlockState()));
 	}
 

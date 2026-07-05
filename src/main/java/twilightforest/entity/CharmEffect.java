@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CharmEffect extends Entity implements ItemSupplier {
@@ -34,12 +33,12 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	private LivingEntity orbiter;
 	private ItemStack displayItem = new ItemStack(Items.BARRIER);
 
-	public CharmEffect(EntityType<? extends @NotNull CharmEffect> type, Level level) {
+	public CharmEffect(EntityType<? extends CharmEffect> type, Level level) {
 		super(type, level);
 	}
 
 	@SuppressWarnings("this-escape")
-	public CharmEffect(EntityType<? extends @NotNull CharmEffect> type, Level level, LivingEntity owner, ItemStack item) {
+	public CharmEffect(EntityType<? extends CharmEffect> type, Level level, LivingEntity owner, ItemStack item) {
 		this(type, level);
 		this.orbiter = owner;
 		this.displayItem = item;

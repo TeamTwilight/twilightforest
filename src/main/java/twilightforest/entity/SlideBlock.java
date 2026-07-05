@@ -22,29 +22,28 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class SlideBlock extends Entity {
+
 	private static final int WARMUP_TIME = 20;
-	private static final EntityDataAccessor<@NotNull Direction> MOVE_DIRECTION = SynchedEntityData.defineId(SlideBlock.class, EntityDataSerializers.DIRECTION);
+	private static final EntityDataAccessor<Direction> MOVE_DIRECTION = SynchedEntityData.defineId(SlideBlock.class, EntityDataSerializers.DIRECTION);
 
 	private BlockState myState;
 	private int slideTime;
 
-	public SlideBlock(EntityType<? extends @NotNull SlideBlock> type, Level world) {
+	public SlideBlock(EntityType<? extends SlideBlock> type, Level world) {
 		super(type, world);
 		this.blocksBuilding = true;
 		this.myState = TFBlocks.SLIDER.get().defaultBlockState();
 	}
 
 	@SuppressWarnings("this-escape")
-	public SlideBlock(EntityType<? extends @NotNull SlideBlock> type, Level world, double x, double y, double z, BlockState state) {
+	public SlideBlock(EntityType<? extends SlideBlock> type, Level world, double x, double y, double z, BlockState state) {
 		super(type, world);
 
 		this.myState = state;
@@ -181,14 +180,14 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(@Nonnull ValueInput compound) {
+	protected void readAdditionalSaveData(ValueInput compound) {
 		this.slideTime = compound.getInt("Time").get();
 		this.getEntityData().set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByteOr("Direction", (byte) 0)));
 		this.myState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), new CompoundTag());
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@Nonnull ValueOutput compound) {
+	protected void addAdditionalSaveData(ValueOutput compound) {
 		compound.putInt("Time", this.slideTime);
 		compound.putByte("Direction", (byte) this.getEntityData().get(MOVE_DIRECTION).get3DDataValue());
 		compound.store("BlockState", BlockState.CODEC, this.myState);

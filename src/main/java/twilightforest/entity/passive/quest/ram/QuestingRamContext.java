@@ -13,13 +13,12 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.loot.TFLootTables;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record QuestingRamContext(Map<DyeColor, Ingredient> questItems, ResourceKey<@NotNull LootTable> lootTable) {
+public record QuestingRamContext(Map<DyeColor, Ingredient> questItems, ResourceKey<LootTable> lootTable) {
 
 	public static final QuestingRamContext FALLBACK = new QuestingRamContext(ImmutableMap.<DyeColor, Ingredient>builder()
 		.put(DyeColor.WHITE, Ingredient.of(Items.WHITE_WOOL))
@@ -45,7 +44,7 @@ public record QuestingRamContext(Map<DyeColor, Ingredient> questItems, ResourceK
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("reward").forGetter(QuestingRamContext::lootTable)
 	).apply(instance, QuestingRamContext::new));
 
-	public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull QuestingRamContext> STREAM_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, QuestingRamContext> STREAM_CODEC = StreamCodec.composite(
 		ByteBufCodecs.map(
 			LinkedHashMap::new,
 			DyeColor.STREAM_CODEC,

@@ -37,19 +37,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
 public class LoyalZombie extends TamableAnimal {
-	private static final EntityDataAccessor<@NotNull Boolean> DATA_BABY_ID = SynchedEntityData.defineId(LoyalZombie.class, EntityDataSerializers.BOOLEAN);
+
+	private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(LoyalZombie.class, EntityDataSerializers.BOOLEAN);
 	private static final Identifier SPEED_MODIFIER_BABY_ID = Identifier.withDefaultNamespace("baby");
 	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(SPEED_MODIFIER_BABY_ID, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.LOYAL_ZOMBIE.get().getDimensions().scale(0.5F).withEyeHeight(0.93F);
 
-	public LoyalZombie(EntityType<? extends @NotNull LoyalZombie> type, Level level) {
+	public LoyalZombie(EntityType<? extends LoyalZombie> type, Level level) {
 		super(type, level);
 	}
 

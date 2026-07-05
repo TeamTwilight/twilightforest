@@ -10,12 +10,12 @@ import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
 import twilightforest.init.TFDimension;
 
 public interface EnforcedHomePoint {
+
 	default <T extends PathfinderMob & EnforcedHomePoint> void addRestrictionGoals(T entity, GoalSelector selector) {
 		selector.addGoal(5, new AttemptToGoHomeGoal<>(entity, 1.25D));
 	}
@@ -53,7 +53,7 @@ public interface EnforcedHomePoint {
 		return this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
 	}
 
-	default boolean isRestrictionPointValid(ResourceKey<@NotNull Level> currentMobLevel) {
+	default boolean isRestrictionPointValid(ResourceKey<Level> currentMobLevel) {
 		return this.getRestrictionPoint() != null && this.getRestrictionPoint().dimension().equals(currentMobLevel);
 	}
 
