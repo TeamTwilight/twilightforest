@@ -17,6 +17,7 @@ import net.minecraft.world.level.pathfinder.PathType;
 import org.jspecify.annotations.Nullable;
 
 public class BurntThornsBlock extends ThornsBlock {
+
 	public BurntThornsBlock(Properties properties) {
 		super(properties);
 	}

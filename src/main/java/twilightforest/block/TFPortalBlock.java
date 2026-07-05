@@ -52,6 +52,7 @@ import java.util.*;
 
 // KelpBlock seems to use ILiquidContainer as it's a block that permanently has water, so I suppose in best practices we also use this interface as well?
 public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockContainer, Portal {
+
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 	public static final Component PORTAL_UNWORTHY = Component.translatable("misc.twilightforest.portal_unworthy");
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));

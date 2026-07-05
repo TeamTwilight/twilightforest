@@ -19,6 +19,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
 public class LockedVanishingBlock extends VanishingBlock {
+
 	public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
 	public LockedVanishingBlock(Properties properties) {
