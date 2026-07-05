@@ -24,7 +24,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
@@ -33,9 +32,9 @@ import twilightforest.network.UncraftingGuiPacket;
 
 import java.util.List;
 
-public class UncraftingScreen extends AbstractContainerScreen<@NotNull UncraftingMenu> implements RecipeUpdateListener {
+public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> implements RecipeUpdateListener {
 	private static final Identifier TEXTURE = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
-	private final RecipeBookComponent<@NotNull RecipeBookMenu> recipeBookComponent = new UncraftingRecipeBookComponent(menu, List.of());
+	private final RecipeBookComponent<RecipeBookMenu> recipeBookComponent = new UncraftingRecipeBookComponent(menu, List.of());
 	private boolean widthTooNarrow;
 
 	public UncraftingScreen(UncraftingMenu container, Inventory player, Component name) {

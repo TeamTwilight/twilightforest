@@ -16,13 +16,12 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.inventory.UncraftingPlaceRecipe;
 
 import java.util.List;
 
-public class UncraftingRecipeBookComponent extends RecipeBookComponent<@NotNull RecipeBookMenu> implements UncraftingPlaceRecipe<Ingredient> {
+public class UncraftingRecipeBookComponent extends RecipeBookComponent<RecipeBookMenu> implements UncraftingPlaceRecipe<Ingredient> {
 	@Nullable
 	private GhostSlots currentGhostSlots = new GhostSlots(() -> 0);
 
@@ -84,7 +83,7 @@ public class UncraftingRecipeBookComponent extends RecipeBookComponent<@NotNull 
 		if (currentGhostSlots != null && !ingredient.isEmpty()) {
 			Slot targetSlot = this.menu.slots.get(slotIndex);
 
-			List<Holder<@NotNull Item>> items = ingredient.getValues().stream().toList();
+			List<Holder<Item>> items = ingredient.getValues().stream().toList();
 			if (!items.isEmpty()) {
 				Item item = items.getFirst().value();
 				ItemStack stack = new ItemStack(item);

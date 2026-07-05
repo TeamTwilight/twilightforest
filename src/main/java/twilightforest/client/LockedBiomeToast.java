@@ -10,6 +10,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class LockedBiomeToast implements Toast {
+
 	private static final Component TITLE = Component.translatable("misc.twilightforest.biome_locked");
 	private static final Component DESCRIPTION = Component.translatable("misc.twilightforest.biome_locked_2");
 	private static final Identifier BACKGROUND_SPRITE = Identifier.withDefaultNamespace("toast/advancement");

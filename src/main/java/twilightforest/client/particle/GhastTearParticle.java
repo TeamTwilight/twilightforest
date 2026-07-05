@@ -16,10 +16,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFSounds;
 
 public class GhastTearParticle extends SingleQuadParticle {
+
 	public GhastTearParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
 		super(level, x, y, z, 0.0D, 0.0D, 0.0D, sprite);
 		this.rCol = this.gCol = this.bCol = 1.0F;
@@ -54,7 +54,7 @@ public class GhastTearParticle extends SingleQuadParticle {
 		super.tick();
 	}
 
-	public static class Factory implements ParticleProvider<@NotNull SimpleParticleType> {
+	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(Identifier.withDefaultNamespace("item/ghast_tear"));

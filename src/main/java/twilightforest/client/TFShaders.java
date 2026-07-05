@@ -14,6 +14,7 @@ import twilightforest.client.renderer.TFRenderPipelines;
 import java.util.Optional;
 
 public class TFShaders {
+
 	private static final DepthStencilState TRANSLUCENT_DEPTH = new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, false);
 
 	private static final RenderPipeline AURORA_PIPELINE = RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
