@@ -25,7 +25,6 @@ import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
@@ -278,7 +277,7 @@ public class OverlayHandler {
 	}
 
 	private static ComponentColumn nameColumn(List<String> oreNameKeys) {
-		ImmutableList.Builder<@NotNull Component> toList = ImmutableList.builder();
+		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
 		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_block").withStyle(ChatFormatting.GRAY));
 
@@ -291,7 +290,7 @@ public class OverlayHandler {
 	}
 
 	private static ComponentColumn dashColumn(int size) {
-		ImmutableList.Builder<@NotNull Component> toList = ImmutableList.builder();
+		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
 		toList.add(Component.empty());
 
@@ -303,7 +302,7 @@ public class OverlayHandler {
 	}
 
 	private static ComponentColumn countColumn(List<Integer> oreCounts) {
-		ImmutableList.Builder<@NotNull Component> toList = ImmutableList.builder();
+		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
 		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_count").withStyle(ChatFormatting.GRAY));
 
@@ -313,7 +312,7 @@ public class OverlayHandler {
 	}
 
 	private static ComponentColumn ratioColumn(int totalScanned, List<Integer> oreCounts) {
-		ImmutableList.Builder<@NotNull Component> toList = ImmutableList.builder();
+		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
 		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_ratio").withStyle(ChatFormatting.GRAY));
 

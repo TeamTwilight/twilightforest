@@ -20,10 +20,8 @@ import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -38,7 +36,6 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
@@ -334,10 +331,10 @@ public class TravellersClientEvents {
 			if (entityRenderDispatcher.getRenderer(player) instanceof AvatarRenderer avatarRenderer) {
 				var playerModel = avatarRenderer.getModel();
 
-				Model<@NotNull HumanoidRenderState> armorModel = IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get())
+				Model<HumanoidRenderState> armorModel = IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get())
 					.getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, playerModel);
 
-				if (armorModel instanceof HumanoidModel<@NotNull HumanoidRenderState> humanoidArmorModel) {
+				if (armorModel instanceof HumanoidModel<HumanoidRenderState> humanoidArmorModel) {
 					ModelPart armPart = humanoidArmorModel.getArm(event.getArm());
 
 					var dummyState = new HumanoidRenderState();

@@ -8,8 +8,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-//import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
-//import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.init.TFAttributeModifiers;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;

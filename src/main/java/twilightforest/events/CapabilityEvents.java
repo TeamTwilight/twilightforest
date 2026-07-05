@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;

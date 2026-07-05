@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.events;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -42,7 +42,6 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.NotNull;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.components.entity.SlimySolesAttachment;
@@ -61,7 +60,7 @@ import java.util.stream.Stream;
 
 @Component
 public class TravellersGearEvents {
-	private static final List<DeferredHolder<@NotNull AttachmentType<?>, ? extends @NotNull AttachmentType<?>>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
+	private static final List<DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
@@ -310,7 +309,7 @@ public class TravellersGearEvents {
 			return;
 		}
 		ItemStack inputStack = travellersItemStacks.getFirst();
-		List<Holder.Reference<@NotNull TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
+		List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
 		if (modifiers.isEmpty()) {
 			event.setCanceled(true);
 			return;
@@ -335,7 +334,7 @@ public class TravellersGearEvents {
 		);
 	}
 
-	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<@NotNull TravellersModifier> modifierKey, DataComponentType<@NotNull T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
+	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
 		if (event.getPlayer() == null)
 			return;
 
@@ -380,13 +379,13 @@ public class TravellersGearEvents {
 
 	public void keepAttachmentsOnDeath(PlayerEvent.Clone event) {
 		if (event.isWasDeath()) {
-			for (DeferredHolder<@NotNull AttachmentType<?>, ? extends @NotNull AttachmentType<?>> attachmentHolder : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
+			for (DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachmentHolder : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
 				copyAttachmentData(event.getOriginal(), event.getEntity(), attachmentHolder.get());
 			}
 		}
 	}
 
-	private <T> void copyAttachmentData(Player source, Player target, AttachmentType<@NotNull T> type) {
+	private <T> void copyAttachmentData(Player source, Player target, AttachmentType<T> type) {
 		if (source.hasData(type)) {
 			target.setData(type, source.getData(type));
 		}

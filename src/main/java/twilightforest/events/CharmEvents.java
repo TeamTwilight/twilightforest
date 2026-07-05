@@ -36,7 +36,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredItem;
-import org.jetbrains.annotations.NotNull;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
@@ -189,7 +188,7 @@ public class CharmEvents {
 
 	}
 
-	private static boolean applyCharm(DeferredItem<@NotNull Item> charm, Inventory keptInventory, Player player, List<ItemStack> inventorySlots) {
+	private static boolean applyCharm(DeferredItem<Item> charm, Inventory keptInventory, Player player, List<ItemStack> inventorySlots) {
 		List<ItemStack> playerArmor = new java.util.AbstractList<>() {
 			@Override public ItemStack get(int index) { return player.getInventory().getItem(36 + index); }
 			@Override public int size() { return 4; }
@@ -217,7 +216,7 @@ public class CharmEvents {
 		if (mergedCheck.stream().filter(stack -> !stack.is(charm)).allMatch(ItemStack::isEmpty)) return false;
 		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true) && !hasCharmCurio(charm.value(), player)) return false;
 
-		NonNullList<@NotNull ItemStack> keptItemsList = NonNullList.create();
+		NonNullList<ItemStack> keptItemsList = NonNullList.create();
 		for (int i = 0; i < inventorySlots.size(); i++) {
 			keptItemsList.add(keptInventory.getItem(i));
 		}
@@ -227,7 +226,7 @@ public class CharmEvents {
 			keptInventory.setItem(i, keptItemsList.get(i));
 		}
 
-		NonNullList<@NotNull ItemStack> keptArmorList = NonNullList.create();
+		NonNullList<ItemStack> keptArmorList = NonNullList.create();
 		for (int i = 0; i < 4; i++) {
 			keptArmorList.add(keptInventory.getItem(i + 36));
 		}
@@ -237,7 +236,7 @@ public class CharmEvents {
 			keptInventory.setItem(i + 36, keptArmorList.get(i));
 		}
 
-		NonNullList<@NotNull ItemStack> keptOffhandList = NonNullList.create();
+		NonNullList<ItemStack> keptOffhandList = NonNullList.create();
 		keptOffhandList.add(keptInventory.getItem(40));
 		keepWholeListAndCheckCasket(keptOffhandList, playerOffhand, keptACasket);
 		keptInventory.setItem(40, keptOffhandList.get(0));
@@ -316,7 +315,7 @@ public class CharmEvents {
 
 			int casketCapacity = casket.getContainerSize();
 			List<ItemStack> list = new ArrayList<>(casketCapacity);
-			NonNullList<@NotNull ItemStack> filler = NonNullList.withSize(4, ItemStack.EMPTY);
+			NonNullList<ItemStack> filler = NonNullList.withSize(4, ItemStack.EMPTY);
 
 			// lets add our inventory exactly how it was on us
 			list.addAll(TFItemStackUtils.sortArmorForCasket(player));
@@ -407,7 +406,7 @@ public class CharmEvents {
 	}
 
 	//transfers a list of items to another
-	private static boolean keepWholeListAndCheckCasket(NonNullList<@NotNull ItemStack> transferTo, List<ItemStack> transferFrom, boolean skipCasketCheck) {
+	private static boolean keepWholeListAndCheckCasket(NonNullList<ItemStack> transferTo, List<ItemStack> transferFrom, boolean skipCasketCheck) {
 		boolean keptCasket = false;
 		for (int i = 0; i < transferFrom.size(); i++) {
 			var item = transferFrom.get(i).copy();

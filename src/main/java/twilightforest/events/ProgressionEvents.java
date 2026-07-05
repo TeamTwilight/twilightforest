@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.events;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.AdvancementHolder;
@@ -6,8 +6,6 @@ import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -60,6 +58,7 @@ import java.util.*;
  */
 @Component
 public class ProgressionEvents {
+
 	@PostConstruct
 	private void setup() {
 		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockBreaking);

@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
@@ -35,7 +35,6 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -226,7 +225,7 @@ public class ToolEvents {
 		OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
 
 		//collect all tags
-		for (TagKey<@NotNull Block> tag : BuiltInRegistries.BLOCK.getTags().filter(location -> location.key().location().getNamespace().equals("c")).map(HolderSet.Named::key).toList()) {
+		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTags().filter(location -> location.key().location().getNamespace().equals("c")).map(HolderSet.Named::key).toList()) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later

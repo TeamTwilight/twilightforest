@@ -12,6 +12,7 @@ import twilightforest.util.Restriction;
 import java.util.Optional;
 
 public class LockedBiomeToastHandler {
+
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 

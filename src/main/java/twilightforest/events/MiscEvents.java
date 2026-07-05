@@ -40,6 +40,7 @@ import twilightforest.network.CreateMovingCicadaSoundPacket;
 
 @Component
 public class MiscEvents {
+
 	@PostConstruct
 	private void setup() {
 		NeoForge.EVENT_BUS.addListener(this::addPrey);
