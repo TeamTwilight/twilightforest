@@ -8,7 +8,6 @@ import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.common.CommonHooks;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.inventory.InventoryUtil;
 import twilightforest.inventory.UncraftingMenu;
@@ -17,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UncraftingResultSlot extends ResultSlot {
+
 	private final Player player;
 	private final Container inputSlot;
 	private final UncraftingContainer uncraftingMatrix;
@@ -46,7 +46,7 @@ public class UncraftingResultSlot extends ResultSlot {
 
 		CraftingInput inputForCheck = this.assemblyMatrix.asCraftInput();
 
-		for (RecipeHolder<@NotNull CraftingRecipe> recipe : recipeManager.recipeMap().byType(RecipeType.CRAFTING)) {
+		for (RecipeHolder<CraftingRecipe> recipe : recipeManager.recipeMap().byType(RecipeType.CRAFTING)) {
 			try {
 				ItemStack resultStack = recipe.value().assemble(inputForCheck);
 
@@ -85,11 +85,11 @@ public class UncraftingResultSlot extends ResultSlot {
 		int i = positioned.left();
 		int j = positioned.top();
 		CommonHooks.setCraftingPlayer(player);
-		NonNullList<@NotNull ItemStack> remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
+		NonNullList<ItemStack> remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
 		var matchingRecipes = recipeManager.recipeMap().getRecipesFor(RecipeType.CRAFTING, input, player.level()).toList();
 
 		if (!matchingRecipes.isEmpty()) {
-			RecipeHolder<@NotNull CraftingRecipe> recipeHolder = matchingRecipes.getFirst();
+			RecipeHolder<CraftingRecipe> recipeHolder = matchingRecipes.getFirst();
 			remainingItems = recipeHolder.value().getRemainingItems(input);
 		}
 

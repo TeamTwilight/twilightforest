@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
@@ -28,7 +27,6 @@ import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
@@ -40,12 +38,12 @@ import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;
 import twilightforest.item.recipe.UncraftingRecipe;
-import twilightforest.tags.TFItemTags;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.*;
 
 public class UncraftingMenu extends RecipeBookMenu {
+
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
 	// Inaccessible grid, for uncrafting logic
@@ -116,7 +114,7 @@ public class UncraftingMenu extends RecipeBookMenu {
 
 		if (!FMLLoader.getCurrent().isProduction()) {
 			// Debug slot listing
-			NonNullList<@NotNull Slot> slots = this.slots;
+			NonNullList<Slot> slots = this.slots;
 
 			StringJoiner joiner = new StringJoiner(",\n", "Uncrafting Menu Slots:\n", "(" + slots.size() + " total slots)");
 
@@ -316,8 +314,8 @@ public class UncraftingMenu extends RecipeBookMenu {
 			}
 		}
 
-		for (RecipeHolder<@NotNull CraftingRecipe> recipe : recipeManager.recipeMap().byType(TFRecipes.UNCRAFTING_RECIPE.get())) {
-			UncraftingRecipe uncraftingRecipe = (UncraftingRecipe) recipe.value();
+		for (RecipeHolder<UncraftingRecipe> recipe : recipeManager.recipeMap().byType(TFRecipes.UNCRAFTING_RECIPE.get())) {
+			UncraftingRecipe uncraftingRecipe = recipe.value();
 			if (uncraftingRecipe.isItemStackAnIngredient(inputStack)) {
 				recipes.add(uncraftingRecipe);
 			}
@@ -334,20 +332,20 @@ public class UncraftingMenu extends RecipeBookMenu {
 		return input.is(output.getItem()) && input.getCount() >= output.getCount();
 	}
 
-	private static List<RecipeHolder<@NotNull CraftingRecipe>> getRecipesFor(CraftingInput input, Level level) {
+	private static List<RecipeHolder<CraftingRecipe>> getRecipesFor(CraftingInput input, Level level) {
 		if (!(level instanceof ServerLevel serverLevel)) return List.of();
 		return serverLevel.getServer().getRecipeManager().recipeMap().getRecipesFor(RecipeType.CRAFTING, input, level).toList();
 	}
 
 	private void chooseRecipe(CraftingInput input) {
-		List<RecipeHolder<@NotNull CraftingRecipe>> recipes = getRecipesFor(input, this.level);
+		List<RecipeHolder<CraftingRecipe>> recipes = getRecipesFor(input, this.level);
 
 		if (recipes.isEmpty()) {
 			this.tinkerResult.setItem(0, ItemStack.EMPTY);
 			return;
 		}
 
-		RecipeHolder<@NotNull CraftingRecipe> recipe = recipes.get(Math.floorMod(this.recipeInCycle, recipes.size()));
+		RecipeHolder<CraftingRecipe> recipe = recipes.get(Math.floorMod(this.recipeInCycle, recipes.size()));
 		MinecraftServer server = this.level instanceof ServerLevel serverLevel ? serverLevel.getServer() : null;
 
 		if (recipe != null && server != null && (!server.getGameRules().get(GameRules.LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe.id()))) {
@@ -456,7 +454,7 @@ public class UncraftingMenu extends RecipeBookMenu {
 	private static int countTotalEnchantmentCost(ItemStack stack) {
 		int count = 0;
 
-		for (Object2IntMap.Entry<Holder<@NotNull Enchantment>> entry : stack.getEnchantments().entrySet()) {
+		for (Object2IntMap.Entry<Holder<Enchantment>> entry : stack.getEnchantments().entrySet()) {
 			Enchantment ench = entry.getKey().value();
 			int level = entry.getIntValue();
 
@@ -623,8 +621,8 @@ public class UncraftingMenu extends RecipeBookMenu {
 	private ItemStack[] getIngredients(Recipe<?> recipe) {
 		ItemStack[] stacks = new ItemStack[recipe.placementInfo().ingredients().size()];
 
-		for (int i = 0; i < recipe.getIngredients().size(); i++) {
-			ItemStack[] matchingStacks = Arrays.stream(recipe.getIngredients().get(i).getItems()).filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).toArray(ItemStack[]::new);
+		for (int i = 0; i < recipe.placementInfo().ingredients().size(); i++) {
+			ItemStack[] matchingStacks = recipe.placementInfo().ingredients().get(i).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(h -> h.value().getDefaultInstance()).toArray(ItemStack[]::new);
 			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
 		}
 

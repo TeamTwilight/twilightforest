@@ -9,6 +9,9 @@ import java.util.Iterator;
 //modified version of PlaceRecipe that uses the correct slots for the uncrafting table
 public interface UncraftingPlaceRecipe<C> {
 
+	// Slots 0 & 1 are Uncrafting input & crafting output
+	// Slots 2 to 10 are Uncrafting matrix
+	// Slots 11 to 19 are Crafting matrix
 	int matrixOffset = 11;
 
 	void addItemToSlot(C ingredient, int slotIndex, int maxAmount, int gridY, int gridX);

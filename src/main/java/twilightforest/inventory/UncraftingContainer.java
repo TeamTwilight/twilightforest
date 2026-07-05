@@ -5,12 +5,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.config.TFConfig;
 
 public class UncraftingContainer implements Container {
 
-	private final NonNullList<@NotNull ItemStack> contents = NonNullList.withSize(9, ItemStack.EMPTY);
+	private final NonNullList<ItemStack> contents = NonNullList.withSize(9, ItemStack.EMPTY);
 
 	public int numberOfInputItems;
 	public int uncraftingCost;
