@@ -19,7 +19,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -32,12 +31,12 @@ public class HydraMortar extends ThrowableProjectile {
 	public int fuse = 80;
 	private boolean megaBlast = false;
 
-	public HydraMortar(EntityType<? extends @NotNull HydraMortar> type, Level world) {
+	public HydraMortar(EntityType<? extends HydraMortar> type, Level world) {
 		super(type, world);
 	}
 
 	@SuppressWarnings("this-escape")
-	public HydraMortar(EntityType<? extends @NotNull HydraMortar> type, Level world, HydraHead head) {
+	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
 		super(type, world);
 
 		Vec3 vector = head.getLookAngle();

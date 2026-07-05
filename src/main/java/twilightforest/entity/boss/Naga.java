@@ -45,7 +45,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
@@ -82,12 +81,12 @@ public class Naga extends BaseTFBoss {
 	public float stunlessRedOverlayProgress = 0.0F;
 
 	private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("1fe84ad2-3b63-4922-ade7-546aae84a9e1");
-	private static final EntityDataAccessor<@NotNull Boolean> DATA_DAZE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<@NotNull Boolean> DATA_CHARGE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<@NotNull Boolean> DATA_STUNLESS = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_DAZE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_CHARGE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_STUNLESS = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 
 	@SuppressWarnings("this-escape")
-	public Naga(EntityType<? extends @NotNull Naga> type, Level level) {
+	public Naga(EntityType<? extends Naga> type, Level level) {
 		super(type, level);
 		this.xpReward = 217;
 
@@ -536,7 +535,7 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	public ResourceKey<@NotNull Structure> getHomeStructure() {
+	public ResourceKey<Structure> getHomeStructure() {
 		return TFStructures.NAGA_COURTYARD;
 	}
 

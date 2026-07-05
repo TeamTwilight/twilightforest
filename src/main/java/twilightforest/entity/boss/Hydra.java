@@ -32,7 +32,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
@@ -58,7 +57,7 @@ public class Hydra extends BaseTFBoss {
 	private static final int SECONDARY_FLAME_CHANCE = 10;
 	private static final int SECONDARY_MORTAR_CHANCE = 16;
 
-	private static final EntityDataAccessor<@NotNull List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
+	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[MAX_HEADS];
 
 	private final HydraPart[] partArray;
@@ -70,7 +69,7 @@ public class Hydra extends BaseTFBoss {
 	private int ticksSinceDamaged = 0;
 	public boolean renderFakeHeads = true;
 
-	public Hydra(EntityType<? extends @NotNull Hydra> type, Level level) {
+	public Hydra(EntityType<? extends Hydra> type, Level level) {
 		super(type, level);
 
 		List<HydraPart> parts = new ArrayList<>();
@@ -731,7 +730,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	public ResourceKey<@NotNull Structure> getHomeStructure() {
+	public ResourceKey<Structure> getHomeStructure() {
 		return TFStructures.HYDRA_LAIR;
 	}
 

@@ -17,7 +17,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -50,7 +49,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -74,8 +72,8 @@ public class KnightPhantom extends BaseTFBoss {
 	private static final int PARTICLE_TICKS = 70;
 	public static final EntityDimensions UNTOUCHABLE = new EntityDimensions(0.0F, 0.0F, 0.0F, EntityAttachments.createDefault(0.0F, 0.0F), true);
 
-	private static final EntityDataAccessor<@NotNull Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<@NotNull Boolean> IT_IS_OVER = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> IT_IS_OVER = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("charging_attack_boost"), 7, AttributeModifier.Operation.ADD_VALUE);
 	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("inactive_armor_boost"), 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
@@ -89,7 +87,7 @@ public class KnightPhantom extends BaseTFBoss {
 	private final EntityDimensions visibleSize = EntityDimensions.fixed(1.75F, 4.0F);
 
 	@SuppressWarnings("this-escape")
-	public KnightPhantom(EntityType<? extends @NotNull KnightPhantom> type, Level level) {
+	public KnightPhantom(EntityType<? extends KnightPhantom> type, Level level) {
 		super(type, level);
 		this.noPhysics = true;
 		this.currentFormation = Formation.HOVER;
@@ -205,7 +203,7 @@ public class KnightPhantom extends BaseTFBoss {
 		List<KnightPhantom> knights = this.getNearbyKnights();
 
 		LootParams params = TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY);
-		Optional<ResourceKey<@NotNull LootTable>> bossLoot = this.getLootTable();
+		Optional<ResourceKey<LootTable>> bossLoot = this.getLootTable();
 
 		if (bossLoot.isPresent()) {
 			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(bossLoot.get());
@@ -573,7 +571,7 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	public ResourceKey<@NotNull Structure> getHomeStructure() {
+	public ResourceKey<Structure> getHomeStructure() {
 		return TFStructures.KNIGHT_STRONGHOLD;
 	}
 
