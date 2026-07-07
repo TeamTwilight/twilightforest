@@ -68,39 +68,36 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	private static void handleEmptyHand(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler) {
-		int maxAmount = 64;
-
-		ItemStack extractedStack = ItemStack.EMPTY;
-
-		try (Transaction _ = Transaction.openRoot()) {
-			ItemResource resource = handler.getResource(SLOT);
-
-			if (!resource.isEmpty()) {
-				ItemStack preview = resource.toStack(handler.getAmountAsInt(SLOT));
-
-				if (player.isSecondaryUseActive()) {
-					player.sendOverlayMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()));
-					wiggle(server, pos, jar);
-					return;
-				}
-
-				extractedStack = resource.toStack(0);
-			}
-		}
-
-		if (extractedStack.isEmpty()) {
+		if (!player.getItemInHand(hand).isEmpty()) {
 			wiggle(server, pos, jar);
 			return;
 		}
 
+		ItemResource resource = handler.getResource(SLOT);
+		if (resource.isEmpty()) {
+			wiggle(server, pos, jar);
+			return;
+		}
+
+		if (player.isSecondaryUseActive()) {
+			ItemStack preview = resource.toStack(handler.getAmountAsInt(SLOT));
+			player.sendOverlayMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()));
+			wiggle(server, pos, jar);
+			return;
+		}
+
+		int maxAmount = Math.min(64, resource.getItem().getMaxStackSize(resource.toStack()));
+
 		try (Transaction transaction = Transaction.openRoot()) {
-			ItemResource resourceToExtract = ItemResource.of(extractedStack);
-			int countExtracted = handler.extract(SLOT, resourceToExtract, maxAmount, transaction);
+			int countExtracted = handler.extract(SLOT, resource, maxAmount, transaction);
 
 			if (countExtracted > 0) {
-				extractedStack.setCount(countExtracted);
+				ItemStack extractedStack = resource.toStack(countExtracted);
 				transaction.commit();
+
 				player.setItemInHand(hand, extractedStack);
+				jar.setChanged();
+				server.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), 3);
 				server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 				return;
@@ -115,37 +112,32 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 
 		ItemResource resource = ItemResource.of(stack);
 		int amountToInsert = stack.getCount();
-		int simulatedInserted;
 
 		try (Transaction transaction = Transaction.openRoot()) {
-			simulatedInserted = handler.insert(SLOT, resource, amountToInsert, transaction);
-		}
+			int inserted = handler.insert(SLOT, resource, amountToInsert, transaction);
 
-		if (simulatedInserted <= 0) {
-			wiggle(server, pos, jar);
-			return;
-		}
-
-		int realInserted;
-		try (Transaction transaction = Transaction.openRoot()) {
-			realInserted = handler.insert(SLOT, resource, amountToInsert, transaction);
-			if (realInserted > 0) {
-				transaction.commit();
+			if (inserted <= 0) {
+				wiggle(server, pos, jar);
+				return;
 			}
+
+			transaction.commit();
+
+			jar.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F));
+			player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+
+			ItemStack before = stack.copy();
+			ItemStack remainder = stack.copy();
+			remainder.shrink(inserted);
+			player.setItemInHand(hand, player.hasInfiniteMaterials() ? before : remainder);
+
+			jar.setChanged();
+			server.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), 3);
+
+			float filledRatio = (float) inserted / (float) before.getMaxStackSize();
+			server.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
+			server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 		}
-
-		jar.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F));
-		player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-
-		ItemStack before = stack.copy();
-
-		ItemStack remainder = stack.copy();
-		remainder.shrink(realInserted);
-		player.setItemInHand(hand, player.hasInfiniteMaterials() ? before : remainder);
-
-		float filledRatio = (float) realInserted / (float) before.getMaxStackSize();
-		server.playSound(null, pos, TFSounds.JAR_INSERT.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
-		server.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE, pos);
 	}
 
 	private static void wiggle(ServerLevel server, BlockPos pos, MasonJarBlockEntity jar) {
