@@ -68,11 +68,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	private static void handleEmptyHand(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler) {
-		if (!player.getItemInHand(hand).isEmpty()) {
-			wiggle(server, pos, jar);
-			return;
-		}
-
 		ItemResource resource = handler.getResource(SLOT);
 		if (resource.isEmpty()) {
 			wiggle(server, pos, jar);
@@ -92,11 +87,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			int countExtracted = handler.extract(SLOT, resource, maxAmount, transaction);
 
 			if (countExtracted > 0) {
-				ItemStack extractedStack = resource.toStack(countExtracted);
 				transaction.commit();
-
-				player.setItemInHand(hand, extractedStack);
-				jar.setChanged();
 				server.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), 3);
 				server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
@@ -130,9 +121,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			ItemStack remainder = stack.copy();
 			remainder.shrink(inserted);
 			player.setItemInHand(hand, player.hasInfiniteMaterials() ? before : remainder);
-
-			jar.setChanged();
-			server.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), 3);
 
 			float filledRatio = (float) inserted / (float) before.getMaxStackSize();
 			server.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
