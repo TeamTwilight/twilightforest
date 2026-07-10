@@ -11,12 +11,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -74,21 +73,22 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			return;
 		}
 
+		ItemStack preview = resource.toStack(handler.getAmountAsInt(SLOT));
 		if (player.isSecondaryUseActive()) {
-			ItemStack preview = resource.toStack(handler.getAmountAsInt(SLOT));
 			player.sendOverlayMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()));
 			wiggle(server, pos, jar);
 			return;
 		}
 
-		int maxAmount = Math.min(64, resource.getItem().getMaxStackSize(resource.toStack()));
+		int maxAmount = Math.min(Item.ABSOLUTE_MAX_STACK_SIZE, resource.getItem().getMaxStackSize(resource.toStack()));
 
 		try (Transaction transaction = Transaction.openRoot()) {
 			int countExtracted = handler.extract(SLOT, resource, maxAmount, transaction);
 
 			if (countExtracted > 0) {
 				transaction.commit();
-				server.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), 3);
+				server.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), Block.UPDATE_ALL);
+				player.setItemInHand(hand, preview);
 				server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 				return;
