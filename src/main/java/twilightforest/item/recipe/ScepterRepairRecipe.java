@@ -3,8 +3,6 @@ package twilightforest.item.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -14,18 +12,34 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFRecipes;
 
 import java.util.List;
 
 public class ScepterRepairRecipe extends CustomRecipe {
+	public static final MapCodec<ScepterRepairRecipe> MAP_CODEC =
+		RecordCodecBuilder.mapCodec(i -> i.group(
+			BuiltInRegistries.ITEM.byNameCodec().fieldOf("scepter").forGetter(o -> o.scepter),
+			Ingredient.CODEC.listOf().fieldOf("repair_ingredients").forGetter(o -> o.repairItems),
+			Codec.INT.fieldOf("durability").forGetter(o -> o.durability)
+		).apply(i, ScepterRepairRecipe::new)
+	);
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, ScepterRepairRecipe> STREAM_CODEC =
+		StreamCodec.composite(
+		ByteBufCodecs.registry(Registries.ITEM), o -> o.scepter,
+		Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), o -> o.repairItems,
+		ByteBufCodecs.INT, o -> o.durability,
+		ScepterRepairRecipe::new
+	);
+
+	public static final RecipeSerializer<ScepterRepairRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
 	private final Item scepter;
 	private final List<Ingredient> repairItems;
 	private final int durability;
 
-	public ScepterRepairRecipe(Item scepter, List<Ingredient> repairItems, int repairDurability, CraftingBookCategory category) {
-		super(category);
+	public ScepterRepairRecipe(Item scepter, List<Ingredient> repairItems, int repairDurability) {
+		super();
 		this.scepter = scepter;
 		this.repairItems = repairItems;
 		this.durability = repairDurability;
@@ -67,11 +81,11 @@ public class ScepterRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+	public ItemStack assemble(CraftingInput craftingInput) {
 		ItemStack scepter = null;
 		int ingredients = 0;
-		for (int i = 0; i < input.size(); ++i) {
-			ItemStack stackInQuestion = input.getItem(i);
+		for (int i = 0; i < craftingInput.size(); ++i) {
+			ItemStack stackInQuestion = craftingInput.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
 					scepter = stackInQuestion;
@@ -98,54 +112,12 @@ public class ScepterRepairRecipe extends CustomRecipe {
 		return this.scepter;
 	}
 
-	public List<Ingredient> getRepairItems() {
-		return this.repairItems;
-	}
-
 	public int getRepairDurability() {
 		return this.durability;
 	}
 
 	@Override
-	public NonNullList<Ingredient> getIngredients() {
-		return NonNullList.copyOf(this.repairItems);
-	}
-
-	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return this.repairItems.size() + 1 > width * height;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.SCEPTER_REPAIR_RECIPE.get();
-	}
-
-	public static class Serializer implements RecipeSerializer<ScepterRepairRecipe> {
-
-		public static final MapCodec<ScepterRepairRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-				BuiltInRegistries.ITEM.byNameCodec().fieldOf("scepter").forGetter(o -> o.scepter),
-				Ingredient.CODEC_NONEMPTY.listOf().fieldOf("repair_ingredients").forGetter(o -> o.repairItems),
-				Codec.INT.fieldOf("durability").forGetter(o -> o.durability),
-				CraftingBookCategory.CODEC.optionalFieldOf("category", CraftingBookCategory.MISC).forGetter(CustomRecipe::category)
-			).apply(instance, ScepterRepairRecipe::new)
-		);
-		public static final StreamCodec<RegistryFriendlyByteBuf, ScepterRepairRecipe> STREAM_CODEC = StreamCodec.composite(
-			ByteBufCodecs.registry(Registries.ITEM), o -> o.scepter,
-			Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), o -> o.repairItems,
-			ByteBufCodecs.INT, o -> o.durability,
-			CraftingBookCategory.STREAM_CODEC, CustomRecipe::category,
-			ScepterRepairRecipe::new
-		);
-
-		@Override
-		public MapCodec<ScepterRepairRecipe> codec() {
-			return CODEC;
-		}
-
-		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, ScepterRepairRecipe> streamCodec() {
-			return STREAM_CODEC;
-		}
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+		return SERIALIZER;
 	}
 }
