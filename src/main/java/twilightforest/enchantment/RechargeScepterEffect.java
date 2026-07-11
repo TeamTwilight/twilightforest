@@ -3,10 +3,12 @@ package twilightforest.enchantment;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
@@ -34,7 +36,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 				if (item.is(recipe.getScepter())) {
 					var ingredientCopy = new ArrayList<>(recipe.placementInfo().ingredients());
 					scepterItemsCheck:
-					for (int i = 0; i < 36; i++) {
+					for (int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
 						var stack = player.getInventory().getItem(i);
 						if (stack.isEmpty()) continue;
 						if (stack.is(TFItems.EXANIMATE_ESSENCE)) {
