@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.CasketRepairRecipe;
@@ -27,7 +27,7 @@ public class ExanimateEssenceRepairExtension implements ICraftingCategoryExtensi
 	@Override
 	public void setRecipe(RecipeHolder<EssenceRepairRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
 		List<List<ItemStack>> inputs = new ArrayList<>();
-		List<ItemStack> scepters = Arrays.stream(Ingredient.of(ItemTagGenerator.SCEPTERS).getItems()).toList();
+		List<ItemStack> scepters = Arrays.stream(Ingredient.of(TFItemTags.SCEPTERS).getItems()).toList();
 
 		craftingGridHelper.createAndSetOutputs(builder, scepters);
 

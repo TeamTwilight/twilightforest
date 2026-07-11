@@ -2,13 +2,9 @@ package twilightforest.item.recipe.travellers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.NonNullList;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
@@ -33,11 +29,6 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return getHeight() <= height && getWidth() <= width;
-	}
-
-	@Override
 	public int getWidth() {
 		return pattern.width();
 	}
@@ -53,8 +44,8 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public NonNullList<Ingredient> getIngredients() {
-		return pattern.ingredients();
+	public PlacementInfo placementInfo() {
+		return PlacementInfo.createFromOptionals(pattern.ingredients());
 	}
 
 	@Override
@@ -63,7 +54,7 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return TFRecipes.MODIFIER_SHAPED_RECIPE_SERIALIZER.get();
 	}
 

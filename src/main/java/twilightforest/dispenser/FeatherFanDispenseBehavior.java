@@ -34,7 +34,7 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 		List<LivingEntity> thingsToPush = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
 		if (!(thingsToPush.size() >= damage)) {
 			for (Entity entity : thingsToPush) {
-				Vec3i lookVec = level.getBlockState(source.pos()).getValue(DispenserBlock.FACING).getNormal();
+				Vec3i lookVec = level.getBlockState(source.pos()).getValue(DispenserBlock.FACING).getUnitVec3i();
 
 				if (entity.isPushable() || entity instanceof ItemEntity) {
 					entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());

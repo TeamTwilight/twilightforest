@@ -4,10 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -25,7 +22,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		BlockState state = level.getBlockState(pos);
 		if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-			var resultBlock = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+			var resultBlock = state.typeHolder().getData(TFDataMaps.CRUMBLE_HORN);
 			if (resultBlock != null) {
 				if (resultBlock.result() == Blocks.AIR) {
 					level.destroyBlock(pos, true);
@@ -34,7 +31,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 					level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
 				}
 
-				stack.hurtAndBreak(1, level, null, item -> {});
+				stack.hurtAndBreak(1, level, null, _ -> {});
 				this.fired = true;
 			}
 		}
