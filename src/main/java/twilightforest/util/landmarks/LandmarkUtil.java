@@ -132,16 +132,6 @@ public final class LandmarkUtil {
 		return level.getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE.get());
 	}
 
-	public static boolean isProgressionEnforced(ClientLevel level) {
-		MinecraftServer server = Minecraft.getInstance().getSingleplayerServer();
-		if (server != null) {
-			return server.getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE.get());
-		} else if (level.getServer() != null) {
-			return level.getServer().getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE.get());
-		}
-		return EnforceProgressionStatusPacket.CLIENT_ENFORCE_PROGRESSION;
-	}
-
 	private LandmarkUtil() {
 	}
 }
