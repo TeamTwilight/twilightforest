@@ -531,7 +531,6 @@ public abstract class BiomeHelper {
 	public static Biome.BiomeBuilder darkForestCenter(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
 		return darkForest(featureGetter, carverGetter)
 			.setAttribute(EnvironmentAttributes.FOG_COLOR, 0x493000)
-			.setAttribute(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)
 			.specialEffects(defaultAmbientBuilder()
 				.grassColorOverride(0x667540)
 				.foliageColorOverride(0xF9821E)
