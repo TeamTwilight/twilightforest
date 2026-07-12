@@ -14,12 +14,7 @@ public class TFBlockEntities {
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TwilightForestMod.ID);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AntibuilderBlockEntity>> ANTIBUILDER = BLOCK_ENTITIES.register("antibuilder", () ->
-		new BlockEntityType<>(
-			AntibuilderBlockEntity::new,
-			TFBlocks.ANTIBUILDER.get()
-		)
-	);
-
+		new BlockEntityType<>(AntibuilderBlockEntity::new, TFBlocks.ANTIBUILDER.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CinderFurnaceBlockEntity>> CINDER_FURNACE = BLOCK_ENTITIES.register("cinder_furnace", () ->
 		new BlockEntityType<>(CinderFurnaceBlockEntity::new, TFBlocks.CINDER_FURNACE.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CarminiteReactorBlockEntity>> CARMINITE_REACTOR = BLOCK_ENTITIES.register("carminite_reactor", () ->

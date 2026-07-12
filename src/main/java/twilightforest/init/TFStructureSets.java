@@ -60,7 +60,8 @@ public class TFStructureSets {
 			new StructureSet.StructureSelectionEntry(structures.getOrThrow(TFStructures.SWAMP_HOLLOW_TREE), 1)
 		);
 
-		Holder.Reference<StructureSet> fallenTrunk = context.register(FALLEN_TRUNK, new StructureSet(structures.getOrThrow(TFStructures.FALLEN_TRUNK), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.8F, 1275623845, Optional.of(new StructurePlacement.ExclusionZone(structureSets.getOrThrow(HOLLOW_TREE), 1)), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));Holder.Reference<StructureSet> hollowTree = context.register(HOLLOW_TREE, new StructureSet(hollowTrees, new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));
+		Holder.Reference<StructureSet> fallenTrunk = context.register(FALLEN_TRUNK, new StructureSet(structures.getOrThrow(TFStructures.FALLEN_TRUNK), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.8F, 1275623845, Optional.of(new StructurePlacement.ExclusionZone(structureSets.getOrThrow(HOLLOW_TREE), 1)), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));
+		Holder.Reference<StructureSet> hollowTree = context.register(HOLLOW_TREE, new StructureSet(hollowTrees, new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));
 
 		Optional<AvoidLandmarkGridPlacement.AvoidAdditionalStructures> avoidTrees = Optional.of(new AvoidLandmarkGridPlacement.AvoidAdditionalStructures(new Object2IntArrayMap<>(Map.of(
 			fallenTrunk, 2,
@@ -68,12 +69,12 @@ public class TFStructureSets {
 		))));
 		context.register(CAMP, new StructureSet(structures.getOrThrow(TFStructures.CAMP), new AvoidLandmarkGridPlacement(18, 14, RandomSpreadType.TRIANGULAR, 701432212, avoidTrees)));
 
-		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new LandmarkGridPlacement(Optional.of(structures.getOrThrow(TFStructures.HEDGE_MAZE).key()))));
-		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new LandmarkGridPlacement(Optional.of(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL).key()))));
-		context.register(HOLLOW_HILL_MEDIUM, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM), new LandmarkGridPlacement(Optional.of(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM).key()))));
-		context.register(HOLLOW_HILL_LARGE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_LARGE), new LandmarkGridPlacement(Optional.of(structures.getOrThrow(TFStructures.HOLLOW_HILL_LARGE).key()))));
-		context.register(NAGA_COURTYARD, new StructureSet(structures.getOrThrow(TFStructures.NAGA_COURTYARD), new LandmarkGridPlacement(Optional.of(structures.getOrThrow(TFStructures.NAGA_COURTYARD).key()))));
-		context.register(LICH_TOWER, new StructureSet(structures.getOrThrow(TFStructures.LICH_TOWER), new LandmarkGridPlacement(Optional.of(structures.getOrThrow(TFStructures.LICH_TOWER).key()))));
+		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new LandmarkGridPlacement(Optional.of(TFStructures.HEDGE_MAZE))));
+		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_SMALL))));
+		context.register(HOLLOW_HILL_MEDIUM, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_MEDIUM))));
+		context.register(HOLLOW_HILL_LARGE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_LARGE), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_LARGE))));
+		context.register(NAGA_COURTYARD, new StructureSet(structures.getOrThrow(TFStructures.NAGA_COURTYARD), new LandmarkGridPlacement(Optional.of(TFStructures.NAGA_COURTYARD))));
+		context.register(LICH_TOWER, new StructureSet(structures.getOrThrow(TFStructures.LICH_TOWER), new LandmarkGridPlacement(Optional.of(TFStructures.LICH_TOWER))));
 
 		context.register(QUEST_GROVE, new StructureSet(structures.getOrThrow(TFStructures.QUEST_GROVE), LandmarkGridPlacement.forceStructureForCenters()));
 		context.register(LABYRINTH, new StructureSet(structures.getOrThrow(TFStructures.LABYRINTH), LandmarkGridPlacement.forceStructureForCenters()));

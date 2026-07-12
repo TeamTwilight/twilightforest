@@ -681,19 +681,15 @@ public class TFBlocks {
 	}
 
 	public static DeferredBlock<OminousCandleBlock> ominousCandle(String name, MapColor mapColor, Block candle) {
-		ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, TwilightForestMod.prefix(name));
-
-		return BLOCKS.registerBlock(name,
-			(properties) -> new OminousCandleBlock(candle, properties),
-			() -> BlockBehaviour.Properties.of()
-				.setId(blockKey)
+		return BLOCKS.register(name, () -> new OminousCandleBlock(candle,
+			BlockBehaviour.Properties.of()
 				.mapColor(mapColor)
 				.noOcclusion()
 				.strength(0.1F)
 				.sound(SoundType.CANDLE)
 				.lightLevel(state -> 2 * state.getValue(OminousCandleBlock.CANDLES))
 				.pushReaction(PushReaction.DESTROY)
-		);
+		));
 	}
 
 	private static BlockBehaviour.Properties logProperties(MapColor color) {
@@ -704,11 +700,9 @@ public class TFBlocks {
 		return BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor((state) -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
 	}
 
-	public static BlockBehaviour.Properties copyAndScaleProperties(BlockBehaviour blockBehaviour, float scale) {
+	public static BlockBehaviour.Properties copyAndScaleProperties(Block blockBehaviour, float scale) {
 		BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(blockBehaviour);
-		float baseDestroyTime = blockBehaviour.defaultDestroyTime();
-		float scaledResistance = baseDestroyTime < 0 ? -1.0F : baseDestroyTime * scale * 5.0F;
-		return properties.destroyTime(blockBehaviour.defaultDestroyTime() * scale).explosionResistance(scaledResistance);
+		return properties.destroyTime(blockBehaviour.defaultDestroyTime() * scale).explosionResistance(blockBehaviour.getExplosionResistance() * scale);
 	}
 
 	private static boolean noSpawning(BlockState pState, BlockGetter pLevel, BlockPos pPos, EntityType<?> pValue) {

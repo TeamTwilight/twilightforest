@@ -176,16 +176,16 @@ public class TFItems {
 
 	public static final DeferredItem<Item> ARCTIC_HELMET = register("arctic_helmet", ArcticArmorItem::new, () -> new Item.Properties()
 		.humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.HELMET)
-		.component(DataComponents.DYED_COLOR, new DyedItemColor(0xFFFFFF)));
+		.component(DataComponents.DYED_COLOR, new DyedItemColor(ArcticArmorItem.DEFAULT_COLOR)));
 	public static final DeferredItem<Item> ARCTIC_CHESTPLATE = register("arctic_chestplate", ArcticArmorItem::new, () -> new Item.Properties()
 		.humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.CHESTPLATE)
-		.component(DataComponents.DYED_COLOR, new DyedItemColor(0xFFFFFF)));
+		.component(DataComponents.DYED_COLOR, new DyedItemColor(ArcticArmorItem.DEFAULT_COLOR)));
 	public static final DeferredItem<Item> ARCTIC_LEGGINGS = register("arctic_leggings", ArcticArmorItem::new, () -> new Item.Properties()
 		.humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.LEGGINGS)
-		.component(DataComponents.DYED_COLOR, new DyedItemColor(0xFFFFFF)));
+		.component(DataComponents.DYED_COLOR, new DyedItemColor(ArcticArmorItem.DEFAULT_COLOR)));
 	public static final DeferredItem<Item> ARCTIC_BOOTS = register("arctic_boots", ArcticArmorItem::new, () -> new Item.Properties()
 		.humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.BOOTS)
-		.component(DataComponents.DYED_COLOR, new DyedItemColor(0xFFFFFF)));
+		.component(DataComponents.DYED_COLOR, new DyedItemColor(ArcticArmorItem.DEFAULT_COLOR)));
 
 	public static final DeferredItem<Item> ALPHA_YETI_FUR = register("alpha_yeti_fur", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> YETI_HELMET = register("yeti_helmet", YetiArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.YETI, ArmorType.HELMET).rarity(Rarity.UNCOMMON));
