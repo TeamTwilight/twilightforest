@@ -700,9 +700,9 @@ public class TFBlocks {
 		return BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor((state) -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
 	}
 
-	public static BlockBehaviour.Properties copyAndScaleProperties(Block blockBehaviour, float scale) {
-		BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(blockBehaviour);
-		return properties.destroyTime(blockBehaviour.defaultDestroyTime() * scale).explosionResistance(blockBehaviour.getExplosionResistance() * scale);
+	public static BlockBehaviour.Properties copyAndScaleProperties(Block block, float scale) {
+		BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(block);
+		return properties.destroyTime(block.defaultDestroyTime() * scale).explosionResistance(block.getExplosionResistance() * scale);
 	}
 
 	private static boolean noSpawning(BlockState pState, BlockGetter pLevel, BlockPos pPos, EntityType<?> pValue) {
