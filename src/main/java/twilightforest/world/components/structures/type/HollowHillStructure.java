@@ -34,13 +34,14 @@ import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
+import twilightforest.world.components.structures.util.ValidatedSpawnLocations;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource {
+public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource, ValidatedSpawnLocations {
 	public static final MapCodec<HollowHillStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
 		.group(
 			// TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
@@ -64,6 +65,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	}
 
 	// "Cuts" the box into a half-dome
+	@Override
 	public boolean canSpawnMob(BlockPos spawnPos, BoundingBox structureStartBox) {
 		float hX = Mth.inverseLerp(spawnPos.getX(), structureStartBox.minX(), structureStartBox.maxX()) * 2 - 1;
 		float hY = Mth.inverseLerp(spawnPos.getY(), structureStartBox.minY(), structureStartBox.maxY());
