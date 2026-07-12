@@ -229,8 +229,11 @@ public class KnightPhantom extends BaseTFBoss {
 					.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
 
 				if (this.lastHurtByPlayer != null) {
-					builder = builder.<Player>withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer.getEntity(level(), Player.class))
-						.withLuck(this.lastHurtByPlayer.getEntity(level(), Player.class).getLuck());
+					Player player = this.lastHurtByPlayer.getEntity(level(), Player.class);
+					if (player != null) {
+						builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
+							.withLuck(player.getLuck());
+					}
 				}
 
 				if (cause.getEntity() != null) {

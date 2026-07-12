@@ -1,8 +1,8 @@
 package twilightforest.entity.boss;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -219,12 +219,11 @@ public class Hydra extends BaseTFBoss {
 			}
 		}
 		compound.putByte("NumHeads", headData);
-		StringBuilder headNames = new StringBuilder();
+		List<String> headNames = new ArrayList<>();
 		for (int i = 0; i < MAX_HEADS; i++) {
-			headNames.append(StringTag.valueOf(this.getEntityData().get(HEAD_NAMES).get(i))).append("|");
+			headNames.add(this.getEntityData().get(HEAD_NAMES).get(i));
 		}
-		headNames.deleteCharAt(headNames.length() - 1);
-		compound.putString("HeadNames", headNames.toString());
+		compound.store("HeadNames", Codec.STRING.listOf(), headNames);
 		super.addAdditionalSaveData(compound);
 	}
 
@@ -232,12 +231,11 @@ public class Hydra extends BaseTFBoss {
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
 		this.activateHeadsOnLoad(compound.getByteOr("NumHeads", (byte) 0));
-		if (!compound.getStringOr("HeadNames", "").isEmpty()) {
+		if (!compound.listOrEmpty("HeadNames", Codec.STRING.listOf()).isEmpty()) {
 			List<String> names = new ArrayList<>();
-			String string = compound.getString("HeadNames").get();
-			String[] list = string.split("\\|");
-			for (int i = 0; i < list.length; i++) {
-				String name = list[i];
+			List<String> list = compound.read("HeadNames", Codec.STRING.listOf()).get();
+			for (int i = 0; i < list.size(); i++) {
+				String name = list.get(i);
 				names.add(name);
 				this.hc[i].headEntity.setCustomName(Component.literal(name));
 			}
@@ -584,10 +582,10 @@ public class Hydra extends BaseTFBoss {
 
 		if (source.getEntity() == this || source.getDirectEntity() == this)
 			return false;
-		this.getParts();
-		for (PartEntity<?> partEntity : this.getParts())
-			if (partEntity == source.getEntity() || partEntity == source.getDirectEntity())
-				return false;
+		if (this.getParts() != null)
+			for (PartEntity<?> partEntity : this.getParts())
+				if (partEntity == source.getEntity() || partEntity == source.getDirectEntity())
+					return false;
 
 		HydraHeadContainer headCon = null;
 

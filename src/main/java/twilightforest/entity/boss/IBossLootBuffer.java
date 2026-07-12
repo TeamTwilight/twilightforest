@@ -53,17 +53,19 @@ public interface IBossLootBuffer {
 
 	static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
 		if (TFConfig.bossDropChests) {
-			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable().get());
-			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
-			boss.fill(boss, params, table);
+			if (boss.getLootTable().isPresent()) {
+				LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable().get());
+				ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
+				boss.fill(boss, params, table);
 
-			//If our loot stack size is bigger than the inventory, drop everything else outside it. Don't want to lose any loot now do we?
-			if (stacks.size() > CONTAINER_SIZE) {
-				for (ItemStack stack : stacks.subList(CONTAINER_SIZE, stacks.size())) {
-					ItemEntity item = new ItemEntity(serverLevel, boss.getX(), boss.getY(), boss.getZ(), stack);
-					item.setExtendedLifetime();
-					item.setNoPickUpDelay();
-					serverLevel.addFreshEntity(item);
+				//If our loot stack size is bigger than the inventory, drop everything else outside it. Don't want to lose any loot now do we?
+				if (stacks.size() > CONTAINER_SIZE) {
+					for (ItemStack stack : stacks.subList(CONTAINER_SIZE, stacks.size())) {
+						ItemEntity item = new ItemEntity(serverLevel, boss.getX(), boss.getY(), boss.getZ(), stack);
+						item.setExtendedLifetime();
+						item.setNoPickUpDelay();
+						serverLevel.addFreshEntity(item);
+					}
 				}
 			}
 		}
