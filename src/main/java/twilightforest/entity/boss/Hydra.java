@@ -219,11 +219,7 @@ public class Hydra extends BaseTFBoss {
 			}
 		}
 		compound.putByte("NumHeads", headData);
-		List<String> headNames = new ArrayList<>();
-		for (int i = 0; i < MAX_HEADS; i++) {
-			headNames.add(this.getEntityData().get(HEAD_NAMES).get(i));
-		}
-		compound.store("HeadNames", Codec.STRING.listOf(), headNames);
+		compound.store("HeadNames", Codec.STRING.listOf(), this.getEntityData().get(HEAD_NAMES));
 		super.addAdditionalSaveData(compound);
 	}
 
@@ -231,12 +227,10 @@ public class Hydra extends BaseTFBoss {
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
 		this.activateHeadsOnLoad(compound.getByteOr("NumHeads", (byte) 0));
-		if (!compound.listOrEmpty("HeadNames", Codec.STRING.listOf()).isEmpty()) {
-			List<String> names = new ArrayList<>();
-			List<String> list = compound.read("HeadNames", Codec.STRING.listOf()).get();
-			for (int i = 0; i < list.size(); i++) {
-				String name = list.get(i);
-				names.add(name);
+		List<String> names = compound.read("HeadNames", Codec.STRING.listOf()).orElse(Collections.emptyList());
+		if (!names.isEmpty()) {
+			for (int i = 0; i < names.size(); i++) {
+				String name = names.get(i);
 				this.hc[i].headEntity.setCustomName(Component.literal(name));
 			}
 			this.getEntityData().set(HEAD_NAMES, names);

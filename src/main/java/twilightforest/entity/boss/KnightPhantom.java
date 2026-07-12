@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -303,29 +305,36 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
-		if (!this.isBlocking()) {
-			return super.hurtServer(server, source, amount);
-		}
-
-		Entity attacker = source.getDirectEntity();
-		if (attacker == null) {
-			attacker = source.getEntity();
-		}
-
-		if (attacker != null) {
-			Vec3 attackerPos = attacker.position();
-			Vec3 mobLook = this.getViewVector(1.0F);
-			Vec3 directionToAttacker = attackerPos.subtract(this.position()).normalize();
-
-			double dotProduct = mobLook.x() * directionToAttacker.x() + mobLook.z() * directionToAttacker.z();
-
-			if (dotProduct > 0.0D) {
-				this.playSound(SoundEvents.SHIELD_BLOCK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
-				return false;
-			}
+		if (this.isDamageSourceBlocked(source)) {
+			this.playSound(SoundEvents.SHIELD_BLOCK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+			return false;
 		}
 
 		return super.hurtServer(server, source, amount);
+	}
+
+	// [VanillaCopy] original method from LivingEntity was deleted
+	private boolean isDamageSourceBlocked(DamageSource damageSource) {
+		Entity entity = damageSource.getDirectEntity();
+		boolean flag = false;
+		if (entity instanceof AbstractArrow abstractarrow) {
+			if (abstractarrow.getPierceLevel() > 0) {
+				flag = true;
+			}
+		}
+
+		ItemStack itemstack = this.getItemBlockingWith();
+		if (!damageSource.is(DamageTypeTags.BYPASSES_SHIELD) && itemstack != null && !flag) {
+			Vec3 vec3 = damageSource.getSourcePosition();
+			if (vec3 != null) {
+				Vec3 vec31 = this.calculateViewVector(0.0F, this.getYHeadRot());
+				Vec3 vec32 = vec3.vectorTo(this.position());
+				vec32 = (new Vec3(vec32.x, 0.0F, vec32.z)).normalize();
+				return vec32.dot(vec31) < (double) 0.0F;
+			}
+		}
+
+		return false;
 	}
 
 	@Override
