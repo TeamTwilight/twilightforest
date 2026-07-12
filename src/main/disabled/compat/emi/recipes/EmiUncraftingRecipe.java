@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.emi.TFEmiCategories;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.item.recipe.UncraftingRecipe;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class EmiUncraftingRecipe<T extends CraftingRecipe> extends TFEmiRecipe<T
 		this.displayedOutputs = new ArrayList<>();
 		List<Ingredient> outputs = new ArrayList<>(this.getRecipe().value().getIngredients()); //Collect each ingredient
 		outputs.replaceAll(ingredient -> Ingredient.of(Arrays.stream(ingredient.getItems())
-			.filter(o -> !o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS))
+			.filter(o -> !o.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS))
 			.filter(o -> o.getCraftingRemainingItem().isEmpty())));
 
 		for (int index = 0, offset = 0; index - offset < outputs.size() && index < 9; index++) {

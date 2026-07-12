@@ -4,9 +4,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
@@ -39,13 +37,8 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return ingredients.size() <= width * height;
-	}
-
-	@Override
-	public NonNullList<Ingredient> getIngredients() {
-		return ingredients;
+	public PlacementInfo placementInfo() {
+		return PlacementInfo.create(ingredients);
 	}
 
 	@Override
@@ -64,14 +57,14 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return TFRecipes.MODIFIER_SHAPELESS_RECIPE_SERIALIZER.get();
 	}
 
 	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapelessRecipe> {
 		public Serializer() {
 			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				NonNullList.codecOf(Ingredient.CODEC_NONEMPTY)
+				NonNullList.codecOf(Ingredient.CODEC)
 					.fieldOf("ingredients")
 					.forGetter(recipe -> recipe.ingredients),
 				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)

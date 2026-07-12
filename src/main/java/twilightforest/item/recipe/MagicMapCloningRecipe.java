@@ -1,19 +1,27 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.HolderLookup;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFRecipes;
 
 public class MagicMapCloningRecipe extends CustomRecipe {
+	public static final MapCodec<MagicMapCloningRecipe> MAP_CODEC =
+		MapCodec.unit(MagicMapCloningRecipe::new);
 
-	public MagicMapCloningRecipe(CraftingBookCategory category) {
-		super(category);
+	public static final StreamCodec<RegistryFriendlyByteBuf, MagicMapCloningRecipe> STREAM_CODEC =
+		StreamCodec.unit(new MagicMapCloningRecipe());
+
+	public static final RecipeSerializer<MagicMapCloningRecipe> SERIALIZER =
+		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
+	public MagicMapCloningRecipe() {
+		super();
 	}
 
 	@Override
@@ -44,12 +52,12 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
+	public ItemStack assemble(CraftingInput craftingInput) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
-		for (int j = 0; j < input.size(); j++) {
-			ItemStack itemstack1 = input.getItem(j);
+		for (int j = 0; j < craftingInput.size(); j++) {
+			ItemStack itemstack1 = craftingInput.getItem(j);
 			if (!itemstack1.isEmpty()) {
 				if (itemstack1.is(TFItems.FILLED_MAGIC_MAP.get())) {
 					if (!itemstack.isEmpty()) {
@@ -77,12 +85,7 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int x, int y) {
-		return x >= 3 && y >= 3;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.MAGIC_MAP_CLONING_RECIPE.get();
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+		return SERIALIZER;
 	}
 }

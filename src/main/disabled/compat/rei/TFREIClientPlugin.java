@@ -42,14 +42,14 @@ import twilightforest.compat.rei.fillers.MoonwormQueenRepairFiller;
 import twilightforest.compat.rei.fillers.REITravellersGearModifierRecipeFiller;
 import twilightforest.compat.rei.filter.HideItemFilterType;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.DryingRecipe;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.UncraftingRecipe;
-import twilightforest.util.entities.EntityRenderingUtil;
+import twilightforest.client.EntityRenderingUtil;
 
 import java.util.Map;
 import java.util.Optional;
@@ -77,7 +77,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		registry.addWorkstations(REICrumbleHornCategory.CRUMBLE_HORN, EntryStacks.of(TFItems.CRUMBLE_HORN));
 		registry.addWorkstations(REITransformationPowderCategory.TRANSFORMATION, EntryStacks.of(TFItems.TRANSFORMATION_POWDER));
 		registry.addWorkstations(REIOminousFireCategory.OMINOUS_FIRE, EntryStacks.of(TFItems.EXANIMATE_ESSENCE));
-		registry.addWorkstations(REIDryingCategory.DRYING, EntryIngredients.ofItemTag(ItemTagGenerator.DRYING_RACKS));
+		registry.addWorkstations(REIDryingCategory.DRYING, EntryIngredients.ofItemTag(TFItemTags.DRYING_RACKS));
 
 		if (!TFConfig.disableEntireTable) {
 			registry.add(new REIUncraftingCategory());
@@ -97,7 +97,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 			if (!TFConfig.disableUncraftingOnly) {
 				registry.registerRecipeFiller(CraftingRecipe.class, RecipeType.CRAFTING, recipe -> {
 					if (recipe.value().getResultItem(registryAccess).isEmpty() ||
-						recipe.value().getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
+						recipe.value().getResultItem(registryAccess).is(TFItemTags.BANNED_UNCRAFTABLES) ||
 						TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) ||
 						TFConfig.flipUncraftingModIdList != TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
 						return null;
