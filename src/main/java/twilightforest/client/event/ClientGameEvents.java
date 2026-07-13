@@ -46,9 +46,7 @@ import tamaized.beanification.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
-import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.client.OptifineWarningScreen;
-import twilightforest.client.TFShaders;
+import twilightforest.client.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.compat.curios.CuriosCompat;
@@ -59,7 +57,6 @@ import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.tags.TFItemTags;
 import twilightforest.util.HolderMatcher;
-import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -141,7 +138,7 @@ public class ClientGameEvents {
 	}
 
 	private void clearEntityRenderUtilMap(ScreenEvent.Closing event) {
-		if (!EntityRenderingUtil.ENTITY_MAP.isEmpty()) EntityRenderingUtil.ENTITY_MAP.clear();
+		EntityCache.clearCache();
 	}
 
 	private void setMusicInDimension(SelectMusicEvent event) {

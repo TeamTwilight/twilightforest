@@ -151,27 +151,25 @@ public class CharmEvents {
 		}
 
 		//keep all items in the kept_on_death tag. This allows modpacks to support other items to keep on death
-		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-			ItemStack stack = player.getInventory().getItem(i);
+		for (int i = 0; i < player.getInventory().items.size(); i++) {
+			ItemStack stack = player.getInventory().items.get(i);
 			if (stack.is(TFItemTags.KEPT_ON_DEATH)) {
-				keepInventory.setItem(i, stack.copy());
-				player.getInventory().setItem(i, ItemStack.EMPTY);
+				keepInventory.items.set(i, stack.copy());
+				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
 		}
 
-		for (int slot = 36; slot <= 39; slot++) {
-			ItemStack armor = player.getInventory().getItem(slot);
+		for (int i = 0; i < player.getInventory().armor.size(); i++) {
+			ItemStack armor = player.getInventory().armor.get(i);
 			if (armor.is(TFItemTags.KEPT_ON_DEATH)) {
-				int localIndex = slot - 36;
-				keepInventory.setItem(localIndex, armor.copy());
-				player.getInventory().setItem(slot, ItemStack.EMPTY);
+				keepInventory.armor.set(i, armor.copy());
+				player.getInventory().armor.set(i, ItemStack.EMPTY);
 			}
 		}
 
-		ItemStack offhand = player.getInventory().getItem(40);
-		if (offhand.is(TFItemTags.KEPT_ON_DEATH)) {
-			keepInventory.setItem(40, offhand.copy());
-			player.getInventory().setItem(40, ItemStack.EMPTY);
+		if (player.getInventory().offhand.getFirst().is(TFItemTags.KEPT_ON_DEATH)) {
+			keepInventory.offhand.set(0, player.getInventory().offhand.getFirst().copy());
+			player.getInventory().offhand.set(0, ItemStack.EMPTY);
 		}
 
 		//take our fake inventory and save it to the persistent player data.

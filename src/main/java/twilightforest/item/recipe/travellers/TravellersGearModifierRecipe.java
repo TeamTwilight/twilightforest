@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+// TODO: Port to 26.1.X
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	protected final ResourceKey<TravellersModifier> travellersModifierKey;
 	public TravellersGearModifierRecipe(ResourceKey<TravellersModifier> travellersModifier) {
@@ -46,13 +47,13 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
-		ItemStack travellerArmorStack = getModifiableArmor(input);
+	public ItemStack assemble(CraftingInput craftingInput) {
+		ItemStack travellerArmorStack = getModifiableArmor(craftingInput);
 		if (travellerArmorStack == null)
 			return ItemStack.EMPTY;  // Should never happen
 
 		ItemStack stack = travellerArmorStack.copy();
-		return applyModifier(registries, stack, input.items().stream().map(Ingredient::of).toList());
+		return applyModifier(registries, stack, craftingInput.items().stream().map(Ingredient::of).toList());
 	}
 
 	public ItemStack applyModifier(HolderLookup.Provider registries, ItemStack stack, List<Ingredient> inputs) {
@@ -84,7 +85,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	}
 
 	public Identifier getId() {
-		return travellersModifierKey.location()
+		return travellersModifierKey.identifier()
 			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
 			.withPrefix("add_modifier_to_travellers_gear/")
 			.withSuffix("_modifier");

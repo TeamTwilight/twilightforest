@@ -8,8 +8,11 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import tamaized.beanification.Component;
 import twilightforest.datagen.data.*;
 import twilightforest.datagen.data.custom.QuestGenerator;
-import twilightforest.datagen.data.custom.StructureTemplateDefinitionGenerator;
 import twilightforest.datagen.data.custom.stalactites.StalactiteGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.CampStructureDefinitionGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.FinalCastleStructureDefinitionGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.LichTowerStructureDefinitionGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.NagaCourtyardStructureDefinitionGenerator;
 import twilightforest.datagen.data.loot.LootGenerator;
 import twilightforest.datagen.data.recipes.CraftingGeneratorRunner;
 import twilightforest.datagen.data.recipes.RecipePriorityGenerator;
@@ -51,7 +54,10 @@ public class DataGenerator {
 		generator.addProvider(true, new QuestGenerator(output));
 		generator.addProvider(true, new RecipePriorityGenerator(output, lookupProvider));
 		generator.addProvider(true, new StalactiteGenerator(output));
-		generator.addProvider(true, new StructureTemplateDefinitionGenerator(output, lookupProvider));
+		generator.addProvider(true, new CampStructureDefinitionGenerator(output, lookupProvider));
+		generator.addProvider(true, new FinalCastleStructureDefinitionGenerator(output, lookupProvider));
+		generator.addProvider(true, new LichTowerStructureDefinitionGenerator(output, lookupProvider));
+		generator.addProvider(true, new NagaCourtyardStructureDefinitionGenerator(output, lookupProvider));
 		generator.addProvider(true, new TFAdvancementProvider(output, lookupProvider));
 		generator.addProvider(true, new TFStructureUpdater("structures", output, event.getResourceManager(PackType.SERVER_DATA)));
 	}

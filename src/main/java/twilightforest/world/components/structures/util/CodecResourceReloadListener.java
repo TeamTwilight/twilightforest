@@ -11,6 +11,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -56,10 +57,13 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 			JsonElement jsonElement = entry.getValue();
 			this.deserialize(manager, location, jsonElement);
 		}
+
+        this.afterApply(manager, profiler);
 	}
 
 	protected void deserialize(ResourceManager manager, Identifier location, JsonElement jsonElement) {
 		try {
+			// FIXME If there are empty holders during deserialization then JsonOps.INSTANCE needs to be augmented with RegistryOps
 			Optional<T> checkFile = this.codec.parse(JsonOps.INSTANCE, jsonElement).result();
 			if (checkFile.isPresent()) {
 				this.forLocation(manager, location, checkFile.get());
@@ -73,10 +77,14 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 	protected abstract void forLocation(ResourceManager manager, Identifier location, T element);
 
+	protected void afterApply(ResourceManager manager, ProfilerFiller profiler) {}
+
 	/**
 	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
 	 */
-//	public void registerListener(AddReloadListenerEvent event) {
-//		event.addListener(this);
-//	}
+	public final void registerListener(AddServerReloadListenersEvent event) {
+		event.addListener(TwilightForestMod.prefix(this.getListenerName()), this);
+	}
+
+	public abstract String getListenerName();
 }

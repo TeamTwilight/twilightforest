@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tamaized.beanification.BeanContext;
 import tamaized.beanification.Configurable;
-import twilightforest.compat.CosmeticArmorCompat;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
@@ -94,7 +93,8 @@ public final class TwilightForestMod {
 		TFRemapper.addRegistryAliases();
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
-		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
+		// Uncomment this when Cosmetic Armor Reworked is ready
+//		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {

@@ -47,6 +47,7 @@ import tamaized.beanification.PostConstruct;
 import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -101,7 +102,7 @@ public class TravellersGearEvents {
 		}
 		AbstractArrow.Pickup pickup = arrow.pickup;
 		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED)) {
-			player.addItem(arrow.getPickupItemStackOrigin());
+			InventoryUtil.giveItemToPlayer(player, arrow.getPickupItemStackOrigin());
 			player.getInventory().setChanged();
 		}
 		if (pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
@@ -335,15 +336,12 @@ public class TravellersGearEvents {
 	}
 
 	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
-		if (event.getPlayer() == null)
-			return;
-
 		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
 			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
 		).map(stack -> stack.get(componentType))
 			.ifPresent(component ->
 				itemStreamExtractor.apply(component)
-					.forEach(itemStack -> event.getPlayer().addItem(itemStack))
+					.forEach(itemStack -> InventoryUtil.giveItemToPlayer(event.getPlayer(), itemStack))
 			);
 	}
 

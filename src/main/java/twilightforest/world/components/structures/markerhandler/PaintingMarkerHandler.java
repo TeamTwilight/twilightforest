@@ -7,7 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;

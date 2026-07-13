@@ -10,7 +10,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
@@ -88,19 +87,10 @@ public class TravellersClientEvents {
 		boolean isModifierActive = TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) && agileRangerModifier != null;
 		ItemStack stack = localPlayer.getUseItem();
 		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
-
-		if (isModifierActive && localPlayer.isUsingItem() && !localPlayer.isPassenger() && isLegalItem) {
-			if (!speedAttribute.hasModifier(AGILE_RANGER_ID)) {
-				speedAttribute.addTransientModifier(new AttributeModifier(
-					AGILE_RANGER_ID,
-					agileRangerModifier,
-					AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-				));
-			}
-		} else {
-			if (speedAttribute.hasModifier(AGILE_RANGER_ID)) {
-				speedAttribute.removeModifier(AGILE_RANGER_ID);
-			}
+		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && isLegalItem) {
+			Input input = event.getInput();
+			input.leftImpulse *= agileRangerModifier;
+			input.forwardImpulse *= agileRangerModifier;
 		}
 	}
 
@@ -318,49 +308,35 @@ public class TravellersClientEvents {
 
 	@SuppressWarnings("unchecked")
 	private void renderGlovesInFirstPerson(RenderArmEvent event) {
-		if (!TFConfig.firstPersonGloveOverlay) {
+        if (!TFConfig.firstPersonGloveOverlay)
 			return;
-		}
 
-		AbstractClientPlayer player = event.getPlayer();
-		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+        AbstractClientPlayer player = event.getPlayer();
+        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+        if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
+            return;
 
-		if (chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) && !chestStack.has(TFDataComponents.EMPERORS_CLOTH)) {
-			EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+		Minecraft minecraft = Minecraft.getInstance();
+		EntityRenderDispatcher renderDispatcher = minecraft.getEntityRenderDispatcher();
 
-			if (entityRenderDispatcher.getRenderer(player) instanceof AvatarRenderer avatarRenderer) {
-				var playerModel = avatarRenderer.getModel();
+		if (!(renderDispatcher.getRenderer(player) instanceof AvatarRenderer avatarRenderer))
+            return;
 
-				Model<HumanoidRenderState> armorModel = IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get())
-					.getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, playerModel);
+		if (!(IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, avatarRenderer.getModel()) instanceof HumanoidModel model))
+			return;
 
-				if (armorModel instanceof HumanoidModel<HumanoidRenderState> humanoidArmorModel) {
-					ModelPart armPart = humanoidArmorModel.getArm(event.getArm());
+		if (!(avatarRenderer.createRenderState(player, minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false)) instanceof AvatarRenderState renderState))
+			return;
 
-					var dummyState = new HumanoidRenderState();
-					humanoidArmorModel.setupAnim(dummyState);
+		renderState.attackTime = 0.0F;
+		renderState.isCrouching = false;
+		renderState.swimAmount = 0.0F;
+        model.setupAnim(renderState);
 
-					armPart.xRot = 0.0F;
+		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
+        armPart.xRot = 0.0F;
 
-					Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
-
-					SubmitNodeCollector collector = event.getSubmitNodeCollector();
-
-					collector.submitModelPart(
-						armPart,
-						event.getPoseStack(),
-						RenderTypes.armorCutoutNoCull(gloveLocation),
-						event.getPackedLight(),
-						OverlayTexture.NO_OVERLAY,
-						null,
-						false, // sheeted
-						false, // hasFoil
-						-1,    // tintedColor
-						null,  // crumblingOverlay
-						0      // index/layer
-					);
-				}
-			}
-		}
-	}
+        Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
+    }
 }

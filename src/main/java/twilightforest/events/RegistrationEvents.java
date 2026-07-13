@@ -29,6 +29,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.IBlockCapabilityProvider;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -41,7 +42,6 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStackResourceHandler;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Autowired;
@@ -49,6 +49,8 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.ChiseledCanopyShelfBlock;
+import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
@@ -70,6 +72,7 @@ import twilightforest.util.Restriction;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
+import twilightforest.world.components.speleothem.StalactiteReloadListener;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
@@ -105,10 +108,10 @@ public class RegistrationEvents {
 		bus.addListener(ConfigSetup::reloadConfigs);
 
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-//		NeoForge.EVENT_BUS.addListener(AddClientReloadListenersEvent.class, event -> event.addListener(new QuestReloadListener()));
-//		NeoForge.EVENT_BUS.addListener(AddClientReloadListenersEvent.class, event -> event.addListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
-//		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
-//		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("quest"), new QuestReloadListener()));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("travellers_cache"), TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
+		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
+		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 	}
 
@@ -138,18 +141,8 @@ public class RegistrationEvents {
 		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.MASON_JAR.get(), (masonJarBlock, side) ->
 			side == Direction.UP ? masonJarBlock.getItemHandler() : null);
 
-		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.DRYING_RACK.get(),  (entity, _) -> new ItemStackResourceHandler() {
-			@Override
-			protected ItemStack getStack() {
-				return entity.getTheItem();
-			}
-
-			@Override
-			protected void setStack(ItemStack stack) {
-
-			}
-		});
-		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), (entity, side) -> VanillaContainerWrapper.of(entity));
+		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.DRYING_RACK.get(), (entity, side) -> new DryingRackBlockEntity.DryingRackHandler(entity));
+		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), (entity, side) -> entity.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) ? null : VanillaContainerWrapper.of(entity));
 	}
 
 	public void addBlockEntityTypes(BlockEntityTypeAddBlocksEvent event) {

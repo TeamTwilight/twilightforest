@@ -76,4 +76,9 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 			}
 		}
 	}
+
+	@Override
+	public String getListenerName() {
+		return "stalactites";
+	}
 }
