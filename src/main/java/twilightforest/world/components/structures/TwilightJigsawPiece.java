@@ -2,6 +2,7 @@ package twilightforest.world.components.structures;
 
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.RegistryOps;
@@ -31,6 +32,7 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
 import twilightforest.world.components.structures.util.*;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -66,6 +68,12 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
+	}
+
+	@Nullable
+	@Deprecated // FIXME Callers should call structureTemplateDefinitions.initializeTemplateFromPool directly
+	public static TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos.MutableBlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
+		return structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, parentOrientation, selectName, rand, genDepth, structureManager);
 	}
 
 	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList serializedProcessors) {

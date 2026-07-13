@@ -78,7 +78,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 		Direction direction = Rotation.getRandom(random).rotate(Direction.SOUTH);
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
-		TwilightJigsawPiece bossSpawner = structureTemplateDefinitions.initializeTemplateFromPool(CENTER_POOL, pos.mutable(), oriented, "twilightforest:center", random, this.genDepth + 1, this.structureManager);
+		TwilightJigsawPiece bossSpawner = TwilightJigsawPiece.initializeTemplateFromPool(CENTER_POOL, pos.mutable(), oriented, "twilightforest:center", random, this.genDepth + 1, this.structureManager);
 		if (bossSpawner != null) {
 			list.addPiece(bossSpawner);
 			// bossSpawner.addChildren(parent, list, random);
