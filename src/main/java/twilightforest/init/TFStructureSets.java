@@ -59,7 +59,6 @@ public class TFStructureSets {
 			new StructureSet.StructureSelectionEntry(structures.getOrThrow(TFStructures.HOLLOW_TREE), 1),
 			new StructureSet.StructureSelectionEntry(structures.getOrThrow(TFStructures.SWAMP_HOLLOW_TREE), 1)
 		);
-
 		Holder.Reference<StructureSet> fallenTrunk = context.register(FALLEN_TRUNK, new StructureSet(structures.getOrThrow(TFStructures.FALLEN_TRUNK), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.8F, 1275623845, Optional.of(new StructurePlacement.ExclusionZone(structureSets.getOrThrow(HOLLOW_TREE), 1)), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));
 		Holder.Reference<StructureSet> hollowTree = context.register(HOLLOW_TREE, new StructureSet(hollowTrees, new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));
 

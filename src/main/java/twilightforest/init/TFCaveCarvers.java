@@ -29,7 +29,6 @@ import java.util.List;
 
 //this was all put into 1 class because it seems like a waste to have it in 2
 public class TFCaveCarvers {
-	
 	public static final DeferredRegister<WorldCarver<?>> CARVER_TYPES = DeferredRegister.create(Registries.CARVER, TwilightForestMod.ID);
 
 	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> TF_CAVES = CARVER_TYPES.register("tf_caves", () -> new TFCavesCarver(
