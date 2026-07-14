@@ -1,28 +1,61 @@
 package twilightforest.item.recipe.travellers;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
-import twilightforest.init.TFRecipes;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRecipe {
+	public static final MapCodec<TravellersGearModifierShapedRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
+		instance.group(
+			ShapedRecipePattern.MAP_CODEC
+				.fieldOf("pattern")
+				.forGetter(recipe -> recipe.pattern),
+			RegistryFixedCodec.create(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
+				.fieldOf("modifier_key")
+				.forGetter(TravellersGearModifierRecipe::getTravellersModifierHolder),
+			Codec.BOOL
+				.fieldOf("is_rotated")
+				.forGetter(recipe -> recipe.isRotated)
+		).apply(instance, TravellersGearModifierShapedRecipe::new)
+	);
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, TravellersGearModifierShapedRecipe> STREAM_CODEC =
+		StreamCodec.composite(
+			ShapedRecipePattern.STREAM_CODEC,
+			recipe -> recipe.pattern,
+
+			ByteBufCodecs.holderRegistry(TFRegistries.Keys.TRAVELLERS_MODIFIERS),
+			TravellersGearModifierRecipe::getTravellersModifierHolder,
+
+			ByteBufCodecs.BOOL,
+			recipe -> recipe.isRotated,
+
+			TravellersGearModifierShapedRecipe::new
+		);
+
+	public static final RecipeSerializer<TravellersGearModifierShapedRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
 	protected final ShapedRecipePattern pattern;
 	protected final boolean isRotated;
 
-	public TravellersGearModifierShapedRecipe(ShapedRecipePattern pattern, ResourceKey<TravellersModifier> travellersModifier, boolean isRotated) {
-		super(travellersModifier);
+	public TravellersGearModifierShapedRecipe(ShapedRecipePattern pattern, Holder<TravellersModifier> travellersModifierHolder, boolean isRotated) {
+		super(travellersModifierHolder);
 		this.pattern = pattern;
 		this.isRotated = isRotated;
 	}
 
 	@Override
-	public boolean matches(@NotNull CraftingInput input, @NotNull Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		if (!super.matches(input, level))
 			return false;
 		return pattern.matches(input);
@@ -55,22 +88,6 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 
 	@Override
 	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
-		return TFRecipes.MODIFIER_SHAPED_RECIPE_SERIALIZER.get();
-	}
-
-	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapedRecipe> {
-		public Serializer() {
-			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				ShapedRecipePattern.MAP_CODEC
-					.fieldOf("pattern")
-					.forGetter(recipe -> recipe.pattern),
-				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
-					.fieldOf("modifier_key")
-					.forGetter(recipe -> recipe.travellersModifierKey),
-				Codec.BOOL
-					.fieldOf("is_rotated")
-					.forGetter(recipe -> recipe.isRotated)
-			).apply(instance, TravellersGearModifierShapedRecipe::new)));
-		}
+		return SERIALIZER;
 	}
 }

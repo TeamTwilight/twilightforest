@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.level.Level;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -105,19 +105,19 @@ public class TravellersModifiersManager {
 		return List.of(Component.translatable(modifier.identifier().toLanguageKey("travellers_gear.modifier", "description"), args));
 	}
 
-	public static boolean isModifierActive(ItemStack stack, Holder.Reference<TravellersModifier> modifierHolder, boolean spectator) {
+	public static boolean isModifierActive(ItemStack stack, Holder<TravellersModifier> modifierHolder, boolean spectator) {
 		return modifierHolder.value().isActive(stack, modifierHolder, spectator);
 	}
 
-	public static boolean isModifierActive(Entity entity, ItemStack stack, Holder.Reference<TravellersModifier> modifierHolder) {
+	public static boolean isModifierActive(Entity entity, ItemStack stack, Holder<TravellersModifier> modifierHolder) {
 		return isModifierActive(stack, modifierHolder, entity.isSpectator());
 	}
 
-	public static boolean isModifierActive(Entity entity, Holder.Reference<TravellersModifier> modifierHolder) {
+	public static boolean isModifierActive(Entity entity, Holder<TravellersModifier> modifierHolder) {
 		return entity instanceof LivingEntity livingEntity && isModifierActive(livingEntity, modifierHolder);
 	}
 
-	public static boolean isModifierActive(LivingEntity livingEntity, Holder.Reference<TravellersModifier> modifierHolder) {
+	public static boolean isModifierActive(LivingEntity livingEntity, Holder<TravellersModifier> modifierHolder) {
 		ItemStack equippedStack = getStackForGroup(livingEntity, modifierHolder.value().group());
 
 		return !equippedStack.isEmpty()
@@ -128,26 +128,26 @@ public class TravellersModifiersManager {
 		);
 	}
 
-	public static boolean hasTravellersModifier(ItemStack stack, Holder.Reference<TravellersModifier> modifierHolder) {
+	public static boolean hasTravellersModifier(ItemStack stack, Holder<TravellersModifier> modifierHolder) {
 		return modifierHolder.value().hasModifier(stack);
 	}
 
-	public static boolean addModifier(ItemStack stack, Holder.Reference<TravellersModifier> modifierHolder) {
+	public static boolean addModifier(ItemStack stack, Holder<TravellersModifier> modifierHolder) {
 		if (!(modifierHolder.value() instanceof InsertableTravellersModifier insertableTravellersModifier))
 			return false;
 		return insertableTravellersModifier.addModifier(stack);
 	}
 
-	public static boolean transferModifier(ItemStack stack, List<Ingredient> ingredients, Holder.Reference<TravellersModifier> modifierHolder) {
+	public static boolean transferModifier(ItemStack stack, CraftingInput input, Holder<TravellersModifier> modifierHolder) {
 		if (!(modifierHolder.value() instanceof TransferableTravellersModifier transferableTravellersModifier))
 			return false;
-		return transferableTravellersModifier.transfer(stack, ingredients);
+		return transferableTravellersModifier.transfer(stack, input);
 	}
 
-	public static int getModifierDataComponentProviders(List<Ingredient> ingredients, Holder.Reference<TravellersModifier> modifierHolder) {
+	public static int getModifierDataComponentProviders(CraftingInput input, Holder<TravellersModifier> modifierHolder) {
 		if (!(modifierHolder.value() instanceof TransferableComponentModifier transferableComponentModifier))
 			return 0;
-		return transferableComponentModifier.findDataComponentProviders(ingredients).size();
+		return transferableComponentModifier.findDataComponentProviders(input).size();
 	}
 
 	public static MutableComponent getModifierTooltipComponent(Holder.Reference<TravellersModifier> modifier) {

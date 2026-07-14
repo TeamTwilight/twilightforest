@@ -35,8 +35,8 @@ public interface TravellersModifier {
 		return "travellers_gear.modifier";
 	}
 
-	default boolean isActive(ItemStack stack, Holder.Reference<TravellersModifier> modifierHolder, boolean spectator) {
-		return this.hasModifier(stack) && !spectator && (!TravellersArmorItem.isTravellersArmorAndBroken(stack) || TravellersModifiersManager.ALWAYS_ACTIVE.contains(modifierHolder.getKey()));
+	default boolean isActive(ItemStack stack, Holder<TravellersModifier> modifierHolder, boolean spectator) {
+		return this.hasModifier(stack) && !spectator && (!TravellersArmorItem.isTravellersArmorAndBroken(stack) || TravellersModifiersManager.ALWAYS_ACTIVE.contains(modifierHolder.unwrapKey().orElseThrow()));
 	}
 
 	static DataResult<EquipmentSlotGroup> validateEquipment(EquipmentSlotGroup group) {
