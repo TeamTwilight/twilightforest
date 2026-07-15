@@ -36,7 +36,7 @@ public interface TravellersModifier {
 	}
 
 	default boolean isActive(ItemStack stack, Holder<TravellersModifier> modifierHolder, boolean spectator) {
-		return this.hasModifier(stack) && !spectator && (!TravellersArmorItem.isTravellersArmorAndBroken(stack) || TravellersModifiersManager.ALWAYS_ACTIVE.contains(modifierHolder.unwrapKey().orElseThrow()));
+		return this.hasModifier(stack) && !spectator && (!TravellersArmorItem.isTravellersArmorAndBroken(stack) || TravellersModifiersManager.ALWAYS_ACTIVE.contains(TravellersModifiersManager.getKeyOrThrow(modifierHolder)));
 	}
 
 	static DataResult<EquipmentSlotGroup> validateEquipment(EquipmentSlotGroup group) {
