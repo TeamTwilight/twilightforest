@@ -34,27 +34,19 @@ public class UncraftingResultSlot extends ResultSlot {
 
 	@Override
 	public void onTake(Player player, ItemStack stack) {
+		if (!(player.level().recipeAccess() instanceof RecipeManager recipeManager)) return;
+
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 
 		//clear the temp map, just in case
 		this.tempRemainderMap.clear();
 
-		var currentServer = player.level().getServer();
-		if (currentServer == null) return;
-		RecipeManager recipeManager = currentServer.getRecipeManager();
-
-		CraftingInput inputForCheck = this.assemblyMatrix.asCraftInput();
-
-		for (RecipeHolder<CraftingRecipe> recipe : recipeManager.recipeMap().byType(RecipeType.CRAFTING)) {
-			try {
-				ItemStack resultStack = recipe.value().assemble(inputForCheck);
-
-				if (ItemStack.isSameItemSameComponents(resultStack, stack)) {
-					combined = false;
-					break;
-				}
-			} catch (IndexOutOfBoundsException | IllegalArgumentException _) {}
+		for (RecipeHolder<CraftingRecipe> recipe : recipeManager.recipeMap().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix.asCraftInput(), this.player.level()).toList()) {
+			if (ItemStack.isSameItemSameComponents(recipe.value().assemble(this.assemblyMatrix.asCraftInput()), stack)) {
+				combined = false;
+				break;
+			}
 		}
 
 		if (combined) {
@@ -85,14 +77,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		int i = positioned.left();
 		int j = positioned.top();
 		CommonHooks.setCraftingPlayer(player);
-		NonNullList<ItemStack> remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
-		var matchingRecipes = recipeManager.recipeMap().getRecipesFor(RecipeType.CRAFTING, input, player.level()).toList();
-
-		if (!matchingRecipes.isEmpty()) {
-			RecipeHolder<CraftingRecipe> recipeHolder = matchingRecipes.getFirst();
-			remainingItems = recipeHolder.value().getRemainingItems(input);
-		}
-
+		NonNullList<ItemStack> remainingItems = recipeManager.getRecipeFor(RecipeType.CRAFTING, input, player.level()).get().value().getRemainingItems(input);
 		CommonHooks.setCraftingPlayer(null);
 
 		for (int k = 0; k < input.height(); k++) {
@@ -108,8 +93,8 @@ public class UncraftingResultSlot extends ResultSlot {
 				if (!remainingStack.isEmpty()) {
 					if (currentStack.isEmpty()) {
 						this.assemblyMatrix.setItem(index, remainingStack);
-					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack)) {
-						InventoryUtil.giveItemToPlayer(this.player, remainingStack);
+					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
+						this.player.drop(remainingStack, false);
 					}
 				}
 			}
