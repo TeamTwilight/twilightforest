@@ -150,7 +150,7 @@ public class TravellersModifiersManager {
 		return transferableComponentModifier.findDataComponentProviders(input).size();
 	}
 
-	public static MutableComponent getModifierTooltipComponent(Holder.Reference<TravellersModifier> modifier) {
+	public static MutableComponent getModifierTooltipComponent(Holder<TravellersModifier> modifier) {
 		return TooltipStringInterpolator.render(modifier.getKey().identifier().toLanguageKey(modifier.value().getPrefix()));
 	}
 
