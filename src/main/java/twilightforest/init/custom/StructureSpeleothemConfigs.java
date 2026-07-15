@@ -6,6 +6,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFStructures;
 import twilightforest.util.iterators.RectangleLatticeIterator;
@@ -38,10 +39,12 @@ public class StructureSpeleothemConfigs {
 		context.register(configKey, StructureSpeleothemConfig.fromLocation(latticeConfig, configKey.identifier().getPath()));
 	}
 
+	@NotNull
 	public static Holder.Reference<StructureSpeleothemConfig> getConfigHolder(HolderLookup.Provider registryAccess, String strRL) {
 		return getConfigHolder(registryAccess, makeKey(Identifier.parse(strRL)));
 	}
 
+	@NotNull
 	public static Holder.Reference<StructureSpeleothemConfig> getConfigHolder(HolderLookup.Provider registryAccess, ResourceKey<StructureSpeleothemConfig> resourceKey) {
 		return registryAccess.lookupOrThrow(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).get(resourceKey).get();
 	}
