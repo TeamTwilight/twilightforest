@@ -55,7 +55,7 @@ public class TemplateMarkerHandlers {
 	public static void bootstrap(BootstrapContext<TemplateMarkerHandlerList> context) {
 		BlockPlaceMarkerHandler campfireSeat = new BlockPlaceMarkerHandler(new WeightedStateProvider(WeightedList.<BlockState>builder()
 			.add(TFBlocks.TWILIGHT_OAK_SLAB.value().defaultBlockState(), 1)
-			.add(Blocks.CAVE_AIR.defaultBlockState(), 3)
+			.add(Blocks.AIR.defaultBlockState(), 3)
 			.build()));
 
 		DryingRackMarkerHandler armorRack = new DryingRackMarkerHandler(SimpleStateProvider.simple(TFBlocks.CANOPY_DRYING_RACK.value()), TFLootTables.CAMP_ARMOR_RACK);
@@ -64,8 +64,7 @@ public class TemplateMarkerHandlers {
 
 		PaintingMarkerHandler painting = new PaintingMarkerHandler(PaintingVariantTags.PLACEABLE);
 
-		BlockState potState = Blocks.DECORATED_POT.defaultBlockState();
-		LootMarkerHandler tentPot = new LootMarkerHandler(BlockStateProvider.simple(potState), TFLootTables.CAMP_POT);
+		LootMarkerHandler tentPot = new LootMarkerHandler(BlockStateProvider.simple(Blocks.DECORATED_POT), TFLootTables.CAMP_POT);
 
 		Map<String, Holder<TemplateMarkerHandler>> keyedHandlers = Map.of(
 			"twilight_oak_slab", Holder.direct(campfireSeat),
@@ -78,4 +77,5 @@ public class TemplateMarkerHandlers {
 			new RotationMarkerHandler(Holder.direct(new SwitchMarkerHandler(keyedHandlers)))
 		));
 	}
+
 }
