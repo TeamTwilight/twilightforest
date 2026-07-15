@@ -173,8 +173,8 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	@Override
-	public void move(MoverType moverType, Vec3 delta) {
-		this.setPos(delta.x, delta.y, delta.z);
+	public void snapTo(double x, double y, double z, float yaw, float pitch) {
+		this.setPos(x, y, z);
 	}
 
 	@Override

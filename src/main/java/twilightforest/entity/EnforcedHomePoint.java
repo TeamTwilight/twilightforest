@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
 import twilightforest.init.TFDimension;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface EnforcedHomePoint {
 
@@ -29,23 +29,17 @@ public interface EnforcedHomePoint {
 	}
 
 	default void loadHomePointFromNbt(ValueInput tag) {
-		Optional<GlobalPos> modernPos = tag.read("HomePos", GlobalPos.CODEC);
-
-		if (modernPos.isPresent()) {
-			this.setRestrictionPoint(modernPos.get());
+		//properly load old home points, just assume theyre set in TF
+		if (tag.read("Home", Codec.DOUBLE.listOf()).isPresent()) {
+			List<Double> nbttaglist = tag.read("Home", Codec.DOUBLE.listOf()).get();
+			double hx = nbttaglist.get(0);
+			double hy = nbttaglist.get(1);
+			double hz = nbttaglist.get(2);
+			this.setRestrictionPoint(GlobalPos.of(TFDimension.DIMENSION_KEY, BlockPos.containing(hx, hy, hz)));
 		} else {
-			tag.read("Home", Codec.DOUBLE.listOf()).ifPresent(doubleList -> {
-				if (doubleList.size() >= 3) {
-					double hx = doubleList.get(0);
-					double hy = doubleList.get(1);
-					double hz = doubleList.get(2);
-
-					this.setRestrictionPoint(GlobalPos.of(
-						TFDimension.DIMENSION_KEY,
-						BlockPos.containing(hx, hy, hz)
-					));
-				}
-			});
+			if (tag.read("HomePos", GlobalPos.CODEC).isPresent()) {
+				this.setRestrictionPoint(tag.read("HomePos", GlobalPos.CODEC).get());
+			}
 		}
 	}
 
