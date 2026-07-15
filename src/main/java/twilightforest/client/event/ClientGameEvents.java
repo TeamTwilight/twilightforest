@@ -21,6 +21,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -103,8 +105,8 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
 
-//		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
-//		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
+		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
+		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
 
 		NeoForge.EVENT_BUS.addListener(FogHandler::renderFog);
 		NeoForge.EVENT_BUS.addListener(FogHandler::unloadFog);
@@ -144,19 +146,7 @@ public class ClientGameEvents {
 	private void setMusicInDimension(SelectMusicEvent event) {
 		Music music = event.getOriginalMusic();
 		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
-			var biomeHolder = Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition());
-			var biomeKeyOpt = biomeHolder.unwrapKey();
-			if (biomeKeyOpt.isPresent()) {
-				var biomeKey = biomeKeyOpt.get();
-				Music selectedMusic = Musics.GAME; // Default fallback
-				String keyString = biomeKey.toString();
-				if (keyString.contains("lake") || keyString.contains("swamp")) {
-					selectedMusic = Musics.UNDER_WATER;
-				} else if (keyString.contains("enchanted")) {
-					selectedMusic = Musics.CREDITS;
-				}
-				event.setMusic(selectedMusic);
-			}
+			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getAttributes().applyModifier(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(Musics.GAME)).defaultMusic().orElse(Musics.GAME));
 		}
 	}
 

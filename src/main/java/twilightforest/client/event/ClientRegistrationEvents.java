@@ -16,19 +16,19 @@ import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.player.AvatarRenderer;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -453,7 +453,6 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("item/moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
-
 	private void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerBlock(new IClientBlockExtensions() {
 			@Override
@@ -573,13 +572,13 @@ public class ClientRegistrationEvents {
 	private void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
-			var renderer = event.getRenderer(type);
+			EntityRenderer<?, ?> renderer = event.getRenderer(type);
 			if (renderer instanceof LivingEntityRenderer<?, ?, ?> living) {
 				attachToLiving(living);
 			}
 		}
 		event.getSkins().forEach(skinName -> {
-			var skinRenderer = event.getPlayerRenderer(skinName);
+			LivingEntityRenderer<?, ?, ?> skinRenderer = event.getPlayerRenderer(skinName);
 			if (skinRenderer != null) {
 				attachToLiving(skinRenderer);
 			}

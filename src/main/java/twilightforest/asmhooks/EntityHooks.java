@@ -33,10 +33,8 @@ public class EntityHooks {
 			return o;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
-
 		if (livingEntity.getFluidHeight(FluidTags.WATER) > 0.0D && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
 			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
-
 		return isWaterWalking;
 	}
 
@@ -102,7 +100,6 @@ public class EntityHooks {
 	public static Entity resetStuckUnrestrained(Entity entity) {
 		if (!(entity instanceof LivingEntity living) || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return entity;
-
 		living.makeStuckInBlock(Blocks.AIR.defaultBlockState(), new Vec3(1.0D, 1.0D, 1.0D));
 
 		return entity;
