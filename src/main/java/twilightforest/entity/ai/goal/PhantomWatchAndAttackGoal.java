@@ -26,7 +26,7 @@ public class PhantomWatchAndAttackGoal extends Goal {
 	@Override
 	public void tick() {
 		LivingEntity target = this.boss.getTarget();
-		if (target != null) {
+		if (target != null && target.level() instanceof ServerLevel serverLevel) {
 			this.boss.lookAt(target, 10.0F, 500.0F);
 
 			if (target.isAlive()) {
@@ -35,7 +35,7 @@ public class PhantomWatchAndAttackGoal extends Goal {
 				if (this.boss.getSensing().hasLineOfSight(target)) {
 					if (attackTime-- <= 0 && f1 < 2.0F && target.getBoundingBox().maxY > this.boss.getBoundingBox().minY && this.boss.getTarget().getBoundingBox().minY < this.boss.getBoundingBox().maxY) {
 						attackTime = 20;
-						this.boss.doHurtTarget((ServerLevel) target.level(), target);
+						this.boss.doHurtTarget(serverLevel, target);
 					}
 				}
 

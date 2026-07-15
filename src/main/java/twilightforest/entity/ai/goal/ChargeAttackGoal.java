@@ -82,6 +82,8 @@ public class ChargeAttackGoal extends Goal {
 
 	@Override
 	public void tick() {
+		if (!(this.chargeTarget.level() instanceof ServerLevel serverLevel)) return;
+
 		// look where we're going
 		this.charger.getLookControl().setLookAt(this.chargePos.x(), this.chargePos.y() - 1, this.chargePos.z(), 10.0F, this.charger.getMaxHeadXRot());
 
@@ -127,7 +129,7 @@ public class ChargeAttackGoal extends Goal {
 		if (this.charger.distanceToSqr(this.chargeTarget.getX(), this.chargeTarget.getBoundingBox().minY, this.chargeTarget.getZ()) <= rangeSq) {
 			if (!this.hasAttacked) {
 				this.hasAttacked = true;
-				this.charger.doHurtTarget((ServerLevel) this.chargeTarget.level(), this.chargeTarget);
+				this.charger.doHurtTarget(serverLevel, this.chargeTarget);
 			}
 		}
 	}

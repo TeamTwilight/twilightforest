@@ -77,6 +77,8 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 	@Override
 	public void tick() {
 
+		if (!(this.attacker.level() instanceof ServerLevel serverLevel)) return;
+
 		// if we have hit the drop spot, start dropping
 		if (this.hoverTimer > 0) {
 			this.hoverTimer++;
@@ -115,7 +117,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 			// drop!
 			this.dropTimer++;
 			if (this.attacker.getY() > this.dropY) {
-				this.attacker.destroyBlocksInAABB((ServerLevel) this.attacker.level(), this.attacker.getBoundingBox().inflate(1, 0.5F, 1));
+				this.attacker.destroyBlocksInAABB(serverLevel, this.attacker.getBoundingBox().inflate(1, 0.5F, 1));
 			}
 		}
 	}
