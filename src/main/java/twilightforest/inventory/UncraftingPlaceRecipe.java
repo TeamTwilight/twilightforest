@@ -18,12 +18,12 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipeHelper {
 	void addItemToSlot(C ingredient, int slotIndex, int gridY, int gridX);
 
 	default void placeRecipe(int width, int height, Recipe<?> recipe, Iterable<C> entries, Output<?> output) {
-		int widthModidied = width;
+		int widthModified = width;
 		int heightModified = height;
 		Iterator<C> ingredients = entries.iterator();
 
 		if (recipe instanceof ShapedRecipe shapedRecipe) {
-			widthModidied = shapedRecipe.getWidth();
+			widthModified = shapedRecipe.getWidth();
 			heightModified = shapedRecipe.getHeight();
 		}
 
@@ -42,13 +42,13 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipeHelper {
 					return;
 				}
 
-				yOverfitted = (float) widthModidied < (float) width / 2.0F;
-				rad = Mth.floor((float) width / 2.0F - (float) widthModidied / 2.0F);
-				int o = widthModidied;
-				boolean xOverfitted = gridX < widthModidied;
+				yOverfitted = (float) widthModified < (float) width / 2.0F;
+				rad = Mth.floor((float) width / 2.0F - (float) widthModified / 2.0F);
+				int o = widthModified;
+				boolean xOverfitted = gridX < widthModified;
 				if (yOverfitted) {
-					o = rad + widthModidied;
-					xOverfitted = rad <= gridX && gridX < rad + widthModidied;
+					o = rad + widthModified;
+					xOverfitted = rad <= gridX && gridX < rad + widthModified;
 				}
 
 				if (xOverfitted) {
