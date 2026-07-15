@@ -38,7 +38,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	@Override
 	public void start() {
 		this.throwTimer = 10 + this.mob.getRandom().nextInt(30); // Wait 0.5 to 2 seconds before we throw the target
-		this.timeout = 80 + this.mob.getRandom().nextInt(40); // Let's only try to chase for around 4-6 seconds
+		this.timeout = 80 + this.mob.getRandom().nextInt(40); // Lets only try to chase for around 4-6 seconds
 		super.start();
 	}
 
