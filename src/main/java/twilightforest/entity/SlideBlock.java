@@ -118,7 +118,7 @@ public class SlideBlock extends Entity {
 			}
 			this.getDeltaMovement().multiply(0.98, 0.98, 0.98);
 
-			if (!this.level().isClientSide()) {
+			if (this.level() instanceof ServerLevel serverLevel) {
 				if (this.slideTime % 5 == 0) {
 					this.playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
@@ -148,10 +148,10 @@ public class SlideBlock extends Entity {
 					if (this.level().isUnobstructed(this.myState, pos, CollisionContext.empty())) {
 						this.level().setBlockAndUpdate(pos, this.myState);
 					} else {
-						this.spawnAtLocation((ServerLevel) level(), new ItemStack(this.myState.getBlock()), 0.0F);
+						this.spawnAtLocation(serverLevel, new ItemStack(this.myState.getBlock()), 0.0F);
 					}
 				} else if (this.slideTime > 100 && (pos.getY() < this.level().getMinY() + 1 || pos.getY() > this.level().getMaxY()) || this.slideTime > 600) {
-					this.spawnAtLocation((ServerLevel) level(), new ItemStack(this.myState.getBlock()), 0.0F);
+					this.spawnAtLocation(serverLevel, new ItemStack(this.myState.getBlock()), 0.0F);
 					this.discard();
 				}
 
@@ -181,9 +181,9 @@ public class SlideBlock extends Entity {
 
 	@Override
 	protected void readAdditionalSaveData(ValueInput compound) {
-		this.slideTime = compound.getInt("Time").get();
+		this.slideTime = compound.getIntOr("Time", 0);
 		this.getEntityData().set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByteOr("Direction", (byte) 0)));
-		this.myState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), new CompoundTag());
+		this.myState = compound.read("BlockState", BlockState.CODEC).get();
 	}
 
 	@Override

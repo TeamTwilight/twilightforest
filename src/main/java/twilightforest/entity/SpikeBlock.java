@@ -72,8 +72,10 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(ValueInput compound) {}
+	protected void readAdditionalSaveData(ValueInput compound) {
+	}
 
 	@Override
-	protected void addAdditionalSaveData(ValueOutput compound) {}
+	protected void addAdditionalSaveData(ValueOutput compound) {
+	}
 }

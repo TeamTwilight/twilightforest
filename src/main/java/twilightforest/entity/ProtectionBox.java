@@ -67,13 +67,16 @@ public class ProtectionBox extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+	}
 
 	@Override
-	protected void readAdditionalSaveData(ValueInput compound) {}
+	protected void readAdditionalSaveData(ValueInput compound) {
+	}
 
 	@Override
-	protected void addAdditionalSaveData(ValueOutput compound) {}
+	protected void addAdditionalSaveData(ValueOutput compound) {
+	}
 
 	@Override
 	public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {

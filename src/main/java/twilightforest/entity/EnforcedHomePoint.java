@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
 import twilightforest.init.TFDimension;
 
+import java.util.Optional;
+
 public interface EnforcedHomePoint {
 
 	default <T extends PathfinderMob & EnforcedHomePoint> void addRestrictionGoals(T entity, GoalSelector selector) {
@@ -27,7 +29,7 @@ public interface EnforcedHomePoint {
 	}
 
 	default void loadHomePointFromNbt(ValueInput tag) {
-		var modernPos = tag.read("HomePos", GlobalPos.CODEC);
+		Optional<GlobalPos> modernPos = tag.read("HomePos", GlobalPos.CODEC);
 
 		if (modernPos.isPresent()) {
 			this.setRestrictionPoint(modernPos.get());
@@ -46,7 +48,6 @@ public interface EnforcedHomePoint {
 			});
 		}
 	}
-
 
 	default boolean isMobWithinHomeArea(Entity entity) {
 		if (!this.isRestrictionPointValid(entity.level().dimension())) return true;

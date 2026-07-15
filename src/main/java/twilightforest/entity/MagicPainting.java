@@ -118,7 +118,7 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	public void readAdditionalSaveData(ValueInput input) {
-		if (!input.getStringOr("variant", "-1").equals("-1")) {
+		if (input.getString("variant").isPresent()) {
 			Identifier location = Identifier.tryParse(input.getString("variant").get());
 			if (location != null) {
 				this.setVariant(this.getReg().get(location).orElse(this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT)));
@@ -178,13 +178,8 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	@Override
-	public void moveTowardsClosestSpace(double x, double y, double z) {
+	public void lerpPositionAndRotationStep(int stepsToTarget, double x, double y, double z, double targetYRot, double targetXRot) {
 		this.setPos(x, y, z);
-	}
-
-	@Override
-	protected void lerpPositionAndRotationStep(int stepsToTarget, double targetX, double targetY, double targetZ, double targetYRot, double targetXRot) {
-		this.setPos(targetX, targetY, targetZ);
 	}
 
 	@Override
