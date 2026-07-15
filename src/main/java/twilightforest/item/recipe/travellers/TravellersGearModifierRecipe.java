@@ -81,7 +81,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	}
 
 	public Identifier getId() {
-		return travellersModifierHolder.unwrapKey().orElseThrow().identifier()
+		return TravellersModifiersManager.getKeyOrThrow(travellersModifierHolder).identifier()
 			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(placementInfo().ingredients()).getItem().getDescriptionId(), '.') + "/")
 			.withPrefix("add_modifier_to_travellers_gear/")
 			.withSuffix("_modifier");

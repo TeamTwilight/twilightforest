@@ -26,6 +26,7 @@ import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.modifiers.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class TravellersModifiersManager {
@@ -118,10 +119,11 @@ public class TravellersModifiersManager {
 	}
 
 	public static boolean isModifierActive(LivingEntity livingEntity, Holder<TravellersModifier> modifierHolder) {
-		ItemStack equippedStack = getStackForGroup(livingEntity, modifierHolder.value().group());
+		TravellersModifier modifier = modifierHolder.value();
+		ItemStack equippedStack = getStackForGroup(livingEntity, modifier.group());
 
 		return !equippedStack.isEmpty()
-			&& modifierHolder.value().isActive(
+			&& modifier.isActive(
 			equippedStack,
 			modifierHolder,
 			livingEntity.isSpectator()
@@ -151,7 +153,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static MutableComponent getModifierTooltipComponent(Holder<TravellersModifier> modifier) {
-		return TooltipStringInterpolator.render(modifier.getKey().identifier().toLanguageKey(modifier.value().getPrefix()));
+		return TooltipStringInterpolator.render(getKeyOrThrow(modifier).identifier().toLanguageKey(modifier.value().getPrefix()));
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
@@ -172,6 +174,27 @@ public class TravellersModifiersManager {
 
 	public static long countInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
 		return findAllInsertableModifiers(registries, stack).size();
+	}
+
+	// May or may not need this, we will see
+	public static Optional<Holder.Reference<TravellersModifier>> lookupHolder(HolderLookup.Provider registries, ResourceKey<TravellersModifier> key) {
+		Optional<Holder.Reference<TravellersModifier>> holder = registries.holder(key);
+
+		if (holder.isEmpty()) {
+			TwilightForestMod.LOGGER.warn("Travellers modifier {} is not present in the registry", key.identifier());
+		}
+
+		return holder;
+	}
+
+	public static ResourceKey<TravellersModifier> getKeyOrThrow(Holder<TravellersModifier> holder) {
+		return holder.unwrapKey().orElseThrow(() -> {
+			TwilightForestMod.LOGGER.error(
+				"Expected a registry-backed TravellersModifier holder but received {}",
+				holder
+			);
+			return new IllegalStateException("TravellersModifier holder is not registry-backed");
+		});
 	}
 
 	private static ItemStack getStackForGroup(LivingEntity livingEntity, EquipmentSlotGroup group) {

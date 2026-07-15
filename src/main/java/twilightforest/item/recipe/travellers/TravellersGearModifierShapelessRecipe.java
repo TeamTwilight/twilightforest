@@ -11,6 +11,7 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.util.RecipeMatcher;
 import twilightforest.TFRegistries;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
@@ -60,7 +61,7 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 			if (!item.isEmpty())
 				nonEmptyItems.add(item);
 		}
-		return net.neoforged.neoforge.common.util.RecipeMatcher.findMatches(nonEmptyItems, this.ingredients) != null;
+		return RecipeMatcher.findMatches(nonEmptyItems, this.ingredients) != null;
 	}
 
 	@Override
