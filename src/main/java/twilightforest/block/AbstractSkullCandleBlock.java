@@ -128,7 +128,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			if (stack.is(ItemTags.CANDLES)
-				&& stack.is(candleColorToCandle(CandleColors.colorFromInt(sc.candleInfo.color())).asItem())
+				&& stack.is(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleInfo().color())).asItem())
 				&& !player.isShiftKeyDown()) {
 				int candles = state.getValue(CANDLES);
 				if (candles < 4) {
@@ -168,7 +168,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 			}
 			level.playSound(null, pos, SoundEvents.CANDLE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.getLightEngine().checkBlock(pos);
-			ItemStack candle = new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.candleInfo.color())));
+			ItemStack candle = new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleInfo().color())));
 			if (player.hasInfiniteMaterials()) {
 				if (!player.getInventory().contains(candle)) {
 					player.getInventory().add(candle);
@@ -231,7 +231,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(LIGHTING, CANDLES);
+		builder.add(LIGHTING, CANDLES, POWERED);
 	}
 
 	@Nullable

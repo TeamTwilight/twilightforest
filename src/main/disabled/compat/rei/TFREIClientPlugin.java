@@ -49,7 +49,7 @@ import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.DryingRecipe;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.UncraftingRecipe;
-import twilightforest.util.entities.EntityRenderingUtil;
+import twilightforest.client.EntityRenderingUtil;
 
 import java.util.Map;
 import java.util.Optional;

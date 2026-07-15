@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4fStack;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.jei.FakeItemEntity;
-import twilightforest.util.entities.EntityRenderingUtil;
+import twilightforest.client.EntityRenderingUtil;
 
 import java.util.List;
 import java.util.Objects;

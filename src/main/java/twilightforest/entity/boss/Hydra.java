@@ -1,11 +1,8 @@
 package twilightforest.entity.boss;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -22,6 +19,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
@@ -90,7 +88,6 @@ public class Hydra extends BaseTFBoss {
 
 		this.partArray = parts.toArray(new HydraPart[0]);
 
-		this.noCulling = true;
 		this.xpReward = 511;
 	}
 
@@ -117,31 +114,31 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	protected float tickHeadTurn(float yRot, float yTurnDelta) {
-		float f = Mth.wrapDegrees(yRot - this.yBodyRot);
-		this.yBodyRot += f * 0.3F;
-		float f1 = Mth.wrapDegrees(this.getYRot() - this.yBodyRot);
-		boolean flag = f1 < -90.0F || f1 >= 90.0F;
+	protected BodyRotationControl createBodyControl() {
+		return new BodyRotationControl(this) {
+			@Override
+			public void clientTick() {
+				float yRot = Hydra.this.getYHeadRot();
 
-		if (f1 < -75.0F) {
-			f1 = -75.0F;
-		}
+				float f = Mth.wrapDegrees(yRot - Hydra.this.yBodyRot);
+				Hydra.this.yBodyRot += f * 0.3F;
+				float f1 = Mth.wrapDegrees(Hydra.this.getYRot() - Hydra.this.yBodyRot);
 
-		if (f1 >= 75.0F) {
-			f1 = 75.0F;
-		}
+				if (f1 < -75.0F) {
+					f1 = -75.0F;
+				}
 
-		this.yBodyRot = this.getYRot() - f1;
+				if (f1 >= 75.0F) {
+					f1 = 75.0F;
+				}
 
-		if (f1 * f1 > 2500.0F) {
-			this.yBodyRot += f1 * 0.2F;
-		}
+				Hydra.this.yBodyRot = Hydra.this.getYRot() - f1;
 
-		if (flag) {
-			yTurnDelta *= -1.0F;
-		}
-
-		return yTurnDelta;
+				if (f1 * f1 > 2500.0F) {
+					Hydra.this.yBodyRot += f1 * 0.2F;
+				}
+			}
+		};
 	}
 
 	@Override
@@ -222,24 +219,18 @@ public class Hydra extends BaseTFBoss {
 			}
 		}
 		compound.putByte("NumHeads", headData);
-		ListTag headNames = new ListTag();
-		for (int i = 0; i < MAX_HEADS; i++) {
-			headNames.add(StringTag.valueOf(this.getEntityData().get(HEAD_NAMES).get(i)));
-		}
-		compound.put("HeadNames", headNames);
+		compound.store("HeadNames", Codec.STRING.listOf(), this.getEntityData().get(HEAD_NAMES));
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.activateHeadsOnLoad(compound.getByte("NumHeads"));
-		if (compound.contains("HeadNames", Tag.TAG_LIST)) {
-			List<String> names = new ArrayList<>();
-			ListTag list = compound.getList("HeadNames", Tag.TAG_STRING);
-			for (int i = 0; i < list.size(); i++) {
-				String name = list.getString(i);
-				names.add(name);
+		this.activateHeadsOnLoad(compound.getByteOr("NumHeads", (byte) 0));
+		List<String> names = compound.read("HeadNames", Codec.STRING.listOf()).orElse(Collections.emptyList());
+		if (!names.isEmpty()) {
+			for (int i = 0; i < names.size(); i++) {
+				String name = names.get(i);
 				this.hc[i].headEntity.setCustomName(Component.literal(name));
 			}
 			this.getEntityData().set(HEAD_NAMES, names);
@@ -574,8 +565,12 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	public boolean attackEntityFromPart(HydraPart part, DamageSource source, float damage) {
+		if (!(this.level() instanceof ServerLevel server)) {
+			return false;
+		}
+
 		// if we're in a wall, kill that wall
-		if (this.level() instanceof ServerLevel server && source.is(DamageTypes.IN_WALL)) {
+		if (source.is(DamageTypes.IN_WALL)) {
 			this.destroyBlocksInAABB(server, part.getBoundingBox());
 		}
 
@@ -609,11 +604,11 @@ public class Hydra extends BaseTFBoss {
 
 		boolean tookDamage;
 		if (headCon != null && headCon.getCurrentMouthOpen() > 0.5) {
-			tookDamage = super.hurtServer(source, damage);
+			tookDamage = super.hurtServer(server, source, damage);
 			headCon.addDamage(damage);
 		} else {
 			int armoredDamage = Math.round(damage / ARMOR_MULTIPLIER);
-			tookDamage = super.hurtServer(source, armoredDamage);
+			tookDamage = super.hurtServer(server, source, armoredDamage);
 
 			if (headCon != null) {
 				headCon.addDamage(armoredDamage);
