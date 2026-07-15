@@ -7,10 +7,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFSounds;
 import twilightforest.item.LifedrainScepterItem;
-import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.EnumSet;

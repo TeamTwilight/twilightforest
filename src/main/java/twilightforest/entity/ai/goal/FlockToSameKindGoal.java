@@ -5,8 +5,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.monster.Kobold;
 import twilightforest.tags.TFItemTags;
+import twilightforest.entity.monster.Kobold;
 
 import java.util.List;
 
