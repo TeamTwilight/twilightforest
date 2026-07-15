@@ -18,20 +18,20 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipeHelper {
 	void addItemToSlot(C ingredient, int slotIndex, int gridY, int gridX);
 
 	default void placeRecipe(int width, int height, Recipe<?> recipe, Iterable<C> entries, Output<?> output) {
-		int recipeWidth = width;
-		int recipeHeight = height;
+		int widthModidied = width;
+		int heightModified = height;
 		Iterator<C> ingredients = entries.iterator();
 
 		if (recipe instanceof ShapedRecipe shapedRecipe) {
-			recipeWidth = shapedRecipe.getWidth();
-			recipeHeight = shapedRecipe.getHeight();
+			widthModidied = shapedRecipe.getWidth();
+			heightModified = shapedRecipe.getHeight();
 		}
 
 		int slotIndex = matrixOffset;
 
 		for (int gridY = 0; gridY < height; ++gridY) {
-			boolean yOverfitted = (float) recipeHeight < (float) height / 2.0F;
-			int rad = Mth.floor((float) height / 2.0F - (float) recipeHeight / 2.0F);
+			boolean yOverfitted = (float) heightModified < (float) height / 2.0F;
+			int rad = Mth.floor((float) height / 2.0F - (float) heightModified / 2.0F);
 			if (yOverfitted && rad > gridY) {
 				slotIndex += width;
 				++gridY;
@@ -42,13 +42,13 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipeHelper {
 					return;
 				}
 
-				yOverfitted = (float) recipeWidth < (float) width / 2.0F;
-				rad = Mth.floor((float) width / 2.0F - (float) recipeWidth / 2.0F);
-				int o = recipeWidth;
-				boolean xOverfitted = gridX < recipeWidth;
+				yOverfitted = (float) widthModidied < (float) width / 2.0F;
+				rad = Mth.floor((float) width / 2.0F - (float) widthModidied / 2.0F);
+				int o = widthModidied;
+				boolean xOverfitted = gridX < widthModidied;
 				if (yOverfitted) {
-					o = rad + recipeWidth;
-					xOverfitted = rad <= gridX && gridX < rad + recipeWidth;
+					o = rad + widthModidied;
+					xOverfitted = rad <= gridX && gridX < rad + widthModidied;
 				}
 
 				if (xOverfitted) {
