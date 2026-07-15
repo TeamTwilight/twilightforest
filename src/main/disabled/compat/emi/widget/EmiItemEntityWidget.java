@@ -12,7 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.entities.EntityRenderingUtil;
+import twilightforest.client.EntityRenderingUtil;
 
 import java.util.ArrayList;
 import java.util.List;

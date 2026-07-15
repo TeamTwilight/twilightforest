@@ -1,23 +1,32 @@
 package twilightforest.item.recipe.travellers;
 
-import net.minecraft.core.HolderLookup;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFRecipes;
 
 import java.util.List;
 import java.util.Optional;
 
 public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
-	public TravellersVestGlovesMergeRecipe(CraftingBookCategory category) {
-		super(category);
+	public static final MapCodec<TravellersVestGlovesMergeRecipe> MAP_CODEC =
+		MapCodec.unit(TravellersVestGlovesMergeRecipe::new);
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, TravellersVestGlovesMergeRecipe> STREAM_CODEC =
+		StreamCodec.unit(new TravellersVestGlovesMergeRecipe());
+
+	public static final RecipeSerializer<TravellersVestGlovesMergeRecipe> SERIALIZER =
+		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
+	public TravellersVestGlovesMergeRecipe() {
+		super();
 	}
 
 	@Override
@@ -30,8 +39,8 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-		Optional<InputPair> pair = this.resolve(input);
+	public ItemStack assemble(CraftingInput craftingInput) {
+		Optional<InputPair> pair = this.resolve(craftingInput);
 		if (pair.isEmpty())
 			return ItemStack.EMPTY;
 
@@ -40,15 +49,9 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 		return vest;
 	}
 
-
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.TRAVELLERS_VEST_GLOVES_MERGE_RECIPE_SERIALIZER.get();
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+		return SERIALIZER;
 	}
 
 	private Optional<InputPair> resolve(CraftingInput input) {

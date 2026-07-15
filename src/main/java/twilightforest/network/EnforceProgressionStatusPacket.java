@@ -1,13 +1,13 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFGameRules;
+import twilightforest.client.event.LockedBiomeToastHandler;
+import twilightforest.client.renderer.TFWeatherRenderer;
 
 public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
@@ -28,8 +28,10 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 	}
 
 	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() ->
-			Minecraft.getInstance().level.getGameRules().getRule(TFGameRules.ENFORCED_PROGRESSION_RULE.get()).set(message.enforce(), null)
-		);
+		boolean enforce = message.enforce;
+		ctx.enqueueWork(() -> {
+			TFWeatherRenderer.setProgressionEnforced(enforce);
+			LockedBiomeToastHandler.setProgressionEnforced(enforce);
+		});
 	}
 }

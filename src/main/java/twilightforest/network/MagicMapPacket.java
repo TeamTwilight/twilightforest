@@ -1,19 +1,19 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 // Rewraps vanilla ClientboundMapItemDataPacket to sync conquered status of structures
 public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> conqueredStructures) implements CustomPacketPayload {
@@ -37,8 +37,7 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 				@Override
 				public void run() {
 					Level level = ctx.player().level();
-					// [VanillaCopy] ClientPacketListener#handleMapItemData with our own mapdatas
-					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
+
 					String s = MagicMapItem.getMapName(message.inner.mapId().id());
 					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(level, s);
 					if (mapdata == null) {
@@ -51,7 +50,13 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 					mapdata.conqueredStructures.clear();
 					mapdata.conqueredStructures.addAll(message.conqueredStructures());
 
-					mapitemrenderer.update(message.inner.mapId(), mapdata);
+					MapItemSavedData saved = level.getMapData(message.inner.mapId());
+
+					if (saved != null) {
+						saved.addClientSideDecorations(
+							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+						);
+					}
 				}
 			});
 		}

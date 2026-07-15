@@ -158,7 +158,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			MutableInt size = new MutableInt(0);
 
 			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
-
 				if (!TFConfig.checkPortalPlacement) {
 					boolean checkProgression = LandmarkUtil.isProgressionEnforced(level);
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
