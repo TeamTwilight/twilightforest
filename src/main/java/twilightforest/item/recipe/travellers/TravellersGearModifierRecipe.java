@@ -3,7 +3,10 @@ package twilightforest.item.recipe.travellers;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -75,7 +78,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		return StreamSupport.stream(ingredients.spliterator(), false)
 			.flatMap(Ingredient::items)
 			.map(ItemStack::new)
-			.filter(stack -> stack.getItem() instanceof TravellersModifiable)
+			.filter(stack -> stack.getItem() instanceof TravellersModifiable modifiable && modifiable.getModifierSlots() > 0)
 			.findFirst()
 			.orElseThrow();
 	}
