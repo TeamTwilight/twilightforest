@@ -149,21 +149,21 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 			possibleList.removeAll(Arrays.asList(Objects.requireNonNull(this.attacker.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.isPickable() && possibleEntity != this.attacker && possibleEntity.level() instanceof ServerLevel serverLevel) {
+			if (possibleEntity.isPickable() && possibleEntity != this.attacker) {
 				float borderSize = possibleEntity.getPickRadius();
 				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
 				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
-						this.attacker.doBreathAttack(serverLevel, possibleEntity);
+						this.attacker.doBreathAttack((ServerLevel) possibleEntity.level(), possibleEntity);
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos.isPresent()) {
 					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
-						this.attacker.doBreathAttack(serverLevel, possibleEntity);
+						this.attacker.doBreathAttack((ServerLevel) possibleEntity.level(), possibleEntity);
 						hitDist = possibleDist;
 					}
 				}

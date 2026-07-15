@@ -17,16 +17,12 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!(this.redcap.level() instanceof ServerLevel serverLevel)) {
-			return false;
-		}
-
 		LivingEntity attackTarget = this.redcap.getTarget();
 		return attackTarget != null
 			&& !this.redcap.heldTNT.isEmpty()
 			&& this.redcap.distanceToSqr(attackTarget) < 25
 			&& !this.isTargetLookingAtMe(attackTarget)
-			&& EventHooks.canEntityGrief(serverLevel, this.redcap)
+			&& EventHooks.canEntityGrief((ServerLevel) this.redcap.level(), this.redcap)
 			&& !this.isLitTNTNearby(8)
 			&& this.findBlockTNTNearby(5) == null;
 	}

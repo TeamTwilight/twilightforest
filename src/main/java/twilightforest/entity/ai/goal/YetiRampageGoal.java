@@ -62,8 +62,6 @@ public class YetiRampageGoal extends Goal {
 	 */
 	@Override
 	public void tick() {
-		if (!(this.yeti.level() instanceof ServerLevel serverLevel)) return;
-
 		this.currentDuration--;
 
 		if (this.yeti.getTarget() != null) {
@@ -75,11 +73,11 @@ public class YetiRampageGoal extends Goal {
 			this.yeti.gameEvent(GameEvent.HIT_GROUND);
 		}
 
-		this.yeti.destroyBlocksInAABB(serverLevel, this.yeti.getBoundingBox().inflate(1, 2, 1).move(0, 2, 0));
+		this.yeti.destroyBlocksInAABB((ServerLevel) this.yeti.level(), this.yeti.getBoundingBox().inflate(1, 2, 1).move(0, 2, 0));
 
 		// regular falling blocks, twice a second
 		if (this.currentDuration % 10 == 0) {
-			this.yeti.makeRandomBlockFall(serverLevel, 30, 80);
+			this.yeti.makeRandomBlockFall((ServerLevel) this.yeti.level(), 30, 80);
 		}
 
 		// blocks target players, one every second
@@ -89,7 +87,7 @@ public class YetiRampageGoal extends Goal {
 
 		// blocks that fall close to the yeti, twice a second near the end of the rampage
 		if (this.currentDuration < 40 && this.currentDuration % 10 == 0) {
-			this.yeti.makeRandomBlockFall(serverLevel, 15, 40);
+			this.yeti.makeRandomBlockFall((ServerLevel) this.yeti.level(), 15, 40);
 		}
 
 		if (this.currentDuration % 20 == 0) {

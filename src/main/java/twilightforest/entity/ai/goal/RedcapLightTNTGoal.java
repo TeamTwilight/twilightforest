@@ -29,11 +29,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!(this.redcap.level() instanceof ServerLevel serverLevel)) {
-			return false;
-		}
-
-		if (!EventHooks.canEntityGrief(serverLevel, this.redcap)) {
+		if (!EventHooks.canEntityGrief((ServerLevel) this.redcap.level(), this.redcap)) {
 			return false;
 		}
 
