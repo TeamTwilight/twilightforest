@@ -54,8 +54,8 @@ public class TeleporterCache extends SavedData {
 		return null;
 	}
 
-	public void removeInvalidPos(Identifier dimension, ColumnPos pos) {
-		this.destinationCoordinateCache.get(ResourceKey.create(Registries.DIMENSION, dimension)).remove(pos);
+	public void removeInvalidPos(ResourceKey<Level> dimension, ColumnPos pos) {
+		this.destinationCoordinateCache.get(dimension).remove(pos);
 		this.setDirty();
 	}
 

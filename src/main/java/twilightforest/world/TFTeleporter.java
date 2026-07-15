@@ -84,7 +84,7 @@ public class TFTeleporter {
 				// Portal was broken, we need to recreate it.
 				LOGGER.debug("Portal Invalid, recreating.");
 				blockpos = null;
-				cache.removeInvalidPos(destDim.dimension().identifier(), columnPos);
+				cache.removeInvalidPos(destDim.dimension(), columnPos);
 			}
 		} else {
 			blockpos = getPortalPosition(destDim, pos);
