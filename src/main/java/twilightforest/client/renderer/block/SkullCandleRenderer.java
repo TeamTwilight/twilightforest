@@ -91,7 +91,7 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		state.skullType = ((SkullCandleBlock)blockState.getBlock()).getType();
 		state.renderType = this.resolveSkullRenderType(state.skullType, blockEntity);
 
-		updateSkullCandle(blockEntity.candleInfo, this.blockResolver, state.candle, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE);
+		updateSkullCandle(blockEntity.getCandleInfo(), this.blockResolver, state.candle, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE);
 	}
 
 	public static void updateSkullCandle(SkullCandles info, BlockModelResolver resolver, BlockModelRenderState state, boolean lit) {

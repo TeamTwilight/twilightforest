@@ -48,7 +48,7 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 				if (blocksSmashed >= maxSmash) break;
 				BlockState state = level.getBlockState(pos);
 				if (!state.isAir()) {
-					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.getBlockHolder())) continue;
+					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.typeHolder())) continue;
 					if (ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && state.canEntityDestroy(level, pos, player)) {
 						if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
 							level.destroyBlock(pos, false);

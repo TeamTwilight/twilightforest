@@ -10,6 +10,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.init.TFAdvancements;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.inventory.UncraftingMenu;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.item.recipe.UncraftingRecipe;
 
 public class UncraftingSlot extends Slot {
@@ -88,9 +89,7 @@ public class UncraftingSlot extends Slot {
 			}
 			if (inputStack.has(DataComponents.CONTAINER)) {
 				inputStack.get(DataComponents.CONTAINER).nonEmptyItems().forEach(stack1 -> {
-					if (!player.getInventory().add(stack1)) {
-						player.drop(stack1, false);
-					}
+					InventoryUtil.giveItemToPlayer(player, stack1);
 				});
 			}
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);

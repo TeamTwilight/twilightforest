@@ -1,10 +1,10 @@
 package twilightforest.client.renderer.armor;
 
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.client.model.armor.TFArmorModel;
 
@@ -23,8 +23,8 @@ public class TFSimpleArmorRenderer extends TFArmorRenderer {
 	}
 
 	@Override
-	public TFArmorModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
-		return itemStack.getEquipmentSlot() == EquipmentSlot.LEGS ?
+	public @NotNull HumanoidModel<?> getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+		return layerType == EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS ?
 			CREATE_MODEL_INSTANCE.apply(getModelPart(INNER_ARMOR_MODEL)) :
 			CREATE_MODEL_INSTANCE.apply(getModelPart(OUTER_ARMOR_MODEL));
 	}

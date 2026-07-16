@@ -8,9 +8,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
@@ -34,7 +37,7 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
@@ -74,7 +77,7 @@ public class TravellersClientEvents {
 		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) || agileRangerModifier == null)
 			return;
 		ItemStack stack = localPlayer.getUseItem();
-		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(ItemTagGenerator.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(ItemTagGenerator.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
+		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
 		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && isLegalItem) {
 			Input input = event.getInput();
 			input.leftImpulse *= agileRangerModifier;
@@ -244,21 +247,35 @@ public class TravellersClientEvents {
 
 	@SuppressWarnings("unchecked") //meh
 	private void renderGlovesInFirstPerson(RenderArmEvent event) {
-		if (TFConfig.firstPersonGloveOverlay) {
-			AbstractClientPlayer player = event.getPlayer();
-			ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) && !chestStack.has(TFDataComponents.EMPERORS_CLOTH)) {
-				PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-				HumanoidModel<AbstractClientPlayer> model = (HumanoidModel<AbstractClientPlayer>) IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(player, chestStack, EquipmentSlot.CHEST, renderer.getModel());
-				ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
-				model.attackTime = 0.0F;
-				model.crouching = false;
-				model.swimAmount = 0.0F;
-				model.setupAnim(player, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-				armPart.xRot = 0.0F;
-				Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
-				armPart.render(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.armorCutoutNoCull(gloveLocation)), event.getPackedLight(), OverlayTexture.NO_OVERLAY);
-			}
-		}
-	}
+        if (!TFConfig.firstPersonGloveOverlay)
+			return;
+
+        AbstractClientPlayer player = event.getPlayer();
+        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+        if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
+            return;
+
+		Minecraft minecraft = Minecraft.getInstance();
+		EntityRenderDispatcher renderDispatcher = minecraft.getEntityRenderDispatcher();
+
+		if (!(renderDispatcher.getRenderer(player) instanceof AvatarRenderer avatarRenderer))
+            return;
+
+		if (!(IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, avatarRenderer.getModel()) instanceof HumanoidModel model))
+			return;
+
+		if (!(avatarRenderer.createRenderState(player, minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false)) instanceof AvatarRenderState renderState))
+			return;
+
+		renderState.attackTime = 0.0F;
+		renderState.isCrouching = false;
+		renderState.swimAmount = 0.0F;
+        model.setupAnim(renderState);
+
+		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
+        armPart.xRot = 0.0F;
+
+        Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
+    }
 }

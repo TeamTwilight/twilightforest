@@ -16,7 +16,7 @@ import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.TFREIClientPlugin;
 import twilightforest.compat.rei.categories.REIOminousFireCategory;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.entities.EntityRenderingUtil;
+import twilightforest.client.EntityRenderingUtil;
 
 import java.util.ArrayList;
 import java.util.List;

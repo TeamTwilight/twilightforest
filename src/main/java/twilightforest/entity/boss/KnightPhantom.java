@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -18,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -30,6 +30,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -133,7 +134,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Nullable
 	@Override
-	@SuppressWarnings({"deprecation", "OverrideOnly"})
+	@SuppressWarnings({"deprecation"})
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
@@ -230,8 +231,11 @@ public class KnightPhantom extends BaseTFBoss {
 					.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
 
 				if (this.lastHurtByPlayer != null) {
-					builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
-						.withLuck(this.lastHurtByPlayer.getLuck());
+					Player player = this.lastHurtByPlayer.getEntity(level(), Player.class);
+					if (player != null) {
+						builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
+							.withLuck(player.getLuck());
+					}
 				}
 
 				if (cause.getEntity() != null) {
@@ -309,6 +313,30 @@ public class KnightPhantom extends BaseTFBoss {
 		return super.hurtServer(server, source, amount);
 	}
 
+	// [VanillaCopy] original method from LivingEntity was deleted
+	private boolean isDamageSourceBlocked(DamageSource damageSource) {
+		Entity entity = damageSource.getDirectEntity();
+		boolean flag = false;
+		if (entity instanceof AbstractArrow abstractarrow) {
+			if (abstractarrow.getPierceLevel() > 0) {
+				flag = true;
+			}
+		}
+
+		ItemStack itemstack = this.getItemBlockingWith();
+		if (!damageSource.is(DamageTypeTags.BYPASSES_SHIELD) && itemstack != null && !flag) {
+			Vec3 vec3 = damageSource.getSourcePosition();
+			if (vec3 != null) {
+				Vec3 vec31 = this.calculateViewVector(0.0F, this.getYHeadRot());
+				Vec3 vec32 = vec3.vectorTo(this.position());
+				vec32 = (new Vec3(vec32.x, 0.0F, vec32.z)).normalize();
+				return vec32.dot(vec31) < (double) 0.0F;
+			}
+		}
+
+		return false;
+	}
+
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), null);
@@ -316,7 +344,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void knockback(double damage, double xRatio, double zRatio) {
-		this.hasImpulse = true;
+		this.hurtMarked = true;
 		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
 		float distance = 0.2F;
 		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
@@ -337,7 +365,7 @@ public class KnightPhantom extends BaseTFBoss {
 	//[VanillaCopy] of FlyingMob.travel
 	@Override
 	public void travel(Vec3 vec3) {
-		if (this.isControlledByLocalInstance()) {
+		if (this.isLocalInstanceAuthoritative()) {
 			if (this.isInWater()) {
 				this.moveRelative(0.02F, vec3);
 				this.move(MoverType.SELF, this.getDeltaMovement());
@@ -533,11 +561,11 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.totalKnownKnights = compound.getInt("TotalKnownKnights");
-		this.setNumber(compound.getInt("MyNumber"));
-		this.switchToFormationByNumber(compound.getInt("Formation"));
-		this.setTicksProgress(compound.getInt("TicksProgress"));
-		this.getEntityData().set(IT_IS_OVER, compound.getBoolean("IsItOver"));
+		this.totalKnownKnights = compound.getInt("TotalKnownKnights").get();
+		this.setNumber(compound.getInt("MyNumber").get());
+		this.switchToFormationByNumber(compound.getInt("Formation").get());
+		this.setTicksProgress(compound.getInt("TicksProgress").get());
+		this.getEntityData().set(IT_IS_OVER, compound.getBooleanOr("IsItOver", false));
 	}
 
 	@Override
@@ -620,7 +648,7 @@ public class KnightPhantom extends BaseTFBoss {
 				double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-				this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		} else if (!this.getNearbyKnights().isEmpty() || this.getEntityData().get(IT_IS_OVER)) {
 			if (this.deathTime == DYING_TICKS) { // Poof when going invisible
@@ -652,7 +680,7 @@ public class KnightPhantom extends BaseTFBoss {
 					double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-					this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}

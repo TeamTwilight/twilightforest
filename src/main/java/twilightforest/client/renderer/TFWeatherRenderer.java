@@ -69,6 +69,8 @@ public class TFWeatherRenderer {
 	private static float urGhastRain = 0.0F;
 	public static boolean urGhastAlive = false;
 
+	public static boolean progressionEnforced = true;
+
 	static {
 		for (int i = 0; i < 32; ++i) {
 			for (int j = 0; j < 32; ++j) {
@@ -83,7 +85,7 @@ public class TFWeatherRenderer {
 
 	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, Vec3 camera) {
 		Minecraft mc = Minecraft.getInstance();
-		if (LandmarkUtil.isProgressionEnforced(level) && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
+		if (progressionEnforced && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
 			renderLockedBiome(ticks, partialTicks, level, mc.player, camera);
 
@@ -345,6 +347,10 @@ public class TFWeatherRenderer {
 
 	public static void setProtectedBoxes(@Nullable List<Pair<BoundingBox, Boolean>> protectedBoxes) {
 		TFWeatherRenderer.boxData = protectedBoxes;
+	}
+
+	public static void setProgressionEnforced(boolean enforce) {
+		progressionEnforced = enforce;
 	}
 
 	private static @Nullable TFWeatherRenderer.WeatherRenderType getRenderType(Restriction restriction) {
