@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -59,6 +61,35 @@ public final class WorldUtil {
 	 */
 	public static Iterable<BlockPos> getAllAround(BlockPos center, int range) {
 		return BlockPos.betweenClosed(center.offset(-range, -range, -range), center.offset(range, range, range));
+	}
+
+	/**
+	 * Finds block entities in loaded chunks within a cube around {@code center}, inclusive of its edges.
+	 * This avoids loading chunks or scanning every block position in the cube.
+	 */
+	public static List<BlockEntity> getLoadedBlockEntitiesInRange(ServerLevel level, BlockPos center, int range) {
+		int minX = center.getX() - range;
+		int minY = center.getY() - range;
+		int minZ = center.getZ() - range;
+		int maxX = center.getX() + range;
+		int maxY = center.getY() + range;
+		int maxZ = center.getZ() + range;
+		ChunkPos minChunk = new ChunkPos(SectionPos.blockToSectionCoord(minX), SectionPos.blockToSectionCoord(minZ));
+		ChunkPos maxChunk = new ChunkPos(SectionPos.blockToSectionCoord(maxX), SectionPos.blockToSectionCoord(maxZ));
+		ServerChunkCache chunkSource = level.getChunkSource();
+
+		return ChunkPos.rangeClosed(minChunk, maxChunk)
+			.map(chunkPos -> chunkSource.getChunkNow(chunkPos.x(), chunkPos.z()))
+			.filter(Objects::nonNull)
+			.flatMap(chunk -> chunk.getBlockEntities().values().stream())
+			.filter(blockEntity -> !blockEntity.isRemoved())
+			.filter(blockEntity -> {
+				BlockPos blockPos = blockEntity.getBlockPos();
+				return blockPos.getX() >= minX && blockPos.getX() <= maxX
+					&& blockPos.getY() >= minY && blockPos.getY() <= maxY
+					&& blockPos.getZ() >= minZ && blockPos.getZ() <= maxZ;
+			})
+			.toList();
 	}
 
 	/**
