@@ -132,7 +132,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			for (int dx = 0; dx < 3; dx++) {
 				for (int dy = 0; dy < 3; dy++) {
 					for (int dz = 0; dz < 3; dz++) {
-						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false, false,
 							pos.getX() + (dx + 0.5D) / 4,
 							pos.getY() + (dy + 0.5D) / 4,
 							pos.getZ() + (dz + 0.5D) / 4,
