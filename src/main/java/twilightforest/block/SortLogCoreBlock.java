@@ -16,14 +16,11 @@ import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
-import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
 import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
-
-	private final BlockCapabilityDirectionalCache<IItemHandler> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -39,25 +36,23 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		Map<List<IItemHandler>, Vec3> inputMap = new HashMap<>();
 		Map<IItemHandler, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
+		for (BlockEntity blockEntity : WorldUtil.getLoadedBlockEntitiesInRange(level, pos, TFConfig.sortingCoreRange).toList()) {
+			BlockPos blockPos = blockEntity.getBlockPos();
 			if (!blockPos.equals(pos)) {
-				BlockEntity blockEntity = level.getBlockEntity(blockPos);
-				if (blockEntity != null) {
-					// Put it in the input if its within 2 blocks
-					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-						List<IItemHandler> handlers = new ArrayList<>();
-						for (Direction side : Direction.values()) {
-							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
-							if (handler != null) handlers.add(handler);
-						}
-						if (!handlers.isEmpty()) {
-							inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
-					} else { // Output if its outside that range
-						for (Direction side : Direction.values()) {
-							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
-							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
+				// Put it in the input if its within 2 blocks
+				if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+					List<IItemHandler> handlers = new ArrayList<>();
+					for (Direction side : Direction.values()) {
+						IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, blockEntity.getBlockState(), blockEntity, side);
+						if (handler != null) handlers.add(handler);
+					}
+					if (!handlers.isEmpty()) {
+						inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+					}
+				} else { // Output if its outside that range
+					for (Direction side : Direction.values()) {
+						IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, blockEntity.getBlockState(), blockEntity, side);
+						if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 					}
 				}
 			}
