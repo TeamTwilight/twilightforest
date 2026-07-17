@@ -23,7 +23,7 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 
-		this.generateGround = compoundTag.getBoolean("gen_ground");
+		this.generateGround = compoundTag.getBooleanOr("gen_ground", false);
 	}
 
 	public LichTowerWingBeard(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, boolean generateGround) {

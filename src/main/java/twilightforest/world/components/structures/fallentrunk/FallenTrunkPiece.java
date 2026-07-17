@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -65,27 +64,27 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	public FallenTrunkPiece(StructurePieceSerializationContext context, CompoundTag tag) {
 		super(TFStructurePieceTypes.TFFallenTrunk.value(), tag);
-		this.length = tag.getInt("length");
-		this.radius = tag.getInt("radius");
+		this.length = tag.getIntOr("length", 0);
+		this.radius = tag.getIntOr("radius", 0);
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
-		log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log")).result().orElse(DEFAULT_LOG);
-		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("chest_loot_table")));
-		this.holeSeed = tag.getInt("hole_seed");
+		log = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("log")).result().orElse(DEFAULT_LOG);
+		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getStringOr("chest_loot_table", "")));
+		this.holeSeed = tag.getIntOr("hole_seed", 0);
 		this.hole = new Hole(this, RandomSource.create(holeSeed));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@NotNull StructurePieceSerializationContext context, CompoundTag tag) {
+	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putInt("length", this.length);
 		tag.putInt("radius", this.radius);
 		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.putString("chest_loot_table", this.chestLootTable.location().toString());
+		tag.putString("chest_loot_table", this.chestLootTable.identifier().toString());
 		tag.putLong("hole_seed", this.holeSeed);
 	}
 
 	@Override
-	public void addChildren(@NotNull StructurePiece parent, StructurePieceAccessor list, @NotNull RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(TERRAFORM_PIECE_SIZE));
 		list.addPiece(terraformingPiece);
 
@@ -94,8 +93,8 @@ public class FallenTrunkPiece extends StructurePiece {
 	}
 
 	@Override
-	public void postProcess(@NotNull WorldGenLevel level, @NotNull StructureManager structureManager, @NotNull ChunkGenerator generator, @NotNull RandomSource randomSource,
-							@NotNull BoundingBox box, @NotNull ChunkPos chunkPos, @NotNull BlockPos pos) {
+	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource randomSource,
+							BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
 		RandomSource random = RandomSource.create(pos.asLong());
 		if (radius == FallenTrunkStructure.radiuses.get(0))
 			generateSmallFallenTrunk(level, random, box, pos, random.nextBoolean());
@@ -145,7 +144,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	private void generateTrunkMainRod(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole) {
 		for (int dz = ERODED_LENGTH; dz < length - 1 - ERODED_LENGTH; dz++) {
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
+			this.placeLog(level, getLogState(level, random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 	}
 
@@ -155,7 +154,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				break;
 
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
+			this.placeLog(level, getLogState(level, random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 
 		for (int dz = length - 1 - ERODED_LENGTH; dz < length - 1; dz++) {
@@ -163,7 +162,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				break;
 
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
+			this.placeLog(level, getLogState(level, random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 	}
 
@@ -209,8 +208,8 @@ public class FallenTrunkPiece extends StructurePiece {
 		return (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.5));
 	}
 
-	private BlockState getLogState(RandomSource random, BlockPos pos) {
-		return log.getState(random, pos).trySetValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	private BlockState getLogState(WorldGenLevel worldGenLevel, RandomSource random, BlockPos pos) {
+		return log.getState(worldGenLevel, random, pos).trySetValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 	}
 
 	private void placeLog(WorldGenLevel level, BlockState blockstate, int x, int y, int z, BoundingBox boundingbox, RandomSource random, boolean hasHole) {
@@ -223,13 +222,12 @@ public class FallenTrunkPiece extends StructurePiece {
 			placeBlock(level, blockstate, x, y, z, boundingbox);
 			if (randomChild.nextFloat() <= MOSS_CHANCE && boundingbox.isInside(getWorldPos(x, y + 1, z)) && this.getBlock(level, x, y + 1, z, boundingbox).is(BlockTags.REPLACEABLE)) {
 				placeBlock(level, TFBlocks.MOSS_PATCH.get().defaultBlockState(), x, y + 1, z, boundingbox);
-				level.blockUpdated(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH.get());  // to connect moss patches
+				level.updateNeighborsAt(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH.get());  // to connect moss patches
 				level.getChunk(getWorldPos(x, y + 1, z)).markPosForPostprocessing(getWorldPos(x, y + 1, z));
 			}
 		}
 	}
 
-	@NotNull
 	@Override
 	public Direction getOrientation() {
 		return Objects.requireNonNull(orientation);  // orientation is always not null, just to remove warnings

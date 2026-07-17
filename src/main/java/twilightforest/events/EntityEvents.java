@@ -70,6 +70,7 @@ import tamaized.beanification.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
@@ -326,11 +327,13 @@ public class EntityEvents {
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE));
-		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(),
-			newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE),
-			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
-		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)));
+		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) {
+			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
+			sc.setOwnerProfile(profile);
+			sc.setChanged();
+		}
 	}
 
 	/**

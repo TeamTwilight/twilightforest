@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
@@ -44,17 +43,17 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	public TowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 
-		this.size = nbt.getInt("towerSize");
-		this.height = nbt.getInt("towerHeight");
+		this.size = nbt.getIntOr("towerSize", 0);
+		this.height = nbt.getIntOr("towerHeight", 0);
 
-		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
+		this.readOpeningsFromArray(nbt.getIntArray("doorInts").get());
 
-		this.highestOpening = nbt.getInt("highestOpening");
+		this.highestOpening = nbt.getIntOr("highestOpening", 0);
 		// too lazy to do this as a loop
-		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
-		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
-		this.openingTowards[2] = nbt.getBoolean("openingTowards2");
-		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
+		this.openingTowards[0] = nbt.getBooleanOr("openingTowards0", false);
+		this.openingTowards[1] = nbt.getBooleanOr("openingTowards1", false);
+		this.openingTowards[2] = nbt.getBooleanOr("openingTowards2", false);
+		this.openingTowards[3] = nbt.getBooleanOr("openingTowards3", false);
 	}
 
 	public int size;
@@ -1252,10 +1251,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		final BlockPos pos = getBlockPosWithOffset(cx, 2, cx);
 
-		if (i > 4 && !world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFStructureHelper.randomTree(rand.nextInt(4))).place(world, generator, world.getRandom(), pos)) {
-			//if tree placement fails, place the potted sapling
-			this.placeBlock(world, plant, cx, 2, cx, sbb);
-		} else {
+		boolean treePlaced = i > 4 && world.registryAccess()
+			.lookupOrThrow(Registries.CONFIGURED_FEATURE)
+			.getOrThrow(TFStructureHelper.randomTree(rand.nextInt(4)))
+			.value()
+			.place(world, generator, world.getRandom(), pos);
+
+		if (!treePlaced) {
 			this.placeBlock(world, plant, cx, 2, cx, sbb);
 		}
 	}

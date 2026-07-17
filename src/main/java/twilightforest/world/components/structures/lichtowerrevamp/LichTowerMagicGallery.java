@@ -127,8 +127,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 				galleryPainting.setVariant(variantHolderOpt.get());
 
 				variantHolderOpt.get().value();
-				this.placeSettings.getRotation();
-				galleryPainting.moveTo(pos.getBottomCenter(), 0, 0);
+				galleryPainting.snapTo(pos.getBottomCenter(), 0, 0);
 
 				level.addFreshEntityWithPassengers(galleryPainting);
 			}

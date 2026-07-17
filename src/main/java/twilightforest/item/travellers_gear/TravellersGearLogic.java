@@ -79,7 +79,7 @@ public class TravellersGearLogic {
 			if (level.isClientSide()) {
 				level.addParticle(ParticleTypes.SPLASH, particlePos.x(), particlePos.y(), particlePos.z(), particleVelocity.x(), particleVelocity.y(), particleVelocity.z());
 			} else {
-				particlePacket.queueParticle(ParticleTypes.SPLASH, false, particlePos, particleVelocity);
+				particlePacket.queueParticle(ParticleTypes.SPLASH, false, false, particlePos, particleVelocity);
 			}
 		}
 
@@ -268,7 +268,7 @@ public class TravellersGearLogic {
 				);
 				ParticleOptions type = TFParticleType.DOUBLE_JUMP.get();
 				Vec3 wingsPosition = player.position().add(Math.sin(Math.toRadians(player.yBodyRot)) / 3, 1.2, -Math.cos(Math.toRadians(player.yBodyRot)) / 3);
-				particlePacket.queueParticle(type, false, wingsPosition, particleVelocity.multiply(0.25, -0.5, 0.25).add(deltaMovement));
+				particlePacket.queueParticle(type, false, false, wingsPosition, particleVelocity.multiply(0.25, -0.5, 0.25).add(deltaMovement));
 			}
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, particlePacket);
 			TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);

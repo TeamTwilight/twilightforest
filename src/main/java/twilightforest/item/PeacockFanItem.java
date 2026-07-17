@@ -57,7 +57,7 @@ public class PeacockFanItem extends Item {
 						ParticlePacket packet = new ParticlePacket();
 
 						for (int i = 0; i < 30; i++) {
-							packet.queueParticle(ParticleTypes.CLOUD, true, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
+							packet.queueParticle(ParticleTypes.CLOUD, false, true, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
 								fanBox.minY + level.getRandom().nextFloat() * (fanBox.maxY - fanBox.minY),
 								fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
 								lookVec.x(), lookVec.y(), lookVec.z());

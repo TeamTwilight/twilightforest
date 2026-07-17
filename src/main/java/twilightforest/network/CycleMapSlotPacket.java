@@ -38,7 +38,7 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 				ItemDisplayContents updatedContents = mutable.toImmutable();
 				headStack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
 				serverPlayer.getInventory().setChanged();
-				player.playNotifySound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), player.getSoundSource(), 1F, 1F);
+				player.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), 1F, 1F);
 			}
 		});
 	}

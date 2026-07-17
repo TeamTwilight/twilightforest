@@ -1,20 +1,28 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.HolderLookup;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFRecipes;
 
 public class EssenceRepairRecipe extends CustomRecipe {
+	public static final MapCodec<EssenceRepairRecipe> MAP_CODEC =
+		MapCodec.unit(EssenceRepairRecipe::new);
 
-	public EssenceRepairRecipe(CraftingBookCategory category) {
-		super(category);
+	public static final StreamCodec<RegistryFriendlyByteBuf, EssenceRepairRecipe> STREAM_CODEC =
+		StreamCodec.unit(new EssenceRepairRecipe());
+
+	public static final RecipeSerializer<EssenceRepairRecipe> SERIALIZER =
+		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
+	public EssenceRepairRecipe() {
+		super();
 	}
 
 	@Override
@@ -40,10 +48,10 @@ public class EssenceRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
+	public ItemStack assemble(CraftingInput craftingInput) {
 		ItemStack scepter = null;
-		for (int i = 0; i < input.size(); ++i) {
-			ItemStack itemstack = input.getItem(i);
+		for (int i = 0; i < craftingInput.size(); ++i) {
+			ItemStack itemstack = craftingInput.getItem(i);
 			if (!itemstack.isEmpty()) {
 				if (itemstack.is(TFItemTags.SCEPTERS)) {
 					if (scepter == null) {
@@ -66,12 +74,7 @@ public class EssenceRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.ESSENCE_REPAIR_RECIPE.get();
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+		return SERIALIZER;
 	}
 }
