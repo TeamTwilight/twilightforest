@@ -167,9 +167,21 @@ public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 		);
 	}
 
-	public void setupModelAnimations(LivingEntity entity, double ageInTicks) {
+	// [VanillaCopy] this method should be removed when IClientItemExtensions fully switches to HumanoidRenderState
+	private HumanoidRenderState createRendererState(LivingEntity entity, float walkAnimationPos, float walkAnimationSpeed, double ageInTicks, float netHeadYaw, float headPitch) {
+		HumanoidRenderState state = new HumanoidRenderState();
+		state.entityType = entity.getType();
+		state.walkAnimationPos = walkAnimationPos;
+		state.walkAnimationSpeed = walkAnimationSpeed;
+		state.ageInTicks = (float) ageInTicks;
+		state.yRot = netHeadYaw;
+		state.xRot = headPitch;
+		return state;
+	}
+
+	public void setupModelAnimations(LivingEntity entity, float walkAnimationPos, float walkAnimationSpeed, double ageInTicks, float netHeadYaw, float headPitch) {
 		this.bodyParts().forEach(modelPart -> modelPart.getAllParts().forEach(ModelPart::resetPose));
-		super.setupAnim(new HumanoidRenderState());
+		super.setupAnim(createRendererState(entity, walkAnimationPos, walkAnimationSpeed, ageInTicks, netHeadYaw, headPitch));
 		TravellersWingsAnimAttachment animAttachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
 		TravellersWingsAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS);
 
