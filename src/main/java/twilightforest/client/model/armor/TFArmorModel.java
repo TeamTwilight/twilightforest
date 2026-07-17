@@ -20,9 +20,9 @@ public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 			this.head.xRot = Mth.DEG_TO_RAD * state.headPose.x();
 			this.head.yRot = Mth.DEG_TO_RAD * state.headPose.y();
 			this.head.zRot = Mth.DEG_TO_RAD * state.headPose.z();
-			this.body.xRot = Mth.DEG_TO_RAD * state.headPose.x();
-			this.body.yRot = Mth.DEG_TO_RAD * state.headPose.y();
-			this.body.zRot = Mth.DEG_TO_RAD * state.headPose.z();
+			this.body.xRot = Mth.DEG_TO_RAD * state.bodyPose.x();
+			this.body.yRot = Mth.DEG_TO_RAD * state.bodyPose.y();
+			this.body.zRot = Mth.DEG_TO_RAD * state.bodyPose.z();
 			this.leftArm.xRot = Mth.DEG_TO_RAD * state.leftArmPose.x();
 			this.leftArm.yRot = Mth.DEG_TO_RAD * state.leftArmPose.y();
 			this.leftArm.zRot = Mth.DEG_TO_RAD * state.leftArmPose.z();
