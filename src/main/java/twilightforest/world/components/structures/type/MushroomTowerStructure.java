@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -20,7 +21,6 @@ import twilightforest.world.components.structures.util.LandmarkStructure;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 
 public class MushroomTowerStructure extends LandmarkStructure {
 	public static final MapCodec<MushroomTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, MushroomTowerStructure::new));

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twilightforest.block.*;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.init.TFBlocks;
 
 public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
@@ -41,7 +42,7 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
 	private static boolean tryAddCandle(ServerLevel level, BlockPos pos, Item candle) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.getCandleColor())).asItem()) {
+			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.getCandleInfo().color())).asItem()) {
 				BlockState state = level.getBlockState(pos);
 				int candles = state.getValue(BlockStateProperties.CANDLES);
 				if (candles < 4) {
@@ -114,12 +115,14 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 			.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)));
-		level.setBlockEntity(new SkullCandleBlockEntity(pos,
-			newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
-		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		level.setBlockEntity(new SkullCandleBlockEntity(pos, newBlock.defaultBlockState()
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+			.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
+			sc.setOwnerProfile(profile);
+			sc.setChanged();
+		}
 	}
 
 	private static void makeWallSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
@@ -128,11 +131,13 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 			.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)));
-		level.setBlockEntity(new SkullCandleBlockEntity(pos,
-			newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
-		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		level.setBlockEntity(new SkullCandleBlockEntity(pos, newBlock.defaultBlockState()
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
+			.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
+			sc.setOwnerProfile(profile);
+			sc.setChanged();
+		}
 	}
 }

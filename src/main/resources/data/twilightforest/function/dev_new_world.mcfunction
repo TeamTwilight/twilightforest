@@ -1,13 +1,13 @@
-gamerule announceAdvancements false
-gamerule doDaylightCycle false
-gamerule doEntityDrops false
-gamerule doMobLoot false
-gamerule doMobSpawning false
-gamerule doPatrolSpawning false
-gamerule doTileDrops false
-gamerule doTraderSpawning false
-gamerule doWeatherCycle false
-gamerule keepInventory true
-gamerule randomTickSpeed -1
-gamerule tfEnforcedProgression false
+gamerule show_advancement_messages false
+gamerule advance_time false
+gamerule entity_drops false
+gamerule mob_drops false
+gamerule spawn_mobs false
+gamerule spawn_patrols false
+gamerule block_drops false
+gamerule spawn_wandering_traders false
+gamerule advance_weather false
+gamerule keep_inventory true
+gamerule random_tick_speed 0
+gamerule twilightforest:twilightforest_enforced_progression false
 execute in twilightforest:twilight_forest run teleport ~ 128 ~

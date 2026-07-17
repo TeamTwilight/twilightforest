@@ -6,8 +6,11 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
@@ -47,7 +50,11 @@ public class Restrictions {
 		context.register(THORNLANDS, new Restriction(TFStructures.FINAL_CASTLE, Enforcements.ACID_RAIN.getKey(), 1.0F, asStack(TFItems.LAMP_OF_CINDERS), List.of(TwilightForestMod.prefix("progress_troll"))));
 	}
 
-	public static ItemStack asStack(ItemLike itemLike) {
-		return new ItemStack(itemLike);
+	private static ItemStackTemplate asStack(DeferredBlock<? extends Block> blockHolder) {
+		return new ItemStackTemplate(blockHolder.asItem());
+	}
+
+	private static ItemStackTemplate asStack(DeferredItem<? extends Item> itemHolder) {
+		return new ItemStackTemplate(itemHolder);
 	}
 }

@@ -48,7 +48,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
 
-		this.placeSpawner = nbt.contains("placeSpawner") ? nbt.getBoolean("placeSpawner") : true; // For old versions of the courtyard that didn't place the naga spawner template
+		this.placeSpawner = nbt.getBooleanOr("placeSpawner", true); // For old versions of the courtyard that didn't place the naga spawner template
 	}
 
 	@SuppressWarnings("this-escape")

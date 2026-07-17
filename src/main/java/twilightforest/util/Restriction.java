@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -28,14 +29,21 @@ import java.util.Optional;
  */
 public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement, float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
 
-	//TODO: test that the itemstacktemplate works in datagen
+public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement,
+						  float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
+
 	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
 		ResourceKey.codec(TFRegistries.Keys.ENFORCEMENT).fieldOf("enforcement").forGetter(Restriction::enforcement),
 		Codec.FLOAT.fieldOf("multiplier").forGetter(Restriction::multiplier),
-		ItemStackTemplate.CODEC.optionalFieldOf("locked_biome_toast").forGetter(restriction -> Optional.ofNullable(restriction.lockedBiomeToast())),
+			ItemStackTemplate.CODEC.optionalFieldOf("locked_biome_toast").forGetter((restriction) -> Optional.ofNullable(restriction.lockedBiomeToast())),
 		ExtraCodecs.nonEmptyList(Identifier.CODEC.listOf()).fieldOf("advancements").forGetter(Restriction::advancements)
 	).apply(recordCodecBuilder, Restriction::create));
+
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
+	private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStackTemplate> lockedBiomeToast, List<Identifier> advancements) {
+		return new Restriction(hintStructureKey.orElse(null), enforcer, multiplier, lockedBiomeToast.orElse(null), advancements);
+	}
 
 	public static Optional<Restriction> getRestrictionForBiome(Biome biome, Entity entity) {
 		if (!(entity instanceof Player player))
@@ -50,13 +58,9 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 		if (restrictionsRegistry.isEmpty())
 			return Optional.empty();
 
-		if (restrictionsRegistry.get().get(biomeLocation).isPresent()) {
-			Restriction restrictions = restrictionsRegistry.get().get(biomeLocation).get().value();
-			if (PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
-				return Optional.empty();
-			}
-
-			return Optional.of(restrictions);
+		Restriction restrictions = restrictionsRegistry.get().get(biomeLocation).map(Holder.Reference::value).orElse(null);
+		if (restrictions == null || PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
+			return Optional.empty();
 		}
 
 		return Optional.empty();

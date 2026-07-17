@@ -89,7 +89,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; ++i) {
-				particlePacket.queueParticle(ParticleTypes.POOF, false,
+				particlePacket.queueParticle(ParticleTypes.POOF, false, false,
 					(double) pos.getX() + 0.5D + level.getRandom().nextGaussian() * 0.02D * level.getRandom().nextGaussian(),
 					(double) pos.getY() + level.getRandom().nextGaussian() * 0.02D * level.getRandom().nextGaussian(),
 					(double) pos.getZ() + 0.5D + level.getRandom().nextGaussian() * 0.02D * level.getRandom().nextGaussian(),

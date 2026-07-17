@@ -63,11 +63,11 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	public LichYardBox(StructurePieceSerializationContext ctx, CompoundTag tag) {
 		super(TFStructurePieceTypes.LICH_YARD_PATH.value(), tag);
 
-		this.edgeFeatheringRange = tag.getFloat("feather");
-		this.direction = tag.contains("direction") ? Direction.values()[tag.getInt("direction")] : Direction.UP;
-		this.doDirtMotley = tag.getBoolean("dirt_mix");
-		this.scale = tag.getFloat("dirt_scale");
-		this.offset = tag.getFloat("offset");
+		this.edgeFeatheringRange = tag.getFloatOr("feather", 0.0F);
+		this.direction = Direction.values()[tag.getIntOr("direction", Direction.UP.ordinal())];
+		this.doDirtMotley = tag.getBooleanOr("dirt_mix", false);
+		this.scale = tag.getFloatOr("dirt_scale", 0.0F);
+		this.offset = tag.getFloatOr("offset", 0.0F);
 	}
 
 	@Override

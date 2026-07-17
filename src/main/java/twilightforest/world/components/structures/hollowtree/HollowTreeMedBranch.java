@@ -73,17 +73,17 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 	protected HollowTreeMedBranch(StructurePieceType type, StructurePieceSerializationContext context, CompoundTag tag) {
 		super(type, tag);
 
-		this.src = new BlockPos(tag.getInt("srcPosX"), tag.getInt("srcPosY"), tag.getInt("srcPosZ"));
-		this.dest = new BlockPos(tag.getInt("destPosX"), tag.getInt("destPosY"), tag.getInt("destPosZ"));
+		this.src = new BlockPos(tag.getIntOr("srcPosX", 0), tag.getIntOr("srcPosY", 0), tag.getIntOr("srcPosZ", 0));
+		this.dest = new BlockPos(tag.getIntOr("destPosX", 0), tag.getIntOr("destPosY", 0), tag.getIntOr("destPosZ", 0));
 
-		this.length = tag.getDouble("branchLength");
-		this.angle = tag.getDouble("branchAngle");
-		this.tilt = tag.getDouble("branchTilt");
-		this.leafy = tag.getBoolean("branchLeafy");
+		this.length = tag.getDoubleOr("branchLength", 0.0D);
+		this.angle = tag.getDoubleOr("branchAngle", 0.0D);
+		this.tilt = tag.getDoubleOr("branchTilt", 0.0D);
+		this.leafy = tag.getBooleanOr("branchLeafy", false);
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
-		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompound("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
-		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompound("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
+		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
 	}
 
 	@Override

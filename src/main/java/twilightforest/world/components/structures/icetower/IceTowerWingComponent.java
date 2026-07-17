@@ -52,8 +52,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	public IceTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.hasBase = nbt.getBoolean("hasBase");
-		this.treasureFloor = nbt.getInt("treasureFloor");
+		this.hasBase = nbt.getBooleanOr("hasBase", false);
+		this.treasureFloor = nbt.getIntOr("treasureFloor", -1);
 	}
 
 	protected IceTowerWingComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
@@ -109,8 +109,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				int[] dest = getValidOpening(rand, dir);
 
 				if (this.getGenDepth() == 4 && (parent instanceof IceTowerMainComponent) && !((IceTowerMainComponent) parent).hasBossWing) {
-					boolean hasBoss = makeBossTowerWing(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], 15, 41, dir);
-					((IceTowerMainComponent) parent).hasBossWing = hasBoss;
+					((IceTowerMainComponent) parent).hasBossWing = makeBossTowerWing(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], 15, 41, dir);
 				} else {
 					int childHeight = (rand.nextInt(2) + rand.nextInt(2) + 2) * 10 + 1;
 					makeTowerWing(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], SIZE, childHeight, dir);
@@ -163,7 +162,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (!(list instanceof StructurePiecesBuilder start) || !start.pieces.isEmpty() && isOutOfRange(start.pieces.get(0), dx[0], dx[2], RANGE))
+		if (!(list instanceof StructurePiecesBuilder start) || !start.pieces.isEmpty() && isOutOfRange(start.pieces.getFirst(), dx[0], dx[2], RANGE))
 			return false;
 
 		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
@@ -182,7 +181,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			return false;
 
 		list.addPiece(wing);
-		wing.addChildren(start.pieces.get(0), list, rand);
+		wing.addChildren(start.pieces.getFirst(), list, rand);
 		addOpening(x, y, z, rotation);
 		return true;
 	}
@@ -201,7 +200,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		if (intersect == null || intersect == this) {
 			list.addPiece(wing);
 			if (list instanceof StructurePiecesBuilder start) {
-				wing.addChildren(start.pieces.get(0), list, rand);
+				wing.addChildren(start.pieces.getFirst(), list, rand);
 			}
 			addOpening(x, y, z, rotation);
 			return true;
@@ -321,7 +320,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				);
 
 			possibleFloors.entrySet().removeIf(entry -> entry.getValue().isEmpty());
-			possibleFloors.keySet().remove(FloorTypesAuroraPalace.TOP);
+			possibleFloors.remove(FloorTypesAuroraPalace.TOP);
 			if (possibleFloors.isEmpty()) {
 				plan.clear();
 				topBlockedParts = topBlockedPartsInit;
@@ -813,8 +812,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 
-	private void decoratePillarParkour(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
-		Rotation rotation = ladderDownDir;
+	private void decoratePillarParkour(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation rotation, boolean hasTreasure, BoundingBox sbb) {
 
 		final BlockState pillarEW = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);

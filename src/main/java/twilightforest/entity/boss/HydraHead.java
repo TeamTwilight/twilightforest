@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 
 public class HydraHead extends HydraPart {
@@ -60,7 +61,7 @@ public class HydraHead extends HydraPart {
 	}
 
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand) {
+	public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
 		ItemStack stack = player.getItemInHand(hand);
 		Component tagName = stack.get(DataComponents.CUSTOM_NAME);
 		if (stack.is(Items.NAME_TAG) && tagName != null) {
@@ -81,6 +82,6 @@ public class HydraHead extends HydraPart {
 
 			return InteractionResult.SUCCESS;
 		}
-		return super.interact(player, hand);
+		return super.interact(player, hand, location);
 	}
 }

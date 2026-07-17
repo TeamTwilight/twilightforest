@@ -8,6 +8,6 @@ import java.util.Map;
 /**
  * @param poolWeights Weights in assigning this template to their respective pools
  */
-public record StructureTemplateDefinition(Map<Identifier, Integer> poolWeights) {
-	public final static Codec<StructureTemplateDefinition> CODEC = Codec.unboundedMap(Identifier.CODEC, Codec.INT).xmap(StructureTemplateDefinition::new, StructureTemplateDefinition::poolWeights);
+public record StructureTemplateDefinition(Map<Identifier, TemplatePoolInstance> poolWeights) {
+	public final static Codec<StructureTemplateDefinition> CODEC = Codec.unboundedMap(Identifier.CODEC, TemplatePoolInstance.CODEC).xmap(StructureTemplateDefinition::new, StructureTemplateDefinition::poolWeights);
 }

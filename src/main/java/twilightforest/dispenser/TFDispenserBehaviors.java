@@ -1,12 +1,10 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.core.dispenser.EquipmentDispenseItemBehavior;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -37,13 +35,7 @@ public class TFDispenserBehaviors {
 			}
 		});
 
-		DispenseItemBehavior idispenseitembehavior = new OptionalDispenseItemBehavior() {
-			@Override
-			protected ItemStack execute(BlockSource source, ItemStack stack) {
-				this.setSuccess(ArmorItem.dispenseArmor(source, stack));
-				return stack;
-			}
-		};
+		DispenseItemBehavior idispenseitembehavior = EquipmentDispenseItemBehavior.INSTANCE;
 		DispenserBlock.registerBehavior(TFBlocks.NAGA_TROPHY.get().asItem(), idispenseitembehavior);
 		DispenserBlock.registerBehavior(TFBlocks.LICH_TROPHY.get().asItem(), idispenseitembehavior);
 		DispenserBlock.registerBehavior(TFBlocks.MINOSHROOM_TROPHY.get().asItem(), idispenseitembehavior);
