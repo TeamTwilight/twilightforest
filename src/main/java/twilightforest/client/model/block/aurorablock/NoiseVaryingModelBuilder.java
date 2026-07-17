@@ -38,19 +38,11 @@ public class NoiseVaryingModelBuilder extends CustomLoaderBuilder {
 	@Override
 	public JsonObject toJson(JsonObject json) {
 		JsonObject mainJson = super.toJson(json);
-		JsonArray variants = new JsonArray();
 
+		JsonArray variants = new JsonArray();
 		this.variants.forEach(Identifier -> variants.add(Identifier.toString()));
 		mainJson.add("variants", variants);
 
-		if (mainJson.has("loader")) {
-			mainJson.remove("loader");
-		}
-		if (mainJson.has("type")) {
-			mainJson.remove("type");
-		}
-
 		return mainJson;
 	}
-
 }
