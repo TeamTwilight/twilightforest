@@ -1,6 +1,4 @@
-@MethodsReturnNonnullByDefault @ParametersAreNonnullByDefault
+@NullMarked
 package twilightforest.datagen.generator;
 
-import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
