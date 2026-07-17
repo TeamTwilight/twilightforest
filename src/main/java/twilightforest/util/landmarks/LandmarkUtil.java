@@ -1,11 +1,8 @@
 package twilightforest.util.landmarks;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -22,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFGameRules;
-import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.tags.TFStructureTags;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.CustomStructureData;

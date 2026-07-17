@@ -1,6 +1,5 @@
 package twilightforest.util.jigsaw;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -9,7 +8,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
-import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
