@@ -143,12 +143,8 @@ public class EntityUtil {
 	}
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
-	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
+	public static boolean properlyApplyCustomDamageSource(ServerLevel serverLevel, Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
 		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-
-		if (!(entity.level() instanceof ServerLevel serverLevel)) {
-			return false;
-		}
 		f = EnchantmentHelper.modifyDamage(serverLevel, entity.getWeaponItem(), entity, source, f);
 
 		boolean flag = victim.hurtServer(serverLevel, source, f);
