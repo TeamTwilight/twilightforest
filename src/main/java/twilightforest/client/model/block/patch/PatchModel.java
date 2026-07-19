@@ -1,40 +1,64 @@
 package twilightforest.client.model.block.patch;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.block.dispatch.ModelState;
+import com.mojang.math.Transformation;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelDebugName;
-import net.minecraft.client.resources.model.geometry.BakedQuad;
-import net.minecraft.client.resources.model.geometry.QuadCollection;
-import net.minecraft.client.resources.model.geometry.UnbakedGeometry;
-import net.minecraft.client.resources.model.sprite.TextureSlots;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.client.model.quad.MutableQuad;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
+import net.neoforged.neoforge.client.model.SimpleModelState;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.block.PatchBlock;
+import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
+import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatchModel implements UnbakedGeometry {
+public class PatchModel implements BakedModel {
 
+	private final TextureAtlasSprite texture;
 	private final boolean shaggify;
+	private final TextureAtlasSprite particle;
+	private final boolean usesAO;
+	private final boolean usesBlockLight;
+	private final ItemTransforms transforms;
+	@Nullable
+	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
+	private final RenderType itemRenderType;
 
-	private TextureAtlasSprite texture;
-	private boolean usesAO;
-	private boolean usesBlockLight;
-
-	public PatchModel(boolean shaggify) {
-		this.shaggify = shaggify;
-	}
-
-	public PatchModel(TextureAtlasSprite texture, boolean shaggify, boolean usesAO, boolean usesBlockLight) {
+	public PatchModel(TextureAtlasSprite texture, boolean shaggify, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
 		this.texture = texture;
 		this.shaggify = shaggify;
+		this.particle = particle;
 		this.usesAO = usesAO;
 		this.usesBlockLight = usesBlockLight;
+		this.transforms = transforms;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
+	}
+
+	@Override
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
+		if (state == null)
+			return this.getQuads(false, false, false, false, random);
+		else
+			return this.getQuads(state.getValue(PatchBlock.NORTH), state.getValue(PatchBlock.EAST), state.getValue(PatchBlock.SOUTH), state.getValue(PatchBlock.WEST), random);
 	}
 
 	private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, RandomSource posRandom) {
@@ -149,50 +173,50 @@ public class PatchModel implements UnbakedGeometry {
 	}
 
 	private BakedQuad quadFromVectors(Direction direction, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-		MutableQuad mutableQuad = new MutableQuad();
+		BlockElementFace face = new BlockElementFace(null, 0, this.texture.atlasLocation().toString(), switch (direction) {
+			case NORTH -> new BlockFaceUV(new float[]{maxX, minZ + 1f, minX, minZ}, 0);
+			case EAST -> new BlockFaceUV(new float[]{maxX, minZ, maxX - 1f, maxZ}, 90);
+			case SOUTH -> new BlockFaceUV(new float[]{minX, maxZ, maxX, maxZ - 1f}, 0);
+			case WEST -> new BlockFaceUV(new float[]{minX, maxZ, minX + 1f, minZ}, 90);
+			default -> new BlockFaceUV(new float[]{minX, minZ, maxX, maxZ}, 0);
+		});
 
-		mutableQuad.setDirection(direction);
-		mutableQuad.setShade(this.usesAO);
-
-		if (this.usesBlockLight) {
-			mutableQuad.setLightEmission(15);
-		}
-
-		for (int v = 0; v < 4; v++) {
-			float x = (v == 1 || v == 2) ? maxX / 16.0f : minX / 16.0f;
-			float y = (v == 2 || v == 3) ? maxY / 16.0f : minY / 16.0f;
-			float z = (direction.getAxis() == net.minecraft.core.Direction.Axis.Z) ? maxZ / 16.0f : minZ / 16.0f;
-
-			mutableQuad.setPosition(v, new org.joml.Vector3f(x, y, z));
-
-			float u = this.texture.getU(x * 16.0f);
-			float vCoord = this.texture.getV(y * 16.0f);
-
-			if (direction == net.minecraft.core.Direction.EAST || direction == net.minecraft.core.Direction.WEST) {
-				mutableQuad.setUv(v, vCoord, u);
-			} else {
-				mutableQuad.setUv(v, u, vCoord);
-			}
-		}
-
-		return mutableQuad.toBakedQuad();
+		return FaceBakery.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true, 0);
 	}
 
 	@Override
-	public QuadCollection bake(TextureSlots textureSlots, ModelBaker modelBaker, ModelState modelState, ModelDebugName modelDebugName) {
-		QuadCollection.Builder builder = new QuadCollection.Builder();
+	public boolean useAmbientOcclusion() {
+		return this.usesAO;
+	}
 
-		RandomSource staticRandom = RandomSource.create(42L);
-		List<BakedQuad> myPatchQuads = this.getQuads(false, false, false, false, staticRandom);
+	@Override
+	public boolean isGui3d() {
+		return false;
+	}
 
-		for (BakedQuad quad : myPatchQuads) {
-			if (quad.direction() != null) {
-				builder.addCulledFace(quad.direction(), quad);
-			} else {
-				builder.addUnculledFace(quad);
-			}
-		}
+	@Override
+	public boolean usesBlockLight() {
+		return this.usesBlockLight;
+	}
 
-		return builder.build();
+	@Override
+	public ItemTransforms getTransforms() {
+		return this.transforms;
+	}
+
+	@Override
+	public TextureAtlasSprite getParticleIcon() {
+		return this.particle;
+	}
+
+	@NotNull
+	@Override
+	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+		return this.blockRenderTypes != null ? this.blockRenderTypes : BakedModel.super.getRenderTypes(state, rand, data);
+	}
+
+	@Override
+	public RenderType getRenderType(ItemStack stack) {
+		return this.itemRenderType != null ? this.itemRenderType : BakedModel.super.getRenderType(stack);
 	}
 }

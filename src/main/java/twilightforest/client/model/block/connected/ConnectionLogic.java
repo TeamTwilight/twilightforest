@@ -1,7 +1,6 @@
 package twilightforest.client.model.block.connected;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.cuboid.CuboidFace;
 import net.minecraft.core.Direction;
 
 //let the magic begin.
@@ -59,9 +58,8 @@ public enum ConnectionLogic {
 		return sprites[this.texture];
 	}
 
-	public CuboidFace.UVs remapUVs(CuboidFace.UVs uvs) {
-		if (uvs == null) return new CuboidFace.UVs(0, 0, 0, 0);
-		return new CuboidFace.UVs(this.getU(uvs.maxU()), this.getV(uvs.minV()), this.getU(uvs.maxU()), this.getV(uvs.maxV()));
+	public float[] remapUVs(float[] uvs) {
+		return new float[]{this.getU(uvs[0]), this.getV(uvs[1]), this.getU(uvs[2]), this.getV(uvs[3])};
 	}
 
 	public float getU(float delta) {

@@ -68,8 +68,6 @@ public class TFBlockEntities {
 		new BlockEntityType<>(KeepsakeCasketBlockEntity::new, TFBlocks.KEEPSAKE_CASKET.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrazierBlockEntity>> BRAZIER = BLOCK_ENTITIES.register("brazier", () ->
 		new BlockEntityType<>(BrazierBlockEntity::new, TFBlocks.BRAZIER.get()));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CoronationCarpetBlockEntity>> CORONATION_CARPET = BLOCK_ENTITIES.register("coronation_carpet", () ->
-		new BlockEntityType<>(CoronationCarpetBlockEntity::new, TFBlocks.CORONATION_CARPET.get()));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFChestBlockEntity>> TF_CHEST = BLOCK_ENTITIES.register("chest", () ->
 		new BlockEntityType<>(TFChestBlockEntity::new,

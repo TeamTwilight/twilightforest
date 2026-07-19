@@ -5,18 +5,27 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Quadrant;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.resources.model.cuboid.CuboidFace;
+import net.minecraft.client.resources.model.cuboid.CuboidModelElement;
+import net.minecraft.client.resources.model.cuboid.CuboidRotation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.neoforged.neoforge.client.model.ExtraFaceData;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.block.forcefield.ForceFieldModel.ExtraDirection;
+import twilightforest.util.UnbakedGeometryUtil;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 
@@ -72,8 +81,9 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 	public JsonObject toJson(JsonObject json) {
 		json = super.toJson(json);
 		if (!this.elements.isEmpty()) {
-			JsonArray elementsArray = new JsonArray();
+			JsonArray elements = new JsonArray();
 			this.elements.forEach(forceFieldElementBuilder -> {
+				CuboidModelElement part = forceFieldElementBuilder.build();
 				JsonObject partObj = new JsonObject();
 
 				if (forceFieldElementBuilder.condition != null) {
@@ -90,63 +100,55 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 					partObj.add("condition", condition);
 				}
 
-				partObj.add("from", serializeVector3f(forceFieldElementBuilder.from));
-				partObj.add("to", serializeVector3f(forceFieldElementBuilder.to));
+				partObj.add("from", serializeVector3fc(part.from()));
+				partObj.add("to", serializeVector3fc(part.to()));
 
-				if (forceFieldElementBuilder.rotation != null) {
+				if (part.rotation() != null) {
 					JsonObject rotation = new JsonObject();
-					rotation.add("origin", serializeVector3f(forceFieldElementBuilder.rotation.origin));
-					rotation.addProperty("axis", forceFieldElementBuilder.rotation.axis.getSerializedName());
-					rotation.addProperty("angle", forceFieldElementBuilder.rotation.angle);
-					if (forceFieldElementBuilder.rotation.rescale) {
+					rotation.add("origin", serializeVector3fc(part.rotation().origin()));
+					rotation.addProperty("axis", part.rotation.axis().getSerializedName());
+					rotation.addProperty("angle", part.rotation.angle());
+					if (part.rotation().rescale()) {
 						rotation.addProperty("rescale", true);
 					}
 					partObj.add("rotation", rotation);
 				}
 
-				if (!forceFieldElementBuilder.shade) {
-					partObj.addProperty("shade", forceFieldElementBuilder.shade);
+				if (!part.shade()) {
+					partObj.addProperty("shade", part.shade());
 				}
 
-				if (forceFieldElementBuilder.light != 0) {
-					partObj.addProperty("light", forceFieldElementBuilder.light);
+				if (part.lightEmission() != 0) {
+					partObj.addProperty("light_emission", part.lightEmission());
 				}
 
-				JsonObject facesObj = new JsonObject();
-
-				for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.values()) {
-					var faceBuilder = forceFieldElementBuilder.faces.get(dir);
-					if (faceBuilder == null) continue;
+				JsonObject faces = new JsonObject();
+				for (Direction dir : Direction.values()) {
+					CuboidFace face = part.faces().get(dir);
+					if (face == null) continue;
 
 					JsonObject faceObj = new JsonObject();
-
-					faceObj.addProperty("texture", serializeLocOrKey(faceBuilder.texture));
-
-					if (faceBuilder.uvs != null) {
-						faceObj.add("uvs", new Gson().toJsonTree(faceBuilder.uvs));
+					faceObj.addProperty("texture", serializeLocOrKey(face.texture()));
+					if (!UnbakedGeometryUtil.areUVsEqual(face.uvs(), UnbakedGeometryUtil.uvsByFace(dir, part))) {
+						faceObj.add("uv", new Gson().toJsonTree(face.uvs()));
 					}
-
-					if (faceBuilder.cullface != null) {
-						faceObj.addProperty("cullface", faceBuilder.cullface.getSerializedName());
+					if (face.cullForDirection() != null) {
+						faceObj.addProperty("cullface", face.cullForDirection().getSerializedName());
 					}
-
-					if (faceBuilder.rotation.rotation != 0) {
-						faceObj.addProperty("rotation", faceBuilder.rotation.rotation);
+					if (face.rotation() != Quadrant.R0) {
+						faceObj.addProperty("rotation", UnbakedGeometryUtil.angleFromQuadrant(face.rotation()));
 					}
-
-					if (faceBuilder.tintindex != -1) {
-						faceObj.addProperty("tintindex", faceBuilder.tintindex);
+					if (face.tintIndex() != -1) {
+						faceObj.addProperty("tintindex", face.tintIndex());
 					}
-
-					facesObj.add(dir.getSerializedName(), faceObj);
+					faces.add(dir.getSerializedName(), faceObj);
 				}
-
-				if (!forceFieldElementBuilder.faces.isEmpty()) {
-					partObj.add("faces", facesObj);
+				if (!part.faces().isEmpty()) {
+					partObj.add("faces", faces);
 				}
-				elementsArray.add(partObj);
+				elements.add(partObj);
 			});
-			json.add("elements", elementsArray);
+			json.add("elements", elements);
 		}
 		return json;
 	}
@@ -158,7 +160,7 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 		return Identifier.parse(tex).toString();
 	}
 
-	private static JsonArray serializeVector3f(Vector3f vec) {
+	private static JsonArray serializeVector3fc(Vector3fc vec) {
 		JsonArray ret = new JsonArray();
 		ret.add(serializeFloat(vec.x()));
 		ret.add(serializeFloat(vec.y()));
@@ -288,6 +290,14 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 			return (direction, builder) -> builder.texture(texture);
 		}
 
+		CuboidModelElement build() {
+			Map<Direction, CuboidFace> faces = this.faces.entrySet().stream()
+				.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().build(), (direction, face) -> {
+					throw new IllegalArgumentException();
+				}, LinkedHashMap::new));
+			return new CuboidModelElement(this.from, this.to, faces, this.rotation == null ? null : this.rotation.build(), this.shade, this.light, ExtraFaceData.DEFAULT);
+		}
+
 		public ForceFieldModelBuilder end() {
 			return self();
 		}
@@ -332,6 +342,13 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 				return this;
 			}
 
+			CuboidFace build() {
+				if (this.texture == null) {
+					throw new IllegalStateException("A model face must have a texture");
+				}
+				return new CuboidFace(this.cullface, this.tintindex, this.texture, this.uvs == null ? new CuboidFace.UVs(0, 0, 16, 16) : UnbakedGeometryUtil.uvsFromArray(this.uvs), UnbakedGeometryUtil.quadrantFromAngle(this.rotation.rotation), ExtraFaceData.DEFAULT, new MutableObject<>());
+			}
+
 			public ForceFieldElementBuilder end() {
 				return ForceFieldElementBuilder.this;
 			}
@@ -367,6 +384,12 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 			public ForceFieldElementBuilder.RotationBuilder rescale(boolean rescale) {
 				this.rescale = rescale;
 				return this;
+			}
+
+			CuboidRotation build() {
+				Preconditions.checkNotNull(this.origin, "No origin specified");
+				Preconditions.checkNotNull(this.axis, "No axis specified");
+				return new CuboidRotation(this.origin, new CuboidRotation.SingleAxisRotation(this.axis, this.angle), this.rescale);
 			}
 
 			public ForceFieldElementBuilder end() {
