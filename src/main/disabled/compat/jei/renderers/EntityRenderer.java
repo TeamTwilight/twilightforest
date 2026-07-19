@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeEntityType;
-import twilightforest.util.entities.EntityRenderingUtil;
+import twilightforest.client.EntityRenderingUtil;
 
 import java.util.List;
 

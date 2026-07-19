@@ -16,17 +16,22 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.DecorationClearance;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 import java.util.Map;
 import java.util.Optional;
 
 public class CampStructure extends Structure implements DecorationClearance {
+
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
 	public static final MapCodec<CampStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance)
@@ -51,8 +56,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			Identifier templatePool = TwilightForestMod.prefix("camp/structure_start");
-			// TODO Instead use StructureTemplateDefinitions.initializeStubFromPool
-			TwilightJigsawPiece twilightJigsawPiece = TwilightJigsawPiece.initializeTemplateFromPool(templatePool, freePosition.mutable(), oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
+			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition.mutable(), oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
 
 			if (twilightJigsawPiece == null) return;
 

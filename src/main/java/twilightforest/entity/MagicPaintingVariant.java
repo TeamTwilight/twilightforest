@@ -3,10 +3,9 @@ package twilightforest.entity;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
@@ -20,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 import twilightforest.TFRegistries;
-import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.MagicPaintingVariants;
 
 import javax.annotation.Nullable;
@@ -107,21 +105,25 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 			}
 		}
 
-		public record OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to, ItemStack item, Optional<MobEffectCategory> effectCategory) {
+		public record OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to, HolderSet<Item> itemTriggers, Optional<MobEffectCategory> effectCategory) {
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max) {
-				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, ItemStack.EMPTY, Optional.empty());
+				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, HolderSet.empty(), Optional.empty());
 			}
 
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to) {
-				this(type, multiplier, invert, min, max, from, to, ItemStack.EMPTY, Optional.empty());
+				this(type, multiplier, invert, min, max, from, to, HolderSet.empty(), Optional.empty());
 			}
 
-			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, ItemStack item) {
-				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, item, Optional.empty());
+			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, HolderSet<Item> itemTriggers) {
+				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, itemTriggers, Optional.empty());
 			}
 
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, MobEffectCategory effectCategory) {
-				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, ItemStack.EMPTY, Optional.of(effectCategory));
+				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, HolderSet.empty(), Optional.of(effectCategory));
+			}
+
+			public boolean matches(ItemStack itemStack) {
+				return this.itemTriggers.contains(itemStack.getItem().builtInRegistryHolder());
 			}
 
 			//Just so we can access MobEffectCategory in json
@@ -135,14 +137,14 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 				ExtraCodecs.POSITIVE_FLOAT.fieldOf("max").forGetter(OpacityModifier::max),
 				Codec.FLOAT.optionalFieldOf("from").forGetter((modifier) -> Float.isNaN(modifier.from()) ? Optional.empty() : Optional.of(modifier.from())),
 				Codec.FLOAT.optionalFieldOf("to").forGetter((modifier) -> Float.isNaN(modifier.to()) ? Optional.empty() : Optional.of(modifier.to())),
-				ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> modifier.item().isEmpty() ? Optional.empty() : Optional.of(modifier.item())),
+				RegistryCodecs.homogeneousList(Registries.ITEM).fieldOf("item_stack").forGetter(OpacityModifier::itemTriggers),
 				MOB_EFFECT_CATEGORY_CODEC.optionalFieldOf("effect_category").forGetter((modifier) -> modifier.effectCategory().isEmpty() ? Optional.empty() : modifier.effectCategory())
 			).apply(recordCodecBuilder, OpacityModifier::create));
 
 			@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
-			private static OpacityModifier create(Type type, float multiplier, boolean invert, float min, float max, Optional<Float> from, Optional<Float> to, Optional<ItemStack> item, Optional<MobEffectCategory> effectCategory) {
+			private static OpacityModifier create(Type type, float multiplier, boolean invert, float min, float max, Optional<Float> from, Optional<Float> to, HolderSet<Item> itemTriggers, Optional<MobEffectCategory> effectCategory) {
 				if (type.usesRange() && (from.isEmpty() || to.isEmpty())) throw new NoSuchElementException("Range for opacity modifier is not defined!");
-				return new OpacityModifier(type, multiplier, invert, min, max, from.orElse(Float.NaN), to.orElse(Float.NaN), item.orElse(ItemStack.EMPTY), effectCategory);
+				return new OpacityModifier(type, multiplier, invert, min, max, from.orElse(Float.NaN), to.orElse(Float.NaN), itemTriggers, effectCategory);
 			}
 
 			public enum Type implements StringRepresentable {

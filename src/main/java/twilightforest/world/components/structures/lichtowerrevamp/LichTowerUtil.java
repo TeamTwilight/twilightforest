@@ -105,33 +105,33 @@ public class LichTowerUtil {
 
 		if (pool == null) return null;
 
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, pool);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, pool);
 	}
 
 	@Nullable
 	public Identifier rollTowerGallery(RandomSource randomSource) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, LichTowerPieces.GALLERY);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, LichTowerPieces.GALLERY);
 	}
 
 	@Nullable
 	public Identifier rollGalleryRoof(RandomSource randomSource, BoundingBox box) {
 		boolean odd = (Math.min(box.getXSpan(), box.getZSpan()) & 1) == 1;
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, odd ? LichTowerPieces.GALLERY_ROOF_ODD : LichTowerPieces.GALLERY_ROOF_EVEN);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, odd ? LichTowerPieces.GALLERY_ROOF_ODD : LichTowerPieces.GALLERY_ROOF_EVEN);
 	}
 
 	@Nullable
 	public Identifier rollRandomMobBridge(RandomSource randomSource) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, LichTowerPieces.MOB_BRIDGE);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, LichTowerPieces.MOB_BRIDGE);
 	}
 
 	@Nullable
 	public Identifier rollRandomCover(RandomSource randomSource) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, LichTowerPieces.DOOR_STOPPER);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, LichTowerPieces.DOOR_STOPPER);
 	}
 
 	@Nullable
 	public Identifier rollRandomDecor(RandomSource randomSource, boolean inCentralTower) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, inCentralTower ? LichTowerPieces.CENTER_DECOR : LichTowerPieces.ROOM_DECOR);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, inCentralTower ? LichTowerPieces.CENTER_DECOR : LichTowerPieces.ROOM_DECOR);
 	}
 
 	public Iterable<Identifier> shuffledCenterBridges(RandomSource randomSource) {
@@ -184,7 +184,7 @@ public class LichTowerUtil {
 
 		if (pool == null) return null;
 
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, pool);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, pool);
 	}
 
 	public Set<String> getLadderPlacementsForSize(int size) {
@@ -201,7 +201,7 @@ public class LichTowerUtil {
 		if (size > 0 && size <= 3) {
 			Int2ObjectMap<Identifier> roomsForSize = this.lichRoomPieces.ladderRooms.get(size - 1);
 			Identifier roomsForLadderPlacement = roomsForSize.get(ladderOffset);
-			return roomsForLadderPlacement == null ? null : StructureTemplateDefinitions.INSTANCE.rollTemplatePool(random, roomsForLadderPlacement);
+			return roomsForLadderPlacement == null ? null : structureTemplateDefinitions.getRandomTemplate(random, roomsForLadderPlacement);
 		}
 
 		return null;
@@ -219,7 +219,7 @@ public class LichTowerUtil {
 
 		if (pool == null) return null;
 
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(random, pool);
+		return structureTemplateDefinitions.getRandomTemplate(random, pool);
 	}
 
 	@Nullable
@@ -233,7 +233,7 @@ public class LichTowerUtil {
 
 		if (pool == null) return null;
 
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(random, pool);
+		return structureTemplateDefinitions.getRandomTemplate(random, pool);
 	}
 
 	public static void addDefaultProcessors(StructurePlaceSettings settings) {
@@ -247,26 +247,26 @@ public class LichTowerUtil {
 
 	@Nullable
 	public Identifier getKeepsakeCasketRoom(RandomSource random) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(random, LichTowerPieces.ROOM_9_SPECIAL);
+		return structureTemplateDefinitions.getRandomTemplate(random, LichTowerPieces.ROOM_9_SPECIAL);
 	}
 
 	@Nullable
 	public Identifier getEnclosedCentralBridge(RandomSource random) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(random, LichTowerPieces.BRIDGE_FROM_CENTRAL_FALLBACK);
+		return structureTemplateDefinitions.getRandomTemplate(random, LichTowerPieces.BRIDGE_FROM_CENTRAL_FALLBACK);
 	}
 
 	@Nullable
 	public Identifier getDirectRoomAttachment(RandomSource random) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(random, LichTowerPieces.ROOM_BRIDGE_FALLBACK);
+		return structureTemplateDefinitions.getRandomTemplate(random, LichTowerPieces.ROOM_BRIDGE_FALLBACK);
 	}
 
 	@Nullable
 	public Identifier getDefaultBridgeStopper(RandomSource randomSource) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, LichTowerPieces.DOOR_STOPPER_FALLBACK);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, LichTowerPieces.DOOR_STOPPER_FALLBACK);
 	}
 
 	@Nullable
 	public Identifier rollGrave(RandomSource randomSource) {
-		return StructureTemplateDefinitions.INSTANCE.rollTemplatePool(randomSource, LichTowerPieces.YARD_GRAVE);
+		return structureTemplateDefinitions.getRandomTemplate(randomSource, LichTowerPieces.YARD_GRAVE);
 	}
 }

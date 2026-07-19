@@ -10,9 +10,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFea
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.world.components.feature.BigMushgloomFeature;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class TrollBigMushgloomFeature extends BigMushgloomFeature {
 	public TrollBigMushgloomFeature(Codec<HugeMushroomFeatureConfiguration> config) {
 		super(config);

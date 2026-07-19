@@ -10,7 +10,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.CraftingInput;
 import twilightforest.TwilightForestMod;
 
 import java.util.List;
@@ -68,27 +68,23 @@ public record TransferableComponentModifier(
 	}
 
 	@Override
-	public boolean transfer(ItemStack output, List<Ingredient> input) {
-		List<ItemStack[]> dataComponentProviders = findDataComponentProviders(input);
+	public boolean transfer(ItemStack output, CraftingInput input) {
+		List<ItemStack> dataComponentProviders = findDataComponentProviders(input);
 		if (dataComponentProviders.isEmpty())
 			return false;
 		if (dataComponentProviders.size() > 1) {
 			TwilightForestMod.LOGGER.error("A recipe with more than 2 dataComponentProviders was matched: {}. Please report to https://github.com/TeamTwilight/twilightforest/issues", input);
 			return false;
 		}
-		ItemStack dataComponentProvider = dataComponentProviders.getFirst()[0];
+		ItemStack dataComponentProvider = dataComponentProviders.getFirst();
 		output.set(this.markerComponent, Unit.INSTANCE);
 		output.set((DataComponentType<Object>) this.transferableComponent.type(), dataComponentProvider.get(transferableComponent.type()));
 		return true;
 	}
 
-	public List<ItemStack[]> findDataComponentProviders(List<Ingredient> input) {
-		return input.stream()
-			.map(ingredient -> ingredient.getValues().stream()
-				.map(itemHolder -> new ItemStack(itemHolder.value()))
-				.toArray(ItemStack[]::new))
-			.filter(itemStacks -> java.util.Arrays.stream(itemStacks)
-				.anyMatch(itemStack -> itemStack.has(transferableComponent.type())))
+	public List<ItemStack> findDataComponentProviders(CraftingInput input) {
+		return input.items().stream()
+			.filter(stack -> stack.has(transferableComponent.type()))
 			.toList();
 	}
 

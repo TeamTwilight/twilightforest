@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
-import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -41,9 +40,9 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
 
-		this.putMobBridge = compoundTag.getBoolean("put_bridge");
-		this.putWings = compoundTag.getBoolean("put_wings");
-		this.putGallery = compoundTag.getBoolean("put_gallery");
+		this.putMobBridge = compoundTag.getBooleanOr("put_bridge", false);
+		this.putWings = compoundTag.getBooleanOr("put_wings", false);
+		this.putGallery = compoundTag.getBooleanOr("put_gallery", false);
 	}
 
 	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery, Identifier template) {

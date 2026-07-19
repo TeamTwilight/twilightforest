@@ -48,6 +48,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.components.item.CandelabraData;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -167,9 +168,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 							player.getInventory().add(itemstack);
 						}
 					} else {
-						if (!player.getInventory().add(itemstack)) {
-							player.drop(itemstack, false);
-						}
+						InventoryUtil.giveItemToPlayer(player, itemstack);
 					}
 					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 					return InteractionResult.SUCCESS;

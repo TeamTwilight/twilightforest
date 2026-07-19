@@ -9,23 +9,22 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.HedgeMazeComponent;
-import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 
 public class HedgeMazeStructure extends LandmarkStructure implements CustomDensitySource {
 	public static final MapCodec<HedgeMazeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, HedgeMazeStructure::new));
@@ -49,7 +48,7 @@ public class HedgeMazeStructure extends LandmarkStructure implements CustomDensi
 			Optional.of(new DecorationConfig(2, false, true, true)),
 			true, Optional.of(TFMapDecorations.HEDGE_MAZE),
 			new Structure.StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HEDGE_MAZE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.BEARD_BOX

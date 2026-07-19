@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
@@ -50,7 +49,6 @@ public class TFDensityFunctions {
 		makeSkylightTerrain(context, referencedBiomeDensity, ambientTerrainNoise);
 	}
 
-	@NotNull
 	private static DensityFunction makeBiomeDensityRaw(BootstrapContext<DensityFunction> context, Holder.Reference<BiomeDensitySource> biomeGrid) {
 		DensityFunction rawBiomeDensityReferenced = new TerrainDensityRouter(
 			biomeGrid,
@@ -67,7 +65,6 @@ public class TFDensityFunctions {
 		return new DensityFunctions.HolderHolder(context.register(BIOME_TERRAIN_RAW, rawBiomeDensityReferenced));
 	}
 
-	@NotNull
 	private static DensityFunction makeAmbientNoise2D(BootstrapContext<DensityFunction> context) {
 		HolderGetter<NormalNoise.NoiseParameters> noiseLookup = context.lookup(Registries.NOISE);
 		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = noiseLookup.getOrThrow(Noises.SURFACE);
@@ -86,7 +83,6 @@ public class TFDensityFunctions {
 		return DensityFunctions.flatCache(jitteredNoise);
 	}
 
-	@NotNull
 	private static DensityFunction makeStreamDensityRaw(BootstrapContext<DensityFunction> context, Holder.Reference<BiomeDensitySource> biomeGrid) {
 		DensityFunction rawStreamDensityReferenced = new NoiseDensityRouter(
 			biomeGrid,
@@ -101,7 +97,6 @@ public class TFDensityFunctions {
 		return new DensityFunctions.HolderHolder(context.register(BIOME_NOISE_RAW, rawStreamDensityReferenced));
 	}
 
-	@NotNull
 	private static DensityFunction mulAddHalf(DensityFunction input) {
 		// mulAddHalf(x) = x * 0.5 + 0.5
 		// Useful for squeezing function range [-1,1] into [0,1]

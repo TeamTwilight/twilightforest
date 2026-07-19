@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
@@ -78,7 +78,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.LABYRINTH),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LABYRINTH_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_LABYRINTH_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
 				TerrainAdjustment.BURY
@@ -136,8 +136,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 		// Finally combine the hill mound & interior fields, resulting field containing per-position minimums from both.
 		// Everything above the hill mound surface are zeros. The interior's field has negative values where "inside" is and positive values where "not inside" is, with zeros forming the interior surfaces.
 		// This min() function combines these two surfaces formed by said zeros
-		DensityFunction hollowHill = DensityFunctions.min(hillMound, interiorMasked);
 
-		return hollowHill;
+		return DensityFunctions.min(hillMound, interiorMasked);
 	}
 }

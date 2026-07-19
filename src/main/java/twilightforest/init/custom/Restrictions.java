@@ -6,8 +6,11 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
@@ -21,15 +24,15 @@ import java.util.List;
 public class Restrictions {
 	public static final Codec<Holder<Restriction>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, false);
 
-	public static final ResourceKey<Restriction> DARK_FOREST = makeKey(TFBiomes.DARK_FOREST.location());
-	public static final ResourceKey<Restriction> DARK_FOREST_CENTER = makeKey(TFBiomes.DARK_FOREST_CENTER.location());
-	public static final ResourceKey<Restriction> FINAL_PLATEAU = makeKey(TFBiomes.FINAL_PLATEAU.location());
-	public static final ResourceKey<Restriction> FIRE_SWAMP = makeKey(TFBiomes.FIRE_SWAMP.location());
-	public static final ResourceKey<Restriction> GLACIER = makeKey(TFBiomes.GLACIER.location());
-	public static final ResourceKey<Restriction> HIGHLANDS = makeKey(TFBiomes.HIGHLANDS.location());
-	public static final ResourceKey<Restriction> SNOWY_FOREST = makeKey(TFBiomes.SNOWY_FOREST.location());
-	public static final ResourceKey<Restriction> SWAMP = makeKey(TFBiomes.SWAMP.location());
-	public static final ResourceKey<Restriction> THORNLANDS = makeKey(TFBiomes.THORNLANDS.location());
+	public static final ResourceKey<Restriction> DARK_FOREST = makeKey(TFBiomes.DARK_FOREST.identifier());
+	public static final ResourceKey<Restriction> DARK_FOREST_CENTER = makeKey(TFBiomes.DARK_FOREST_CENTER.identifier());
+	public static final ResourceKey<Restriction> FINAL_PLATEAU = makeKey(TFBiomes.FINAL_PLATEAU.identifier());
+	public static final ResourceKey<Restriction> FIRE_SWAMP = makeKey(TFBiomes.FIRE_SWAMP.identifier());
+	public static final ResourceKey<Restriction> GLACIER = makeKey(TFBiomes.GLACIER.identifier());
+	public static final ResourceKey<Restriction> HIGHLANDS = makeKey(TFBiomes.HIGHLANDS.identifier());
+	public static final ResourceKey<Restriction> SNOWY_FOREST = makeKey(TFBiomes.SNOWY_FOREST.identifier());
+	public static final ResourceKey<Restriction> SWAMP = makeKey(TFBiomes.SWAMP.identifier());
+	public static final ResourceKey<Restriction> THORNLANDS = makeKey(TFBiomes.THORNLANDS.identifier());
 
 	private static ResourceKey<Restriction> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.RESTRICTIONS, name);
@@ -47,7 +50,11 @@ public class Restrictions {
 		context.register(THORNLANDS, new Restriction(TFStructures.FINAL_CASTLE, Enforcements.ACID_RAIN.getKey(), 1.0F, asStack(TFItems.LAMP_OF_CINDERS), List.of(TwilightForestMod.prefix("progress_troll"))));
 	}
 
-	public static ItemStack asStack(ItemLike itemLike) {
-		return new ItemStack(itemLike);
+	private static ItemStackTemplate asStack(DeferredBlock<? extends Block> blockHolder) {
+		return new ItemStackTemplate(blockHolder.asItem());
+	}
+
+	private static ItemStackTemplate asStack(DeferredItem<? extends Item> itemHolder) {
+		return new ItemStackTemplate(itemHolder);
 	}
 }

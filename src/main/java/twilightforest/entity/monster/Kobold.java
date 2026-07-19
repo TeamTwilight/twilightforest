@@ -163,7 +163,7 @@ public class Kobold extends Monster {
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < amount; ++i) {
 				this.getItemParticleVectors((vec31, vec3) ->
-					particlePacket.queueParticle(particleOptions, false,
+					particlePacket.queueParticle(particleOptions, false, false,
 						vec31.x() + vec3.x() * this.random.nextGaussian(),
 						vec31.y() + (vec3.y() + 0.05D) * this.random.nextGaussian(),
 						vec31.z() + vec3.z() * this.random.nextGaussian(),

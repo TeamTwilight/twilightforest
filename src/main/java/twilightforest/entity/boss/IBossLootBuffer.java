@@ -1,14 +1,13 @@
 package twilightforest.entity.boss;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,28 +44,28 @@ public interface IBossLootBuffer {
 	}
 
 	default void addDeathItemsSaveData(ValueOutput tag, RegistryAccess registryAccess) {
-		ContainerHelper.saveAllItems(tag, this.getItemStacks(), registryAccess);
+		ContainerHelper.saveAllItems(tag, this.getItemStacks(), false);
 	}
 
 	default void readDeathItemsSaveData(ValueInput tag, RegistryAccess registryAccess) {
-		ContainerHelper.loadAllItems(tag, this.getItemStacks(), registryAccess);
+		ContainerHelper.loadAllItems(tag, this.getItemStacks());
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
-		if (TFConfig.bossDropChests) {
-			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable());
-			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
-			boss.fill(boss, params, table);
+		if (!TFConfig.bossDropChests || boss.getLootTable().isEmpty())
+			return;
+		LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable().get());
+		ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
+		boss.fill(boss, params, table);
 
-			//If our loot stack size is bigger than the inventory, drop everything else outside it. Don't want to lose any loot now do we?
-			if (stacks.size() > CONTAINER_SIZE) {
-				for (ItemStack stack : stacks.subList(CONTAINER_SIZE, stacks.size())) {
-					ItemEntity item = new ItemEntity(serverLevel, boss.getX(), boss.getY(), boss.getZ(), stack);
-					item.setExtendedLifetime();
-					item.setNoPickUpDelay();
-					serverLevel.addFreshEntity(item);
-				}
-			}
+		if (stacks.size() <= CONTAINER_SIZE)
+			return;
+		//If our loot stack size is bigger than the inventory, drop everything else outside it. Don't want to lose any loot now do we?
+		for (ItemStack stack : stacks.subList(CONTAINER_SIZE, stacks.size())) {
+			ItemEntity item = new ItemEntity(serverLevel, boss.getX(), boss.getY(), boss.getZ(), stack);
+			item.setExtendedLifetime();
+			item.setNoPickUpDelay();
+			serverLevel.addFreshEntity(item);
 		}
 	}
 
@@ -109,7 +108,7 @@ public interface IBossLootBuffer {
 			double x = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
 			double y = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
 			double z = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-			particlePacket.queueParticle(ParticleTypes.POOF, false, vec3.add(x, y, z), Vec3.ZERO);
+			particlePacket.queueParticle(ParticleTypes.POOF, false, false, vec3.add(x, y, z), Vec3.ZERO);
 		}
 		PacketDistributor.sendToPlayersTrackingEntity(boss, particlePacket);
 	}
