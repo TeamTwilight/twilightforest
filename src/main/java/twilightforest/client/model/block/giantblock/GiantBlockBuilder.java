@@ -18,18 +18,4 @@ public class GiantBlockBuilder extends CustomLoaderBuilder {
 	protected CustomLoaderBuilder copyInternal() {
 		return new GiantBlockBuilder();
 	}
-
-	@Override
-	public JsonObject toJson(JsonObject json) {
-		JsonObject mainJson = super.toJson(json);
-
-		if (mainJson.has("loader")) {
-			mainJson.remove("loader");
-		}
-		if (mainJson.has("type")) {
-			mainJson.remove("type");
-		}
-
-		return mainJson;
-	}
 }
