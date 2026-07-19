@@ -126,7 +126,7 @@ public class TFBlocks {
 	public static final DeferredBlock<RotatedPillarBlock> TERRORCOTTA_ARCS = registerWithItem("terrorcotta_arcs", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F));
 	public static final DeferredBlock<GlazedTerracottaBlock> TERRORCOTTA_CURVES = registerWithItem("terrorcotta_curves", GlazedTerracottaBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F));
 	public static final DeferredBlock<BinaryRotatedBlock> TERRORCOTTA_LINES = registerWithItem("terrorcotta_lines", BinaryRotatedBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F));
-	public static final DeferredBlock<CarpetBlock> CORONATION_CARPET = registerWithItem("coronation_carpet", properties -> new WoolCarpetBlock(DyeColor.RED, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CARPET).isValidSpawn(Blocks::always));
+	public static final DeferredBlock<CoronationCarpetBlock> CORONATION_CARPET = registerWithItem("coronation_carpet", properties -> new CoronationCarpetBlock(DyeColor.RED, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CARPET).isValidSpawn(Blocks::always));
 
 	//ominous
 	public static final DeferredBlock<OminousFireBlock> OMINOUS_FIRE = register("ominous_fire", OminousFireBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).replaceable().noCollision().instabreak().lightLevel((state) -> 15).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY));

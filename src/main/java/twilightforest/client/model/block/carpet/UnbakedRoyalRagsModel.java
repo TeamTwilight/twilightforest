@@ -1,11 +1,13 @@
 package twilightforest.client.model.block.carpet;
 
-import com.mojang.blaze3d.platform.Transparency;
+import com.mojang.math.Quadrant;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelDebugName;
-import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.client.resources.model.cuboid.CuboidFace;
+import net.minecraft.client.resources.model.cuboid.CuboidModelElement;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.client.resources.model.geometry.UnbakedGeometry;
@@ -13,160 +15,120 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.sprite.TextureSlots;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.data.AtlasIds;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.client.model.block.connected.ConnectionLogic;
+import twilightforest.util.UnbakedGeometryUtil;
 
-import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 //for now, im keeping this hardcoded to a 2 layer block, with the overlay layer being fullbright and tinted.
 //It might be worth expanding this in the future to be more flexible for other kinds of blocks (1 layer blocks, determining emissivity and tinting per layer, maybe >2 layer blocks?) but for now, I see no point.
 //I only wanted this system for castle doors after all!
-public class UnbakedRoyalRagsModel implements UnbakedGeometry, UnbakedModel {
-	private final Vector3f[][][] baseElements; // [horizontal_dir][quad][0 = from, 1 = to]
-	private final Vector3f[][][][] faceElements; // [up_down_dir][quad][connection_logic][0 = from, 1 = to]
+public class UnbakedRoyalRagsModel implements UnbakedGeometry {
+
+	private final CuboidModelElement[][] baseElements;
+	private final CuboidModelElement[][][] faceElements;
 
 	public UnbakedRoyalRagsModel() {
-		// Properly size the arrays to handle the extra [2] dimension at the end for from/to
-		this.baseElements = new Vector3f[4][4][2];
-		this.faceElements = new Vector3f[2][4][5][2];
+		//base elements - the side faces without ctm. No Connected Textures on this bit.
+		//the array is made of horizontal directions (Direction.get2DDataValue) and quads
+		this.baseElements = new CuboidModelElement[4][4];
+
+		//face elements - the connected bit of the model.
+		//the array is made of the directions, quads, and each logic value in the ConnectionLogic class
+		//Topmost array indexes to up/dpwn directions (Direction.get3DDataValue, down = 0, up = 1) then inside are quads
+		this.faceElements = new CuboidModelElement[2][4][5];
 		Vec3i center = new Vec3i(8, 8, 8);
 
 		for (Direction face : Direction.values()) {
 			Direction[] planeDirections = ConnectionLogic.AXIS_PLANE_DIRECTIONS[face.getAxis().ordinal()];
 
 			for (int quad = 0; quad < 4; quad++) {
-				Vec3i vFace = face.getUnitVec3i();
-				Vec3i vP1 = planeDirections[quad].getUnitVec3i();
-				Vec3i vP2 = planeDirections[(quad + 1) % 4].getUnitVec3i();
-
-				int cornerX = (vFace.getX() + vP1.getX() + vP2.getX() + 1) * 8;
-				int cornerY = (vFace.getY() + vP1.getY() + vP2.getY() + 1) * 8;
-				int cornerZ = (vFace.getZ() + vP1.getZ() + vP2.getZ() + 1) * 8;
-
-				Vector3f from = new Vector3f(
-					(float) Math.min(center.getX(), cornerX),
-					(float) Math.min(center.getY(), cornerY) / 16f,
-					(float) Math.min(center.getZ(), cornerZ)
-				);
-
-				Vector3f to = new Vector3f(
-					(float) Math.max(center.getX(), cornerX),
-					(float) Math.max(center.getY(), cornerY) / 16f,
-					(float) Math.max(center.getZ(), cornerZ)
-				);
+				Vec3i corner = face.getUnitVec3i().offset(planeDirections[quad].getUnitVec3i()).offset(planeDirections[(quad + 1) % 4].getUnitVec3i()).offset(1, 1, 1).multiply(8);
+				CuboidModelElement element = new CuboidModelElement(new Vector3f((float) Math.min(center.getX(), corner.getX()), (float) Math.min(center.getY(), corner.getY()) / 16f, (float) Math.min(center.getZ(), corner.getZ())), new Vector3f((float) Math.max(center.getX(), corner.getX()), (float) Math.max(center.getY(), corner.getY()) / 16f, (float) Math.max(center.getZ(), corner.getZ())), Map.of());
 
 				if (face.getAxis().isHorizontal()) {
-					this.baseElements[face.get2DDataValue()][quad][0] = from;
-					this.baseElements[face.get2DDataValue()][quad][1] = to;
+					this.baseElements[face.get2DDataValue()][quad] = new CuboidModelElement(element.from(), element.to(), Map.of(face, new CuboidFace(face, -1, "", ConnectionLogic.NONE.remapUVs(UnbakedGeometryUtil.uvsByFace(face, element)), Quadrant.R0)));
 				} else {
 					for (ConnectionLogic connectionType : ConnectionLogic.values()) {
-						this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()][0] = from;
-						this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()][1] = to;
+						this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new CuboidModelElement(element.from(), element.to(), Map.of(face, new CuboidFace(face, 0, "", connectionType.remapUVs(UnbakedGeometryUtil.uvsByFace(face, element)), Quadrant.R0)));
 					}
 				}
 			}
 		}
 	}
 
+	public QuadCollection getQuads(@Nullable Direction side, List<BakedQuad>[] baseQuads, BakedQuad[][][] quads) {
+		if (side != null) {
+			QuadCollection.Builder builder = new QuadCollection.Builder();
+			if (side.getAxis().isHorizontal()) {
+				if (baseQuads != null) {
+					for (BakedQuad bakedQuad : baseQuads[side.get2DDataValue()]) {
+						builder.addCulledFace(side, bakedQuad);
+					}
+				}
+			} else {
+				int faceIndex = side.get3DDataValue();
+				for (int quad = 0; quad < 4; ++quad) {
+					ConnectionLogic connectionType = ConnectionLogic.NONE;
+					builder.addCulledFace(side, quads[faceIndex][quad][connectionType.ordinal()]);
+				}
+			}
+
+			return builder.build();
+		} else {
+			return QuadCollection.EMPTY;
+		}
+	}
+
 	@Override
 	public QuadCollection bake(TextureSlots textureSlots, ModelBaker modelBaker, ModelState modelState, ModelDebugName modelDebugName) {
-		QuadCollection.Builder builder = new QuadCollection.Builder();
+		//making an array list like this is cursed, would not recommend
+		@SuppressWarnings("unchecked") //this is fine, I hope
+		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 4);
+		Material baseMaterial = textureSlots.getMaterial("wool");
+		TextureAtlasSprite baseTexture = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(baseMaterial.sprite());
+		Material.Baked baseBakedMaterial = new Material.Baked(baseTexture, baseMaterial.forceTranslucent());
 
-		TextureAtlasSprite baseTexture = modelBaker.materials().resolveSlot(textureSlots, "wool", modelDebugName).sprite();
-		TextureAtlasSprite ctmTexture = modelBaker.materials().resolveSlot(textureSlots, "wool_ctm", modelDebugName).sprite();
-		TextureAtlasSprite[] textures = new TextureAtlasSprite[]{baseTexture, ctmTexture};
+		Material ctmMaterial = textureSlots.getMaterial("wool_ctm");
+		TextureAtlasSprite ctmTexture = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(ctmMaterial.sprite());
 
 		for (Direction direction : Direction.Plane.HORIZONTAL) {
-			int horSideIndex = direction.get2DDataValue();
+			baseQuads[direction.get2DDataValue()] = new ArrayList<>();
 
-			for (int quad = 0; quad < 4; quad++) {
-				Vector3f from = this.baseElements[horSideIndex][quad][0];
-				Vector3f to = this.baseElements[horSideIndex][quad][1];
-
-				if (from == null || to == null) continue;
-
-				Material.Baked material = modelBaker.materials().get(textureSlots.getMaterial("wool"), modelDebugName);
-				BakedQuad bakedQuad = createModernQuad(from, to, direction, material, baseTexture, -1, baseTexture.transparency());
-				builder.addUnculledFace(bakedQuad);
+			for (CuboidModelElement element : this.baseElements[direction.get2DDataValue()]) {
+				baseQuads[direction.get2DDataValue()].add(UnbakedGeometryUtil.bakeElementFace(modelBaker, element, element.faces().values().iterator().next(), baseBakedMaterial, direction, modelState));
 			}
 		}
 
-		for (int direction = 0; direction < 2; direction++) {
-			Direction actualDirection = direction == 0 ? Direction.DOWN: Direction.UP;
+		//we'll use this to figure out which texture to use with the Connected Texture logic
+		//NONE uses the first one, everything else uses the 2nd one
+		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{baseTexture, ctmTexture};
+		Material[] materials = new Material[]{baseMaterial, ctmMaterial};
 
+		BakedQuad[][][] quads = new BakedQuad[2][4][5];
+
+		for (int dir = 0; dir < 2; dir++) {
 			for (int quad = 0; quad < 4; quad++) {
-				for (int connectionState = 0; connectionState < 5; connectionState++) {
-					Vector3f from = this.faceElements[direction][quad][connectionState][0];
-					Vector3f to = this.faceElements[direction][quad][connectionState][1];
-
-					if (from == null || to == null) continue;
-
-					TextureAtlasSprite chosenTexture = ConnectionLogic.values()[connectionState].chooseTexture(textures);
-
-					Material.Baked material = modelBaker.materials().get(textureSlots.getMaterial(chosenTexture == baseTexture ? "wool" : "wool_ctm"), modelDebugName);
-					BakedQuad bakedQuad = createModernQuad(from, to, actualDirection, material, chosenTexture, 0, baseTexture.transparency());
-					builder.addCulledFace(actualDirection, bakedQuad);
+				for (int type = 0; type < 5; type++) {
+					CuboidModelElement element = this.faceElements[dir][quad][type];
+					Material.Baked bakedChoice = UnbakedGeometryUtil.chooseAndBake(ConnectionLogic.values()[type], sprites, materials);
+					quads[dir][quad][type] = UnbakedGeometryUtil.bakeElementFace(modelBaker, element, element.faces().values().iterator().next(), bakedChoice, Direction.values()[dir], modelState);
 				}
 			}
 		}
 
-		return builder.build();
-	}
+		QuadCollection.Builder builder = new QuadCollection.Builder();
 
-	private BakedQuad createModernQuad(
-		Vector3f from, Vector3f to,
-		Direction direction,
-		Material.Baked material,
-		TextureAtlasSprite activeSprite,
-		int tintIndex,
-		Transparency transparency) {
-
-		float x0 = from.x(), y0 = from.y(), z0 = from.z();
-		float x1 = to.x(),   y1 = to.y(),   z1 = to.z();
-
-		Vector3f p0 = new Vector3f();
-		Vector3f p1 = new Vector3f();
-		Vector3f p2 = new Vector3f();
-		Vector3f p3 = new Vector3f();
-
-		switch (direction) {
-			case DOWN -> {
-				p0.set(x0, y0, z0); p1.set(x1, y0, z0); p2.set(x1, y0, z1); p3.set(x0, y0, z1);
-			}
-			case UP -> {
-				p0.set(x0, y1, z1); p1.set(x1, y1, z1); p2.set(x1, y1, z0); p3.set(x0, y1, z0);
-			}
-			case NORTH -> {
-				p0.set(x1, y1, z0); p1.set(x1, y0, z0); p2.set(x0, y0, z0); p3.set(x0, y1, z0);
-			}
-			case SOUTH -> {
-				p0.set(x0, y1, z1); p1.set(x0, y0, z1); p2.set(x1, y0, z1); p3.set(x1, y1, z1);
-			}
-			case WEST -> {
-				p0.set(x0, y1, z0); p1.set(x0, y0, z0); p2.set(x0, y0, z1); p3.set(x0, y1, z1);
-			}
-			case EAST -> {
-				p0.set(x1, y1, z1); p1.set(x1, y0, z1); p2.set(x1, y0, z0); p3.set(x1, y1, z0);
-			}
+		for (Direction value : Direction.values()) {
+			builder.addAll(getQuads(value, baseQuads, quads));
 		}
 
-		float u0 = activeSprite.getU0(), u1 = activeSprite.getU1();
-		float v0 = activeSprite.getV0(), v1 = activeSprite.getV1();
-
-		long uv0 = ((long) Float.floatToRawIntBits(u0) << 32) | (Float.floatToRawIntBits(v0) & 0xFFFFFFFFL);
-		long uv1 = ((long) Float.floatToRawIntBits(u1) << 32) | (Float.floatToRawIntBits(v0) & 0xFFFFFFFFL);
-		long uv2 = ((long) Float.floatToRawIntBits(u1) << 32) | (Float.floatToRawIntBits(v1) & 0xFFFFFFFFL);
-		long uv3 = ((long) Float.floatToRawIntBits(u0) << 32) | (Float.floatToRawIntBits(v1) & 0xFFFFFFFFL);
-
-		BakedQuad.MaterialInfo materialInfo = BakedQuad.MaterialInfo.of(
-			material,
-			transparency,
-			tintIndex,
-			true,
-			0,
-			true
-		);
-
-		return new BakedQuad(p0, p1, p2, p3, uv0, uv1, uv2, uv3, direction, materialInfo);
+		return builder.build();
 	}
 }
