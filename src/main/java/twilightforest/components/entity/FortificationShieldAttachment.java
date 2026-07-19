@@ -117,7 +117,7 @@ public class FortificationShieldAttachment {
 				double x = (entity.getRandom().nextDouble() - 0.5D);
 				double y = (entity.getRandom().nextDouble() - 0.5D) * 0.25D;
 				double z = (entity.getRandom().nextDouble() - 0.5D);
-				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, pos.x + x, pos.y + y, pos.z + z, x * 0.33D, y * 0.33D, z * 0.33D);
+				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, false, pos.x + x, pos.y + y, pos.z + z, x * 0.33D, y * 0.33D, z * 0.33D);
 			}
 		}
 
