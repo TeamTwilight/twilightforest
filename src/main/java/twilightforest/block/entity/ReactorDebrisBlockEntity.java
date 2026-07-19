@@ -1,6 +1,7 @@
 package twilightforest.block.entity;
 
 import com.google.common.base.MoreObjects;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.model.data.ModelProperty;
 import org.joml.Vector3f;
 import twilightforest.init.TFBlockEntities;
 
@@ -30,6 +33,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		Identifier.withDefaultNamespace("block/nether_portal"),
 		Identifier.withDefaultNamespace("block/obsidian"),
 	};
+	public static final ModelProperty<Identifier> TEXTURE_FOR_PARTICLE = new ModelProperty<>();
 	public static final Identifier DEFAULT_TEXTURE = TEXTURES[0];
 	private static final float Z_FIGHTING_MIN = 0.008F;
 	private static final float Z_FIGHTING_MAX = 1 - 0.008F;
@@ -152,5 +156,13 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
 		return this.saveCustomOnly(registries);
+	}
+
+	@Override
+	public ModelData getModelData() {
+		if (!(this.level instanceof ClientLevel clientLevel))
+			return ModelData.EMPTY.derive().with(TEXTURE_FOR_PARTICLE, ReactorDebrisBlockEntity.DEFAULT_TEXTURE).build();
+		final Identifier textureForParticle = this.textures[clientLevel.getRandom().nextInt(this.textures.length)];
+		return ModelData.EMPTY.derive().with(TEXTURE_FOR_PARTICLE, textureForParticle).build();
 	}
 }
