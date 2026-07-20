@@ -43,7 +43,6 @@ public class NagaMovementPattern extends Goal {
 
 	@Override
 	public void tick() {
-		if (!(this.naga.level() instanceof ServerLevel serverLevel)) return;
 		if (!this.naga.getNavigation().isDone()) {
 			// If we still have an uncompleted path don't run yet
 			// This isn't in shouldExecute/shouldContinueExecuting because we don't want to reset the task
@@ -73,7 +72,7 @@ public class NagaMovementPattern extends Goal {
 						//the stunless charge has a higher chance to happen the lower the naga's health gets
 						//difficulty is also factored in. The higher the difficulty the greater the chance
 						float healthRatio = 1.0F - (this.naga.getHealth() / (this.naga.getMaxHealth())) - 0.25F;
-						float chance = Mth.clamp(healthRatio + (serverLevel.getCurrentDifficultyAt(this.naga.blockPosition()).getDifficulty().getId() * 0.05F), 0.0F, 0.5F);
+						float chance = Mth.clamp(healthRatio + (getServerLevel(this.naga).getCurrentDifficultyAt(this.naga.blockPosition()).getDifficulty().getId() * 0.05F), 0.0F, 0.5F);
 						float randChance = this.naga.getRandom().nextFloat() * 0.75F;
 						boolean stunless = randChance < chance;
 						this.naga.setStunlessCharging(stunless);

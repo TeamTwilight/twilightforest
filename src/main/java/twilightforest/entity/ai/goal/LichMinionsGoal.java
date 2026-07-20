@@ -89,19 +89,16 @@ public class LichMinionsGoal extends Goal {
 		}
 
 		if (this.lich.getAttackCooldown() == 0) {
+			ServerLevel serverLevel = getServerLevel(this.lich);
 			if (dist < 2.0F) {
 				// melee attack
-				if (this.lich.level() instanceof ServerLevel serverLevel) {
-					this.lich.doHurtTarget(serverLevel, targetedEntity);
-				}
+				this.lich.doHurtTarget(serverLevel, targetedEntity);
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < ATTACK_RANGE && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
-				if (this.lich.level() instanceof ServerLevel serverLevel) {
-					if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(serverLevel, this.lich));
-					else this.lich.launchProjectileAt(new LichBomb(serverLevel, this.lich));
-				}
+				if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(serverLevel, this.lich));
+				else this.lich.launchProjectileAt(new LichBomb(serverLevel, this.lich));
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setNextAttackType(this.lich.getRandom().nextBoolean() ? 0 : 1);
