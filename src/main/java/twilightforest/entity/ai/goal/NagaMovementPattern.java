@@ -179,7 +179,7 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!EventHooks.canEntityGrief((ServerLevel) this.naga.level(), this.naga) || naga.getTarget() == null) return;
+		if (!EventHooks.canEntityGrief(Goal.getServerLevel(this.naga), this.naga) || naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;

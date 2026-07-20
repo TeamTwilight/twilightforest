@@ -98,7 +98,7 @@ public class ChargeAttackGoal extends Goal {
 				}
 			}
 		} else if (this.canBreak) {
-			if (!this.charger.level().isClientSide() && EventHooks.canEntityGrief((ServerLevel) this.charger.level(), this.charger)) {
+			if (!this.charger.level().isClientSide() && EventHooks.canEntityGrief(Goal.getServerLevel(this.charger), this.charger)) {
 
 				AABB bb = this.charger.getBoundingBox();
 				int minx = Mth.floor(bb.minX - 0.75D);
@@ -127,7 +127,7 @@ public class ChargeAttackGoal extends Goal {
 		if (this.charger.distanceToSqr(this.chargeTarget.getX(), this.chargeTarget.getBoundingBox().minY, this.chargeTarget.getZ()) <= rangeSq) {
 			if (!this.hasAttacked) {
 				this.hasAttacked = true;
-				this.charger.doHurtTarget((ServerLevel) this.chargeTarget.level(), this.chargeTarget);
+				this.charger.doHurtTarget(Goal.getServerLevel(this.chargeTarget), this.chargeTarget);
 			}
 		}
 	}

@@ -35,7 +35,7 @@ public class PhantomWatchAndAttackGoal extends Goal {
 				if (this.boss.getSensing().hasLineOfSight(target)) {
 					if (attackTime-- <= 0 && f1 < 2.0F && target.getBoundingBox().maxY > this.boss.getBoundingBox().minY && this.boss.getTarget().getBoundingBox().minY < this.boss.getBoundingBox().maxY) {
 						attackTime = 20;
-						this.boss.doHurtTarget((ServerLevel) target.level(), target);
+						this.boss.doHurtTarget(Goal.getServerLevel(target), target);
 					}
 				}
 

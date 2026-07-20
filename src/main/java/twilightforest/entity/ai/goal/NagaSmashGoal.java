@@ -21,7 +21,7 @@ public class NagaSmashGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.naga.horizontalCollision && EventHooks.canEntityGrief((ServerLevel) this.naga.level(), this.naga);
+		return this.naga.horizontalCollision && EventHooks.canEntityGrief(Goal.getServerLevel(this.naga), this.naga);
 	}
 
 	@Override

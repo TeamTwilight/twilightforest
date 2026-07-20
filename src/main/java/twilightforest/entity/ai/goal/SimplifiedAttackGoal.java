@@ -54,7 +54,7 @@ public class SimplifiedAttackGoal extends Goal {
 		if (this.attackTick <= 0 && this.mob.isWithinMeleeAttackRange(entity) && this.mob.hasLineOfSight(entity)) {
 			this.attackTick = this.adjustedTickDelay(20);
 			this.mob.swing(InteractionHand.MAIN_HAND);
-			this.mob.doHurtTarget((ServerLevel) entity.level(), entity);
+			this.mob.doHurtTarget(Goal.getServerLevel(entity), entity);
 		}
 	}
 }

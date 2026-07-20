@@ -88,7 +88,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 			// anyhoo, deal damage
 			Entity target = this.getHeadLookTarget();
 			if (target != null) {
-				this.entityHost.doBreathAttack((ServerLevel) target.level(), target);
+				this.entityHost.doBreathAttack(Goal.getServerLevel(target), target);
 				this.entityHost.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			}
 		}

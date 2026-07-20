@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.event.EventHooks;
@@ -22,7 +23,7 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 			&& !this.redcap.heldTNT.isEmpty()
 			&& this.redcap.distanceToSqr(attackTarget) < 25
 			&& !this.isTargetLookingAtMe(attackTarget)
-			&& EventHooks.canEntityGrief((ServerLevel) this.redcap.level(), this.redcap)
+			&& EventHooks.canEntityGrief(Goal.getServerLevel(this.redcap), this.redcap)
 			&& !this.isLitTNTNearby(8)
 			&& this.findBlockTNTNearby(5) == null;
 	}
