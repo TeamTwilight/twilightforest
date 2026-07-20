@@ -7,12 +7,12 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import twilightforest.client.state.entity.LoyalZombieRenderState;
 
 /**
  * [VanillaCopy] {@link net.minecraft.client.model.monster.zombie.AbstractZombieModel} due to generic restrictions
  */
-public class LoyalZombieModel extends HumanoidModel<LoyalZombieModel.LoyalZombieRenderState> {
+public class LoyalZombieModel extends HumanoidModel<LoyalZombieRenderState> {
 
 	public LoyalZombieModel(ModelPart part) {
 		super(part);
@@ -40,9 +40,5 @@ public class LoyalZombieModel extends HumanoidModel<LoyalZombieModel.LoyalZombie
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		int greenColor = ARGB.color(ARGB.alpha(color), (int) (ARGB.red(color) * 0.25F), ARGB.green(color), (int) (ARGB.blue(color) * 0.25F));
 		super.renderToBuffer(stack, builder, light, overlay, greenColor);
-	}
-
-	public static class LoyalZombieRenderState extends HumanoidRenderState {
-		public boolean isAggressive;
 	}
 }
