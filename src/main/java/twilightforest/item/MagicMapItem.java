@@ -53,7 +53,8 @@ public class MagicMapItem extends MapItem {
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level level) {
 		MapId mapid = stack.get(DataComponents.MAP_ID);
-		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, mapid);
+		// FIXME fix this after fixing TFMagicMapData
+		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(mapid.id()));
 	}
 
 	@Nullable
@@ -89,7 +90,8 @@ public class MagicMapItem extends MapItem {
 		ColumnPos pos = getMagicMapCenter(x, z);
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(level, mapdata, new MapId(freeMapId.id())); // call our own register method
+		// FIXME fix this after fixing TFMagicMapData
+		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
 		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
