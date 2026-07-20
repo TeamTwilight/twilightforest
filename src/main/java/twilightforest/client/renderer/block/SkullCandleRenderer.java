@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
@@ -29,7 +30,6 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.LightableBlock;
-import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.client.state.block.SkullCandleRenderState;
 import twilightforest.components.item.SkullCandles;
@@ -88,7 +88,7 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 			state.candleTransformation = CANDLE_TRANSFORMS.freeTransformations(0);
 		}
 
-		state.skullType = ((SkullCandleBlock)blockState.getBlock()).getType();
+		state.skullType = ((AbstractSkullBlock)blockState.getBlock()).getType();
 		state.renderType = this.resolveSkullRenderType(state.skullType, blockEntity);
 
 		updateSkullCandle(blockEntity.getCandleInfo(), this.blockResolver, state.candle, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE);
@@ -108,7 +108,7 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 	}
 
 	private static Transformation createGroundTransformation(int segment) {
-		return new Transformation(new Matrix4f().translation(0.0F, 0.0F, 0.0F));
+		return new Transformation(new Matrix4f().translation(0.0F, 0.45F, 0.0F));
 	}
 
 	private RenderType resolveSkullRenderType(SkullBlock.Type type, SkullBlockEntity entity) {
