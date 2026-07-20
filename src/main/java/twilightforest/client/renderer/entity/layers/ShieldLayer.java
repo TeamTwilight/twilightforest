@@ -36,7 +36,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, S state, float netHeadYaw, float headPitch) {
 		Integer count = state.getRenderData(SHIELD_COUNT_KEY);
 		if (count != null && count > 0) {
-			this.renderShields(stack, collector, state, count);
+			this.renderShields(stack, collector, state, count, state.lightCoords, state.outlineColor);
 		}
 	}
 
@@ -46,7 +46,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 			: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 
-	private void renderShields(PoseStack stack, SubmitNodeCollector collector, S state, int count) {
+	private void renderShields(PoseStack stack, SubmitNodeCollector collector, S state, int count, int lightCoords, int outlineColor) {
 		float age = state.ageInTicks;
 		float rotateAngleY = age / -5.0F;
 		float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
@@ -78,9 +78,9 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 				modelState.submit(
 					stack,
 					collector,
-					0xF000F0,
+					lightCoords,
 					OverlayTexture.NO_OVERLAY,
-					-1
+					outlineColor
 				);
 			}
 
