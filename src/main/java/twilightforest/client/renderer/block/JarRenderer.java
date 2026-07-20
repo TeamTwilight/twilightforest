@@ -3,37 +3,33 @@ package twilightforest.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.item.ItemModel;
-import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.RenderTypeHelper;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
-import twilightforest.client.state.block.JarRenderState;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 
@@ -43,8 +39,8 @@ import java.util.List;
 import java.util.Map;
 
 //TODO I ideally want to move the jar lids to be data driven
-public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRenderer<T, JarRenderState> {
-	public static final Map<Item, ItemModel> LIDS = new HashMap<>();
+public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRenderer<T> {
+	public static final Map<Item, BakedModel> LIDS = new HashMap<>();
 
 	public record LidResource(Item lid, Identifier identifier, @Nullable String customPath) {
 		public LidResource(DeferredBlock<?> lid) {
@@ -103,11 +99,11 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		new LidResource(Items.STRIPPED_BAMBOO_BLOCK, "stripped_bamboo_block")
 	));
 
-	protected final BlockEntityRenderDispatcher blockRenderer;
+	protected final BlockRenderDispatcher blockRenderer;
 	protected static final float WOBBLE_AMPLITUDE = 0.125F;
 
 	public JarRenderer(BlockEntityRendererProvider.Context context) {
-		this.blockRenderer = context.blockEntityRenderDispatcher();
+		this.blockRenderer = context.getBlockRenderDispatcher();
 	}
 
 	@Override
@@ -116,15 +112,15 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	}
 
 	@Override
-	public void submit(JarRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+	public void render(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		poseStack.pushPose();
 		poseStack.translate(0.5, 0.0, 0.5);
 		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
 		poseStack.translate(-0.5, 0.0, -0.5);
-		WobbleStyle wobbleStyle = state.lastWobbleStyle;
+		WobbleStyle wobbleStyle = blockEntity.lastWobbleStyle;
 
-		if (wobbleStyle != null && state.blockState != null) {
-			float f = ((float) (state.level.getGameTime() - state.wobbleStartedAtTick) + state.partialTick) / (float) wobbleStyle.duration;
+		if (wobbleStyle != null && blockEntity.getLevel() != null) {
+			float f = ((float) (blockEntity.getLevel().getGameTime() - blockEntity.wobbleStartedAtTick) + partialTick) / (float) wobbleStyle.duration;
 			if (f >= 0.0F && f <= 1.0F) {
 				if (wobbleStyle == WobbleStyle.POSITIVE) {
 					float f1 = 0.015625F;
@@ -141,34 +137,25 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 			}
 		}
 
-		BlockState blockState = state.blockState;
-		if (LIDS.containsKey(state.lid)) renderModel(LIDS.get(state.lid), blockState, this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
-		renderJarModel(blockState, this.blockRenderer, poseStack, submitNodeCollector, cameraRenderState);
-		this.renderContents(state, poseStack, submitNodeCollector, state.lightCoords, state.overlayCoords, ARGB.color(0, 0, 0), new int[0], List.of());
+		BlockState state = blockEntity.getBlockState();
+		if (LIDS.containsKey(blockEntity.lid)) renderModel(LIDS.get(blockEntity.lid), state, this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
+		renderJarModel(state, this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
+		this.renderContents(blockEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
 
 		poseStack.popPose();
 	}
 
-	@Override
-	public JarRenderState createRenderState() {
-		return new JarRenderState();
+	public static void renderJarModel(BlockState blockState, BlockRenderDispatcher blockRenderer, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+		BakedModel bakedModel = blockRenderer.getBlockModel(blockState);
+		renderModel(bakedModel, blockState, blockRenderer, stack, buffer, packedLight, packedOverlay);
 	}
 
-	public static void renderJarModel(BlockState blockState, BlockEntityRenderDispatcher blockRenderer, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-		blockRenderer.
-		renderModel(bakedModel, blockState, blockRenderer, stack, submitNodeCollector, cameraRenderState);
-	}
-
-	public static void renderModel(BakedModel bakedModel, BlockState blockState, BlockEntityRenderDispatcher blockRenderer, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+	public static void renderModel(BakedModel bakedModel, BlockState blockState, BlockRenderDispatcher blockRenderer, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		int color = blockRenderer.blockColors.getColor(blockState, null, null, 0);
 		float r = (float) (color >> 16 & 0xFF) / 255.0F;
 		float g = (float) (color >> 8 & 0xFF) / 255.0F;
 		float b = (float) (color & 0xFF) / 255.0F;
 		for (RenderType rt : bakedModel.getRenderTypes(blockState, RandomSource.create(42), ModelData.EMPTY))
-			submitNodeCollector.submitBlockModel(
-				stack,
-				RenderTypes
-			);
 			blockRenderer.getModelRenderer()
 				.renderModel(
 					stack.last(),
@@ -185,7 +172,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 				);
 	}
 
-	public void renderContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, int overlayCoords, int outlineColor, int[] tintLayers, List<BakedQuad> quads) {
+	public void renderContents(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 
 	}
 
@@ -195,38 +182,30 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		@Autowired(dist = Dist.CLIENT)
 		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
-		protected final ItemModelResolver itemModelResolver;
+		protected final ItemRenderer itemRenderer;
 		protected final EntityRenderDispatcher entityRender;
 		protected final Font font;
 
 		public MasonJarRenderer(BlockEntityRendererProvider.Context context) {
 			super(context);
-			this.entityRender = context.entityRenderer();
-			this.itemModelResolver = context.itemModelResolver();
-			this.font = context.font();
+			this.entityRender = context.getEntityRenderer();
+			this.itemRenderer = context.getItemRenderer();
+			this.font = context.getFont();
 		}
 
 		@Override
-		public void renderContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, int overlayCoords, int outlineColor, int[] tintLayers, List<BakedQuad> quads) {
-			ItemStack stack = state.itemInside;
+		public void renderContents(MasonJarBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+			ItemStack stack = blockEntity.getItemHandler().getItem();
 
 			if (!stack.isEmpty()) {
 				poseStack.pushPose();
 				poseStack.translate(0.5D, 0.4375D, 0.5D);
 
-				poseStack.mulPose(Axis.YN.rotationDegrees(RotationSegment.convertToDegrees(state.itemRotation)));
+				poseStack.mulPose(Axis.YN.rotationDegrees(RotationSegment.convertToDegrees(blockEntity.getItemRotation())));
 
 				poseStack.scale(0.5F, 0.5F, 0.5F);
-				collector.submitItem(
-					poseStack,
-					ItemDisplayContext.GROUND,
-					lightCoords,
-					overlayCoords,
-					outlineColor,
-					tintLayers,
-					quads,
-					stack.hasFoil() ? ItemStackRenderState.FoilType.STANDARD : ItemStackRenderState.FoilType.NONE
-				);
+				this.itemRenderer.renderStatic(stack, itemDisplayContextEnumExtension.JARRED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
+
 
 				poseStack.popPose();
 			}
