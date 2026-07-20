@@ -157,14 +157,14 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
-						this.attacker.doBreathAttack(Goal.getServerLevel(possibleEntity), possibleEntity);
+						this.attacker.doBreathAttack(getServerLevel(possibleEntity), possibleEntity);
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos.isPresent()) {
 					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
-						this.attacker.doBreathAttack(Goal.getServerLevel(possibleEntity), possibleEntity);
+						this.attacker.doBreathAttack(getServerLevel(possibleEntity), possibleEntity);
 						hitDist = possibleDist;
 					}
 				}
