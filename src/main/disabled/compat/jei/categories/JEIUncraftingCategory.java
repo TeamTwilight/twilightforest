@@ -21,7 +21,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.recipe.UncraftingRecipe;
 
@@ -70,7 +70,7 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 	public void setRecipe(IRecipeLayoutBuilder builder, CraftingRecipe recipe, IFocusGroup focuses) {
 		List<Ingredient> outputs = new ArrayList<>(recipe.getIngredients()); //Collect each ingredient
 		outputs.replaceAll(ingredient -> Ingredient.of(Arrays.stream(ingredient.getItems())
-			.filter(o -> !(o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS)))
+			.filter(o -> !(o.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)))
 			.filter(o -> !(o.getItem().hasCraftingRemainingItem(o))))//Remove any banned items
 		);
 

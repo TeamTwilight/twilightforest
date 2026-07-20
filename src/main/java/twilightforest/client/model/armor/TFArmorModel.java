@@ -13,31 +13,32 @@ public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 	}
 
 	@Override
-	public void setupAnim(HumanoidRenderState humanoidRenderState) {
+	public void setupAnim(HumanoidRenderState state) {
+		if (!(state instanceof ArmorStandRenderState armorStandState)) {
+			super.setupAnim(state); // TF - Defer to super otherwise
+			return;
+		}
+
 		// [VanillaCopy] ArmorStandArmorModel
 		// this prevents helmets from always facing south, and the armor "breathing" on the stand
-		if (humanoidRenderState instanceof ArmorStandRenderState state) {
-			this.head.xRot = Mth.DEG_TO_RAD * state.headPose.x();
-			this.head.yRot = Mth.DEG_TO_RAD * state.headPose.y();
-			this.head.zRot = Mth.DEG_TO_RAD * state.headPose.z();
-			this.body.xRot = Mth.DEG_TO_RAD * state.bodyPose.x();
-			this.body.yRot = Mth.DEG_TO_RAD * state.bodyPose.y();
-			this.body.zRot = Mth.DEG_TO_RAD * state.bodyPose.z();
-			this.leftArm.xRot = Mth.DEG_TO_RAD * state.leftArmPose.x();
-			this.leftArm.yRot = Mth.DEG_TO_RAD * state.leftArmPose.y();
-			this.leftArm.zRot = Mth.DEG_TO_RAD * state.leftArmPose.z();
-			this.rightArm.xRot = Mth.DEG_TO_RAD * state.rightArmPose.x();
-			this.rightArm.yRot = Mth.DEG_TO_RAD * state.rightArmPose.y();
-			this.rightArm.zRot = Mth.DEG_TO_RAD * state.rightArmPose.z();
-			this.leftLeg.xRot = Mth.DEG_TO_RAD * state.leftLegPose.x();
-			this.leftLeg.yRot = Mth.DEG_TO_RAD * state.leftLegPose.y();
-			this.leftLeg.zRot = Mth.DEG_TO_RAD * state.leftLegPose.z();
-			this.rightLeg.xRot = Mth.DEG_TO_RAD * state.rightLegPose.x();
-			this.rightLeg.yRot = Mth.DEG_TO_RAD * state.rightLegPose.y();
-			this.rightLeg.zRot = Mth.DEG_TO_RAD * state.rightLegPose.z();
-			this.hat.loadPose(this.head.storePose());
-		} else {
-			super.setupAnim(humanoidRenderState);
-		} // TF - Defer to super otherwise
+		this.head.xRot = Mth.DEG_TO_RAD * armorStandState.headPose.x();
+		this.head.yRot = Mth.DEG_TO_RAD * armorStandState.headPose.y();
+		this.head.zRot = Mth.DEG_TO_RAD * armorStandState.headPose.z();
+		this.body.xRot = Mth.DEG_TO_RAD * armorStandState.bodyPose.x();
+		this.body.yRot = Mth.DEG_TO_RAD * armorStandState.bodyPose.y();
+		this.body.zRot = Mth.DEG_TO_RAD * armorStandState.bodyPose.z();
+		this.leftArm.xRot = Mth.DEG_TO_RAD * armorStandState.leftArmPose.x();
+		this.leftArm.yRot = Mth.DEG_TO_RAD * armorStandState.leftArmPose.y();
+		this.leftArm.zRot = Mth.DEG_TO_RAD * armorStandState.leftArmPose.z();
+		this.rightArm.xRot = Mth.DEG_TO_RAD * armorStandState.rightArmPose.x();
+		this.rightArm.yRot = Mth.DEG_TO_RAD * armorStandState.rightArmPose.y();
+		this.rightArm.zRot = Mth.DEG_TO_RAD * armorStandState.rightArmPose.z();
+		this.leftLeg.xRot = Mth.DEG_TO_RAD * armorStandState.leftLegPose.x();
+		this.leftLeg.yRot = Mth.DEG_TO_RAD * armorStandState.leftLegPose.y();
+		this.leftLeg.zRot = Mth.DEG_TO_RAD * armorStandState.leftLegPose.z();
+		this.rightLeg.xRot = Mth.DEG_TO_RAD * armorStandState.rightLegPose.x();
+		this.rightLeg.yRot = Mth.DEG_TO_RAD * armorStandState.rightLegPose.y();
+		this.rightLeg.zRot = Mth.DEG_TO_RAD * armorStandState.rightLegPose.z();
+		this.hat.loadPose(this.head.getInitialPose());
 	}
 }

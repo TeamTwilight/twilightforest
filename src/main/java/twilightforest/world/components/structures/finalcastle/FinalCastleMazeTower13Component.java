@@ -38,7 +38,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 	public FinalCastleMazeTower13Component(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		color = NbtUtils.readBlockState(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).lookupOrThrow(Registries.BLOCK), nbt.getCompound("color"));
+		color = nbt.getCompound("color").map(t -> NbtUtils.readBlockState(BuiltInRegistries.BLOCK, t)).orElse(Blocks.AIR.defaultBlockState());
 	}
 
 	public FinalCastleMazeTower13Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {

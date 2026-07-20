@@ -2,7 +2,6 @@ package twilightforest.world.components.structures;
 
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.RegistryOps;
@@ -19,10 +18,12 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -30,7 +31,6 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
 import twilightforest.world.components.structures.util.*;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -38,20 +38,28 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
 
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
+
 	private static final String NBT_JIGSAW_SOURCE = "source";
 	private static final String NBT_JIGSAW_CONNECTIONS = "connections";
 	private static final String NBT_TERRAIN_ADAPT = "terrain_adaptation";
 	private static final String NBT_TEMPLATE_PROCESSORS = "template_processors";
+	private static final String NBT_PLACE_PROJECTION = "place_projection";
 	private static final String NBT_GROUND_OFFSET = "ground_offset";
 	private static final String NBT_IGNORE_WATERLOG = "ignore_waterlog";
 	private static final String NBT_MARKER_HANDLERS = "marker_handlers";
+	private static final String NBT_RANDOMIZED_PROCESSORS = "randomized_processors";
 
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
 	private final TerrainAdjustment terrainAdjustment;
 	private final Optional<Holder<StructureProcessorList>> processors;
+	private final StructureTemplatePool.Projection projection;
 	private final Optional<Holder<TemplateMarkerHandlerList>> markerHandlers;
 	private final int beardifierGroundDelta;
+	private final StructureProcessorList serializedProcessors;
+	private final Map<String, String> poolAliases;
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
@@ -59,19 +67,9 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
 	}
-	@Nullable
-	public static TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos.MutableBlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
-		Identifier templateId = StructureTemplateDefinitions.INSTANCE.rollTemplatePool(rand, templatePool);
-		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateId, selectName, rand);
 
-		if (templateId == null || placeContext == null)
-			return null;
-
-		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateId, placeContext);
-	}
-
-	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext) {
-		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext);
+	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList serializedProcessors) {
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance, serializedProcessors, templatePoolInstance.poolAliases());
 		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
@@ -85,14 +83,18 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.terrainAdjustment = compoundTag.getString(NBT_TERRAIN_ADAPT).map(TerrainAdjustment::valueOf).orElse(TerrainAdjustment.NONE);
 		DynamicOps<Tag> dynamicOps = RegistryOps.create(NbtOps.INSTANCE, ctx.registryAccess());
 		this.processors = compoundTag.contains(NBT_TEMPLATE_PROCESSORS) ? StructureProcessorType.LIST_CODEC.parse(dynamicOps, compoundTag.get(NBT_TEMPLATE_PROCESSORS)).resultOrPartial(message -> LOGGER.error("Error deserializing " + NBT_TEMPLATE_PROCESSORS + ": {}", message)) : Optional.empty();
+		this.projection = compoundTag.getString(NBT_PLACE_PROJECTION).map(StructureTemplatePool.Projection::valueOf).orElse(StructureTemplatePool.Projection.RIGID);
 		this.markerHandlers = compoundTag.contains(NBT_MARKER_HANDLERS) ? TemplateMarkerHandlerList.HOLDER_CODEC.parse(dynamicOps, compoundTag.get(NBT_MARKER_HANDLERS)).resultOrPartial(message -> LOGGER.error("Error deserializing " + NBT_MARKER_HANDLERS + ": {}", message)) : Optional.empty();
 
 		this.beardifierGroundDelta = compoundTag.getIntOr(NBT_GROUND_OFFSET, 0);
 
-		Optional<Boolean> ignoreWaterlog = compoundTag.getBoolean(NBT_IGNORE_WATERLOG);
-		this.placeSettings.setLiquidSettings(ignoreWaterlog.isPresent() && ignoreWaterlog.get() ? LiquidSettings.IGNORE_WATERLOGGING : LiquidSettings.APPLY_WATERLOGGING);
+		if (compoundTag.getBooleanOr(NBT_IGNORE_WATERLOG, false))
+			this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
 		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
+		this.serializedProcessors = compoundTag.contains(NBT_RANDOMIZED_PROCESSORS) ? StructureProcessorType.LIST_OBJECT_CODEC.parse(dynamicOps, compoundTag.get(NBT_RANDOMIZED_PROCESSORS)).resultOrPartial(message -> LOGGER.error("Error deserializing " + NBT_RANDOMIZED_PROCESSORS + ": {}", message)).orElseGet(() -> new StructureProcessorList(List.of())) : new StructureProcessorList(List.of());
+		this.serializedProcessors.list().forEach(this.placeSettings::addProcessor);
+		this.poolAliases = Map.of();
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext) {
@@ -102,8 +104,28 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
 		this.terrainAdjustment = TerrainAdjustment.NONE;
 		this.processors = Optional.empty();
+		this.projection = StructureTemplatePool.Projection.RIGID;
 		this.markerHandlers = Optional.empty();
 		this.beardifierGroundDelta = 0;
+		this.serializedProcessors = new StructureProcessorList(List.of());
+		this.poolAliases = Map.of();
+	}
+
+	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList serializedProcessors, Map<String, String> poolAliases) {
+		super(type, genDepth, structureManager, templateLocation, jigsawContext.placementSettings(), jigsawContext.templatePos());
+
+		this.sourceJigsaw = jigsawContext.seedJigsaw();
+		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
+		this.terrainAdjustment = templatePoolInstance.terrainAdjustment();
+		this.processors = templatePoolInstance.processors();
+		this.projection = templatePoolInstance.projection();
+		this.markerHandlers = templatePoolInstance.markerHandlers();
+		this.beardifierGroundDelta = templatePoolInstance.beardifierGroundDelta().map(TemplatePoolInstance.HeightAdjustment::beardifierGroundDelta).orElse(0);
+		if (templatePoolInstance.ignoreWorldWaterlog()) this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
+		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
+		this.serializedProcessors = serializedProcessors;
+		this.serializedProcessors.list().forEach(this.placeSettings::addProcessor);
+		this.poolAliases = poolAliases;
 	}
 
 	protected static JigsawRecord readSourceFromNBT(CompoundTag structureTag) {
@@ -182,18 +204,18 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	}
 
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
-//		Identifier templatePool = Identifier.parse(this.poolAliases.getOrDefault(connection.pool(), connection.pool()));
-//		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
-//		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
-//
-//		if (jigsawPiece == null)
-//			return;
-//
-//		if (pieceAccessor.findCollisionPiece(jigsawPiece.boundingBox) != null)
-//			return;
-//
-//		pieceAccessor.addPiece(jigsawPiece);
-//		jigsawPiece.addJigsaws(this, pieceAccessor, context);
+		Identifier templatePool = Identifier.parse(this.poolAliases.getOrDefault(connection.pool(), connection.pool()));
+		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
+		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
+
+		if (jigsawPiece == null)
+			return;
+
+		if (pieceAccessor.findCollisionPiece(jigsawPiece.boundingBox) != null)
+			return;
+
+		pieceAccessor.addPiece(jigsawPiece);
+		jigsawPiece.addJigsaws(this, pieceAccessor, context);
 	}
 
 	@Override

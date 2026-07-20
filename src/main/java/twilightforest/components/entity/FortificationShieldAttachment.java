@@ -109,7 +109,7 @@ public class FortificationShieldAttachment {
 				double x = sizeRange * offset.z * horizontal;
 				double y = sizeRange * (entity.getRandom().nextDouble() - 0.5D);
 				double z = sizeRange * offset.x * -horizontal;
-				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, pos.x + x, pos.y + y, pos.z + z, x * 0.5D, y * 0.5D, z * 0.5D);
+				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, false, pos.x + x, pos.y + y, pos.z + z, x * 0.5D, y * 0.5D, z * 0.5D);
 			}
 		} else {
 			pos = entity.position().add(0.0D, entity.getBbHeight() * 0.65D, 0.0D);
@@ -117,7 +117,7 @@ public class FortificationShieldAttachment {
 				double x = (entity.getRandom().nextDouble() - 0.5D);
 				double y = (entity.getRandom().nextDouble() - 0.5D) * 0.25D;
 				double z = (entity.getRandom().nextDouble() - 0.5D);
-				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, pos.x + x, pos.y + y, pos.z + z, x * 0.33D, y * 0.33D, z * 0.33D);
+				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, false, pos.x + x, pos.y + y, pos.z + z, x * 0.33D, y * 0.33D, z * 0.33D);
 			}
 		}
 

@@ -30,7 +30,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
@@ -166,7 +166,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				if (possibleKeyTowers.size() < 1) {
+				if (possibleKeyTowers.isEmpty()) {
 					TwilightForestMod.LOGGER.warn("Dark forest tower could not find four small towers to place keys in.");
 					break;
 				}
@@ -1095,16 +1095,21 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
-					break;
+				var configuredFeatureHolder = world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen);
+
+				if (configuredFeatureHolder.isPresent()) {
+					if (configuredFeatureHolder.get().value().place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
+						break;
+					}
 				}
+
 			}
 		}
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, RandomSource decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-			.getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS)
+			.get(TFBlockTags.DARK_TOWER_ALLOWED_POTS)
 			.flatMap(tag -> tag.getRandomElement(decoRNG))
 			.map(Holder::value);
 		setBlockStateRotated(world, decoRNG.nextInt(10) != 0 && optional.isPresent() ? optional.get().defaultBlockState() : Blocks.FLOWER_POT.defaultBlockState(), x, y, z, rotation, sbb);
