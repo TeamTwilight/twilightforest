@@ -35,7 +35,6 @@ public class ProtectionBox extends Entity {
 		this.sbb = sbb;
 
 		this.snapTo(sbb.minX(), sbb.minY(), sbb.minZ(), 0.0F, 0.0F);
-		this.setRot(0.0F, 0.0F);
 
 		this.sizeX = sbb.getXSpan();
 		this.sizeY = sbb.getYSpan();
