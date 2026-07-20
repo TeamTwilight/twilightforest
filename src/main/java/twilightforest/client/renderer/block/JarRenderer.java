@@ -2,39 +2,38 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.BlockModelRenderState;
-import net.minecraft.client.renderer.block.model.BlockDisplayContext;
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
+import twilightforest.client.state.block.JarRenderState;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 
@@ -44,8 +43,8 @@ import java.util.List;
 import java.util.Map;
 
 //TODO I ideally want to move the jar lids to be data driven
-public class JarRenderer implements BlockEntityRenderer<JarBlockEntity, JarRenderer.JarRenderState> {
-	public static final Map<Item, BlockModel> LIDS = new HashMap<>();
+public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRenderer<T, JarRenderState> {
+	public static final Map<Item, ItemModel> LIDS = new HashMap<>();
 
 	public record LidResource(Item lid, Identifier identifier, @Nullable String customPath) {
 		public LidResource(DeferredBlock<?> lid) {
@@ -59,16 +58,6 @@ public class JarRenderer implements BlockEntityRenderer<JarBlockEntity, JarRende
 		public LidResource(Item item, String path, String customPath) {
 			this(item, Identifier.fromNamespaceAndPath("minecraft", path), customPath);
 		}
-	}
-
-	public static class JarRenderState extends BlockEntityRenderState {
-		public Item lidItem = Items.AIR;
-		public float partialTicks;
-		public float rotX = 0.0F;
-		public float rotY = 0.0F;
-		public float rotZ = 0.0F;
-		public BlockState blockState;
-		public JarBlockEntity blockEntity;
 	}
 
 	public static final Lazy<List<LidResource>> LID_LOCATION_LIST = Lazy.of(() -> List.of(
@@ -122,126 +111,121 @@ public class JarRenderer implements BlockEntityRenderer<JarBlockEntity, JarRende
 	}
 
 	@Override
-	public JarRenderState createRenderState() {
-		return new JarRenderState();
-	}
-
-	@Override
-	public void submit(JarRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState cameraState) {
-		stack.pushPose();
-		stack.translate(0.5, 0.0, 0.5);
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
-		stack.translate(-0.5, 0.0, -0.5);
-
-		if (state.rotX != 0.0F) stack.rotateAround(Axis.XP.rotation(state.rotX), 0.5F, 0.0F, 0.5F);
-		if (state.rotY != 0.0F) stack.rotateAround(Axis.YP.rotation(state.rotY), 0.5F, 0.0F, 0.5F);
-		if (state.rotZ != 0.0F) stack.rotateAround(Axis.ZP.rotation(state.rotZ), 0.5F, 0.0F, 0.5F);
-
-		BlockModel jarModel = net.minecraft.client.Minecraft.getInstance()
-			.getModelManager()
-			.getBlockModelSet()
-			.get(state.blockState);
-
-		BlockModelRenderState modelState = new BlockModelRenderState();
-
-		jarModel.update(modelState, state.blockState, BlockDisplayContext.create(), 42L);
-		modelState.submit(stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, -1);
-		this.renderContents(state, stack, collector);
-
-		stack.popPose();
-	}
-
-	@Override
-	public void extractRenderState(JarBlockEntity blockEntity, JarRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
-		state.lidItem = blockEntity.lid;
-		state.blockState = blockEntity.getBlockState();
-		state.blockEntity = blockEntity;
-
-		state.rotX = 0.0F;
-		state.rotY = 0.0F;
-		state.rotZ = 0.0F;
-
-		WobbleStyle wobbleStyle = blockEntity.lastWobbleStyle;
-		Level level = blockEntity.getLevel();
-
-		if (wobbleStyle != null && level != null) {
-			float f = ((float) (level.getGameTime() - blockEntity.wobbleStartedAtTick) + partialTicks) / (float) wobbleStyle.duration;
-			if (f >= 0.0F && f <= 1.0F) {
-				if (wobbleStyle == WobbleStyle.POSITIVE) {
-					float f1 = 0.015625F;
-					float f2 = f * (float) (Math.PI * 2);
-					state.rotX = (-1.5F * (Mth.cos(f2) + 0.5F) * Mth.sin(f2 / 2.0F)) * f1;
-					state.rotZ = Mth.sin(f2) * f1;
-				} else {
-					float f5 = Mth.sin(-f * 3.0F * (float) Math.PI) * WOBBLE_AMPLITUDE;
-					float f6 = 1.0F - f;
-					state.rotY = f5 * f6;
-				}
-			}
-		}
-	}
-
-	public void renderContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {}
-
-	@Override
 	public int getViewDistance() {
 		return 256;
 	}
 
+	@Override
+	public void submit(JarRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+		poseStack.pushPose();
+		poseStack.translate(0.5, 0.0, 0.5);
+		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+		poseStack.translate(-0.5, 0.0, -0.5);
+		WobbleStyle wobbleStyle = state.lastWobbleStyle;
+
+		if (wobbleStyle != null && state.blockState != null) {
+			float f = ((float) (state.level.getGameTime() - state.wobbleStartedAtTick) + state.partialTick) / (float) wobbleStyle.duration;
+			if (f >= 0.0F && f <= 1.0F) {
+				if (wobbleStyle == WobbleStyle.POSITIVE) {
+					float f1 = 0.015625F;
+					float f2 = f * (float) (Math.PI * 2);
+					float f3 = -1.5F * (Mth.cos(f2) + 0.5F) * Mth.sin(f2 / 2.0F);
+					poseStack.rotateAround(Axis.XP.rotation(f3 * f1), 0.5F, 0.0F, 0.5F);
+					float f4 = Mth.sin(f2);
+					poseStack.rotateAround(Axis.ZP.rotation(f4 * f1), 0.5F, 0.0F, 0.5F);
+				} else {
+					float f5 = Mth.sin(-f * 3.0F * (float) Math.PI) * WOBBLE_AMPLITUDE;
+					float f6 = 1.0F - f;
+					poseStack.rotateAround(Axis.YP.rotation(f5 * f6), 0.5F, 0.0F, 0.5F);
+				}
+			}
+		}
+
+		BlockState blockState = state.blockState;
+		if (LIDS.containsKey(state.lid)) renderModel(LIDS.get(state.lid), blockState, this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
+		renderJarModel(blockState, this.blockRenderer, poseStack, submitNodeCollector, cameraRenderState);
+		this.renderContents(state, poseStack, submitNodeCollector, state.lightCoords, state.overlayCoords, ARGB.color(0, 0, 0), new int[0], List.of());
+
+		poseStack.popPose();
+	}
+
+	@Override
+	public JarRenderState createRenderState() {
+		return new JarRenderState();
+	}
+
+	public static void renderJarModel(BlockState blockState, BlockEntityRenderDispatcher blockRenderer, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+		blockRenderer.
+		renderModel(bakedModel, blockState, blockRenderer, stack, submitNodeCollector, cameraRenderState);
+	}
+
+	public static void renderModel(BakedModel bakedModel, BlockState blockState, BlockEntityRenderDispatcher blockRenderer, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+		int color = blockRenderer.blockColors.getColor(blockState, null, null, 0);
+		float r = (float) (color >> 16 & 0xFF) / 255.0F;
+		float g = (float) (color >> 8 & 0xFF) / 255.0F;
+		float b = (float) (color & 0xFF) / 255.0F;
+		for (RenderType rt : bakedModel.getRenderTypes(blockState, RandomSource.create(42), ModelData.EMPTY))
+			submitNodeCollector.submitBlockModel(
+				stack,
+				RenderTypes
+			);
+			blockRenderer.getModelRenderer()
+				.renderModel(
+					stack.last(),
+					buffer.getBuffer(RenderTypeHelper.getEntityRenderType(rt, false)),
+					blockState,
+					bakedModel,
+					r,
+					g,
+					b,
+					packedLight,
+					packedOverlay,
+					ModelData.EMPTY,
+					rt
+				);
+	}
+
+	public void renderContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, int overlayCoords, int outlineColor, int[] tintLayers, List<BakedQuad> quads) {
+
+	}
+
 	@Configurable
-	public static class MasonJarRenderer extends JarRenderer {
+	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
 
 		@Autowired(dist = Dist.CLIENT)
 		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
+		protected final ItemModelResolver itemModelResolver;
 		protected final EntityRenderDispatcher entityRender;
 		protected final Font font;
 
 		public MasonJarRenderer(BlockEntityRendererProvider.Context context) {
 			super(context);
 			this.entityRender = context.entityRenderer();
+			this.itemModelResolver = context.itemModelResolver();
 			this.font = context.font();
 		}
 
 		@Override
-		public void renderContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
-			if (!(state.blockEntity instanceof MasonJarBlockEntity masonJarBlockEntity)) return;
-
-			ItemStack stack = masonJarBlockEntity.getItemHandler().getItem();
+		public void renderContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, int overlayCoords, int outlineColor, int[] tintLayers, List<BakedQuad> quads) {
+			ItemStack stack = state.itemInside;
 
 			if (!stack.isEmpty()) {
 				poseStack.pushPose();
-
 				poseStack.translate(0.5D, 0.4375D, 0.5D);
-				poseStack.mulPose(Axis.YN.rotationDegrees(masonJarBlockEntity.getItemRotation()));
+
+				poseStack.mulPose(Axis.YN.rotationDegrees(RotationSegment.convertToDegrees(state.itemRotation)));
+
 				poseStack.scale(0.5F, 0.5F, 0.5F);
-
-				ItemStackRenderState itemState = new ItemStackRenderState();
-
-				Identifier itemGroupId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
-				ItemModel itemModel = net.minecraft.client.Minecraft.getInstance()
-					.getModelManager()
-					.getItemModel(itemGroupId);
-
-				ItemModelResolver resolver = Minecraft.getInstance()
-					.getItemModelResolver();
-
-				itemModel.update(
-					itemState,
-					stack,
-					resolver,
-					itemDisplayContextEnumExtension.JARRED,
-					null,
-					null,
-					42
-				);
-
-				itemState.submit(
+				collector.submitItem(
 					poseStack,
-					collector,
-					state.lightCoords,
-					OverlayTexture.NO_OVERLAY,
-					-1
+					ItemDisplayContext.GROUND,
+					lightCoords,
+					overlayCoords,
+					outlineColor,
+					tintLayers,
+					quads,
+					stack.hasFoil() ? ItemStackRenderState.FoilType.STANDARD : ItemStackRenderState.FoilType.NONE
 				);
 
 				poseStack.popPose();

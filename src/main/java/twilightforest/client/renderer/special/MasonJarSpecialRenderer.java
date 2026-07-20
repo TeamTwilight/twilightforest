@@ -4,9 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BlockDisplayContext;
-import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
@@ -14,6 +15,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.api.distmarker.Dist;
@@ -41,25 +43,8 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 			JarLid jarLid = map.get(TFDataComponents.JAR_LID.get());
 			Item testLid = jarLid == null ? this.defaultLid().orElse(null) : jarLid.lid();
 			Item lid = testLid == null || !JarRenderer.LIDS.containsKey(testLid) ? null : testLid;
-
 			if (lid != null) {
-				BlockModel jarBlockModel = net.minecraft.client.Minecraft.getInstance()
-					.getModelManager()
-					.getBlockModelSet()
-					.get(TFBlocks.MASON_JAR.get().defaultBlockState());
-
-				if (jarBlockModel != null) {
-					net.minecraft.client.renderer.block.BlockModelRenderState blockModelState = new net.minecraft.client.renderer.block.BlockModelRenderState();
-
-					jarBlockModel.update(
-						blockModelState,
-						TFBlocks.MASON_JAR.get().defaultBlockState(),
-						BlockDisplayContext.create(),
-						42L
-					);
-
-					blockModelState.submit(stack, collector, light, overlay, outlineColor);
-				}
+				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), TFBlocks.MASON_JAR.get().defaultBlockState(), Minecraft.getInstance().getBlockRenderer(), stack, source, light, overlay);
 			}
 
 			ItemContainerContents contents = map.get(DataComponents.CONTAINER);
@@ -86,7 +71,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 		return stack.getComponents();
 	}
 
-	public record Unbaked(Optional<Item> defaultLid) implements SpecialModelRenderer.Unbaked<DataComponentMap> {
+	public record Unbaked(Optional<Item> defaultLid) implements SpecialModelRenderer.Unbaked {
 		public static final MapCodec<MasonJarSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 				BuiltInRegistries.ITEM.byNameCodec().optionalFieldOf("default_lid").forGetter(MasonJarSpecialRenderer.Unbaked::defaultLid))
 			.apply(instance, MasonJarSpecialRenderer.Unbaked::new));
@@ -105,7 +90,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 		}
 
 		@Override
-		public SpecialModelRenderer<DataComponentMap> bake(BakingContext bakingContext) {
+		public SpecialModelRenderer<?> bake(BakingContext context) {
 			return new MasonJarSpecialRenderer(this.defaultLid(), Minecraft.getInstance().getItemModelResolver());
 		}
 	}
