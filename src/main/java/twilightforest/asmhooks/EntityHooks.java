@@ -100,7 +100,7 @@ public class EntityHooks {
 	public static Entity resetStuckUnrestrained(Entity entity) {
 		if (!(entity instanceof LivingEntity living) || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return entity;
-		living.makeStuckInBlock(Blocks.AIR.defaultBlockState(), new Vec3(1.0D, 1.0D, 1.0D));
+		living.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
 
 		return entity;
 	}
