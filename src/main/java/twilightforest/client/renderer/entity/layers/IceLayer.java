@@ -41,6 +41,7 @@ public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S
 		int numCubes = (int) (state.boundingBoxHeight / 0.4F) + (int) (count / FrostedEffect.FROST_MULTIPLIER) + 1; //Number of cubes, adds more cubes based on the level of the effect
 
 		float specialOffset = this.getParentModel() instanceof DeathTomeModel ? 1.0F : 0.0F;
+
 		for (int i = 0; i < numCubes; i++) { //Render cubes
 			stack.pushPose();
 			float dx = ((this.random.nextFloat() * (state.boundingBoxWidth * 2.0F)) - state.boundingBoxWidth) * 0.1F;
