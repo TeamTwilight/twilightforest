@@ -11,14 +11,13 @@ import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.core.Direction;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
-import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDataAttachments;
@@ -26,7 +25,6 @@ import twilightforest.init.TFDataAttachments;
 public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
 
 	public static final Identifier LOC = TwilightForestMod.prefix("item/shield");
-	private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
 
 	public static ContextKey<Integer> SHIELD_COUNT_KEY = new ContextKey<>(TwilightForestMod.prefix("shield_count"));
 
@@ -67,11 +65,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 			// push the shields outwards from the center of rotation
 			stack.translate(0.0F, 0.0F, -0.7F);
 
-			StandaloneModelKey<BlockModel> modelKey = new StandaloneModelKey<>(LOC::toDebugFileName);
-			BlockModel shieldModel =
-				Minecraft.getInstance()
-				.getModelManager()
-				.getStandaloneModel(modelKey);
+			BlockModel shieldModel = Minecraft.getInstance().getModelManager().getStandaloneModel(new StandaloneModelKey<>(LOC::toDebugFileName));
 
 			if (shieldModel != null) {
 				BlockModelRenderState modelState = new BlockModelRenderState();
@@ -85,7 +79,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 					stack,
 					collector,
 					0xF000F0,
-					net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,
+					OverlayTexture.NO_OVERLAY,
 					-1
 				);
 			}
