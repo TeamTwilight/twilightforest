@@ -25,6 +25,7 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
+import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.tags.TFStructureTags;
 import twilightforest.util.datamaps.MagicMapBiomeColor;
@@ -53,7 +54,16 @@ public class MagicMapItem extends MapItem {
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level level) {
 		MapId mapid = stack.get(DataComponents.MAP_ID);
-		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(mapid.id()));
+
+		if (mapid == null) {
+			return null;
+		}
+
+		if (level instanceof ServerLevel serverLevel) {
+			return MapDataManager.getServerMagicMapData(serverLevel, mapid);
+		}
+
+		return MapDataManager.getClientMagicMapData(mapid);
 	}
 
 	@Nullable
@@ -89,7 +99,7 @@ public class MagicMapItem extends MapItem {
 		ColumnPos pos = getMagicMapCenter(x, z);
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
+		MapDataManager.saveServerMagicMapData(level, freeMapId, mapdata); // call our own save method
 		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
