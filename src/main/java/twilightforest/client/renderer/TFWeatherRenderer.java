@@ -1,5 +1,6 @@
 package twilightforest.client.renderer;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Camera;
@@ -8,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -36,8 +37,8 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.util.IntervalUtils;
+import twilightforest.util.RenderTypeUtil;
 import twilightforest.util.Restriction;
-import twilightforest.util.landmarks.LandmarkUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,21 +84,28 @@ public class TFWeatherRenderer {
 		}
 	}
 
-	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, Vec3 camera) {
+	// [VanillaCopy] the copy of removed Minecraft.useFancyGraphics
+	private static boolean useFancyGraphics() {
+		return Minecraft.getInstance().options.graphicsPreset().get().ordinal() >= GraphicsPreset.FANCY.ordinal();
+	}
+
+	// [VanillaCopy] the copy of removed
+
+	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, Vec3 camera, MultiBufferSource buffer) {
 		Minecraft mc = Minecraft.getInstance();
 		if (progressionEnforced && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
-			renderLockedBiome(ticks, partialTicks, level, mc.player, camera);
+			renderLockedBiome(ticks, partialTicks, level, mc.player, camera, buffer);
 
 			// locked structures
-			renderLockedStructure(ticks, partialTicks, camera);
+			renderLockedStructure(ticks, partialTicks, camera, buffer);
 		}
 
 		//render normal weather anyway
 		return false;
 	}
 
-	private static void renderLockedBiome(int ticks, float partialTicks, ClientLevel level, LocalPlayer player, Vec3 camera) {
+	private static void renderLockedBiome(int ticks, float partialTicks, ClientLevel level, LocalPlayer player, Vec3 camera, MultiBufferSource buffer) {
 		// check nearby for locked biome
 		if (isNearLockedBiome(level, player)) {
 			int px = Mth.floor(camera.x());
@@ -105,10 +113,9 @@ public class TFWeatherRenderer {
 			int pz = Mth.floor(camera.z());
 
 			int range = 5;
-			if (Minecraft.getInstance().options.graphicsPreset().get() != GraphicsPreset.FAST) {
+			if (useFancyGraphics()) {
 				range = 10;
 			}
-
 
 			WeatherRenderType currentType = null;
 			float combinedTicks = ticks + partialTicks;
@@ -150,7 +157,6 @@ public class TFWeatherRenderer {
 							double zRange = (double) ((float) dz + 0.5F) - camera.z();
 							float distanceToPlayer = Mth.sqrt((float) (xRange * xRange + zRange * zRange)) / (float) range;
 							float alpha = ((1.0F - distanceToPlayer * distanceToPlayer) * 0.3F + 0.5F);
-							int worldBrightness = LevelRenderer.getLightCoords(level, pos);
 							int fullbright = 15 << 20 | 15 << 4;
 
 							switch (currentType) {
@@ -158,7 +164,7 @@ public class TFWeatherRenderer {
 									float countFactor = ((float) (ticks & 511) + partialTicks) / 512.0F;
 									float uFactor = random.nextFloat() + combinedTicks * 0.05F * (float) random.nextGaussian();
 									float vFactor = random.nextFloat() + combinedTicks * 0.0025F * (float) random.nextGaussian();
-									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright);
+									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright, buffer);
 								}
 								case MOSQUITO -> {
 									float countFactor = 0;
@@ -167,26 +173,27 @@ public class TFWeatherRenderer {
 									float red = random.nextFloat() * 0.3F;
 									float green = random.nextFloat() * 0.3F;
 									float blue = random.nextFloat() * 0.3F;
-									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{red, green, blue, 1.0F}, fullbright);
+									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{red, green, blue, 1.0F}, fullbright, buffer);
 								}
 								case ASHES -> {
 									float countFactor = -((float) (ticks & 1023) + partialTicks) / 1024.0F;
 									float uFactor = random.nextFloat() + combinedTicks * 0.0025F * (float) random.nextGaussian();
 									float vFactor = random.nextFloat() + combinedTicks * 0.005F * (float) random.nextGaussian();
 									float color = random.nextFloat() * 0.2F + 0.8F;
-									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{color, color, color, alpha}, fullbright);
+									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{color, color, color, alpha}, fullbright, buffer);
 								}
 								case DARK_STREAM -> {
 									float countFactor = -((ticks & 511) + partialTicks) / 512.0F;
 									float uFactor = 0; //no moving horizontally
 									float vFactor = random.nextFloat() + combinedTicks * 0.005F * (float) random.nextGaussian();
-									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright);
+									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright, buffer);
 								}
 								case BIG_RAIN -> {
 									float countFactor = ((float) (ticks + dx * dx * 3121 + dx * 45238971 + dz * dz * 418711 + dz * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
 									float uFactor = random.nextFloat();
 									float vFactor = random.nextFloat();
-									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, worldBrightness);
+									int worldBrightness = LevelRenderer.getLightCoords(level, pos);
+									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, worldBrightness, buffer);
 								}
 							}
 						}
@@ -197,8 +204,8 @@ public class TFWeatherRenderer {
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	private static void renderLockedStructure(int ticks, float partialTicks, Vec3 camera) {
-		int range = Minecraft.getInstance().options.graphicsPreset().get() != GraphicsPreset.FAST ? 10 : 5;
+	private static void renderLockedStructure(int ticks, float partialTicks, Vec3 camera, MultiBufferSource buffer) {
+		int range = useFancyGraphics() ? 10 : 5;
 		int px = Mth.floor(camera.x());
 		int py = Mth.floor(camera.y());
 		int pz = Mth.floor(camera.z());
@@ -215,7 +222,6 @@ public class TFWeatherRenderer {
 			updateRainIntervals(pBox);
 			pBoxOld = pBox;
 		}
-
 
 		float combinedTicks = ticks + partialTicks;
 		int drawFlag = -1;
@@ -249,7 +255,8 @@ public class TFWeatherRenderer {
 						camera, x, z,
 						countFactor, uFactor, vFactor,
 						new float[] {1.0F, 1.0F, 1.0F, alpha},
-						(15 << 20) | (15 << 4)
+						(15 << 20) | (15 << 4),
+						buffer
 					);
 				}
 			}
@@ -299,8 +306,8 @@ public class TFWeatherRenderer {
 		return intervals;
 	}
 
-	private static void renderEffect(Identifier type, double rainX, double rainZ, int minY, int maxY, Vec3 camera, int dx, int dz, float countFactor, float uFactor, float vFactor, float[] color, int light) {
-		VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.entityTranslucentEmissive(type, Minecraft.useShaderTransparency()));
+	private static void renderEffect(Identifier type, double rainX, double rainZ, int minY, int maxY, Vec3 camera, int dx, int dz, float countFactor, float uFactor, float vFactor, float[] color, int light, MultiBufferSource bufferSource) {
+		VertexConsumer consumer = bufferSource.getBuffer(RenderTypeUtil.weather(type, Minecraft.useShaderTransparency()));
 		consumer
 			.addVertex((float) (dx - camera.x() - rainX + 0.5F), (float) (minY - camera.y()), (float) (dz - camera.z() - rainZ + 0.5F))
 			.setUv(0.0F + uFactor, minY * 0.25F + countFactor + vFactor)
@@ -392,7 +399,7 @@ public class TFWeatherRenderer {
 		} else urGhastRain = Math.max(0.0F, urGhastRain - 0.02F);
 
 		//TF - factor in the Ur-Ghast being alive when determining rain level
-		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (Minecraft.getInstance().options.graphicsPreset().get() != GraphicsPreset.FAST ? 1.0F : 2.0F);
+		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (useFancyGraphics() ? 1.0F : 2.0F);
 		if (rainLevel > 0.0F) {
 			RandomSource randomsource = RandomSource.create((long) partialTicks * 312987231L);
 			BlockPos blockpos1 = null;
