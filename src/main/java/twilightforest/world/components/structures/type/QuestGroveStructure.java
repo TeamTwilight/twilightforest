@@ -10,6 +10,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -22,7 +23,6 @@ import twilightforest.world.components.structures.util.ConquerableStructure;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 
 public class QuestGroveStructure extends ConquerableStructure {
 	public static final MapCodec<QuestGroveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));

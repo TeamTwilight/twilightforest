@@ -474,7 +474,7 @@ public class Lich extends BaseTFBoss {
 						double x = clone.getX((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 1.5D);
 						double y = clone.getY(this.random.nextDouble() * this.random.nextDouble() * 1.25D);
 						double z = clone.getZ((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 1.5D);
-						particlePacket.queueParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
+						particlePacket.queueParticle(ParticleTypes.SMOKE, false, false, x, y, z, 0.0D, 0.0D, 0.0D);
 					}
 
 					PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
@@ -683,14 +683,14 @@ public class Lich extends BaseTFBoss {
 					double x = this.getX(this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D));
 					double y =  this.getY(this.random.nextDouble());
 					double z = this.getZ(this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D));
-					particlePacket.queueParticle(options, false, x, y, z, (x - pos.x) * 0.0625D, (y - pos.y) * 0.0625D, (z - pos.z) * 0.0625D);
+					particlePacket.queueParticle(options, false, false, x, y, z, (x - pos.x) * 0.0625D, (y - pos.y) * 0.0625D, (z - pos.z) * 0.0625D);
 				}
 			} else {
 				for(int j = 0; j < (!this.isShadowClone() ? 128 : 64); ++j) {
 					double x = this.getX((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 2.0D);
 					double y =  this.getY(this.random.nextDouble() * 1.125D);
 					double z = this.getZ((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 2.0D);
-					particlePacket.queueParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
+					particlePacket.queueParticle(ParticleTypes.SMOKE, false, false, x, y, z, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -710,7 +710,7 @@ public class Lich extends BaseTFBoss {
 						double tx = source.x() + (target.x() - source.x()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double ty = source.y() + 0.2D + (target.y() - source.y()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double tz = source.z() + (target.z() - source.z()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						packet.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), red, green, blue), false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
+						packet.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), red, green, blue), false, false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
 					}
 
 					PacketDistributor.sendToPlayersTrackingEntity(this, packet);

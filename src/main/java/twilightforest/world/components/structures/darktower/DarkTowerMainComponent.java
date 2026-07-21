@@ -166,7 +166,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				if (possibleKeyTowers.size() < 1) {
+				if (possibleKeyTowers.isEmpty()) {
 					TwilightForestMod.LOGGER.warn("Dark forest tower could not find four small towers to place keys in.");
 					break;
 				}
@@ -1095,9 +1095,14 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
-					break;
+				var configuredFeatureHolder = world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen);
+
+				if (configuredFeatureHolder.isPresent()) {
+					if (configuredFeatureHolder.get().value().place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
+						break;
+					}
 				}
+
 			}
 		}
 	}

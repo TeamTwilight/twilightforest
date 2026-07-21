@@ -3,6 +3,8 @@ package twilightforest.init.custom;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -12,8 +14,8 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.common.Tags;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingAtlasInfo;
@@ -57,17 +59,18 @@ public class MagicPaintingVariants {
 			new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, 0.0F, 1.0F), true, true),
 			new Layer("frame", null, null, false, false)
 		));
+		HolderSet<Item> goldIngots = context.lookup(Registries.ITEM).getOrThrow(Tags.Items.INGOTS_GOLD);
 		register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 3, 3, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("background", null, null, true, true),
 			new Layer("clouds", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), null, true, true),
 			new Layer("mookaite_mesa", null, null, true, true),
 			new Layer("agate_jungle", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), null, true, true),
 			new Layer("crystal_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), null, true, true),
-			new Layer("background_gold", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("clouds_gold", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("golden_hills", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("golden_forest", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
-			new Layer("golden_sands", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true, true),
+			new Layer("background_gold", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, goldIngots), true, true),
+			new Layer("clouds_gold", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, goldIngots), true, true),
+			new Layer("golden_hills", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, goldIngots), true, true),
+			new Layer("golden_forest", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, goldIngots), true, true),
+			new Layer("golden_sands", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, goldIngots), true, true),
 			new Layer("background_corrupt", null, new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), true, true),
 			new Layer("clouds_corrupt", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false, true),
 			new Layer("goldstone_peaks", null, new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false, true),
