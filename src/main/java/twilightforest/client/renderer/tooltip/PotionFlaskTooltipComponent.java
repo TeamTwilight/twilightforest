@@ -1,22 +1,36 @@
 package twilightforest.client.renderer.tooltip;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Holder;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL46C;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.item.PotionFlaskItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
+
 	private static final Identifier BORDER_SPRITE = TwilightForestMod.prefix("flask_bar_border");
 	private static final Identifier DOSE_SPRITE = TwilightForestMod.prefix("flask_dose_bar");
 	private static final Component EMPTY_DESCRIPTION = Component.translatable("item.twilightforest.flask.empty_description");
@@ -56,10 +70,23 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 		return font.split(EMPTY_DESCRIPTION, WIDTH).size() * font.lineHeight + 1;
 	}
 
+	// [VanillaCopy] the copy of deleted Potion.getName
+	private static String getName(Optional<Holder<Potion>> potion, String descriptionId) {
+		if (potion.isPresent()) {
+			String s = potion.get().value().name();
+			if (s != null) {
+				return descriptionId + s;
+			}
+		}
+
+		String s1 = potion.flatMap(Holder::unwrapKey).map(p_331494_ -> p_331494_.identifier().getPath()).orElse("empty");
+		return descriptionId + s1;
+	}
+
 	private List<Component> getPotionTooltips() {
 		if (this.component.potion().potion().isPresent()) {
 			List<Component> tooltips = new ArrayList<>();
-			tooltips.add(Component.translatable("item.minecraft.potion.effect." + BuiltInRegistries.POTION.getKey(this.component.potion().potion().get().value()).getPath()));
+			tooltips.add(Component.translatable(getName(this.component.potion().potion(), "item.minecraft.potion.effect.")));
 			PotionContents.addPotionTooltip(this.component.potion().potion().get().value().getEffects(), tooltips::add, 1.0F, Minecraft.getInstance().level.tickRateManager().tickrate());
 			return tooltips;
 		}
@@ -110,23 +137,30 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BORDER_SPRITE, x, y, WIDTH, 13);
 	}
 
-
 	private void renderPotion(GuiGraphicsExtractor guiGraphics, int xPosition, int yPosition, int desiredWidth, int desiredHeight, int color) {
 		if (desiredWidth <= 0 || desiredHeight <= 0) return;
 
 		Identifier waterLocation = Identifier.withDefaultNamespace("block/water_still");
 
-		guiGraphics.blit(
-			RenderPipelines.GUI_TEXTURED,
-			waterLocation,
-			xPosition,
-			yPosition - desiredHeight,
-			0,
-			0,
-			desiredWidth,
-			desiredHeight,
-			16, 16,
-			color
-		);
+		int startY = yPosition - desiredHeight;
+
+		for (int x = 0; x < desiredWidth; x += 16) {
+			int width = Math.min(16, desiredWidth - x);
+
+			for (int y = 0; y < desiredHeight; y += 16) {
+				int height = Math.min(16, desiredHeight - y);
+
+				guiGraphics.blit(
+					RenderPipelines.GUI_TEXTURED,
+					waterLocation,
+					xPosition + x,
+					startY + y,
+					0, 0,
+					width, height,
+					16, 16,
+					color
+				);
+			}
+		}
 	}
 }
