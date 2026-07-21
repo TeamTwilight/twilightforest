@@ -14,10 +14,12 @@ import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
+import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.tags.TFEntityTypeTags;
+import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
+
+	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>(Capabilities.Item.BLOCK);
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -48,7 +52,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 				if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
 					List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
 					for (Direction side : Direction.values()) {
-						ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, blockPos, blockEntity.getBlockState(), blockEntity, side);
+						ResourceHandler<ItemResource> handler = this.getItemHandler(level, blockEntity, side);
 						if (handler != null) handlers.add(handler);
 					}
 					if (!handlers.isEmpty()) {
@@ -56,7 +60,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 					}
 				} else { // Output if its outside that range
 					for (Direction side : Direction.values()) {
-						ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, blockPos, blockEntity.getBlockState(), blockEntity, side);
+						ResourceHandler<ItemResource> handler = this.getItemHandler(level, blockEntity, side);
 						if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 					}
 				}
@@ -134,5 +138,14 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 				if (transferred) break; // Again, since we only transfer once per source, break
 			}
 		}
+	}
+
+	@Nullable
+	ResourceHandler<ItemResource> getItemHandler(ServerLevel level, BlockEntity blockEntity, Direction side) {
+		return this.capabilityCache.get(level, blockEntity, side);
+	}
+
+	public void clearCapabilityCache(ServerLevel level) {
+		this.capabilityCache.clear(level);
 	}
 }
