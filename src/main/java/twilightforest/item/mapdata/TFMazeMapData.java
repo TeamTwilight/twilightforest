@@ -19,13 +19,9 @@ import twilightforest.network.MazeMapPacket;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TFMazeMapData extends MapItemSavedData {
-	private static final Map<MapId, TFMazeMapData> CLIENT_DATA = new HashMap<>();
-
 	public int yCenter;
 	public boolean ore;
 
@@ -118,25 +114,6 @@ public class TFMazeMapData extends MapItemSavedData {
 				this.centerZ = mc.getZ();
 			}
 		}
-	}
-
-	// [VanillaCopy] Adapted from ServerLevel.getMapData(...)
-	public static @Nullable TFMazeMapData getServerMazeMapData(ServerLevel serverLevel, MapId id) {
-		return serverLevel.getServer().getDataStorage().get(mazeMapType(id));
-	}
-
-	// [VanillaCopy] Adapted from ClientLevel.getMapData(...)
-	public static @Nullable TFMazeMapData getClientMazeMapData(MapId id) {
-		return CLIENT_DATA.get(id);
-	}
-
-	// [VanillaCopy] Adapted from ServerLevel.setMapData(...)
-	public static void setServerMazeMapData(ServerLevel serverLevel, MapId id, TFMazeMapData data) {
-		serverLevel.getServer().getDataStorage().set(mazeMapType(id), data);
-	}
-
-	public static void setClientMazeMapData(MapId id, TFMazeMapData data) {
-		CLIENT_DATA.put(id, data);
 	}
 
 	@Nullable

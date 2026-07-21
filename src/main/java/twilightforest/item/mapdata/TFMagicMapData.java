@@ -6,7 +6,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,12 +20,9 @@ import twilightforest.util.Codecs;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TFMagicMapData extends MapItemSavedData {
-	private static final Map<MapId, TFMagicMapData> CLIENT_DATA = new HashMap<>();
 	public final List<String> conqueredStructures = new ArrayList<>();
 
 	// [VanillaCopy] from MapItemSavedData but with our own fields and constructor
@@ -130,25 +126,6 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 
 		this.conqueredStructures.addAll(conqueredStructures);
-	}
-
-	// [VanillaCopy] Adapted from ServerLevel.getMapData(...)
-	public static @Nullable TFMagicMapData getServerMagicMapData(ServerLevel serverLevel, MapId id) {
-		return serverLevel.getServer().getDataStorage().get(magicMapType(id));
-	}
-
-	// [VanillaCopy] Adapted from ClientLevel.getMapData(...)
-	public static @Nullable TFMagicMapData getClientMagicMapData(MapId id) {
-		return CLIENT_DATA.get(id);
-	}
-
-	// [VanillaCopy] Adapted from ServerLevel.setMapData(...)
-	public static void setServerMagicMapData(ServerLevel serverLevel, MapId id, TFMagicMapData data) {
-		serverLevel.getServer().getDataStorage().set(magicMapType(id), data);
-	}
-
-	public static void setClientMagicMapData(MapId id, TFMagicMapData data) {
-		CLIENT_DATA.put(id, data);
 	}
 
 	@Nullable
