@@ -6,11 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -23,8 +19,6 @@ import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.attribute.BackgroundMusic;
 import net.minecraft.world.attribute.EnvironmentAttributes;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ChunkPos;
@@ -36,8 +30,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
@@ -51,7 +43,6 @@ import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
@@ -60,8 +51,6 @@ import twilightforest.item.*;
 import twilightforest.tags.TFItemTags;
 import twilightforest.util.HolderMatcher;
 
-import java.awt.*;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashSet;
@@ -82,8 +71,6 @@ public class ClientGameEvents {
 	private int aurora = 0;
 	private int lastAurora = 0;
 
-	private static Field skyFlashTimeField;
-
 	@Autowired(dist = Dist.CLIENT)
 	private HolderMatcher holderMatcher;
 
@@ -102,7 +89,8 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::setMusicInDimension);
 		NeoForge.EVENT_BUS.addListener(this::shakeCamera);
 		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
-		NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
+		// Uncomment this when Curios compat is ready
+//		NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
@@ -167,30 +155,21 @@ public class ClientGameEvents {
 	private void renderAurora(RenderLevelStageEvent.AfterWeather event) {
 		if (Minecraft.getInstance().level == null) return;
 
-		if (aurora > 0 || lastAurora > 0) {
-			var bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+		if ((aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
+			Tesselator tesselator = Tesselator.getInstance();
+			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			VertexConsumer consumer = bufferSource.getBuffer(TFShaders.AURORA);
-
-			float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks();
-			float alpha = (Mth.lerp(partialTicks, lastAurora, aurora)) / 60F * 0.5F;
-
-			final float scale = 2048F * (Minecraft.getInstance().options.renderDistance().get() / 32F);
+			final float scale = 2048F * (Minecraft.getInstance().options.getEffectiveRenderDistance() / 2F);
 			Vec3 pos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
 			float y = (float) (256F - pos.y());
+			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
-			PoseStack poseStack = event.getPoseStack();
-			poseStack.pushPose();
-
-			PoseStack.Pose lastPose = poseStack.last();
-
-			consumer.addVertex(lastPose.pose(), -scale, y, scale).setColor(1F, 1F, 1F, alpha);
-			consumer.addVertex(lastPose.pose(), -scale, y, -scale).setColor(1F, 1F, 1F, alpha);
-			consumer.addVertex(lastPose.pose(), scale, y, -scale).setColor(1F, 1F, 1F, alpha);
-			consumer.addVertex(lastPose.pose(), scale, y, scale).setColor(1F, 1F, 1F, alpha);
-
-			poseStack.popPose();
-			bufferSource.endBatch(TFShaders.AURORA);
+			TFShaders.AURORA.invokeThenEndTesselator(
+				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
+				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
 		}
 	}
 
@@ -228,9 +207,7 @@ public class ClientGameEvents {
 			BugModelAnimationHelper.animate();
 
 			if (mc.level != null) {
-				Integer flashTime = ObfuscationReflectionHelper.getPrivateValue(ClientLevel.class, mc.level, "skyFlashTime");
-
-				if (flashTime != null && flashTime > 0) {
+				if (mc.level.getSkyFlashTime() > 0) {
 					MagicPaintingRenderer.lastLightning = mc.level.getGameTime();
 				}
 
@@ -251,7 +228,7 @@ public class ClientGameEvents {
 								Player player = mc.player;
 								shakeIntensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
 								if (shakeIntensity > 0) {
-									player.absSnapTo(player.getX(), player.getY(), player.getZ(),
+									player.snapTo(player.getX(), player.getY(), player.getZ(),
 										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * shakeIntensity,
 										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * shakeIntensity);
 									shakeIntensity = 0.0F;
@@ -301,28 +278,25 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?, ?> event) {
-		LocalPlayer localPlayer = Minecraft.getInstance().player;
-		if (localPlayer == null) {
-			return;
-		}
-		ItemStack stack = localPlayer.getItemBySlot(EquipmentSlot.HEAD);
-		boolean visible = !(stack.is(TFItemTags.TROPHIES)) && !areCuriosEquipped(localPlayer);
-		boolean isPlayer = true;
-		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);
-			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
-			}
-		}
-	}
-
-	private boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.is(TFItemTags.TROPHIES));
-		}
-		return false;
-	}
+	// Uncomment this when Curios compat is ready
+//	private void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?, ?> event) {
+//		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
+//		boolean visible = !(stack.getItem() instanceof TrophyItem) && !areCuriosEquipped(event.getEntity());
+//		boolean isPlayer = event.getEntity() instanceof Player;
+//		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
+//			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
+//			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
+//				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
+//			}
+//		}
+//	}
+//
+//	private boolean areCuriosEquipped(LivingEntity entity) {
+//		if (ModList.get().isLoaded("curios")) {
+//			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem);
+//		}
+//		return false;
+//	}
 
 	private void translateBookAuthor(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
@@ -339,37 +313,60 @@ public class ClientGameEvents {
 		}
 	}
 
+	// [VanillaCopy] the copy of removed LevelRenderer.renderShape
+	private void renderShape(
+		PoseStack poseStack,
+		VertexConsumer consumer,
+		VoxelShape shape,
+		double x,
+		double y,
+		double z,
+		float red,
+		float green,
+		float blue,
+		float alpha
+	) {
+		PoseStack.Pose posestack$pose = poseStack.last();
+		shape.forAllEdges(
+			(p_323073_, p_323074_, p_323075_, p_323076_, p_323077_, p_323078_) -> {
+				float f = (float)(p_323076_ - p_323073_);
+				float f1 = (float)(p_323077_ - p_323074_);
+				float f2 = (float)(p_323078_ - p_323075_);
+				float f3 = Mth.sqrt(f * f + f1 * f1 + f2 * f2);
+				f /= f3;
+				f1 /= f3;
+				f2 /= f3;
+				consumer.addVertex(posestack$pose, (float)(p_323073_ + x), (float)(p_323074_ + y), (float)(p_323075_ + z))
+					.setColor(red, green, blue, alpha)
+					.setNormal(posestack$pose, f, f1, f2);
+				consumer.addVertex(posestack$pose, (float)(p_323076_ + x), (float)(p_323077_ + y), (float)(p_323078_ + z))
+					.setColor(red, green, blue, alpha)
+					.setNormal(posestack$pose, f, f1, f2);
+			}
+		);
+	}
+
 	private void renderGiantBlockOutlines(ExtractBlockOutlineRenderStateEvent event) {
 		BlockPos pos = event.getBlockPos();
 		BlockState state = event.getBlockState();
 
-		boolean isMiniature = state.getBlock() instanceof MiniatureStructureBlock;
+		if (state.getBlock() instanceof MiniatureStructureBlock) {
+			event.setCanceled(true);
+			return;
+		}
 
 		LocalPlayer player = Minecraft.getInstance().player;
-		boolean isHoldingGiantTool = player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem
-			|| (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock));
-
-		if (isMiniature || (isHoldingGiantTool && !state.isAir() && player.level().getWorldBorder().isWithinBounds(pos))) {
-			Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
-			BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-			Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(cameraPos);
-
-			int outlineColor = 0x7F000000;
-			event.addCustomRenderer((_, bufferSource, poseStack, _, _) -> {
-
-				if (isHoldingGiantTool && !isMiniature) {
-					VertexConsumer consumer = bufferSource.getBuffer(RenderTypes.lines());
-					ShapeRenderer.renderShape(
-						poseStack,
-						consumer,
-						GIANT_BLOCK,
-						xyz.x(), xyz.y(), xyz.z(),
-						outlineColor, 1.0F
-					);
-				}
-
-				return false;
-			});
+		if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
+			event.setCanceled(true);
+			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
+				event.addCustomRenderer((renderState, buffer, stack, translucentPass, levelRenderState) -> {
+					BlockPos offsetPos = new BlockPos(renderState.pos().getX() & ~0b11, renderState.pos().getY() & ~0b11, renderState.pos().getZ() & ~0b11);
+					Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().position());
+					VertexConsumer consumer = buffer.getBuffer(RenderTypes.lines());
+					renderShape(stack, consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
+					return true;
+				});
+			}
 		}
 	}
 
