@@ -261,10 +261,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 			}
 			case WEATHER -> a = level.getRainLevel(partialTicks);
 			case STORM -> a = (level.getRainLevel(partialTicks) + level.getThunderLevel(partialTicks)) * 0.5F;
-			case LIGHTNING -> {
-				float flash = level.isThundering() && (level.getGameTime() % 50 < 4) ? 2.0F : 0.0F;
-				a = flash * opacityModifier.multiplier();
-			}
+			case LIGHTNING -> a = level.getSkyFlashTime() * opacityModifier.multiplier();
 			case DAY_TIME -> {
 				float time = level.getDefaultClockTime();
 
