@@ -221,7 +221,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 					ParticlePacket packet = new ParticlePacket();
 
 					for (int i = 0; i < iterations; i++) {
-						packet.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, ARGB.red(colorVal), ARGB.green(colorVal), ARGB.blue(colorVal)), false,
+						packet.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, ARGB.red(colorVal), ARGB.green(colorVal), ARGB.blue(colorVal)), false, false,
 							this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
 							this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 1.5D,
 							this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,

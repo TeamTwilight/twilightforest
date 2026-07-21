@@ -108,7 +108,7 @@ public interface IBossLootBuffer {
 			double x = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
 			double y = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
 			double z = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-			particlePacket.queueParticle(ParticleTypes.POOF, false, vec3.add(x, y, z), Vec3.ZERO);
+			particlePacket.queueParticle(ParticleTypes.POOF, false, false, vec3.add(x, y, z), Vec3.ZERO);
 		}
 		PacketDistributor.sendToPlayersTrackingEntity(boss, particlePacket);
 	}

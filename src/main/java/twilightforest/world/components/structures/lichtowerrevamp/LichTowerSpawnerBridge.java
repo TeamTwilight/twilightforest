@@ -37,7 +37,7 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 
-		this.invertedPalette = compoundTag.getBoolean("inverted");
+		this.invertedPalette = compoundTag.getBooleanOr("inverted", false);
 
 		if (this.invertedPalette) {
 			RegistryAccess registryAccess = ctx.registryAccess();
