@@ -93,8 +93,8 @@ public class UncraftingResultSlot extends ResultSlot {
 				if (!remainingStack.isEmpty()) {
 					if (currentStack.isEmpty()) {
 						this.assemblyMatrix.setItem(index, remainingStack);
-					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
-						this.player.drop(remainingStack, false);
+					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack)) {
+						InventoryUtil.giveItemToPlayer(this.player, remainingStack);
 					}
 				}
 			}
