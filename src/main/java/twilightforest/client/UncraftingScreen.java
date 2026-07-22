@@ -175,6 +175,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 
 		UncraftingMenu tfContainer = this.menu;
 
+		// show uncrafting ingredients as background
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(this.leftPos, this.topPos);
 
@@ -242,6 +243,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 
 		boolean itemBroken = UncraftingMenu.isMarked(itemStackToRender);
 
+		// draw 50% gray rectangle over the item
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(0.0F, 0.0F);
 		graphics.fill(appearSlot.x, appearSlot.y, appearSlot.x + 16, appearSlot.y + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
@@ -267,6 +269,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 			}
 		}
 
+		//check if we're hovering over a banned uncraftable item
 		if (container.slots.getFirst().hasItem()
 			&& container.slots.getFirst().getItem().is(TFItemTags.BANNED_UNCRAFTABLES)
 			&& container.slots.getFirst().equals(this.hoveredSlot)) {
