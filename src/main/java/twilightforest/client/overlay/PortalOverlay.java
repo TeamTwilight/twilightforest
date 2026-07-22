@@ -25,7 +25,7 @@ public class PortalOverlay {
 					.withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, false))
 					.build();
 				Material.Baked textureatlassprite = minecraft.getModelManager().getBlockStateModelSet().getParticleMaterial(TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState());
-				graphics.blit(pipeline, textureatlassprite.sprite().atlasLocation(), 0, 0, 0, 0, -90, window.getGuiScaledWidth(), window.getGuiScaledHeight(), ARGB.color(255 * portal.getPortalTimer() / TFPortalAttachment.MAX_TICKS, 0, 0, 0));
+				graphics.blit(pipeline, textureatlassprite.sprite().atlasLocation(), 0, 0, 0, 0, -90, window.getGuiScaledWidth(), window.getGuiScaledHeight(), ARGB.color(255 * portal.getPortalTimer() / TFPortalAttachment.MAX_TICKS, 255, 255, 255));
 			}
 		}
 	}
