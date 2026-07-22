@@ -98,10 +98,9 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Mob.createMobAttributes()
+		return Animal.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 70.0D)
-			.add(Attributes.MOVEMENT_SPEED, 0.23D)
-			.add(Attributes.TEMPT_RANGE, 16.0D);
+			.add(Attributes.MOVEMENT_SPEED, 0.23D);
 	}
 
 	@Override

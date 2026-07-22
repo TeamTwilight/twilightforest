@@ -51,11 +51,10 @@ public class TinyBird extends FlyingBird {
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return FlyingBird.createMobAttributes()
+		return FlyingBird.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 4.0D)
 			.add(Attributes.MOVEMENT_SPEED, 0.2D)
-			.add(Attributes.STEP_HEIGHT, 1.0D)
-			.add(Attributes.TEMPT_RANGE, 16.0D);
+			.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override

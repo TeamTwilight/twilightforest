@@ -68,10 +68,9 @@ public class Penguin extends Bird {
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Mob.createMobAttributes()
+		return Animal.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 10.0D)
-			.add(Attributes.MOVEMENT_SPEED, 0.2D)
-			.add(Attributes.TEMPT_RANGE, 16.0D);
+			.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 
 	@Override
