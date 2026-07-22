@@ -24,9 +24,11 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import twilightforest.block.SortLogCoreBlock;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
@@ -47,6 +49,13 @@ public class MiscEvents {
 		NeoForge.EVENT_BUS.addListener(this::updateCicadaSoundsOnHead);
 		NeoForge.EVENT_BUS.addListener(this::addTomesToLecterns);
 		NeoForge.EVENT_BUS.addListener(this::washOffCloth);
+		NeoForge.EVENT_BUS.addListener(this::clearSortingTreeCapabilityCache);
+	}
+
+	private void clearSortingTreeCapabilityCache(LevelEvent.Unload event) {
+		if (event.getLevel() instanceof ServerLevel level) {
+			((SortLogCoreBlock) TFBlocks.SORTING_LOG_CORE.get()).clearCapabilityCache(level);
+		}
 	}
 
 	private void addPrey(EntityJoinLevelEvent event) {
