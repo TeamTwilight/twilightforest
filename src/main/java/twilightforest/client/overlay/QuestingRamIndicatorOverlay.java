@@ -20,6 +20,8 @@ public class QuestingRamIndicatorOverlay {
 	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final Identifier QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 
+	private static final Minecraft minecraft = Minecraft.getInstance();
+
 	@Autowired(dist = Dist.CLIENT)
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
@@ -33,9 +35,9 @@ public class QuestingRamIndicatorOverlay {
 							int j = ((graphics.guiHeight() - 1) / 2) - 11;
 							int k = ((graphics.guiHeight() - 1) / 2) - 3;
 							if (!ram.isColorPresent(questEntry.getKey())) {
-								graphics.blitSprite(RenderPipelines.GUI_TEXTURED, QUESTING_RAM_X_SPRITE, k, j, 7, 7);
+								graphics.blitSprite(RenderPipelines.CROSSHAIR, QUESTING_RAM_X_SPRITE, k, j, 7, 7);
 							} else {
-								graphics.blitSprite(RenderPipelines.GUI_TEXTURED, QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
+								graphics.blitSprite(RenderPipelines.CROSSHAIR, QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
 							}
 							break;
 						}
