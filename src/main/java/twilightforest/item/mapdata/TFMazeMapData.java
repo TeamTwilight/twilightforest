@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -83,7 +84,7 @@ public class TFMazeMapData extends MapItemSavedData {
 
 	// [VanillaCopy] from MapItemSavedData but with our own fields
 	private TFMazeMapData(ResourceKey<Level> dimension, int centerX, int centerZ, byte scale, ByteBuffer colors, boolean trackingPosition, boolean unlimitedTracking, boolean locked, List<MapBanner> banners, List<MapFrame> frames, int yCenter, boolean ore) {
-		super(centerX, centerZ, scale, trackingPosition, unlimitedTracking, locked, dimension);
+		this(centerX, centerZ, (byte) Mth.clamp(scale, 0, 4), trackingPosition, unlimitedTracking, locked, dimension);
 
 		if (colors.array().length == 16384) {
 			this.colors = colors.array();
