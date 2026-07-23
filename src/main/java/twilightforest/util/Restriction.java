@@ -2,21 +2,20 @@ package twilightforest.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,20 +51,9 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 			return Optional.empty();
 
 		Optional<Registry<Restriction>> restrictionsRegistry = access.lookup(TFRegistries.Keys.RESTRICTIONS);
-		if (restrictionsRegistry.isEmpty())
-			return Optional.empty();
-
-		Restriction restrictions = restrictionsRegistry.get().get(biomeLocation).map(Holder.Reference::value).orElse(null);
-		if (restrictions == null || PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
-			return Optional.empty();
-		}
-
-		return Optional.of(restrictions);
-	}
-
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStackTemplate> lockedBiomeToast, List<Identifier> advancements) {
-		return new Restriction(hintStructureKey.orElse(null), enforcer, multiplier, lockedBiomeToast.orElse(null), advancements);
+		return restrictionsRegistry.flatMap(restrictions -> restrictions
+			.getOptional(biomeLocation)
+			.filter(r -> !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, r.advancements())));
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
