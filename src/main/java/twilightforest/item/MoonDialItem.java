@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.MoonPhase;
 import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class MoonDialItem extends Item {
 	public static MutableComponent getMoonPhase(@Nullable Level level, BlockPos pos) {
 		String phaseType;
 		if (level != null && !level.dimensionType().hasFixedTime()) {
-			var phase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, pos);
+			MoonPhase phase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, pos);
 			phaseType = String.valueOf(phase.index());
 		} else {
 			boolean aprilFools = LocalDate.of(LocalDate.now().getYear(), 4, 1).equals(LocalDate.now());
