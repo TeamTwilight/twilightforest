@@ -1,10 +1,8 @@
 package twilightforest.client.renderer;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Camera;
-import net.minecraft.client.GraphicsPreset;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -37,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.util.IntervalUtils;
+import twilightforest.util.MinecraftUtil;
 import twilightforest.util.RenderTypeUtil;
 import twilightforest.util.Restriction;
 
@@ -84,13 +83,6 @@ public class TFWeatherRenderer {
 		}
 	}
 
-	// [VanillaCopy] the copy of removed Minecraft.useFancyGraphics
-	private static boolean useFancyGraphics() {
-		return Minecraft.getInstance().options.graphicsPreset().get().ordinal() >= GraphicsPreset.FANCY.ordinal();
-	}
-
-	// [VanillaCopy] the copy of removed
-
 	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, Vec3 camera, MultiBufferSource buffer) {
 		Minecraft mc = Minecraft.getInstance();
 		if (progressionEnforced && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
@@ -113,7 +105,7 @@ public class TFWeatherRenderer {
 			int pz = Mth.floor(camera.z());
 
 			int range = 5;
-			if (useFancyGraphics()) {
+			if (MinecraftUtil.useFancyGraphics()) {
 				range = 10;
 			}
 
@@ -205,7 +197,7 @@ public class TFWeatherRenderer {
 
 	@SuppressWarnings("ConstantConditions")
 	private static void renderLockedStructure(int ticks, float partialTicks, Vec3 camera, MultiBufferSource buffer) {
-		int range = useFancyGraphics() ? 10 : 5;
+		int range = MinecraftUtil.useFancyGraphics() ? 10 : 5;
 		int px = Mth.floor(camera.x());
 		int py = Mth.floor(camera.y());
 		int pz = Mth.floor(camera.z());
@@ -399,7 +391,7 @@ public class TFWeatherRenderer {
 		} else urGhastRain = Math.max(0.0F, urGhastRain - 0.02F);
 
 		//TF - factor in the Ur-Ghast being alive when determining rain level
-		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (useFancyGraphics() ? 1.0F : 2.0F);
+		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (MinecraftUtil.useFancyGraphics() ? 1.0F : 2.0F);
 		if (rainLevel > 0.0F) {
 			RandomSource randomsource = RandomSource.create((long) partialTicks * 312987231L);
 			BlockPos blockpos1 = null;
