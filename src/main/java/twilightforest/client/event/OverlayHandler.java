@@ -1,7 +1,6 @@
 package twilightforest.client.event;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -9,15 +8,10 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.sprite.SpriteId;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
@@ -29,13 +23,12 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.client.overlay.ItemDisplayOverlay;
-import twilightforest.components.entity.TFPortalAttachment;
+import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
@@ -70,11 +63,11 @@ public class OverlayHandler {
 			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
 				int xPos = graphics.guiWidth() / 2 + 91;
 				int yPos = graphics.guiHeight() - gui.rightHeight;
-				renderModdedFoodBar(graphics, player, xPos, yPos);
+				gui.extractFood(graphics, player, yPos, xPos);
 				gui.rightHeight += 10;
 			}
 		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, _) -> {
+		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -94,32 +87,10 @@ public class OverlayHandler {
 
 		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> {
 			Minecraft minecraft = Minecraft.getInstance();
-			Window window = minecraft.getWindow();
 			LocalPlayer player = minecraft.player;
 
 			if (player != null) {
-				TFPortalAttachment portal = player.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
-				if (portal.getPortalTimer() > 0) {
-					float alpha = (float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS;
-					int packedColor = ((int)(alpha * 255.0F) << 24) | 0xFFFFFF;
-
-					Identifier portalTextureLocation = BuiltInRegistries.BLOCK.getKey(TFBlocks.TWILIGHT_PORTAL.get()).withPrefix("block/");
-
-					TextureAtlasSprite sprite = minecraft.getAtlasManager().get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, portalTextureLocation));
-
-					graphics.blit(
-						RenderPipelines.GUI_TEXTURED,
-						TextureAtlas.LOCATION_BLOCKS,
-						0, 0,
-						sprite.getU0() * sprite.contents().width(),
-						sprite.getV0() * sprite.contents().height(),
-						window.getGuiScaledWidth(),
-						window.getGuiScaledHeight(),
-						sprite.contents().width(),
-						sprite.contents().height(),
-						packedColor
-					);
-				}
+				PortalOverlay.render(graphics, minecraft, player);
 			}
 		});
 
@@ -128,39 +99,6 @@ public class OverlayHandler {
 			Gui gui = minecraft.gui;
 			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());
 		});
-	}
-
-	private static void renderModdedFoodBar(GuiGraphicsExtractor graphics, Player player, int xPos, int yPos) {
-		Identifier guiIcons = Identifier.fromNamespaceAndPath("minecraft", "textures/gui/icons.png");
-
-		int foodLevel = player.getFoodData().getFoodLevel();
-		boolean hasHungerEffect = player.hasEffect(MobEffects.HUNGER);
-
-		int uOffset = hasHungerEffect ? 88 : 16;
-		int uIconOffset = hasHungerEffect ? 115 : 52;
-
-		int textureWidth = 256;
-		int textureHeight = 256;
-
-		for (int i = 0; i < 10; ++i) {
-			int idx = i * 2 + 1;
-			int x = xPos - i * 8;
-
-			graphics.blit(
-				RenderPipelines.GUI_TEXTURED,
-				guiIcons,
-				x, yPos,
-				uOffset, 27,
-				9, 9,
-				textureWidth, textureHeight
-			);
-
-			if (idx < foodLevel) {
-				graphics.blit(RenderPipelines.GUI_TEXTURED, guiIcons, x, yPos, uIconOffset, 27, 9, 9, textureWidth, textureHeight);
-			} else if (idx == foodLevel) {
-				graphics.blit(RenderPipelines.GUI_TEXTURED, guiIcons, x, yPos, uIconOffset + 9, 27, 9, 9, textureWidth, textureHeight);
-			}
-		}
 	}
 
 	private static void renderIndicator(Minecraft minecraft, GuiGraphicsExtractor graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
@@ -172,9 +110,9 @@ public class OverlayHandler {
 						int j = ((screenHeight - 1) / 2) - 11;
 						int k = ((screenWidth - 1) / 2) - 3;
 						if (!ram.isColorPresent(questEntry.getKey())) {
-							graphics.blitSprite(RenderPipelines.GUI_INVERT, QUESTING_RAM_X_SPRITE, k, j, 7, 7);
+							graphics.blitSprite(RenderPipelines.CROSSHAIR, QUESTING_RAM_X_SPRITE, k, j, 7, 7);
 						} else {
-							graphics.blitSprite(RenderPipelines.GUI_INVERT, QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
+							graphics.blitSprite(RenderPipelines.CROSSHAIR, QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
 						}
 						break;
 					}
