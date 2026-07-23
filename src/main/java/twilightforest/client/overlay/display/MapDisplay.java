@@ -23,7 +23,7 @@ public class MapDisplay implements ItemDisplay {
 	private static final RenderType MAP_BACKGROUND = RenderTypes.text(Identifier.withDefaultNamespace("textures/map/map_background.png"));
 	private static final RenderType MAP_BACKGROUND_CHECKERBOARD = RenderTypes.text(Identifier.withDefaultNamespace("textures/map/map_background_checkerboard.png"));
 
-	private static final int FULL_BRIGHT = 15728880;
+	private static final int FULL_BRIGHT = 0xF000F0;
 
 	private final MapRenderState cachedMapRenderState = new MapRenderState();
 
