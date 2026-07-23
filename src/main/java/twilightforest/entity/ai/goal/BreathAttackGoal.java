@@ -1,6 +1,5 @@
 package twilightforest.entity.ai.goal;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -13,7 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
