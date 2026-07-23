@@ -42,8 +42,12 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 		return new ItemStack(Items.ARROW);
 	}
 
+	// FIXME find another way to use parentArrow's doPostHurtEffects
 	@Override
 	public void doPostHurtEffects(LivingEntity target) {
+		if (this.parentArrow != null) {
+			this.parentArrow.doPostHurtEffects(target);
+		}
 		super.doPostHurtEffects(target);
 	}
 }
