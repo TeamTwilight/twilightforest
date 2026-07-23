@@ -97,7 +97,7 @@ public class TFMazeMapData extends MapItemSavedData {
 
 		for(MapFrame frame : frames) {
 			this.frameMarkers.put(frame.getId(), frame);
-			this.addDecoration(MapDecorationTypes.FRAME, null, getFrameKey(frame.entityId()), frame.pos().getX(), frame.pos().getZ(), frame.rotation(), null); // getFrameKey(...) needs an AT entry or VanillaCopy
+			this.addDecoration(MapDecorationTypes.FRAME, null, getFrameKey(frame.entityId()), frame.pos().getX(), frame.pos().getZ(), frame.rotation(), null);
 		}
 
 		this.yCenter = yCenter;
