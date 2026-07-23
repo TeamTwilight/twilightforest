@@ -11,9 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
+
 import java.time.LocalDate;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
 
 public class MoonDialItem extends Item {
 	public MoonDialItem(Properties properties) {
