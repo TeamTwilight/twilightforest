@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.wolf.AdultWolfModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
@@ -19,12 +20,16 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -572,7 +577,7 @@ public class ClientRegistrationEvents {
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
 			if (renderer instanceof LivingEntityRenderer<?, ?, ?> living) {
-				attachRenderLayers(living);
+				attachRenderLayers((LivingEntityRenderer) living); // FIXME find the better way to avoid raw types
 			}
 		}
 
@@ -582,7 +587,7 @@ public class ClientRegistrationEvents {
 		});
 	}
 
-	private <T extends AbstractClientPlayer> void attachRenderLayers(AvatarRenderer<T> renderer) {
+	private <E extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<S>> void attachRenderLayers(LivingEntityRenderer<E, S, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
 	}
