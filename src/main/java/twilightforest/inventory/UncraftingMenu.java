@@ -193,6 +193,7 @@ public class UncraftingMenu extends RecipeBookMenu {
 					}
 				}
 
+				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
 				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.display().getFirst().result().resolveForFirstStack(ContextMap.EMPTY).getCount(); //Uncrafting recipes need this method call
 				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
