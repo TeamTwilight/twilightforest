@@ -27,6 +27,7 @@ import java.util.Optional;
  * @param lockedBiomeToast Item that is used as an icon for the notification that tells the player that the area is locked
  * @param advancements     List of advancements that are required to make a biome no longer restricted
  */
+public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement, float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
 
 public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement,
 						  float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
@@ -62,7 +63,12 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 			return Optional.empty();
 		}
 
-		return Optional.of(restrictions);
+		return Optional.empty();
+	}
+
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+	private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStackTemplate> lockedBiomeToast, List<Identifier> advancements) {
+		return new Restriction(hintStructureKey.orElse(null), enforcer, multiplier, lockedBiomeToast.orElse(null), advancements);
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {

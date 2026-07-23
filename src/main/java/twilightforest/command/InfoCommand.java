@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.random.Weighted;
-import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -26,6 +25,7 @@ import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
@@ -78,11 +78,14 @@ public class InfoCommand {
 			}
 
 			// what is the spawn list
-			WeightedList<MobSpawnSettings.SpawnerData> spawnList = EntityEvents.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
-			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
-			if (spawnList != null)
-				for (Weighted<MobSpawnSettings.SpawnerData> entry : spawnList.unwrap())
-					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.value().type().getDescription().getString(), entry.weight()), false);
+			List<Weighted<MobSpawnSettings.SpawnerData>> spawnList = new ArrayList<>();
+
+			EntityEvents.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos, spawnList::add);
+
+			if (!spawnList.isEmpty()) {
+				source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
+				spawnList.forEach(entry -> source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.value().type().getDescription().getString(), entry.weight()), false));
+			}
 		} else {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.outside").withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
 		}
