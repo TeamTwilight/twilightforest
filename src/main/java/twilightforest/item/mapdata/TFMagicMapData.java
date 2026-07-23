@@ -110,7 +110,6 @@ public class TFMagicMapData extends MapItemSavedData {
 			this.addDecoration(MapDecorationTypes.FRAME, null, getFrameKey(frame.entityId()), frame.pos().getX(), frame.pos().getZ(), frame.rotation(), null); // getFrameKey(...) needs an AT entry or VanillaCopy
 		}
 
-
 		for (DecorationHolder holder : decorations) {
 			MapDecoration newDecoration = holder.decoration();
 			MapDecoration oldDecoration = this.decorations.put(holder.id(), newDecoration);
