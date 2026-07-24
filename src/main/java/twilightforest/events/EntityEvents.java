@@ -4,8 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -43,8 +41,6 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.storage.TagValueInput;
-import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.fml.ModList;
@@ -59,9 +55,9 @@ import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
@@ -183,12 +179,9 @@ public class EntityEvents {
 	private void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		ItemStack item = event.getItemStack();
 		if (item.is(TFItems.ORE_METER.get()) && (item.has(TFDataComponents.ORE_DATA) || item.has(TFDataComponents.ORE_FILTER))) {
-
 			ClientPacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
-
 			item.remove(TFDataComponents.ORE_DATA);
 			item.remove(TFDataComponents.ORE_FILTER);
-
 			event.getLevel().playSound(
 				event.getEntity(),
 				event.getEntity().blockPosition(),
@@ -199,7 +192,6 @@ public class EntityEvents {
 			);
 		}
 	}
-
 
 	private void entityHurts(LivingDamageEvent.Post event) {
 		LivingEntity living = event.getEntity();
@@ -230,7 +222,7 @@ public class EntityEvents {
 	}
 
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them
-	private void onCasketBreak(BlockEvent.BreakEvent event) {
+	private void onCasketBreak(BreakBlockEvent event) {
 		Player player = event.getPlayer();
 		if (event.getState().getBlock() instanceof SkullChestBlock) {
 			BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
@@ -268,16 +260,16 @@ public class EntityEvents {
 		if (!projectile.level().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
 			if (event.getRayTraceResult() instanceof EntityHitResult result) {
 				Entity entity = result.getEntity();
+
 				if (entity instanceof LivingEntity entityBlocking) {
 					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
-						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, EntityReference.of(projectile.getOwner()), true);
+						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, EntityReference.of(entityBlocking), true);
 						event.setCanceled(true);
 					}
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * Checks if the player is attempting to create a skull candle
@@ -337,11 +329,9 @@ public class EntityEvents {
 	private static void makeSkullCandle(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
 		ResolvableProfile profile = null;
 		Level level = event.getLevel();
-
 		if (level.getBlockEntity(event.getPos()) instanceof SkullBlockEntity skull) {
 			profile = skull.getOwnerProfile();
 		}
-
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE));
@@ -360,8 +350,8 @@ public class EntityEvents {
 	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
 		int amount = 0;
 
-		for (int i = 0; i < 4; i++) {
-			ItemStack armor = entity.getItemBySlot(ARMOR_SLOTS[i]);
+		for (EquipmentSlot armorSlot : ARMOR_SLOTS) {
+			ItemStack armor = entity.getItemBySlot(armorSlot);
 			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
 				amount++;
 			}
