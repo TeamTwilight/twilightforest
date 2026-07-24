@@ -14,7 +14,6 @@ import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
@@ -60,10 +59,12 @@ import twilightforest.entity.RovingCube;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
+import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.init.custom.TemplateMarkerHandlers;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
@@ -210,7 +211,7 @@ public class RegistrationEvents {
 	}
 
 	public void setupPackets(RegisterPayloadHandlersEvent event) {
-		PayloadRegistrar registrar = event.registrar(TwilightForestMod.ID);
+		PayloadRegistrar registrar = event.registrar(TwilightForestMod.ID).versioned("1.0.0").optional();
 		registrar.playToClient(AreaProtectionPacket.TYPE, AreaProtectionPacket.STREAM_CODEC, AreaProtectionPacket::handle);
 		registrar.playToClient(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket.STREAM_CODEC, CreateMovingCicadaSoundPacket::handle);
 		registrar.playToClient(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket.STREAM_CODEC, EnforceProgressionStatusPacket::handle);
