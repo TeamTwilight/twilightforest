@@ -80,5 +80,5 @@ public class TFArmorMaterials {
 		map.put(ArmorType.CHESTPLATE, 4);
 		map.put(ArmorType.HELMET, 2);
 		map.put(ArmorType.BODY, 4);
-	}), 0, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, TFItemTags.REPAIRS_TRAVELLERS_GEAR, TFEquipmentAssets.TRAVELLERS);
+	}), 1, SoundEvents.ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, TFItemTags.REPAIRS_TRAVELLERS_GEAR, TFEquipmentAssets.TRAVELLERS);
 }

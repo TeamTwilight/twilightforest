@@ -33,7 +33,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.UrGhastAttackGoal;
 import twilightforest.entity.ai.goal.UrGhastFlightGoal;
@@ -42,6 +41,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.init.*;
 import twilightforest.util.entities.EntityUtil;
+import twilightforest.client.renderer.TFWeatherRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -469,7 +469,7 @@ public class UrGhast extends BaseTFBoss {
 	//[VanillaCopy] of FlyingMob.travel
 	@Override
 	public void travel(Vec3 vec3) {
-		if (this.isLocalInstanceAuthoritative()) {
+		if (this.isLocalClientAuthoritative()) {
 			if (this.isInWater()) {
 				this.moveRelative(0.02F, vec3);
 				this.move(MoverType.SELF, this.getDeltaMovement());

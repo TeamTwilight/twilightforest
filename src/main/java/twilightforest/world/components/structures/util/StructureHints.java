@@ -1,7 +1,9 @@
 package twilightforest.world.components.structures.util;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.Level;
@@ -133,9 +136,13 @@ public interface StructureHints {
 
 	record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
 		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
+			ItemStackTemplate.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItemTemplate),
 			BuiltInRegistries.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
 		).apply(instance, HintConfig::new));
+
+		public HintConfig(ItemStackTemplate hintItemTemplate, EntityType<? extends Mob> hintMob) {
+			this(hintItemTemplate.create(), hintMob);
+		}
 
 		@SuppressWarnings("unchecked")
 		private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
@@ -153,6 +160,10 @@ public interface StructureHints {
 			ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
 			StructureHints.addBookInformationStatic(book, name, pageCount);
 			return book;
+		}
+
+		public ItemStackTemplate hintItemTemplate() {
+			return ItemStackTemplate.fromNonEmptyStack(this.hintItem);
 		}
 	}
 }

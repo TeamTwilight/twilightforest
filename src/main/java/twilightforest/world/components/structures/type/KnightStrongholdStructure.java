@@ -116,7 +116,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 		@Override
 		public void loadFromTag(CompoundTag nbt) {
 			super.loadFromTag(nbt);
-			this.startY = nbt.getInt("knight_y");
+			this.startY = nbt.getIntOr("knight_y", 0);
 		}
 	}
 }

@@ -43,7 +43,7 @@ public final class WorldUtil {
 	}
 
 	public static long getOverworldSeed() {
-		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).getWorldData().worldGenOptions().seed();
+		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).overworld().getSeed();
 	}
 
 	public static RegistryAccess getRegistryAccess() {

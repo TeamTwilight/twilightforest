@@ -1,7 +1,4 @@
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NullMarked
 package twilightforest.compat.jei.renderers;
 
-import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;

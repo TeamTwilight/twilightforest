@@ -128,7 +128,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		return new FallenTrunkStructure(
 			new Structure.StructureSettings(
 				biomes,
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
+				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
@@ -143,7 +143,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		boolean isBigTree = piece.radius == radiuses.get(2);
 		int minMounds = 1;
 		int maxMounds = 2;
-		return new TrunkUnderDensityFunction(objectlist.iterator(), piece, isBigTree, minMounds, maxMounds);  // big trees are a special case
+		return new TrunkUnderDensityFunction(objectlist, piece, isBigTree, minMounds, maxMounds, piece.getBoundingBox());  // big trees are a special case
 	}
 
 	@Override

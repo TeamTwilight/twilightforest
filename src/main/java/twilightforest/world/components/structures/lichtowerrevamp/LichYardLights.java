@@ -30,7 +30,7 @@ public class LichYardLights extends StructurePiece implements PieceBeardifierMod
 
 	public LichYardLights(StructurePieceSerializationContext ctx, CompoundTag tag) {
 		super(TFStructurePieceTypes.LICH_YARD_LIGHTS.value(), tag);
-		this.placeAxis = tag.contains("axis") ? Direction.Axis.values()[tag.getInt("axis")] : Direction.Axis.Y;
+		this.placeAxis = Direction.Axis.values()[tag.getIntOr("axis", Direction.Axis.Y.ordinal())];
 	}
 
 	@Override

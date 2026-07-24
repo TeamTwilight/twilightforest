@@ -35,7 +35,7 @@ public class GlassSwordItem extends Item {
 		if (target.level() instanceof ServerLevel) {
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; i++) {
-				particlePacket.queueParticle(GLASS_PARTICLE, false,
+				particlePacket.queueParticle(GLASS_PARTICLE, false, false,
 				target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
 				target.getY() + target.getRandom().nextFloat() * target.getBbHeight(),
 				target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),

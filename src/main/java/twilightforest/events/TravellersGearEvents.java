@@ -136,7 +136,7 @@ public class TravellersGearEvents {
 				(level.getRandom().nextDouble() - 0.5)
 			);
 			ParticleOptions type = TFParticleType.PERFECT_DODGE.get();
-			particlePacket.queueParticle(type, false, hitPosition, particleVelocity);
+			particlePacket.queueParticle(type, false, false, hitPosition, particleVelocity);
 		}
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
 	}

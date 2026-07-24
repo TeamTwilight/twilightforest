@@ -18,6 +18,7 @@ import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
 public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
+
 	private static final Identifier WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
 	private static final Identifier WELL_BOTTOM = TwilightForestMod.prefix("feature/well/fancy_well_bottom");
 
@@ -56,7 +57,7 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 
 	@Override
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-		String s = info.nbt().getString("metadata");
+		String s = info.nbt().getStringOr("metadata", "");
 
 		if (!s.startsWith("loot")) return;
 

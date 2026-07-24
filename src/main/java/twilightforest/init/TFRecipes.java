@@ -11,7 +11,6 @@ import twilightforest.item.recipe.travellers.TravellersGearModifierShapedRecipe;
 import twilightforest.item.recipe.travellers.TravellersGearModifierShapelessRecipe;
 import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 
-// TODO: Update recipes to use new codec serialization system. Check RecipeSerializers and ShapedRecipe classes for reference implementation.
 public class TFRecipes {
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, TwilightForestMod.ID);
 	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, TwilightForestMod.ID);
@@ -24,8 +23,8 @@ public class TFRecipes {
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MoonwormQueenRepairRecipe>> MOONWORM_QUEEN_REPAIR_RECIPE = RECIPE_SERIALIZERS.register("moonworm_queen_repair_recipe", () -> MoonwormQueenRepairRecipe.SERIALIZER);
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ScepterRepairRecipe>> SCEPTER_REPAIR_RECIPE = RECIPE_SERIALIZERS.register("scepter_repair", () -> ScepterRepairRecipe.SERIALIZER);
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<UncraftingRecipe>> UNCRAFTING_SERIALIZER = RECIPE_SERIALIZERS.register("uncrafting", () -> UncraftingRecipe.SERIALIZER);
-	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TravellersGearModifierShapelessRecipe>> MODIFIER_SHAPELESS_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("travellers_gear_modifier_shapeless_recipe", TravellersGearModifierShapelessRecipe.Serializer::new);
-	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TravellersGearModifierShapedRecipe>> MODIFIER_SHAPED_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("travellers_gear_modifier_shaped_recipe", TravellersGearModifierShapedRecipe.Serializer::new);
+	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TravellersGearModifierShapelessRecipe>> MODIFIER_SHAPELESS_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("travellers_gear_modifier_shapeless_recipe", () -> TravellersGearModifierShapelessRecipe.SERIALIZER);
+	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TravellersGearModifierShapedRecipe>> MODIFIER_SHAPED_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("travellers_gear_modifier_shaped_recipe", () -> TravellersGearModifierShapedRecipe.SERIALIZER);
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TravellersVestGlovesMergeRecipe>> TRAVELLERS_VEST_GLOVES_MERGE_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("travellers_vest_gloves_merge_recipe", () -> TravellersVestGlovesMergeRecipe.SERIALIZER);
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<NoTemplateSmithingRecipe>> NO_TEMPLATE_SMITHING_SERIALIZER = RECIPE_SERIALIZERS.register("no_template_smithing", () -> NoTemplateSmithingRecipe.SERIALIZER);
 	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<DryingRecipe>> DRYING_SERIALIZER = RECIPE_SERIALIZERS.register("drying", () -> DryingRecipe.SERIALIZER);
