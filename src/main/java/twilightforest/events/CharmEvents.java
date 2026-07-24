@@ -89,7 +89,10 @@ public class CharmEvents {
 
 		if (living.level() instanceof ServerLevel serverLevel) {
 			if (!serverLevel.getGameRules().get(GameRules.KEEP_INVENTORY)) {
+				// Did the player recover? No? Let's give them their stuff based on the keeping charms
 				handleCharmOfKeeping(player);
+
+				// Then let's store the rest of their stuff in the casket
 				stockKeepsakeCasket(player);
 			}
 		}
