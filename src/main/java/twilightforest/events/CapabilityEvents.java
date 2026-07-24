@@ -29,6 +29,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.Component;
@@ -72,7 +73,7 @@ public class ProgressionEvents {
 	/**
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
 	 */
-	private void preventLockedAreaBlockBreaking(BlockEvent.BreakEvent event) {
+	private void preventLockedAreaBlockBreaking(BreakBlockEvent event) {
 		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
 
 		BlockPos pos = event.getPos();
