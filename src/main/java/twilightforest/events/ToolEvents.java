@@ -35,6 +35,7 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -150,7 +151,7 @@ public class ToolEvents {
 		}
 	}
 
-	private void damageNonMazebreakerToolsMore(BlockEvent.BreakEvent event) {
+	private void damageNonMazebreakerToolsMore(BreakBlockEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
 		if (event.getState().is(TFBlockTags.MAZEBREAKER_ACCELERATED)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
@@ -165,7 +166,7 @@ public class ToolEvents {
 		}
 	}
 
-	private void handleGiantPickaxeMining(BlockEvent.BreakEvent event) {
+	private void handleGiantPickaxeMining(BreakBlockEvent event) {
 		BlockPos pos = event.getPos();
 		BlockState state = event.getState();
 
@@ -175,7 +176,7 @@ public class ToolEvents {
 			if (shouldBreakGiantBlock(player, attachment)) {
 				attachment.setBreaking(true); // Tell the capability that a block breaking loop is happening, so it knows to fail the if check above. Otherwise, this would go on forever
 
-				LootParams.Builder builder = new LootParams.Builder(player.level())
+				LootParams.Builder builder = new LootParams.Builder(player.level().getLevel())
 					.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
 					.withParameter(LootContextParams.BLOCK_STATE, state)
 					.withOptionalParameter(LootContextParams.THIS_ENTITY, player)
