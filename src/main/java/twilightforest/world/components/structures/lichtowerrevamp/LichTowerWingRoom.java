@@ -10,14 +10,12 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.*;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -42,7 +40,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
@@ -68,7 +65,6 @@ import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public final class LichTowerWingRoom extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
@@ -88,12 +84,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
-		this.roomSize = compoundTag.getInt("room_size");
-		this.generateGround = compoundTag.getBoolean("gen_ground");
-		this.ladderIndex = compoundTag.getInt("ladder_index");
+		this.roomSize = compoundTag.getIntOr("room_size", 0);
+		this.generateGround = compoundTag.getBooleanOr("gen_ground", false);
+		this.ladderIndex = compoundTag.getIntOr("ladder_index", 0);
 		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
-		this.roofFallback = compoundTag.getInt("roof_index");
-		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements");
+		this.roofFallback = compoundTag.getIntOr("roof_index", 0);
+		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements").get();
 	}
 
 	public LichTowerWingRoom(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, Identifier roomId, int roomSize, boolean generateGround, boolean canGenerateLadder, RandomSource random) {
@@ -124,7 +120,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		blockInfos.removeIf(info -> {
 			CompoundTag nbt = info.nbt();
 			if (nbt == null || nbt.isEmpty()) return false;
-			String metadata = nbt.getString("metadata");
+			String metadata = nbt.getStringOr("metadata", "");
 			return !(metadata.startsWith("rope") || metadata.startsWith("chain"));
 		});
 
@@ -165,10 +161,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private static boolean filterMetadata(RandomSource random, CompoundTag nbt) {
-		if (nbt.isEmpty() || !nbt.contains("metadata", Tag.TAG_STRING))
+		if (nbt.isEmpty() || !nbt.contains("metadata"))
 			return true;
 
-		String metadata = nbt.getString("metadata").split("%", 1)[0];
+		String metadata = nbt.getString("metadata").get().split("%", 1)[0];
 		String chance = metadata.startsWith("rope") ? metadata.substring("rope".length()) : metadata.substring("chain".length());
 
 		return chance.isBlank() || StringUtils.isNumeric(chance) && random.nextFloat() > Integer.parseInt(chance) * 0.01f;
@@ -313,7 +309,6 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		return false;
 	}
 
-	@NotNull
 	public static FrontAndTop getVerticalOrientation(JigsawRecord connection, Direction vertical, TwilightJigsawPiece towerRoom) {
 		JigsawRecord sourceJigsaw = towerRoom.getSourceJigsaw();
 		Direction sourceDirection = JigsawUtil.getAbsoluteHorizontal(sourceJigsaw != null ? sourceJigsaw.orientation() : connection.orientation());
@@ -551,7 +546,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				BlockState blockState = this.blockFromLabel(parameters[0]).rotate(stateRotation);
 				if (!blockState.isAir()) {
 					level.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
-				} else if (!FMLLoader.isProduction()) {
+				} else if (!FMLLoader.getCurrent().isProduction()) {
 					TwilightForestMod.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
 				}
 			}
@@ -573,10 +568,17 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 					case "enchanting" -> TFLootTables.TOWER_ENCHANTING;
 					default -> ResourceKey.create(Registries.LOOT_TABLE, Identifier.bySeparator(label, '.'));
 				};
+
 				if (!jarEntity.fillFromLootTable(lootTableId, random.nextLong(), level.getLevel())) {
 					Identifier itemId = Identifier.bySeparator(label, '.');
-					jarEntity.getItemHandler().setItem(new ItemStack(level.registryAccess().lookup(Registries.ITEM).<Function<Identifier, Item>>map(reg -> reg::get).orElse($ -> Items.AIR).apply(itemId)));
+					level.registryAccess()
+						.lookupOrThrow(Registries.ITEM)
+						.get(itemId)
+						.map(Holder.Reference::value)
+						.map(ItemStack::new)
+						.ifPresent(jarEntity.getItemHandler()::setItem);
 				}
+
 				int itemRotation = this.placeSettings.getRotation().ordinal() * 4 + (parameters.length == 3 ? this.getHeadRotation(parameters[2], random) : 0);
 				jarEntity.setItemRotation(Math.floorMod(itemRotation, 16));
 			}
@@ -661,7 +663,6 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		return this.defaultRandomMob(random);
 	}
 
-	@NotNull
 	private EntityType<?> defaultRandomMob(RandomSource random) {
 		return switch (random.nextInt(10)) {
 			case 7, 8, 9 -> EntityType.SKELETON;
@@ -722,7 +723,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.addFreshEntity(trapEntity);
 	}
 
-	private @NotNull Direction getRandomDirectionInsideChunk(WorldGenLevel level, RandomSource random, BlockPos pos) {
+	private Direction getRandomDirectionInsideChunk(WorldGenLevel level, RandomSource random, BlockPos pos) {
 		int xInChunk = SectionPos.sectionRelative(pos.getX());
 		int zInChunk = SectionPos.sectionRelative(pos.getZ());
 
@@ -738,8 +739,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (directions.isEmpty())
 			return Direction.UP;
 
-		Direction randomDirection = Util.getRandom(directions, random);
-		return randomDirection;
+		return Util.getRandom(directions, random);
 	}
 
 	private BlockState blockFromLabel(String label) {

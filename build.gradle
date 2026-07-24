@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.relocation.SimpleRelocator
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import net.neoforged.moddevgradle.internal.RunGameTask
@@ -25,27 +26,36 @@ plugins {
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
 	id 'net.neoforged.moddev' version "${mdg_version}"
 	id "com.dorongold.task-tree" version "4.0.1"
-	id 'com.gradleup.shadow' version '9.4.1'
+	id 'com.gradleup.shadow' version "${shadowjar_version}"
 }
 
 apply plugin: 'tamaized.beanification'
+
+repositories {
+	gradlePluginPortal()
+}
+
+dependencies { // Forces intellij to grab sources for the gradle build script
+	compileOnly "com.gradleup.shadow:shadow-gradle-plugin:${shadowjar_version}"
+	compileOnly "net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${mdg_version}"
+}
+
+wrapper {
+	gradleVersion = '9.1.0'
+	distributionType = Wrapper.DistributionType.ALL
+}
 
 configurations {
 	shade
 }
 
 shadowJar {
-	archiveClassifier.set('universal')
-	dependsOn(tasks.named("jar"))
-	afterEvaluate {
-		from({ tasks.named("jar").get().outputs })
-	}
+	mustRunAfter jar
+	archiveClassifier.set('')
 	configurations = [project.configurations.shade]
-	relocate 'tamaized.beanification', "${project.mod_id}.beanification"
-}
-
-jar {
-	archiveClassifier = "slim"
+	relocate(new SimpleRelocator('tamaized', 'twilightforest')) {
+		exclude 'twilightforest.**'
+	}
 }
 
 def secrets = new Properties()
@@ -116,7 +126,7 @@ neoForge {
 	evaluationDependsOnChildren()
 
 	def mod_id = project.mod_id
-	version = project.neo_version
+	version = project.neoforge_version
 
 	validateAccessTransformers = true
 
@@ -143,8 +153,8 @@ neoForge {
 
 	unitTest {
 		enable()
-		// For whatever reason, tests break if we dont combine all source sets, which the data source set does
-		testedMod = dataMod
+		testedMod = mainMod
+		loadedMods = [mainMod]
 	}
 
 	runs {
@@ -203,8 +213,8 @@ repositories {
 		url 'https://maven.blamejared.com/'
 	}
 	maven {
-		name = "OctoStudios" //Curios
-		url = uri("https://maven.octo-studios.com/releases")
+		name = "Curios" // Curios
+		url = uri("https://maven.theillusivec4.top/")
 	}
 	maven {
 		name 'Shedaniel\'s Maven' //REI
@@ -244,7 +254,7 @@ dependencies {
 //	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.base_minecraft_version}"
 
 	// theillusivec4
-//	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
+	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
 
 	//curse maven
 //	implementation "curse.maven:jade-324717:6170888"
@@ -264,10 +274,11 @@ dependencies {
 //	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.4.3+1.21.4"
 //	runtimeOnly "curse.maven:world-edit-225608:6013137"
 
-	testImplementation group: 'net.neoforged', name: 'testframework', version: project.neo_version
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.3'
-	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.3'
-	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
+	testImplementation "net.neoforged:testframework:${project.neoforge_version}"
+	testImplementation "org.junit.jupiter:junit-jupiter:6.0.1"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:6.0.1"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher:6.0.1"
+	testImplementation "org.mockito:mockito-junit-jupiter:5.21.0"
 }
 
 configurations.testImplementation {
@@ -286,6 +297,11 @@ test {
 
 		showStandardStreams = false
 	}
+}
+
+sourceSets.main.resources {
+	srcDir 'src/generated/resources'
+	exclude '.cache'
 }
 
 processResources {
@@ -329,13 +345,35 @@ publishing {
 	publications {
 		create('mavenJava', MavenPublication) {
 			afterEvaluate {
-				artifact this.project.shadowJar
+				artifact this.project.jar
 				artifact this.project.sourceJar
 				artifact this.project.dataJar
 				artifact this.project.dataSourceJar
 			}
 			groupId 'team-twilight'
 			artifactId this.project.mod_id
+
+			def depsProvider = this.project.provider {
+				[
+					beanification_version: this.project.beanification_version
+				]
+			}
+
+			pom.withXml {
+				def dependenciesNode = asNode().appendNode('dependencies')
+
+				def addDep = { String group, String name, String version ->
+					def depNode = dependenciesNode.appendNode('dependency')
+					depNode.appendNode('groupId', group)
+					depNode.appendNode('artifactId', name)
+					depNode.appendNode('version', version)
+					depNode.appendNode('scope', 'compile')
+				}
+
+				def deps = depsProvider.get()
+
+				addDep('tamaized', 'beanification', deps.beanification_version)
+			}
 		}
 	}
 	repositories {
@@ -371,10 +409,6 @@ tasks.register('dataJar', Jar) {
 tasks.register('dataSourceJar', Jar) {
 	from sourceSets.data.allSource
 	archiveClassifier = 'data-sources'
-}
-
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = 'UTF-8'
 }
 
 build.dependsOn shadowJar

@@ -1,6 +1,5 @@
 package twilightforest.util.jigsaw;
 
-import net.minecraft.Optionull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
@@ -45,34 +44,34 @@ public record JigsawRecord(int priority, FrontAndTop orientation, BlockPos pos, 
 
 	public static JigsawRecord fromUnconfiguredJigsaw(StructureTemplate.StructureBlockInfo info, StructurePlaceSettings settings) {
 		return new JigsawRecord(
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
+			info.nbt().getIntOr("selection_priority", 0),
 			JigsawUtil.process(info.state().getValue(JigsawBlock.ORIENTATION), settings),
 			StructureTemplate.calculateRelativePosition(settings, info.pos()),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty"),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), ""),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "")
+			info.nbt().getStringOr("pool", "minecraft:empty"),
+			info.nbt().getStringOr("name", ""),
+			info.nbt().getStringOr("target", "")
 		);
 	}
 
 	public static JigsawRecord fromJigsawBlock(StructureTemplate.StructureBlockInfo info) {
 		return new JigsawRecord(
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getInt("selection_priority"), 0),
+			info.nbt().getIntOr("selection_priority", 0),
 			info.state().getValue(JigsawBlock.ORIENTATION),
 			info.pos(),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("pool"), "minecraft:empty"),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("name"), ""),
-			Optionull.mapOrDefault(info.nbt(), tag -> tag.getString("target"), "")
+			info.nbt().getStringOr("pool", "minecraft:empty"),
+			info.nbt().getStringOr("name", ""),
+			info.nbt().getStringOr("target", "")
 		);
 	}
 
 	public static JigsawRecord fromTag(CompoundTag tag) {
 		return new JigsawRecord(
-			tag.getInt("priority"),
-			FrontAndTop.values()[tag.getInt("facing")],
-			new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z")),
-			tag.getString("pool"),
-			tag.getString("name"),
-			tag.getString("target")
+			tag.getIntOr("priority", 0),
+			FrontAndTop.values()[tag.getIntOr("facing", 0)],
+			new BlockPos(tag.getIntOr("x", 0), tag.getIntOr("y", 0), tag.getIntOr("z", 0)),
+			tag.getStringOr("pool", ""),
+			tag.getStringOr("name", ""),
+			tag.getStringOr("target", "")
 		);
 	}
 

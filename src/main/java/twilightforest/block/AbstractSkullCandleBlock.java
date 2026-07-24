@@ -231,7 +231,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(LIGHTING, CANDLES);
+		builder.add(LIGHTING, CANDLES, POWERED);
 	}
 
 	@Nullable

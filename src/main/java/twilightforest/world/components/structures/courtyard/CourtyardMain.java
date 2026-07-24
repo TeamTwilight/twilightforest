@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProce
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
@@ -39,16 +38,11 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 	public static final Identifier CENTER_POOL = TwilightForestMod.prefix("courtyard/center");
 
-	@Deprecated // TODO remove in 1.22
-	private final boolean placeSpawner;
-
 	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
 	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
-
-		this.placeSpawner = nbt.contains("placeSpawner") ? nbt.getBoolean("placeSpawner") : true; // For old versions of the courtyard that didn't place the naga spawner template
 	}
 
 	@SuppressWarnings("this-escape")
@@ -59,15 +53,6 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -RADIUS / 2, -1, -RADIUS / 2, RADIUS, 10, RADIUS, this.getOrientation(), false);
 		this.sizeConstraints = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getOrientation(), false);
-
-		this.placeSpawner = false;
-	}
-
-	@Override
-	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(ctx, tagCompound);
-
-		tagCompound.putBoolean("placeSpawner", this.placeSpawner);
 	}
 
 	@Override
@@ -78,7 +63,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 		Direction direction = Rotation.getRandom(random).rotate(Direction.SOUTH);
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
-		TwilightJigsawPiece bossSpawner = TwilightJigsawPiece.initializeTemplateFromPool(CENTER_POOL, pos.mutable(), oriented, "twilightforest:center", random, this.genDepth + 1, this.structureManager);
+		TwilightJigsawPiece bossSpawner = structureTemplateDefinitions.initializeTemplateFromPool(CENTER_POOL, pos.mutable(), oriented, "twilightforest:center", random, this.genDepth + 1, this.structureManager);
 		if (bossSpawner != null) {
 			list.addPiece(bossSpawner);
 			// bossSpawner.addChildren(parent, list, random);
@@ -87,9 +72,6 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.placeSpawner) {
-			// TODO remove in 1.22
-			placeBlock(world, TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState(), RADIUS / 2, 3, RADIUS / 2, sbb);
-		}
+		// Boss spawner placed via template
 	}
 }

@@ -1,29 +1,57 @@
 package twilightforest.item.recipe.travellers;
 
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.common.util.RecipeMatcher;
 import twilightforest.TFRegistries;
-import twilightforest.init.TFRecipes;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TravellersGearModifierShapelessRecipe extends TravellersGearModifierRecipe {
+	public static final MapCodec<TravellersGearModifierShapelessRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
+		instance.group(
+			NonNullList.codecOf(Ingredient.CODEC)
+				.fieldOf("ingredients")
+				.forGetter(recipe -> recipe.ingredients),
+			RegistryFixedCodec.create(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
+				.fieldOf("modifier_key")
+				.forGetter(TravellersGearModifierRecipe::getTravellersModifierHolder)
+		).apply(instance, TravellersGearModifierShapelessRecipe::new)
+	);
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, TravellersGearModifierShapelessRecipe> STREAM_CODEC =
+		StreamCodec.composite(
+			ByteBufCodecs.collection(NonNullList::createWithCapacity, Ingredient.CONTENTS_STREAM_CODEC),
+			recipe -> recipe.ingredients,
+
+			ByteBufCodecs.holderRegistry(TFRegistries.Keys.TRAVELLERS_MODIFIERS),
+			TravellersGearModifierRecipe::getTravellersModifierHolder,
+
+			TravellersGearModifierShapelessRecipe::new
+		);
+
+	public static final RecipeSerializer<TravellersGearModifierShapelessRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
 	protected final NonNullList<Ingredient> ingredients;
 
-	public TravellersGearModifierShapelessRecipe(NonNullList<Ingredient> ingredients, ResourceKey<TravellersModifier> travellersModifier) {
-		super(travellersModifier);
+	public TravellersGearModifierShapelessRecipe(NonNullList<Ingredient> ingredients, Holder<TravellersModifier> travellersModifierHolder) {
+		super(travellersModifierHolder);
 		this.ingredients = ingredients;
 	}
 
 	@Override
-	public boolean matches(@NotNull CraftingInput input, @NotNull Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		if (!super.matches(input, level))
 			return false;
 		if (input.ingredientCount() != this.ingredients.size())
@@ -33,7 +61,7 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 			if (!item.isEmpty())
 				nonEmptyItems.add(item);
 		}
-		return net.neoforged.neoforge.common.util.RecipeMatcher.findMatches(nonEmptyItems, this.ingredients) != null;
+		return RecipeMatcher.findMatches(nonEmptyItems, this.ingredients) != null;
 	}
 
 	@Override
@@ -58,19 +86,6 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 
 	@Override
 	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
-		return TFRecipes.MODIFIER_SHAPELESS_RECIPE_SERIALIZER.get();
-	}
-
-	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapelessRecipe> {
-		public Serializer() {
-			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				NonNullList.codecOf(Ingredient.CODEC)
-					.fieldOf("ingredients")
-					.forGetter(recipe -> recipe.ingredients),
-				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
-					.fieldOf("modifier_key")
-					.forGetter(recipe -> recipe.travellersModifierKey)
-			).apply(instance, TravellersGearModifierShapelessRecipe::new)));
-		}
+		return SERIALIZER;
 	}
 }

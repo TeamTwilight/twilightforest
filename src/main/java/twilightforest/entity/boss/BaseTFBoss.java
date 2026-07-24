@@ -237,7 +237,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	protected ServerTFBossBar createBossBar() {
-		return new ServerTFBossBar(this.getBossBarTitle(), this.getBossBarColor(), this.getBossBarOverlay());
+		return new ServerTFBossBar(this.getUUID(), this.getBossBarTitle(), this.getBossBarColor(), this.getBossBarOverlay());
 	}
 
 	public Component getBossBarTitle() {

@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -30,21 +29,21 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 	public StructureMazeGenerator(StructureTemplateManager structureManager, StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 
-		this.widthInCellCount = nbt.getInt("mazeWidth");
-		this.heightInCellCount = nbt.getInt("mazeHeight");
+		this.widthInCellCount = nbt.getIntOr("mazeWidth", 0);
+		this.heightInCellCount = nbt.getIntOr("mazeHeight", 0);
 
 		maze = new int[this.widthInCellCount - 1][this.heightInCellCount - 1];
 
-		ListTag mazeX = nbt.getList("maze", 9);
+		ListTag mazeX = nbt.getListOrEmpty("maze");
 
 		for (int x = 0; x < widthInCellCount - 1; x++) {
 			Tag mazeY = mazeX.get(x);
 
 			if (mazeY instanceof ListTag)
-				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListTag) mazeY).getInt(y);
+				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListTag) mazeY).getIntOr(y, 0);
 		}
 
-		this.sizeConstraints = BoundingBoxUtils.NBTToBoundingBox(nbt.getCompound("constraints"));
+		this.sizeConstraints = BoundingBoxUtils.NBTToBoundingBox(nbt.getCompoundOrEmpty("constraints"));
 		this.structureManager = structureManager;
 	}
 

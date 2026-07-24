@@ -31,6 +31,7 @@ import twilightforest.world.components.feature.trees.treeplacers.*;
 import java.util.OptionalInt;
 
 public class TreeConfigurations {
+
 	private static final int canopyDistancing = 5;
 
 	static WeightedList.Builder<BlockState> createBlockList() {
@@ -265,7 +266,7 @@ public class TreeConfigurations {
 		new TwoLayersFeatureSize(1, 1, 1)
 	)
 		.ignoreVines()
-		.forceDirt()
+		.belowTrunkProvider(TreeConfiguration.PLACE_BELOW_OVERWORLD_TRUNKS)
 		.decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
 		.build();
 
