@@ -2,7 +2,6 @@ package twilightforest.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -27,7 +26,6 @@ import java.util.Optional;
  * @param advancements     List of advancements that are required to make a biome no longer restricted
  */
 public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement, float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
-
 	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
 		ResourceKey.codec(TFRegistries.Keys.ENFORCEMENT).fieldOf("enforcement").forGetter(Restriction::enforcement),
@@ -42,18 +40,17 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 	}
 
 	public static Optional<Restriction> getRestrictionForBiome(Biome biome, Entity entity) {
-		if (!(entity instanceof Player player))
-			return Optional.empty();
-
-		RegistryAccess access = entity.level().registryAccess();
-		Identifier biomeLocation = access.lookupOrThrow(Registries.BIOME).getKey(biome);
-		if (biomeLocation == null)
-			return Optional.empty();
-
-		Optional<Registry<Restriction>> restrictionsRegistry = access.lookup(TFRegistries.Keys.RESTRICTIONS);
-		return restrictionsRegistry.flatMap(restrictions -> restrictions
-			.getOptional(biomeLocation)
-			.filter(r -> !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, r.advancements())));
+		if (entity instanceof Player player) {
+			RegistryAccess access = entity.level().registryAccess();
+			Identifier biomeLocation = access.lookupOrThrow(Registries.BIOME).getKey(biome);
+			if (biomeLocation != null) {
+				Restriction restrictions = access.lookupOrThrow(TFRegistries.Keys.RESTRICTIONS).getValue(biomeLocation);
+				if (restrictions != null && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
+					return Optional.of(restrictions);
+				}
+			}
+		}
+		return Optional.empty();
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
