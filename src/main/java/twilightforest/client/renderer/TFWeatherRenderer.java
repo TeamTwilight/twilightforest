@@ -104,10 +104,7 @@ public class TFWeatherRenderer {
 			int py = Mth.floor(camera.y());
 			int pz = Mth.floor(camera.z());
 
-			int range = 5;
-			if (MinecraftUtil.useFancyGraphics()) {
-				range = 10;
-			}
+			int range = Minecraft.getInstance().options.weatherRadius().get();
 
 			WeatherRenderType currentType = null;
 			float combinedTicks = ticks + partialTicks;
