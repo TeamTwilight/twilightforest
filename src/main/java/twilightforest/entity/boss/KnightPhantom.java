@@ -339,7 +339,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), null);
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), null);
 	}
 
 	@Override

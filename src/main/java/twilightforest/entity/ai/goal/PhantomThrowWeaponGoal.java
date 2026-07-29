@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.entity.projectile.ThrownWep;
 import twilightforest.init.TFEntities;
@@ -56,7 +57,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 
 		projectile.shoot(tx, ty, tz, speed, 1.0F);
 
-		projectile.moveTo(sx, sy, sz, this.boss.getYRot(), this.boss.getXRot());
+		projectile.snapTo(new Vec3(sx, sy, sz), this.boss.getYRot(), this.boss.getXRot());
 
 		this.boss.level().addFreshEntity(projectile);
 	}
@@ -76,11 +77,9 @@ public class PhantomThrowWeaponGoal extends Goal {
 			double vy = 0;
 			double vz = Mth.sin(throwAngle);
 
-
 			ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.level(), this.boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 
-
-			projectile.moveTo(sx, sy, sz, i * 45F, this.boss.getXRot());
+			projectile.snapTo(new Vec3(sx, sy, sz), i * 45, this.boss.getXRot());
 
 			float speed = 0.5F;
 

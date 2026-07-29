@@ -11,10 +11,10 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.components.entity.YetiThrowAttachment;
-import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.network.MovePlayerPacket;
+import twilightforest.tags.TFEntityTypeTags;
 
 public class ThrowRiderGoal extends MeleeAttackGoal {
 
@@ -65,7 +65,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 					// Pluck them from the boat, minecart, donkey, or whatever
 					victim.stopRiding();
 
-					victim.startRiding(this.mob, true);
+					victim.startRiding(this.mob, true, false);
 				}
 			}
 		}
@@ -74,7 +74,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	@Override
 	public void stop() {
 		if (!this.mob.getPassengers().isEmpty()) {
-			Entity rider = this.mob.getPassengers().get(0);
+			Entity rider = this.mob.getPassengers().getFirst();
 			HostileMountEvents.hostileDismount(rider);
 
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * 2.0D, 0.9, this.mob.getLookAngle().z() * 2.0D);

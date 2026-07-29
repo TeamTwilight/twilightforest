@@ -63,7 +63,7 @@ public record TravellersEntryModifier(EquipmentSlotGroup group, List<ItemAttribu
 					newEntries.add(entry);
 				}
 			});
-			stack.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(newEntries, modifiers.showInTooltip()));
+			stack.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(newEntries));
 			stack.remove(this.markerComponent());
 		}
 	}

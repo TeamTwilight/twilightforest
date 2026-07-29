@@ -1,10 +1,8 @@
 package twilightforest.entity;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -13,9 +11,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
 import twilightforest.init.TFDimension;
+
+import java.util.List;
 
 public interface EnforcedHomePoint {
 
@@ -25,21 +24,21 @@ public interface EnforcedHomePoint {
 
 	default void saveHomePointToNbt(ValueOutput tag) {
 		if (this.getRestrictionPoint() != null) {
-			GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, this.getRestrictionPoint()).resultOrPartial(TwilightForestMod.LOGGER::error).ifPresent(tag1 -> tag.put("HomePos", tag1));
+			tag.store("HomePos", GlobalPos.CODEC, this.getRestrictionPoint());
 		}
 	}
 
 	default void loadHomePointFromNbt(ValueInput tag) {
 		//properly load old home points, just assume theyre set in TF
-		if (tag.contains("Home", 9)) {
-			ListTag nbttaglist = tag.getList("Home", 6);
-			double hx = nbttaglist.getDouble(0);
-			double hy = nbttaglist.getDouble(1);
-			double hz = nbttaglist.getDouble(2);
+		if (tag.read("Home", Codec.DOUBLE.listOf()).isPresent()) {
+			List<Double> nbttaglist = tag.read("Home", Codec.DOUBLE.listOf()).get();
+			double hx = nbttaglist.get(0);
+			double hy = nbttaglist.get(1);
+			double hz = nbttaglist.get(2);
 			this.setRestrictionPoint(GlobalPos.of(TFDimension.DIMENSION_KEY, BlockPos.containing(hx, hy, hz)));
 		} else {
-			if (tag.contains("HomePos")) {
-				this.setRestrictionPoint(GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("HomePos")).resultOrPartial(TwilightForestMod.LOGGER::error).orElse(null));
+			if (tag.read("HomePos", GlobalPos.CODEC).isPresent()) {
+				this.setRestrictionPoint(tag.read("HomePos", GlobalPos.CODEC).get());
 			}
 		}
 	}

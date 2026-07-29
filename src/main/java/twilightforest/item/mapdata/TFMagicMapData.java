@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+// FIXME this class should be totally fixed
 public class TFMagicMapData extends MapItemSavedData {
 	public final List<String> conqueredStructures = new ArrayList<>();
 

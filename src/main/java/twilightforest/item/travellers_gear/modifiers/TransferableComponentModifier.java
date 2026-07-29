@@ -73,7 +73,7 @@ public record TransferableComponentModifier(
 		if (dataComponentProviders.isEmpty())
 			return false;
 		if (dataComponentProviders.size() > 1) {
-			TwilightForestMod.LOGGER.error(String.format("A recipe with more than 2 dataComponentProviders was matched: %s. Please report to https://github.com/TeamTwilight/twilightforest/issues", input));
+			TwilightForestMod.LOGGER.error("A recipe with more than 2 dataComponentProviders was matched: {}. Please report to https://github.com/TeamTwilight/twilightforest/issues", input);
 			return false;
 		}
 		ItemStack dataComponentProvider = dataComponentProviders.getFirst();

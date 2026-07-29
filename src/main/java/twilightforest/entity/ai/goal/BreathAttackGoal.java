@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 
 import java.util.*;
+import java.util.List;
 
 public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 
@@ -85,7 +86,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 			// anyhoo, deal damage
 			Entity target = this.getHeadLookTarget();
 			if (target != null) {
-				this.entityHost.doBreathAttack(target);
+				this.entityHost.doBreathAttack(getServerLevel(target), target);
 				this.entityHost.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			}
 		}

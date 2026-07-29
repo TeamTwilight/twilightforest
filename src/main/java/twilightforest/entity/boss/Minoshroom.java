@@ -144,7 +144,7 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOSHROOM_ATTACK.get());
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOSHROOM_ATTACK.get());
 	}
 
 	@Override

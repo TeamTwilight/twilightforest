@@ -2,15 +2,11 @@ package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFSounds;
 
 public abstract class TFThrowable extends ThrowableItemProjectile implements ITFProjectile {
 
@@ -28,7 +24,7 @@ public abstract class TFThrowable extends ThrowableItemProjectile implements ITF
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-
+		super.defineSynchedData(builder);
 	}
 
 	public void makeTrail(ParticleOptions particle, int amount) {

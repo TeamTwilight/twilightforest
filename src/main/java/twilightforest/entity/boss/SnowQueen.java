@@ -254,7 +254,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SQUISH, this, TFEntities.SNOW_QUEEN.get()) : this.level().damageSources().mobAttack(this);
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, source, null);
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, source, null);
 	}
 
 	@Override
