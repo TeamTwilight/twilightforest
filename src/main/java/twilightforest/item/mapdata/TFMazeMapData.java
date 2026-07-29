@@ -22,7 +22,6 @@ import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-// FIXME this class should be totally fixed
 public class TFMazeMapData extends MapItemSavedData {
 	public int yCenter;
 	public boolean ore;
