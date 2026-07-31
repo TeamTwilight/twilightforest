@@ -38,7 +38,7 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	}
 
 	private void renderSlot(int x, int y, int itemIndex, GuiGraphicsExtractor graphics, Font font) {
-		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_SPRITE, x, y, 0, SLOT_WIDTH, SLOT_HEIGHT);
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_SPRITE, x, y, SLOT_WIDTH, SLOT_HEIGHT);
 
 		if (itemIndex < this.contents.size()) {
 			ItemStack itemstack = this.contents.get(itemIndex);
