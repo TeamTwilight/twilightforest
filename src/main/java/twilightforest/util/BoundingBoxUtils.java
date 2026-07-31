@@ -51,12 +51,12 @@ public class BoundingBoxUtils {
 
 	public static BoundingBox NBTToBoundingBox(CompoundTag nbt) {
 		return new BoundingBox(
-			nbt.getInt("minX"),
-			nbt.getInt("minY"),
-			nbt.getInt("minZ"),
-			nbt.getInt("maxX"),
-			nbt.getInt("maxY"),
-			nbt.getInt("maxZ")
+			nbt.getIntOr("minX", 0),
+			nbt.getIntOr("minY", 0),
+			nbt.getIntOr("minZ", 0),
+			nbt.getIntOr("maxX", 0),
+			nbt.getIntOr("maxY", 0),
+			nbt.getIntOr("maxZ", 0)
 		);
 	}
 
@@ -92,7 +92,7 @@ public class BoundingBoxUtils {
 	public static AABB vectorsMinMax(List<Vec3> vec3List, double expand) {
 		if (vec3List.isEmpty()) return null;
 
-		Vec3 first = vec3List.get(0);
+		Vec3 first = vec3List.getFirst();
 
 		return new AABB(
 			vec3List.stream().mapToDouble(Vec3::x).reduce(first.x, Math::min) - expand,

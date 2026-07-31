@@ -1,61 +1,107 @@
 package twilightforest.item.mapdata;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.saveddata.maps.MapId;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.saveddata.SavedDataType;
+import net.minecraft.world.level.saveddata.maps.*;
+import org.jspecify.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.ByteBuffer;
+import java.util.List;
 
 public class TFMazeMapData extends MapItemSavedData {
-	private static final Map<String, TFMazeMapData> CLIENT_DATA = new HashMap<>();
-
 	public int yCenter;
 	public boolean ore;
 
-	public TFMazeMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
-		super(x, z, scale, trackpos, unlimited, locked, dim);
+	// [VanillaCopy] from MapItemSavedData but with our own fields and constructor
+	public static final Codec<TFMazeMapData> CODEC = RecordCodecBuilder.create(i ->
+		i.group(
+			Level.RESOURCE_KEY_CODEC
+				.fieldOf("dimension")
+				.forGetter(m -> m.dimension),
+			Codec.INT
+				.fieldOf("xCenter")
+				.forGetter(m -> m.centerX),
+			Codec.INT
+				.fieldOf("zCenter")
+				.forGetter(m -> m.centerZ),
+			Codec.BYTE
+				.optionalFieldOf("scale", (byte) 0)
+				.forGetter(m -> m.scale),
+			Codec.BYTE_BUFFER
+				.fieldOf("colors")
+				.forGetter(m -> ByteBuffer.wrap(m.colors)),
+			Codec.BOOL
+				.optionalFieldOf("trackingPosition", true)
+				.forGetter(m -> m.trackingPosition),
+			Codec.BOOL
+				.optionalFieldOf("unlimitedTracking", false)
+				.forGetter(m -> m.unlimitedTracking),
+			Codec.BOOL
+				.optionalFieldOf("locked", false)
+				.forGetter(m -> m.locked),
+			MapBanner.CODEC
+				.listOf()
+				.optionalFieldOf("banners", List.of())
+				.forGetter(m -> List.copyOf(m.bannerMarkers.values())),
+			MapFrame.CODEC
+				.listOf()
+				.optionalFieldOf("frames", List.of())
+				.forGetter(m -> List.copyOf(m.frameMarkers.values())),
+			Codec.INT
+				.optionalFieldOf("yCenter", 0)
+				.forGetter(m -> m.yCenter),
+			Codec.BOOL
+				.optionalFieldOf("mapOres", false)
+				.forGetter(m -> m.ore)
+		).apply(i, TFMazeMapData::new)
+	);
+
+	// [VanillaCopy] from MapItemSavedData but changed to use our Codec and namespace
+	public static SavedDataType<TFMazeMapData> mazeMapType(MapId id) {
+		return new SavedDataType<>(TwilightForestMod.prefix(id.key()), () -> {
+			throw new IllegalStateException("Should never create an empty map saved data");
+		}, CODEC, DataFixTypes.SAVED_DATA_MAP_DATA);
 	}
 
-	public static TFMazeMapData load(CompoundTag nbt, HolderLookup.Provider provider) {
-		MapItemSavedData data = MapItemSavedData.load(nbt, provider);
-		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
-		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
-		final boolean locked = nbt.getBoolean("locked");
-		TFMazeMapData tfdata = new TFMazeMapData(data.centerX, data.centerZ, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
-
-		tfdata.colors = data.colors;
-		tfdata.bannerMarkers.putAll(data.bannerMarkers);
-		tfdata.decorations.putAll(data.decorations);
-		tfdata.frameMarkers.putAll(data.frameMarkers);
-		tfdata.trackedDecorationCount = data.trackedDecorationCount;
-
-		tfdata.yCenter = nbt.getInt("yCenter");
-		tfdata.ore = nbt.getBoolean("mapOres");
-
-		return tfdata;
+	// [VanillaCopy] from MapItemSavedData
+	public TFMazeMapData(int centerX, int centerZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, boolean locked, ResourceKey<Level> dimension) {
+		super(centerX, centerZ, scale, trackingPosition, unlimitedTracking, locked, dimension);
 	}
 
-	@Override
-	public CompoundTag save(CompoundTag nbt, HolderLookup.Provider provider) {
-		CompoundTag ret = super.save(nbt, provider);
-		ret.putInt("yCenter", this.yCenter);
-		ret.putBoolean("mapOres", this.ore);
-		return ret;
+	// [VanillaCopy] from MapItemSavedData but with our own fields
+	private TFMazeMapData(ResourceKey<Level> dimension, int centerX, int centerZ, byte scale, ByteBuffer colors, boolean trackingPosition, boolean unlimitedTracking, boolean locked, List<MapBanner> banners, List<MapFrame> frames, int yCenter, boolean ore) {
+		this(centerX, centerZ, (byte) Mth.clamp(scale, 0, 4), trackingPosition, unlimitedTracking, locked, dimension);
+
+		if (colors.array().length == 16384) {
+			this.colors = colors.array();
+		}
+
+		for(MapBanner banner : banners) {
+			this.bannerMarkers.put(banner.getId(), banner);
+			this.addDecoration(banner.getDecoration(), null, banner.getId(), banner.pos().getX(), banner.pos().getZ(), 180.0F, banner.name().orElse(null));
+		}
+
+		for(MapFrame frame : frames) {
+			this.frameMarkers.put(frame.getId(), frame);
+			this.addDecoration(MapDecorationTypes.FRAME, null, getFrameKey(frame.entityId()), frame.pos().getX(), frame.pos().getZ(), frame.rotation(), null);
+		}
+
+		this.yCenter = yCenter;
+		this.ore = ore;
 	}
 
 	public void calculateMapCenter(Level world, int x, int y, int z) {
@@ -69,31 +115,6 @@ public class TFMazeMapData extends MapItemSavedData {
 				this.centerZ = mc.getZ();
 			}
 		}
-	}
-
-	// [VanillaCopy] Adapted from World.getMapData
-	@Nullable
-	public static TFMazeMapData getMazeMapData(Level level, String name) {
-		if (level.isClientSide()) return CLIENT_DATA.get(name);
-		else return (TFMazeMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
-	}
-
-	// Like the method above, but if we know we're on client
-	@Nullable
-	public static TFMazeMapData getClientMagicMapData(String name) {
-		return CLIENT_DATA.get(name);
-	}
-
-	public static SavedData.Factory<MapItemSavedData> factory() {
-		return new SavedData.Factory<>(() -> {
-			throw new IllegalStateException("Should never create an empty map saved data");
-		}, TFMazeMapData::load, DataFixTypes.SAVED_DATA_MAP_DATA);
-	}
-
-	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMazeMapData(Level level, TFMazeMapData data, String id) {
-		if (level.isClientSide()) CLIENT_DATA.put(id, data);
-		else ((ServerLevel) level).getServer().overworld().getDataStorage().set(id, data);
 	}
 
 	@Nullable

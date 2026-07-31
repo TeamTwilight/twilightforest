@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
@@ -77,10 +78,11 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 				);
 				modelState.submit(
 					stack,
-					collector,
-					lightCoords,
-					OverlayTexture.NO_OVERLAY,
-					outlineColor
+					buffer.getBuffer(Sheets.translucentItemSheet()),
+					model.getQuads(null, dir, Minecraft.getInstance().font.random, ModelData.EMPTY, Sheets.translucentItemSheet()),
+					new int[0],
+					LightCoordsUtil.FULL_BRIGHT,
+					OverlayTexture.NO_OVERLAY
 				);
 			}
 

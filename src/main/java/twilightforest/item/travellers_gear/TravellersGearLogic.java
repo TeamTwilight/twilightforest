@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -88,7 +88,7 @@ public class TravellersGearLogic {
 	}
 
 	public static boolean isBelowMaxWaterWalkingSubmergedHeight(LivingEntity livingEntity) {
-		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
+		double waterHeight = livingEntity.getFluidHeight(FluidTags.WATER);
 		return waterHeight < WATER_WALKING_MAX_SUBMERGED_HEIGHT;
 	}
 
@@ -195,7 +195,7 @@ public class TravellersGearLogic {
 
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
 		if (TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
-			livingEntity.stuckSpeedMultiplier = Vec3.ZERO;
+			livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {

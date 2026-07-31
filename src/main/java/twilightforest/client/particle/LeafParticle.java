@@ -6,6 +6,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
@@ -90,7 +91,7 @@ public class LeafParticle extends SingleQuadParticle {
 
 	@Override
 	public int getLightCoords(float partialTicks) {
-		return 240 | 240 << 16;
+		return LightCoordsUtil.FULL_BRIGHT;
 	}
 
 	public record Factory(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {

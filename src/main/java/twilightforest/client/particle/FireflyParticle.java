@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
 
@@ -61,7 +62,7 @@ public class FireflyParticle extends SingleQuadParticle {
 
 	@Override
 	public int getLightCoords(float partialTicks) {
-		return 0xF000F0;
+		return LightCoordsUtil.FULL_BRIGHT;
 	}
 
 	public record StationaryProvider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {

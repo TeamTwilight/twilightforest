@@ -3,124 +3,129 @@ package twilightforest.item.mapdata;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.*;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.saveddata.maps.MapDecoration;
-import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import net.minecraft.world.level.saveddata.maps.MapId;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.saveddata.SavedDataType;
+import net.minecraft.world.level.saveddata.maps.*;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.util.Codecs;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TFMagicMapData extends MapItemSavedData {
-	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
 	public final List<String> conqueredStructures = new ArrayList<>();
 
-	public TFMagicMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
-		super(x, z, scale, trackpos, unlimited, locked, dim);
-	}
+	// [VanillaCopy] from MapItemSavedData but with our own fields and constructor
+	public static final Codec<TFMagicMapData> CODEC = RecordCodecBuilder.create(i ->
+		i.group(
+			Level.RESOURCE_KEY_CODEC
+				.fieldOf("dimension")
+				.forGetter(m -> m.dimension),
+			Codec.INT
+				.fieldOf("xCenter")
+				.forGetter(m -> m.centerX),
+			Codec.INT
+				.fieldOf("zCenter")
+				.forGetter(m -> m.centerZ),
+			Codec.BYTE
+				.optionalFieldOf("scale", (byte) 0)
+				.forGetter(m -> m.scale),
+			Codec.BYTE_BUFFER
+				.fieldOf("colors")
+				.forGetter(m -> ByteBuffer.wrap(m.colors)),
+			Codec.BOOL
+				.optionalFieldOf("trackingPosition", true)
+				.forGetter(m -> m.trackingPosition),
+			Codec.BOOL
+				.optionalFieldOf("unlimitedTracking", false)
+				.forGetter(m -> m.unlimitedTracking),
+			Codec.BOOL
+				.optionalFieldOf("locked", false)
+				.forGetter(m -> m.locked),
+			MapBanner.CODEC
+				.listOf()
+				.optionalFieldOf("banners", List.of())
+				.forGetter(m -> List.copyOf(m.bannerMarkers.values())),
+			MapFrame.CODEC
+				.listOf()
+				.optionalFieldOf("frames", List.of())
+				.forGetter(m -> List.copyOf(m.frameMarkers.values())),
+			DecorationHolder.CODEC
+				.listOf()
+				.optionalFieldOf("decorations", List.of())
+				.forGetter(m -> {
+					List<DecorationHolder> holders = new ArrayList<>();
+					m.decorations.forEach((id, decoration) -> {
+						if (decoration.type().value().showOnItemFrame()) {
+							holders.add(new DecorationHolder(id, decoration));
+						}
+					});
+					return holders;
+				}),
+			Codec.STRING
+				.listOf()
+				.optionalFieldOf("conquered_structures", List.of())
+				.forGetter(m -> List.copyOf(m.conqueredStructures))
+		).apply(i, TFMagicMapData::new)
+	);
 
-	public static TFMagicMapData load(CompoundTag nbt, HolderLookup.Provider provider) {
-		MapItemSavedData data = MapItemSavedData.load(nbt, provider);
-		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
-		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
-		final boolean locked = nbt.getBoolean("locked");
-		TFMagicMapData tfdata = new TFMagicMapData(data.centerX, data.centerZ, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
-
-		tfdata.colors = data.colors;
-		tfdata.bannerMarkers.putAll(data.bannerMarkers);
-		tfdata.frameMarkers.putAll(data.frameMarkers);
-
-		for (DecorationHolder decoration : DecorationHolder.CODEC.listOf()
-			.parse(provider.createSerializationContext(NbtOps.INSTANCE), nbt.get("decorations"))
-			.resultOrPartial(error -> TwilightForestMod.LOGGER.warn("Failed to parse map decoration: '{}'", error))
-			.orElse(List.of())) {
-			MapDecoration mapdecoration1 = decoration.decoration();
-			MapDecoration mapdecoration = tfdata.decorations.put(decoration.id(), mapdecoration1);
-			if (!mapdecoration1.equals(mapdecoration)) {
-				if (mapdecoration != null && mapdecoration.type().value().trackCount()) {
-					tfdata.trackedDecorationCount--;
-				}
-
-				if (decoration.decoration().type().value().trackCount()) {
-					tfdata.trackedDecorationCount++;
-				}
-				tfdata.setDecorationsDirty();
-			}
-		}
-
-		if (nbt.contains("conquered_structures", Tag.TAG_LIST)) {
-			tfdata.conqueredStructures.clear();
-			ListTag tag = nbt.getList("conquered_structures", Tag.TAG_STRING);
-			tag.forEach(tag1 -> tfdata.conqueredStructures.add(tag1.getAsString()));
-		}
-
-		return tfdata;
-	}
-
-	@Override
-	public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
-		tag = super.save(tag, provider);
-
-		List<DecorationHolder> holders = new ArrayList<>();
-		this.decorations.forEach((s, decoration) -> {
-			if (decoration.type().value().showOnItemFrame()) {
-				holders.add(new DecorationHolder(s, decoration));
-			}
-		});
-		tag.put("decorations", DecorationHolder.CODEC.listOf().encodeStart(NbtOps.INSTANCE, holders).getOrThrow());
-
-		if (!this.conqueredStructures.isEmpty()) {
-			ListTag conqueredTag = new ListTag();
-			for (String structure : this.conqueredStructures) {
-				conqueredTag.add(StringTag.valueOf(structure));
-			}
-			tag.put("conquered_structures", conqueredTag);
-		}
-
-		return tag;
-	}
-
-	// [VanillaCopy] Adapted from World.getMapData
-	@Nullable
-	public static TFMagicMapData getMagicMapData(Level level, String name) {
-		if (level instanceof ServerLevel serverLevel) return (TFMagicMapData) serverLevel.getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
-		else return CLIENT_DATA.get(name);
-	}
-
-	// Like the method above, but if we know we're on client
-	@Nullable
-	public static TFMagicMapData getClientMagicMapData(String name) {
-		return CLIENT_DATA.get(name);
-	}
-
-	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMagicMapData(Level level, TFMagicMapData data, String id) {
-		if (level instanceof ServerLevel serverLevel) serverLevel.getServer().overworld().getDataStorage().set(id, data);
-		else CLIENT_DATA.put(id, data);
-	}
-
-	public static Factory<MapItemSavedData> factory() {
-		return new SavedData.Factory<>(() -> {
+	// [VanillaCopy] from MapItemSavedData but changed to use our Codec and namespace
+	public static SavedDataType<TFMagicMapData> magicMapType(MapId id) {
+		return new SavedDataType<>(TwilightForestMod.prefix(id.key()), () -> {
 			throw new IllegalStateException("Should never create an empty map saved data");
-		}, TFMagicMapData::load, DataFixTypes.SAVED_DATA_MAP_DATA);
+		}, CODEC, DataFixTypes.SAVED_DATA_MAP_DATA);
+	}
+
+	// [VanillaCopy] from MapItemSavedData
+	public TFMagicMapData(int centerX, int centerZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, boolean locked, ResourceKey<Level> dimension) {
+		super(centerX, centerZ, scale, trackingPosition, unlimitedTracking, locked, dimension);
+	}
+
+	// [VanillaCopy] from MapItemSavedData but with our own fields
+	private TFMagicMapData(ResourceKey<Level> dimension, int centerX, int centerZ, byte scale, ByteBuffer colors, boolean trackingPosition, boolean unlimitedTracking, boolean locked, List<MapBanner> banners, List<MapFrame> frames, List<DecorationHolder> decorations, List<String> conqueredStructures) {
+		this(centerX, centerZ, (byte) Mth.clamp(scale, 0, 4), trackingPosition, unlimitedTracking, locked, dimension);
+
+		if (colors.array().length == 16384) {
+			this.colors = colors.array();
+		}
+
+		for(MapBanner banner : banners) {
+			this.bannerMarkers.put(banner.getId(), banner);
+			this.addDecoration(banner.getDecoration(), null, banner.getId(), banner.pos().getX(), banner.pos().getZ(), 180.0F, banner.name().orElse(null));
+		}
+
+		for(MapFrame frame : frames) {
+			this.frameMarkers.put(frame.getId(), frame);
+			this.addDecoration(MapDecorationTypes.FRAME, null, getFrameKey(frame.entityId()), frame.pos().getX(), frame.pos().getZ(), frame.rotation(), null);
+		}
+
+		for (DecorationHolder holder : decorations) {
+			MapDecoration newDecoration = holder.decoration();
+			MapDecoration oldDecoration = this.decorations.put(holder.id(), newDecoration);
+
+			if (!newDecoration.equals(oldDecoration)) {
+				if (oldDecoration != null && oldDecoration.type().value().trackCount()) {
+					this.trackedDecorationCount--;
+				}
+
+				if (newDecoration.type().value().trackCount()) {
+					this.trackedDecorationCount++;
+				}
+			}
+		}
+
+		this.conqueredStructures.addAll(conqueredStructures);
 	}
 
 	@Nullable

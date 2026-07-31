@@ -1,12 +1,15 @@
 package twilightforest.entity;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import twilightforest.init.TFEntities;
 
 public class ProtectionBox extends Entity {
@@ -31,7 +34,7 @@ public class ProtectionBox extends Entity {
 
 		this.sbb = sbb;
 
-		this.moveTo(sbb.minX(), sbb.minY(), sbb.minZ(), 0.0F, 0.0F);
+		this.snapTo(sbb.minX(), sbb.minY(), sbb.minZ(), 0.0F, 0.0F);
 
 		this.sizeX = sbb.getXSpan();
 		this.sizeY = sbb.getYSpan();
@@ -67,11 +70,16 @@ public class ProtectionBox extends Entity {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+	protected void readAdditionalSaveData(ValueInput compound) {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
+	protected void addAdditionalSaveData(ValueOutput compound) {
+	}
+
+	@Override
+	public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
+		return false;
 	}
 
 	@Override

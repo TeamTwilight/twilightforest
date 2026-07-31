@@ -130,15 +130,12 @@ public class LoyalZombie extends TamableAnimal {
 	@Override
 	public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
 		if (!(target instanceof Creeper) && !(target instanceof Ghast)) {
-			if (target instanceof LoyalZombie zombie) {
-				return !zombie.isTame() || zombie.getOwner() != owner;
-			} else if (target instanceof Player pTarget && owner instanceof Player pOwner && !pOwner.canHarmPlayer(pTarget)) {
-				return false;
-			} else if (target instanceof AbstractHorse horse && horse.isTamed()) {
-				return false;
-			} else {
-				return !(target instanceof TamableAnimal animal) || !animal.isTame();
-			}
+			return switch (target) {
+				case LoyalZombie zombie -> !zombie.isTame() || zombie.getOwner() != owner;
+				case Player pTarget when owner instanceof Player pOwner && !pOwner.canHarmPlayer(pTarget) -> false;
+				case AbstractHorse horse when horse.isTamed() -> false;
+				default -> !(target instanceof TamableAnimal animal) || !animal.isTame();
+			};
 		} else {
 			return false;
 		}
@@ -208,7 +205,7 @@ public class LoyalZombie extends TamableAnimal {
 	@Override
 	public void setBaby(boolean baby) {
 		this.getEntityData().set(DATA_BABY_ID, baby);
-		if (this.level() != null && !this.level().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
 			attributeinstance.removeModifier(SPEED_MODIFIER_BABY_ID);
 			if (baby) {

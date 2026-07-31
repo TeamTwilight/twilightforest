@@ -7,15 +7,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
-import java.util.Optional;
 
 // For making rectangular grids that are approximately-evenly spaced (floating-point -> integer rounding), even if re-sampled for a different chunk or general region
 // Making a hexagonal pattern will require using two of these
 // Positions are lazily generated, meaning no excess of positions are produced if terminated early
 public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
+
 	private final int yLevel, latticeStartX, latticeStartZ, latticeCountX, latticeCountZ;
 	private final float xSpacing, zSpacing, xOffset, zOffset;
 	private final TernaryIntegerFunction<T> converter;
@@ -71,7 +70,6 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 		return this.latticeX < this.latticeCountX;
 	}
 
-	@NotNull
 	@Override
 	public Iterator<T> iterator() {
 		return this;
@@ -121,14 +119,11 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 			float spacing = tag.getFloatOr("spacing", 0f);
 			if (spacing <= 0.0000001) spacing = 3.5f;
 
-			float xOffset = tag.getFloat("x_offset").orElse(Mth.cos(Mth.PI / 6f) * spacing);
-			float zOffset = tag.getFloat("z_offset").orElse(Mth.sin(Mth.PI / 6f) * spacing);
+			float xOffset = tag.getFloatOr("x_offset", Mth.cos(Mth.PI / 6f) * spacing);
+			float zOffset = tag.getFloatOr("z_offset", Mth.sin(Mth.PI / 6f) * spacing);
 
-			float xSpacing = tag.getFloatOr("x_spacing", 0f);
-			float zSpacing = tag.getFloatOr("z_spacing", 0f);
-
-			if (xSpacing != 0 || zSpacing != 0) {
-				return new TriangularLatticeConfig(spacing, xOffset, zOffset, xSpacing, zSpacing);
+			if (tag.contains("x_spacing") || tag.contains("z_spacing")) {
+				return new TriangularLatticeConfig(spacing, xOffset, zOffset, tag.getFloatOr("x_spacing", 0.0F), tag.getFloatOr("z_spacing", 0.0F));
 			} else {
 				return new TriangularLatticeConfig(spacing, xOffset, zOffset);
 			}

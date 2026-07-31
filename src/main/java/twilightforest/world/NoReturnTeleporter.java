@@ -3,13 +3,13 @@ package twilightforest.world;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 
 public class NoReturnTeleporter extends TFTeleporter {
 
-	public static DimensionTransition createNoPortalTransition(ServerLevel dest, Entity entity, BlockPos destPos) {
+	public static TeleportTransition createNoPortalTransition(ServerLevel dest, Entity entity, BlockPos destPos) {
 		Vec3 safePos = moveToSafeCoords(dest, entity, destPos);
 		return makeTransition(dest, entity, placePosition(entity, dest, safePos));
 	}

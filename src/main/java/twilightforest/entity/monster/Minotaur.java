@@ -94,7 +94,7 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOTAUR_ATTACK.get());
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOTAUR_ATTACK.get());
 	}
 
 	@Override

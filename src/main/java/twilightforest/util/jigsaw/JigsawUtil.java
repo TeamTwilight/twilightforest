@@ -8,12 +8,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
-import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class JigsawUtil {
@@ -64,7 +64,7 @@ public class JigsawUtil {
 		if (random != null) {
 			Util.shuffle(returnables, random);
 			// "Stable" sorting - preserves order of "equal" priorities, as arranged by prior shuffling.
-			SinglePoolElement.sortBySelectionPriority(returnables);
+			returnables.sort(Comparator.<StructureTemplate.StructureBlockInfo>comparingInt(info -> info.nbt() == null ? 0 : info.nbt().getIntOr("selection_priority", 0)).reversed());
 		}
 
 		return returnables;

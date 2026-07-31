@@ -47,7 +47,7 @@ public class Squirrel extends Animal {
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Mob.createMobAttributes()
+		return Animal.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 6.0D)
 			.add(Attributes.MOVEMENT_SPEED, 0.3D)
 			.add(Attributes.STEP_HEIGHT, 1.0D);

@@ -4,6 +4,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 
 public class IceBeamParticle extends SingleQuadParticle {
@@ -55,7 +56,7 @@ public class IceBeamParticle extends SingleQuadParticle {
 
 	@Override
 	public int getLightCoords(float partialTicks) {
-		return 240 | 240 << 16;
+		return LightCoordsUtil.FULL_BRIGHT;
 	}
 
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {

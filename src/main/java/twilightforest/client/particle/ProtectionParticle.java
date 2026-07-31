@@ -7,6 +7,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 
 public class ProtectionParticle extends SuspendedTownParticle {
@@ -17,7 +18,7 @@ public class ProtectionParticle extends SuspendedTownParticle {
 
 	@Override
 	public int getLightCoords(float partialTicks) {
-		return 0xF000F0;
+		return LightCoordsUtil.FULL_BRIGHT;
 	}
 
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
