@@ -78,12 +78,12 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	}
 
 	public static boolean isSwapHotbarActive(Player player, ItemStack stack) {
-		return (TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
+		return (TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.SWAP_HOTBAR_MODIFIER).orElseThrow()) || TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.SWAP_HOTBAR_ABILITY).orElseThrow()))
 			&& stack.has(DataComponents.CONTAINER);
 	}
 
 	public static boolean hasSwapHotbar(Player player, ItemStack stack) {
-		return (TravellersModifiersManager.hasTravellersModifier(player.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.hasTravellersModifier(player.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
+		return (TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.SWAP_HOTBAR_MODIFIER).orElseThrow()) || TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.SWAP_HOTBAR_ABILITY).orElseThrow()))
 			&& stack.has(DataComponents.CONTAINER);
 	}
 
