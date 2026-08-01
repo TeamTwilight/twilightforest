@@ -115,7 +115,7 @@ public class BlockHooks {
 	 * Targets: FRETURN
 	 */
 	public static float resetBlockFrictionWithUnrestrained(float o, Entity entity) {
-		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 0.6F : o;
+		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.lookupHolder(entity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER).orElseThrow()) ? 0.6F : o;
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class BlockHooks {
 	 * Targets: {@link Entity#isSteppingCarefully()}
 	 */
 	public static boolean resetSlimeMomentumWithUnrestrained(boolean o, Entity entity) {
-		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER)) {
+		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.lookupHolder(entity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER).orElseThrow())) {
 			return true; //dont return false here as the original check is looking that an entity is NOT stepping carefully
 		}
 		return o;
@@ -139,7 +139,7 @@ public class BlockHooks {
 	 * {@link net.minecraft.world.level.block.SlimeBlock#bounceUp(Entity)}
 	 */
 	public static void stopBouncing(Entity entity) {
-		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) && entity.getDeltaMovement().y() > -0.08)
+		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.lookupHolder(entity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER).orElseThrow()) && entity.getDeltaMovement().y() > -0.08)
 			entity.setDeltaMovement(new Vec3(entity.getDeltaMovement().x, Math.max(0, entity.getDeltaMovement().y), entity.getDeltaMovement().z));
 	}
 }
