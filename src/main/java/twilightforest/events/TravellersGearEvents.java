@@ -338,7 +338,7 @@ public class TravellersGearEvents {
 
 	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
 		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
-			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
+			TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.lookupHolder(event.getPlayer().registryAccess(), modifierKey).orElseThrow())
 		).map(stack -> stack.get(componentType))
 			.ifPresent(component ->
 				itemStreamExtractor.apply(component)
@@ -355,7 +355,7 @@ public class TravellersGearEvents {
 	}
 
 	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
-		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
+		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.lookupHolder(event.getEntity().registryAccess(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER).orElseThrow())) {
 			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
 		}
 	}
