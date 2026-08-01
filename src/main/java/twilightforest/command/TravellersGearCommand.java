@@ -46,17 +46,17 @@ public class TravellersGearCommand {
 	private int addModifier(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
 		Context ctx = validate(source, modifier);
 		if (TravellersModifiersManager.countInsertableModifiers(source.registryAccess(), ctx.stack()) >= ctx.item().getModifierSlots()) throw ERROR_TOO_MANY_MODIFIERS.create();
-		if (TravellersModifiersManager.hasTravellersModifier(source.registryAccess(), ctx.stack(), modifier.key())) throw ERROR_HAS_MODIFIER.apply(ctx.modKey()).create();
+		if (TravellersModifiersManager.hasTravellersModifier(ctx.stack(), modifier)) throw ERROR_HAS_MODIFIER.apply(ctx.modKey()).create();
 		if (!modifier.value().group().test(ctx.player().getEquipmentSlotForItem(ctx.stack()))) throw ERROR_WRONG_SLOT.apply(ctx.modKey()).create();
 
-		TravellersModifiersManager.addModifier(source.registryAccess(), ctx.stack(), modifier.key());
+		TravellersModifiersManager.addModifier(ctx.stack(), modifier);
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.added_modifier", ctx.modKey(), ctx.stack().getHoverName()), true);
 		return Command.SINGLE_SUCCESS;
 	}
 
 	private int removeModifier(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
 		Context ctx = validate(source, modifier);
-		if (!TravellersModifiersManager.hasTravellersModifier(source.registryAccess(), ctx.stack(), modifier.key())) throw ERROR_NO_MODIFIER.apply(ctx.modKey()).create();
+		if (!TravellersModifiersManager.hasTravellersModifier(ctx.stack(), modifier)) throw ERROR_NO_MODIFIER.apply(ctx.modKey()).create();
 
 		((InsertableTravellersModifier) modifier.value()).removeModifier(ctx.stack());
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.removed_modifier", ctx.modKey(), ctx.stack().getHoverName()), true);
