@@ -176,7 +176,6 @@ public class TravellersModifiersManager {
 		return findAllInsertableModifiers(registries, stack).size();
 	}
 
-	// May or may not need this, we will see
 	public static Optional<Holder.Reference<TravellersModifier>> lookupHolder(HolderLookup.Provider registries, ResourceKey<TravellersModifier> key) {
 		Optional<Holder.Reference<TravellersModifier>> holder = registries.holder(key);
 
