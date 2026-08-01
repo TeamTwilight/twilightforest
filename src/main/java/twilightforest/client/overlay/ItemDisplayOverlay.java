@@ -26,7 +26,7 @@ public class ItemDisplayOverlay {
 			return;
 
 		ItemStack goggles = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (!TravellersModifiersManager.isModifierActive(player, goggles, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.ITEM_DISPLAY_MODIFIER).orElseThrow()))
+		if (!TravellersModifiersManager.isModifierActive(player, goggles, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)))
 			return;
 
 		ItemDisplayContents contents = goggles.get(TFDataComponents.ITEM_DISPLAY);

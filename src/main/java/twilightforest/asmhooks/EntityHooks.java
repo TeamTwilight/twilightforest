@@ -30,7 +30,7 @@ public class EntityHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return o;
 
-		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.lookupHolder(livingEntity.registryAccess(), TravellersModifiersManager.WATER_WALK_MODIFIER).orElseThrow()))
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.lookupHolderOrThrow(livingEntity.registryAccess(), TravellersModifiersManager.WATER_WALK_MODIFIER)))
 			return o;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
@@ -47,7 +47,7 @@ public class EntityHooks {
 	 * Targets: {@link Entity#isInWater()}
 	 */
 	public static boolean unrestrainedSprintingInWater(boolean isInWater, LivingEntity livingEntity) {
-		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.lookupHolder(livingEntity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER).orElseThrow()))
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.lookupHolderOrThrow(livingEntity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER)))
 			return isInWater;
 		return !livingEntity.canStandOnFluid(livingEntity.level().getFluidState(livingEntity.blockPosition())) && isInWater;
 	}
@@ -89,7 +89,7 @@ public class EntityHooks {
 	 * Targets: FRETURN
 	 */
 	public static float resetFactorWithUnrestrained(float o, Entity entity) {
-		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.lookupHolder(entity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER).orElseThrow()) ? 1.0F : o;
+		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.lookupHolderOrThrow(entity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER)) ? 1.0F : o;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class EntityHooks {
 	 * {@link net.minecraft.world.entity.Entity#move(MoverType, Vec3)}<br/>
 	 */
 	public static Entity resetStuckUnrestrained(Entity entity) {
-		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.lookupHolder(entity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER).orElseThrow()))
+		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.lookupHolderOrThrow(entity.registryAccess(), TravellersModifiersManager.UNRESTRAINED_MODIFIER)))
 			return entity;
 		living.stuckSpeedMultiplier = Vec3.ZERO;
 

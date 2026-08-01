@@ -36,7 +36,7 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 				return;
 			}
 
-			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.ZOOM_ABILITY).orElseThrow());
+			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), TravellersModifiersManager.ZOOM_ABILITY));
 			if (canChangeZoomState) {
 				player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
 				player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());

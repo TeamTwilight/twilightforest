@@ -27,7 +27,7 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 
 			ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
-			if (contents == null || contents.isEmpty() || !TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.ITEM_DISPLAY_MODIFIER).orElseThrow()))
+			if (contents == null || contents.isEmpty() || !TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)))
 				return;
 
 			ItemDisplayContents.Mutable mutable = new ItemDisplayContents.Mutable(contents);

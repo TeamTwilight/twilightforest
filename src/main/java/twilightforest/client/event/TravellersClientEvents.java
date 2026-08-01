@@ -74,7 +74,7 @@ public class TravellersClientEvents {
 			return;
 		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
 		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER);
-		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.lookupHolder(localPlayer.registryAccess(), TravellersModifiersManager.AGILE_RANGER_MODIFIER).orElseThrow()) || agileRangerModifier == null)
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.lookupHolderOrThrow(localPlayer.registryAccess(), TravellersModifiersManager.AGILE_RANGER_MODIFIER)) || agileRangerModifier == null)
 			return;
 		ItemStack stack = localPlayer.getUseItem();
 		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
@@ -95,7 +95,7 @@ public class TravellersClientEvents {
 			return;
 
 		Input input = localPlayer.input;
-		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.lookupHolder(localPlayer.registryAccess(), TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER).orElseThrow()) || multiplier == null || input.forwardImpulse <= 0)
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.lookupHolderOrThrow(localPlayer.registryAccess(), TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER)) || multiplier == null || input.forwardImpulse <= 0)
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
@@ -150,7 +150,7 @@ public class TravellersClientEvents {
 		if (pressedKey)
 			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
 		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
-		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.lookupHolder(localPlayer.registryAccess(), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER).orElseThrow())) {
+		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.lookupHolderOrThrow(localPlayer.registryAccess(), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
 			}
@@ -163,7 +163,7 @@ public class TravellersClientEvents {
 		boolean wasUsingZoom = player.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
-		boolean isUsingZoom = isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.ZOOM_ABILITY).orElseThrow()) && zoomModifier != null;
+		boolean isUsingZoom = isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), TravellersModifiersManager.ZOOM_ABILITY)) && zoomModifier != null;
 		if (isUsingZoom)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
 		if (isUsingZoom == wasUsingZoom)
@@ -214,7 +214,7 @@ public class TravellersClientEvents {
 			return;
 
 		Player player = Minecraft.getInstance().player;
-		if (player == null || !TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolder(player.registryAccess(), modifier).orElseThrow()))
+		if (player == null || !TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), modifier)))
 			return;
 
 		boolean current = player.getData(attachment.get());
