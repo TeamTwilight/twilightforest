@@ -176,6 +176,10 @@ public class TravellersModifiersManager {
 		return findAllInsertableModifiers(registries, stack).size();
 	}
 
+	public static Holder.Reference<TravellersModifier> lookupHolderOrThrow(HolderLookup.Provider registries, ResourceKey<TravellersModifier> key) {
+		return lookupHolder(registries, key).orElseThrow(() -> new IllegalStateException("TravellersModifier holder was not found"));
+	}
+
 	public static Optional<Holder.Reference<TravellersModifier>> lookupHolder(HolderLookup.Provider registries, ResourceKey<TravellersModifier> key) {
 		Optional<Holder.Reference<TravellersModifier>> holder = registries.holder(key);
 
