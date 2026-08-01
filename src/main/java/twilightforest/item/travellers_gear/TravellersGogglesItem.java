@@ -93,7 +93,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		//only tick while on the player's head
 		if (slot != EquipmentSlot.HEAD)
 			return;
-		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(owner, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
+		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(owner, TravellersModifiersManager.lookupHolder(owner.registryAccess(), TravellersModifiersManager.ITEM_DISPLAY_MODIFIER).orElseThrow()))
 			return;
 
 		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
@@ -118,7 +118,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 
 	@Override
 	public boolean isGazeDisguise(ItemStack stack, Player player, @Nullable LivingEntity entity) {
-		return entity instanceof EnderMan && TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
+		return entity instanceof EnderMan && TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolder(player.registryAccess(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER).orElseThrow());
 	}
 
 	private void playRemoveOneSound(Entity entity) {
