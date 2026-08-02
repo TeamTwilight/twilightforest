@@ -106,26 +106,26 @@ public class TravellersModifiersManager {
 		return List.of(Component.translatable(modifier.identifier().toLanguageKey("travellers_gear.modifier", "description"), args));
 	}
 
-	public static boolean isModifierActive(ItemStack stack, Holder<TravellersModifier> modifierHolder, boolean spectator) {
-		return modifierHolder.value().isActive(stack, modifierHolder, spectator);
+	public static boolean isModifierActive(Entity entity, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
+		return isModifierActive(entity.registryAccess(), stack, modifierKey, entity.isSpectator());
 	}
 
-	public static boolean isModifierActive(Entity entity, ItemStack stack, Holder<TravellersModifier> modifierHolder) {
-		return isModifierActive(stack, modifierHolder, entity.isSpectator());
+	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey, boolean spectator) {
+		return lookupHolderOrThrow(registries, modifierKey).value().isActive(stack, modifierKey, spectator);
 	}
 
-	public static boolean isModifierActive(Entity entity, Holder<TravellersModifier> modifierHolder) {
-		return entity instanceof LivingEntity livingEntity && isModifierActive(livingEntity, modifierHolder);
+	public static boolean isModifierActive(Entity entity, ResourceKey<TravellersModifier> modifierKey) {
+		return entity instanceof LivingEntity livingEntity && isModifierActive(livingEntity, modifierKey);
 	}
 
-	public static boolean isModifierActive(LivingEntity livingEntity, Holder<TravellersModifier> modifierHolder) {
-		TravellersModifier modifier = modifierHolder.value();
+	public static boolean isModifierActive(LivingEntity livingEntity, ResourceKey<TravellersModifier> modifierKey) {
+		TravellersModifier modifier = lookupHolderOrThrow(livingEntity.registryAccess(), modifierKey).value();
 		ItemStack equippedStack = getStackForGroup(livingEntity, modifier.group());
 
 		return !equippedStack.isEmpty()
 			&& modifier.isActive(
 			equippedStack,
-			modifierHolder,
+			modifierKey,
 			livingEntity.isSpectator()
 		);
 	}

@@ -78,7 +78,7 @@ public class RedThreadRenderer implements BlockEntityRenderer<RedThreadBlockEnti
 
 		Player player = Minecraft.getInstance().player;
 		if (player != null) {
-			boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER));
+			boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER);
 			state.glowing = player.isHolding(TFBlocks.RED_THREAD.get().asItem()) || wearsActivatedTravellersGoggles;
 		}
 
