@@ -212,7 +212,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 						ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 						leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
 						boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
-						boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.lookupHolderOrThrow(Minecraft.getInstance().level.registryAccess(), TravellersModifiersManager.SWAP_HOTBAR_MODIFIER));
+						boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(Minecraft.getInstance().level.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
 
 						TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
 						TravellersWingsModel.skipWings(leggingsLayer, !hasWings);

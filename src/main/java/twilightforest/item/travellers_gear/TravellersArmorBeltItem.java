@@ -83,7 +83,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	}
 
 	public static boolean hasSwapHotbar(Player player, ItemStack stack) {
-		return (TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), TravellersModifiersManager.SWAP_HOTBAR_MODIFIER)) || TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.lookupHolderOrThrow(player.registryAccess(), TravellersModifiersManager.SWAP_HOTBAR_ABILITY)))
+		return (TravellersModifiersManager.hasTravellersModifier(player.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.hasTravellersModifier(player.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
 			&& stack.has(DataComponents.CONTAINER);
 	}
 

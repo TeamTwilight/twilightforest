@@ -134,6 +134,10 @@ public class TravellersModifiersManager {
 		return modifierHolder.value().hasModifier(stack);
 	}
 
+	public static boolean hasTravellersModifier(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
+		return lookupHolderOrThrow(registries, modifierKey).value().hasModifier(stack);
+	}
+
 	public static boolean addModifier(ItemStack stack, Holder<TravellersModifier> modifierHolder) {
 		if (!(modifierHolder.value() instanceof InsertableTravellersModifier insertableTravellersModifier))
 			return false;
