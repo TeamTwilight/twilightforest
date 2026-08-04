@@ -40,6 +40,6 @@ public class TFGameRules {
 
 	public static void register() {
 		// Get main thread and use it to register our game rules early
-		GAME_RULES.forEach(gameRule -> Util.backgroundExecutor().execute(gameRule::get));
+		GAME_RULES.forEach(Supplier::get);
 	}
 }
