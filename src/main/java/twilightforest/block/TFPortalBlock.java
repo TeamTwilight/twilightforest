@@ -268,13 +268,16 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 	@Override
 	public int getPortalTransitionTime(ServerLevel level, Entity entity) {
-		if (!(entity instanceof Player player))
-			return 0;
-		return player.getAbilities().invulnerable
-			? level.getGameRules().get(TFGameRules.TF_PORTAL_CREATIVE_DELAY.get())
-			: level.getGameRules().get(TFGameRules.TF_PORTAL_DEFAULT_DELAY.get());
+		if (!(entity instanceof Player player)) return 0;
+		var gameRules = level.getGameRules();
+		if (player.getAbilities().invulnerable) {
+			var rule = gameRules.get(TFGameRules.TF_PORTAL_CREATIVE_DELAY.get());
+			return rule != null ? rule.get() : 0;  // Default 0 seconds
+		} else {
+			var rule = gameRules.get(TFGameRules.TF_PORTAL_DEFAULT_DELAY.get());
+			return rule != null ? rule.get() : 60; // Default 60 seconds (corresponding to the default value at registration)
+		}
 	}
-
 	@Nullable
 	@Override
 	public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
