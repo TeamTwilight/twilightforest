@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
@@ -74,7 +75,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 					buffer.getBuffer(Sheets.translucentItemSheet()),
 					model.getQuads(null, dir, Minecraft.getInstance().font.random, ModelData.EMPTY, Sheets.translucentItemSheet()),
 					new int[0],
-					0xF000F0,
+					LightCoordsUtil.FULL_BRIGHT,
 					OverlayTexture.NO_OVERLAY
 				);
 			}

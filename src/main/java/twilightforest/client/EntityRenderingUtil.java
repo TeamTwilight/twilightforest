@@ -133,7 +133,7 @@ public class EntityRenderingUtil {
 //
 //		stack.pushPose();
 //
-//		Minecraft.getInstance().getItemRenderer().render(itemstack, ItemDisplayContext.GROUND, false, stack, buffer, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+//		Minecraft.getInstance().getItemRenderer().render(itemstack, ItemDisplayContext.GROUND, false, stack, buffer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, bakedmodel);
 //		stack.popPose();
 //
 //

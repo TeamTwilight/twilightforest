@@ -44,6 +44,8 @@ import twilightforest.client.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.config.TFConfig;
+import twilightforest.item.mapdata.MapDataManager;
+import twilightforest.tags.TFItemTags;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
@@ -102,6 +104,8 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
 
 		NeoForge.EVENT_BUS.addListener(TFSkyRenderer::extractLevelRender);
+
+		NeoForge.EVENT_BUS.addListener(MapDataManager::clearCache);
 	}
 
 	private void handleGameBootup(ScreenEvent.Init.Post event) {

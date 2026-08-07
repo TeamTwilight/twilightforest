@@ -106,32 +106,36 @@ public class TravellersModifiersManager {
 		return List.of(Component.translatable(modifier.identifier().toLanguageKey("travellers_gear.modifier", "description"), args));
 	}
 
-	public static boolean isModifierActive(ItemStack stack, Holder<TravellersModifier> modifierHolder, boolean spectator) {
-		return modifierHolder.value().isActive(stack, modifierHolder, spectator);
+	public static boolean isModifierActive(Entity entity, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
+		return isModifierActive(entity.registryAccess(), stack, modifierKey, entity.isSpectator());
 	}
 
-	public static boolean isModifierActive(Entity entity, ItemStack stack, Holder<TravellersModifier> modifierHolder) {
-		return isModifierActive(stack, modifierHolder, entity.isSpectator());
+	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey, boolean spectator) {
+		return lookupHolderOrThrow(registries, modifierKey).value().isActive(stack, modifierKey, spectator);
 	}
 
-	public static boolean isModifierActive(Entity entity, Holder<TravellersModifier> modifierHolder) {
-		return entity instanceof LivingEntity livingEntity && isModifierActive(livingEntity, modifierHolder);
+	public static boolean isModifierActive(Entity entity, ResourceKey<TravellersModifier> modifierKey) {
+		return entity instanceof LivingEntity livingEntity && isModifierActive(livingEntity, modifierKey);
 	}
 
-	public static boolean isModifierActive(LivingEntity livingEntity, Holder<TravellersModifier> modifierHolder) {
-		TravellersModifier modifier = modifierHolder.value();
+	public static boolean isModifierActive(LivingEntity livingEntity, ResourceKey<TravellersModifier> modifierKey) {
+		TravellersModifier modifier = lookupHolderOrThrow(livingEntity.registryAccess(), modifierKey).value();
 		ItemStack equippedStack = getStackForGroup(livingEntity, modifier.group());
 
 		return !equippedStack.isEmpty()
 			&& modifier.isActive(
 			equippedStack,
-			modifierHolder,
+			modifierKey,
 			livingEntity.isSpectator()
 		);
 	}
 
 	public static boolean hasTravellersModifier(ItemStack stack, Holder<TravellersModifier> modifierHolder) {
 		return modifierHolder.value().hasModifier(stack);
+	}
+
+	public static boolean hasTravellersModifier(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
+		return lookupHolderOrThrow(registries, modifierKey).value().hasModifier(stack);
 	}
 
 	public static boolean addModifier(ItemStack stack, Holder<TravellersModifier> modifierHolder) {
@@ -176,7 +180,10 @@ public class TravellersModifiersManager {
 		return findAllInsertableModifiers(registries, stack).size();
 	}
 
-	// May or may not need this, we will see
+	public static Holder.Reference<TravellersModifier> lookupHolderOrThrow(HolderLookup.Provider registries, ResourceKey<TravellersModifier> key) {
+		return lookupHolder(registries, key).orElseThrow(() -> new IllegalStateException("TravellersModifier holder was not found"));
+	}
+
 	public static Optional<Holder.Reference<TravellersModifier>> lookupHolder(HolderLookup.Provider registries, ResourceKey<TravellersModifier> key) {
 		Optional<Holder.Reference<TravellersModifier>> holder = registries.holder(key);
 

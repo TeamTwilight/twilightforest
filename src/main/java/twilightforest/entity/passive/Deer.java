@@ -43,7 +43,7 @@ public class Deer extends Animal {
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Mob.createMobAttributes()
+		return Animal.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 10.0)
 			.add(Attributes.MOVEMENT_SPEED, 0.2);
 	}

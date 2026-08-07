@@ -1,15 +1,16 @@
 package twilightforest.network;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.MazeMapItem;
+import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMazeMapData;
 
 import java.util.stream.StreamSupport;
@@ -38,10 +39,10 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					Level level = ctx.player().level();
+					if (!(ctx.player().level() instanceof ClientLevel clientLevel)) return;
 
-					String s = MazeMapItem.getMapName(message.inner().mapId().id());
-					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
+					MapId mapId = message.inner.mapId();
+					TFMazeMapData mapdata = MapDataManager.getClientMazeMapData(mapId);
 					if (mapdata == null) {
 						mapdata = new TFMazeMapData(
 							0, 0,
@@ -49,16 +50,16 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 							false,
 							false,
 							message.inner().locked(),
-							level.dimension()
+							clientLevel.dimension()
 						);
-						TFMazeMapData.registerMazeMapData(level, mapdata, s);
+						MapDataManager.saveClientMazeMapData(mapId, mapdata);
 					}
 
 					mapdata.ore = message.ore();
 					mapdata.yCenter = message.yCenter();
 					message.inner().applyToMap(mapdata);
 
-					MapItemSavedData saved = level.getMapData(message.inner().mapId());
+					MapItemSavedData saved = clientLevel.getMapData(message.inner().mapId());
 
 					if (saved != null) {
 						saved.addClientSideDecorations(

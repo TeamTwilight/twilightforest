@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.monster.LichMinion;
@@ -88,14 +89,16 @@ public class LichMinionsGoal extends Goal {
 		}
 
 		if (this.lich.getAttackCooldown() == 0) {
+			ServerLevel serverLevel = getServerLevel(this.lich);
 			if (dist < 2.0F) {
 				// melee attack
-				this.lich.doHurtTarget(targetedEntity);
+				this.lich.doHurtTarget(serverLevel, targetedEntity);
+
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < ATTACK_RANGE && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
-				if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(this.lich.level(), this.lich));
-				else this.lich.launchProjectileAt(new LichBomb(this.lich.level(), this.lich));
+				if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(serverLevel, this.lich));
+				else this.lich.launchProjectileAt(new LichBomb(serverLevel, this.lich));
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setNextAttackType(this.lich.getRandom().nextBoolean() ? 0 : 1);
@@ -129,7 +132,7 @@ public class LichMinionsGoal extends Goal {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.level(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			EventHooks.finalizeMobSpawn(minion, accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), EntitySpawnReason.MOB_SUMMONED, null);
+			EventHooks.finalizeMobSpawn(minion, accessor, accessor.getCurrentDifficultyAt(BlockPos.containing(minionSpot)), EntitySpawnReason.MOB_SUMMONED, null);
 			this.lich.level().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);

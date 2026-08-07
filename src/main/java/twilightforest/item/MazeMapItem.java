@@ -27,6 +27,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
+import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.util.datamaps.OreMapOreColor;
 
@@ -53,8 +54,17 @@ public class MazeMapItem extends MapItem {
 
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level level) {
-		MapId id = stack.get(DataComponents.MAP_ID);
-		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id.id()));
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+
+		if (mapId == null) {
+			return null;
+		}
+
+		if (level instanceof ServerLevel serverLevel) {
+			return MapDataManager.getServerMazeMapData(serverLevel, mapId);
+		}
+
+		return MapDataManager.getClientMazeMapData(mapId);
 	}
 
 	@Nullable
@@ -70,7 +80,7 @@ public class MazeMapItem extends MapItem {
 	}
 
 	private static TFMazeMapData createMapData(ItemStack stack, ServerLevel level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
-		MapId i = level.getFreeMapId();
+		MapId freeMapId = level.getFreeMapId();
 
 		int mapSize = 128 * (1 << scale);
 		int roundX = Mth.floor((x + 64.0D) / (double) mapSize);
@@ -81,8 +91,8 @@ public class MazeMapItem extends MapItem {
 		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
 		mapdata.ore = ore;
-		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i.id())); // call our own register method
-		stack.set(DataComponents.MAP_ID, i);
+		MapDataManager.saveServerMazeMapData(level, freeMapId, mapdata); // call our own save method
+		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
 
@@ -166,7 +176,7 @@ public class MazeMapItem extends MapItem {
 
 									if (this.mapOres) {
 										// recolor ores
-										OreMapOreColor color = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.ORE_MAP_ORE_COLOR);
+										OreMapOreColor color = state.typeHolder().getData(TFDataMaps.ORE_MAP_ORE_COLOR);
 										if (color != null) {
 											multiset.add(color.color(), 1000);
 										} else if (!state.isAir() && state.is(Tags.Blocks.ORES)) {

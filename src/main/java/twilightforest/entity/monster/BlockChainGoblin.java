@@ -137,7 +137,7 @@ public class BlockChainGoblin extends Monster {
 
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.block), null);
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.block), null);
 	}
 
 	@Override
