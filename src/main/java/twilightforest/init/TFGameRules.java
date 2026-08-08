@@ -1,8 +1,8 @@
 package twilightforest.init;
 
 import com.google.common.base.Suppliers;
-import net.minecraft.Util;
 import net.minecraft.world.level.GameRules;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.network.EnforceProgressionStatusPacket;
 
@@ -38,8 +38,8 @@ public class TFGameRules {
 		return supplier;
 	}
 
-	public static void register() {
-		// Get main thread and use it to register our game rules early
-		GAME_RULES.forEach(gameRule -> Util.backgroundExecutor().execute(gameRule::get));
+	public static void register(FMLCommonSetupEvent event) {
+		// Register our gamerules out of parallel-modloading
+		event.enqueueWork(() -> GAME_RULES.forEach(Supplier::get));
 	}
 }
