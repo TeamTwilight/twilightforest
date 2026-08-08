@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -66,6 +67,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
 						);
 					}
+					Minecraft.getInstance().getMapTextureManager().update(message.inner.mapId(), mapdata);
 				}
 			});
 		}
