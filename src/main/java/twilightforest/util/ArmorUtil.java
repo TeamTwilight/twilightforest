@@ -9,11 +9,14 @@ import twilightforest.init.TFDataComponents;
 
 @Component
 public class ArmorUtil {
+	public static EquipmentSlot[] HUMANOID_ARMOR_SLOTS = {
+			EquipmentSlot.FEET, EquipmentSlot.LEGS, EquipmentSlot.CHEST, EquipmentSlot.HEAD
+	};
 	public float getShroudedArmorPercentage(LivingEntity entity) {
 		int shroudedArmor = 0;
 		int armorSlots = 0;
 
-		for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR) {
+		for (EquipmentSlot slot : HUMANOID_ARMOR_SLOTS) {
 			ItemStack stack = entity.getItemBySlot(slot);
 
 			if (!stack.isEmpty() && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {

@@ -166,6 +166,7 @@ public class Hydra extends BaseTFBoss {
 		if (this.renderFakeHeads) this.renderFakeHeads = false;
 		this.clearFire();
 		this.body.tick();
+		this.tail.tick();
 		this.leftLeg.tick();
 		this.rightLeg.tick();
 
@@ -203,6 +204,9 @@ public class Hydra extends BaseTFBoss {
 		dy = this.getY() + 0.1D;
 		dz = this.getZ() + Mth.cos(angle) * 10.5D;
 		this.tail.setPos(dx, dy, dz);
+
+		this.leftLeg.setPos(getX() - Mth.cos(angle) * 3.0D, getY(), getZ() - Mth.sin(angle) * 3.0D);
+        this.rightLeg.setPos(getX() + Mth.cos(angle) * 3.0D, getY(), getZ() + Mth.sin(angle) * 3.0D);
 
 		if (this.hurtTime == 0) {
 			this.collideWithEntities(this.level().getEntities(this, this.body.getBoundingBox()), this.body);
