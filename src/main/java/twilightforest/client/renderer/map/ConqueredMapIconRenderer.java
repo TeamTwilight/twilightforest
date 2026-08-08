@@ -12,7 +12,6 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.client.gui.map.IMapDecorationRenderer;
 import org.joml.Matrix4f;
-import org.jspecify.annotations.NonNull;
 import twilightforest.item.MagicMapItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 
@@ -26,7 +25,7 @@ public class ConqueredMapIconRenderer implements IMapDecorationRenderer {
 	}
 
 	@Override
-	public boolean render(MapRenderState.MapDecorationRenderState decoration, PoseStack stack, SubmitNodeCollector submitNodeCollector, @NonNull MapRenderState mapRenderState, TextureAtlas decorationSprites, boolean inItemFrame, int light, int index) {
+	public boolean render(MapRenderState.MapDecorationRenderState decoration, PoseStack stack, SubmitNodeCollector submitNodeCollector, MapRenderState mapRenderState, TextureAtlas decorationSprites, boolean inItemFrame, int light, int index) {
 		// FIXME find a new way to get mapData
 //		if (!(this.isConquered(mapData, decoration))) {
 //			return false;
