@@ -76,7 +76,7 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 
 	@Override
 	public ItemStack createHintBook(RegistryAccess registryAccess) {
-		return this.hintConfig.map(config -> config.hintItem().copy()).orElse(ItemStack.EMPTY);
+		return this.hintConfig.map(config -> config.hintItem().create()).orElse(ItemStack.EMPTY);
 	}
 
 	@Override

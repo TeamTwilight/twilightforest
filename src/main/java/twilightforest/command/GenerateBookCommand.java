@@ -44,7 +44,7 @@ public class GenerateBookCommand {
 				}
 			}
 		} else {
-			if (source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE).get(structureKey.key()).orElseThrow() instanceof StructureHints hint) {
+			if (structureKey.value() instanceof StructureHints hint) {
 				ItemStack book = hint.createHintBook(source.registryAccess());
 				if (!book.isEmpty()) {
 					if (!player.addItem(book)) {
@@ -52,7 +52,7 @@ public class GenerateBookCommand {
 					}
 				}
 			} else {
-				ItemStack book = StructureHints.HintConfig.defaultBook();
+				ItemStack book = StructureHints.HintConfig.defaultBook().create();
 				if (!player.addItem(book)) {
 					player.drop(book, true);
 				}
