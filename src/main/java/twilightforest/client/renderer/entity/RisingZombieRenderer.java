@@ -54,11 +54,11 @@ public class RisingZombieRenderer extends HumanoidMobRenderer<RisingZombie, Risi
 		super.setupRotations(state, stack, bodyRot, scale);
 		var tick = state.risingTicks;
 		stack.translate(0.0F, -(80.0F - Math.min(80.0F, tick)) / 80.0F, 0.0F);
-		stack.translate(0.0F, -(40.0F - Math.min(40.0F, Math.max(0.0F, tick - 80.0F))) / 40.0F, 0.0F);
+		stack.translate(0.0F, -(40.0F - Math.clamp(tick - 80.0F, 0.0F, 40.0F)) / 40.0F, 0.0F);
 		final float yOff = 1.0F;
 		stack.translate(0.0F, yOff, 0.0F);
 		stack.mulPose(Axis.XP.rotationDegrees(120.0F * (80.0F - Math.min(80.0F, tick)) / 80.0F));
-		stack.mulPose(Axis.XP.rotationDegrees(-30.0F * (40.0F - Math.min(40.0F, Math.max(0.0F, tick - 80.0F))) / 40.0F));
+		stack.mulPose(Axis.XP.rotationDegrees(-30.0F * (40.0F - Math.clamp(tick - 80.0F, 0.0F, 40.0F)) / 40.0F));
 		stack.translate(0.0F, -yOff, 0.0F);
 
 	}

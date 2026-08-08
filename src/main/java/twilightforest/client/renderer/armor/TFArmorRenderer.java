@@ -7,6 +7,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.util.Lazy;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public abstract class TFArmorRenderer implements IClientItemExtensions {
 
 	public static final class ResourceReloadListener implements ResourceManagerReloadListener {
 		@Override
-		public void onResourceManagerReload(ResourceManager resourceManager) {
+		public void onResourceManagerReload(@NonNull ResourceManager resourceManager) {
 			TFArmorRenderer.resetAllModelCache();
 		}
 	}
