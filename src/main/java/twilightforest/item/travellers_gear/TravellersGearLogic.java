@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -79,7 +79,7 @@ public class TravellersGearLogic {
 			if (level.isClientSide()) {
 				level.addParticle(ParticleTypes.SPLASH, particlePos.x(), particlePos.y(), particlePos.z(), particleVelocity.x(), particleVelocity.y(), particleVelocity.z());
 			} else {
-				particlePacket.queueParticle(ParticleTypes.SPLASH, false, particlePos, particleVelocity);
+				particlePacket.queueParticle(ParticleTypes.SPLASH, false, false, particlePos, particleVelocity);
 			}
 		}
 
@@ -88,7 +88,7 @@ public class TravellersGearLogic {
 	}
 
 	public static boolean isBelowMaxWaterWalkingSubmergedHeight(LivingEntity livingEntity) {
-		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
+		double waterHeight = livingEntity.getFluidHeight(FluidTags.WATER);
 		return waterHeight < WATER_WALKING_MAX_SUBMERGED_HEIGHT;
 	}
 
@@ -195,7 +195,7 @@ public class TravellersGearLogic {
 
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
 		if (TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
-			livingEntity.stuckSpeedMultiplier = Vec3.ZERO;
+			livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
@@ -268,7 +268,7 @@ public class TravellersGearLogic {
 				);
 				ParticleOptions type = TFParticleType.DOUBLE_JUMP.get();
 				Vec3 wingsPosition = player.position().add(Math.sin(Math.toRadians(player.yBodyRot)) / 3, 1.2, -Math.cos(Math.toRadians(player.yBodyRot)) / 3);
-				particlePacket.queueParticle(type, false, wingsPosition, particleVelocity.multiply(0.25, -0.5, 0.25).add(deltaMovement));
+				particlePacket.queueParticle(type, false, false, wingsPosition, particleVelocity.multiply(0.25, -0.5, 0.25).add(deltaMovement));
 			}
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, particlePacket);
 			TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);

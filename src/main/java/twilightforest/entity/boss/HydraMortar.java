@@ -37,7 +37,7 @@ public class HydraMortar extends ThrowableProjectile {
 
 	@SuppressWarnings("this-escape")
 	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
-		super(type, head.getParent(), world);
+		super(type, world);
 
 		Vec3 vector = head.getLookAngle();
 
@@ -126,12 +126,13 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	private void detonate() {
+		if (!(this.level() instanceof ServerLevel serverLevel)) return;
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = EventHooks.canEntityGrief(this.level(), this);
+		boolean flag = EventHooks.canEntityGrief(serverLevel, this);
 		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
 		for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurtServer(serverLevel, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
 				nearby.igniteForSeconds(BURN_FACTOR);
 			}
 		}

@@ -1,17 +1,13 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import twilightforest.init.TFBlocks;
 
 public class MissingAdvancementToast implements Toast {
@@ -43,6 +39,6 @@ public class MissingAdvancementToast implements Toast {
 		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
 		graphics.item(this.icon, 6, 8);
 		graphics.text(font, UPPER_TEXT, 25, 7, 0xffffffff, false);
-		graphics.text(font, this.title, 25, 18, 0xffffff, false);
+		graphics.text(font, this.title, 25, 18, 0xffffffff, false);
 	}
 }

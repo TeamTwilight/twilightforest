@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.phys.AABB;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraModel;
@@ -64,5 +65,15 @@ public class HydraRenderer extends MobRenderer<Hydra, HydraRenderState, HydraMod
 	@Override
 	public Identifier getTextureLocation(HydraRenderState state) {
 		return TEXTURE;
+	}
+
+	@Override
+	protected boolean affectedByCulling(Hydra entity) {
+		return false;
+	}
+
+	@Override
+	protected AABB getBoundingBoxForCulling(Hydra entity) {
+		return entity.getBoundingBox().inflate(16.0D, 16.0D, 16.0D);
 	}
 }

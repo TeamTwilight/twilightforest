@@ -12,16 +12,20 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderPipelines;
 import twilightforest.TwilightForestMod;
 
+import java.util.Optional;
+
 public class TFRenderPipelines {
 
 	private static final BlendFunction SHADOW = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
 	public static final RenderPipeline RED_THREAD = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
-		.withLocation(TwilightForestMod.prefix("pipeline/red_thread"))
+		.withLocation(TwilightForestMod.prefix("core/red_thread/red_thread"))
 		.withSampler("Sampler0")
+		.withVertexShader(TwilightForestMod.prefix("core/red_thread/red_thread"))
+		.withFragmentShader(TwilightForestMod.prefix("core/red_thread/red_thread"))
 		.withVertexFormat(DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS)
 		.withCull(true)
-		.withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, false))
+		.withDepthStencilState(Optional.of(new DepthStencilState(CompareOp.ALWAYS_PASS, false)))
 		.build();
 
 	public static final RenderPipeline PROTECTION_BOX = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)

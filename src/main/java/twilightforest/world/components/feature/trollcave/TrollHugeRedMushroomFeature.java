@@ -11,10 +11,8 @@ import net.minecraft.world.level.levelgen.feature.HugeRedMushroomFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import twilightforest.util.features.FeatureLogic;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 
 // [VanillaCopy]
-@ParametersAreNonnullByDefault
 public class TrollHugeRedMushroomFeature extends HugeRedMushroomFeature {
 	public TrollHugeRedMushroomFeature(Codec<HugeMushroomFeatureConfiguration> config) {
 		super(config);

@@ -127,7 +127,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 				entity.startRiding(this, true, false); //I mean, they aren't riding purposefully, don't send an event
 			}
 		}
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), null);
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), null);
 	}
 
 	@Override

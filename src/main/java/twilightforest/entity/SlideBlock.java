@@ -8,6 +8,8 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,13 +18,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class SlideBlock extends Entity {
@@ -115,7 +118,7 @@ public class SlideBlock extends Entity {
 			}
 			this.getDeltaMovement().multiply(0.98, 0.98, 0.98);
 
-			if (!this.level().isClientSide()) {
+			if (this.level() instanceof ServerLevel serverLevel) {
 				if (this.slideTime % 5 == 0) {
 					this.playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
@@ -145,10 +148,10 @@ public class SlideBlock extends Entity {
 					if (this.level().isUnobstructed(this.myState, pos, CollisionContext.empty())) {
 						this.level().setBlockAndUpdate(pos, this.myState);
 					} else {
-						this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
+						this.spawnAtLocation(serverLevel, new ItemStack(this.myState.getBlock()), 0.0F);
 					}
 				} else if (this.slideTime > 100 && (pos.getY() < this.level().getMinY() + 1 || pos.getY() > this.level().getMaxY()) || this.slideTime > 600) {
-					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
+					this.spawnAtLocation(serverLevel, new ItemStack(this.myState.getBlock()), 0.0F);
 					this.discard();
 				}
 
@@ -177,17 +180,22 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(@Nonnull CompoundTag compound) {
-		this.slideTime = compound.getInt("Time");
-		this.getEntityData().set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByte("Direction")));
-		this.myState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("BlockState"));
+	protected void readAdditionalSaveData(ValueInput compound) {
+		this.slideTime = compound.getIntOr("Time", 0);
+		this.getEntityData().set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByteOr("Direction", (byte) 0)));
+		this.myState = compound.read("BlockState", BlockState.CODEC).get();
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@Nonnull CompoundTag compound) {
+	protected void addAdditionalSaveData(ValueOutput compound) {
 		compound.putInt("Time", this.slideTime);
 		compound.putByte("Direction", (byte) this.getEntityData().get(MOVE_DIRECTION).get3DDataValue());
-		compound.put("BlockState", NbtUtils.writeBlockState(this.myState));
+		compound.store("BlockState", BlockState.CODEC, this.myState);
+	}
+
+	@Override
+	public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
+		return false;
 	}
 
 	@Override

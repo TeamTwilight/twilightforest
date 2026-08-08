@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.TFRegistries;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
@@ -34,13 +34,14 @@ import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
+import twilightforest.world.components.structures.util.ValidatedSpawnLocations;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource {
+public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource, ValidatedSpawnLocations {
 	public static final MapCodec<HollowHillStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
 		.group(
 			// TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
@@ -64,6 +65,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	}
 
 	// "Cuts" the box into a half-dome
+	@Override
 	public boolean canSpawnMob(BlockPos spawnPos, BoundingBox structureStartBox) {
 		float hX = Mth.inverseLerp(spawnPos.getX(), structureStartBox.minX(), structureStartBox.maxX()) * 2 - 1;
 		float hY = Mth.inverseLerp(spawnPos.getY(), structureStartBox.minY(), structureStartBox.maxY());
@@ -106,7 +108,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 			Optional.of(new DecorationConfig(1, true, false, false)),
 			true, Optional.of(TFMapDecorations.SMALL_HOLLOW_HILL),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
@@ -134,7 +136,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 			Optional.of(new DecorationConfig(2, true, false, false)),
 			true, Optional.of(TFMapDecorations.MEDIUM_HOLLOW_HILL),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
@@ -163,7 +165,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.LARGE_HOLLOW_HILL),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE

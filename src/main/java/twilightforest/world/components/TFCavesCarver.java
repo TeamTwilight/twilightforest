@@ -2,15 +2,13 @@ package twilightforest.world.components;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.SectionPos;
+import net.minecraft.core.*;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +30,7 @@ import java.util.function.Function;
 
 //Framework taken from CaveWorldCarver, everything worth knowing is documented for easier changes in the future
 public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
+
 	private final boolean isHighlands;
 	private final BlockStateProvider wallBlocks;
 	private final ImprovedNoise noise;
@@ -122,7 +121,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				if (!access.getFluidState(pos.above(2)).isEmpty()) // Sand doesn't quite generate until after the carvers, so we must look for liquid above possible sand instead
 					blockStateToPlace = randomFromPos.nextBoolean() ? Blocks.ROOTED_DIRT.defaultBlockState() : Blocks.COARSE_DIRT.defaultBlockState(); // normal dirt will get replaced with sand, special ones are required
 
-				boolean blockPlaced = access.setBlockState(pos, blockStateToPlace, false) != null;
+				boolean blockPlaced = access.setBlockState(pos, blockStateToPlace) != null;
 
 				if (aquifer.shouldScheduleFluidUpdate() && !blockStateToPlace.getFluidState().isEmpty()) {
 					access.markPosForPostprocessing(pos);
@@ -132,7 +131,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					BlockPos posDown = pos.relative(Direction.DOWN);
 					if (access.getBlockState(posDown).is(Blocks.DIRT)) {
 						ctx.topMaterial(biomePos, access, posDown, !blockStateToPlace.getFluidState().isEmpty()).ifPresent(state -> {
-							access.setBlockState(posDown, state, false);
+							access.setBlockState(posDown, state);
 							if (!state.getFluidState().isEmpty()) {
 								access.markPosForPostprocessing(posDown);
 							}
@@ -157,6 +156,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	private void postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand, BlockPos chunkOrigin) {
+		if (!(access.getLevel() instanceof ServerLevelAccessor serverLevel)) return;
+
 		for (Direction facing : Direction.values()) {
 			BlockPos directionalRelative = pos.relative(facing);
 			if (!isInsideChunk(directionalRelative, chunkOrigin)) continue;
@@ -166,7 +167,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 			if (this.isHighlands) {
 				if (rand.nextInt(4) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(serverLevel.getLevel(), rand, directionalRelative));
 				}
 			} else if (facing != Direction.DOWN && (facing == Direction.UP || access.getBlockState(directionalRelative.above()).isAir() || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
 				// Dirt is never placed below, always on roof, and typically to the sides
@@ -174,7 +175,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				BlockState neighboringBlock = access.getBlockState(directionalRelative);
 
 				if (neighboringBlock.is(BlockTags.BASE_STONE_OVERWORLD) || neighboringBlock.getFluidState().is(FluidTags.WATER)) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(serverLevel.getLevel(), rand, directionalRelative));
 				}
 			}
 		}

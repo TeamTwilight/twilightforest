@@ -3,9 +3,6 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,6 +11,8 @@ import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,11 +35,16 @@ public class ThrownBlock extends TFThrowable {
 		super(type, worldIn);
 	}
 
-	public ThrownBlock(Level world, LivingEntity thrower, @Nullable BlockState state) {
-		super(TFEntities.THROWN_BLOCK.get(), world, thrower);
+	public ThrownBlock(Level world, @Nullable BlockState state) {
+		super(TFEntities.THROWN_BLOCK.get(), world);
 		if (state != null) {
 			this.state = state;
 		}
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return Items.STONE;
 	}
 
 	@Override

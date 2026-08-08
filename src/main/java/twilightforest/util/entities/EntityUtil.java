@@ -4,20 +4,23 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.entity.decoration.Painting;
-import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.entity.decoration.painting.Painting;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,6 +34,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -41,6 +47,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
 
+import java.awt.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
@@ -136,13 +143,11 @@ public class EntityUtil {
 	}
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
-	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
+	public static boolean properlyApplyCustomDamageSource(ServerLevel serverLevel, Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
 		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		if (entity.level() instanceof ServerLevel serverlevel) {
-			f = EnchantmentHelper.modifyDamage(serverlevel, entity.getWeaponItem(), entity, source, f);
-		}
+		f = EnchantmentHelper.modifyDamage(serverLevel, entity.getWeaponItem(), entity, source, f);
 
-		boolean flag = victim.hurt(source, f);
+		boolean flag = victim.hurtServer(serverLevel, source, f);
 		if (flag) {
 			float f1 = getKnockback(entity, victim, source);
 			if (f1 > 0.0F && victim instanceof LivingEntity livingentity) {
@@ -172,7 +177,7 @@ public class EntityUtil {
 	@Nullable
 	private static <T extends Entity> T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
 		try {
-			return type.create(levelAccessor.getLevel());
+			return type.create(levelAccessor.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {
 			return null;
 		}
@@ -191,7 +196,7 @@ public class EntityUtil {
 
 			return false;
 		}
-		painting.setVariant(chosenPainting);
+		painting.setComponent(DataComponents.PAINTING_VARIANT, chosenPainting);
 
 		if (checkValidPaintingPosition(world, painting)) {
 			world.addFreshEntity(painting);
@@ -210,7 +215,7 @@ public class EntityUtil {
 	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).holders().toList()) {
+		for (Holder.Reference<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).listElements().toList()) {
 			if (exactMeasurements) {
 				if (art.value().width() == width && art.value().height() == height) {
 					valid.add(art);
@@ -232,7 +237,7 @@ public class EntityUtil {
 	public static List<Holder<PaintingVariant>> getPaintingsOfSizeOrSmaller(WorldGenLevel level, TagKey<PaintingVariant> lichTowerPaintings, int width, int height) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
+		for (Holder<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
 			if (art.value().width() <= width && art.value().height() <= height) {
 				valid.add(art);
 			}
@@ -275,7 +280,7 @@ public class EntityUtil {
 				ChunkAccess chunk = world.getChunk(i1, j1, ChunkStatus.STRUCTURE_STARTS);
 				if (chunk instanceof ProtoChunk proto) {
 					proto.getEntities().forEach(nbt -> {
-						Entity entity = EntityType.loadEntityRecursive(nbt, world.getLevel(), e -> e);
+						Entity entity = EntityType.loadEntityRecursive(nbt, world.getLevel(), EntitySpawnReason.NATURAL, e -> e);
 						if (entity != null && boundingBox.intersects(entity.getBoundingBox())) {
 							list.add(entity);
 						}
@@ -290,12 +295,12 @@ public class EntityUtil {
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
-		var newEntity = newType.create(level);
+		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
 		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
-				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
+				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
 			} else {
 				newEntity.copyPosition(oldEntity);
 
@@ -305,7 +310,7 @@ public class EntityUtil {
 							ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
 							if (!itemstack.isEmpty()) {
 								mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
-								mob.setDropChance(equipmentslot, oldMob.getEquipmentDropChance(equipmentslot));
+								mob.setDropChance(equipmentslot, oldMob.getDropChances().byEquipment(equipmentslot));
 							}
 						}
 					}
@@ -316,10 +321,20 @@ public class EntityUtil {
 				oldEntity.level().addFreshEntity(newEntity);
 				oldEntity.discard();
 			}
-			try { // try copying what can be copied
+			try {
 				UUID uuid = newEntity.getUUID();
-				newEntity.load(oldEntity.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+				ProblemReporter reporter = ProblemReporter.DISCARDING;
+				RegistryAccess provider = level.registryAccess();
+				TagValueOutput outputFactory = TagValueOutput.createWithContext(reporter, provider);
+
+				oldEntity.saveWithoutId(outputFactory);
+
+				CompoundTag copiedData = outputFactory.buildResult();
+				ValueInput inputFactory = TagValueInput.create(reporter, provider, copiedData);
+
+				newEntity.load(inputFactory);
 				newEntity.setUUID(uuid);
+
 				if (newEntity instanceof LivingEntity living) {
 					living.setHealth(living.getMaxHealth());
 				}
@@ -327,8 +342,13 @@ public class EntityUtil {
 				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
 			}
 
-			if (oldEntity instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
-				newEntity.spawnAtLocation(Items.SADDLE);
+			ItemStack saddleStack = oldEntity.getItemBySlot(EquipmentSlot.SADDLE);
+			if (!saddleStack.isEmpty() && saddleStack.is(Items.SADDLE)) {
+				if (!(newEntity instanceof LivingEntity newLiving) || !newLiving.canUseSlot(EquipmentSlot.SADDLE)) {
+					newEntity.spawnAtLocation(level, Items.SADDLE);
+				} else {
+					newLiving.setItemSlot(EquipmentSlot.SADDLE, saddleStack.copy());
+				}
 			}
 
 			if (newEntity instanceof Mob mob) {
@@ -337,13 +357,13 @@ public class EntityUtil {
 
 				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
 					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
-					mob.spawnAtLocation(itemstack);
+					mob.spawnAtLocation(level, itemstack);
 				}
 			}
 
 			if (!passengerSave.isEmpty()) {
 				for (var entity : passengerSave) {
-					entity.startRiding(newEntity, true);
+					entity.startRiding(newEntity, true, false);
 				}
 			}
 
@@ -357,7 +377,7 @@ public class EntityUtil {
 	@Nullable
 	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
 		try {
-			return type.create(level.getLevel());
+			return type.create(level.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {
 			return null;
 		}

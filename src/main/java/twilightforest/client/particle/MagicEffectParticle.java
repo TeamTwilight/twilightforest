@@ -3,9 +3,8 @@ package twilightforest.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class MagicEffectParticle extends SpellParticle {
 
@@ -15,7 +14,7 @@ public class MagicEffectParticle extends SpellParticle {
 
 	@Override
 	public int getLightCoords(float partialTick) {
-		return 0xF000F0;
+		return LightCoordsUtil.FULL_BRIGHT;
 	}
 
 	public static class Factory implements ParticleProvider<ColorParticleOption> {

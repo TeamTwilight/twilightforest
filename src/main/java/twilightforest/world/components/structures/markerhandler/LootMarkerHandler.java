@@ -25,7 +25,7 @@ public record LootMarkerHandler(BlockStateProvider provider, ResourceKey<LootTab
 
 	@Override
 	public boolean handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
-		BlockState state = this.provider.getState(random, pos).rotate(rotation);
+		BlockState state = this.provider.getState(level, random, pos).rotate(rotation);
 
 		if (level.setBlock(pos, state, Block.UPDATE_ALL) && level.getBlockEntity(pos) instanceof RandomizableContainer) {
 			RandomizableContainer.setBlockEntityLootTable(level, random, pos, this.lootTable);

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import twilightforest.inventory.InventoryUtil;
 
 public class EmptyMazeMapItem extends Item {
 	final boolean mapOres;
@@ -27,13 +28,11 @@ public class EmptyMazeMapItem extends Item {
 			itemStack.consume(1, player);
 			player.awardStat(Stats.ITEM_USED.get(this));
 			serverLevel.playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0F, 1.0F);
-			ItemStack map = MazeMapItem.setupNewMap(level, Mth.floor(player.getX()), Mth.floor(player.getZ()), (byte) 0, true, false, Mth.floor(player.getY()), this.mapOres);
+			ItemStack map = MazeMapItem.setupNewMap(serverLevel, Mth.floor(player.getX()), Mth.floor(player.getZ()), (byte) 0, true, false, Mth.floor(player.getY()), this.mapOres);
 			if (itemStack.isEmpty()) {
 				return InteractionResult.SUCCESS.heldItemTransformedTo(map);
 			} else {
-				if (!player.getInventory().add(map.copy())) {
-					player.drop(map, false);
-				}
+				InventoryUtil.giveItemToPlayer(player, map.copy());
 
 				return InteractionResult.SUCCESS;
 			}

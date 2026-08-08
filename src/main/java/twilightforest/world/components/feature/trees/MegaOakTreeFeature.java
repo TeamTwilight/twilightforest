@@ -14,11 +14,9 @@ import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-@ParametersAreNonnullByDefault
 public class MegaOakTreeFeature extends CanopyTreeFeature {
 
 	public MegaOakTreeFeature(Codec<TFTreeFeatureConfig> config) {

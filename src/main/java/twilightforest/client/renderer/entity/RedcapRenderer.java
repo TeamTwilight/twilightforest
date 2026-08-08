@@ -45,15 +45,14 @@ public class RedcapRenderer extends HumanoidMobRenderer<Redcap, HumanoidRenderSt
 
 		@Override
 		public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, S state, float yRot, float xRot) {
-			//TODO Need Access Transformer
-			this.renderArmorPiece(poseStack, submitNodeCollector, state.chestEquipment, EquipmentSlot.CHEST, state, this.getArmorModel(state, EquipmentSlot.CHEST));
-			this.renderArmorPiece(poseStack, submitNodeCollector, state.legsEquipment, EquipmentSlot.LEGS, state, this.getArmorModel(state, EquipmentSlot.LEGS));
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.chestEquipment, EquipmentSlot.CHEST, lightCoords, state);
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.legsEquipment, EquipmentSlot.LEGS, lightCoords, state);
 			//TF: raise boots
 			poseStack.pushPose();
 			poseStack.translate(0.0D, -0.2D, 0.0D);
-			this.renderArmorPiece(poseStack, submitNodeCollector, state.feetEquipment, EquipmentSlot.FEET, state, this.getArmorModel(state, EquipmentSlot.FEET));
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.feetEquipment, EquipmentSlot.FEET, lightCoords, state);
 			poseStack.popPose();
-			this.renderArmorPiece(poseStack, submitNodeCollector, state.headEquipment, EquipmentSlot.HEAD, state, this.getArmorModel(state, EquipmentSlot.HEAD));
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.headEquipment, EquipmentSlot.HEAD, lightCoords, state);
 		}
 	}
 }

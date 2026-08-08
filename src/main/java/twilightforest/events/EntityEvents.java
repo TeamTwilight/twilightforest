@@ -12,7 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.random.Weighted;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -62,7 +62,6 @@ import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
@@ -70,8 +69,9 @@ import tamaized.beanification.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
@@ -87,11 +87,13 @@ import twilightforest.util.entities.OminousFireDamageSource;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.components.structures.type.HollowHillStructure;
 import twilightforest.world.components.structures.util.ControlledSpawns;
+import twilightforest.world.components.structures.util.ValidatedSpawnLocations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @tamaized.beanification.Component
 public class EntityEvents {
@@ -326,11 +328,13 @@ public class EntityEvents {
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE));
-		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(),
-			newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
-				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE),
-			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
-		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
+			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)));
+		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) {
+			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
+			sc.setOwnerProfile(profile);
+			sc.setChanged();
+		}
 	}
 
 	/**
@@ -366,45 +370,58 @@ public class EntityEvents {
 		return highestFoundIndex;
 	}
 
-	@Nullable
-	public static WeightedList<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
+	public static void gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos, Consumer<Weighted<MobSpawnSettings.SpawnerData>> consumer) {
 		List<StructureStart> structureStarts = structureManager.startsForStructure(ChunkPos.containing(pos), s -> s instanceof ControlledSpawns);
 
-		// This is wretched FIXME make this method return void instead, make one of parameters the SpawnerData consumer (eg LevelEvent.PotentialSpawns::addSpawnerData or List::add)
 		for (StructureStart start : structureStarts) {
 			if (start.getStructure() instanceof ControlledSpawns landmark) {
 
 				if (!start.isValid())
 					continue;
 
-				if (classification != MobCategory.MONSTER)
-					return landmark.getSpawnableList(classification);
+				if (classification != MobCategory.MONSTER) {
+					landmark.getSpawnableList(classification)
+						.unwrap()
+						.forEach(consumer);
+
+					return;
+				}
 
 				if (start instanceof TFStructureStart s && s.isConquered())
-					return null;
+					return;
 
-				// FIXME Make interface for this method?
-				if (landmark instanceof HollowHillStructure hollowHill && !hollowHill.canSpawnMob(pos, start.getBoundingBox()))
-					return null;
+				if (landmark instanceof ValidatedSpawnLocations validator && !validator.canSpawnMob(pos, start.getBoundingBox()))
+					return;
 
 				final int index = getSpawnListIndexAt(start, pos);
 				if (index < 0)
-					return null;
-				return landmark.getSpawnableMonsterList(index);
+					return;
+
+				landmark.getSpawnableMonsterList(index)
+					.unwrap()
+					.forEach(consumer);
+
+				return;
 			}
 		}
-
-		return null;
 	}
 
 	private void structureSpecialSpawns(LevelEvent.PotentialSpawns event) {
 		if (!(event.getLevel() instanceof ServerLevel serverLevel))
 			return;
 
-		WeightedList<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
-		if (potentialStructureSpawns != null) {
+		List<Weighted<MobSpawnSettings.SpawnerData>> potentialStructureSpawns = new ArrayList<>();
+
+		gatherPotentialSpawns(
+			serverLevel.structureManager(),
+			event.getMobCategory(),
+			event.getPos(),
+			potentialStructureSpawns::add
+		);
+
+		if (!potentialStructureSpawns.isEmpty()) {
 			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
-			potentialStructureSpawns.unwrap().forEach(event::addSpawnerData);
+			potentialStructureSpawns.forEach(event::addSpawnerData);
 		}
 	}
 
@@ -420,7 +437,7 @@ public class EntityEvents {
 	}
 
 	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
@@ -440,7 +457,7 @@ public class EntityEvents {
 	}
 
 	private void addQualifiedGroupPlayerIfNeeded(LivingDamageEvent.Post event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (event.getSource().getEntity() != null) {
 				data.maybeAddQualifiedPlayer(event.getSource().getEntity());

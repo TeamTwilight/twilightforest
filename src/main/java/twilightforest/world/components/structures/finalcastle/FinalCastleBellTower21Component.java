@@ -71,6 +71,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		}
 	}
 
+
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);

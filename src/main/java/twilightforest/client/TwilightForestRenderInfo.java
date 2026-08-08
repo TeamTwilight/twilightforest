@@ -3,8 +3,6 @@ package twilightforest.client;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
@@ -16,7 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.CustomSkyboxRenderer;
 import net.neoforged.neoforge.client.CustomWeatherEffectRenderer;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -42,6 +39,7 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 //		return biomeFogColor.multiply(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
 //	}
 
+	// FIXME rewrite method under using new Effect System
 	@Override
 	public boolean isFoggyAt(int x, int y) { // true = nearFog
 		Player player = Minecraft.getInstance().player;
@@ -74,11 +72,11 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 
 	@Override
 	public boolean renderSnowAndRain(LevelRenderState levelRenderState, WeatherRenderState weatherRenderState, MultiBufferSource bufferSource, Vec3 camPos) {
-		return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, new Vec3(camX, camY, camZ));
+		return TFWeatherRenderer.renderSnowAndRain(Minecraft.getInstance().level, Minecraft.getInstance().levelRenderer.getTicks(), Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks(), camPos, bufferSource);
 	}
 
 	@Override
 	public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
-		return TFWeatherRenderer.tickRain(level, ticks, camera.getBlockPosition());
+		return TFWeatherRenderer.tickRain(level, ticks, camera.blockPosition());
 	}
 }

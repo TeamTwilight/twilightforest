@@ -4,9 +4,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class CustomTextureParticle extends SingleQuadParticle {
     private final boolean fullBright;
@@ -39,7 +38,7 @@ public class CustomTextureParticle extends SingleQuadParticle {
 
 	@Override
 	public int getLightCoords(float partialTick) {
-		return this.fullBright ? 0xF000F0 : super.getLightCoords(partialTick);
+		return this.fullBright ? LightCoordsUtil.FULL_BRIGHT : super.getLightCoords(partialTick);
 	}
 
 	@Override

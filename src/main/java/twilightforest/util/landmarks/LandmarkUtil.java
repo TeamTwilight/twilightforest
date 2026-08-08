@@ -16,10 +16,10 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFGameRules;
+import twilightforest.tags.TFStructureTags;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
@@ -32,13 +32,13 @@ import java.util.stream.Collectors;
 @SuppressWarnings("OptionalIsPresent")
 public final class LandmarkUtil {
 	public static Optional<StructureStart> locateNearestLandmarkStart(LevelAccessor level, int chunkX, int chunkZ) {
-		return locateNearestMatchingLandmark(level, StructureTagGenerator.LANDMARK, chunkX, chunkZ);
+		return locateNearestMatchingLandmark(level, TFStructureTags.LANDMARK, chunkX, chunkZ);
 	}
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, TagKey<Structure> matching, int chunkX, int chunkZ) {
-		var structureRegistry = level.registryAccess().registry(Registries.STRUCTURE);
+		var structureRegistry = level.registryAccess().lookup(Registries.STRUCTURE);
 		if (structureRegistry.isEmpty()) return Optional.empty();
-		var holders = structureRegistry.get().getTag(matching);
+		Optional<HolderSet.Named<Structure>> holders = structureRegistry.get().get(matching);
 		if (holders.isEmpty()) return Optional.empty();
 
 		return locateNearestMatchingLandmark(level, holders.get(), chunkX, chunkZ);
@@ -89,9 +89,9 @@ public final class LandmarkUtil {
 
 	@Nullable
 	public static Structure structureForKey(LevelReader level, ResourceKey<Structure> structureKey) {
-		Optional<Registry<Structure>> registry = level.registryAccess().registry(Registries.STRUCTURE);
+		Optional<Registry<Structure>> registry = level.registryAccess().lookup(Registries.STRUCTURE);
 
-		return registry.isPresent() ? registry.get().get(structureKey) : null;
+		return registry.isPresent() ? registry.get().get(structureKey).get().value() : null;
 	}
 
 	public static Optional<StructureStart> locateNearestLandmarkStart(LevelAccessor level, ResourceKey<Structure> structureKey, BlockPos pos) {

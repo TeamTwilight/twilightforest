@@ -1,18 +1,15 @@
-package twilightforest.datagen.data.custom;
+package twilightforest.datagen.data.custom.structuredefinitions;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.finalcastle.FinalCastleBellTower21Component;
-import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
-import twilightforest.world.components.structures.finalcastle.FinalCastleLargeTowerComponent;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerPieces;
 
 import java.util.concurrent.CompletableFuture;
 
-public class StructureTemplateDefinitionGenerator extends StructureTemplateDefinitionProvider {
-	public StructureTemplateDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		super(output, lookupProvider, TwilightForestMod.ID);
+public class LichTowerStructureDefinitionGenerator extends StructureTemplateDefinitionProvider {
+	public LichTowerStructureDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(output, lookupProvider, TwilightForestMod.ID, "Lich Tower");
 	}
 
 	@Override
@@ -345,9 +342,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/room_bridge_4",
 			"lich_tower/room_bridge_5"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_BRIDGE_FALLBACK, 100,
-			"lich_tower/no_bridge"
-		);
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_BRIDGE_FALLBACK, 100, "lich_tower/no_bridge");
 
 		this.addAllTemplatesToPool(LichTowerPieces.END_BRIDGE, 100,
 			"lich_tower/end_bridge_1",
@@ -361,12 +356,6 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 		this.add("lich_tower/grave_open", LichTowerPieces.YARD_GRAVE, 50); // A little rarer
 		this.add("lich_tower/grave_ajar", LichTowerPieces.YARD_GRAVE, 25); // Rarest
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_SPECIAL, 100,
-			"lich_tower/9x9/keepsake_casket"
-		);
-
-		this.add("final_castle/temp/large_tower", FinalCastleLargeTowerComponent.LARGE_TOWER_TEMP_POOL, 100);
-		this.add("final_castle/temp/bell_tower", FinalCastleBellTower21Component.BELL_TOWER_TEMP_POOL, 100);
-		this.add("final_castle/temp/gazebo", FinalCastleBossGazeboComponent.GAZEBO_TEMP_POOL, 100);
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_SPECIAL, 100, "lich_tower/9x9/keepsake_casket");
 	}
 }

@@ -208,7 +208,7 @@ public class UpperGoblinKnight extends Monster {
 		if (this.level() instanceof ServerLevel) {
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 50; i++) {
-				particlePacket.queueParticle(ParticleTypes.LARGE_SMOKE, false,
+				particlePacket.queueParticle(ParticleTypes.LARGE_SMOKE, false, false,
 					px + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
 					py,
 					pz + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
