@@ -19,7 +19,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public final class TerrainColumn {
+public final class TerrainColumn implements Comparable<TerrainColumn> {
 	public static final Codec<TerrainColumn> CODEC = RecordCodecBuilder.create(instance ->
 		instance.group(
 			RegistryFixedCodec.create(Registries.BIOME).fieldOf("key_biome").forGetter(o -> o.keyBiome),
@@ -96,5 +96,10 @@ public final class TerrainColumn {
 
 	public ResourceKey<Biome> getResourceKey() {
 		return this.resourceKey;
+	}
+
+	@Override
+	public int compareTo(TerrainColumn o) {
+		return this.resourceKey.location().compareTo(o.resourceKey.location());
 	}
 }

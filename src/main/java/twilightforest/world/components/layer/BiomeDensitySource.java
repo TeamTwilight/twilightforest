@@ -74,7 +74,7 @@ public class BiomeDensitySource {
 
 	// Only used for building a cache
 	public Stream<Holder<Biome>> collectPossibleBiomes() {
-		return this.biomeList.values().stream().flatMap(TerrainColumn::getBiomes);
+		return this.biomeList.values().stream().sorted().flatMap(TerrainColumn::getBiomes);
 	}
 
 	public void addDebugInfo(List<String> info, BlockPos cameraPos) {
