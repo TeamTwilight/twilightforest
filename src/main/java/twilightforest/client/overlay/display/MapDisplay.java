@@ -40,6 +40,7 @@ public class MapDisplay implements ItemDisplay {
 
 		Matrix4f matrix4f = stack.last().pose();
 
+		// FIXME: Data inserted into the new VertexConsumer are never submitted for rendering
 		//render map background
 		float start = Math.max(widestWidgetWidth / 2 - 50, 0);
 		consumer.addVertex(matrix4f, start, 100.0F, -2.0F).setColor(-1).setUv(0.0F, 1.0F).setLight(LightCoordsUtil.FULL_BRIGHT);
