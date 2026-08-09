@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -158,9 +159,15 @@ public class ClientGameEvents {
 			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
 			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
+			RenderSystem.enableBlend();
+			RenderSystem.enableDepthTest();
+			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
 			TFShaders.AURORA.invokeThenEndTesselator(
 				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
 				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
+			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+			RenderSystem.disableDepthTest();
+			RenderSystem.disableBlend();
 		}
 	}
 
