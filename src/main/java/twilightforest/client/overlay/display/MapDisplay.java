@@ -24,8 +24,6 @@ public class MapDisplay implements ItemDisplay {
 	private static final RenderType MAP_BACKGROUND = RenderTypes.text(Identifier.withDefaultNamespace("textures/map/map_background.png"));
 	private static final Identifier MAP_BACKGROUND_CHECKERBOARD = Identifier.withDefaultNamespace("textures/map/map_background_checkerboard.png");
 
-	private final MapRenderState cachedMapRenderState = new MapRenderState();
-
 	@Override
 	public void render(ItemStack item, GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
 		PoseStack stack = new PoseStack();

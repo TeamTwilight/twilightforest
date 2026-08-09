@@ -49,16 +49,12 @@ public class ClockDisplay implements ItemDisplay {
 	@Override
 	public void render(ItemStack item, GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
 		FormattedCharSequence formattedcharsequence = this.getText(minecraft).getVisualOrderText();
-		boolean natural = !minecraft.level.dimensionType().hasFixedTime();
-		if (natural) {
-			long timeValue = minecraft.level.getOverworldClockTime();
-			int k = this.getFrameForTime(timeValue).frame;
-			int xRow = k % 2;
-			int yRow = k / 2 % 2;
-			int xMin = xRow * 8;
-			int yMin = yRow * 8;
-			graphics.blit(TwilightForestMod.getGuiTexture("time.png"), (widestWidgetWidth / 2 - 5) - minecraft.font.width(formattedcharsequence) / 2, 0, xMin, yMin, 8, 8, 16, 16);
-		}
+		int k = this.getFrameForTime(minecraft.level.getGameTime()).frame;
+		int xRow = k % 2;
+		int yRow = k / 2 % 2;
+		int xMin = xRow * 8;
+		int yMin = yRow * 8;
+		graphics.blit(TwilightForestMod.getGuiTexture("time.png"), (widestWidgetWidth / 2 - 5) - minecraft.font.width(formattedcharsequence) / 2, 0, xMin, yMin, 8, 8, 16, 16);
 		graphics.text(minecraft.font, formattedcharsequence, Math.max(0, (widestWidgetWidth / 2 + 5) - minecraft.font.width(formattedcharsequence) / 2), 0, 0xFFFFFF);
 	}
 
