@@ -7,7 +7,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.object.skull.SkullModelBase;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
@@ -16,14 +15,11 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
-import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.client.renderer.block.SkullCandleRenderer;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.init.TFDataComponents;
@@ -76,8 +72,8 @@ public record SkullCandleSpecialRenderer(PlayerSkinRenderCache playerSkinRenderC
 		}
 
 		@Override
-		public MapCodec<SkullCandleSpecialRenderer.Unbaked> type() {
-			return MAP_CODEC;
+		public MapCodec<? extends SpecialModelRenderer.Unbaked<Pair<PlayerSkinRenderCache.RenderInfo, SkullCandles>>> type() {
+			return Unbaked.MAP_CODEC;
 		}
 
 		@Nullable

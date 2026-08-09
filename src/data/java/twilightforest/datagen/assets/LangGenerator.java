@@ -976,10 +976,6 @@ public class LangGenerator extends TFLangProvider {
 			"§8[[This book shows signs of having been copied many times]]§0\n\nI cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is something I have left",
 			"undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.");
 
-		this.addScreenMessage("optifine.title", "WARNING: OPTIFINE DETECTED");
-		this.addScreenMessage("optifine.message", "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.");
-		this.addScreenMessage("optifine.suggestions", "Here's a selection of mods that we recommend using instead.");
-
 		this.addScreenMessage("progression_end.message", "This is the end of progression for now. The Final Castle that awaits on the plateau is still unfinished and a work in progress. If you would like to keep up with the mod's development you can join our %s.");
 		this.addScreenMessage("progression_end.discord", "Discord Server");
 
@@ -1181,7 +1177,6 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("silent_cicadas_on_head", "Silent Cicadas on Head", ConfigComments.SILENT_CICADAS_ON_HEAD);
 		this.configEntry("screen_shake", "Beanstalk Screen Shake", ConfigComments.SCREEN_SHAKE);
 		this.configEntry("animate_trophies", "Animate Trophies", ConfigComments.ANIMATE_TROPHIES);
-		this.configEntry("optifine", "Optifine Screen", ConfigComments.OPTIFINE);
 		this.configEntry("locked_toasts", "Disable Locked Biome Toasts", ConfigComments.LOCKED_TOASTS);
 		this.configEntry("ram_indicator", "Questing Ram Wool Indicator", ConfigComments.QUESTING_RAM_WOOL);
 		this.configEntry("shield_indicator", "Fortification Shield Indicator", ConfigComments.FORTIFICATION);

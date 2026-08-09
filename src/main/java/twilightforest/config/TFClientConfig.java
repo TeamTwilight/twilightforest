@@ -12,7 +12,6 @@ public class TFClientConfig {
 	final ModConfigSpec.BooleanValue silentCicadasOnHead;
 	final ModConfigSpec.BooleanValue firstPersonEffects;
 	final ModConfigSpec.BooleanValue rotateTrophyHeadsGui;
-	final ModConfigSpec.BooleanValue disableOptifineNagScreen;
 	final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
 	final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 	final ModConfigSpec.BooleanValue showFortificationShieldIndicator;
@@ -47,11 +46,6 @@ public class TFClientConfig {
 			.translation(TFConfig.CONFIG_ID + "animate_trophies")
 			.comment(ConfigComments.ANIMATE_TROPHIES)
 			.define("rotateTrophyHeadsGui", true);
-
-		disableOptifineNagScreen = builder
-			.translation(TFConfig.CONFIG_ID + "optifine")
-			.comment(ConfigComments.OPTIFINE)
-			.define("disableOptifineNagScreen", false);
 
 		disableLockedBiomeToasts = builder
 			.translation(TFConfig.CONFIG_ID + "locked_toasts")

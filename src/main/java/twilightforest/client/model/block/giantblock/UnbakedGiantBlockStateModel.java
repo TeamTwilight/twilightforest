@@ -17,7 +17,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import twilightforest.block.GiantBlock;
@@ -36,7 +35,7 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 		return new GiantBlockModel(this.subdivideBakedSource(modelBaker, this.sourceModel.bake(modelBaker)));
 	}
 
-	private BlockStateModel @NotNull [] subdivideBakedSource(ModelBaker modelBaker, BlockStateModel bakedSourceModel) {
+	private BlockStateModel[] subdivideBakedSource(ModelBaker modelBaker, BlockStateModel bakedSourceModel) {
 		BlockStateModel[] giantSubBlocks = new BlockStateModel[4 * 4 * 4];
 
 		ArrayList<BlockStateModelPart> list = new ArrayList<>();
@@ -133,6 +132,6 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 
 	@Override
 	public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
-		return null;
+		return UnbakedGiantBlockStateModel.MAP_CODEC;
 	}
 }

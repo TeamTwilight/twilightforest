@@ -16,6 +16,7 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
@@ -83,8 +85,6 @@ import java.util.Objects;
 
 @Component(dist = Dist.CLIENT)
 public class ClientRegistrationEvents {
-
-	private static boolean optifinePresent = false;
 
 	@PostConstruct
 	private void setup(IEventBus bus) {
@@ -153,8 +153,21 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("experiment_115_variant"), Experiment115Type.TYPE);
 	}
 
-	// FIXME should be fixed after JarRenderer
-	private void registerAdditionalModels(RegisterBlockModelsEvent event) {
+	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
+		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
+		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
+
+        BlockStateModel netherrackModel = event.getBakingResult().blockStateModels().get(Blocks.NETHERRACK.defaultBlockState());
+		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(netherrackModel));
+	}
+
+	private void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+		event.register(ShieldLayer.LOC);
+		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
+		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
+		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
+
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			Identifier location = lid.identifier();
 			String name = location.getPath();
@@ -173,13 +186,6 @@ public class ClientRegistrationEvents {
 	}
 
 	private void clientSetup(FMLClientSetupEvent evt) {
-		try {
-			Class.forName("net.optifine.Config");
-			optifinePresent = true;
-		} catch (ClassNotFoundException e) {
-			optifinePresent = false;
-		}
-
 		evt.enqueueWork(() -> {
 			Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
 			Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
@@ -590,9 +596,5 @@ public class ClientRegistrationEvents {
 	private <E extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<S>> void attachRenderLayers(LivingEntityRenderer<E, S, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
-	}
-
-	public static boolean isOptifinePresent() {
-		return optifinePresent;
 	}
 }

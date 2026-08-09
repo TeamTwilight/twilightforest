@@ -65,8 +65,6 @@ public class ClientGameEvents {
 	private final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
 	private final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
 
-	private boolean firstTitleScreenShown = false;
-
 	public static int time = 0;
 	private float shakeIntensity = 0.0F;
 
@@ -82,7 +80,6 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::clientTick);
 		NeoForge.EVENT_BUS.addListener(this::customizeSplashes);
 		NeoForge.EVENT_BUS.addListener(this::clearEntityRenderUtilMap);
-		NeoForge.EVENT_BUS.addListener(this::handleGameBootup);
 		NeoForge.EVENT_BUS.addListener(this::killVignette);
 		NeoForge.EVENT_BUS.addListener(this::removeHostileMountHealth);
 		NeoForge.EVENT_BUS.addListener(this::renderAurora);
@@ -106,16 +103,6 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(TFSkyRenderer::extractLevelRender);
 
 		NeoForge.EVENT_BUS.addListener(MapDataManager::clearCache);
-	}
-
-	private void handleGameBootup(ScreenEvent.Init.Post event) {
-		if (firstTitleScreenShown || !(event.getScreen() instanceof TitleScreen)) return;
-
-		if (ClientRegistrationEvents.isOptifinePresent() && !TFConfig.disableOptifineNagScreen) {
-			Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
-		}
-
-		firstTitleScreenShown = true;
 	}
 
 	private void customizeSplashes(ScreenEvent.Init.Post event) {

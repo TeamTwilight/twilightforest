@@ -4,21 +4,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import org.joml.Vector3fc;
-import org.jspecify.annotations.Nullable;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KeepsakeCasketModel;
-import twilightforest.client.renderer.block.KeepsakeCasketRenderer;
 import twilightforest.client.renderer.block.SkullChestRenderer;
-import twilightforest.init.TFDataComponents;
 
 import java.util.function.Consumer;
 

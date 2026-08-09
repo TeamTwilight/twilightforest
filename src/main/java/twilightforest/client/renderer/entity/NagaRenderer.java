@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
+import net.minecraft.world.phys.AABB;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
@@ -61,5 +62,15 @@ public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<N
 		} else {
 			return TEXTURE;
 		}
+	}
+
+	@Override
+	protected boolean affectedByCulling(Naga entity) {
+		return false;
+	}
+
+	@Override
+	protected AABB getBoundingBoxForCulling(Naga entity) {
+		return entity.getBoundingBox().inflate(16.0D, 16.0D, 16.0D);
 	}
 }

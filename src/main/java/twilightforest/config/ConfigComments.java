@@ -6,7 +6,6 @@ public final class ConfigComments {
 	public static final String SILENT_CICADAS_ON_HEAD = "Makes Cicadas silent when one is on your head. If the above option is set to true, this won't have any effect.";
 	public static final String SCREEN_SHAKE = "Controls whether the screen shakes when a Magic Bean is in the process of growing.";
 	public static final String ANIMATE_TROPHIES = "Rotate Trophy heads on item model. Has no performance impact at all. For those who don't like fun.";
-	public static final String OPTIFINE = "Disable the nag screen when OptiFine is installed.";
 	public static final String LOCKED_TOASTS = "Disables the toasts that appear when entering a locked biome. Not recommended if you're unfamiliar with progression.";
 	public static final String QUESTING_RAM_WOOL = "Renders a check mark or X above your crosshair while holding wool when hovering over the Questing Ram depending on if that color of wool has been fed to it already.";
 	public static final String FORTIFICATION = """

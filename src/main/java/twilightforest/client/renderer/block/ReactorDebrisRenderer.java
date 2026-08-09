@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisBlockEntity, ReactorDebrisRenderState> {
 
-	private static final Map<Identifier, TextureAtlasSprite> spriteCache = new HashMap<>();
+	private static final Map<Identifier, Material.Baked> spriteCache = new HashMap<>();
 
 	public ReactorDebrisRenderer(BlockEntityRendererProvider.Context context) {
 	}
@@ -42,12 +43,12 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 
 		RenderType type = RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS);
 
-		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[0]), Direction.Axis.X, minX, minY, minZ, maxY, maxZ, -1, state.lightCoords);
-		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[1]), Direction.Axis.X, maxX, minY, maxZ, maxY, minZ, 1, state.lightCoords);
-		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[2]), Direction.Axis.Y, minY, minX, maxZ, maxX, minZ, -1, state.lightCoords);
-		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[3]), Direction.Axis.Y, maxY, minX, minZ, maxX, maxZ, 1, state.lightCoords);
-		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[4]), Direction.Axis.Z, minZ, minX, minY, maxX, maxY, -1, state.lightCoords);
-		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[5]), Direction.Axis.Z, maxZ, maxX, minY, minX, maxY, 1, state.lightCoords);
+		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[0]).sprite(), Direction.Axis.X, minX, minY, minZ, maxY, maxZ, -1, state.lightCoords);
+		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[1]).sprite(), Direction.Axis.X, maxX, minY, maxZ, maxY, minZ, 1, state.lightCoords);
+		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[2]).sprite(), Direction.Axis.Y, minY, minX, maxZ, maxX, minZ, -1, state.lightCoords);
+		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[3]).sprite(), Direction.Axis.Y, maxY, minX, minZ, maxX, maxZ, 1, state.lightCoords);
+		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[4]).sprite(), Direction.Axis.Z, minZ, minX, minY, maxX, maxY, -1, state.lightCoords);
+		maybeRenderDoubleSide(stack, type, collector, getSprite(state.textures[5]).sprite(), Direction.Axis.Z, maxZ, maxX, minY, minX, maxY, 1, state.lightCoords);
 	}
 
 	private static void maybeRenderDoubleSide(PoseStack stack, RenderType type, SubmitNodeCollector collector, TextureAtlasSprite sprite, Direction.Axis axis, float c1, float min1, float min2, float max1, float max2, float n, int light) {
@@ -87,11 +88,11 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 		});
 	}
 
-	public static TextureAtlasSprite getSprite(Identifier location) {
+	public static Material.Baked getSprite(Identifier location) {
 		if (location == null)  // Handles cases with too many debris placed at once
 			return getSprite(ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
 		return spriteCache.computeIfAbsent(location, loc ->
-			Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(loc)
+			new Material.Baked(Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(loc), false)
 		);
 	}
 

@@ -41,7 +41,6 @@ public class TFConfig {
 	public static boolean silentCicadasOnHead = false;
 	public static boolean firstPersonEffects = true;
 	public static boolean rotateTrophyHeadsGui = true;
-	public static boolean disableOptifineNagScreen = false;
 	public static boolean disableLockedBiomeToasts = false;
 	public static boolean showQuestRamCrosshairIndicator = true;
 	public static boolean showFortificationShieldIndicator = true;
@@ -213,7 +212,6 @@ public class TFConfig {
 		silentCicadasOnHead = config.silentCicadasOnHead.get();
 		firstPersonEffects = config.firstPersonEffects.get();
 		rotateTrophyHeadsGui = config.rotateTrophyHeadsGui.get();
-		disableOptifineNagScreen = config.disableOptifineNagScreen.get();
 		disableLockedBiomeToasts = config.disableLockedBiomeToasts.get();
 		showFortificationShieldIndicator = config.showFortificationShieldIndicator.get();
 		showFortificationShieldIndicatorInCreative = config.showFortificationShieldIndicatorInCreative.get();
