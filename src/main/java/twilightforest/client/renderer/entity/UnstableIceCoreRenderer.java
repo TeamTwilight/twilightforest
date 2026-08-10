@@ -25,13 +25,14 @@ public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, Living
 		stack.translate(0.0F, Mth.sin(state.ageInTicks * 0.2F) * 0.15F, 0.0F);
 
 		// flash
-		float f1 = state.deathTime;
-		if (f1 > 0) {
-			float f2 = 1.0F + Mth.sin(f1 * 100.0F) * f1 * 0.01F;
+		if (state.deathTime > 0) {
+			float f1 = state.deathTime / 60.0F;
 
 			if (f1 > 1.0F) {
 				f1 = 1.0F;
 			}
+
+			float f2 = 1.0F + Mth.sin(f1 * 60 * 100.0F) * f1 * 0.01F;
 
 			f1 *= f1;
 			f1 *= f1;
