@@ -31,21 +31,23 @@ public class GiantBlock extends Block {
 	}
 
 	public static int packCoords(int x, int y, int z) {
-		int length = 4;
+		int mod = 4;
+		int length = 2;
 
-		int packedX = Mth.positiveModulo(x, length);
-		int packedY = Mth.positiveModulo(y, length) << length;
-		int packedZ = Mth.positiveModulo(z, length) << (length + length);
+		int packedX = Mth.positiveModulo(x, mod);
+		int packedY = Mth.positiveModulo(y, mod) << length;
+		int packedZ = Mth.positiveModulo(z, mod) << (length + length);
 
 		return packedX | packedY | packedZ;
 	}
 
 	public static BlockPos unpackCoords(int index) {
-		int length = 4;
+		int mod = 4;
+		int length = 2;
 
-		int unpackedX = Mth.positiveModulo(index, length);
-		int unpackedY = Mth.positiveModulo(index >> length, length);
-		int unpackedZ = Mth.positiveModulo(index >> (length + length), length);
+		int unpackedX = Mth.positiveModulo(index, mod);
+		int unpackedY = Mth.positiveModulo(index >> length, mod);
+		int unpackedZ = Mth.positiveModulo(index >> (length + length), mod);
 
 		return new BlockPos(unpackedX, unpackedY, unpackedZ);
 	}

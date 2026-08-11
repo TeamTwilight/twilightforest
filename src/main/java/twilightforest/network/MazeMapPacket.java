@@ -60,14 +60,14 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 					mapdata.yCenter = message.yCenter();
 					message.inner().applyToMap(mapdata);
 
-					MapItemSavedData saved = clientLevel.getMapData(message.inner().mapId());
+					MapItemSavedData saved = clientLevel.getMapData(mapId);
 
 					if (saved != null) {
 						saved.addClientSideDecorations(
 							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
 						);
 					}
-					Minecraft.getInstance().getMapTextureManager().update(message.inner.mapId(), mapdata);
+					Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
 				}
 			});
 		}

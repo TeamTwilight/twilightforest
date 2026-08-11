@@ -198,14 +198,14 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 							spawned = true;
 						}
 					}
-					this.spawnBuffer.clear(); // Loop iterated, now reset
+				}
+				this.spawnBuffer.clear(); // Loop iterated, now reset
 
-					if (spawned) {
-						for (ParticleOptions particle : this.particleOptions) {
-							serverLevel.sendParticles(particle, blockEntityPos.getX() + 0.5f, blockEntityPos.getY() + 0.5f, blockEntityPos.getZ() + 0.5f, 10, 1, 1, 1, 0);
-						}
-						this.delay(serverLevel, blockEntityPos);
+				if (spawned) {
+					for (ParticleOptions particle : this.particleOptions) {
+						serverLevel.sendParticles(particle, blockEntityPos.getX() + 0.5f, blockEntityPos.getY() + 0.5f, blockEntityPos.getZ() + 0.5f, 10, 1, 1, 1, 0);
 					}
+					this.delay(serverLevel, blockEntityPos);
 				}
 			} else if (this.spawnDelay == 0) {
 				// Spawn buffer is empty, let spawnDelay tick over into resetting delay
