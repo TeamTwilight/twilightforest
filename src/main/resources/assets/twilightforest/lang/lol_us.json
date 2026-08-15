@@ -1,1 +1,19 @@
-{}
+{
+  "advancement.twilightforest.craft_travellers_gear": "around da fowest in 80 dayz",
+  "advancement.twilightforest.experiment_115": "mistwry cat food?",
+  "advancement.twilightforest.glass_sword.desc": "hope u did gud stuffz with it.",
+  "block.twilightforest.uncrafting_table.disabled": "Blok not on.",
+  "config.twilightforest.portal_settings": "portal opshuns",
+  "config.twilightforest.shield.tooltip": "Shield Parry is gud for parry, but these kez are for no mod install.",
+  "config.twilightforest.twenty_four_hour_format": "24 hour clock",
+  "config.twilightforest.twenty_four_hour_format.tooltip": "ON mean clock upgrade show 24 and not 12 hour.",
+  "config.twilightforest.uncrafting": "Unkrafting Tabal",
+  "config.twilightforest.uncrafting.tooltip": "Opshuns for teh stuffz for teh Unkrafting Tabal.",
+  "config.twilightforest.uncrafting_recipes_flip": "recipe banz",
+  "container.twilightforest.uncrafting_table": "Unkrafting Tabal",
+  "death.attack.twilightforest.clamped": "%1$s wuz loaf to hard bai %2$s",
+  "death.attack.twilightforest.clamped.item": "%1$s wuz loaf to hard bai %2$s an %3$s",
+  "gui.twilightforest.optifine.suggestions": "u should use teh mods here insted of being teh Optifine cat with fall ouchies:",
+  "gui.twilightforest.optifine.title": "ono optifine",
+  "gui.twilightforest.uncrafting_jei": "Unkrafting"
+}
