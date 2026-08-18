@@ -43,6 +43,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
@@ -79,6 +80,8 @@ import twilightforest.item.PotionFlaskItem;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
+import twilightforest.network.GogglesZoomPacket;
+import twilightforest.network.GradualGlidePacket;
 import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.Objects;
@@ -94,6 +97,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerAdditionalModels);
 		bus.addListener(this::registerClientReloadListeners);
+		bus.addListener(this::registerClientPayloadHandlers);
 		bus.addListener(this::registerAtlases);
 		bus.addListener(this::registerEntityRenderers);
 		bus.addListener(this::registerLayerDefinitions);
@@ -205,6 +209,11 @@ public class ClientRegistrationEvents {
 	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {
 		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
 		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
+	}
+
+	private void registerClientPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
+		event.register(GogglesZoomPacket.TYPE, GogglesZoomPacket::handle);
+		event.register(GradualGlidePacket.TYPE, GradualGlidePacket::handle);
 	}
 
 	private void registerScreens(RegisterMenuScreensEvent event) {
