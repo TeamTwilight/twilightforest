@@ -681,15 +681,14 @@ public class TFBlocks {
 	}
 
 	public static DeferredBlock<OminousCandleBlock> ominousCandle(String name, MapColor mapColor, Block candle) {
-		return BLOCKS.register(name, () -> new OminousCandleBlock(candle,
-			BlockBehaviour.Properties.of()
+		return BLOCKS.registerBlock(name, (p) -> new OminousCandleBlock(candle, p),
+			() -> BlockBehaviour.Properties.of()
 				.mapColor(mapColor)
 				.noOcclusion()
 				.strength(0.1F)
 				.sound(SoundType.CANDLE)
 				.lightLevel(state -> 2 * state.getValue(OminousCandleBlock.CANDLES))
-				.pushReaction(PushReaction.DESTROY)
-		));
+				.pushReaction(PushReaction.DESTROY));
 	}
 
 	private static BlockBehaviour.Properties logProperties(MapColor color) {
