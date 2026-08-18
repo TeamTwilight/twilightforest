@@ -1,10 +1,11 @@
 package twilightforest.datagen.data.loot;
 
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -17,10 +18,12 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -35,6 +38,7 @@ import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
+import twilightforest.loot.TFLootTables;
 
 import java.util.List;
 import java.util.Set;
@@ -163,7 +167,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.add(
 						LootItem.lootTableItem(TFBlocks.MASON_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(DataComponents.CUSTOM_NAME)
 									.include(DataComponents.CONTAINER)
 									.include(DataComponents.LOCK)
@@ -182,7 +186,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.add(
 						LootItem.lootTableItem(TFBlocks.FIREFLY_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(TFDataComponents.JAR_LID.get())
 							)
 					)
@@ -197,7 +201,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.add(
 						LootItem.lootTableItem(TFBlocks.CICADA_JAR.get())
 							.apply(
-								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 									.include(TFDataComponents.JAR_LID.get())
 							)
 					)
@@ -272,13 +276,13 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 				.include(DataComponents.PROFILE)
 				.include(DataComponents.NOTE_BLOCK_SOUND)
 				.include(DataComponents.CUSTOM_NAME)
 		));
 		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 				.include(DataComponents.PROFILE)
 				.include(DataComponents.NOTE_BLOCK_SOUND)
 				.include(DataComponents.CUSTOM_NAME)
@@ -695,7 +699,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
-					.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))));
+					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))));
 	}
 
 	private static LootTable.Builder casketInfo(Block block) {
@@ -703,7 +707,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
-					.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))
+					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))
 					.apply(CopyBlockState.copyState(block).copy(KeepsakeCasketBlock.BREAKAGE))));
 	}
 

@@ -11,9 +11,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.spelothem.SpeleothemVarietyConfig;
-import twilightforest.world.components.spelothem.Stalactite;
-import twilightforest.world.components.spelothem.StalactiteReloadListener;
+import twilightforest.world.components.speleothem.SpeleothemVarietyConfig;
+import twilightforest.world.components.speleothem.Stalactite;
+import twilightforest.world.components.speleothem.StalactiteReloadListener;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

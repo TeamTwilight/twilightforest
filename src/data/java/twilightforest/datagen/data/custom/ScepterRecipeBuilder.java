@@ -47,7 +47,7 @@ public class ScepterRecipeBuilder {
 	}
 
 	public void save(RecipeOutput output, ResourceKey<Recipe<?>> id) {
-		ScepterRepairRecipe recipe = new ScepterRepairRecipe(this.scepter.asItem(), this.repairItems, this.durability, CraftingBookCategory.MISC);
+		ScepterRepairRecipe recipe = new ScepterRepairRecipe(this.scepter.asItem(), this.repairItems, this.durability);
 		output.accept(id, recipe, null);
 	}
 }

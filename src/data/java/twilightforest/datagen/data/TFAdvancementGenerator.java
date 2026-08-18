@@ -1,8 +1,11 @@
 package twilightforest.datagen.data;
 
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentExactPredicate;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.advancements.AdvancementSubProvider;
@@ -10,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -515,10 +519,10 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 						Component.translatable("advancement.twilightforest.arctic_dyed"),
 						Component.translatable("advancement.twilightforest.arctic_dyed.desc"),
 						null, AdvancementType.TASK, true, true, false)
-				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
-				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
+				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
+				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
+				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
+				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
 				.rewards(AdvancementRewards.Builder.experience(25))
 				.save(consumer, "twilightforest:arctic_armor_dyed");
 
@@ -542,16 +546,18 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 
 	}
 
-	private ItemStack e115Tag(String key) {
-		ItemStack itemstack = new ItemStack(TFItems.EXPERIMENT_115.get());
-		itemstack.set(TFDataComponents.EXPERIMENT_115_VARIANTS, key);
-		return itemstack;
+	private ItemStackTemplate e115Tag(String key) {
+		return new ItemStackTemplate(TFItems.EXPERIMENT_115.get(),
+			DataComponentPatch.builder()
+				.set(TFDataComponents.EXPERIMENT_115_VARIANTS.value(), key)
+				.build());
 	}
 
-	private ItemStack flaskWithHarming() {
-		ItemStack itemstack = new ItemStack(TFItems.BRITTLE_FLASK.get());
-		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, new PotionFlaskComponent(new PotionContents(Potions.STRONG_HARMING), 4, 0, false));
-		return itemstack;
+	private ItemStackTemplate flaskWithHarming() {
+		return new ItemStackTemplate(TFItems.BRITTLE_FLASK.get(),
+			DataComponentPatch.builder()
+				.set(TFDataComponents.POTION_FLASK_CONTENTS.value(), new PotionFlaskComponent(new PotionContents(Potions.STRONG_HARMING), 4, 0, false))
+				.build());
 	}
 
 	private Advancement.Builder addTFKillable(HolderLookup.Provider registries, Advancement.Builder builder) {

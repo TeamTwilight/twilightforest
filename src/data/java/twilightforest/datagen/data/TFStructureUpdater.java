@@ -10,6 +10,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -72,7 +73,7 @@ public class TFStructureUpdater implements DataProvider {
 
 	private static CompoundTag updateNBT(CompoundTag nbt) {
 		final CompoundTag updatedNBT = DataFixTypes.STRUCTURE.updateToCurrentVersion(
-			DataFixers.getDataFixer(), nbt, nbt.getInt("DataVersion")
+			DataFixers.getDataFixer(), nbt, NbtUtils.getDataVersion(nbt)
 		);
 		StructureTemplate template = new StructureTemplate();
 		template.load(BuiltInRegistries.BLOCK, updatedNBT);
