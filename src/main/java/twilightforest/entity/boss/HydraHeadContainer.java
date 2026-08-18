@@ -775,7 +775,7 @@ public class HydraHeadContainer {
 		float curLength = this.stateNeckLength[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevLength, curLength, progress);
+		return Mth.clampedLerp(progress, prevLength, curLength);
 	}
 
 	private float getCurrentHeadXRotation() {
@@ -783,7 +783,7 @@ public class HydraHeadContainer {
 		float currentRotation = this.stateXRotations[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevRotation, currentRotation, progress);
+		return Mth.clampedLerp(progress, prevRotation, currentRotation);
 	}
 
 	private float getCurrentHeadYRotation() {
@@ -791,7 +791,7 @@ public class HydraHeadContainer {
 		float currentRotation = this.stateYRotations[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevRotation, currentRotation, progress);
+		return Mth.clampedLerp(progress, prevRotation, currentRotation);
 	}
 
 	protected float getCurrentMouthOpen() {
@@ -799,7 +799,7 @@ public class HydraHeadContainer {
 		float curOpen = this.stateMouthOpen[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevOpen, curOpen, progress);
+		return Mth.clampedLerp(progress, prevOpen, curOpen);
 	}
 
 	/**

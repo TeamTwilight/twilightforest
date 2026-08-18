@@ -62,7 +62,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 		float angle = 0;
 		for (int i = 0; i < 20; i++) {
 			angle += random.nextFloat(); // Incrementing angle each iteration ensures candles among all 4 sides of the room
-			float range = Mth.clampedLerp(7, 11, random.nextFloat());
+			float range = Mth.clampedLerp(random.nextFloat(), 7, 11);
 			int x = Math.round(Mth.cos(angle) * range);
 			int z = Math.round(Mth.sin(angle) * range);
 			int y = random.nextInt(3);

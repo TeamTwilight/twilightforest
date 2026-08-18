@@ -43,7 +43,7 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 		for (int i = 0; i < connectableJigsaws.size(); i++) {
 			StructureTemplate.StructureBlockInfo info = connectableJigsaws.get(i);
 			CompoundTag nbt = info.nbt();
-			if (nbt != null && jigsawNameLabel.equals(nbt.getString("name")) && JigsawUtil.canRearrangeForConnection(sourceOrientation, info)) {
+			if (nbt != null && jigsawNameLabel.equals(nbt.getStringOr("name", "")) && JigsawUtil.canRearrangeForConnection(sourceOrientation, info)) {
 				connectable = info;
 				connectableJigsaws.remove(i);
 				break;

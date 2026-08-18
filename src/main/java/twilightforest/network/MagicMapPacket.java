@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -51,13 +52,14 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 					mapdata.conqueredStructures.clear();
 					mapdata.conqueredStructures.addAll(message.conqueredStructures());
 
-					MapItemSavedData saved = clientLevel.getMapData(message.inner.mapId());
+					MapItemSavedData saved = clientLevel.getMapData(mapId);
 
 					if (saved != null) {
 						saved.addClientSideDecorations(
 							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
 						);
 					}
+					Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
 				}
 			});
 		}

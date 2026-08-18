@@ -8,7 +8,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -155,9 +154,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		return deltaX >= 0 && deltaZ >= 0 && deltaX <= 15 && deltaZ <= 15;
 	}
 
+	// FIXME: place as Feature instead
 	private void postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand, BlockPos chunkOrigin) {
-		if (!(access.getLevel() instanceof ServerLevelAccessor serverLevel)) return;
-
 		for (Direction facing : Direction.values()) {
 			BlockPos directionalRelative = pos.relative(facing);
 			if (!isInsideChunk(directionalRelative, chunkOrigin)) continue;
@@ -167,7 +165,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 			if (this.isHighlands) {
 				if (rand.nextInt(4) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(serverLevel.getLevel(), rand, directionalRelative));
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(null, rand, directionalRelative));
 				}
 			} else if (facing != Direction.DOWN && (facing == Direction.UP || access.getBlockState(directionalRelative.above()).isAir() || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
 				// Dirt is never placed below, always on roof, and typically to the sides
@@ -175,7 +173,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				BlockState neighboringBlock = access.getBlockState(directionalRelative);
 
 				if (neighboringBlock.is(BlockTags.BASE_STONE_OVERWORLD) || neighboringBlock.getFluidState().is(FluidTags.WATER)) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(serverLevel.getLevel(), rand, directionalRelative));
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(null, rand, directionalRelative));
 				}
 			}
 		}

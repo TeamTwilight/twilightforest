@@ -689,6 +689,7 @@ public class TFBlocks {
 				.sound(SoundType.CANDLE)
 				.lightLevel(state -> 2 * state.getValue(OminousCandleBlock.CANDLES))
 				.pushReaction(PushReaction.DESTROY)
+				.setId(ResourceKey.create(Registries.BLOCK, TwilightForestMod.prefix(name)))
 		));
 	}
 

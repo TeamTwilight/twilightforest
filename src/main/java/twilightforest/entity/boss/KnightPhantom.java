@@ -344,7 +344,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void knockback(double damage, double xRatio, double zRatio) {
-		this.hurtMarked = true;
+		this.needsSync = true;
 		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
 		float distance = 0.2F;
 		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
@@ -561,10 +561,10 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.totalKnownKnights = compound.getInt("TotalKnownKnights").get();
-		this.setNumber(compound.getInt("MyNumber").get());
-		this.switchToFormationByNumber(compound.getInt("Formation").get());
-		this.setTicksProgress(compound.getInt("TicksProgress").get());
+		this.totalKnownKnights = compound.getIntOr("TotalKnownKnights", 0);
+		this.setNumber(compound.getIntOr("MyNumber", 0));
+		this.switchToFormationByNumber(compound.getIntOr("Formation", 0));
+		this.setTicksProgress(compound.getIntOr("TicksProgress", 0));
 		this.getEntityData().set(IT_IS_OVER, compound.getBooleanOr("IsItOver", false));
 	}
 

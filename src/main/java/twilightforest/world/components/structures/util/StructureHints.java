@@ -8,6 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -44,16 +45,16 @@ public interface StructureHints {
 	 * Create a hint book for the specified feature.  Only features with block protection will need this.
 	 */
 	default ItemStack createHintBook(RegistryAccess registryAccess) {
-		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-		this.addBookInformation(book);
-		return book;
+		DataComponentPatch.Builder patch = DataComponentPatch.builder();
+		this.addBookInformation(patch);
+		return new ItemStackTemplate(Items.WRITTEN_BOOK, patch.build()).create();
 	}
 
-	default void addBookInformation(ItemStack book) {
-		addBookInformationStatic(book, "unknown", 2);
+	default void addBookInformation(DataComponentPatch.Builder patch) {
+		addBookInformationStatic(patch, "unknown", 2);
 	}
 
-	static void addBookInformationStatic(ItemStack book, @Nullable String name, int pageCount) {
+	static void addBookInformationStatic(DataComponentPatch.Builder patch, @Nullable String name, int pageCount) {
 		String key = name == null ? "unknown" : name;
 
 		Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + (index + 1)));
@@ -63,7 +64,7 @@ public interface StructureHints {
 			.map(pageGenerationFunc)
 			.toList();
 
-		book.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
+		patch.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
 			Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
 			BOOK_AUTHOR,
 			3,
@@ -71,7 +72,7 @@ public interface StructureHints {
 			true
 		));
 
-		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE);
+		patch.set(TFDataComponents.TRANSLATABLE_BOOK.get(), Unit.INSTANCE);
 	}
 
 	/**
@@ -134,15 +135,11 @@ public interface StructureHints {
 	@Nullable
 	Mob createHintMonster(Level world);
 
-	record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
+	record HintConfig(ItemStackTemplate hintItem, EntityType<? extends Mob> hintMob) {
 		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ItemStackTemplate.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItemTemplate),
+			ItemStackTemplate.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
 			BuiltInRegistries.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
 		).apply(instance, HintConfig::new));
-
-		public HintConfig(ItemStackTemplate hintItemTemplate, EntityType<? extends Mob> hintMob) {
-			this(hintItemTemplate.create(), hintMob);
-		}
 
 		@SuppressWarnings("unchecked")
 		private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
@@ -152,18 +149,14 @@ public interface StructureHints {
 			return DataResult.success((EntityType<? extends Mob>) entityType);
 		}
 
-		public static ItemStack defaultBook() {
+		public static ItemStackTemplate defaultBook() {
 			return book("unknown", 2);
 		}
 
-		public static ItemStack book(String name, int pageCount) {
-			ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-			StructureHints.addBookInformationStatic(book, name, pageCount);
-			return book;
-		}
-
-		public ItemStackTemplate hintItemTemplate() {
-			return ItemStackTemplate.fromNonEmptyStack(this.hintItem);
+		public static ItemStackTemplate book(String name, int pageCount) {
+			DataComponentPatch.Builder patch = DataComponentPatch.builder();
+			StructureHints.addBookInformationStatic(patch, name, pageCount);
+			return new ItemStackTemplate(Items.WRITTEN_BOOK, patch.build());
 		}
 	}
 }
