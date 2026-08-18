@@ -57,7 +57,7 @@ public class NoSmithingTemplateRecipeBuilder {
 			.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
 		NoTemplateSmithingRecipe smithingtrimrecipe = new NoTemplateSmithingRecipe(Optional.of(this.base), Optional.of(this.addition), this.additionalData);
-		output.accept(id, smithingtrimrecipe, advancement$builder.build(id.location().withPrefix("recipes/" + this.category.getFolderName() + "/")));
+		output.accept(id, smithingtrimrecipe, advancement$builder.build(id.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
 	}
 
 	private void ensureValid(ResourceKey<Recipe<?>> location) {
