@@ -130,6 +130,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get());
+		dropSelf(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get());
+		dropSelf(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.KNIGHTMETAL_BLOCK.get());
 		dropSelf(TFBlocks.IRONWOOD_BLOCK.get());
 		dropSelf(TFBlocks.FIERY_BLOCK.get());
@@ -205,6 +207,18 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.FIREFLY_SPAWNER.get(), particleSpawner());
 		add(TFBlocks.MOSS_PATCH.get(), createShearsOnlyDrop(TFBlocks.MOSS_PATCH.get()));
 		add(TFBlocks.MAYAPPLE.get(), createShearsOnlyDrop(TFBlocks.MAYAPPLE.get()));
+		addTFBush(TFBlocks.IRON_OREBERRY_BUSH.get(), TFLootTables.IRON_OREBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.GOLD_OREBERRY_BUSH.get(), TFLootTables.GOLD_OREBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.COPPER_OREBERRY_BUSH.get(), TFLootTables.COPPER_OREBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.ESSENCE_OREBERRY_BUSH.get(), TFLootTables.ESSENCE_BERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.RASPBERRY_BUSH.get(), TFLootTables.RASPBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.BLUEBERRY_BUSH.get(), TFLootTables.BLUEBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.BLACKBERRY_BUSH.get(), TFLootTables.BLACKBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.MALOBERRY_BUSH.get(), TFLootTables.MALOBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.BLIGHTBERRY_BUSH.get(), TFLootTables.BLIGHTBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.DUSKBERRY_BUSH.get(), TFLootTables.DUSKBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.SKYBERRY_BUSH.get(), TFLootTables.SKYBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.STINGBERRY_BUSH.get(), TFLootTables.STINGBERRY_BUSH_DROPS);
 		add(TFBlocks.CLOVER_PATCH.get(), createShearsOnlyDrop(TFBlocks.CLOVER_PATCH.get()));
 		add(TFBlocks.FIDDLEHEAD.get(), createShearsOnlyDrop(TFBlocks.FIDDLEHEAD.get()));
 		dropSelf(TFBlocks.MUSHGLOOM.get());
@@ -318,6 +332,19 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.CHERRY_BANISTER.get());
 		dropSelf(TFBlocks.PALE_OAK_BANISTER.get());
 
+		dropSelf(TFBlocks.OAK_DRYING_RACK.get());
+		dropSelf(TFBlocks.SPRUCE_DRYING_RACK.get());
+		dropSelf(TFBlocks.BIRCH_DRYING_RACK.get());
+		dropSelf(TFBlocks.JUNGLE_DRYING_RACK.get());
+		dropSelf(TFBlocks.ACACIA_DRYING_RACK.get());
+		dropSelf(TFBlocks.DARK_OAK_DRYING_RACK.get());
+		dropSelf(TFBlocks.CRIMSON_DRYING_RACK.get());
+		dropSelf(TFBlocks.WARPED_DRYING_RACK.get());
+		dropSelf(TFBlocks.VANGROVE_DRYING_RACK.get());
+		dropSelf(TFBlocks.BAMBOO_DRYING_RACK.get());
+		dropSelf(TFBlocks.CHERRY_DRYING_RACK.get());
+		dropSelf(TFBlocks.PALE_OAK_DRYING_RACK.get());
+
 		add(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get()));
@@ -404,6 +431,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_OAK_BANISTER.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_CHEST.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.TWILIGHT_OAK_DRYING_RACK.get());
 
 		dropSelf(TFBlocks.CANOPY_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_CANOPY_LOG.get());
@@ -429,6 +457,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.CANOPY_BANISTER.get());
 		dropSelf(TFBlocks.CANOPY_CHEST.get());
 		dropSelf(TFBlocks.CANOPY_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.CANOPY_DRYING_RACK.get());
 
 		dropSelf(TFBlocks.MANGROVE_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_MANGROVE_LOG.get());
@@ -452,6 +481,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MANGROVE_BANISTER.get());
 		dropSelf(TFBlocks.MANGROVE_CHEST.get());
 		dropSelf(TFBlocks.MANGROVE_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.MANGROVE_DRYING_RACK.get());
 
 		dropSelf(TFBlocks.DARK_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_DARK_LOG.get());
@@ -476,6 +506,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.DARK_BANISTER.get());
 		dropSelf(TFBlocks.DARK_CHEST.get());
 		dropSelf(TFBlocks.DARK_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.DARK_DRYING_RACK.get());
 
 		dropSelf(TFBlocks.TIME_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -500,6 +531,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TIME_BANISTER.get());
 		dropSelf(TFBlocks.TIME_CHEST.get());
 		dropSelf(TFBlocks.TIME_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.TIME_DRYING_RACK.get());
 
 		dropSelf(TFBlocks.TRANSFORMATION_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
@@ -524,6 +556,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TRANSFORMATION_BANISTER.get());
 		dropSelf(TFBlocks.TRANSFORMATION_CHEST.get());
 		dropSelf(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.TRANSFORMATION_DRYING_RACK.get());
 
 		dropSelf(TFBlocks.MINING_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_MINING_LOG.get());
@@ -548,6 +581,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MINING_BANISTER.get());
 		dropSelf(TFBlocks.MINING_CHEST.get());
 		dropSelf(TFBlocks.MINING_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.MINING_DRYING_RACK.get());
 
 		dropSelf(TFBlocks.SORTING_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_SORTING_LOG.get());
@@ -572,6 +606,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.SORTING_BANISTER.get());
 		dropSelf(TFBlocks.SORTING_CHEST.get());
 		dropSelf(TFBlocks.SORTING_TRAPPED_CHEST.get());
+		dropSelf(TFBlocks.SORTING_DRYING_RACK.get());
+
 		add(TFBlocks.OMINOUS_FIRE.get(), noDrop());
 		ominousCandle(TFBlocks.OMINOUS_CANDLE);
 		ominousCandle(TFBlocks.OMINOUS_WHITE_CANDLE);
@@ -631,6 +667,27 @@ public class BlockLootTables extends BlockLootSubProvider {
 	private LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, float... nonSilkFortune) {
 		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when((HAS_SHEARS.or(this.hasSilkTouch())).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+	}
+
+	private void addTFBush(Block block, ResourceKey<LootTable> berry) {
+		if (!(block instanceof TFBushBlock bush))
+			throw new IllegalArgumentException(block + " is not a TFBushBlock");
+
+		add(block,
+			LootTable.lootTable()
+				.withPool(
+					LootPool.lootPool()
+						.when(
+							LootItemBlockStatePropertyCondition.hasBlockStateProperties(bush)
+								.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TFBushBlock.AGE, 3))
+						)
+						.add(NestedLootTable.lootTableReference(berry))
+				)
+				.withPool(
+					LootPool.lootPool()
+						.add(LootItem.lootTableItem(bush.asItem()))
+				)
+		);
 	}
 
 	private static LootTable.Builder skullChestInfo(Block block) {
