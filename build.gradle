@@ -197,8 +197,6 @@ jar {
 	exclude 'data/twilightforest/function/**'
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 repositories {
 	mavenLocal()
 	maven {
