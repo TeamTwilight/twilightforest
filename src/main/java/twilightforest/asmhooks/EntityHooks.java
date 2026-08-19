@@ -33,7 +33,7 @@ public class EntityHooks {
 			return o;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
-		if (livingEntity.getFluidHeight(FluidTags.WATER) > 0.0D && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
+		if (livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
 			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
 		return isWaterWalking;
 	}

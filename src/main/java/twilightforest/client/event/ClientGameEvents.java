@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -361,7 +362,7 @@ public class ClientGameEvents {
 					BlockPos offsetPos = new BlockPos(renderState.pos().getX() & ~0b11, renderState.pos().getY() & ~0b11, renderState.pos().getZ() & ~0b11);
 					Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().position());
 					VertexConsumer consumer = buffer.getBuffer(RenderTypes.lines());
-					renderShape(stack, consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
+					ShapeRenderer.renderShape(stack, consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0, 1.0F);
 					return true;
 				});
 			}

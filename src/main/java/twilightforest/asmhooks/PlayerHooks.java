@@ -8,6 +8,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
+import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.init.TFAttributeModifiers;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
@@ -37,7 +39,7 @@ public class PlayerHooks {
 	 * {@link GetFieldOfViewModifierTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()}
+	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()} ()}
 	 */
 	public static void straightAheadNullify(AbstractClientPlayer player) {
 		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
@@ -53,7 +55,7 @@ public class PlayerHooks {
 	 * {@link GetFieldOfViewModifierTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()}
+	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()} ()}
 	 */
 	public static void straightAheadRestore(AbstractClientPlayer player) {
 		if (!(player instanceof LocalPlayer))

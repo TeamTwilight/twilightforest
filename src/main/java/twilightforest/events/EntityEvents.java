@@ -515,7 +515,7 @@ public class EntityEvents {
 	private void stopEndermenFromGrabbingBlocksInTF(EntityJoinLevelEvent event) {
 		if (event.getEntity() instanceof EnderMan enderMan) {
 			enderMan.goalSelector.getAvailableGoals().stream()
-				.filter(g -> g.getGoal().getClass().getName().endsWith("EndermanTakeBlockGoal"))
+				.filter(g -> g.getGoal() instanceof EnderMan.EndermanTakeBlockGoal)
 				.findAny()
 				.ifPresent(g -> {
 					enderMan.goalSelector.removeGoal(g.getGoal());
