@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.network.UncraftingGuiPacket;
 
@@ -256,7 +256,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		}
 
 		//check if we're hovering over a banned uncraftable item
-		if (container.slots.getFirst().hasItem() && container.slots.getFirst().getItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && container.slots.getFirst().equals(this.hoveredSlot)) {
+		if (container.slots.getFirst().hasItem() && container.slots.getFirst().getItem().is(TFItemTags.BANNED_UNCRAFTABLES) && container.slots.getFirst().equals(this.hoveredSlot)) {
 			graphics.renderTooltip(this.font, Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
 		} else {
 			super.renderTooltip(graphics, pX, pY);
