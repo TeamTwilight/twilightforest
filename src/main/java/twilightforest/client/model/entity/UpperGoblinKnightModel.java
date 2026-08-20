@@ -26,10 +26,10 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create(),
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(),
 			PartPose.offset(0.0F, 12.0F, 0.0F));
 
-		var hat = partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(),
+		var hat = head.addOrReplaceChild("hat", CubeListBuilder.create(),
 			PartPose.offset(0.0F, 12.0F, 0.0F));
 
 		hat.addOrReplaceChild("helmet", CubeListBuilder.create()
