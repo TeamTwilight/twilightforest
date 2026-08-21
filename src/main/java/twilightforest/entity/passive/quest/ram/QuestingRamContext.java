@@ -40,6 +40,8 @@ public record QuestingRamContext(Map<DyeColor, Ingredient> questItems, ResourceK
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("reward").forGetter(QuestingRamContext::lootTable)
 	).apply(instance, QuestingRamContext::new));
 
+	public static final StreamCodec<RegistryFriendlyByteBuf, QuestingRamContext> STREAM_CODEC = StreamCodec.composite(
+		ByteBufCodecs.map(HashMap::new, DyeColor.STREAM_CODEC, Ingredient.CONTENTS_STREAM_CODEC), QuestingRamContext::questItems,
 	private static DataResult<Map<DyeColor, Ingredient>> validate(Map<DyeColor, Ingredient> map) {
 		int colorFlags = 0;
 		for (var color : map.keySet()) {
