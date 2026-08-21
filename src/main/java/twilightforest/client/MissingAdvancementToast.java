@@ -8,18 +8,19 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import twilightforest.init.TFBlocks;
 
 public class MissingAdvancementToast implements Toast {
-	public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(Component.translatable("misc.twilightforest.advancement_hidden"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.asItem()));
+	public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(Component.translatable("misc.twilightforest.advancement_hidden"), new ItemStackTemplate(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.asItem()));
 	private static final Component UPPER_TEXT = Component.translatable("misc.twilightforest.advancement_required");
 	private static final Identifier BACKGROUND_SPRITE = Identifier.withDefaultNamespace("toast/advancement");
 
 	private Toast.Visibility wantedVisibility = Toast.Visibility.HIDE;
 	private final Component title;
-	private final ItemStack icon;
+	private final ItemStackTemplate icon;
 
-	public MissingAdvancementToast(Component title, ItemStack icon) {
+	public MissingAdvancementToast(Component title, ItemStackTemplate icon) {
 		this.title = title;
 		this.icon = icon;
 	}
@@ -37,7 +38,7 @@ public class MissingAdvancementToast implements Toast {
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor graphics, Font font, long timer) {
 		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
-		graphics.item(this.icon, 6, 8);
+		graphics.item(this.icon.create(), 6, 8);
 		graphics.text(font, UPPER_TEXT, 25, 7, 0xffffffff, false);
 		graphics.text(font, this.title, 25, 18, 0xffffffff, false);
 	}

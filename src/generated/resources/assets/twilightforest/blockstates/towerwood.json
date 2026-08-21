@@ -1,12 +1,7 @@
 {
   "variants": {
-    "": [
-      {
-        "model": "twilightforest:block/towerwood"
-      },
-      {
-        "model": "twilightforest:block/towerwood_flipped"
-      }
-    ]
+    "": {
+      "model": "twilightforest:block/towerwood"
+    }
   }
 }

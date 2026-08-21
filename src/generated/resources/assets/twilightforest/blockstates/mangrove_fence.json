@@ -1,133 +1,47 @@
 {
   "multipart": [
     {
-      "apply": [
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_post",
-          "weight": 10
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_post_1",
-          "weight": 10
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_post_2"
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_post_3"
-        }
-      ]
+      "apply": {
+        "model": "twilightforest:block/mangrove_fence_post"
+      }
     },
     {
-      "apply": [
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side",
-          "uvlock": true,
-          "weight": 10
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_1",
-          "uvlock": true,
-          "weight": 10
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_2",
-          "uvlock": true
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_3",
-          "uvlock": true
-        }
-      ],
+      "apply": {
+        "model": "twilightforest:block/mangrove_fence_side",
+        "uvlock": true
+      },
       "when": {
         "north": "true"
       }
     },
     {
-      "apply": [
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side",
-          "uvlock": true,
-          "weight": 10,
-          "y": 180
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_1",
-          "uvlock": true,
-          "weight": 10,
-          "y": 180
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_2",
-          "uvlock": true,
-          "y": 180
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_3",
-          "uvlock": true,
-          "y": 180
-        }
-      ],
+      "apply": {
+        "model": "twilightforest:block/mangrove_fence_side",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/mangrove_fence_side",
+        "uvlock": true,
+        "y": 180
+      },
       "when": {
         "south": "true"
       }
     },
     {
-      "apply": [
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side",
-          "uvlock": true,
-          "weight": 10,
-          "y": 270
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_1",
-          "uvlock": true,
-          "weight": 10,
-          "y": 270
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_2",
-          "uvlock": true,
-          "y": 270
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_3",
-          "uvlock": true,
-          "y": 270
-        }
-      ],
+      "apply": {
+        "model": "twilightforest:block/mangrove_fence_side",
+        "uvlock": true,
+        "y": 270
+      },
       "when": {
         "west": "true"
-      }
-    },
-    {
-      "apply": [
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side",
-          "uvlock": true,
-          "weight": 10,
-          "y": 90
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_1",
-          "uvlock": true,
-          "weight": 10,
-          "y": 90
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_2",
-          "uvlock": true,
-          "y": 90
-        },
-        {
-          "model": "twilightforest:block/wood/fence/mangrove/mangrove_fence_side_3",
-          "uvlock": true,
-          "y": 90
-        }
-      ],
-      "when": {
-        "east": "true"
       }
     }
   ]

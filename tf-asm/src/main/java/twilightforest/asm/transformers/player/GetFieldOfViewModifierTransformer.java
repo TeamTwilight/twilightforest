@@ -23,12 +23,12 @@ import java.util.Set;
 public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNode> {
 
 	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
+	public TargetType<MethodNode> getTargetType() {
 		return TargetType.METHOD;
 	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
 		ASMUtil.findInstructions(node, Opcodes.FCONST_1).findFirst().ifPresent(target -> {
 			node.instructions.insertBefore(target, ASMAPI.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
@@ -55,12 +55,12 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
+	public TransformerVoteResult castVote(ITransformerVotingContext context) {
 		return TransformerVoteResult.YES;
 	}
 
 	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
+	public Set<Target<MethodNode>> targets() {
 		return Set.of(
 			Target.targetMethod(
 				"net/minecraft/client/player/AbstractClientPlayer",

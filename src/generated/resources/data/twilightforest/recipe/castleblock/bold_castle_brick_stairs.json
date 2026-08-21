@@ -3,12 +3,8 @@
   "category": "building",
   "key": {
     "#": [
-      {
-        "item": "twilightforest:bold_castle_brick_pillar"
-      },
-      {
-        "item": "twilightforest:bold_castle_brick_tile"
-      }
+      "twilightforest:bold_castle_brick_pillar",
+      "twilightforest:bold_castle_brick_tile"
     ]
   },
   "pattern": [

@@ -2,15 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:firefly"
-    },
-    {
-      "item": "twilightforest:mason_jar"
-    }
+    "twilightforest:firefly",
+    "twilightforest:mason_jar"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:firefly_jar"
   }
 }

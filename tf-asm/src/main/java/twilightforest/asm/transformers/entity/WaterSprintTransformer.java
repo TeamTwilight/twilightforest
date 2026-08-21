@@ -53,19 +53,19 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 	}
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
 		injectIsInWater(node);
 		injectIsInFluidType(node);
 		return node;
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
+	public TransformerVoteResult castVote(ITransformerVotingContext context) {
 		return TransformerVoteResult.YES;
 	}
 
 	@Override
-	public @NotNull java.util.Set<Target<MethodNode>> targets() {
+	public java.util.Set<Target<MethodNode>> targets() {
 		return java.util.Set.of(Target.targetMethod(
 			"net.minecraft.client.player.LocalPlayer",
 			"aiStep",
@@ -74,7 +74,7 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 	}
 
 	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
+	public TargetType<MethodNode> getTargetType() {
 		return TargetType.METHOD;
 	}
 }

@@ -43,12 +43,12 @@ public class UncraftingResultSlot extends ResultSlot {
 		//clear the temp map, just in case
 		this.tempRemainderMap.clear();
 
-		for (RecipeHolder<CraftingRecipe> recipe : player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix.asCraftInput(), this.player.level())) {
-			if (ItemStack.isSameItemSameComponents(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
-				combined = false;
-				break;
-			}
-		}
+//		for (RecipeHolder<CraftingRecipe> recipe : player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix.asCraftInput(), this.player.level())) {
+//			if (ItemStack.isSameItemSameComponents(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
+//				combined = false;
+//				break;
+//			}
+//		}
 
 		if (combined) {
 			// charge the player before the stacks empty
@@ -78,26 +78,26 @@ public class UncraftingResultSlot extends ResultSlot {
 		int i = positioned.left();
 		int j = positioned.top();
 		CommonHooks.setCraftingPlayer(player);
-		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, input, player.level());
+//		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, input, player.level());
 		CommonHooks.setCraftingPlayer(null);
 
 		for (int k = 0; k < input.height(); k++) {
 			for (int l = 0; l < input.width(); l++) {
 				int index = l + i + (k + j) * this.assemblyMatrix.getWidth();
 				ItemStack currentStack = this.assemblyMatrix.getItem(index);
-				ItemStack remainingStack = remainingItems.get(l + k * input.width());
+//				ItemStack remainingStack = remainingItems.get(l + k * input.width());
 				if (!currentStack.isEmpty()) {
 					this.assemblyMatrix.removeItem(index, 1);
 					currentStack = this.assemblyMatrix.getItem(index);
 				}
 
-				if (!remainingStack.isEmpty()) {
-					if (currentStack.isEmpty()) {
-						this.assemblyMatrix.setItem(index, remainingStack);
-					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack)) {
-						InventoryUtil.giveItemToPlayer(this.player, remainingStack);
-					}
-				}
+//				if (!remainingStack.isEmpty()) {
+//					if (currentStack.isEmpty()) {
+//						this.assemblyMatrix.setItem(index, remainingStack);
+//					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack)) {
+//						InventoryUtil.giveItemToPlayer(this.player, remainingStack);
+//					}
+//				}
 			}
 		}
 		//add all remainders to the crafting grid. This prevents any extra items from being deleted during the recrafting process.

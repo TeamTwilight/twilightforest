@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "twilightforest:giant_obsidian"
-    }
+    "twilightforest:giant_obsidian"
   ],
   "result": {
     "count": 64,

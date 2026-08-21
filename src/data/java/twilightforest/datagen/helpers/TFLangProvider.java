@@ -22,7 +22,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.gamerules.GameRule;
-import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -30,14 +29,14 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
-import twilightforest.init.TFKeyBindsCategories;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public abstract class TFLangProvider extends LanguageProvider {
 
@@ -46,6 +45,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	private final PackOutput output;
 	private final CompletableFuture<HolderLookup.Provider> registries;
 	public final Map<String, String> upsideDownEntries = new HashMap<>();
+	private final Map<String, String> data = new TreeMap<>();
 
 	public TFLangProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, TwilightForestMod.ID, "en_us");
@@ -55,7 +55,8 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	@Override
 	public void add(String key, String value) {
-		super.add(key, value);
+		if (this.data.put(key, value) != null)
+			throw new IllegalStateException("Duplicate translation key " + key);
 		List<LangFormatSplitter.Component> splitEnglish = LangFormatSplitter.split(value);
 		this.upsideDownEntries.put(key, LangConversionHelper.convertComponents(splitEnglish));
 	}
@@ -147,7 +148,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addMusicDisc(DeferredItem<Item> disc, String description) {
 		this.addItem(disc, "Music Disc");
-		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().getKey().identifier()), description);
+//		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().getKey().identifier()), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {
@@ -211,11 +212,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void addTravellersModifier(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String name) {
-		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
+//		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
 	}
 
 	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
-		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
+//		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
 	}
 
 	public void createTip(String key, String translation) {
@@ -268,5 +269,12 @@ public abstract class TFLangProvider extends LanguageProvider {
 			futuresBuilder.add(DataProvider.saveStable(cache, GSON.toJsonTree(object), this.output.getOutputFolder().resolve("assets/twilightforest/tips/" + entry.getValue() + ".json")));
 		}
 		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
+	}
+
+	private CompletableFuture<?> save(CachedOutput cache, Path target) {
+		JsonObject json = new JsonObject();
+		this.data.forEach(json::addProperty);
+
+		return DataProvider.saveStable(cache, json, target);
 	}
 }

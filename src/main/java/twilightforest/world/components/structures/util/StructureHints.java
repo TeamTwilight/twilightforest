@@ -1,13 +1,11 @@
 package twilightforest.world.components.structures.util;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +18,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
@@ -43,17 +42,15 @@ public interface StructureHints {
 	/**
 	 * Create a hint book for the specified feature.  Only features with block protection will need this.
 	 */
-	default ItemStack createHintBook(RegistryAccess registryAccess) {
-		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-		this.addBookInformation(book);
-		return book;
+	default ItemStackTemplate createHintBook(RegistryAccess registryAccess) {
+		return addBookInformation(Items.WRITTEN_BOOK);
 	}
 
-	default void addBookInformation(ItemStack book) {
-		addBookInformationStatic(book, "unknown", 2);
+	default ItemStackTemplate addBookInformation(Item book) {
+		return addBookInformationStatic(book, "unknown", 2);
 	}
 
-	static void addBookInformationStatic(ItemStack book, @Nullable String name, int pageCount) {
+	static ItemStackTemplate addBookInformationStatic(Item book, @Nullable String name, int pageCount) {
 		String key = name == null ? "unknown" : name;
 
 		Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + (index + 1)));
@@ -63,15 +60,16 @@ public interface StructureHints {
 			.map(pageGenerationFunc)
 			.toList();
 
-		book.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
-			Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
-			BOOK_AUTHOR,
-			3,
-			list,
-			true
-		));
-
-		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE);
+		return new ItemStackTemplate(book, DataComponentPatch.builder()
+			.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
+				Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
+				BOOK_AUTHOR,
+				3,
+				list,
+				true
+			))
+			.set(TFDataComponents.TRANSLATABLE_BOOK.value(), Unit.INSTANCE)
+			.build());
 	}
 
 	/**
@@ -115,10 +113,10 @@ public interface StructureHints {
 			// check if the bounding box is clear
 			if (hinty.checkSpawnObstruction(world) && hinty.getSensing().hasLineOfSight(player)) {
 				// add items and hint book
-				ItemStack book = this.createHintBook(world.registryAccess());
+				ItemStackTemplate book = this.createHintBook(world.registryAccess());
 
-				if (!book.isEmpty()) {
-					hinty.setItemSlot(EquipmentSlot.MAINHAND, book);
+				if (!book.create().isEmpty()) {
+					hinty.setItemSlot(EquipmentSlot.MAINHAND, book.create());
 					hinty.setDropChance(EquipmentSlot.MAINHAND, 1.0F); //Mob.PRESERVE_ITEM_DROP_CHANCE_THRESHOLD = 1.0F
 					//hinty.setDropItemsWhenDead(true);
 				}
@@ -134,15 +132,11 @@ public interface StructureHints {
 	@Nullable
 	Mob createHintMonster(Level world);
 
-	record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
+	record HintConfig(ItemStackTemplate hintItem, EntityType<? extends Mob> hintMob) {
 		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			ItemStackTemplate.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItemTemplate),
 			BuiltInRegistries.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
 		).apply(instance, HintConfig::new));
-
-		public HintConfig(ItemStackTemplate hintItemTemplate, EntityType<? extends Mob> hintMob) {
-			this(hintItemTemplate.create(), hintMob);
-		}
 
 		@SuppressWarnings("unchecked")
 		private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
@@ -152,18 +146,16 @@ public interface StructureHints {
 			return DataResult.success((EntityType<? extends Mob>) entityType);
 		}
 
-		public static ItemStack defaultBook() {
+		public static ItemStackTemplate defaultBook() {
 			return book("unknown", 2);
 		}
 
-		public static ItemStack book(String name, int pageCount) {
-			ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-			StructureHints.addBookInformationStatic(book, name, pageCount);
-			return book;
+		public static ItemStackTemplate book(String name, int pageCount) {
+			return StructureHints.addBookInformationStatic(Items.WRITTEN_BOOK, name, pageCount);
 		}
 
 		public ItemStackTemplate hintItemTemplate() {
-			return ItemStackTemplate.fromNonEmptyStack(this.hintItem);
+			return this.hintItem;
 		}
 	}
 }

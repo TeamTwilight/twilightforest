@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:ingots/steeleaf"
-    },
-    "X": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#c:ingots/steeleaf",
+    "X": "#c:rods/wooden"
   },
   "pattern": [
     "##",
@@ -17,12 +13,9 @@
   "result": {
     "components": {
       "minecraft:enchantments": {
-        "levels": {
-          "minecraft:fortune": 2
-        }
+        "minecraft:fortune": 2
       }
     },
-    "count": 1,
     "id": "twilightforest:steeleaf_hoe"
   }
 }

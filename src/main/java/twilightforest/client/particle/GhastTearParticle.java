@@ -59,11 +59,11 @@ public class GhastTearParticle extends SingleQuadParticle {
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-			TextureAtlasSprite textureatlassprite = this.calculateState(new ItemStack(Items.GHAST_TEAR), level).pickParticleIcon(random);
+			TextureAtlasSprite textureatlassprite = this.calculateState(new ItemStack(Items.GHAST_TEAR), level).pickParticleMaterial(random).sprite();
 
-			if (textureatlassprite == null) {
-				textureatlassprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
-			}
+//			if (textureatlassprite == null) {
+//				textureatlassprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
+//			}
 
 			return new GhastTearParticle(level, x, y, z, textureatlassprite);
 		}

@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/casket_solid_template",
-  "textures": {
-    "side": "minecraft:block/basalt_side",
-    "top": "minecraft:block/basalt_top"
-  }
-}

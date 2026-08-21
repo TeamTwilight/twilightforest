@@ -3,7 +3,6 @@ package twilightforest.asmhooks;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +38,7 @@ public class MultipartHooks {
 	 * Targets: {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#renderers}
 	 */
 	@Nullable
-	public static EntityRenderer<?> resolveEntityRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
+	public static EntityRenderer<?,?> resolveEntityRenderer(@Nullable EntityRenderer<?,?> renderer, Entity entity) {
 		return multipartEntityUtil.tryLookupTFPartRenderer(renderer, entity);
 	}
 

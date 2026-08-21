@@ -43,7 +43,7 @@ public class CapabilityEvents {
 
 	private void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getData(TFDataAttachments.FEATHER_FAN)) {
-			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true);
+//			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true);
 			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
 
 			if (event.getEntity().onGround() || event.getEntity().isSwimming() || event.getEntity().isInWater()) {
@@ -63,7 +63,7 @@ public class CapabilityEvents {
 				if (living.invulnerableTime <= 0) {
 					attachment.breakShield(living, false);
 					FortificationShieldAttachment.addShieldBreakParticles(event.getSource(), living);
-					living.invulnerableTime = living.invulnerableDuration;
+//					living.invulnerableTime = living.invulnerableDuration;
 				}
 				event.setCanceled(true);
 			}
@@ -73,9 +73,9 @@ public class CapabilityEvents {
 	private void spawnInTFIfNecessary(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 
-		if (serverPlayer.getRespawnPosition() == null) {
-			newSpawnInTwilightForest(serverPlayer);
-		}
+//		if (serverPlayer.getRespawnPosition() == null) {
+//			newSpawnInTwilightForest(serverPlayer);
+//		}
 	}
 
 	/**
@@ -92,16 +92,16 @@ public class CapabilityEvents {
 	private static void newSpawnInTwilightForest(ServerPlayer player) {
 		if (!TFConfig.newPlayersSpawnInTF)
 			return;
-		ServerLevel level = player.getServer().getLevel(TFDimension.DIMENSION_KEY);
-		if (level == null)
-			return;
+//		ServerLevel level = player.getServer().getLevel(TFDimension.DIMENSION_KEY);
+//		if (level == null)
+//			return;
 
-		BlockPos newDefaultSpawn = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, player.blockPosition());
+//		BlockPos newDefaultSpawn = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, player.blockPosition());
 
-		player.changeDimension(TFConfig.portalForNewPlayerSpawn ?
-			TFTeleporter.createTransition(player, level, newDefaultSpawn, true) :
-			NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
-		player.setRespawnPosition(TFDimension.DIMENSION_KEY, newDefaultSpawn, player.getYRot(), true, false);
+//		player.changeDimension(TFConfig.portalForNewPlayerSpawn ?
+//			TFTeleporter.createTransition(player, level, newDefaultSpawn, true) :
+//			NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
+//		player.setRespawnPosition(TFDimension.DIMENSION_KEY, newDefaultSpawn, player.getYRot(), true, false);
 
 		player.setData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST, Unit.INSTANCE);
 	}
@@ -110,7 +110,7 @@ public class CapabilityEvents {
 		CompoundTag tagCompound = player.getPersistentData();
 		if (!tagCompound.contains(Player.PERSISTED_NBT_TAG))
 			return;
-		CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
+		CompoundTag playerData = tagCompound.getCompoundOrEmpty(Player.PERSISTED_NBT_TAG);
 		if (!playerData.contains("twilightforest_banished"))
 			return;
 

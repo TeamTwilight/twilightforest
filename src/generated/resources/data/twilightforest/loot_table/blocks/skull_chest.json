@@ -3,7 +3,21 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "entries": [],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "twilightforest:skull_chest"
+        }
+      ],
       "rolls": 1.0
     }
   ],

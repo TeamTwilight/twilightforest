@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "item": "twilightforest:canopy_window"
-    }
+    "G": "twilightforest:canopy_window"
   },
   "pattern": [
     "GGG",

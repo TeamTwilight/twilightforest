@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/spawner",
-  "render_type": "minecraft:cutout",
+  "parent": "minecraft:block/cube_all_inner_faces",
   "textures": {
     "all": "twilightforest:block/sinister_spawner"
   }

@@ -1,9 +1,9 @@
 {
-  "parent": "twilightforest:block/vertical_hollow_log_ladder",
-  "render_type": "minecraft:cutout",
+  "parent": "twilightforest:block/climbable_hollow_log",
   "textures": {
-    "inner": "minecraft:block/stripped_spruce_log",
-    "side": "minecraft:block/spruce_log",
-    "top": "minecraft:block/spruce_log_top"
+    "climbable": "minecraft:block/ladder",
+    "end": "minecraft:block/spruce_log_top",
+    "inside": "minecraft:block/stripped_spruce_log",
+    "side": "minecraft:block/spruce_log"
   }
 }

@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:builtin/entity",
   "textures": {
-    "particle": "twilightforest:block/wood/planks_sort_0"
+    "particle": "twilightforest:block/sorting_planks"
   }
 }

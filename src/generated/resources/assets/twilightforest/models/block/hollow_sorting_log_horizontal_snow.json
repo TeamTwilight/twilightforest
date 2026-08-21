@@ -1,9 +1,10 @@
 {
-  "parent": "twilightforest:block/hollow_log_snow",
-  "render_type": "minecraft:cutout",
+  "parent": "twilightforest:block/horizontal_hollow_log_carpet",
   "textures": {
-    "inner": "twilightforest:block/stripped_sorting_log",
-    "side": "twilightforest:block/sorting_log",
-    "top": "twilightforest:block/sorting_log_top"
+    "carpet": "minecraft:block/snow",
+    "end": "twilightforest:block/sorting_log_top",
+    "inside": "twilightforest:block/stripped_sorting_log",
+    "overhang": "twilightforest:block/snow_overhang",
+    "side": "twilightforest:block/sorting_log"
   }
 }

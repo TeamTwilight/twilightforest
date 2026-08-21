@@ -47,5 +47,8 @@
       "path": "frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.castaway_paradise.title"
+  },
   "width": 32
 }

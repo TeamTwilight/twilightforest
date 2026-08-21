@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/mangrove_wall_hanging_sign"
+      "model": "twilightforest:block/mangrove_hanging_sign"
     }
   }
 }

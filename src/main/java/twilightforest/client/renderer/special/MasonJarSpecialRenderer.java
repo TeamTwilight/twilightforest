@@ -38,10 +38,10 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 			stack.pushPose();
 			JarLid jarLid = map.get(TFDataComponents.JAR_LID.get());
 			Item testLid = jarLid == null ? this.defaultLid().orElse(null) : jarLid.lid();
-			Item lid = testLid == null || !JarRenderer.LIDS.containsKey(testLid) ? null : testLid;
-			if (lid != null) {
-				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), TFBlocks.MASON_JAR.get().defaultBlockState(), Minecraft.getInstance().getBlockRenderer(), stack, source, light, overlay);
-			}
+//			Item lid = testLid == null || !JarRenderer.LIDS.containsKey(testLid) ? null : testLid;
+//			if (lid != null) {
+////				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), TFBlocks.MASON_JAR.get().defaultBlockState(), Minecraft.getInstance().getBlockRenderer(), stack, source, light, overlay);
+//			}
 
 			ItemContainerContents contents = map.get(DataComponents.CONTAINER);
 			if (contents != null) {
@@ -67,7 +67,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 		return stack.getComponents();
 	}
 
-	public record Unbaked(Optional<Item> defaultLid) implements SpecialModelRenderer.Unbaked {
+	public record Unbaked(Optional<Item> defaultLid) implements SpecialModelRenderer.Unbaked<DataComponentMap> {
 		public static final MapCodec<MasonJarSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 				BuiltInRegistries.ITEM.byNameCodec().optionalFieldOf("default_lid").forGetter(MasonJarSpecialRenderer.Unbaked::defaultLid))
 			.apply(instance, MasonJarSpecialRenderer.Unbaked::new));
@@ -86,7 +86,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(BakingContext context) {
+		public SpecialModelRenderer<DataComponentMap> bake(BakingContext context) {
 			return new MasonJarSpecialRenderer(this.defaultLid(), Minecraft.getInstance().getItemModelResolver());
 		}
 	}

@@ -1,10 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:time_log"
-  },
+  "ingredient": "twilightforest:time_log",
   "result": {
-    "count": 1,
     "id": "twilightforest:hollow_time_log"
   }
 }

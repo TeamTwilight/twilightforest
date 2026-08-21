@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public class DamageSourcesTransformer implements ITransformer<MethodNode> {
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
 		ASMUtil.findInstructions(
 			node,
 			Opcodes.ARETURN
@@ -38,12 +38,12 @@ public class DamageSourcesTransformer implements ITransformer<MethodNode> {
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext iTransformerVotingContext) {
+	public TransformerVoteResult castVote(ITransformerVotingContext iTransformerVotingContext) {
 		return TransformerVoteResult.YES;
 	}
 
 	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
+	public Set<Target<MethodNode>> targets() {
 		return Set.of(Target.targetMethod(
 			"net.minecraft.world.damagesource.DamageSources",
 			"mobAttack",
@@ -56,7 +56,7 @@ public class DamageSourcesTransformer implements ITransformer<MethodNode> {
 	}
 
 	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
+	public TargetType<MethodNode> getTargetType() {
 		return TargetType.METHOD;
 	}
 }

@@ -20,7 +20,7 @@ import java.util.Set;
 public class CancelElytraRenderingTransformer implements ITransformer<MethodNode> {
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
 		ASMUtil.findInstructions(
 				node,
 				Opcodes.IRETURN
@@ -40,12 +40,12 @@ public class CancelElytraRenderingTransformer implements ITransformer<MethodNode
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
+	public TransformerVoteResult castVote(ITransformerVotingContext context) {
 		return TransformerVoteResult.YES;
 	}
 
 	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
+	public Set<Target<MethodNode>> targets() {
 		return Set.of(Target.targetMethod(
 			"net.minecraft.client.renderer.entity.layers.ElytraLayer",
 			"shouldRender",
@@ -54,7 +54,7 @@ public class CancelElytraRenderingTransformer implements ITransformer<MethodNode
 	}
 
 	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
+	public TargetType<MethodNode> getTargetType() {
 		return TargetType.METHOD;
 	}
 

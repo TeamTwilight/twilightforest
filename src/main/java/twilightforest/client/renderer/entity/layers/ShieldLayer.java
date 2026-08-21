@@ -76,14 +76,14 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 					BlockDisplayContext.create(),
 					42L
 				);
-				modelState.submit(
-					stack,
-					buffer.getBuffer(Sheets.translucentItemSheet()),
-					model.getQuads(null, dir, Minecraft.getInstance().font.random, ModelData.EMPTY, Sheets.translucentItemSheet()),
-					new int[0],
-					LightCoordsUtil.FULL_BRIGHT,
-					OverlayTexture.NO_OVERLAY
-				);
+//				modelState.submit(
+//					stack,
+//					buffer.getBuffer(Sheets.translucentItemSheet()),
+//					model.getQuads(null, dir, Minecraft.getInstance().font.random, ModelData.EMPTY, Sheets.translucentItemSheet()),
+//					new int[0],
+//					LightCoordsUtil.FULL_BRIGHT,
+//					OverlayTexture.NO_OVERLAY
+//				);
 			}
 
 			stack.popPose();

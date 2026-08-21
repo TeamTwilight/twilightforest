@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "wooden_trapdoor",
   "key": {
-    "#": {
-      "item": "twilightforest:transformation_planks"
-    }
+    "#": "twilightforest:transformation_planks"
   },
   "pattern": [
     "###",

@@ -1,98 +1,14 @@
 {
   "variants": {
-    "axis=x,delay=0,waterlogged=false": {
+    "axis=x": {
       "model": "twilightforest:block/slider_horiz",
       "x": 90,
       "y": 90
     },
-    "axis=x,delay=0,waterlogged=true": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90,
-      "y": 90
-    },
-    "axis=x,delay=1,waterlogged=false": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90,
-      "y": 90
-    },
-    "axis=x,delay=1,waterlogged=true": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90,
-      "y": 90
-    },
-    "axis=x,delay=2,waterlogged=false": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90,
-      "y": 90
-    },
-    "axis=x,delay=2,waterlogged=true": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90,
-      "y": 90
-    },
-    "axis=x,delay=3,waterlogged=false": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90,
-      "y": 90
-    },
-    "axis=x,delay=3,waterlogged=true": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90,
-      "y": 90
-    },
-    "axis=y,delay=0,waterlogged=false": {
+    "axis=y": {
       "model": "twilightforest:block/slider"
     },
-    "axis=y,delay=0,waterlogged=true": {
-      "model": "twilightforest:block/slider"
-    },
-    "axis=y,delay=1,waterlogged=false": {
-      "model": "twilightforest:block/slider"
-    },
-    "axis=y,delay=1,waterlogged=true": {
-      "model": "twilightforest:block/slider"
-    },
-    "axis=y,delay=2,waterlogged=false": {
-      "model": "twilightforest:block/slider"
-    },
-    "axis=y,delay=2,waterlogged=true": {
-      "model": "twilightforest:block/slider"
-    },
-    "axis=y,delay=3,waterlogged=false": {
-      "model": "twilightforest:block/slider"
-    },
-    "axis=y,delay=3,waterlogged=true": {
-      "model": "twilightforest:block/slider"
-    },
-    "axis=z,delay=0,waterlogged=false": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90
-    },
-    "axis=z,delay=0,waterlogged=true": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90
-    },
-    "axis=z,delay=1,waterlogged=false": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90
-    },
-    "axis=z,delay=1,waterlogged=true": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90
-    },
-    "axis=z,delay=2,waterlogged=false": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90
-    },
-    "axis=z,delay=2,waterlogged=true": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90
-    },
-    "axis=z,delay=3,waterlogged=false": {
-      "model": "twilightforest:block/slider_horiz",
-      "x": 90
-    },
-    "axis=z,delay=3,waterlogged=true": {
+    "axis=z": {
       "model": "twilightforest:block/slider_horiz",
       "x": 90
     }

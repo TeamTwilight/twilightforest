@@ -3,26 +3,14 @@
   "category": "building",
   "key": {
     "B": [
-      {
-        "item": "minecraft:stone_bricks"
-      },
-      {
-        "item": "minecraft:mossy_stone_bricks"
-      },
-      {
-        "item": "minecraft:cracked_stone_bricks"
-      },
-      {
-        "item": "minecraft:chiseled_stone_bricks"
-      }
+      "minecraft:stone_bricks",
+      "minecraft:mossy_stone_bricks",
+      "minecraft:cracked_stone_bricks",
+      "minecraft:chiseled_stone_bricks"
     ],
     "S": [
-      {
-        "item": "minecraft:stone_slab"
-      },
-      {
-        "item": "minecraft:stone_brick_slab"
-      }
+      "minecraft:stone_slab",
+      "minecraft:stone_brick_slab"
     ]
   },
   "pattern": [

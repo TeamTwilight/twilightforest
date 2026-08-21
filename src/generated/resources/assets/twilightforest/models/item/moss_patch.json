@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:block/patch/moss"
+    "layer0": "twilightforest:item/moss_patch"
   }
 }

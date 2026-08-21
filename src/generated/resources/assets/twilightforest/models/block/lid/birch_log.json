@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/jar_lid",
   "textures": {
-    "1": "minecraft:block/birch_log_top",
-    "2": "minecraft:block/birch_log"
+    "end": "minecraft:block/birch_log_top",
+    "side": "minecraft:block/birch_log"
   }
 }

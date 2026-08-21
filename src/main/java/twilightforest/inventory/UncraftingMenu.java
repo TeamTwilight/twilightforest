@@ -4,22 +4,24 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +40,7 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.*;
 
-public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInput>> {
+public class UncraftingMenu extends AbstractCraftingMenu {
 
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
@@ -73,7 +75,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 	}
 
 	public UncraftingMenu(int id, Inventory inventory, Level level, ContainerLevelAccess positionData) {
-		super(TFMenuTypes.UNCRAFTING.get(), id);
+		super(TFMenuTypes.UNCRAFTING.get(), id, 3, 3);
 
 		this.positionData = positionData;
 		this.level = level;
@@ -108,7 +110,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 
 		this.slotsChanged(this.assemblyMatrix);
 
-		if (!FMLLoader.isProduction()) {
+		if (!FMLEnvironment.isProduction()) {
 			// Debug slot listing
 			NonNullList<Slot> slots = this.slots;
 
@@ -140,7 +142,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 
 				Recipe<?> recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				this.storedGhostRecipe = recipe;
-				ItemStack[] recipeItems = this.getIngredients(recipe);
+//				ItemStack[] recipeItems = this.getIngredients(recipe);
 
 				if (recipe instanceof ShapedRecipe rec) {
 
@@ -152,18 +154,18 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 						for (int invX = 0; invX < recipeWidth; invX++) {
 
 							int index = invX + invY * recipeWidth;
-							if (index >= recipeItems.length) continue;
+//							if (index >= recipeItems.length) continue;
 
-							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
-							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
+//							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
+//							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
 						}
 					}
 				} else {
 					for (int i = 0; i < this.uncraftingMatrix.getContainerSize(); i++) {
-						if (i < recipeItems.length) {
-							ItemStack ingredient = normalizeIngredient(recipeItems[i].copy());
-							this.uncraftingMatrix.setItem(i, ingredient);
-						}
+//						if (i < recipeItems.length) {
+//							ItemStack ingredient = normalizeIngredient(recipeItems[i].copy());
+//							this.uncraftingMatrix.setItem(i, ingredient);
+//						}
 					}
 				}
 
@@ -184,13 +186,13 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 				// mark banned items
 				for (int i = 0; i < 9; i++) {
 					ItemStack ingredient = this.uncraftingMatrix.getItem(i);
-					if (isIngredientProblematic(ingredient)) {
-						markStack(ingredient);
-					}
+//					if (isIngredientProblematic(ingredient)) {
+//						markStack(ingredient);
+//					}
 				}
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
-				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.getResultItem(this.level.registryAccess()).getCount(); //Uncrafting recipes need this method call
+//				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.assemble(this.level.registryAccess()).getCount(); //Uncrafting recipes need this method call
 				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 
@@ -236,20 +238,20 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 			ItemStack result = this.tinkerResult.getItem(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
-				if (result.getItem().isEnchantable(result)) {
-					//store copy of input enchants
-					ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
-					//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
-					if (result.has(DataComponents.ENCHANTMENTS)) {
-						Objects.requireNonNull(result.get(DataComponents.ENCHANTMENTS)).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
-					}
-					//remove any incompatible enchants
-					enchants.removeIf(holder -> !result.supportsEnchantment(holder));
-
-					//remove enchantments and replace with filtered list
-					result.remove(DataComponents.ENCHANTMENTS);
-					EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
-				}
+//				if (result.getItem().isEnchantable(result)) {
+//					//store copy of input enchants
+//					ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
+//					//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
+//					if (result.has(DataComponents.ENCHANTMENTS)) {
+//						Objects.requireNonNull(result.get(DataComponents.ENCHANTMENTS)).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
+//					}
+//					//remove any incompatible enchants
+//					enchants.removeIf(holder -> !result.supportsEnchantment(holder));
+//
+//					//remove enchantments and replace with filtered list
+//					result.remove(DataComponents.ENCHANTMENTS);
+//					EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
+//				}
 
 				this.tinkerResult.setItem(0, result);
 				this.uncraftingMatrix.uncraftingCost = 0;
@@ -272,9 +274,9 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 		TFItemStackUtils.clearInfoTag(stack, TAG_MARKER);
 	}
 
-	public static boolean isIngredientProblematic(ItemStack ingredient) {
-		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient)) || ingredient.is(Items.BARRIER);
-	}
+//	public static boolean isIngredientProblematic(ItemStack ingredient) {
+//		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient)) || ingredient.is(Items.BARRIER);
+//	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
 		if (ingredient.getCount() > 1) {
@@ -288,21 +290,21 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 		List<Recipe<?>> recipes = new ArrayList<>();
 
 		if (!inputStack.isEmpty()) {
-			for (RecipeHolder<?> recipe : world.getRecipeManager().getRecipes()) {
-				if (isRecipeSupported(recipe.value()) &&
-					!recipe.value().isIncomplete() &&
-					recipe.value().canCraftInDimensions(3, 3) &&
-					!recipe.value().getIngredients().isEmpty() &&
-					matches(inputStack, recipe.value().getResultItem(world.registryAccess())) &&
-					TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString())) {
-					if (TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
-						recipes.add(recipe.value());
-					}
-				}
-			}
-			for (RecipeHolder<UncraftingRecipe> uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get())) {
-				if (uncraftingRecipe.value().isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe.value());
-			}
+//			for (RecipeHolder<?> recipe : world.getRecipeManager().getRecipes()) {
+//				if (isRecipeSupported(recipe.value()) &&
+////					!recipe.value().isIncomplete() &&
+////					recipe.value().canCraftInDimensions(3, 3) &&
+////					!recipe.value().getIngredients().isEmpty() &&
+////					matches(inputStack, recipe.value().getResultItem(world.registryAccess())) &&
+//					TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString())) {
+////					if (TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
+////						recipes.add(recipe.value());
+////					}
+//				}
+//			}
+//			for (RecipeHolder<UncraftingRecipe> uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get())) {
+//				if (uncraftingRecipe.value().isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe.value());
+//			}
 		}
 
 		return recipes.toArray(new Recipe<?>[0]);
@@ -317,27 +319,27 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	private static RecipeHolder<CraftingRecipe>[] getRecipesFor(CraftingInput input, Level level) {
-		return level.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, input, level).toArray(new RecipeHolder[0]);
-	}
+//	private static RecipeHolder<CraftingRecipe>[] getRecipesFor(CraftingInput input, Level level) {
+//		return level.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, input, level).toArray(new RecipeHolder[0]);
+//	}
 
 	private void chooseRecipe(CraftingInput input) {
 
-		RecipeHolder<CraftingRecipe>[] recipes = getRecipesFor(input, this.level);
+//		RecipeHolder<CraftingRecipe>[] recipes = getRecipesFor(input, this.level);
 
-		if (recipes.length == 0) {
-			this.tinkerResult.setItem(0, ItemStack.EMPTY);
-			return;
-		}
+//		if (recipes.length == 0) {
+//			this.tinkerResult.setItem(0, ItemStack.EMPTY);
+//			return;
+//		}
 
-		RecipeHolder<CraftingRecipe> recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
+//		RecipeHolder<CraftingRecipe> recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
-		if (recipe != null && (!this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe.id()))) {
-			this.tinkerResult.setRecipeUsed(recipe);
-			this.tinkerResult.setItem(0, recipe.value().assemble(input, this.level.registryAccess()));
-		} else {
-			this.tinkerResult.setItem(0, ItemStack.EMPTY);
-		}
+//		if (recipe != null && this.level instanceof ServerLevel server && (!server.getGameRules().get(GameRules.LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe.id()))) {
+//			this.tinkerResult.setRecipeUsed(recipe);
+//			this.tinkerResult.setItem(0, recipe.value().assemble(input));
+//		} else {
+//			this.tinkerResult.setItem(0, ItemStack.EMPTY);
+//		}
 	}
 
 	/**
@@ -369,9 +371,9 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 			return true;
 		}
 
-		if (inputStack.getItem() instanceof ArmorItem input && resultStack.getItem() instanceof ArmorItem result) {
-			return input.getEquipmentSlot() == result.getEquipmentSlot();
-		}
+//		if (inputStack.getItem() instanceof ArmorItem input && resultStack.getItem() instanceof ArmorItem result) {
+//			return input.getEquipmentSlot() == result.getEquipmentSlot();
+//		}
 
 		return false;
 	}
@@ -407,7 +409,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 		}
 
 		// okay, if we're here the input item must be enchanted, and we are repairing or recrafting it
-		if (!output.getItem().isEnchantable(output)) return 0; // Assuming the above comment is correct, we check this here and return 0 if true
+//		if (!output.getItem().isEnchantable(output)) return 0; // Assuming the above comment is correct, we check this here and return 0 if true
 
 		int cost = 0;
 
@@ -456,13 +458,13 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 	}
 
 	@Override
-	public void clicked(int slotNum, int mouseButton, ClickType clickType, Player player) {
+	public void clicked(int slotNum, int mouseButton, ContainerInput clickType, Player player) {
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.assemblyMatrix
 			&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
-			if (this.assemblyMatrix.isEmpty() && (clickType != ClickType.SWAP || player.getInventory().getItem(mouseButton).isEmpty())) {
+			if (this.assemblyMatrix.isEmpty() && (clickType != ContainerInput.SWAP || player.getInventory().getItem(mouseButton).isEmpty())) {
 				slotNum -= 9;
 			}
 		}
@@ -520,9 +522,9 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 		int count = matrix.getContainerSize();
 		for (int i = 0; i < matrix.getContainerSize(); i++) {
 
-			if (isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i)) || !isDamageableComponent(matrix.getItem(i))) {
-				count--;
-			}
+//			if (isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i)) || !isDamageableComponent(matrix.getItem(i))) {
+//				count--;
+//			}
 		}
 		return count;
 	}
@@ -554,7 +556,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 				}
 				slot.onQuickCraft(itemstack1, itemstack);
 			} else if (slotNum == 1) {
-				this.positionData.execute((p_39378_, p_39379_) -> itemstack1.getItem().onCraftedBy(itemstack1, p_39378_, player));
+				this.positionData.execute((p_39378_, p_39379_) -> itemstack1.getItem().onCraftedBy(itemstack1, player));
 				if (!this.moveItemStackTo(itemstack1, 20, 56, true)) {
 					return ItemStack.EMPTY;
 				}
@@ -598,16 +600,16 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 		});
 	}
 
-	private ItemStack[] getIngredients(Recipe<?> recipe) {
-		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
-
-		for (int i = 0; i < recipe.getIngredients().size(); i++) {
-			ItemStack[] matchingStacks = Arrays.stream(recipe.getIngredients().get(i).getItems()).filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).toArray(ItemStack[]::new);
-			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
-		}
-
-		return stacks;
-	}
+//	private ItemStack[] getIngredients(Recipe<?> recipe) {
+////		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
+//
+//		for (int i = 0; i < recipe.getIngredients().size(); i++) {
+//			ItemStack[] matchingStacks = Arrays.stream(recipe.getIngredients().get(i).getItems()).filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).toArray(ItemStack[]::new);
+//			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
+//		}
+//
+//		return stacks;
+//	}
 
 	@Override
 	public boolean stillValid(Player player) {
@@ -615,55 +617,55 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 	}
 
 	@Override
-	public void fillCraftSlotsStackedContents(StackedContents stackedContents) {
+	public void fillCraftSlotsStackedContents(StackedItemContents stackedContents) {
 		this.assemblyMatrix.fillStackedContents(stackedContents);
 	}
 
+	//	@Override
+//	public void clearCraftingContent() {
+//		this.tinkerInput.clearContent();
+//		this.assemblyMatrix.clearContent();
+//		this.tinkerResult.clearContent();
+//	}
+
 	@Override
-	public void clearCraftingContent() {
-		this.tinkerInput.clearContent();
-		this.assemblyMatrix.clearContent();
-		this.tinkerResult.clearContent();
+	public Slot getResultSlot() {
+		return this.slots.get(1); // tinkerResult slot
 	}
 
 	@Override
-	public int getResultSlotIndex() {
-		return 1; // tinkerResult slot
+	public List<Slot> getInputGridSlots() {
+		return this.slots.subList(11, 20);
 	}
 
 	@Override
-	public int getGridWidth() {
-		return this.assemblyMatrix.getWidth();
+	protected Player owner() {
+		return this.player;
 	}
 
-	@Override
-	public int getGridHeight() {
-		return this.assemblyMatrix.getHeight();
-	}
-
-	@Override
-	public int getSize() {
-		return 20;
-	}
+	//	@Override
+//	public int getSize() {
+//		return 20;
+//	}
 
 	@Override
 	public RecipeBookType getRecipeBookType() {
 		return RecipeBookType.CRAFTING;
 	}
 
-	@Override
-	public boolean shouldMoveToInventory(int slot) {
-		return slot == 0 || (11 <= slot && slot <= 19);
-	}
+//	@Override
+//	public boolean shouldMoveToInventory(int slot) {
+//		return slot == 0 || (11 <= slot && slot <= 19);
+//	}
 
-	@Override
-	public boolean recipeMatches(RecipeHolder<Recipe<RecipeInput>> recipeHolder) {
-		return recipeHolder.value().matches(this.assemblyMatrix.asCraftInput(), this.player.level());
-	}
+//	@Override
+//	public boolean recipeMatches(RecipeHolder<Recipe<RecipeInput>> recipeHolder) {
+//		return recipeHolder.value().matches(this.assemblyMatrix.asCraftInput(), this.player.level());
+//	}
 
-	@SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
-	@Override
-	public void handlePlacement(boolean placeAll, RecipeHolder<?> recipe, ServerPlayer player) {
-		new UncrafterPlaceRecipe<>(this).recipeClicked(player, (RecipeHolder<Recipe<RecipeInput>>) recipe, placeAll);
-	}
+//	@SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
+//	@Override
+//	public PostPlaceAction handlePlacement(boolean useMaxItems, boolean allowDroppingItemsToClear, RecipeHolder<?> recipe, ServerLevel level, Inventory inventory) {
+//		return new UncrafterPlaceRecipe<>(this).recipeClicked(player, (RecipeHolder<Recipe<RecipeInput>>) recipe, useMaxItems);
+//	}
 }

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_banister",
   "key": {
-    "-": {
-      "item": "minecraft:bamboo_slab"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "-": "minecraft:bamboo_slab",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "---",

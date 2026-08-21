@@ -1,9 +1,10 @@
 {
-  "parent": "twilightforest:block/hollow_log_moss",
-  "render_type": "minecraft:cutout",
+  "parent": "twilightforest:block/horizontal_hollow_log_carpet",
   "textures": {
-    "inner": "minecraft:block/stripped_crimson_stem",
-    "side": "minecraft:block/crimson_stem",
-    "top": "minecraft:block/crimson_stem_top"
+    "carpet": "twilightforest:block/moss_patch",
+    "end": "minecraft:block/crimson_stem_top",
+    "inside": "minecraft:block/stripped_crimson_stem",
+    "overhang": "twilightforest:block/moss_overhang",
+    "side": "minecraft:block/crimson_stem"
   }
 }

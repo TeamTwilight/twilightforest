@@ -18,7 +18,7 @@ import java.util.Set;
 public class BeardifierClassTransformer implements ITransformer<ClassNode> {
 
 	@Override
-	public @NotNull ClassNode transform(ClassNode node, ITransformerVotingContext context) {
+	public ClassNode transform(ClassNode node, ITransformerVotingContext context) {
 		node.fields.add(new FieldNode(
 			Opcodes.ACC_PUBLIC,
 			"twilightforest_customStructureDensities",
@@ -30,17 +30,17 @@ public class BeardifierClassTransformer implements ITransformer<ClassNode> {
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
+	public TransformerVoteResult castVote(ITransformerVotingContext context) {
 		return TransformerVoteResult.YES;
 	}
 
 	@Override
-	public @NotNull Set<Target<ClassNode>> targets() {
+	public Set<Target<ClassNode>> targets() {
 		return Set.of(Target.targetClass("net.minecraft.world.level.levelgen.Beardifier"));
 	}
 
 	@Override
-	public @NotNull TargetType<ClassNode> getTargetType() {
+	public TargetType<ClassNode> getTargetType() {
 		return TargetType.CLASS;
 	}
 

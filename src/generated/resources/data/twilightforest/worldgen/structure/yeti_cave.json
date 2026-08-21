@@ -34,13 +34,19 @@
           "generation": 3,
           "pages": [
             {
-              "raw": "{\"translate\":\"twilightforest.book.yeticave.1\"}"
+              "raw": {
+                "translate": "twilightforest.book.yeticave.1"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.yeticave.2\"}"
+              "raw": {
+                "translate": "twilightforest.book.yeticave.2"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.yeticave.3\"}"
+              "raw": {
+                "translate": "twilightforest.book.yeticave.3"
+              }
             }
           ],
           "resolved": true,
@@ -50,7 +56,6 @@
         },
         "twilightforest:translatable_book": {}
       },
-      "count": 1,
       "id": "minecraft:written_book"
     },
     "hint_mob": "twilightforest:kobold"

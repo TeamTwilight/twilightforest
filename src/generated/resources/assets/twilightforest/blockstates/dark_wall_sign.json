@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/dark_wall_sign"
+      "model": "twilightforest:block/dark_sign"
     }
   }
 }

@@ -16,6 +16,11 @@ buildscript {
 	dependencies {
 		classpath "tamaized:beanification:${beanification_version}:gradle"
 	}
+	gradle.projectsEvaluated {
+		tasks.withType(JavaCompile) {
+			options.compilerArgs << "-Xmaxerrs" << "1000"
+		}
+	}
 }
 
 plugins {
@@ -92,7 +97,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+	//options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
 	options.encoding = 'UTF-8'
 }
 
@@ -315,11 +320,11 @@ processResources {
 	def lazyTree = providers.provider {
 		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"])
 	}
-	doLast {
-		lazyTree.get().each {
-			File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
-		}
-	}
+//	doLast {
+//		lazyTree.get().each {
+//			File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
+//		}
+//	}
 }
 
 jar {

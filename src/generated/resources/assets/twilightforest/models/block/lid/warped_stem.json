@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/jar_lid",
   "textures": {
-    "1": "minecraft:block/warped_stem_top",
-    "2": "minecraft:block/warped_stem"
+    "end": "minecraft:block/warped_stem_top",
+    "side": "minecraft:block/warped_stem"
   }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/boss_spawner"
+      "model": "twilightforest:block/hydra_boss_spawner"
     }
   }
 }

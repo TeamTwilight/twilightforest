@@ -54,10 +54,7 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
+        "item_stack": "#c:ingots/gold",
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -70,10 +67,7 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
+        "item_stack": "#c:ingots/gold",
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -92,10 +86,7 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
+        "item_stack": "#c:ingots/gold",
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -108,10 +99,7 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
+        "item_stack": "#c:ingots/gold",
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -130,10 +118,7 @@
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
-        "item_stack": {
-          "count": 1,
-          "id": "minecraft:gold_ingot"
-        },
+        "item_stack": "#c:ingots/gold",
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -153,6 +138,7 @@
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -166,6 +152,7 @@
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -185,6 +172,7 @@
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -198,6 +186,7 @@
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -211,6 +200,7 @@
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -230,6 +220,7 @@
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.01
@@ -248,5 +239,8 @@
       "path": "frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.lucid_lands.title"
+  },
   "width": 48
 }

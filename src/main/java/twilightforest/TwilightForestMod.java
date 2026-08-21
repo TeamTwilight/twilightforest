@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tamaized.beanification.BeanContext;
 import tamaized.beanification.Configurable;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
@@ -98,10 +97,10 @@ public final class TwilightForestMod {
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {
-		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		bus.addListener(CuriosCompat::registerCurioRenderers);
-		bus.addListener(CuriosCompat::registerCurioLayers);
+//		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+//		bus.addListener(CuriosCompat::registerCuriosCapabilities);
+//		bus.addListener(CuriosCompat::registerCurioRenderers);
+//		bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
 	public static Identifier prefix(String name) {

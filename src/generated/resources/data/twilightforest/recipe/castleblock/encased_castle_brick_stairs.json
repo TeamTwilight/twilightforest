@@ -3,12 +3,8 @@
   "category": "building",
   "key": {
     "#": [
-      {
-        "item": "twilightforest:encased_castle_brick_pillar"
-      },
-      {
-        "item": "twilightforest:encased_castle_brick_tile"
-      }
+      "twilightforest:encased_castle_brick_pillar",
+      "twilightforest:encased_castle_brick_tile"
     ]
   },
   "pattern": [

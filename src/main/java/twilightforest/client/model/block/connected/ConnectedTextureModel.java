@@ -1,26 +1,23 @@
 package twilightforest.client.model.block.connected;
 
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.cuboid.ItemTransforms;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.model.data.ModelProperty;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class ConnectedTextureModel implements IDynamicBakedModel {
+public class ConnectedTextureModel {
 
 	private final Set<Direction> connectedFaces;
 	private final Set<Direction> unculledFaces;
@@ -31,14 +28,14 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	private final boolean usesAO;
 	private final boolean usesBlockLight;
 	private final ItemTransforms transforms;
+//	@Nullable
+//	private final ChunkRenderTypeSet blockRenderTypes;
 	@Nullable
-	private final ChunkRenderTypeSet blockRenderTypes;
-	@Nullable
-	private final RenderType itemRenderType;
+//	private final RenderType itemRenderType;
 	private final List<Block> validConnectors;
 	private static final ModelProperty<ConnectedTextureData> DATA = new ModelProperty<>();
 
-	public ConnectedTextureModel(Set<Direction> connectedFaces, Set<Direction> unculledFaces, boolean renderOverlayOnAllFaces, List<Block> connectableBlocks, Map<Direction, BakedQuad[]> baseQuads, Map<Direction, BakedQuad[][]> connectedQuads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
+	public ConnectedTextureModel(Set<Direction> connectedFaces, Set<Direction> unculledFaces, boolean renderOverlayOnAllFaces, List<Block> connectableBlocks, Map<Direction, BakedQuad[]> baseQuads, Map<Direction, BakedQuad[][]> connectedQuads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms) {
 		this.connectedFaces = connectedFaces;
 		this.unculledFaces = unculledFaces;
 		this.renderOverlayOnAllFaces = renderOverlayOnAllFaces;
@@ -49,11 +46,10 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		this.usesAO = usesAO;
 		this.usesBlockLight = usesBlockLight;
 		this.transforms = transforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
+//		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+//		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
 	}
 
-	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random, ModelData extraData, @Nullable RenderType type) {
 		if (side == null) {
 			List<BakedQuad> quadList = new ArrayList<>();
@@ -79,7 +75,6 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		return quads;
 	}
 
-	@Override
 	public ModelData getModelData(BlockAndTintGetter getter, BlockPos pos, BlockState state, ModelData modelData) {
 		ConnectedTextureData data = new ConnectedTextureData();
 
@@ -118,40 +113,40 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 
-	@Override
-	public boolean useAmbientOcclusion() {
-		return this.usesAO;
-	}
+//	@Override
+//	public boolean useAmbientOcclusion() {
+//		return this.usesAO;
+//	}
 
-	@Override
-	public boolean isGui3d() {
-		return true;
-	}
+//	@Override
+//	public boolean isGui3d() {
+//		return true;
+//	}
 
-	@Override
-	public boolean usesBlockLight() {
-		return this.usesBlockLight;
-	}
+//	@Override
+//	public boolean usesBlockLight() {
+//		return this.usesBlockLight;
+//	}
 
-	@Override
-	public TextureAtlasSprite getParticleIcon() {
-		return this.particle;
-	}
+//	@Override
+//	public TextureAtlasSprite getParticleIcon() {
+//		return this.particle;
+//	}
 
-	@Override
-	public ItemTransforms getTransforms() {
-		return this.transforms;
-	}
+//	@Override
+//	public ItemTransforms getTransforms() {
+//		return this.transforms;
+//	}
 
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
-		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
+//	@Override
+//	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
+//		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
+//	}
 
-	@Override
-	public RenderType getRenderType(ItemStack stack) {
-		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
-	}
+//	@Override
+//	public RenderType getRenderType(ItemStack stack) {
+//		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
+//	}
 
 	private static final class ConnectedTextureData {
 		private final ConnectionLogic[][] logic = new ConnectionLogic[6][4];

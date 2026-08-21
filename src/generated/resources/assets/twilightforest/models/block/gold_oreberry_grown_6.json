@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/abstract_bush_grown_6",
-  "textures": {
-    "all": "twilightforest:block/gold_oreberry_ripe"
-  }
-}

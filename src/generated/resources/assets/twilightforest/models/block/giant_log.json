@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:block/block",
   "loader": "twilightforest:giant_block",
-  "parent_block": "minecraft:oak_log",
   "textures": {
     "down": "minecraft:block/oak_log_top",
     "east": "minecraft:block/oak_log",

@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:block/trollber"
+    "layer0": "twilightforest:block/trollber",
+    "layer1": "twilightforest:block/trollber_emissive"
   }
 }

@@ -42,7 +42,7 @@ public class UncraftingRecipe extends ShapedRecipe {
 	private final ShapedRecipePattern pattern;
 
 	public UncraftingRecipe(CommonInfo commonInfo, int cost, Ingredient input, int count, ShapedRecipePattern pattern) {
-		super(commonInfo, new CraftingBookInfo(CraftingBookCategory.MISC, "uncrafting"), pattern, new ItemStackTemplate(Items.AIR, count));
+		super(commonInfo, new CraftingBookInfo(CraftingBookCategory.MISC, "uncrafting"), pattern, new ItemStackTemplate(Items.STICK, count)); //TODO: Air cannot be used
 		this.commonInfo = commonInfo;
 		this.cost = cost;
 		this.input = input;

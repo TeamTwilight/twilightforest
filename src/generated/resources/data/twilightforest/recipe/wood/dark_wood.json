@@ -3,9 +3,7 @@
   "category": "building",
   "group": "bark",
   "key": {
-    "#": {
-      "item": "twilightforest:dark_log"
-    }
+    "#": "twilightforest:dark_log"
   },
   "pattern": [
     "##",

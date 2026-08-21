@@ -20,7 +20,7 @@ import java.util.Set;
 public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
 		ASMUtil.findMethodInstructions(
 			node,
 			Opcodes.INVOKEVIRTUAL,
@@ -44,12 +44,12 @@ public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
+	public TransformerVoteResult castVote(ITransformerVotingContext context) {
 		return TransformerVoteResult.YES;
 	}
 
 	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
+	public Set<Target<MethodNode>> targets() {
 		return Set.of(Target.targetMethod(
 			"net.minecraft.world.level.chunk.status.ChunkStatusTasks",
 			"generateSurface",
@@ -58,7 +58,7 @@ public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 	}
 
 	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
+	public TargetType<MethodNode> getTargetType() {
 		return TargetType.METHOD;
 	}
 

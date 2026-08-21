@@ -114,7 +114,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 
 		//other vanilla tags
 		this.tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addTag(TFBiomeTags.IS_TWILIGHT);
-		this.tag(BiomeTags.WITHOUT_PATROL_SPAWNS).addTag(TFBiomeTags.IS_TWILIGHT);
+		//this.tag(BiomeTags.WITHOUT_PATROL_SPAWNS).addTag(TFBiomeTags.IS_TWILIGHT); //TODO: EnvironmentAttribute
 		this.tag(BiomeTags.WITHOUT_ZOMBIE_SIEGES).addTag(TFBiomeTags.IS_TWILIGHT);
 
 		//even though we won't spawn vanilla frogs, we'll still add support for the variants
@@ -123,9 +123,9 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 
 		this.tag(BiomeTags.SPAWNS_SNOW_FOXES).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
 		this.tag(BiomeTags.SPAWNS_WHITE_RABBITS).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
-		this.tag(BiomeTags.SNOW_GOLEM_MELTS).add(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP);
+		//this.tag(BiomeTags.SNOW_GOLEM_MELTS).add(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP); //TODO: EnvironmentAttribute
 
-		this.tag(BiomeTags.HAS_CLOSER_WATER_FOG).add(TFBiomes.SPOOKY_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP);
+		//this.tag(BiomeTags.HAS_CLOSER_WATER_FOG).add(TFBiomes.SPOOKY_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP); //TODO: EnvironmentAttribute
 	}
 
 	@Override

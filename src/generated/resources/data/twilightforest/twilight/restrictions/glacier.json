@@ -4,7 +4,6 @@
   ],
   "enforcement": "twilightforest:frost",
   "locked_biome_toast": {
-    "count": 1,
     "id": "twilightforest:alpha_yeti_fur"
   },
   "multiplier": 1.0,

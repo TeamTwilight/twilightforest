@@ -1,24 +1,14 @@
 {
-  "carvers": {},
+  "attributes": {
+    "minecraft:visual/fog_color": "#c0ffd8",
+    "minecraft:visual/sky_color": "#20224a",
+    "minecraft:visual/water_fog_color": "#050533"
+  },
+  "carvers": [],
   "creature_spawn_probability": 0.3,
   "downfall": 0.2,
   "effects": {
-    "fog_color": 12648408,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
-    "sky_color": 2105930,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_color": "#3f76e4"
   },
   "features": [],
   "has_precipitation": true,

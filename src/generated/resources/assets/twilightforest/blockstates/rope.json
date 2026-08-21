@@ -2,18 +2,18 @@
   "multipart": [
     {
       "apply": {
-        "model": "twilightforest:block/rope_y"
-      },
-      "when": {
-        "y": "true"
-      }
-    },
-    {
-      "apply": {
         "model": "twilightforest:block/rope_x"
       },
       "when": {
         "x": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/rope_y"
+      },
+      "when": {
+        "y": "true"
       }
     },
     {
@@ -31,16 +31,34 @@
       "when": {
         "OR": [
           {
-            "x": "true",
-            "y": "true"
+            "AND": [
+              {
+                "x": "true"
+              },
+              {
+                "y": "true"
+              }
+            ]
           },
           {
-            "y": "true",
-            "z": "true"
+            "AND": [
+              {
+                "y": "true"
+              },
+              {
+                "z": "true"
+              }
+            ]
           },
           {
-            "x": "true",
-            "z": "true"
+            "AND": [
+              {
+                "z": "true"
+              },
+              {
+                "x": "true"
+              }
+            ]
           }
         ]
       }

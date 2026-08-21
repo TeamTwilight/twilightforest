@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/banister_connected_extended",
-  "textures": {
-    "texture": "twilightforest:block/wood/planks_mine_0"
-  }
-}

@@ -1,5 +1,4 @@
 {
-  "parent": "minecraft:builtin/entity",
   "textures": {
     "particle": "twilightforest:block/stripped_mangrove_log"
   }

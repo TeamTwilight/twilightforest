@@ -96,7 +96,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::bakeCustomModels);
 		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
-		bus.addListener(this::registerAdditionalModels);
+//		bus.addListener(this::registerAdditionalModels);
 		bus.addListener(this::registerClientReloadListeners);
 		bus.addListener(this::registerAtlases);
 		bus.addListener(this::registerEntityRenderers);
@@ -118,9 +118,9 @@ public class ClientRegistrationEvents {
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
 
-		bus.addListener(TFShaders::registerShaders);
+//		bus.addListener(TFShaders::registerShaders);
 
-		bus.addListener(OverlayHandler::registerOverlays);
+//		bus.addListener(OverlayHandler::registerOverlays);
 
 		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> {
 			event.register(PotionFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new);
@@ -142,7 +142,7 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
+//		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 	}
 
 	private void registerConditionalProperties(RegisterConditionalItemModelPropertyEvent event) {
@@ -160,8 +160,8 @@ public class ClientRegistrationEvents {
 	}
 
 	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
-		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
+//		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
+//		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 
         BlockStateModel netherrackModel = event.getBakingResult().blockStateModels().get(Blocks.NETHERRACK.defaultBlockState());
 		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(netherrackModel));
@@ -181,11 +181,26 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
+//	private void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+//		event.register(ShieldLayer.LOC);
+//		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
+//		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
+//		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+//		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
+//
+//		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
+//			Identifier location = lid.identifier();
+//			String name = location.getPath();
+//			if (lid.customPath() != null) name = lid.customPath();
+//			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
+//		}
+//	}
+
 	private void cacheJarLids(ModelEvent.BakingCompleted event) {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
 			String name = lid.identifier().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
+//			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
 		});
 	}
 
@@ -203,14 +218,12 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerAtlases(RegisterTextureAtlasesEvent event) {
-		event.register(new AtlasManager.AtlasConfig(MagicPaintingAtlasInfo.ATLAS_LOCATION, MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION, false));
+		event.register(new AtlasManager.AtlasConfig(MagicPaintingAtlasInfo.ATLAS_LOCATION, MagicPaintingAtlasInfo.ATLAS_LOCATION, false));
 	}
 
 	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {
 		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
 		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
-	}
-
 	}
 
 	private void registerScreens(RegisterMenuScreensEvent event) {
@@ -588,8 +601,8 @@ public class ClientRegistrationEvents {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
-			if (renderer instanceof LivingEntityRenderer living) {
-				attachRenderLayers(living);
+			if (renderer instanceof LivingEntityRenderer<?,?,?> living) {
+//				attachRenderLayers(living);
 			}
 		}
 

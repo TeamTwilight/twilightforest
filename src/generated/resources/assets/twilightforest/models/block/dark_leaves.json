@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/leaves",
   "textures": {
-    "all": "twilightforest:block/darkwood_leaves"
+    "all": "twilightforest:block/dark_leaves"
   }
 }

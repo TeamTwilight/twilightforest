@@ -28,15 +28,15 @@ public class MultipartEntityUtilTests {
 	public void tryLookupTFPartRenderer() {
 		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
 			Identifier location = Identifier.withDefaultNamespace("test");
-			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
+			EntityRenderer<?,?> partRenderer = mock(EntityRenderer.class);
 			lookup.when(() -> BakedMultiPartRenderers.lookup(location)).thenReturn(partRenderer);
 
 			TFPart<?> part = mock(TFPart.class);
 			when(part.renderer()).thenReturn(location);
 
-			EntityRenderer<?> originalRenderer = mock(EntityRenderer.class);
+			EntityRenderer<?,?> originalRenderer = mock(EntityRenderer.class);
 
-			EntityRenderer<?> result = instance.tryLookupTFPartRenderer(originalRenderer, part);
+			EntityRenderer<?,?> result = instance.tryLookupTFPartRenderer(originalRenderer, part);
 
 			assertNotNull(result);
 			assertSame(partRenderer, result);
@@ -47,12 +47,12 @@ public class MultipartEntityUtilTests {
 	@Test
 	public void tryLookupTFPartRendererNonTFPart() {
 		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
-			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
+			EntityRenderer<?,?> partRenderer = mock(EntityRenderer.class);
 			lookup.when(() -> BakedMultiPartRenderers.lookup(any(Identifier.class))).thenReturn(partRenderer);
 
-			EntityRenderer<?> originalRenderer = mock(EntityRenderer.class);
+			EntityRenderer<?,?> originalRenderer = mock(EntityRenderer.class);
 
-			EntityRenderer<?> result = instance.tryLookupTFPartRenderer(originalRenderer, mock(Entity.class));
+			EntityRenderer<?,?> result = instance.tryLookupTFPartRenderer(originalRenderer, mock(Entity.class));
 
 			assertNotNull(result);
 			assertNotSame(partRenderer, result);

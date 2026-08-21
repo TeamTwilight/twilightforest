@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_slab",
   "key": {
-    "#": {
-      "item": "twilightforest:canopy_planks"
-    }
+    "#": "twilightforest:canopy_planks"
   },
   "pattern": [
     "###"

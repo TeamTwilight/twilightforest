@@ -26,7 +26,7 @@ public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> 
 	}
 
 	public HostileWolfModel(Function<Identifier, RenderType> type, ModelPart root) {
-		super(type, false, 5.0F, 2.0F, 2.0F, 2.0F, 24.0F);
+		super(root, type);
 		this.head = root.getChild("head");
 		this.body = root.getChild("body");
 		this.upperBody = root.getChild("upper_body");

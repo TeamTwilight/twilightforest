@@ -1,19 +1,5 @@
 {
   "parent": "minecraft:item/generated",
-  "overrides": [
-    {
-      "model": "twilightforest:item/think115",
-      "predicate": {
-        "twilightforest:think": 1.0
-      }
-    },
-    {
-      "model": "twilightforest:block/experiment115_8_8_regenerating",
-      "predicate": {
-        "twilightforest:full": 1.0
-      }
-    }
-  ],
   "textures": {
     "layer0": "twilightforest:item/experiment_115"
   }

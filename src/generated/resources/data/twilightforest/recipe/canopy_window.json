@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "tag": "c:glass_blocks"
-    },
-    "P": {
-      "item": "twilightforest:canopy_planks"
-    }
+    "G": "#c:glass_blocks",
+    "P": "twilightforest:canopy_planks"
   },
   "pattern": [
     "GPG",

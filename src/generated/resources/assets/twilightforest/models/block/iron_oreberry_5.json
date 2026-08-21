@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/abstract_bush_5",
-  "textures": {
-    "all": "twilightforest:block/iron_oreberry"
-  }
-}

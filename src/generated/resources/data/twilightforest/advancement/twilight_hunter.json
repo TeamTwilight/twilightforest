@@ -69,14 +69,14 @@
       },
       "trigger": "minecraft:player_killed_entity"
     },
-    "blockchain_goblin": {
+    "block_and_chain_goblin": {
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:blockchain_goblin",
+              "type": "twilightforest:block_and_chain_goblin",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -942,7 +942,6 @@
       "translate": "advancement.twilightforest.twilight_hunter.desc"
     },
     "icon": {
-      "count": 1,
       "id": "twilightforest:raven_feather"
     },
     "title": {
@@ -954,7 +953,7 @@
       "adherent",
       "armored_giant",
       "bighorn_sheep",
-      "blockchain_goblin",
+      "block_and_chain_goblin",
       "dwarf_rabbit",
       "death_tome",
       "deer",

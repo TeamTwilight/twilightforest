@@ -1,5 +1,4 @@
 {
-  "parent": "minecraft:builtin/entity",
   "textures": {
     "particle": "twilightforest:block/stripped_twilight_oak_log"
   }

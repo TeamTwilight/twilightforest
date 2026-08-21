@@ -2,7 +2,7 @@
   "type": "twilightforest:oreberry_bushes",
   "config": {
     "state": {
-      "Name": "twilightforest:iron_oreberry",
+      "Name": "twilightforest:iron_oreberry_bush",
       "Properties": {
         "age": "3",
         "layers": "0"

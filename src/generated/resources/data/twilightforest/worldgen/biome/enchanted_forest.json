@@ -1,35 +1,25 @@
 {
-  "carvers": {
-    "air": "twilightforest:tf_caves"
+  "attributes": {
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "twilightforest:wandering_firefly"
+        },
+        "probability": 2.5E-4
+      }
+    ],
+    "minecraft:visual/fog_color": "#c0ffd8",
+    "minecraft:visual/sky_color": "#20224a",
+    "minecraft:visual/water_fog_color": "#050533"
   },
+  "carvers": "twilightforest:tf_caves",
   "creature_spawn_probability": 0.15,
-  "downfall": 0.5,
+  "downfall": 0.0,
   "effects": {
-    "fog_color": 12648408,
-    "foliage_color": 65535,
-    "grass_color": 65535,
+    "foliage_color": "#00ffff",
+    "grass_color": "#00ffff",
     "grass_color_modifier": "twilightforest:enchanted_forest",
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
-    "particle": {
-      "options": {
-        "type": "twilightforest:wandering_firefly"
-      },
-      "probability": 2.5E-4
-    },
-    "sky_color": 2105930,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_color": "#3f76e4"
   },
   "features": [
     [],

@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/abstract_bush_grown_1",
-  "textures": {
-    "all": "twilightforest:block/maloberry_bush_ripe"
-  }
-}

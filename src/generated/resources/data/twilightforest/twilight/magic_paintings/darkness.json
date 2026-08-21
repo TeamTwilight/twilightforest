@@ -16,6 +16,7 @@
       "opacity_modifier": {
         "type": "sine_time",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.03
@@ -45,6 +46,7 @@
         "type": "day_time",
         "from": 1.0,
         "invert": true,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 2.0,
@@ -58,6 +60,7 @@
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 1.0
@@ -70,5 +73,8 @@
       "path": "frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.darkness.title"
+  },
   "width": 64
 }

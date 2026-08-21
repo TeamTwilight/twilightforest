@@ -4,7 +4,6 @@
   ],
   "enforcement": "twilightforest:acid_rain",
   "locked_biome_toast": {
-    "count": 1,
     "id": "twilightforest:lamp_of_cinders"
   },
   "multiplier": 1.0,

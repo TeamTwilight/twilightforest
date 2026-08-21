@@ -4,7 +4,7 @@
       "model": "twilightforest:block/vanishing_block"
     },
     "active=true": {
-      "model": "twilightforest:block/vanishing_block_active"
+      "model": "twilightforest:block/vanishing_block_on"
     }
   }
 }

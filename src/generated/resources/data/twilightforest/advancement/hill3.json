@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:hill2",
   "criteria": {
-    "redcap": {
+    "wraith": {
       "conditions": {
         "entity": [
           {
@@ -29,7 +29,6 @@
       ]
     },
     "icon": {
-      "count": 1,
       "id": "minecraft:glowstone_dust"
     },
     "title": {
@@ -38,7 +37,7 @@
   },
   "requirements": [
     [
-      "redcap"
+      "wraith"
     ]
   ],
   "sends_telemetry_event": true

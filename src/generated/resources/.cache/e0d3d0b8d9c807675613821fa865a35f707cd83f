@@ -1,6 +1,6 @@
-// 1.21.1	2025-11-11T22:52:40.867567802	Data Maps
-9d605f77607fab46af7ad213ed8d31788a2321c9 data/neoforge/data_maps/entity_type/parrot_imitations.json
-30c50db57cf2c1a439799e1d9f04f334efbe0ff2 data/neoforge/data_maps/item/compostables.json
+// 26.1.2	2026-08-18T23:26:07.7661712	Data Maps
+aaf736767d7e0660bb90e3835d0f1de41f25d955 data/neoforge/data_maps/entity_type/parrot_imitations.json
+afd96f81ddd677bc5552b0685df897a93f4d6445 data/neoforge/data_maps/item/compostables.json
 1bda341a4fd3cfbd09ba74b7072ce0931799b473 data/neoforge/data_maps/item/furnace_fuels.json
 8a5b0485a5ac296217fe1f69fc34d7126e5ca4c9 data/twilightforest/data_maps/block/crumble_horn.json
 7250563057afb29996423871be69f9cd4f78b7cc data/twilightforest/data_maps/block/ore_map_color.json

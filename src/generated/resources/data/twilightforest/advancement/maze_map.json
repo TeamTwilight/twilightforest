@@ -3,9 +3,13 @@
   "criteria": {
     "maze_map": {
       "conditions": {
-        "recipe_id": "twilightforest:maze_map"
+        "items": [
+          {
+            "items": "twilightforest:filled_maze_map"
+          }
+        ]
       },
-      "trigger": "minecraft:recipe_crafted"
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -19,7 +23,6 @@
     },
     "frame": "goal",
     "icon": {
-      "count": 1,
       "id": "twilightforest:filled_maze_map"
     },
     "title": {

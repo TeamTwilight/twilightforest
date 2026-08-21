@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/banister_short",
-  "textures": {
-    "texture": "minecraft:block/dark_oak_planks"
-  }
-}
