@@ -1,7 +1,7 @@
 package twilightforest.tags;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import twilightforest.TwilightForestMod;
@@ -36,6 +36,6 @@ public class TFEntityTypeTags {
 
 
 	private static TagKey<EntityType<?>> create(String modid, String tagName) {
-		return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(modid, tagName));
+		return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(modid, tagName));
 	}
 }

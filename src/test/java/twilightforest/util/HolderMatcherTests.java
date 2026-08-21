@@ -22,7 +22,7 @@ public class HolderMatcherTests {
 
 	@Test
 	public void matchesReference() {
-		Holder<Item> holder = BuiltInRegistries.ITEM.getHolderOrThrow(BuiltInRegistries.ITEM.getResourceKey(Items.OAK_PLANKS).orElseThrow());
+		Holder<Item> holder = BuiltInRegistries.ITEM.getOrThrow(BuiltInRegistries.ITEM.getResourceKey(Items.OAK_PLANKS).orElseThrow());
 
 		boolean result = instance.match(holder, holder);
 
@@ -31,8 +31,8 @@ public class HolderMatcherTests {
 
 	@Test
 	public void matchesReferenceFailed() {
-		Holder<Item> holder = BuiltInRegistries.ITEM.getHolderOrThrow(BuiltInRegistries.ITEM.getResourceKey(Items.OAK_PLANKS).orElseThrow());
-		Holder<Item> other = BuiltInRegistries.ITEM.getHolderOrThrow(BuiltInRegistries.ITEM.getResourceKey(Items.BIRCH_PLANKS).orElseThrow());
+		Holder<Item> holder = BuiltInRegistries.ITEM.getOrThrow(BuiltInRegistries.ITEM.getResourceKey(Items.OAK_PLANKS).orElseThrow());
+		Holder<Item> other = BuiltInRegistries.ITEM.getOrThrow(BuiltInRegistries.ITEM.getResourceKey(Items.BIRCH_PLANKS).orElseThrow());
 
 		boolean result = instance.match(holder, other);
 
@@ -79,7 +79,7 @@ public class HolderMatcherTests {
 
 	@Test
 	public void matchesMixed() {
-		Holder<Item> ref = BuiltInRegistries.ITEM.getHolderOrThrow(BuiltInRegistries.ITEM.getResourceKey(TFItems.EXPERIMENT_115.value()).orElseThrow());
+		Holder<Item> ref = BuiltInRegistries.ITEM.getOrThrow(BuiltInRegistries.ITEM.getResourceKey(TFItems.EXPERIMENT_115.value()).orElseThrow());
 		Holder<Item> direct = Holder.direct(TFItems.EXPERIMENT_115.value());
 		Holder<Item> deferred = TFItems.EXPERIMENT_115;
 
