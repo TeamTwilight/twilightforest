@@ -22,6 +22,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
@@ -101,7 +102,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			BlockState state = this.level().getBlockState(pos);
 			if (!state.isAir()) {
 				if (this.getOwner() instanceof ServerPlayer player) {
-					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
+					if (!NeoForge.EVENT_BUS.post(new BreakBlockEvent(this.level(), pos, state, player)).isCanceled()) {
 						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);

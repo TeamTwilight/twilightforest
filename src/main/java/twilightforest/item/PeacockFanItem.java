@@ -23,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.block.LightableBlock;
 import twilightforest.init.TFDataAttachments;
@@ -151,7 +152,7 @@ public class PeacockFanItem extends Item {
 		BlockState state = level.getBlockState(pos);
 		if (state.getBlock() instanceof FlowerBlock) {
 			if (level.getRandom().nextInt(3) == 0) {
-				if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
+				if (!NeoForge.EVENT_BUS.post(new BreakBlockEvent(level, pos, state, player)).isCanceled()) {
 					level.destroyBlock(pos, true);
 					cost++;
 				}
