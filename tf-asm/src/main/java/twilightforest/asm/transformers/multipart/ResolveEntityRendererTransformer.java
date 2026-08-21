@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.multipart;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleMethodProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -18,10 +15,15 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.MultipartHooks#resolveEntityRenderer}
  */
-public class ResolveEntityRendererTransformer implements ITransformer<MethodNode> {
+public class ResolveEntityRendererTransformer extends SimpleMethodProcessor {
 
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public ProcessorName name() {
+		return ASMUtil.named("resolve_entity_renderer");
+	}
+
+	@Override
+	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findFieldInstructions(
 				node,
 				Opcodes.GETFIELD,
@@ -41,7 +43,7 @@ public class ResolveEntityRendererTransformer implements ITransformer<MethodNode
 			).findFirst())).filter(Optional::isPresent).map(Optional::get)
 			.forEach(target -> node.instructions.insert(
 				target,
-				ASMAPI.listOf(
+				ASMUtil.listOf(
 					new VarInsnNode(Opcodes.ALOAD, 1),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
@@ -51,26 +53,15 @@ public class ResolveEntityRendererTransformer implements ITransformer<MethodNode
 					)
 				)
 			));
-		return node;
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public Set<Target> targets() {
+		return Set.of(new Target(
 			"net.minecraft.client.renderer.entity.EntityRenderDispatcher",
 			"getRenderer",
 			"(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;"
 		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

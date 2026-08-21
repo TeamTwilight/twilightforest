@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.entity;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleMethodProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 import twilightforest.asm.ASMUtil;
@@ -15,15 +12,21 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.EntityHooks#overrideStayCloseToHolder}
  */
-public class PathFinderUnrestrainedByLeashTransformer implements ITransformer<MethodNode> {
+public class PathFinderUnrestrainedByLeashTransformer extends SimpleMethodProcessor {
+
 	@Override
-	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext iTransformerVotingContext) {
+	public ProcessorName name() {
+		return ASMUtil.named("path_finder_unrestrained_by_leash");
+	}
+
+	@Override
+	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findInstructions(
 			node,
 			Opcodes.IRETURN
 		).forEach(target -> node.instructions.insertBefore(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0), // PathfinderMob.this
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
@@ -33,26 +36,14 @@ public class PathFinderUnrestrainedByLeashTransformer implements ITransformer<Me
 				)
 			)
 		));
-
-		return node;
 	}
 
 	@Override
-	public @NotNull TransformerVoteResult castVote(ITransformerVotingContext iTransformerVotingContext) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public @NotNull Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public Set<Target> targets() {
+		return Set.of(new Target(
 			"net.minecraft.world.entity.PathfinderMob",
 			"shouldStayCloseToLeashHolder",
 			"()Z"
 		));
-	}
-
-	@Override
-	public @NotNull TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 }

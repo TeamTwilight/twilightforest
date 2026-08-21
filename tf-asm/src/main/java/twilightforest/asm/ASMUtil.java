@@ -1,5 +1,6 @@
 package twilightforest.asm;
 
+import net.neoforged.neoforgespi.transformation.ProcessorName;
 import org.objectweb.asm.tree.*;
 
 import java.util.Optional;
@@ -11,6 +12,18 @@ public class ASMUtil {
 
 	private ASMUtil() {
 
+	}
+
+	public static ProcessorName named(String name) {
+		return new ProcessorName("twilightforest", name);
+	}
+
+	public static InsnList listOf(AbstractInsnNode... instructions) {
+		InsnList list = new InsnList();
+		for (AbstractInsnNode node : instructions) {
+			list.add(node);
+		}
+		return list;
 	}
 
 	public static Stream<AbstractInsnNode> streamInstructions(MethodNode node) {
