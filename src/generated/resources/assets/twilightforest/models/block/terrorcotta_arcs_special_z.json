@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/util/cube_column_rotationally_special_z",
+  "textures": {
+    "end": "twilightforest:block/terrorcotta_arcs_end",
+    "side_a": "twilightforest:block/terrorcotta_arcs_side_a",
+    "side_b": "twilightforest:block/terrorcotta_arcs_side_b"
+  }
+}

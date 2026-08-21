@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/util/three_layer_block",
+  "textures": {
+    "all": "twilightforest:block/reappearing_block_on",
+    "all2": "twilightforest:block/reappearing_block_on_layer_1",
+    "all3": "twilightforest:block/reappearing_block_on_layer_2"
+  }
+}

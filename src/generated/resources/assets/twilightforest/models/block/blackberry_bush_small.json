@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/small_bush",
+  "textures": {
+    "all": "twilightforest:block/blackberry_bush"
+  }
+}

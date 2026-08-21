@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left",
+  "textures": {
+    "bottom": "twilightforest:block/mining_door_bottom",
+    "top": "twilightforest:block/mining_door_top"
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/back"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/sky"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/terrain"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/gems"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/gems"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/1_background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/2_distant_islands_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/3_gold_dungeon_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/4_fog_1_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/5_silver_dungeon_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/6_fog_2_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/7_portal_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/8_fog_3_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/9_field_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/10_flowers_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/11_fog_4_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/12_clouds_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/13_frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_sky"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_roots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_mid"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_mid_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_fog"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_foreground"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_foreground_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_greeblings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_greeblings_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/clouds"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/mookaite_mesa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/agate_jungle"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/crystal_plains"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/background_gold"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/clouds_gold"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/golden_hills"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/golden_forest"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/golden_sands"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/background_corrupt"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/clouds_corrupt"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_peaks"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_peaks_overlay"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_forest"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_plains"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/sunset"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/sun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/faraway_palm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/ocean"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/deckchair"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/palm_tree"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/frame"
+    }
+  ]
+}

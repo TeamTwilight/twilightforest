@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/util/three_layer_block",
+  "textures": {
+    "all": "twilightforest:block/carminite_builder_on",
+    "all2": "twilightforest:block/carminite_builder_on_layer_1",
+    "all3": "twilightforest:block/carminite_builder_on_layer_2"
+  }
+}

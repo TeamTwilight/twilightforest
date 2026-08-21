@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/fullbright_cube",
+  "textures": {
+    "all": "twilightforest:block/built_block_on"
+  }
+}

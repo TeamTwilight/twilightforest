@@ -1,0 +1,295 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bottom"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        14,
+        13
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#soil",
+          "uv": [
+            4.0,
+            5.0,
+            12.0,
+            13.0
+          ]
+        },
+        "east": {
+          "rotation": 90,
+          "texture": "#soil",
+          "uv": [
+            11.0,
+            5.0,
+            13.0,
+            13.0
+          ]
+        },
+        "north": {
+          "texture": "#soil",
+          "uv": [
+            4.0,
+            12.0,
+            12.0,
+            14.0
+          ]
+        },
+        "south": {
+          "rotation": 180,
+          "texture": "#soil",
+          "uv": [
+            4.0,
+            3.0,
+            12.0,
+            5.0
+          ]
+        },
+        "up": {
+          "texture": "#soil",
+          "uv": [
+            4.0,
+            5.0,
+            12.0,
+            13.0
+          ]
+        },
+        "west": {
+          "rotation": 270,
+          "texture": "#soil",
+          "uv": [
+            3.0,
+            5.0,
+            5.0,
+            13.0
+          ]
+        }
+      },
+      "from": [
+        4,
+        0.01,
+        4
+      ],
+      "to": [
+        12,
+        2,
+        12
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#plant",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#plant",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        1,
+        2,
+        6
+      ],
+      "rotation": {
+        "angle": 45.0,
+        "axis": "y",
+        "origin": [
+          8,
+          1,
+          8
+        ]
+      },
+      "to": [
+        17,
+        18,
+        6
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#plant",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#plant",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        9,
+        2,
+        -2
+      ],
+      "rotation": {
+        "angle": 45.0,
+        "axis": "y",
+        "origin": [
+          8,
+          1,
+          8
+        ]
+      },
+      "to": [
+        9,
+        18,
+        14
+      ]
+    },
+    {
+      "faces": {
+        "south": {
+          "texture": "#top",
+          "uv": [
+            4.0,
+            3.0,
+            12.0,
+            4.0
+          ]
+        }
+      },
+      "from": [
+        4,
+        13,
+        3
+      ],
+      "to": [
+        12,
+        14,
+        4
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "rotation": 180,
+          "texture": "#top",
+          "uv": [
+            4.0,
+            12.0,
+            12.0,
+            13.0
+          ]
+        }
+      },
+      "from": [
+        4,
+        13,
+        12
+      ],
+      "to": [
+        12,
+        14,
+        13
+      ]
+    },
+    {
+      "faces": {
+        "west": {
+          "rotation": 270,
+          "texture": "#top",
+          "uv": [
+            12.0,
+            4.0,
+            13.0,
+            12.0
+          ]
+        }
+      },
+      "from": [
+        12,
+        13,
+        4
+      ],
+      "to": [
+        13,
+        14,
+        12
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "rotation": 90,
+          "texture": "#top",
+          "uv": [
+            3.0,
+            4.0,
+            4.0,
+            12.0
+          ]
+        }
+      },
+      "from": [
+        3,
+        13,
+        4
+      ],
+      "to": [
+        4,
+        14,
+        12
+      ]
+    }
+  ],
+  "textures": {
+    "bottom": "twilightforest:block/jar_bottom",
+    "particle": "twilightforest:block/jar_side",
+    "plant": "minecraft:block/poppy",
+    "side": "twilightforest:block/jar_side",
+    "soil": "minecraft:block/composter_compost",
+    "top": "twilightforest:block/jar_top"
+  }
+}

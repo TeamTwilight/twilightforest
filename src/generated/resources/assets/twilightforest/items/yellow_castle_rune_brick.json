@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:block/yellow_castle_rune_brick_0",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -256
+      }
+    ]
+  }
+}

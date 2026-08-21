@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:item/orange_force_field",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -42238
+      }
+    ]
+  }
+}

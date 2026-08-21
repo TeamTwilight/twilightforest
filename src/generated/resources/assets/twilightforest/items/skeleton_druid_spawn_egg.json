@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:item/skeleton_druid_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -6052957
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -14009577
+      }
+    ]
+  }
+}

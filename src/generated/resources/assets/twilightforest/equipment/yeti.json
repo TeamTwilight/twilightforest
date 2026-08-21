@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "twilightforest:yeti"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "twilightforest:yeti"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "twilightforest:yeti"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:block/violet_castle_door",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -11861886
+      }
+    ]
+  }
+}

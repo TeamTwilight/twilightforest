@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "twilightforest:block/mining_planks",
+    "side": "twilightforest:block/mining_planks",
+    "top": "twilightforest:block/mining_planks"
+  }
+}

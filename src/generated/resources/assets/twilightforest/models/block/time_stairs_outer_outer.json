@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "twilightforest:block/time_planks",
+    "side": "twilightforest:block/time_planks",
+    "top": "twilightforest:block/time_planks"
+  }
+}

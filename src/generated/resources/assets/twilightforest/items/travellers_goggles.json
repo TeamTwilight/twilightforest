@@ -1,0 +1,22 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "twilightforest:travellers_gear",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/travellers_goggles"
+      },
+      "modifier_directory": "twilightforest:travellers_modifiers/goggles"
+    },
+    "on_true": {
+      "type": "twilightforest:travellers_gear",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/travellers_goggles_broken"
+      },
+      "modifier_directory": "twilightforest:travellers_modifiers/goggles/broken"
+    },
+    "property": "minecraft:broken"
+  }
+}

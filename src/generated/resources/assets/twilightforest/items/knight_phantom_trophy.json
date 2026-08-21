@@ -1,0 +1,149 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "none",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "none"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "thirdperson_lefthand",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "thirdperson_lefthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "thirdperson_righthand",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "thirdperson_righthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "firstperson_lefthand",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "firstperson_lefthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "firstperson_righthand",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "firstperson_righthand"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "head",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "head"
+      },
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/minor_boss_trophy"
+            },
+            {
+              "type": "minecraft:special",
+              "base": "twilightforest:item/smaller_gui_trophy",
+              "model": {
+                "type": "twilightforest:trophy",
+                "display": "gui",
+                "kind": "knight_phantom"
+              }
+            }
+          ]
+        },
+        "when": "gui"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "ground",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "ground"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "fixed",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "fixed"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "on_shelf",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "on_shelf"
+      },
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/smaller_gui_trophy",
+          "model": {
+            "type": "twilightforest:trophy",
+            "display": "twilightforest:jarred",
+            "kind": "knight_phantom"
+          }
+        },
+        "when": "twilightforest:jarred"
+      }
+    ],
+    "property": "minecraft:display_context"
+  }
+}
