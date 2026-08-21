@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.entity;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleMethodProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -17,11 +14,17 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.EntityHooks#processWaterWalking}
  */
-public class WaterWalkTransformer implements ITransformer<MethodNode> {
+public class WaterWalkTransformer extends SimpleMethodProcessor {
+
 	@Override
-	public MethodNode transform(MethodNode method, ITransformerVotingContext context) {
-		ASMUtil.findInstructions(method, Opcodes.IRETURN).forEach(
-			(instruction) -> method.instructions.insertBefore(instruction, ASMAPI.listOf(
+	public ProcessorName name() {
+		return ASMUtil.named("water_walk");
+	}
+
+	@Override
+	public void transform(MethodNode node, SimpleTransformationContext context) {
+		ASMUtil.findInstructions(node, Opcodes.IRETURN).forEach(
+			(instruction) -> node.instructions.insertBefore(instruction, ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new VarInsnNode(Opcodes.ALOAD, 1),
 				new MethodInsnNode(
@@ -31,25 +34,14 @@ public class WaterWalkTransformer implements ITransformer<MethodNode> {
 					"(ZLnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/material/FluidState;)Z",
 					false
 				))));
-		return method;
 	}
 
 	@Override
-	public TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public Set<Target> targets() {
+		return Set.of(new Target(
 			"net.minecraft.world.entity.LivingEntity",
 			"canStandOnFluid",
 			"(Lnet/minecraft/world/level/material/FluidState;)Z"
 		));
-	}
-
-	@Override
-	public TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 }

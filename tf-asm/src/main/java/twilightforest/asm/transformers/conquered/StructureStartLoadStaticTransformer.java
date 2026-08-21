@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.conquered;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleMethodProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -17,10 +14,15 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.WorldgenHooks#loadStaticStart}
  */
-public class StructureStartLoadStaticTransformer implements ITransformer<MethodNode> {
+public class StructureStartLoadStaticTransformer extends SimpleMethodProcessor {
 
 	@Override
-	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public ProcessorName name() {
+		return ASMUtil.named("structure_start_load_static");
+	}
+
+	@Override
+	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
 			node,
 			Opcodes.INVOKESPECIAL,
@@ -29,7 +31,7 @@ public class StructureStartLoadStaticTransformer implements ITransformer<MethodN
 			"(Lnet/minecraft/world/level/levelgen/structure/Structure;Lnet/minecraft/world/level/ChunkPos;ILnet/minecraft/world/level/levelgen/structure/pieces/PiecesContainer;)V"
 		).findFirst().ifPresent(target -> node.instructions.insert(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 10),
 				new VarInsnNode(Opcodes.ALOAD, 1),
 				new MethodInsnNode(
@@ -40,26 +42,15 @@ public class StructureStartLoadStaticTransformer implements ITransformer<MethodN
 				)
 			)
 		));
-		return node;
 	}
 
 	@Override
-	public TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public Set<Target> targets() {
+		return Set.of(new Target(
 			"net.minecraft.world.level.levelgen.structure.StructureStart",
 			"loadStaticStart",
 			"(Lnet/minecraft/world/level/levelgen/structure/pieces/StructurePieceSerializationContext;Lnet/minecraft/nbt/CompoundTag;J)Lnet/minecraft/world/level/levelgen/structure/StructureStart;"
 		));
-	}
-
-	@Override
-	public TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

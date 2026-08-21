@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.beardifier;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleMethodProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 import twilightforest.asm.ASMUtil;
@@ -15,16 +12,21 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.WorldgenHooks#getCustomDensity}
  */
-public class BeardifierComputeTransformer implements ITransformer<MethodNode> {
+public class BeardifierComputeTransformer extends SimpleMethodProcessor {
 
 	@Override
-	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public ProcessorName name() {
+		return ASMUtil.named("beardifier_compute");
+	}
+
+	@Override
+	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findInstructions(
 			node,
 			Opcodes.DRETURN
 		).forEach(target -> node.instructions.insertBefore(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 1), // DensityFunction$FunctionContext from params
 				new VarInsnNode(Opcodes.ALOAD, 0), // Beardifier.this
 				new FieldInsnNode(
@@ -41,26 +43,15 @@ public class BeardifierComputeTransformer implements ITransformer<MethodNode> {
 				)
 			)
 		));
-		return node;
 	}
 
 	@Override
-	public TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public Set<Target> targets() {
+		return Set.of(new Target(
 			"net.minecraft.world.level.levelgen.Beardifier",
 			"compute",
 			"(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
 		));
-	}
-
-	@Override
-	public TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }

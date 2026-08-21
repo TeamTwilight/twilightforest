@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.block;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleMethodProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 import twilightforest.asm.ASMUtil;
@@ -15,10 +12,15 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.BlockHooks#stopBouncing}
  */
-public final class SlimeBlockBounceUpTransformer implements ITransformer<MethodNode> {
+public final class SlimeBlockBounceUpTransformer extends SimpleMethodProcessor {
 
 	@Override
-	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public ProcessorName name() {
+		return ASMUtil.named("slime_block_bounce_up");
+	}
+
+	@Override
+	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
 			node,
 			Opcodes.INVOKEVIRTUAL,
@@ -27,7 +29,7 @@ public final class SlimeBlockBounceUpTransformer implements ITransformer<MethodN
 			"()Lnet/minecraft/world/phys/Vec3;"
 		).findFirst().ifPresent(target -> node.instructions.insertBefore(
 			target,
-			ASMAPI.listOf(
+			ASMUtil.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 1),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
@@ -38,25 +40,14 @@ public final class SlimeBlockBounceUpTransformer implements ITransformer<MethodN
 				)
 			)
 		));
-		return node;
 	}
 
 	@Override
-	public TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public Set<Target> targets() {
+		return Set.of(new Target(
 			"net.minecraft.world.level.block.SlimeBlock",
 			"bounceUp",
 			"(Lnet/minecraft/world/entity/Entity;)V"
 		));
-	}
-
-	@Override
-	public TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 }

@@ -1,11 +1,8 @@
 package twilightforest.asm.transformers.armor;
 
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TargetType;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforgespi.transformation.ProcessorName;
+import net.neoforged.neoforgespi.transformation.SimpleMethodProcessor;
+import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -17,15 +14,20 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.ArmorHooks#modifyArmorVisibility}
  */
-public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodNode> {
+public class ArmorVisibilityRenderingTransformer extends SimpleMethodProcessor {
 
 	@Override
-	public MethodNode transform(MethodNode node, ITransformerVotingContext context) {
+	public ProcessorName name() {
+		return ASMUtil.named("armor_visibility_rendering");
+	}
+
+	@Override
+	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findVarInstructions(node, Opcodes.FSTORE, 4)
 			.findFirst()
 			.ifPresent(target -> node.instructions.insertBefore(
 				target,
-				ASMAPI.listOf(
+				ASMUtil.listOf(
 					new VarInsnNode(Opcodes.ALOAD, 0),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
@@ -35,26 +37,15 @@ public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodN
 					)
 				)
 			));
-		return node;
 	}
 
 	@Override
-	public TransformerVoteResult castVote(ITransformerVotingContext context) {
-		return TransformerVoteResult.YES;
-	}
-
-	@Override
-	public Set<Target<MethodNode>> targets() {
-		return Set.of(Target.targetMethod(
+	public Set<Target> targets() {
+		return Set.of(new Target(
 			"net.minecraft.world.entity.LivingEntity",
 			"getVisibilityPercent",
 			"(Lnet/minecraft/world/entity/Entity;)D"
 		));
-	}
-
-	@Override
-	public TargetType<MethodNode> getTargetType() {
-		return TargetType.METHOD;
 	}
 
 }
