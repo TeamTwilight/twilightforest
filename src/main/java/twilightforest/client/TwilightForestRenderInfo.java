@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.client.renderer.state.level.WeatherRenderState;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.client.CustomSkyboxRenderer;
 import net.neoforged.neoforge.client.CustomWeatherEffectRenderer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4fc;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFBiomes;
@@ -22,6 +24,9 @@ import twilightforest.init.TFBiomes;
 import java.util.Optional;
 
 public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWeatherEffectRenderer {
+
+	public static final Identifier SKY_RENDERER = TwilightForestMod.prefix("renderer");
+	public static final Identifier WEATHER_RENDERER = TwilightForestMod.prefix("weather");
 
 	@Nullable
 	private TFSkyRenderer skyRenderer;

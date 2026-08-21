@@ -112,6 +112,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerRangeProperties);
 		bus.addListener(this::registerSelectProperties);
 		bus.addListener(this::registerItemModels);
+		bus.addListener(this::registerCustomEnvironmentRenderers);
 
 		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
@@ -615,5 +616,10 @@ public class ClientRegistrationEvents {
 	private <T extends LivingEntityRenderState, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<?, T, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
+	}
+
+	private void registerCustomEnvironmentRenderers(RegisterCustomEnvironmentEffectRendererEvent event) {
+		event.registerSkyboxRenderer(TwilightForestRenderInfo.SKY_RENDERER, new TwilightForestRenderInfo());
+		event.registerWeatherEffectRenderer(TwilightForestRenderInfo.WEATHER_RENDERER, new TwilightForestRenderInfo());
 	}
 }

@@ -124,10 +124,10 @@ public class TFSkyRenderer implements AutoCloseable {
 					Vector3f vector3f = new Vector3f(f1, f2, f3).normalize(100.0F);
 					float f6 = (float)(random.nextDouble() * (float) Math.PI * 2.0);
 					Matrix3f matrix3f = new Matrix3f().rotateTowards(new Vector3f(vector3f).negate(), new Vector3f(0.0F, 1.0F, 0.0F)).rotateZ(-f6);
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(f4, -f4, 0.0F).mul(matrix3f).add(vector3f)));
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(f4, f4, 0.0F).mul(matrix3f).add(vector3f)));
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(-f4, f4, 0.0F).mul(matrix3f).add(vector3f)));
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(-f4, -f4, 0.0F).mul(matrix3f).add(vector3f)));
+					bufferBuilder.addVertex(new Vector3f(f4, -f4, 0.0F).mul(matrix3f).add(vector3f));
+					bufferBuilder.addVertex(new Vector3f(f4, f4, 0.0F).mul(matrix3f).add(vector3f));
+					bufferBuilder.addVertex(new Vector3f(-f4, f4, 0.0F).mul(matrix3f).add(vector3f));
+					bufferBuilder.addVertex(new Vector3f(-f4, -f4, 0.0F).mul(matrix3f).add(vector3f));
 				}
 			}
 

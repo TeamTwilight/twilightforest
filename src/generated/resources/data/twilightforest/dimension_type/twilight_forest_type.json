@@ -26,7 +26,9 @@
     "minecraft:gameplay/creaking_active": true,
     "minecraft:gameplay/eyeblossom_open": true,
     "minecraft:gameplay/piglins_zombify": false,
-    "minecraft:visual/star_brightness": 1.0
+    "minecraft:visual/star_brightness": 1.0,
+    "neoforge:custom_skybox": "twilightforest:renderer",
+    "neoforge:custom_weather_effects": "twilightforest:weather"
   },
   "coordinate_scale": 0.125,
   "has_ceiling": false,

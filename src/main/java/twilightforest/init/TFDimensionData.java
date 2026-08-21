@@ -16,8 +16,10 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.timeline.Timeline;
+import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
@@ -67,6 +69,8 @@ public class TFDimensionData {
 				.set(EnvironmentAttributes.CREAKING_ACTIVE, true)
 				.set(EnvironmentAttributes.EYEBLOSSOM_OPEN, TriState.TRUE)
 				.set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
+				.set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
+				.set(NeoForgeEnvironmentAttributes.CUSTOM_WEATHER_EFFECTS, TwilightForestRenderInfo.WEATHER_RENDERER)
 				.build(),
 			timelines.getOrThrow(TimelineTags.UNIVERSAL), //timelines
 			Optional.empty() //clock
