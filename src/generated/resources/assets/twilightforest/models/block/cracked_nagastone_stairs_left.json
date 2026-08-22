@@ -1,9 +1,8 @@
 {
   "parent": "twilightforest:block/util/bisected_stairs",
   "textures": {
-    "bottom": "twilightforest:block/stone_tiles_weathered",
+    "end": "twilightforest:block/stone_tiles_weathered",
     "middle": "twilightforest:block/nagastone_bare_weathered",
-    "side": "twilightforest:block/etched_nagastone_left_weathered",
-    "top": "twilightforest:block/stone_tiles_weathered"
+    "side": "twilightforest:block/etched_nagastone_left_weathered"
   }
 }
