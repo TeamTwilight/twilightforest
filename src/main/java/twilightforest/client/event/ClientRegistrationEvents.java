@@ -123,7 +123,7 @@ public class ClientRegistrationEvents {
 
 //		bus.addListener(TFShaders::registerShaders);
 
-//		bus.addListener(OverlayHandler::registerOverlays);
+		bus.addListener(OverlayHandler::registerOverlays);
 
 		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> {
 			event.register(PotionFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new);

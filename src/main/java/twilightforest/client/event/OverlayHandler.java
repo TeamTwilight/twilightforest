@@ -1,8 +1,6 @@
 package twilightforest.client.event;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -10,7 +8,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
@@ -27,13 +24,11 @@ import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
-import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
@@ -58,9 +53,7 @@ public class OverlayHandler {
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
 			if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
-//				RenderSystem.enableBlend();
 				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
-//				RenderSystem.disableBlend();
 			}
 		});
 		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
@@ -110,7 +103,6 @@ public class OverlayHandler {
 			if (!stack.isEmpty()) {
 				for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
 					if (questEntry.getValue().test(stack)) {
-//						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 						int j = ((screenHeight - 1) / 2) - 11;
 						int k = ((screenWidth - 1) / 2) - 3;
 						if (!ram.isColorPresent(questEntry.getKey())) {
@@ -118,7 +110,6 @@ public class OverlayHandler {
 						} else {
 							graphics.blitSprite(RenderPipelines.CROSSHAIR, QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
 						}
-//						RenderSystem.defaultBlendFunc();
 						break;
 					}
 				}
@@ -282,7 +273,7 @@ public class OverlayHandler {
 			for (Component rowText : column.textRows) {
 				int textPixelWidth = Minecraft.getInstance().font.width(rowText);
 				int textXPos = xOff + this.textAlignment.getTextOffset(textPixelWidth, this.maxPixelWidth);
-				graphics.text(Minecraft.getInstance().font, rowText, textXPos, yOff, 0x00_ff_ff_ff, false);
+				graphics.text(Minecraft.getInstance().font, rowText, textXPos, yOff, 0xff_ff_ff_00, false);
 				yOff += verticalTextPixelsAdvance;
 			}
 
@@ -313,7 +304,7 @@ public class OverlayHandler {
 			int yOff = 4;
 
 			for (Component headerRowText : this.headerRows) {
-				graphics.text(Minecraft.getInstance().font, headerRowText, xOff, yOff, 0x00_ff_ff_ff, false);
+				graphics.text(Minecraft.getInstance().font, headerRowText, xOff, yOff, 0xff_ff_ff_00, false);
 				yOff += verticalTextPixelsAdvance;
 			}
 
