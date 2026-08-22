@@ -211,8 +211,6 @@ public class ClientRegistrationEvents {
 		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
 	}
 
-	}
-
 	private void registerScreens(RegisterMenuScreensEvent event) {
 		event.register(TFMenuTypes.UNCRAFTING.get(), UncraftingScreen::new);
 	}
