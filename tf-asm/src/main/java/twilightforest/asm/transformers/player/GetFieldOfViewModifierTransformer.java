@@ -50,9 +50,9 @@ public class GetFieldOfViewModifierTransformer extends SimpleMethodProcessor {
 	@Override
 	public Set<Target> targets() {
 		return Set.of(new Target(
-				"net/minecraft/client/player/AbstractClientPlayer",
+				"net.minecraft.client.player.AbstractClientPlayer",
 				"getFieldOfViewModifier",
-				"()F"
+				"(ZF)F"
 			)
 		);
 	}

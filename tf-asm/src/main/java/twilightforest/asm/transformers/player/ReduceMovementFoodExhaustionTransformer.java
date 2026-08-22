@@ -50,12 +50,12 @@ public class ReduceMovementFoodExhaustionTransformer extends SimpleMethodProcess
 	@Override
 	public Set<Target> targets() {
 		return Set.of(new Target(
-				"net/minecraft/server/level/ServerPlayer",
+				"net.minecraft.server.level.ServerPlayer",
 				"checkMovementStatistics",
 				"(DDD)V"
 			),
 			new Target(
-				"net/minecraft/world/entity/player/Player",
+				"net.minecraft.world.entity.player.Player",
 				"jumpFromGround",
 				"()V"
 			)
