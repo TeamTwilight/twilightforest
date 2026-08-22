@@ -2,6 +2,7 @@ package twilightforest.client.model.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -11,7 +12,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TrollsteinnBlock;
 
 public class TrollsteinnModel {
-//	public static final ModelResourceLocation LIT_TROLLSTEINN = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light"));
+	public static final Identifier LIT_TROLLSTEINN = TwilightForestMod.prefix("item/trollsteinn_light");
 //	@Nullable
 //	private BakedModel litTrollsteinnModel;
 //	private final ItemOverrides overrides = new ItemOverrides() {

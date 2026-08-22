@@ -43,6 +43,8 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
+import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -96,7 +98,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::bakeCustomModels);
 		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
-//		bus.addListener(this::registerAdditionalModels);
+		bus.addListener(this::registerStandalone);
 		bus.addListener(this::registerClientReloadListeners);
 		bus.addListener(this::registerAtlases);
 		bus.addListener(this::registerEntityRenderers);
@@ -182,20 +184,25 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
-//	private void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-//		event.register(ShieldLayer.LOC);
-//		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
-//		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
-//		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
-//		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
-//
-//		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
-//			Identifier location = lid.identifier();
-//			String name = location.getPath();
-//			if (lid.customPath() != null) name = lid.customPath();
-//			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
-//		}
-//	}
+	private void registerStandalone(ModelEvent.RegisterStandalone event) {
+		Identifier trophy = TwilightForestMod.prefix("item/trophy");
+		Identifier trophy_minor = TwilightForestMod.prefix("item/trophy_minor");
+		Identifier trophy_quest = TwilightForestMod.prefix("item/trophy_quest");
+
+		event.register(new StandaloneModelKey<>(ShieldLayer.LOC::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(ShieldLayer.LOC));
+		event.register(new StandaloneModelKey<>(trophy::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy));
+		event.register(new StandaloneModelKey<>(trophy_minor::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_minor));
+		event.register(new StandaloneModelKey<>(trophy_quest::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_quest));
+		event.register(new StandaloneModelKey<>(TrollsteinnModel.LIT_TROLLSTEINN::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(TrollsteinnModel.LIT_TROLLSTEINN));
+
+		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
+			Identifier location = lid.identifier();
+			String name = location.getPath();
+			if (lid.customPath() != null) name = lid.customPath();
+			Identifier modelKey = TwilightForestMod.prefix("block/lid/" + name);
+			event.register(new StandaloneModelKey<>(modelKey::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(modelKey));
+		}
+	}
 
 	private void cacheJarLids(ModelEvent.BakingCompleted event) {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
