@@ -3,12 +3,10 @@ package twilightforest.client.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FogType;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.TFBiomes;
 
 import javax.annotation.Nullable;
@@ -26,10 +24,9 @@ public class FogHandler {
 	private static float TERRAIN_NEAR = 0.0F;
 
 	protected static void renderFog(ViewportEvent.RenderFog event) {
-		if (event.getType().equals(FogType.NONE) && Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level() instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
-			if (event.getMode().equals(FogRenderer.FogMode.FOG_SKY)) {
+		if (event.getType().equals(FogType.NONE) && Minecraft.getInstance().getCameraEntity() instanceof LocalPlayer player && player.level() instanceof ClientLevel clientLevel) {
+			if (event.getType().equals(FogType.ATMOSPHERIC)) {
 				if (SKY_CHUNK_LOADED) {
-					event.setCanceled(true);
 					boolean spooky = isSpooky(clientLevel, player);
 
 					float far = spooky ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
@@ -47,7 +44,6 @@ public class FogHandler {
 				}
 			} else {
 				if (TERRAIN_CHUNK_LOADED) {
-					event.setCanceled(true);
 					boolean spooky = isSpooky(clientLevel, player);
 
 					float far = spooky ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();

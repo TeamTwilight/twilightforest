@@ -39,7 +39,7 @@ public class PlayerHooks {
 	 * {@link GetFieldOfViewModifierTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()}
+	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()} ()}
 	 */
 	public static void straightAheadNullify(AbstractClientPlayer player) {
 		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
@@ -55,7 +55,7 @@ public class PlayerHooks {
 	 * {@link GetFieldOfViewModifierTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()}
+	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()} ()}
 	 */
 	public static void straightAheadRestore(AbstractClientPlayer player) {
 		if (!(player instanceof LocalPlayer))

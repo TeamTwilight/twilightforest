@@ -1,6 +1,7 @@
 package twilightforest.events;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,6 +10,8 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.LevelData;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -25,6 +28,8 @@ import twilightforest.world.TFTeleporter;
 
 @Component
 public class CapabilityEvents {
+
+	private static final int COMMON_INVULNERABLE_DURATION = 20;
 
 	@PostConstruct
 	private void setup() {
@@ -43,7 +48,7 @@ public class CapabilityEvents {
 
 	private void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getData(TFDataAttachments.FEATHER_FAN)) {
-			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true);
+			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true, Vec3.ZERO);
 			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
 
 			if (event.getEntity().onGround() || event.getEntity().isSwimming() || event.getEntity().isInWater()) {
@@ -58,12 +63,12 @@ public class CapabilityEvents {
 		LivingEntity living = event.getEntity();
 		// shields
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
-            FortificationShieldAttachment attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
+			FortificationShieldAttachment attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
 			if (attachment.shieldsLeft() > 0) {
 				if (living.invulnerableTime <= 0) {
 					attachment.breakShield(living, false);
 					FortificationShieldAttachment.addShieldBreakParticles(event.getSource(), living);
-					living.invulnerableTime = living.invulnerableDuration;
+					living.invulnerableTime = COMMON_INVULNERABLE_DURATION;
 				}
 				event.setCanceled(true);
 			}
@@ -73,7 +78,7 @@ public class CapabilityEvents {
 	private void spawnInTFIfNecessary(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 
-		if (serverPlayer.getRespawnPosition() == null) {
+		if (serverPlayer.getRespawnConfig() == null) {
 			newSpawnInTwilightForest(serverPlayer);
 		}
 	}
@@ -92,16 +97,18 @@ public class CapabilityEvents {
 	private static void newSpawnInTwilightForest(ServerPlayer player) {
 		if (!TFConfig.newPlayersSpawnInTF)
 			return;
-		ServerLevel level = player.getServer().getLevel(TFDimension.DIMENSION_KEY);
+		ServerLevel level = player.level().getServer().getLevel(TFDimension.DIMENSION_KEY);
 		if (level == null)
 			return;
 
 		BlockPos newDefaultSpawn = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, player.blockPosition());
 
-		player.changeDimension(TFConfig.portalForNewPlayerSpawn ?
+		player.teleport(TFConfig.portalForNewPlayerSpawn ?
 			TFTeleporter.createTransition(player, level, newDefaultSpawn, true) :
 			NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
-		player.setRespawnPosition(TFDimension.DIMENSION_KEY, newDefaultSpawn, player.getYRot(), true, false);
+		LevelData.RespawnData respawnData = new LevelData.RespawnData(new GlobalPos(TFDimension.DIMENSION_KEY, newDefaultSpawn), player.getYRot(), player.getXRot());
+		ServerPlayer.RespawnConfig respawnConfig = new ServerPlayer.RespawnConfig(respawnData, true);
+		player.setRespawnPosition(respawnConfig, false);
 
 		player.setData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST, Unit.INSTANCE);
 	}
@@ -110,7 +117,7 @@ public class CapabilityEvents {
 		CompoundTag tagCompound = player.getPersistentData();
 		if (!tagCompound.contains(Player.PERSISTED_NBT_TAG))
 			return;
-		CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
+		CompoundTag playerData = tagCompound.getCompoundOrEmpty(Player.PERSISTED_NBT_TAG);
 		if (!playerData.contains("twilightforest_banished"))
 			return;
 

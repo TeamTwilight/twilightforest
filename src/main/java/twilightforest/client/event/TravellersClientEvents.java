@@ -6,15 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.Input;
+import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
@@ -37,13 +39,13 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
-import twilightforest.tags.TFItemTags;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
+import twilightforest.tags.TFItemTags;
 
 @Component(dist = Dist.CLIENT)
 public class TravellersClientEvents {
@@ -69,6 +71,7 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::renderGlovesInFirstPerson);
 	}
 
+	// FIXME try to find another way to modify the input data and implement it for the three methods listed below
 	private void handleAgileRanger(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
@@ -112,24 +115,24 @@ public class TravellersClientEvents {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.onGround())
 			return;
 
-		Input input = localPlayer.input;
+		ClientInput input = localPlayer.input;
 		boolean lastImpulseZero = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
-		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.leftImpulse);
+		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.getMoveVector().x);
 		int currentTime = localPlayer.tickCount;
 		int lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
-		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.leftImpulse != 0) {
-			boolean isLeftSidestep = input.leftImpulse > 0;
+		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.getMoveVector().x != 0) {
+			boolean isLeftSidestep = input.getMoveVector().x > 0;
 			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
 				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
 			}
 		}
 
-		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.leftImpulse);
-		if (input.leftImpulse != 0) {
+		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.getMoveVector().x);
+		if (input.getMoveVector().x != 0) {
 			localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
-			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.leftImpulse);
+			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.getMoveVector().x);
 		}
 	}
 
@@ -242,40 +245,40 @@ public class TravellersClientEvents {
 	}
 
 	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
-		return !key.matches(event.getKey(), event.getScanCode()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
+		return !key.matches(event.getKeyEvent()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
 	}
 
 	@SuppressWarnings("unchecked") //meh
 	private void renderGlovesInFirstPerson(RenderArmEvent event) {
-        if (!TFConfig.firstPersonGloveOverlay)
-			return;
-
-        AbstractClientPlayer player = event.getPlayer();
-        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-        if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
-            return;
-
-		Minecraft minecraft = Minecraft.getInstance();
-		EntityRenderDispatcher renderDispatcher = minecraft.getEntityRenderDispatcher();
-
-		if (!(renderDispatcher.getRenderer(player) instanceof AvatarRenderer avatarRenderer))
-            return;
-
-		if (!(IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, avatarRenderer.getModel()) instanceof HumanoidModel model))
-			return;
-
-		if (!(avatarRenderer.createRenderState(player, minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false)) instanceof AvatarRenderState renderState))
-			return;
-
-		renderState.attackTime = 0.0F;
-		renderState.isCrouching = false;
-		renderState.swimAmount = 0.0F;
-        model.setupAnim(renderState);
-
-		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
-        armPart.xRot = 0.0F;
-
-        Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
-		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
-    }
+		if (TFConfig.firstPersonGloveOverlay) {
+			AbstractClientPlayer player = event.getPlayer();
+			ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+			if (chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) && !chestStack.has(TFDataComponents.EMPERORS_CLOTH)) {
+				AvatarRenderer<AbstractClientPlayer> renderer = (AvatarRenderer<AbstractClientPlayer>) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+				HumanoidModel<AvatarRenderState> model = (HumanoidModel<AvatarRenderState>) IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, renderer.getModel());
+				ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
+				AvatarRenderState renderState = renderer.createRenderState();
+				renderState.attackTime = 0.0F;
+				renderState.isCrouching = false;
+				renderState.swimAmount = 0.0F;
+				renderState.walkAnimationPos = 0.0F;
+				renderState.walkAnimationSpeed = 0.0F;
+				renderState.ageInTicks = 0.0F;
+				renderState.yRot = 0.0F;
+				renderState.xRot = 0.0F;
+				model.setupAnim(renderState);
+				armPart.xRot = 0.0F;
+				Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+				TextureAtlasSprite glove = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.ARMOR_TRIMS).getSprite(gloveLocation);
+				event.getSubmitNodeCollector().submitModelPart(
+					armPart,
+					event.getPoseStack(),
+					RenderTypes.armorCutoutNoCull(gloveLocation),
+					event.getPackedLight(),
+					OverlayTexture.NO_OVERLAY,
+					glove
+				);
+			}
+		}
+	}
 }

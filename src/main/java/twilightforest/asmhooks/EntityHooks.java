@@ -5,11 +5,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
@@ -25,7 +25,6 @@ public class EntityHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.world.entity.LivingEntity#canStandOnFluid(FluidState)}
 	 */
-	@Nullable
 	public static boolean processWaterWalking(boolean o, LivingEntity livingEntity, FluidState fluidState) {
 		if (!fluidState.is(FluidTags.WATER))
 			return o;
@@ -99,9 +98,9 @@ public class EntityHooks {
 	 * {@link net.minecraft.world.entity.Entity#move(MoverType, Vec3)}<br/>
 	 */
 	public static Entity resetStuckUnrestrained(Entity entity) {
-		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+		if (!(entity instanceof LivingEntity living) || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return entity;
-		living.stuckSpeedMultiplier = Vec3.ZERO;
+		living.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
 
 		return entity;
 	}

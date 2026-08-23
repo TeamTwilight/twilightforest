@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
@@ -51,7 +54,6 @@ import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
-import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
 import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
@@ -60,7 +62,6 @@ import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TravellersGearItemModel;
-import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
@@ -76,8 +77,7 @@ import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.init.*;
-import twilightforest.item.ArcticArmorItem;
-import twilightforest.item.PotionFlaskItem;
+import twilightforest.item.*;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
@@ -93,7 +93,6 @@ public class ClientRegistrationEvents {
 	@PostConstruct
 	private void setup(IEventBus bus) {
 		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
-		bus.addListener(this::bakeCustomModels);
 		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerAdditionalModels);
@@ -181,11 +180,12 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
+	// FIXME should be fixed after JarRenderer
 	private void cacheJarLids(ModelEvent.BakingCompleted event) {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
 			String name = lid.identifier().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
+			JarRenderer.LIDS.put(lid.lid(), event.getModelManager().getBlockModelSet().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
 		});
 	}
 
@@ -586,18 +586,18 @@ public class ClientRegistrationEvents {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
-			if (renderer instanceof LivingEntityRenderer living) {
-				attachRenderLayers(living);
+			if (renderer instanceof LivingEntityRenderer<?, ?, ?> living) {
+				attachRenderLayers((LivingEntityRenderer) living); // FIXME find the better way to avoid raw types
 			}
 		}
 
-		event.getSkins().forEach(renderer -> {
-			AvatarRenderer<AbstractClientPlayer> skin = event.getPlayerRenderer(renderer);
+		event.getSkins().forEach(modelType -> {
+			AvatarRenderer<AbstractClientPlayer> skin = event.getPlayerRenderer(modelType);
 			attachRenderLayers(Objects.requireNonNull(skin));
 		});
 	}
 
-	private <T extends LivingEntityRenderState, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<?, T, M> renderer) {
+	private <E extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<S>> void attachRenderLayers(LivingEntityRenderer<E, S, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
 	}
