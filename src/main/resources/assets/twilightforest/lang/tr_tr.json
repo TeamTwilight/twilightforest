@@ -35,6 +35,7 @@
   "advancement.twilightforest.kill_hydra": "Hidra Katili",
   "advancement.twilightforest.kill_hydra.desc": "Güçlü %s'i öldür ve kendini güçlendir",
   "advancement.twilightforest.kill_lich": "Ölülerinizi Ortaya Çıkarın",
+  "advancement.twilightforest.lich_scepters.desc": "Dört güç asasını da ele geçir",
   "advancement.twilightforest.magic_map": "Sonsuza Kadar Görebilirim",
   "advancement.twilightforest.magic_map_focus": "Ateşle Yazar",
   "advancement.twilightforest.naga_armors": "Naga Zırhçısı",
@@ -43,6 +44,7 @@
   "advancement.twilightforest.progress_yeti": "Alfa kürk",
   "advancement.twilightforest.root": "Alacakaranlık Ormanı",
   "advancement.twilightforest.twilight_hunter": "Ormanın Sessizliği",
+  "advancement.twilightforest.uncraft_uncrafting_table": "Bir Adım Fazla",
   "biome.twilightforest.clearing": "Alacakaranlık Temizliği",
   "biome.twilightforest.dark_forest": "Karanlık Orman",
   "biome.twilightforest.dark_forest_center": "Karanlık Orman Merkezi",
@@ -220,6 +222,7 @@
   "block.twilightforest.aurora_slab": "Aurora Basamak",
   "block.twilightforest.birch_banister": "Huş Korkuluğu",
   "block.twilightforest.blue_force_field": "Mavi Güç Alanı",
+  "block.twilightforest.blueberry_bush": "Yabanmersini Çalısı",
   "block.twilightforest.brown_thorns": "Dikenler",
   "item.twilightforest.snow_queen_banner_pattern.desc": "Kar Tanesi"
 }
