@@ -6,9 +6,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.ItemInHandRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
@@ -17,15 +18,15 @@ import top.theillusivec4.curios.api.client.ICurioRenderer;
 public class CharmOfKeepingRenderer implements ICurioRenderer {
 
 	@Override
-	public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack ms, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource buffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+	public <S extends LivingEntityRenderState, M extends EntityModel<? super S>> void render(ItemStack stack, SlotContext slotContext, PoseStack ms, SubmitNodeCollector buffer, int light, S renderState, RenderLayerParent<S, M> renderLayerParent, EntityRendererProvider.Context context, float yRotation, float xRotation) {
 		if (renderLayerParent.getModel() instanceof HumanoidModel<?> model) {
 			ms.pushPose();
 			model.rightLeg.translateAndRotate(ms);
 			ms.translate(-0.0D, 0.15D, -0.15D);
 			ms.mulPose(Axis.YP.rotationDegrees(0.0F));
 			ms.scale(0.3F, -0.3F, -0.3F);
-			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemRenderer());
-			renderer.renderItem(slotContext.entity(), stack, ItemDisplayContext.FIXED, false, ms, buffer, light);
+			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemModelResolver());
+			renderer.renderItem(slotContext.entity(), stack, ItemDisplayContext.FIXED, ms, buffer, light);
 			ms.popPose();
 		}
 	}

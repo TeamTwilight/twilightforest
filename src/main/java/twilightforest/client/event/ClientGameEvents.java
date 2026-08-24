@@ -56,6 +56,7 @@ import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.tags.TFItemTags;

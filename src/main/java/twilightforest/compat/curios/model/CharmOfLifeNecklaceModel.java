@@ -1,15 +1,14 @@
 package twilightforest.compat.curios.model;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
-public class CharmOfLifeNecklaceModel extends HumanoidModel<LivingEntity> {
+public class CharmOfLifeNecklaceModel extends HumanoidModel<HumanoidRenderState> {
 
 	public CharmOfLifeNecklaceModel(ModelPart root) {
 		super(root);
@@ -26,15 +25,15 @@ public class CharmOfLifeNecklaceModel extends HumanoidModel<LivingEntity> {
 		return LayerDefinition.create(meshdefinition, 64, 48);
 	}
 
-	@Override
-	protected Iterable<ModelPart> headParts() {
-		return ImmutableList.of();
-	}
+	//	@Override
+//	protected Iterable<ModelPart> headParts() {
+//		return ImmutableList.of();
+//	}
 
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(this.body);
-	}
+//	@Override
+//	protected Iterable<ModelPart> bodyParts() {
+//		return ImmutableList.of(this.body);
+//	}
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {

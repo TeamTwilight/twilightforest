@@ -2,7 +2,7 @@ package twilightforest.compat.curios;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +16,8 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.SlotResult;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+import top.theillusivec4.curios.api.client.ICurioRenderer;
+import top.theillusivec4.curios.api.common.DropRule;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import twilightforest.client.model.TFModelLayers;
@@ -75,12 +76,13 @@ public class CuriosCompat {
 	public static void keepCurios(DropRulesEvent event) {
 		if (event.getEntity() instanceof Player player) {
 			CompoundTag playerData = CharmEvents.getPlayerData(player);
-			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CONSUMED_CHARM_TAG) && playerData.contains(CharmEvents.CHARM_INV_TAG) && !playerData.getList(CharmEvents.CHARM_INV_TAG, 10).isEmpty()) {
+			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CONSUMED_CHARM_TAG) && playerData.contains(CharmEvents.CHARM_INV_TAG) && playerData.getList(CharmEvents.CHARM_INV_TAG).isPresent()) {
 				//Keep all Curios items
 				CuriosApi.getCuriosInventory(player).ifPresent(modifiable -> {
 					for (int i = 0; i < modifiable.getSlots(); ++i) {
 						int finalI = i;
-						event.addOverride(stack -> stack == modifiable.getEquippedCurios().getStackInSlot(finalI), ICurio.DropRule.ALWAYS_KEEP);
+						//noinspection removal TODO: This is just what Curios does.
+						event.addOverride(stack -> stack == modifiable.getEquippedCurios().getStackInSlot(finalI), DropRule.ALWAYS_KEEP);
 					}
 				});
 			}
@@ -93,32 +95,32 @@ public class CuriosCompat {
 
 	public static void registerCurioRenderers(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_1.get(), () -> new CharmOfLifeNecklaceRenderer(FastColor.ARGB32.colorFromFloat(1.0F, 1.0F, 0.5F, 0.5F)));
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_2.get(), () -> new CharmOfLifeNecklaceRenderer(FastColor.ARGB32.colorFromFloat(1.0F, 1.0F, 0.9F, 0.0F)));
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_1.get(), CharmOfKeepingRenderer::new);
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_2.get(), CharmOfKeepingRenderer::new);
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_3.get(), CharmOfKeepingRenderer::new);
+			ICurioRenderer.register(TFItems.CHARM_OF_LIFE_1.get(), () -> new CharmOfLifeNecklaceRenderer(ARGB.colorFromFloat(1.0F, 1.0F, 0.5F, 0.5F)));
+			ICurioRenderer.register(TFItems.CHARM_OF_LIFE_2.get(), () -> new CharmOfLifeNecklaceRenderer(ARGB.colorFromFloat(1.0F, 1.0F, 0.9F, 0.0F)));
+			ICurioRenderer.register(TFItems.CHARM_OF_KEEPING_1.get(), CharmOfKeepingRenderer::new);
+			ICurioRenderer.register(TFItems.CHARM_OF_KEEPING_2.get(), CharmOfKeepingRenderer::new);
+			ICurioRenderer.register(TFItems.CHARM_OF_KEEPING_3.get(), CharmOfKeepingRenderer::new);
 
-			CuriosRendererRegistry.register(TFItems.NAGA_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.LICH_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.MINOSHROOM_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.HYDRA_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.KNIGHT_PHANTOM_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.UR_GHAST_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.ALPHA_YETI_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.SNOW_QUEEN_TROPHY.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.QUEST_RAM_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.NAGA_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.LICH_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.MINOSHROOM_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.HYDRA_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.KNIGHT_PHANTOM_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.UR_GHAST_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.ALPHA_YETI_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.SNOW_QUEEN_TROPHY.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.QUEST_RAM_TROPHY.get(), CurioHeadRenderer::new);
 
-			CuriosRendererRegistry.register(TFBlocks.CICADA.get().asItem(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFBlocks.FIREFLY.get().asItem(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFBlocks.MOONWORM.get().asItem(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFBlocks.CICADA.get().asItem(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFBlocks.FIREFLY.get().asItem(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFBlocks.MOONWORM.get().asItem(), CurioHeadRenderer::new);
 
-			CuriosRendererRegistry.register(TFItems.CREEPER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.PIGLIN_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.PLAYER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);
-			CuriosRendererRegistry.register(TFItems.ZOMBIE_SKULL_CANDLE.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.CREEPER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.PIGLIN_SKULL_CANDLE.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.PLAYER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);
+			ICurioRenderer.register(TFItems.ZOMBIE_SKULL_CANDLE.get(), CurioHeadRenderer::new);
 		});
 	}
 
@@ -134,7 +136,7 @@ public class CuriosCompat {
 	public static boolean findAndConsumeCurio(Item item, Player player) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
 		if (slot.isPresent()) {
-			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(player.registryAccess()));
+//			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(player.registryAccess()));
 			slot.get().stack().shrink(1);
 			return true;
 		}
