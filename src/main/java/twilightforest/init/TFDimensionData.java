@@ -61,6 +61,7 @@ public class TFDimensionData {
 	public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
 		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
 		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctions.SKYLIGHT_TERRAIN : TFDensityFunctions.FORESTED_TERRAIN));
+		DensityFunction fluidLevelFloodedness = skylight ? DensityFunctions.zero() : makeFluidLevelFloodedness(finalDensity);
 
 		NoiseSettings tfNoise = NoiseSettings.create(
 			-32, //TODO Deliberate over this. For now it'll be -32
@@ -75,7 +76,7 @@ public class TFDimensionData {
 			skylight ? Blocks.AIR.defaultBlockState() : Blocks.WATER.defaultBlockState(),
 			new NoiseRouter(
 				DensityFunctions.zero(),
-				DensityFunctions.zero(),
+				fluidLevelFloodedness,
 				DensityFunctions.zero(),
 				DensityFunctions.zero(),
 				DensityFunctions.zero(),
@@ -94,9 +95,21 @@ public class TFDimensionData {
 			List.of(),
 			TFDimensionData.SEALEVEL,
 			false,
-			false,
+			!skylight,
 			false,
 			false
+		);
+	}
+
+	private static DensityFunction makeFluidLevelFloodedness(DensityFunction finalDensity) {
+		// Natural terrain openings have negative density, while blocks removed later by carvers retain
+		// positive density here. Flood only the former so streams stay wet without flooding caves.
+		return DensityFunctions.rangeChoice(
+			finalDensity,
+			-1.0,
+			0.0,
+			DensityFunctions.constant(1.0),
+			DensityFunctions.constant(-1.0)
 		);
 	}
 

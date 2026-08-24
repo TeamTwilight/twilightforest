@@ -1,5 +1,5 @@
 {
-  "aquifers_enabled": false,
+  "aquifers_enabled": true,
   "default_block": {
     "Name": "minecraft:stone"
   },
@@ -23,7 +23,14 @@
     "depth": 0.0,
     "erosion": 0.0,
     "final_density": "twilightforest:forested_terrain",
-    "fluid_level_floodedness": 0.0,
+    "fluid_level_floodedness": {
+      "type": "minecraft:range_choice",
+      "input": "twilightforest:forested_terrain",
+      "max_exclusive": 0.0,
+      "min_inclusive": -1.0,
+      "when_in_range": 1.0,
+      "when_out_of_range": -1.0
+    },
     "fluid_level_spread": 0.0,
     "initial_density_without_jaggedness": "twilightforest:forested_terrain",
     "lava": 0.0,
