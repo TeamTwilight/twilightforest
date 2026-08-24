@@ -1,25 +1,28 @@
 package twilightforest.inventory;
 
-import net.minecraft.recipebook.PlaceRecipe;
+import net.minecraft.recipebook.PlaceRecipeHelper;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import java.util.Iterator;
 
 //modified version of PlaceRecipe that uses the correct slots for the uncrafting table
-public interface UncraftingPlaceRecipe<C> extends PlaceRecipe<C> {
+public interface UncraftingPlaceRecipe<C> extends PlaceRecipeHelper {
 
 	// Slots 0 & 1 are Uncrafting input & crafting output
 	// Slots 2 to 10 are Uncrafting matrix
 	// Slots 11 to 19 are Crafting matrix
 	int matrixOffset = 11;
 
-	@Override
-	default void placeRecipe(int width, int height, int outputSlot, RecipeHolder<?> recipe, Iterator<C> ingredients, int maxAmount) {
+	void addItemToSlot(C ingredient, int slotIndex, int gridY, int gridX);
+
+	default void placeRecipe(int width, int height, Recipe<?> recipe, Iterable<C> entries, Output<?> output) {
 		int widthModified = width;
 		int heightModified = height;
-		if (recipe.value() instanceof ShapedRecipe shapedRecipe) {
+		Iterator<C> ingredients = entries.iterator();
+
+		if (recipe instanceof ShapedRecipe shapedRecipe) {
 			widthModified = shapedRecipe.getWidth();
 			heightModified = shapedRecipe.getHeight();
 		}
@@ -49,7 +52,7 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipe<C> {
 				}
 
 				if (xOverfitted) {
-					this.addItemToSlot(ingredients.next(), slotIndex, maxAmount, gridY, gridX);
+					this.addItemToSlot(ingredients.next(), slotIndex, gridY, gridX);
 				} else if (o == gridX) {
 					slotIndex += width - gridX;
 					break;
