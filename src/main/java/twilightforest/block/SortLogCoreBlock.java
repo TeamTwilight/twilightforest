@@ -14,6 +14,7 @@ import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
+import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
@@ -28,7 +29,7 @@ import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
-	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
+	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>(Capabilities.Item.BLOCK);
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -39,31 +40,28 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		return !TFConfig.disableSortingCore;
 	}
 
-	//TODO fuckkkkkkkkk
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		Map<List<ResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();
 		Map<ResourceHandler<ItemResource>, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
+		for (BlockEntity blockEntity : WorldUtil.getLoadedBlockEntitiesInRange(level, pos, TFConfig.sortingCoreRange)) {
+			BlockPos blockPos = blockEntity.getBlockPos();
 			if (!blockPos.equals(pos)) {
-				BlockEntity blockEntity = level.getBlockEntity(blockPos);
-				if (blockEntity != null) {
-					// Put it in the input if its within 2 blocks
-					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-						List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
-						for (Direction side : Direction.values()) {
-							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
-							if (handler != null) handlers.add(handler);
-						}
-						if (!handlers.isEmpty()) {
-							inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
-					} else { // Output if its outside that range
-						for (Direction side : Direction.values()) {
-							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
-							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
+				// Put it in the input if its within 2 blocks
+				if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+					List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
+					for (Direction side : Direction.values()) {
+						ResourceHandler<ItemResource> handler = this.getItemHandler(level, blockEntity, side);
+						if (handler != null) handlers.add(handler);
+					}
+					if (!handlers.isEmpty()) {
+						inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+					}
+				} else { // Output if its outside that range
+					for (Direction side : Direction.values()) {
+						ResourceHandler<ItemResource> handler = this.getItemHandler(level, blockEntity, side);
+						if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 					}
 				}
 			}
@@ -140,5 +138,14 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 				if (transferred) break; // Again, since we only transfer once per source, break
 			}
 		}
+	}
+
+	@Nullable
+	ResourceHandler<ItemResource> getItemHandler(ServerLevel level, BlockEntity blockEntity, Direction side) {
+		return this.capabilityCache.get(level, blockEntity, side);
+	}
+
+	public void clearCapabilityCache(ServerLevel level) {
+		this.capabilityCache.clear(level);
 	}
 }
