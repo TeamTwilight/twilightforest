@@ -85,13 +85,12 @@ public class SortingParticle extends SingleQuadParticle {
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2, RandomSource random) {
-			SortingParticle sortingParticle = new SortingParticle(level, x, y, z, x2, y2, z2, this.sprite.get(random));
-			return sortingParticle;
+			return new SortingParticle(level, x, y, z, x2, y2, z2, this.sprite.get(random));
 		}
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(float partialTicks) {
+	public AABB getBoundingBox() {
 		return AABB.INFINITE;
 	}
 }

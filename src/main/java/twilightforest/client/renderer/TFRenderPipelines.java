@@ -10,6 +10,7 @@ import com.mojang.blaze3d.platform.SourceFactor;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class TFRenderPipelines {
 
 	private static final BlendFunction SHADOW = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+	private static final DepthStencilState TRANSLUCENT_DEPTH = new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, false);
 
 	public static final RenderPipeline RED_THREAD = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
 		.withLocation(TwilightForestMod.prefix("core/red_thread/red_thread"))
@@ -49,5 +51,11 @@ public class TFRenderPipelines {
 		.withSampler("Sampler1")
 		.withCull(false)
 		.withColorTargetState(new ColorTargetState(SHADOW))
+		.build();
+
+	public static final RenderPipeline AURORA_PIPELINE = RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
+		.withLocation(Identifier.fromNamespaceAndPath("twilightforest", "aurora/aurora"))
+		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS)
+		.withDepthStencilState(Optional.of(TRANSLUCENT_DEPTH))
 		.build();
 }

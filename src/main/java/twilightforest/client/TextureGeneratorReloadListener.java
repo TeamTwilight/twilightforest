@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.EnumMap;
 import java.util.concurrent.atomic.AtomicReference;
 
+// FIXME
 public class TextureGeneratorReloadListener implements ResourceManagerReloadListener {
 	public static final TextureGeneratorReloadListener INSTANCE = new TextureGeneratorReloadListener();
 	private static final EnumMap<Boat.Type, AbstractTexture> BOAT_CACHE = new EnumMap<>(Boat.Type.class);

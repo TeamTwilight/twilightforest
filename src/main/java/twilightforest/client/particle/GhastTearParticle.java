@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -59,10 +60,13 @@ public class GhastTearParticle extends SingleQuadParticle {
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-			TextureAtlasSprite textureatlassprite = this.calculateState(new ItemStack(Items.GHAST_TEAR), level).pickParticleIcon(random);
+			Material.Baked material = this.calculateState(new ItemStack(Items.GHAST_TEAR), level).pickParticleMaterial(random);
+			TextureAtlasSprite textureatlassprite;
 
-			if (textureatlassprite == null) {
-				textureatlassprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
+			if (material != null) {
+				textureatlassprite = material.sprite();
+			} else {
+				textureatlassprite = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(MissingTextureAtlasSprite.getLocation());
 			}
 
 			return new GhastTearParticle(level, x, y, z, textureatlassprite);
