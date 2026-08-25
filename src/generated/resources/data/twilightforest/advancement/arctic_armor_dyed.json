@@ -7,7 +7,7 @@
           {
             "items": "twilightforest:arctic_boots",
             "predicates": {
-              "minecraft:dyed_color": {}
+              "twilightforest:color": {}
             }
           }
         ]
@@ -20,7 +20,7 @@
           {
             "items": "twilightforest:arctic_chestplate",
             "predicates": {
-              "minecraft:dyed_color": {}
+              "twilightforest:color": {}
             }
           }
         ]
@@ -33,7 +33,7 @@
           {
             "items": "twilightforest:arctic_helmet",
             "predicates": {
-              "minecraft:dyed_color": {}
+              "twilightforest:color": {}
             }
           }
         ]
@@ -46,7 +46,7 @@
           {
             "items": "twilightforest:arctic_leggings",
             "predicates": {
-              "minecraft:dyed_color": {}
+              "twilightforest:color": {}
             }
           }
         ]
