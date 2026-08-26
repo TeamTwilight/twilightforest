@@ -1,6 +1,5 @@
 {
   "parent": "block/block",
-  "render_type": "minecraft:cutout",
   "textures": {
     "all": "twilightforest:block/carminite_block",
     "all2": "twilightforest:block/carminite_block_overlay",
