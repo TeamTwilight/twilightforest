@@ -11,6 +11,7 @@ import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.entity.vehicle.boat.ChestBoat;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jspecify.annotations.Nullable;
@@ -152,7 +153,7 @@ public class TFEntities {
 
 	public static <E extends Mob> DeferredHolder<EntityType<?>, EntityType<E>> registerWithEgg(String name, EntityType.Builder<E> builder, Supplier<AttributeSupplier.Builder> attributes, SpawnPlacements.@Nullable SpawnPredicate<E> predicate) {
 		DeferredHolder<EntityType<?>, EntityType<E>> ret = ENTITY_TYPES.register(name, () -> builder.build(createIDFor(name)));
-		SPAWN_EGGS.registerItem(name + "_spawn_egg", Item::new, () -> new Item.Properties().spawnEgg(ret.get()));
+		SPAWN_EGGS.registerItem(name + "_spawn_egg", SpawnEggItem::new, () -> new Item.Properties().spawnEgg(ret.get()));
 		ATTRIBUTES.put(ret, attributes);
 		if (predicate != null) {
 			SPAWN_PREDICATES.put(ret, predicate);
