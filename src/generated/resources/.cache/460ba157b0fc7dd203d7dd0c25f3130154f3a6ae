@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-26T22:42:35.552684915	Model Definitions - twilightforest
+// 26.1.2	2026-08-27T01:05:42.159608047	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -711,7 +711,7 @@ a075e6d51bb6968460215b867a86a16bb5537c6d assets/twilightforest/items/filled_ore_
 8f7d3874c091f2c0dd37afe2fc371b97235002ac assets/twilightforest/items/final_boss_boss_spawner.json
 1396d828ef7b71a0f834a0f9cc525873478539d2 assets/twilightforest/items/fire_beetle_spawn_egg.json
 7a978965e0b28898e3db6e935938688371a8448f assets/twilightforest/items/fire_jet.json
-78509625324ffc2bde1fef0603469b80a75f6719 assets/twilightforest/items/firefly.json
+431fcefdb83fe13f2ab6727e254eadf4c2b7a553 assets/twilightforest/items/firefly.json
 a75942f78ba7b879eb09c3e209dbbc7a1e2c4555 assets/twilightforest/items/firefly_jar.json
 cdd39c5ad288b3a373f05544876a84dea49d1561 assets/twilightforest/items/firefly_particle_spawner.json
 ddfbfe59023d896fd7293408debcff571da0e75b assets/twilightforest/items/fluffy_cloud.json
