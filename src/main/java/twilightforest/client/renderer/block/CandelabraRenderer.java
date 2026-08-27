@@ -47,7 +47,7 @@ public class CandelabraRenderer implements BlockEntityRenderer<CandelabraBlockEn
 			} else {
 				stack.translate(-Math.abs(facing.getStepZ()) * offset, 0.44F, -Math.abs(facing.getStepX()) * offset);
 			}
-			candleStates.get(i).submit(stack, collector, light, overlay, -1);
+			candleStates.get(i).submit(stack, collector, light, overlay, 0);
 			stack.popPose();
 		}
 	}
