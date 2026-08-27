@@ -31,7 +31,7 @@ public interface TravellersModifier {
 		return List.of();
 	}
 
-	default String getPrefix() {
+	static String getPrefix() {
 		return "travellers_gear.modifier";
 	}
 

@@ -158,7 +158,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static MutableComponent getModifierTooltipComponent(Holder<TravellersModifier> modifier) {
-		return TooltipStringInterpolator.render(getKeyOrThrow(modifier).identifier().toLanguageKey(modifier.value().getPrefix()));
+		return TooltipStringInterpolator.render(getKeyOrThrow(modifier).identifier().toLanguageKey(TravellersModifier.getPrefix()));
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
