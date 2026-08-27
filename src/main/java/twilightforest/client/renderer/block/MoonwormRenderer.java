@@ -8,9 +8,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Unit;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -21,7 +19,6 @@ import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.client.state.block.MoonwormRenderState;
 
 public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity, MoonwormRenderState> {
-
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
 
@@ -31,18 +28,17 @@ public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity
 
 	@Override
 	public void submit(MoonwormRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
-		submitMoonworm(this.moonwormModel, state.yaw, state.rotation, state.wiggleRotation, state.delay, state.facing, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+		submitMoonworm(this.moonwormModel, state, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 	}
 
-	public static void submitMoonworm(MoonwormModel model, float yaw, float rotation, float wiggleRotation, int delay, Direction facing, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, int outlineColor, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+	public static void submitMoonworm(MoonwormModel model, MoonwormRenderState state, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, int outlineColor, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.5F, 0.5F);
-		stack.mulPose(facing.getRotation());
+		stack.mulPose(state.facing.getRotation());
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F + rotation));
-		stack.mulPose(Axis.YN.rotationDegrees(yaw));
-		model.setupAnim(delay, wiggleRotation);
-		collector.submitModel(model, Unit.INSTANCE, stack, model.renderType(TEXTURE), light, overlay, outlineColor, breakProgress);
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F + state.rotation));
+		stack.mulPose(Axis.YN.rotationDegrees(state.yaw));
+		collector.submitModel(model, state, stack, model.renderType(TEXTURE), light, overlay, outlineColor, breakProgress);
 		stack.popPose();
 	}
 
