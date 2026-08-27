@@ -740,15 +740,15 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.CHARM_OF_KEEPING_2, "Charm of Keeping II");
 		this.addItem(TFItems.CHARM_OF_KEEPING_3, "Charm of Keeping III");
 
-		this.addMusicDisc(TFItems.MUSIC_DISC_RADIANCE, "Rotch Gwylt - Radiance");
-		this.addMusicDisc(TFItems.MUSIC_DISC_STEPS, "Rotch Gwylt - Steps");
-		this.addMusicDisc(TFItems.MUSIC_DISC_SUPERSTITIOUS, "Rotch Gwylt - Superstitious");
-		this.addMusicDisc(TFItems.MUSIC_DISC_HOME, "MrCompost - Home");
-		this.addMusicDisc(TFItems.MUSIC_DISC_WAYFARER, "MrCompost - Wayfarer");
-		this.addMusicDisc(TFItems.MUSIC_DISC_FINDINGS, "MrCompost - Findings");
-		this.addMusicDisc(TFItems.MUSIC_DISC_MAKER, "MrCompost - Maker");
-		this.addMusicDisc(TFItems.MUSIC_DISC_THREAD, "MrCompost - Thread");
-		this.addMusicDisc(TFItems.MUSIC_DISC_MOTION, "MrCompost - Motion");
+		this.addMusicDisc(TFItems.MUSIC_DISC_RADIANCE, TFJukeboxSongs.RADIANCE, "Rotch Gwylt - Radiance");
+		this.addMusicDisc(TFItems.MUSIC_DISC_STEPS, TFJukeboxSongs.STEPS, "Rotch Gwylt - Steps");
+		this.addMusicDisc(TFItems.MUSIC_DISC_SUPERSTITIOUS, TFJukeboxSongs.SUPERSTITIOUS, "Rotch Gwylt - Superstitious");
+		this.addMusicDisc(TFItems.MUSIC_DISC_HOME, TFJukeboxSongs.HOME, "MrCompost - Home");
+		this.addMusicDisc(TFItems.MUSIC_DISC_WAYFARER, TFJukeboxSongs.WAYFARER, "MrCompost - Wayfarer");
+		this.addMusicDisc(TFItems.MUSIC_DISC_FINDINGS, TFJukeboxSongs.FINDINGS, "MrCompost - Findings");
+		this.addMusicDisc(TFItems.MUSIC_DISC_MAKER, TFJukeboxSongs.MAKER, "MrCompost - Maker");
+		this.addMusicDisc(TFItems.MUSIC_DISC_THREAD, TFJukeboxSongs.THREAD, "MrCompost - Thread");
+		this.addMusicDisc(TFItems.MUSIC_DISC_MOTION, TFJukeboxSongs.MOTION, "MrCompost - Motion");
 
 		this.add("item.twilightforest.lower_goblin_knight_spawn_egg", "Goblin Knight Spawn Egg");
 

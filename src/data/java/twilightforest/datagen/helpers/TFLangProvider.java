@@ -8,6 +8,8 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.util.Util;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
@@ -18,8 +20,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -146,9 +147,9 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + itemKey + "_hoe", item + " Hoe");
 	}
 
-	public void addMusicDisc(DeferredItem<Item> disc, String description) {
+	public void addMusicDisc(DeferredItem<Item> disc, ResourceKey<JukeboxSong> song, String description) {
 		this.addItem(disc, "Music Disc");
-//		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().getKey().identifier()), description);
+		this.add(Util.makeDescriptionId("jukebox_song", song.identifier()), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {
