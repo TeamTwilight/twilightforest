@@ -45,8 +45,7 @@ public record MoonwormSpecialRenderer(MoonwormModel model) implements NoDataSpec
 	}
 
 	public record Unbaked() implements NoDataSpecialModelRenderer.Unbaked {
-		public static final MapCodec<MoonwormSpecialRenderer.Unbaked> MAP_CODEC =
-			MapCodec.unit(MoonwormSpecialRenderer.Unbaked::new);
+		public static final MapCodec<MoonwormSpecialRenderer.Unbaked> MAP_CODEC = MapCodec.unit(MoonwormSpecialRenderer.Unbaked::new);
 
 		@Override
 		public MapCodec<MoonwormSpecialRenderer.Unbaked> type() {
@@ -55,9 +54,7 @@ public record MoonwormSpecialRenderer(MoonwormModel model) implements NoDataSpec
 
 		@Override
 		public SpecialModelRenderer<Void> bake(BakingContext context) {
-			return new MoonwormSpecialRenderer(
-				new MoonwormModel(context.entityModelSet().bakeLayer(TFModelLayers.MOONWORM))
-			);
+			return new MoonwormSpecialRenderer(new MoonwormModel(context.entityModelSet().bakeLayer(TFModelLayers.MOONWORM)));
 		}
 	}
 }
