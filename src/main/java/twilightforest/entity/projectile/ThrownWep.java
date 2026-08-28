@@ -38,6 +38,7 @@ public class ThrownWep extends TFThrowable {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
 		builder.define(DATA_ITEMSTACK, ItemStack.EMPTY);
 		builder.define(DATA_VELOCITY, 0.001F);
 	}
