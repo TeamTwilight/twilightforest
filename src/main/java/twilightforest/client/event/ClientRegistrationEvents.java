@@ -226,7 +226,7 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerAtlases(RegisterTextureAtlasesEvent event) {
-		event.register(new AtlasManager.AtlasConfig(MagicPaintingAtlasInfo.ATLAS_LOCATION, MagicPaintingAtlasInfo.ATLAS_LOCATION, false));
+		event.register(new AtlasManager.AtlasConfig(MagicPaintingAtlasInfo.ATLAS_LOCATION, MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION, false));
 	}
 
 	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {

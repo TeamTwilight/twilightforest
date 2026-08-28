@@ -1,7 +1,5 @@
 package twilightforest.entity;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -13,10 +11,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,8 +40,6 @@ import java.util.Optional;
 public class MagicPainting extends HangingEntity {
 	private static final EntityDataAccessor<Holder<MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT.value());
 
-	private Direction direction;
-
 	public MagicPainting(EntityType<? extends MagicPainting> entityType, Level level) {
 		super(entityType, level);
 	}
@@ -53,12 +50,14 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
 		builder.define(MAGIC_PAINTING_VARIANT, this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT));
 	}
 
 	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-		if (MAGIC_PAINTING_VARIANT.equals(pKey)) {
+	public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+		super.onSyncedDataUpdated(accessor);
+		if (MAGIC_PAINTING_VARIANT.equals(accessor)) {
 			this.recalculateBoundingBox();
 		}
 	}
@@ -73,7 +72,7 @@ public class MagicPainting extends HangingEntity {
 
 	public static Optional<MagicPainting> create(Level level, BlockPos pos, Direction direction) {
 		MagicPainting magicPainting = new MagicPainting(level, pos);
-		List<Holder.Reference<MagicPaintingVariant>> list = new ArrayList<>();
+		List<Holder<MagicPaintingVariant>> list = new ArrayList<>();
 		level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).listElements().forEach(list::add);
 		if (list.isEmpty()) {
 			return Optional.empty();
@@ -87,8 +86,8 @@ public class MagicPainting extends HangingEntity {
 				return Optional.empty();
 			} else {
 				int biggestPossibleArea = list.stream().mapToInt(MagicPainting::variantArea).max().orElse(0);
-				list.removeIf((variant) -> variantArea(variant) < biggestPossibleArea);
-				Optional<Holder.Reference<MagicPaintingVariant>> optional = Util.getRandomSafe(list, magicPainting.random);
+				list.removeIf((variantArea) -> variantArea(variantArea) < biggestPossibleArea);
+				Optional<Holder<MagicPaintingVariant>> optional = Util.getRandomSafe(list, magicPainting.random);
 				if (optional.isEmpty()) {
 					return Optional.empty();
 				} else {
@@ -109,25 +108,25 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ValueOutput output) {
+	public void addAdditionalSaveData(ValueOutput output) {
 		Identifier location = this.getReg().getKey(this.getVariant().value());
 		if (location != null) output.putString("variant", location.toString());
-		output.putByte("facing", (byte) this.direction.get2DDataValue());
+		output.putByte("facing", (byte) this.getDirection().get2DDataValue());
 		super.addAdditionalSaveData(output);
 	}
 
 	@Override
 	public void readAdditionalSaveData(ValueInput input) {
 		if (input.getString("variant").isPresent()) {
-			Identifier location = Identifier.tryParse(input.getString("variant").get());
+			Identifier location = Identifier.tryParse(input.getString("variant").orElseThrow());
 			if (location != null) {
 				this.setVariant(this.getReg().get(location).orElse(this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT)));
 			}
 		}
 
-		this.direction = Direction.from2DDataValue(input.getByteOr("facing", (byte) 0));
+		this.setDirection(Direction.from2DDataValue(input.getByteOr("facing", (byte) 0)));
 		super.readAdditionalSaveData(input);
-		this.setDirection(this.direction);
+		this.setDirection(this.getDirection());
 	}
 
 	protected Registry<MagicPaintingVariant> getReg() {
@@ -189,7 +188,7 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
-		return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
+		return new ClientboundAddEntityPacket(this, this.getDirection().get3DDataValue(), this.getPos());
 	}
 
 	@Override
