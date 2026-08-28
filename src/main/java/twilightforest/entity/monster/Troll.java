@@ -116,7 +116,9 @@ public class Troll extends Monster implements RangedAttackMob {
 						this.setHasRock(true);
 						this.playSound(TFSounds.TROLL_GRABS_ROCK.get());
 						ThrownBlock block = new ThrownBlock(level, this.rock);
-						block.startRiding(this);
+						block.setPos(this.getX(), this.getY() + this.getBbHeight(), this.getZ());
+
+						block.startRiding(this, true, false);
 						level.addFreshEntity(block);
 					}
 				}
@@ -124,9 +126,10 @@ public class Troll extends Monster implements RangedAttackMob {
 		}
 	}
 
+
 	@Override
 	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vec3(0.0F, dimensions.height() * 1.25F, 0.0F);
+		return super.getPassengerAttachmentPoint(entity, dimensions, yRot).add(0.0F, dimensions.height() * 0.25F, 0.0F);
 	}
 
 	@Override
@@ -248,7 +251,7 @@ public class Troll extends Monster implements RangedAttackMob {
 			this.level().addFreshEntity(blocc);
 			this.setHasRock(false);
 			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {
-				this.getFirstPassenger().discard();
+				this.ejectPassengers();
 			}
 			this.rockCooldown = 300 + this.getRandom().nextInt(100);
 			this.rock = null;
