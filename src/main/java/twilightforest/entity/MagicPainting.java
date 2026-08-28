@@ -72,7 +72,7 @@ public class MagicPainting extends HangingEntity {
 
 	public static Optional<MagicPainting> create(Level level, BlockPos pos, Direction direction) {
 		MagicPainting magicPainting = new MagicPainting(level, pos);
-		List<Holder<MagicPaintingVariant>> list = new ArrayList<>();
+		List<Holder.Reference<MagicPaintingVariant>> list = new ArrayList<>();
 		level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).listElements().forEach(list::add);
 		if (list.isEmpty()) {
 			return Optional.empty();
@@ -87,7 +87,7 @@ public class MagicPainting extends HangingEntity {
 			} else {
 				int biggestPossibleArea = list.stream().mapToInt(MagicPainting::variantArea).max().orElse(0);
 				list.removeIf((variantArea) -> variantArea(variantArea) < biggestPossibleArea);
-				Optional<Holder<MagicPaintingVariant>> optional = Util.getRandomSafe(list, magicPainting.random);
+				Optional<Holder.Reference<MagicPaintingVariant>> optional = Util.getRandomSafe(list, magicPainting.random);
 				if (optional.isEmpty()) {
 					return Optional.empty();
 				} else {
