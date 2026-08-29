@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/jar_lid",
-  "textures": {
-    "end": "minecraft:block/crimson_stem_top",
-    "side": "minecraft:block/crimson_stem"
-  }
-}
