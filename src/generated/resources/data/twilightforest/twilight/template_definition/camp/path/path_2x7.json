@@ -1,0 +1,36 @@
+{
+  "twilightforest:camp/main_path": {
+    "height_adjustment": {
+      "ground_junction_diff_clamp": 0,
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 2
+    },
+    "processors": {
+      "processors": [
+        {
+          "heightmap": "WORLD_SURFACE_WG",
+          "offset": -2,
+          "processor_type": "minecraft:gravity"
+        }
+      ]
+    },
+    "weight": 50
+  },
+  "twilightforest:camp/path": {
+    "height_adjustment": {
+      "ground_junction_diff_clamp": 0,
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 2
+    },
+    "processors": {
+      "processors": [
+        {
+          "heightmap": "WORLD_SURFACE_WG",
+          "offset": -2,
+          "processor_type": "minecraft:gravity"
+        }
+      ]
+    },
+    "weight": 50
+  }
+}

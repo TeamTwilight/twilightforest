@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-29T17:27:00.8253017	Registries
+// 26.1.2	2026-08-29T18:13:40.9770855	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -109,6 +109,7 @@ f02b58fee7b8c53de8781fc96d34e3d42b78c989 data/twilightforest/twilight/structure_
 28bd116a4d98a7fefbb66ccec49064b2521a0de8 data/twilightforest/twilight/structure_speleothem_settings/small_hollow_hill.json
 1679722beb70b9aca46df8d045d117fd6b0c8161 data/twilightforest/twilight/structure_speleothem_settings/troll_cave.json
 85f373028b0470aca0046a3d19f13c6a2391cee8 data/twilightforest/twilight/structure_speleothem_settings/yeti_cave.json
+2c7e05fef19dbb963cdc20328b82a0f67d3fdcdf data/twilightforest/twilight/template_marker_handler_list/camp_marker_handlers.json
 dca11fa054f68a265bbd246bf44ab70069720f1b data/twilightforest/twilight/tiny_bird_variant/blue.json
 4a8b097d389df52282f6d211a65088ccbe432d89 data/twilightforest/twilight/tiny_bird_variant/brown.json
 f1043dfc0421d0561f7a90528e923d1a199a4938 data/twilightforest/twilight/tiny_bird_variant/gold.json
