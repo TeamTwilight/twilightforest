@@ -48,8 +48,10 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 			mutablePos.setY(i);
 			if (config.target().test(level, mutablePos) && level.getBlockState(mutablePos.above()).canBeReplaced()) {
 				BlockState blockstate1 = config.stateProvider().getState(level, random, mutablePos);
-				level.setBlock(mutablePos, blockstate1, Block.UPDATE_CLIENTS);
+				level.setBlock(mutablePos, blockstate1, Block.UPDATE_ALL);
+				level.destroyBlock(mutablePos.above(), false);
 				this.markAboveForPostProcessing(level, mutablePos);
+				this.markAboveForPostProcessing(level, mutablePos.above());
 				flag = true;
 			}
 		}

@@ -144,11 +144,9 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_CANOPY_MUSHROOMS_DENSE = registerKey("mushroom/canopy_mushrooms_dense");
 
 	// Twilight variants of grass placers (Vanilla-copied), configured to avoid the Lich Tower
-	// public static final ResourceKey<PlacedFeature> PATCH_GRASS_PLAIN = registerKey("patch_grass_plain");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_FOREST = registerKey("patch_grass_forest");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_BADLANDS = registerKey("patch_grass_badlands");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_SAVANNA = registerKey("patch_grass_savanna");
-	// public static final ResourceKey<PlacedFeature> PATCH_GRASS_NORMAL = registerKey("patch_grass_normal");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_TAIGA_2 = registerKey("patch_grass_taiga_2");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_TAIGA = registerKey("patch_grass_taiga");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_JUNGLE = registerKey("patch_grass_jungle");
@@ -323,23 +321,23 @@ public class TFPlacedFeatures {
 		context.register(PLACED_CANOPY_MUSHROOMS_DENSE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.CANOPY_MUSHROOMS_DENSE), tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.CANOPY_SAPLING.get().defaultBlockState())));
 
 		List<PlacementModifier> avoidLichTowerList = List.of(avoidLichTower);
+		PlacementModifier myceliumPredicate = BlockPredicateFilter.forPredicate(BlockPredicate.not(BlockPredicate.matchesBlocks(Blocks.MYCELIUM)));
+		List<PlacementModifier> myceliumPredicateList = List.of(myceliumPredicate);
 
 		Holder<ConfiguredFeature<?, ?>> grassConfig = features.getOrThrow(VegetationFeatures.GRASS);
-		// PlacementUtils.register(context, PATCH_GRASS_PLAIN, grassConfig, NoiseThresholdCountPlacement.of(-0.8, 5, 10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome(), avoidLichTower);
-		PlacementUtils.register(context, PATCH_GRASS_FOREST, grassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(2), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList));
-		PlacementUtils.register(context, PATCH_GRASS_BADLANDS, grassConfig, InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome(), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE), avoidLichTower);
-		PlacementUtils.register(context, PATCH_GRASS_SAVANNA, grassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(20), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList));
-		// PlacementUtils.register(context, PATCH_GRASS_NORMAL, grassConfig, ConcatenatedListView.of(VegetationPlacements.worldSurfaceSquaredWithCount(5), avoidLichTowerList));
+		PlacementUtils.register(context, PATCH_GRASS_FOREST, grassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(2), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList, myceliumPredicateList));
+		PlacementUtils.register(context, PATCH_GRASS_BADLANDS, grassConfig, InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome(), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE), avoidLichTower, myceliumPredicate);
+		PlacementUtils.register(context, PATCH_GRASS_SAVANNA, grassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(20), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList, myceliumPredicateList));
 
 		Holder<ConfiguredFeature<?, ?>> taigaGrassConfig = features.getOrThrow(VegetationFeatures.TAIGA_GRASS);
 		PlacementUtils.register(context, PATCH_GRASS_TAIGA_2, taigaGrassConfig, InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome(), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE), avoidLichTower);
 		PlacementUtils.register(context, PATCH_GRASS_TAIGA, taigaGrassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(7), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList));
 
 		Holder<ConfiguredFeature<?, ?>> jungleGrassConfig = features.getOrThrow(VegetationFeatures.GRASS_JUNGLE);
-		PlacementUtils.register(context, PATCH_GRASS_JUNGLE, jungleGrassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(25), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList));
+		PlacementUtils.register(context, PATCH_GRASS_JUNGLE, jungleGrassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(25), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList, myceliumPredicateList));
 
 		Holder<ConfiguredFeature<?, ?>> tallGrassConfig = features.getOrThrow(VegetationFeatures.TALL_GRASS);
-		PlacementUtils.register(context, PATCH_TALL_GRASS, tallGrassConfig, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), CountPlacement.of(96), RandomOffsetPlacement.ofTriangle(7, 3), avoidLichTower);
+		PlacementUtils.register(context, PATCH_TALL_GRASS, tallGrassConfig, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), CountPlacement.of(96), RandomOffsetPlacement.ofTriangle(7, 3), avoidLichTower, myceliumPredicate);
 
 		Holder<ConfiguredFeature<?, ?>> fernConfig = features.getOrThrow(VegetationFeatures.LARGE_FERN);
 		PlacementUtils.register(context, PATCH_LARGE_FERN, fernConfig, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), CountPlacement.of(96), RandomOffsetPlacement.ofTriangle(7, 3), avoidLichTower);
