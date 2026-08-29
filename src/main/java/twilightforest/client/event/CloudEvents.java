@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -32,6 +31,7 @@ import twilightforest.block.CloudBlock;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.config.TFConfig;
 import twilightforest.util.MinecraftUtil;
+import twilightforest.util.RenderTypeUtil;
 import twilightforest.util.Vec2i;
 
 import java.util.ArrayList;
@@ -188,7 +188,7 @@ public class CloudEvents {
 
 				RandomSource random = RandomSource.create((long) roofX * roofX * 3121 + roofX * 45238971L ^ (long) roofZ * roofZ * 418711 + roofZ * 13761L);
 				if (helper.precipitation() == Biome.Precipitation.RAIN) {
-					RenderType renderType = RenderTypes.entityTranslucent(TFWeatherRenderer.RAIN_TEXTURES);
+					RenderType renderType = RenderTypeUtil.weather(TFWeatherRenderer.RAIN_TEXTURES, Minecraft.useShaderTransparency());
 
 					int offset = ticks + roofX * roofX * 3121 + roofX * 45238971 + roofZ * roofZ * 418711 + roofZ * 13761 & 31;
 					float uvOffset = -((float) offset + partialTick) / 32.0F * (3.0F + random.nextFloat());
@@ -207,7 +207,7 @@ public class CloudEvents {
 					vC.addVertex(event.getPoseStack().last(), (float) (roofX - camX + rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightCoords);
 					vC.addVertex(event.getPoseStack().last(), (float) (roofX - camX - rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightCoords);
 				} else if (helper.precipitation() == Biome.Precipitation.SNOW) {
-					RenderType renderType = RenderTypes.entityTranslucent(TFWeatherRenderer.SNOW_TEXTURES);
+					RenderType renderType = RenderTypeUtil.weather(TFWeatherRenderer.SNOW_TEXTURES, Minecraft.useShaderTransparency());
 
 					float offset = -((float) (ticks & 511) + partialTick) / 512.0F;
 					float uOffset = (float) (random.nextDouble() + (double) fullTick * 0.01D * (double) ((float) random.nextGaussian()));
