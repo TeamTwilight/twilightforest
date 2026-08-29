@@ -168,7 +168,11 @@ neoForge {
 		client {
 			client()
 			systemProperty 'forge.enabledGameTestNamespaces', mod_id
-			programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
+			programArguments.addAll(
+				'--username', secrets.getProperty("username") ?: 'Dev',
+				'--accessToken', '0',
+				secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
+			)
 		}
 
 		server {
@@ -180,7 +184,12 @@ neoForge {
 		clientData {
 			clientData()
 			gameDirectory = project.file('run-data')
-			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+			programArguments.addAll(
+				'--mod', mod_id,
+				'--all',
+				'--output', file('src/generated/resources/').getAbsolutePath(),
+				'--existing', file('src/main/resources/').getAbsolutePath()
+			)
 			sourceSet = this.sourceSets.data
 			loadedMods = [dataMod, asmMod]
 		}
