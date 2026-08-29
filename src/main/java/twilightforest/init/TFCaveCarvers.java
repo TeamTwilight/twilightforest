@@ -14,8 +14,6 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
@@ -23,6 +21,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBlockTags;
+import twilightforest.world.components.NoiseCarverWallProvider;
 import twilightforest.world.components.TFCavesCarver;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class TFCaveCarvers {
 	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> TF_CAVES = CARVER_TYPES.register("tf_caves", () -> new TFCavesCarver(
 		CaveCarverConfiguration.CODEC,
 		false,
-		new NoiseProvider(
+		new NoiseCarverWallProvider(
 			6972119253061020355L,
 			new NormalNoise.NoiseParameters(0, 1.0),
 			0.5f,
@@ -50,16 +49,18 @@ public class TFCaveCarvers {
 			)
 		)
 	));
-	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> HIGHLAND_CAVES = CARVER_TYPES.register("highland_caves", () -> new TFCavesCarver(
-		CaveCarverConfiguration.CODEC,
-		true,
-		new WeightedStateProvider(
-			WeightedList.<BlockState>builder()
-				.add(TFBlocks.TROLLSTEINN.value().defaultBlockState(), 1)
-				.add(Blocks.STONE.defaultBlockState(), 3)
-				.build()
-		)
-	));
+	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> HIGHLAND_CAVES = CARVER_TYPES.register("highland_caves", () -> {
+		WeightedList<BlockState> highlandWalls = WeightedList.<BlockState>builder()
+			.add(TFBlocks.TROLLSTEINN.value().defaultBlockState(), 1)
+			.add(Blocks.STONE.defaultBlockState(), 3)
+			.build();
+
+		return new TFCavesCarver(
+			CaveCarverConfiguration.CODEC,
+			true,
+			(random, _) -> highlandWalls.getRandomOrThrow(random)
+		);
+	});
 
 	public static final ResourceKey<ConfiguredWorldCarver<?>> TFCAVES_CONFIGURED = registerKey("tf_caves");
 	public static final ResourceKey<ConfiguredWorldCarver<?>> HIGHLANDCAVES_CONFIGURED = registerKey("highland_caves");
