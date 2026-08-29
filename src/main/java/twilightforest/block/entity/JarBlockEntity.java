@@ -25,26 +25,13 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BooleanSupplier;
-
 import static net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 
 public class JarBlockEntity extends BlockEntity {
 	public static final Codec<Item> ITEM_CODEC = BuiltInRegistries.ITEM.byNameCodec();
-	public static final Map<Item, BooleanSupplier> REGISTERED_LOG_LIDS = new HashMap<>();
 	public static final String TAG_LID = "lid";
 	public static final Identifier JAR_LID = TwilightForestMod.prefix("jar_lid");
 	public static final int EVENT_POT_WOBBLES = 1;
-
-	public static void addLid(Item item, BooleanSupplier supplier) {
-		REGISTERED_LOG_LIDS.put(item, supplier);
-	}
-
-	public static void addLid(Item item) {
-		addLid(item, () -> true);
-	}
 
 	public Item lid = TFBlocks.TWILIGHT_OAK_LOG.asItem();
 	public long wobbleStartedAtTick;

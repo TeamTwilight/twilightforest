@@ -50,8 +50,9 @@ import tamaized.beanification.PostConstruct;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ChiseledCanopyShelfBlock;
+import twilightforest.block.JarBlock;
+import twilightforest.block.JarLid;
 import twilightforest.block.entity.DryingRackBlockEntity;
-import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -191,6 +192,7 @@ public class RegistrationEvents {
 		event.dataPackRegistry(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC, DwarfRabbitVariant.DIRECT_CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC, TinyBirdVariant.DIRECT_CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TravellersModifier.CODEC, TravellersModifier.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.JAR_LIDS, JarLid.CODEC, JarLid.CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {
@@ -491,46 +493,51 @@ public class RegistrationEvents {
 			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.get().asItem());
 			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.get().asItem());
 
-			JarBlockEntity.addLid(TFBlocks.MANGROVE_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.CANOPY_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.DARK_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.MINING_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.SORTING_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.TIME_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.TRANSFORMATION_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.TWILIGHT_OAK_LOG.asItem());
-			JarBlockEntity.addLid(Items.ACACIA_LOG);
-			JarBlockEntity.addLid(Items.BIRCH_LOG);
-			JarBlockEntity.addLid(Items.CHERRY_LOG);
-			JarBlockEntity.addLid(Items.DARK_OAK_LOG);
-			JarBlockEntity.addLid(Items.JUNGLE_LOG);
-			JarBlockEntity.addLid(Items.MANGROVE_LOG);
-			JarBlockEntity.addLid(Items.OAK_LOG);
-			JarBlockEntity.addLid(Items.SPRUCE_LOG);
-			JarBlockEntity.addLid(Items.CRIMSON_STEM);
-			JarBlockEntity.addLid(Items.WARPED_STEM);
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_MANGROVE_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_CANOPY_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_DARK_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_MINING_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_SORTING_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_TIME_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_TRANSFORMATION_LOG.asItem());
-			JarBlockEntity.addLid(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.asItem());
-			JarBlockEntity.addLid(Items.STRIPPED_ACACIA_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_BIRCH_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_CHERRY_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_DARK_OAK_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_JUNGLE_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_MANGROVE_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_OAK_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_SPRUCE_LOG);
-			JarBlockEntity.addLid(Items.STRIPPED_CRIMSON_STEM);
-			JarBlockEntity.addLid(Items.STRIPPED_WARPED_STEM);
-			JarBlockEntity.addLid(TFBlocks.CINDER_LOG.asItem());
-			JarBlockEntity.addLid(Items.BAMBOO_BLOCK);
-			JarBlockEntity.addLid(Items.STRIPPED_BAMBOO_BLOCK);
-			JarBlockEntity.addLid(Items.PUMPKIN, () -> this.holidayEvent.isHalloweenWeek());
+			JarBlock.LidInteractionRegistry.register(
+				Items.ACACIA_LOG,
+				Items.BIRCH_LOG,
+				Items.CHERRY_LOG,
+				Items.DARK_OAK_LOG,
+				Items.JUNGLE_LOG,
+				Items.MANGROVE_LOG,
+				Items.OAK_LOG,
+				Items.SPRUCE_LOG,
+				Items.CRIMSON_STEM,
+				Items.WARPED_STEM,
+				Items.PALE_OAK_LOG,
+				Items.STRIPPED_ACACIA_LOG,
+				Items.STRIPPED_BIRCH_LOG,
+				Items.STRIPPED_CHERRY_LOG,
+				Items.STRIPPED_DARK_OAK_LOG,
+				Items.STRIPPED_JUNGLE_LOG,
+				Items.STRIPPED_MANGROVE_LOG,
+				Items.STRIPPED_OAK_LOG,
+				Items.STRIPPED_SPRUCE_LOG,
+				Items.STRIPPED_CRIMSON_STEM,
+				Items.STRIPPED_WARPED_STEM,
+				Items.STRIPPED_PALE_OAK_LOG,
+				Items.BAMBOO_BLOCK,
+				Items.STRIPPED_BAMBOO_BLOCK,
+				TFBlocks.MANGROVE_LOG.asItem(),
+				TFBlocks.CANOPY_LOG.asItem(),
+				TFBlocks.DARK_LOG.asItem(),
+				TFBlocks.MINING_LOG.asItem(),
+				TFBlocks.SORTING_LOG.asItem(),
+				TFBlocks.TIME_LOG.asItem(),
+				TFBlocks.TRANSFORMATION_LOG.asItem(),
+				TFBlocks.TWILIGHT_OAK_LOG.asItem(),
+				TFBlocks.CINDER_LOG.asItem(),
+				TFBlocks.STRIPPED_MANGROVE_LOG.asItem(),
+				TFBlocks.STRIPPED_CANOPY_LOG.asItem(),
+				TFBlocks.STRIPPED_DARK_LOG.asItem(),
+				TFBlocks.STRIPPED_MINING_LOG.asItem(),
+				TFBlocks.STRIPPED_SORTING_LOG.asItem(),
+				TFBlocks.STRIPPED_TIME_LOG.asItem(),
+				TFBlocks.STRIPPED_TRANSFORMATION_LOG.asItem(),
+				TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.asItem()
+			);
+
+			JarBlock.LidInteractionRegistry.registerConditional(Items.PUMPKIN, () -> this.holidayEvent.isHalloweenWeek());
 		});
 	}
 

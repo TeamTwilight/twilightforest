@@ -56,7 +56,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (super.useItemOn(stack, state, level, pos, player, hand, hit) != InteractionResult.PASS)
+		if (super.useItemOn(stack, state, level, pos, player, hand, hit) != InteractionResult.TRY_WITH_EMPTY_HAND)
 			return InteractionResult.SUCCESS;
 		if (!(level.getBlockEntity(pos) instanceof MasonJarBlockEntity jar))
 			return InteractionResult.CONSUME;

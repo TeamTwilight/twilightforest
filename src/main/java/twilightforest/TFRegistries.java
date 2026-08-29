@@ -5,6 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.registries.RegistryBuilder;
+import twilightforest.block.JarLid;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
@@ -58,6 +59,7 @@ public class TFRegistries {
 		public static final ResourceKey<Registry<ChunkBlanketProcessor>> CHUNK_BLANKET_PROCESSORS = ResourceKey.createRegistryKey(namedRegistry("chunk_blanket_processors"));
 		public static final ResourceKey<Registry<TemplateMarkerHandler>> TEMPLATE_MARKER_HANDLER = ResourceKey.createRegistryKey(namedRegistry("template_marker_handler"));
 		public static final ResourceKey<Registry<TemplateMarkerHandlerList>> TEMPLATE_MARKER_HANDLER_LIST = ResourceKey.createRegistryKey(namedRegistry("template_marker_handler_list"));
+		public static final ResourceKey<Registry<JarLid>> JAR_LIDS = ResourceKey.createRegistryKey(namedRegistry("jar_lids"));
 
 		public static Identifier namedRegistry(String name) {
 			return Identifier.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));

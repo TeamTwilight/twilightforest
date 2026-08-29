@@ -18,6 +18,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
@@ -39,7 +40,9 @@ import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
@@ -116,7 +119,7 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity && hitResult.getLocation().y >= pos.getY() + (14.0D / 16.0D)) {
 			Item lid = stack.getItem();
-			if (lid != jarBlockEntity.lid && JarBlockEntity.REGISTERED_LOG_LIDS.get(lid) instanceof BooleanSupplier check && check.getAsBoolean())  {
+			if (lid != jarBlockEntity.lid && LidInteractionRegistry.getRegisteredLids().get(lid) instanceof BooleanSupplier check && check.getAsBoolean())  {
 				jarBlockEntity.lid = lid;
 				if (level instanceof ServerLevel serverLevel) {
 					serverLevel.playSound(null, pos, TFSounds.JAR_LID_SWAP.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -126,7 +129,7 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 				return InteractionResult.SUCCESS;
 			}
 		}
-		return InteractionResult.PASS;
+		return InteractionResult.TRY_WITH_EMPTY_HAND;
 	}
 
 	@Override
@@ -139,6 +142,38 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 			return InteractionResult.SUCCESS;
 		} else {
 			return InteractionResult.PASS;
+		}
+	}
+
+	@Override
+	protected boolean skipRendering(BlockState state, BlockState neighborState, Direction direction) {
+		return true;
+	}
+
+	@Override
+	public RenderShape getRenderShape(BlockState state) {
+		return RenderShape.INVISIBLE;
+	}
+
+	public static final class LidInteractionRegistry {
+		private static final Map<Item, BooleanSupplier> REGISTERED_LIDS = new HashMap<>();
+
+		public static void register(Item... items) {
+			for (Item item : items) {
+				register(item);
+			}
+		}
+
+		public static void register(Item item) {
+			registerConditional(item, () -> true);
+		}
+
+		public static void registerConditional(Item item, BooleanSupplier condition) {
+			REGISTERED_LIDS.put(item, condition);
+		}
+
+		public static Map<Item, BooleanSupplier> getRegisteredLids() {
+			return REGISTERED_LIDS;
 		}
 	}
 }
