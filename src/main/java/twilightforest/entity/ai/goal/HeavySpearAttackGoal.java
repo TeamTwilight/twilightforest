@@ -9,6 +9,7 @@ import java.util.EnumSet;
 public class HeavySpearAttackGoal extends Goal {
 
 	private final UpperGoblinKnight entity;
+	private boolean hasAttackedInThisCycle = false;
 
 	@SuppressWarnings("this-escape")
 	public HeavySpearAttackGoal(UpperGoblinKnight upperKnight) {
@@ -17,9 +18,15 @@ public class HeavySpearAttackGoal extends Goal {
 	}
 
 	@Override
+	public void start() {
+		this.hasAttackedInThisCycle = false;
+	}
+
+	@Override
 	public void tick() {
-		if (this.entity.heavySpearTimer == 25) {
+		if (this.entity.heavySpearTimer <= 25 && !hasAttackedInThisCycle) {
 			this.entity.landHeavySpearAttack();
+			hasAttackedInThisCycle = true;
 		}
 	}
 

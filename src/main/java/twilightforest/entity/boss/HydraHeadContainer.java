@@ -181,17 +181,9 @@ public class HydraHeadContainer {
 		this.setupStateRotations();
 
 		if (startActive) {
-			this.prevState = State.IDLE;
-			this.currentState = State.IDLE;
-			this.nextState = NEXT_AUTOMATIC;
-			this.ticksNeeded = 60;
-			this.ticksProgress = 60;
+			this.forceActive();
 		} else {
-			this.prevState = State.DEAD;
-			this.currentState = State.DEAD;
-			this.nextState = NEXT_AUTOMATIC;
-			this.ticksNeeded = 20;
-			this.ticksProgress = 20;
+			this.forceInactive();
 		}
 		this.setHeadPosition();
 		this.setNeckPosition();
@@ -317,6 +309,22 @@ public class HydraHeadContainer {
 		this.setAnimation(4, State.ROAR_RAWR, 50, -90, 10, 1);
 		this.setAnimation(5, State.ROAR_RAWR, -10, 90, 11, 1);
 		this.setAnimation(6, State.ROAR_RAWR, -10, -90, 11, 1);
+	}
+
+	public void forceActive() {
+		this.prevState = State.IDLE;
+		this.currentState = State.IDLE;
+		this.nextState = NEXT_AUTOMATIC;
+		this.ticksNeeded = 60;
+		this.ticksProgress = 60;
+	}
+
+	private void forceInactive() {
+		this.prevState = State.DEAD;
+		this.currentState = State.DEAD;
+		this.nextState = NEXT_AUTOMATIC;
+		this.ticksNeeded = 20;
+		this.ticksProgress = 20;
 	}
 
 	private void setAnimation(int head, State state, float xRotation, float yRotation, float neckLength, float mouthOpen) {

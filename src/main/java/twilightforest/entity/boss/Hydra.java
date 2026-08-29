@@ -192,7 +192,7 @@ public class Hydra extends BaseTFBoss {
 		double dx, dy, dz;
 
 		// body goes behind the actual position of the hydra
-		angle = (((this.yBodyRot + 180.0F) * Mth.PI) / 180.0F);
+		angle = (this.yBodyRot + 180.0F) * Mth.DEG_TO_RAD;
 
 		dx = this.getX() - Mth.sin(angle) * 3.0D;
 		dy = this.getY() + 0.1D;
@@ -244,7 +244,7 @@ public class Hydra extends BaseTFBoss {
 	private void activateHeadsOnLoad(byte heads) {
 		for (int i = 0; i < MAX_HEADS; i++) {
 			if ((heads & 1 << i) != 0) {
-				this.hc[i].setNextState(HydraHeadContainer.State.IDLE);
+				this.hc[i].forceAtcive();
 				this.hc[i].endCurrentAction();
 			}
 		}
