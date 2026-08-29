@@ -3,12 +3,11 @@ package twilightforest.compat;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import mezz.jei.library.plugins.vanilla.crafting.JeiShapedRecipe;
+//import mezz.jei.library.plugins.vanilla.crafting.JeiShapedRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.LightTexture;
+//import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -32,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RecipeViewerConstants {
-	public static final int GENERIC_RECIPE_WIDTH = 116;
+	/*public static final int GENERIC_RECIPE_WIDTH = 116;
 	public static final int GENERIC_RECIPE_HEIGHT = 54;
 	public static final Component MOONWORM_QUEEN_TOOLTIP = Component.translatable("item.twilightforest.moonworm_queen.jei_info_message").withStyle(ChatFormatting.GREEN);
 
@@ -141,7 +140,7 @@ public class RecipeViewerConstants {
 		} else {
 			return 0x80FF20;
 		}
-	}
+	}*/
 
 	public static Component getDryingTime(int dryingTicks) {
 		int dryingMinutes = dryingTicks / 60 / 20;
@@ -168,7 +167,7 @@ public class RecipeViewerConstants {
 		return time;
 	}
 
-	public static void renderFlatBlock(PoseStack stack, BlockState state, Vec3 location, float scale) {
+	/*public static void renderFlatBlock(PoseStack stack, BlockState state, Vec3 location, float scale) {
 		Minecraft minecraft = Minecraft.getInstance();
 		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
 		stack.pushPose();
@@ -236,5 +235,5 @@ public class RecipeViewerConstants {
 	}
 
 	public record OminousFireInfo(EntityType<?> input, EntityType<?> output) {
-	}
+	}*/
 }
