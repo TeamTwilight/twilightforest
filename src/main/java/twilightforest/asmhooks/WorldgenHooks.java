@@ -1,7 +1,6 @@
 package twilightforest.asmhooks;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.StaticCache2D;
@@ -10,55 +9,45 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStep;
 import net.minecraft.world.level.chunk.status.WorldGenContext;
+import net.minecraft.world.level.levelgen.Beardifier;
 import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.custom.ChunkBlanketProcessors;
+import twilightforest.world.components.chunkgenerators.CustomTerrainBeardifier;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
+
+import java.util.List;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class WorldgenHooks {
 
 	/**
-	 * {@link twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer}<p/>
+	 * {@link twilightforest.asm.transformers.beardifier.InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer}<p/>
 	 *
 	 * Injection point:<br/>
 	 * {@link net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator#createNoiseChunk(ChunkAccess, StructureManager, Blender, RandomState)}
 	 */
-	public static ObjectListIterator<DensityFunction> gatherCustomTerrain(StructureManager structureManager, ChunkPos chunkPos) {
-		ObjectArrayList<DensityFunction> customStructureTerraforms = new ObjectArrayList<>(10);
+	public static DensityFunctions.BeardifierOrMarker gatherCustomTerrain(Beardifier vanilla, StructureManager structureManager, ChunkAccess chunkAccess) {
+		ChunkPos chunkPos = chunkAccess.getPos();
+		List<StructureStart> structureStarts = structureManager.startsForStructure(chunkPos, s -> s instanceof CustomDensitySource);
 
-		for (StructureStart structureStart : structureManager.startsForStructure(chunkPos, s -> s instanceof CustomDensitySource))
+		if (structureStarts.isEmpty())
+			return vanilla;
+
+		ObjectArrayList<DensityFunction> customStructureTerraforms = new ObjectArrayList<>(structureStarts.size());
+
+		for (StructureStart structureStart : structureStarts)
 			if (structureStart.getStructure() instanceof CustomDensitySource customDensitySource)
 				customStructureTerraforms.add(customDensitySource.getStructureTerraformer(chunkPos, structureStart));
 
-		return customStructureTerraforms.iterator();
-	}
-
-	/**
-	 * {@link twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer}<p/>
-	 *
-	 * Injection point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.Beardifier#compute(DensityFunction.FunctionContext)}
-	 */
-	public static double getCustomDensity(double o, DensityFunction.FunctionContext context, @Nullable ObjectListIterator<DensityFunction> customDensities) {
-		if (customDensities == null)
-			return o;
-
-		double newDensity = 0;
-
-		while (customDensities.hasNext()) {
-			newDensity += customDensities.next().compute(context);
-		}
-		customDensities.back(Integer.MAX_VALUE);
-
-		return o + newDensity;
+		return customStructureTerraforms.isEmpty() ? vanilla : new CustomTerrainBeardifier(vanilla, customStructureTerraforms);
 	}
 
 	/**

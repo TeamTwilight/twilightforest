@@ -5,9 +5,7 @@ import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelElytraRenderingTransformer;
 import twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer;
-import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
-import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
-import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
+import twilightforest.asm.transformers.beardifier.InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
 import twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer;
@@ -44,9 +42,7 @@ public class TFCoreMod implements ClassProcessorProvider {
 		collector.add(new FixCapeUnrenderingTransformer());
 
 		// beardifier
-		collector.add(new BeardifierClassTransformer());
-		collector.add(new BeardifierComputeTransformer());
-		collector.add(new InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer());
+		collector.add(new InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer());
 
 		// book
 		collector.add(new ModifyWrittenBookNameTransformer());

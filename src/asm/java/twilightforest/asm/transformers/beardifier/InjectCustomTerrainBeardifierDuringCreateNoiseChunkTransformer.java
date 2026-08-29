@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * {@link twilightforest.asmhooks.WorldgenHooks#gatherCustomTerrain}
  */
-public class InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer extends SimpleMethodProcessor {
+public class InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer extends SimpleMethodProcessor {
 
 	@Override
 	public ProcessorName name() {
@@ -30,26 +30,13 @@ public class InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer e
 		).forEach(target -> node.instructions.insert(
 			target,
 			ASMUtil.listOf(
-				new InsnNode(Opcodes.DUP), // Need to duplicate since we are not returning the object after consuming
 				new VarInsnNode(Opcodes.ALOAD, 2), // StructureManager from params
 				new VarInsnNode(Opcodes.ALOAD, 1), // Chunk from params
-				new MethodInsnNode(
-					Opcodes.INVOKEVIRTUAL,
-					"net/minecraft/world/level/chunk/ChunkAccess",
-					"getPos",
-					"()Lnet/minecraft/world/level/ChunkPos;"
-				),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/WorldgenHooks",
 					"gatherCustomTerrain",
-					"(Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/ChunkPos;)Lit/unimi/dsi/fastutil/objects/ObjectListIterator;"
-				),
-				new FieldInsnNode(
-					Opcodes.PUTFIELD, // pops the stack
-					"net/minecraft/world/level/levelgen/Beardifier",
-					"twilightforest_customStructureDensities",
-					"Lit/unimi/dsi/fastutil/objects/ObjectListIterator;"
+					"(Lnet/minecraft/world/level/levelgen/Beardifier;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Lnet/minecraft/world/level/levelgen/DensityFunctions$BeardifierOrMarker;"
 				)
 			)
 		));
