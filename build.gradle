@@ -137,19 +137,19 @@ neoForge {
 			it.sourceSet this.sourceSets.main
 		}
 
-		'tf-asm' {
-			it.sourceSet project(":tf-asm").sourceSets.main
-		}
-
 		"${mod_id}-data" {
 			it.sourceSet this.sourceSets.main
 			it.sourceSet this.sourceSets.data
 		}
+
+		'asm' {
+			it.sourceSet project(":asm").sourceSets.main
+		}
 	}
 
 	def mainMod = mods."${project.mod_id}"
-	def asmMod = mods."tf-asm"
 	def dataMod = mods."${project.mod_id}-data"
+	def asmMod = mods."asm"
 
 	unitTest {
 		enable()
@@ -198,7 +198,7 @@ neoForge {
 
 afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
 	tasks.withType(RunGameTask).configureEach {
-		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('tf-asm')).toList())
+		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('/asm/build/')).toList())
 	}
 }
 
@@ -247,7 +247,7 @@ repositories {
 }
 
 dependencies {
-	jarJar implementation(project(":tf-asm"))
+	jarJar implementation(project(":asm"))
 
 	def beanification = "tamaized:beanification:${project.beanification_version}"
 	implementation beanification
@@ -289,7 +289,7 @@ dependencies {
 }
 
 configurations.testImplementation {
-	exclude module: 'tf-asm'
+	exclude module: 'asm'
 }
 
 test {
@@ -320,7 +320,6 @@ processResources {
 			]
 		])
 	}
-	exclude ".cache"
 	def lazyTree = providers.provider {
 		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"])
 	}
