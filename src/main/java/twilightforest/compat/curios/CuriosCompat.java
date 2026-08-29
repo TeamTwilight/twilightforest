@@ -81,8 +81,10 @@ public class CuriosCompat {
 				CuriosApi.getCuriosInventory(player).ifPresent(modifiable -> {
 					for (int i = 0; i < modifiable.getSlots(); ++i) {
 						int finalI = i;
-						//noinspection removal TODO: This is just what Curios does.
-						event.addOverride(stack -> stack == modifiable.getEquippedCurios().getStackInSlot(finalI), DropRule.ALWAYS_KEEP);
+						//TODO: This is just what Curios does.
+						@SuppressWarnings("removal")
+						Predicate<ItemStack> isEquippedCurio = stack -> stack == modifiable.getEquippedCurios().getStackInSlot(finalI);
+						event.addOverride(isEquippedCurio, DropRule.ALWAYS_KEEP);
 					}
 				});
 			}
