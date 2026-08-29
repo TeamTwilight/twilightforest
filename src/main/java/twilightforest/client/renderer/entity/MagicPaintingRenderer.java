@@ -41,7 +41,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 
 	public MagicPaintingRenderer(EntityRendererProvider.Context context) {
 		super(context);
-		this.paintingAtlas = context.getAtlas(MagicPaintingAtlasInfo.ATLAS_LOCATION);
+		this.paintingAtlas = context.getAtlas(MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION);
 	}
 
 	@Override
