@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-29T18:13:40.9770855	Registries
+// 26.1.2	2026-08-29T21:01:16.6400565	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -9,8 +9,8 @@ b02ef5ca34cf18dab1ae63fe8266b87e4d612478 data/minecraft/twilight/wood_palettes/j
 96ce0ebb03bf3906a0b6f8a19d5f658ecab260cd data/minecraft/twilight/wood_palettes/spruce.json
 5fbf8048f4f024ba7ebf85efbf3a169a2faa1139 data/minecraft/twilight/wood_palettes/warped.json
 b1b8672fb4d292f86efb07cdf3a83833aaa1b0fe data/minecraft/worldgen/placed_feature/flower_forest_flowers.json
-21fd3484333a6c23df2af1a5b8f24e4b7d108c17 data/minecraft/worldgen/placed_feature/patch_large_fern.json
-3b6b8fae1ac507c2dae7cfe3bbb66853c1a24a95 data/minecraft/worldgen/placed_feature/patch_tall_grass.json
+4626722d671e3c04a921242a6c02982d568bbe03 data/minecraft/worldgen/placed_feature/patch_large_fern.json
+160962ac315ae5ba3c5eb3082d5ec72ceb3e35db data/minecraft/worldgen/placed_feature/patch_tall_grass.json
 e0bd517d210bb520290899846b3a56e91d41af64 data/twilightforest/banner_pattern/alpha_yeti.json
 f88fbfc39628c5b52f30bc6139acc8ba341e29e6 data/twilightforest/banner_pattern/hydra.json
 b8180793de67252042c045ffc454289f38071f2b data/twilightforest/banner_pattern/knight_phantom.json

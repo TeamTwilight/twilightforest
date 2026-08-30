@@ -339,10 +339,10 @@ public class TFPlacedFeatures {
 		PlacementUtils.register(context, PATCH_GRASS_JUNGLE, jungleGrassConfig, ConcatenatedListView.of(Util.copyAndAdd(VegetationPlacements.worldSurfaceSquaredWithCount(25), CountPlacement.of(32), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE)), avoidLichTowerList));
 
 		Holder<ConfiguredFeature<?, ?>> tallGrassConfig = features.getOrThrow(VegetationFeatures.TALL_GRASS);
-		PlacementUtils.register(context, PATCH_TALL_GRASS, tallGrassConfig, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), CountPlacement.of(96), RandomOffsetPlacement.ofTriangle(7, 3), avoidLichTower);
+		PlacementUtils.register(context, PATCH_TALL_GRASS, tallGrassConfig, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), CountPlacement.of(96), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE), avoidLichTower);
 
 		Holder<ConfiguredFeature<?, ?>> fernConfig = features.getOrThrow(VegetationFeatures.LARGE_FERN);
-		PlacementUtils.register(context, PATCH_LARGE_FERN, fernConfig, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), CountPlacement.of(96), RandomOffsetPlacement.ofTriangle(7, 3), avoidLichTower);
+		PlacementUtils.register(context, PATCH_LARGE_FERN, fernConfig, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), CountPlacement.of(96), RandomOffsetPlacement.ofTriangle(7, 3), BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE), avoidLichTower);
 
 		Holder<ConfiguredFeature<?, ?>> forestFlowersConfig = features.getOrThrow(VegetationFeatures.FOREST_FLOWERS);
 		PlacementUtils.register(context,
