@@ -197,6 +197,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			if (stack.has(DataComponents.EQUIPPABLE)) {
 				EquipmentSlot slot = stack.get(DataComponents.EQUIPPABLE).slot();
 				ModelPart root = switch (slot) {
+					case HEAD -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
 					case CHEST -> {
 						ModelPart chestLayer = this.getModelPart(this.isModelSlim(model) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 						chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
@@ -227,7 +228,9 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 				if (slot == EquipmentSlot.LEGS) {
 					return new TravellersWingsModel(root);
 				} else if (root != null) {
-					return new TFArmorModel(root);
+					TFArmorModel armorModel = new TFArmorModel(root);
+					armorModel.setSlot(slot);
+					return armorModel;
 				}
 			}
 			return super.getHumanoidArmorModel(stack, layerType, model);
