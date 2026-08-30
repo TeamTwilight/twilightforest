@@ -268,7 +268,7 @@ public class TravellersClientEvents {
 //		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
 //        armPart.xRot = 0.0F;
 
-        Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+        Identifier gloveLocation = TwilightForestMod.prefix("textures/entity/equipment/humanoid/travellers.png");
 //		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
     }
 }
