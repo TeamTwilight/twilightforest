@@ -168,6 +168,7 @@ public class Hydra extends BaseTFBoss {
 		this.body.tick();
 		this.leftLeg.tick();
 		this.rightLeg.tick();
+		this.tail.tick();
 
 		// update all heads
 		for (int i = 0; i < MAX_HEADS; i++) {
@@ -651,9 +652,30 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
+	public void snapTo(double x, double y, double z, float yRot, float xRot) {
+		super.snapTo(x, y, z, yRot, xRot);
+		this.setYBodyRot(yRot);
+		this.setYHeadRot(yRot);
+		this.yBodyRotO = yRot;
+		this.yHeadRotO = yRot;
+		this.repositionParts();
+	}
+
+	@Override
 	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
 		super.recreateFromPacket(packet);
 		TFPart.assignPartIDs(this);
+		this.repositionParts();
+	}
+
+	private void repositionParts() {
+		if (this.partArray == null) return;
+
+		for (HydraHeadContainer container : this.hc) {
+			container.setHeadPosition();
+			container.setNeckPosition();
+		}
+		TFPart.forEachPart(this, (part, _) -> part.setOldPosAndRot());
 	}
 
 	/**
