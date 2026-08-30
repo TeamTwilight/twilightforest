@@ -1,9 +1,10 @@
 package twilightforest.client.renderer.block.jar;
 
-import net.minecraft.client.renderer.block.BlockModelResolver;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -26,14 +27,14 @@ public final class JarLidResolver {
 	private static final RandomSource RANDOM = RandomSource.create(42L);
 	private static final Map<Item, Optional<TexturedJarLidPart>> TEXTURE_CACHE = new HashMap<>();
 
-	public @Nullable TexturedJarLidPart resolve(BlockModelResolver blockModelResolver, JarBlockEntity jar, Level level) {
+	public @Nullable TexturedJarLidPart resolve(JarBlockEntity jar, Level level) {
 		if (!hasLid(level, jar)) {
 			return null;
 		}
-		return resolve(blockModelResolver, jar.lid);
+		return resolve(jar.lid);
 	}
 
-	public @Nullable TexturedJarLidPart resolve(BlockModelResolver blockModelResolver, Item lid) {
+	public @Nullable TexturedJarLidPart resolve(Item lid) {
 		if (!(lid instanceof BlockItem blockItem)) {
 			return null;
 		}
@@ -43,20 +44,21 @@ public final class JarLidResolver {
 			return cached.orElse(null);
 		}
 
-		TexturedJarLidPart resolved = createLidPart(blockModelResolver, blockItem);
+		TexturedJarLidPart resolved = createLidPart(blockItem);
 		TEXTURE_CACHE.put(lid, Optional.ofNullable(resolved));
 
 		return resolved;
 	}
 
-	private @Nullable TexturedJarLidPart createLidPart(BlockModelResolver blockModelResolver, BlockItem blockItem) {
-		BlockStateModelPart base = blockModelResolver.modelManager.getStandaloneModel(JarRenderer.MODEL_KEY);
+	private @Nullable TexturedJarLidPart createLidPart(BlockItem blockItem) {
+		ModelManager modelManager = Minecraft.getInstance().getModelManager();
+		BlockStateModelPart base = modelManager.getStandaloneModel(JarRenderer.MODEL_KEY);
 
 		if (base == null) {
 			return null;
 		}
 
-		BlockStateModel sourceModel = blockModelResolver.modelManager.getBlockStateModelSet().get(blockItem.getBlock().defaultBlockState());
+		BlockStateModel sourceModel = modelManager.getBlockStateModelSet().get(blockItem.getBlock().defaultBlockState());
 		List<BlockStateModelPart> parts = new ArrayList<>();
 		sourceModel.collectParts(RANDOM, parts);
 

@@ -2,6 +2,7 @@ package twilightforest.client.renderer.block.jar;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.block.BlockModelResolver;
@@ -62,13 +63,13 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	public void extractRenderState(T blockEntity, JarRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 		BlockState blockState = blockEntity.getBlockState();
-		state.blockStateModel = this.blockModelResolver.modelManager.getBlockStateModelSet().get(blockState);
+		state.blockStateModel = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(blockState);
 		state.blockModelRenderState = new BlockModelRenderState();
 		this.blockModelResolver.update(state.blockModelRenderState, blockState, BlockDisplayContext.create());
 		state.lidPart = null;
 		Level level = blockEntity.getLevel();
 		if (level != null) {
-			state.lidPart = jarLidResolver.resolve(blockModelResolver, blockEntity, level);
+			state.lidPart = jarLidResolver.resolve(blockEntity, level);
 			state.gameTime = (float) (level.getGameTime() - blockEntity.wobbleStartedAtTick) + partialTicks;
 		} else {
 			state.gameTime = 0.0F;

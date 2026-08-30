@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.BlockModelResolver;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolver itemModelResolver, BlockModelResolver blockModelResolver) implements SpecialModelRenderer<DataComponentMap> {
+public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolver itemModelResolver) implements SpecialModelRenderer<DataComponentMap> {
 
 	@Autowired(dist = Dist.CLIENT)
 	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
@@ -59,7 +58,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 			return;
 		}
 
-		TexturedJarLidPart lidPart = jarLidResolver.resolve(blockModelResolver, lid);
+		TexturedJarLidPart lidPart = jarLidResolver.resolve(lid);
 
 		if (lidPart == null) {
 			return;
@@ -145,8 +144,7 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 			Minecraft minecraft = Minecraft.getInstance();
 			return new MasonJarSpecialRenderer(
 				defaultLid,
-				minecraft.getItemModelResolver(),
-				minecraft.getBlockModelResolver()
+				minecraft.getItemModelResolver()
 			);
 		}
 	}
