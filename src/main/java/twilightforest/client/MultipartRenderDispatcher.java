@@ -42,11 +42,11 @@ public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRende
 	private final int hitboxColor = ARGB.colorFromFloat(1.0F, 0.25F, 1.0F, 0.0F);
 
 	@PostConstruct
-	private void setup(IEventBus bus) {
-		bus.addListener(this::registerDebugRenderers);
+	private void setup(IEventBus modBus, IEventBus gameBus) {
+		modBus.addListener(this::registerDebugRenderers);
 
-		NeoForge.EVENT_BUS.addListener(this::extractPartRenderStates);
-		NeoForge.EVENT_BUS.addListener(this::submitPartRenderStates);
+		gameBus.addListener(this::extractPartRenderStates);
+		gameBus.addListener(this::submitPartRenderStates);
 	}
 
 	private void registerDebugRenderers(RegisterDebugRenderersEvent event) {
