@@ -22,6 +22,7 @@ public class HostileWolfRenderer extends MobRenderer<HostileWolf, WolfRenderStat
 	@Override
 	public void extractRenderState(HostileWolf entity, WolfRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
+		state.isAngry = entity.getTarget() != null;
 		state.tailAngle = entity.getTailAngle();
 		state.texture = entity.getTexture();
 	}
