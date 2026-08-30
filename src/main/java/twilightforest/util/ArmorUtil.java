@@ -14,6 +14,10 @@ public class ArmorUtil {
 		int armorSlots = 0;
 
 		for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR) {
+			if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR) {
+				continue;
+			}
+
 			ItemStack stack = entity.getItemBySlot(slot);
 
 			if (!stack.isEmpty() && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
