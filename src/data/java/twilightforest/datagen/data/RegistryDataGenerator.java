@@ -41,7 +41,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		.add(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariants::bootstrap)
 		.add(Registries.JUKEBOX_SONG, TFJukeboxSongs::bootstrap)
 		.add(Registries.ENCHANTMENT, TFEnchantments::bootstrap)
-		.add(TFRegistries.Keys.JAR_LIDS, JarLids::bootstrap);
+		.add(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlers::bootstrap);
 
 	public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider, BUILDER, Set.of("minecraft", TwilightForestMod.ID));

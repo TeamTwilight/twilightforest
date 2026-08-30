@@ -480,7 +480,7 @@ public class TFTeleporter {
 					BlockState state = world.getBlockState(tPos);
 
 					// all blocks mustn't be bedrock, end portal frame, etc.; and other conditions for layers >= 0
-					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.is(BlockTags.SUBSTRATE_OVERWORLD) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}
@@ -519,7 +519,7 @@ public class TFTeleporter {
 		BlockState dirt = Blocks.DIRT.defaultBlockState();
 		for (BlockPos blockpos : positions) {
 			BlockState state = world.getBlockState(blockpos);
-			if (state.is(BlockTags.DIRT) || state.is(BlockTags.REPLACEABLE) || state.is(BlockTags.AIR))
+			if (state.is(BlockTags.SUBSTRATE_OVERWORLD) || state.is(BlockTags.REPLACEABLE) || state.is(BlockTags.AIR))
 				world.setBlockAndUpdate(blockpos, dirt);
 		}
 

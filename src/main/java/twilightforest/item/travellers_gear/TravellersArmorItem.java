@@ -193,7 +193,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		}
 
 		@Override
-		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, Model model) {
+		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, @SuppressWarnings("rawtypes") Model model) {
 			if (stack.has(DataComponents.EQUIPPABLE)) {
 				EquipmentSlot slot = stack.get(DataComponents.EQUIPPABLE).slot();
 				ModelPart root = switch (slot) {
@@ -234,7 +234,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		}
 
 		@Override
-		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, @SuppressWarnings("rawtypes") Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
 //			if (model instanceof TravellersWingsModel wingsModel)
 //				wingsModel.setupModelAnimations(livingEntity, ageInTicks);
 		}

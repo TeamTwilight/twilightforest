@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.*;
@@ -67,7 +66,7 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> SWAP_HOTBAR_MODIFIER = COMPONENTS.register("swap_hotbar_modifier", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> HIGH_JUMP_AMPLIFIER = COMPONENTS.register("high_jump_amplifier", () -> DataComponentType.<Integer>builder().persistent(ExtraCodecs.UNSIGNED_BYTE).networkSynchronized(ByteBufCodecs.INT).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> GRADUALLY_GLIDING_MULTIPLIER = COMPONENTS.register("gradually_gliding_multiplier", () -> DataComponentType.<Float>builder().persistent(ExtraCodecs.POSITIVE_FLOAT).networkSynchronized(ByteBufCodecs.FLOAT).cacheEncoding().build());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> AGILE_RANGER_MODIFIER = COMPONENTS.register("agile_ranger_modifier", () -> DataComponentType.<Float>builder().persistent(ExtraCodecs.POSITIVE_FLOAT).networkSynchronized(ByteBufCodecs.FLOAT).cacheEncoding().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> AGILE_RANGER_MODIFIER = COMPONENTS.register("agile_ranger_modifier", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> DOUBLE_JUMP = COMPONENTS.register("double_jump", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Long>> SIDESTEP_COOLDOWN = COMPONENTS.register("sidestep_cooldown", () -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> STRAIGHT_AHEAD_MULTIPLIER = COMPONENTS.register("straight_ahead_multiplier", () -> DataComponentType.<Double>builder().persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE).cacheEncoding().build());

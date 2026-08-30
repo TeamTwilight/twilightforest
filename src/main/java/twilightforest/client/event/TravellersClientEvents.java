@@ -3,48 +3,40 @@ package twilightforest.client.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.player.AvatarRenderer;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.component.UseEffects;
+import net.minecraft.world.phys.Vec2;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
-import twilightforest.tags.TFItemTags;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
+import twilightforest.tags.TFItemTags;
 
 @Component(dist = Dist.CLIENT)
 public class TravellersClientEvents {
@@ -74,15 +66,16 @@ public class TravellersClientEvents {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
-		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER);
-		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) || agileRangerModifier == null)
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER))
 			return;
 		ItemStack stack = localPlayer.getUseItem();
 		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(TFItemTags.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
 		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && isLegalItem) {
 			ClientInput input = event.getInput();
-//			input.getMoveVector().x *= agileRangerModifier;
-//			input.getMoveVector().y *= agileRangerModifier;
+			float movementModifier = localPlayer.getUseItem().getOrDefault(DataComponents.USE_EFFECTS, UseEffects.DEFAULT).speedMultiplier();
+			if (movementModifier < 1E-5)
+				return;
+			input.moveVector = input.getMoveVector().scale(1 / movementModifier);
 		}
 	}
 
@@ -99,7 +92,7 @@ public class TravellersClientEvents {
 		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.getMoveVector().y <= 0)
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-//		input.getMoveVector().x /= multiplier;
+		input.moveVector = new Vec2((float) (input.getMoveVector().x / multiplier), input.getMoveVector().y);
 	}
 
 	private void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
@@ -119,18 +112,18 @@ public class TravellersClientEvents {
 		int lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
-//		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.getMoveVector().x != 0) {
-//			boolean isLeftSidestep = input.getMoveVector().x > 0;
-//			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
-//				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
-//			}
-//		}
+		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.getMoveVector().x != 0) {
+			boolean isLeftSidestep = input.getMoveVector().x > 0;
+			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
+				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
+			}
+		}
 
-//		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.getMoveVector().x);
-//		if (input.getMoveVector().x != 0) {
-//			localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
-//			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.getMoveVector().x);
-//		}
+		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.getMoveVector().x);
+		if (input.getMoveVector().x != 0) {
+			localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
+			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.getMoveVector().x);
+		}
 	}
 
 	private void handleStealth(RenderFrameEvent.Pre event) {
@@ -143,18 +136,18 @@ public class TravellersClientEvents {
 	}
 
 	private void handleDoubleJump(InputEvent.Key event) {
-//		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, Minecraft.getInstance().options.keyJump))
-//			return;
-//		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
+		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, Minecraft.getInstance().options.keyJump))
+			return;
+		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
 		boolean pressedKey = event.getAction() == InputConstants.PRESS;
-//		if (pressedKey)
-//			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
-//		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
-//		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
-//			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
-//				localPlayer.connection.send(new PerformDoubleJumpPacket());
-//			}
-//		}
+		if (pressedKey)
+			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
+		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
+		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
+			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
+				localPlayer.connection.send(new PerformDoubleJumpPacket());
+			}
+		}
 	}
 
 	private void updateZoomState(ComputeFovModifierEvent event) {
@@ -241,9 +234,9 @@ public class TravellersClientEvents {
 		event.setMouseSensitivity(mod * mouseSensitivity / fovMod);
 	}
 
-//	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
-//		return !key.matches(event.getKey(), event.getScanCode()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
-//	}
+	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
+		return !key.matches(event.getKeyEvent()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
+	}
 
 	@SuppressWarnings("unchecked") //meh
 	private void renderGlovesInFirstPerson(RenderArmEvent event) {

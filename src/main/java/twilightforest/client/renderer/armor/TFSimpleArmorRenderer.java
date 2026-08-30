@@ -23,6 +23,7 @@ public class TFSimpleArmorRenderer extends TFArmorRenderer {
 	}
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	public HumanoidModel<?> getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 		return layerType == EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS ?
 			CREATE_MODEL_INSTANCE.apply(getModelPart(INNER_ARMOR_MODEL)) :

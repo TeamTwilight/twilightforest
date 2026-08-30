@@ -13,7 +13,7 @@ public class LichTowerStructureDefinitionGenerator extends StructureTemplateDefi
 	}
 
 	@Override
-	protected void generatePools() {
+	protected void generatePools(HolderLookup.Provider provider) {
 		this.addAllTemplatesToPool(LichTowerPieces.MOB_BRIDGE, 100,
 			"lich_tower/bridge_spawner",
 			"lich_tower/bridge_spawner_bend",
