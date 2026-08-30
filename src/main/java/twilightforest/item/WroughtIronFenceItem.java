@@ -1,15 +1,22 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.init.TFSounds;
+
+import java.util.function.Consumer;
 
 public class WroughtIronFenceItem extends BlockItem {
 	public WroughtIronFenceItem(Block block, Properties properties) {
@@ -31,5 +38,12 @@ public class WroughtIronFenceItem extends BlockItem {
 			return InteractionResult.SUCCESS;
 		}
 		return super.useOn(context);
+	}
+
+	@Override
+	@Deprecated
+	public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag tooltipFlag) {
+		super.appendHoverText(itemStack, context, display, tooltip, tooltipFlag);
+		tooltip.accept(Component.translatable("block.twilightforest.wrought_iron_fence.cap").withStyle(ChatFormatting.GRAY));
 	}
 }
