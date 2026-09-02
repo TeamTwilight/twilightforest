@@ -1,5 +1,6 @@
 package twilightforest.client.event;
 
+import com.google.common.reflect.TypeToken;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -17,6 +18,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -28,6 +30,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
@@ -45,7 +51,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
-import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
+import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
@@ -55,7 +61,6 @@ import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
-import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
@@ -83,8 +88,7 @@ import twilightforest.item.PotionFlaskItem;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
-import twilightforest.network.GogglesZoomPacket;
-import twilightforest.network.GradualGlidePacket;
+import twilightforest.potions.FrostedEffect;
 import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.Objects;
@@ -115,6 +119,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerSelectProperties);
 		bus.addListener(this::registerItemModels);
 		bus.addListener(this::registerCustomEnvironmentRenderers);
+		bus.addListener(this::registerCustomRenderData);
 
 		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
@@ -189,7 +194,7 @@ public class ClientRegistrationEvents {
 		Identifier trophy_minor = TwilightForestMod.prefix("item/trophy_minor");
 		Identifier trophy_quest = TwilightForestMod.prefix("item/trophy_quest");
 
-		event.register(new StandaloneModelKey<>(ShieldLayer.LOC::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(ShieldLayer.LOC));
+		event.register(ShieldLayer.SHIELD_MODEL, SimpleUnbakedStandaloneModel.quadCollection(ShieldLayer.LOC));
 		event.register(new StandaloneModelKey<>(trophy::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy));
 		event.register(new StandaloneModelKey<>(trophy_minor::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_minor));
 		event.register(new StandaloneModelKey<>(trophy_quest::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_quest));
@@ -608,21 +613,40 @@ public class ClientRegistrationEvents {
 	private void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
-			var renderer = event.getRenderer(type);
-			if (renderer instanceof LivingEntityRenderer<?,?,?> living) {
-//				attachRenderLayers(living);
+			EntityRenderer<?, ?> renderer = event.getRenderer(type);
+			if (renderer instanceof LivingEntityRenderer<?, ?, ?>) {
+				@SuppressWarnings("unchecked") // Yuck
+				var living = (LivingEntityRenderer<?, LivingEntityRenderState, EntityModel<LivingEntityRenderState>>) renderer;
+				this.attachLivingRenderLayers(living);
 			}
 		}
 
 		event.getSkins().forEach(renderer -> {
 			AvatarRenderer<AbstractClientPlayer> skin = event.getPlayerRenderer(renderer);
-			attachRenderLayers(Objects.requireNonNull(skin));
+			this.attachLivingRenderLayers(Objects.requireNonNull(skin));
 		});
 	}
 
-	private <T extends LivingEntityRenderState, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<?, T, M> renderer) {
+	private <T extends LivingEntityRenderState, M extends EntityModel<? super T>> void attachLivingRenderLayers(LivingEntityRenderer<?, T, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
+	}
+
+	private void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
+		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity living, LivingEntityRenderState state) -> {
+			state.setRenderData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(living));
+
+			AttributeInstance speed = living.getAttribute(Attributes.MOVEMENT_SPEED);
+			if (speed == null)
+				return;
+
+			AttributeModifier frost = speed.getModifier(FrostedEffect.MOVEMENT_SPEED_MODIFIER);
+			if (frost == null)
+				return;
+
+			state.setRenderData(IceLayer.FROST_COUNT_KEY, frost.amount());
+			state.setRenderData(IceLayer.FROST_ID_KEY, living.getId());
+		});
 	}
 
 	private void registerCustomEnvironmentRenderers(RegisterCustomEnvironmentEffectRendererEvent event) {
