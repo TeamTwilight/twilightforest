@@ -2,17 +2,24 @@ package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Spawner;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -36,10 +43,11 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static twilightforest.init.TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER;
 
-public class SinisterSpawnerBlock extends BaseEntityBlock {
+public class SinisterSpawnerBlock extends BaseEntityBlock implements TooltipBlock {
 	public static final MapCodec<SinisterSpawnerBlock> CODEC = simpleCodec(SinisterSpawnerBlock::new);
 
 	public SinisterSpawnerBlock(Properties properties) {
@@ -67,12 +75,11 @@ public class SinisterSpawnerBlock extends BaseEntityBlock {
 		return 15 + level.getRandom().nextInt(15) + level.getRandom().nextInt(15);
 	}
 
-	//TODO
-//	@Override
-//	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-//		super.appendHoverText(stack, context, tooltip, flag);
-//		Spawner.appendHoverText(stack, tooltip, "SpawnData");
-//	}
+	@Override
+	public void addTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+		TypedEntityData<BlockEntityType<?>> blockEntityData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+		Spawner.appendHoverText(blockEntityData, tooltip, "SpawnData");
+	}
 
 	@Override
 	protected VoxelShape getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {

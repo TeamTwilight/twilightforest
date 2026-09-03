@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -35,7 +36,7 @@ public class ArmorUtilTests {
 			.thenReturn(ItemStack.EMPTY);
 
 		when(entity.getItemBySlot(EquipmentSlot.CHEST))
-			.thenReturn(new ItemStack(Items.STICK));
+			.thenReturn(new ItemStack(Holder.direct(Items.STICK), 1));
 
 		when(entity.getItemBySlot(EquipmentSlot.LEGS))
 			.thenReturn(ItemStack.EMPTY);
@@ -43,7 +44,7 @@ public class ArmorUtilTests {
 		when(entity.getItemBySlot(EquipmentSlot.FEET))
 			.thenReturn(
 				new ItemStack(
-					TFItems.ARCTIC_BOOTS,
+					Holder.direct(TFItems.ARCTIC_BOOTS.get()),
 					1,
 					DataComponentPatch.builder()
 						.set(TFDataComponents.EMPERORS_CLOTH.get(), Unit.INSTANCE)

@@ -229,7 +229,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		this.tag(Tags.Blocks.STORAGE_BLOCKS).addTags(TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR, TFBlockTags.STORAGE_BLOCKS_CARMINITE, TFBlockTags.STORAGE_BLOCKS_FIERY, TFBlockTags.STORAGE_BLOCKS_IRONWOOD, TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL, TFBlockTags.STORAGE_BLOCKS_STEELEAF);
 
 		this.tag(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
-		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.DIRT);
+		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.SUBSTRATE_OVERWORLD);
 		this.tag(TFBlockTags.PORTAL_POOL).add(Blocks.WATER);
 		this.tag(TFBlockTags.PORTAL_DECO).add(
 				Blocks.BAMBOO,
@@ -306,7 +306,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.addTag(BlockTags.FLOWERS);
 
 		this.tag(TFBlockTags.PLANTS_HANG_ON)
-			.addTag(BlockTags.DIRT)
+			.addTag(BlockTags.SUBSTRATE_OVERWORLD)
 			.add(Blocks.MOSS_BLOCK, TFBlocks.MANGROVE_ROOT.get(), TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get());
 
 		this.tag(TFBlockTags.COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
@@ -393,7 +393,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(TFBlocks.HUGE_MUSHGLOOM.get());
 
 		this.tag(TFBlockTags.ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
-			BlockTags.DIRT,
+			BlockTags.SUBSTRATE_OVERWORLD,
 			Tags.Blocks.GRAVELS,
 			Tags.Blocks.SANDS,
 			BlockTags.NYLIUM,
@@ -446,7 +446,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.addTag(Tags.Blocks.ORES)
 			.addTag(BlockTags.BASE_STONE_OVERWORLD)
 			.addTag(BlockTags.BASE_STONE_NETHER)
-			.addTag(BlockTags.DIRT)
+			.addTag(BlockTags.SUBSTRATE_OVERWORLD)
 			.addTag(Tags.Blocks.SANDS)
 			.addTag(Tags.Blocks.SANDSTONE_BLOCKS)
 			.addTag(BlockTags.TERRACOTTA)

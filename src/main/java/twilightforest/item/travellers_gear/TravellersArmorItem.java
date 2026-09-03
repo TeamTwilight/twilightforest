@@ -193,10 +193,11 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		}
 
 		@Override
-		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, Model model) {
+		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, @SuppressWarnings("rawtypes") Model model) {
 			if (stack.has(DataComponents.EQUIPPABLE)) {
 				EquipmentSlot slot = stack.get(DataComponents.EQUIPPABLE).slot();
 				ModelPart root = switch (slot) {
+					case HEAD -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
 					case CHEST -> {
 						ModelPart chestLayer = this.getModelPart(this.isModelSlim(model) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 						chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
@@ -227,14 +228,16 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 				if (slot == EquipmentSlot.LEGS) {
 					return new TravellersWingsModel(root);
 				} else if (root != null) {
-					return new TFArmorModel(root);
+					TFArmorModel armorModel = new TFArmorModel(root);
+					armorModel.setSlot(slot);
+					return armorModel;
 				}
 			}
 			return super.getHumanoidArmorModel(stack, layerType, model);
 		}
 
 		@Override
-		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, @SuppressWarnings("rawtypes") Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
 //			if (model instanceof TravellersWingsModel wingsModel)
 //				wingsModel.setupModelAnimations(livingEntity, ageInTicks);
 		}

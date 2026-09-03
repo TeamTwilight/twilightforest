@@ -40,6 +40,8 @@ public class MistWolfRenderer extends MobRenderer<MistWolf, MistWolfRenderState,
 	@Override
 	public void extractRenderState(MistWolf entity, MistWolfRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
+		state.isAngry = entity.getTarget() != null;
+		state.tailAngle = entity.getTailAngle();
 		state.brightness = entity.level().getMaxLocalRawBrightness(entity.blockPosition());
 	}
 

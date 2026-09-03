@@ -8,10 +8,7 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.util.Util;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -212,12 +209,12 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(keyMapping.getName(), name);
 	}
 
-	public void addTravellersModifier(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String name) {
-//		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
+	public void addTravellersModifier(ResourceKey<TravellersModifier> modifier, String name) {
+		this.add(modifier.identifier().toLanguageKey(TravellersModifier.getPrefix()), name);
 	}
 
-	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
-//		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
+	public void addTravellersDescription(ResourceKey<TravellersModifier> modifier, String description) {
+		this.add(modifier.identifier().toLanguageKey(TravellersModifier.getPrefix(), "description"), description);
 	}
 
 	public void createTip(String key, String translation) {

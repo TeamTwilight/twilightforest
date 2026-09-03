@@ -61,6 +61,6 @@ public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> 
 		this.leftFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
 		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
-		this.tail.xRot = entity.ageInTicks;
+		this.tail.xRot = entity.tailAngle;
 	}
 }

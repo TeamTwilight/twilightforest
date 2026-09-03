@@ -116,7 +116,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
 		BlockPos placeAt = new BlockPos(x, y, z);
 
-		if (!level.getBlockState(placeAt).is(BlockTags.DIRT))
+		if (!level.getBlockState(placeAt).is(BlockTags.SUBSTRATE_OVERWORLD))
 			return;
 
 		int xBorderDist = Math.min(x - this.boundingBox.minX(), this.boundingBox.maxX() - x);

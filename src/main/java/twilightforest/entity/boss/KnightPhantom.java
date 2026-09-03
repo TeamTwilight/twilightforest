@@ -184,7 +184,10 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	protected void customServerAiStep(ServerLevel server) {
 		super.customServerAiStep(server);
-		if (this.totalKnownKnights == Integer.MIN_VALUE) this.updateMyNumber();
+		if (this.totalKnownKnights == Integer.MIN_VALUE) {
+			this.updateMyNumber();
+			this.joinNearbyFormation();
+		}
 		float health = 0F;
 		float maxHealth = 0F;
 		int amount = 0;
@@ -415,6 +418,9 @@ public class KnightPhantom extends BaseTFBoss {
 			if (knight.getNumber() == 0)
 				this.setRestrictionPoint(knight.getRestrictionPoint());
 		}
+		int largest = Math.max(knights.size(), 1);
+		if (this.totalKnownKnights < largest)
+			this.totalKnownKnights = largest;
 		if (nums.isEmpty()) {
 			this.setNumber(0);
 			return;
@@ -422,7 +428,6 @@ public class KnightPhantom extends BaseTFBoss {
 		int[] n = Ints.toArray(nums);
 		Arrays.sort(n);
 		int smallest = n[0];
-		int largest = knights.size();
 		int smallestUnused = largest + 1;
 		if (smallest > 0) {
 			smallestUnused = 0;
@@ -434,10 +439,22 @@ public class KnightPhantom extends BaseTFBoss {
 				}
 			}
 		}
-		if (this.totalKnownKnights < largest)
-			this.totalKnownKnights = largest;
 		if (this.number > smallestUnused || nums.contains(this.number))
 			this.setNumber(smallestUnused);
+	}
+
+	private void joinNearbyFormation() {
+		KnightPhantom leader = null;
+		for (KnightPhantom knight : this.getNearbyKnights()) {
+			if (knight == this)
+				continue;
+			if (leader == null || knight.getNumber() < leader.getNumber())
+				leader = knight;
+		}
+		if (leader != null) {
+			this.switchToFormation(leader.getCurrentFormation());
+			this.setTicksProgress(leader.getTicksProgress());
+		}
 	}
 
 	public boolean isChargingAtPlayer() {

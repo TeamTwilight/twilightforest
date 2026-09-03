@@ -51,7 +51,7 @@ public class QuestRamRenderer extends MobRenderer<QuestRam, QuestingRamRenderSta
 		@Override
 		public void submit(PoseStack stack, SubmitNodeCollector collector, int light, QuestingRamRenderState state, float yRot, float xRot) {
 			stack.scale(1.025F, 1.025F, 1.025F);
-			collector.order(1).submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucent(LINE_TEXTURE), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, null);
+			collector.order(1).submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucent(LINE_TEXTURE), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 		}
 	}
 }

@@ -5,14 +5,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable Map<Integer, PartDataHolder> data) implements CustomPacketPayload {
 
@@ -21,14 +19,20 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 
 	public UpdateTFMultipartPacket(RegistryFriendlyByteBuf buf) {
 		this(buf.readInt(), null, new HashMap<>());
-		int id;
-		while ((id = buf.readInt()) > 0) {
-			this.data.put(id, PartDataHolder.decode(buf));
+		int index;
+		while ((index = buf.readInt()) != -1) {
+			this.data.put(index, PartDataHolder.decode(buf));
 		}
 	}
 
 	public UpdateTFMultipartPacket(Entity entity) {
-		this(-1, entity, Arrays.stream(entity.getParts()).filter(part -> part instanceof TFPart<?>).map(part -> (TFPart<?>) part).collect(Collectors.toMap(TFPart::getId, TFPart::writeData)));
+		this(-1, entity, collectPartData(entity));
+	}
+
+	private static Map<Integer, PartDataHolder> collectPartData(Entity entity) {
+		Map<Integer, PartDataHolder> data = new HashMap<>();
+		TFPart.forEachPart(entity, (part, index) -> data.put(index, part.writeData()));
+		return data;
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {
@@ -37,8 +41,8 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 		if (this.data == null)
 			throw new IllegalStateException("Null Data while encoding UpdateTFMultipartPacket");
 		buf.writeInt(this.entity.getId());
-		this.data.forEach((id, data) -> {
-			buf.writeInt(id);
+		this.data.forEach((index, data) -> {
+			buf.writeInt(index);
 			data.encode(buf);
 		});
 		buf.writeInt(-1);
@@ -53,24 +57,12 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 		ctx.enqueueWork(() -> {
 			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
 			Entity ent = ctx.player().level().getEntity(eId);
-			if (ent != null && ent.isMultipartEntity()) {
-				PartEntity<?>[] parts = ent.getParts();
-				if (parts == null)
-					return;
-				for (PartEntity<?> part : parts) {
-					if (part instanceof TFPart<?> tfPart) {
-						if (message.data == null && message.entity != null) // Account for Singleplayer
-							Arrays.stream(message.entity.getParts())
-								.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
-								.map(p -> (TFPart<?>) p)
-								.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
-						else if (message.data != null) {
-							PartDataHolder data = message.data.get(tfPart.getId());
-							if (data != null)
-								tfPart.readData(data);
-						}
-					}
-				}
+			if (ent != null && message.data != null) {
+				TFPart.forEachPart(ent, (part, index) -> {
+					PartDataHolder data = message.data.get(index);
+					if (data != null)
+						part.readData(data);
+				});
 			}
 		});
 	}
