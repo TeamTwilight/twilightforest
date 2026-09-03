@@ -28,3 +28,5 @@ gource.sh
 .noai
 .profileconfig.json
 profile.jfr
+.claude
+CLAUDE.md

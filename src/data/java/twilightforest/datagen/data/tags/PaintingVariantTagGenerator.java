@@ -4,15 +4,13 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.KeyTagProvider;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.entity.decoration.painting.PaintingVariants;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFPaintingVariantTags;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
-import static net.minecraft.tags.TagEntry.tag;
 
 public class PaintingVariantTagGenerator extends KeyTagProvider<PaintingVariant> {
 
@@ -23,7 +21,7 @@ public class PaintingVariantTagGenerator extends KeyTagProvider<PaintingVariant>
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 		// Every single painting except for Humble
-		tag(TFPaintingVariantTags.LICH_TOWER_PAINTINGS).add(
+		tag(TFPaintingVariantTags.LICH_TOWER_PAINTINGS).addAll(List.of(
 			PaintingVariants.KEBAB,
 			PaintingVariants.AZTEC,
 			PaintingVariants.ALBAN,
@@ -73,9 +71,9 @@ public class PaintingVariantTagGenerator extends KeyTagProvider<PaintingVariant>
 			PaintingVariants.POND,
 			PaintingVariants.SUNFLOWERS,
 			PaintingVariants.TIDES
-		);
+		));
 		// Every single painting except for Humble, Unpacked, and the 4 elements
-		tag(TFPaintingVariantTags.LICH_BOSS_PAINTINGS).add(
+		tag(TFPaintingVariantTags.LICH_BOSS_PAINTINGS).addAll(List.of(
 			PaintingVariants.KEBAB,
 			PaintingVariants.AZTEC,
 			PaintingVariants.ALBAN,
@@ -120,7 +118,7 @@ public class PaintingVariantTagGenerator extends KeyTagProvider<PaintingVariant>
 			PaintingVariants.POND,
 			PaintingVariants.SUNFLOWERS,
 			PaintingVariants.TIDES
-		);
+		));
 	}
 
 	@Override

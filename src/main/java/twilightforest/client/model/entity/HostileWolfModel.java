@@ -26,7 +26,7 @@ public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> 
 	}
 
 	public HostileWolfModel(Function<Identifier, RenderType> type, ModelPart root) {
-		super(type, false, 5.0F, 2.0F, 2.0F, 2.0F, 24.0F);
+		super(root, type);
 		this.head = root.getChild("head");
 		this.body = root.getChild("body");
 		this.upperBody = root.getChild("upper_body");
@@ -61,6 +61,6 @@ public class HostileWolfModel<T extends WolfRenderState> extends EntityModel<T> 
 		this.leftFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
 		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
-		this.tail.xRot = entity.ageInTicks;
+		this.tail.xRot = entity.tailAngle;
 	}
 }

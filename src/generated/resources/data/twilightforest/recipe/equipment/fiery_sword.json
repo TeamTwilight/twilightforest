@@ -3,12 +3,8 @@
   "category": "equipment",
   "group": "fiery_sword",
   "key": {
-    "#": {
-      "tag": "c:ingots/fiery"
-    },
-    "X": {
-      "tag": "c:rods/blaze"
-    }
+    "#": "#c:ingots/fiery",
+    "X": "#c:rods/blaze"
   },
   "pattern": [
     "#",
@@ -16,7 +12,6 @@
     "X"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:fiery_sword"
   }
 }

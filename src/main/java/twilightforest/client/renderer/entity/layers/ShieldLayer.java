@@ -1,31 +1,32 @@
 package twilightforest.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.BlockModelRenderState;
-import net.minecraft.client.renderer.block.model.BlockDisplayContext;
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDataAttachments;
 
-public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
+import java.util.List;
+
+public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityModel<? super S>> extends RenderLayer<S, M> {
 
 	public static final Identifier LOC = TwilightForestMod.prefix("item/shield");
+	public static final StandaloneModelKey<QuadCollection> SHIELD_MODEL = new StandaloneModelKey<>(LOC::toDebugFileName);
 
 	public static ContextKey<Integer> SHIELD_COUNT_KEY = new ContextKey<>(TwilightForestMod.prefix("shield_count"));
 
@@ -37,7 +38,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, S state, float netHeadYaw, float headPitch) {
 		Integer count = state.getRenderData(SHIELD_COUNT_KEY);
 		if (count != null && count > 0) {
-			this.renderShields(stack, collector, state, count, state.lightCoords, state.outlineColor);
+			this.renderShields(stack, collector, state, count);
 		}
 	}
 
@@ -47,7 +48,17 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 			: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 
-	private void renderShields(PoseStack stack, SubmitNodeCollector collector, S state, int count, int lightCoords, int outlineColor) {
+	private void renderShields(PoseStack stack, SubmitNodeCollector collector, S state, int count) {
+		QuadCollection shieldModel = Minecraft.getInstance().getModelManager().getStandaloneModel(SHIELD_MODEL);
+		if (shieldModel == null)
+			return;
+
+		List<BakedQuad> quads = shieldModel.getAll();
+		if (quads.isEmpty())
+			return;
+
+		QuadInstance instance = new QuadInstance();
+
 		float age = state.ageInTicks;
 		float rotateAngleY = age / -5.0F;
 		float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
@@ -66,25 +77,11 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 			// push the shields outwards from the center of rotation
 			stack.translate(0.0F, 0.0F, -0.7F);
 
-			BlockModel shieldModel = Minecraft.getInstance().getModelManager().getStandaloneModel(new StandaloneModelKey<>(LOC::toDebugFileName));
-
-			if (shieldModel != null) {
-				BlockModelRenderState modelState = new BlockModelRenderState();
-				shieldModel.update(
-					modelState,
-					Blocks.AIR.defaultBlockState(),
-					BlockDisplayContext.create(),
-					42L
-				);
-				modelState.submit(
-					stack,
-					buffer.getBuffer(Sheets.translucentItemSheet()),
-					model.getQuads(null, dir, Minecraft.getInstance().font.random, ModelData.EMPTY, Sheets.translucentItemSheet()),
-					new int[0],
-					LightCoordsUtil.FULL_BRIGHT,
-					OverlayTexture.NO_OVERLAY
-				);
-			}
+			collector.submitCustomGeometry(stack, Sheets.translucentItemSheet(), (pose, buffer) -> {
+				for (BakedQuad quad : quads) {
+					buffer.putBakedQuad(pose, quad, instance);
+				}
+			});
 
 			stack.popPose();
 		}

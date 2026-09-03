@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_banister",
   "key": {
-    "-": {
-      "item": "minecraft:acacia_slab"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "-": "minecraft:acacia_slab",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "---",

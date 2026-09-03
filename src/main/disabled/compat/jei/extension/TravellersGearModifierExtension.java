@@ -21,7 +21,7 @@ import java.util.List;
 public class TravellersGearModifierExtension implements ICraftingCategoryExtension<TravellersGearModifierRecipe> {
 
 	@Override
-	public void setRecipe(RecipeHolder<TravellersGearModifierRecipe> recipeHolder, @NotNull IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, @NotNull IFocusGroup focuses) {
+	public void setRecipe(RecipeHolder<TravellersGearModifierRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
 		TravellersGearModifierRecipe recipe = recipeHolder.value();
 		List<List<ItemStack>> inputs = new ArrayList<>(recipe.getIngredients().stream().map(ingredient -> Arrays.stream(ingredient.getItems()).toList()).toList());
 		List<ItemStack> outputs = new ArrayList<>();

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/transformation_wall_hanging_sign"
+      "model": "twilightforest:block/transformation_hanging_sign"
     }
   }
 }

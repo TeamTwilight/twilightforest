@@ -2,20 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "tag": "c:ingots/knightmetal"
-    },
-    "m": {
-      "item": "twilightforest:knightmetal_ingot"
-    }
+    "#": "#c:ingots/knightmetal"
   },
   "pattern": [
     "###",
-    "#m#",
+    "###",
     "###"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:knightmetal_block"
   }
 }

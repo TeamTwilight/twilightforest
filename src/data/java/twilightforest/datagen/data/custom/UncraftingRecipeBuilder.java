@@ -8,6 +8,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
@@ -34,6 +35,11 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 		this.items = getter;
 		this.input = input;
 		this.count = count;
+	}
+
+	@Override
+	public ResourceKey<Recipe<?>> defaultId() {
+		return RecipeBuilder.getDefaultRecipeId(new ItemStackTemplate(this.input.getValues().get(0).value())); //TODO: idk
 	}
 
 	public static UncraftingRecipeBuilder uncrafting(HolderGetter<Item> getter, ItemLike input) {
@@ -99,20 +105,20 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 		return this;
 	}
 
-	@Override
-	public Item getResult() {
-		return this.input.getValues().get(0).value();
-	}
+//	@Override
+//	public Item getResult() {
+//		return this.input.getValues().get(0).value();
+//	}
 
 	@Override
 	public void save(RecipeOutput output) {
-		this.save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("uncrafting/" + RecipeBuilder.getDefaultRecipeId(this.getResult()).getPath())));
+		this.save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("uncrafting/" + defaultId().identifier().getPath())));
 	}
 
 	@Override
 	public void save(RecipeOutput output, ResourceKey<Recipe<?>> id) {
 		ShapedRecipePattern pattern = ShapedRecipePattern.of(this.key, this.rows);
-		UncraftingRecipe recipe = new UncraftingRecipe(this.cost, this.input, this.count, pattern);
+		UncraftingRecipe recipe = new UncraftingRecipe(RecipeBuilder.createCraftingCommonInfo(false), this.cost, this.input, this.count, pattern); //TODO: Notify?
 		output.accept(id, recipe, null);
 	}
 }

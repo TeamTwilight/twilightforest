@@ -5,8 +5,14 @@
         "model": "twilightforest:block/iron_ladder_left"
       },
       "when": {
-        "facing": "north",
-        "left": "false"
+        "AND": [
+          {
+            "left": "false"
+          },
+          {
+            "facing": "north"
+          }
+        ]
       }
     },
     {
@@ -14,8 +20,14 @@
         "model": "twilightforest:block/iron_ladder_left_connection"
       },
       "when": {
-        "facing": "north",
-        "left": "true"
+        "AND": [
+          {
+            "left": "true"
+          },
+          {
+            "facing": "north"
+          }
+        ]
       }
     },
     {
@@ -23,8 +35,14 @@
         "model": "twilightforest:block/iron_ladder_right"
       },
       "when": {
-        "facing": "north",
-        "right": "false"
+        "AND": [
+          {
+            "right": "false"
+          },
+          {
+            "facing": "north"
+          }
+        ]
       }
     },
     {
@@ -32,8 +50,14 @@
         "model": "twilightforest:block/iron_ladder_right_connection"
       },
       "when": {
-        "facing": "north",
-        "right": "true"
+        "AND": [
+          {
+            "right": "true"
+          },
+          {
+            "facing": "north"
+          }
+        ]
       }
     },
     {
@@ -42,8 +66,14 @@
         "y": 90
       },
       "when": {
-        "facing": "east",
-        "left": "false"
+        "AND": [
+          {
+            "left": "false"
+          },
+          {
+            "facing": "east"
+          }
+        ]
       }
     },
     {
@@ -52,8 +82,14 @@
         "y": 90
       },
       "when": {
-        "facing": "east",
-        "left": "true"
+        "AND": [
+          {
+            "left": "true"
+          },
+          {
+            "facing": "east"
+          }
+        ]
       }
     },
     {
@@ -62,8 +98,14 @@
         "y": 90
       },
       "when": {
-        "facing": "east",
-        "right": "false"
+        "AND": [
+          {
+            "right": "false"
+          },
+          {
+            "facing": "east"
+          }
+        ]
       }
     },
     {
@@ -72,8 +114,14 @@
         "y": 90
       },
       "when": {
-        "facing": "east",
-        "right": "true"
+        "AND": [
+          {
+            "right": "true"
+          },
+          {
+            "facing": "east"
+          }
+        ]
       }
     },
     {
@@ -82,8 +130,14 @@
         "y": 180
       },
       "when": {
-        "facing": "south",
-        "left": "false"
+        "AND": [
+          {
+            "left": "false"
+          },
+          {
+            "facing": "south"
+          }
+        ]
       }
     },
     {
@@ -92,8 +146,14 @@
         "y": 180
       },
       "when": {
-        "facing": "south",
-        "left": "true"
+        "AND": [
+          {
+            "left": "true"
+          },
+          {
+            "facing": "south"
+          }
+        ]
       }
     },
     {
@@ -102,8 +162,14 @@
         "y": 180
       },
       "when": {
-        "facing": "south",
-        "right": "false"
+        "AND": [
+          {
+            "right": "false"
+          },
+          {
+            "facing": "south"
+          }
+        ]
       }
     },
     {
@@ -112,8 +178,14 @@
         "y": 180
       },
       "when": {
-        "facing": "south",
-        "right": "true"
+        "AND": [
+          {
+            "right": "true"
+          },
+          {
+            "facing": "south"
+          }
+        ]
       }
     },
     {
@@ -122,8 +194,14 @@
         "y": 270
       },
       "when": {
-        "facing": "west",
-        "left": "false"
+        "AND": [
+          {
+            "left": "false"
+          },
+          {
+            "facing": "west"
+          }
+        ]
       }
     },
     {
@@ -132,8 +210,14 @@
         "y": 270
       },
       "when": {
-        "facing": "west",
-        "left": "true"
+        "AND": [
+          {
+            "left": "true"
+          },
+          {
+            "facing": "west"
+          }
+        ]
       }
     },
     {
@@ -142,8 +226,14 @@
         "y": 270
       },
       "when": {
-        "facing": "west",
-        "right": "false"
+        "AND": [
+          {
+            "right": "false"
+          },
+          {
+            "facing": "west"
+          }
+        ]
       }
     },
     {
@@ -152,8 +242,14 @@
         "y": 270
       },
       "when": {
-        "facing": "west",
-        "right": "true"
+        "AND": [
+          {
+            "right": "true"
+          },
+          {
+            "facing": "west"
+          }
+        ]
       }
     }
   ]

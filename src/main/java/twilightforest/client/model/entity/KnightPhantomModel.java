@@ -18,7 +18,7 @@ import twilightforest.client.state.entity.KnightPhantomRenderState;
 
 public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> implements TrophyBlockModel {
 
-	private static final Identifier PHANTOM_ARMOR_TEXTURE = TwilightForestMod.prefix("textures/models/armor/phantom_layer_1.png");
+	private static final Identifier PHANTOM_ARMOR_TEXTURE = TwilightForestMod.prefix("textures/entity/equipment/humanoid/phantom.png");
 
 	@Nullable
 	private ModelPart helmet;

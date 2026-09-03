@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 public class FieryToolSmeltingModifier extends LootModifier {
 	public static final MapCodec<FieryToolSmeltingModifier> CODEC = RecordCodecBuilder.mapCodec(inst -> LootModifier.codecStart(inst).apply(inst, FieryToolSmeltingModifier::new));
 
-	public FieryToolSmeltingModifier(LootItemCondition[] conditions) {
-		super(conditions);
+	public FieryToolSmeltingModifier(LootItemCondition[] conditions, int priority) {
+		super(conditions, priority);
 	}
 
 	@Override
-	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		List<Pair<ItemStack, Float>> list = generatedLoot.stream().map(stack ->
 			context.getLevel().recipeAccess().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), context.getLevel())
 				.map(holder -> {

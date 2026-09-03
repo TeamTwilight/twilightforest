@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:liveroot"
-    },
-    {
-      "item": "minecraft:raw_iron"
-    },
-    {
-      "tag": "c:nuggets/gold"
-    }
+    "twilightforest:liveroot",
+    "minecraft:raw_iron",
+    "#c:nuggets/gold"
   ],
   "result": {
     "count": 2,

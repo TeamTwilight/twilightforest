@@ -6,6 +6,7 @@
   "loader": "twilightforest:connected_texture_block",
   "textures": {
     "overlay_connected": "twilightforest:block/arctic_fur_block_ctm",
-    "overlay_texture": "twilightforest:block/arctic_fur_block"
+    "overlay_texture": "twilightforest:block/arctic_fur_block",
+    "particle": "twilightforest:block/arctic_fur_block"
   }
 }

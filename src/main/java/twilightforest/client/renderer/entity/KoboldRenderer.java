@@ -25,7 +25,7 @@ public class KoboldRenderer extends HumanoidMobRenderer<Kobold, KoboldRenderStat
 	@Override
 	public void extractRenderState(Kobold entity, KoboldRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
-		state.jumping = !entity.isNoAi() && !entity.onGround() && entity.getDeltaMovement().y() != 0;
+		state.jumping = !entity.isNoAi() && entity.getDeltaMovement().y() > 0;
 	}
 
 	@Override

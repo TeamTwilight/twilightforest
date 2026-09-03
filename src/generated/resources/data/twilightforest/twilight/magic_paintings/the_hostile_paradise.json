@@ -39,6 +39,7 @@
         "type": "distance",
         "from": 4.0,
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 1.0,
@@ -64,6 +65,7 @@
         "type": "distance",
         "from": 5.0,
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 1.0,
@@ -89,6 +91,7 @@
         "type": "distance",
         "from": 6.0,
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 1.0,
@@ -119,6 +122,7 @@
         "type": "distance",
         "from": 12.0,
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 1.0,
@@ -133,6 +137,7 @@
         "type": "distance",
         "from": 12.0,
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 1.0,
@@ -152,5 +157,8 @@
       "path": "13_frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.the_hostile_paradise.title"
+  },
   "width": 48
 }

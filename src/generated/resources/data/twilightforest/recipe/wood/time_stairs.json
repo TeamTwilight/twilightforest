@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_stairs",
   "key": {
-    "#": {
-      "item": "twilightforest:time_planks"
-    }
+    "#": "twilightforest:time_planks"
   },
   "pattern": [
     "#  ",

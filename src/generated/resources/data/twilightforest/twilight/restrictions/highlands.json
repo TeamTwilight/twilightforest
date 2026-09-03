@@ -4,7 +4,6 @@
   ],
   "enforcement": "twilightforest:acid_rain",
   "locked_biome_toast": {
-    "count": 1,
     "id": "twilightforest:uberous_soil"
   },
   "multiplier": 0.5,

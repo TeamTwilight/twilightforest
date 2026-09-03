@@ -25,7 +25,7 @@ public class YetiArmorModel extends TFArmorModel {
 				.addBox(-4.5F, -8.0F, -4.0F, 9.0F, 8.0F, 8.0F, deformation),
 			PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		// add horns
 		addPairHorns(head, 1, -8.0F, 35.0F);

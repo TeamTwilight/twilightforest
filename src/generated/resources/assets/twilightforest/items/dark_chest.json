@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/dark_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "twilightforest:darkwood/normal"
+    }
+  }
+}

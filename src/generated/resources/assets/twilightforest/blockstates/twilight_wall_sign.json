@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/twilight_wall_sign"
+      "model": "twilightforest:block/twilight_oak_sign"
     }
   }
 }

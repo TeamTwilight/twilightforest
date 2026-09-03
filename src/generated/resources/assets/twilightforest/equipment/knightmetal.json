@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "twilightforest:knightmetal"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "twilightforest:knightmetal"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "twilightforest:knightmetal"
+      }
+    ]
+  }
+}

@@ -1,9 +1,7 @@
 {
-  "asset_name": "steeleaf",
+  "asset_name": "twilightforest_steeleaf",
   "description": {
     "color": "#497733",
     "translate": "trim_material.twilightforest.steeleaf"
-  },
-  "ingredient": "twilightforest:steeleaf_ingot",
-  "item_model_index": 0.7
+  }
 }

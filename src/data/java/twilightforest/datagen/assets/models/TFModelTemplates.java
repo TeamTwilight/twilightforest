@@ -23,9 +23,9 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate CUBE_BOTTOM_2_LAYER_TOP = create("twilightforest:util/cube_bottom_2_layer_top", TextureSlot.BOTTOM, TextureSlot.TOP, TFTextureSlot.TOP_2, TextureSlot.SIDE);
 	public static final ModelTemplate TWO_LAYER_COLUMN_NO_BOTTOM = create("twilightforest:util/two_layer_column_no_bottom", TextureSlot.BOTTOM, TextureSlot.TOP, TFTextureSlot.TOP_2, TextureSlot.SIDE, TFTextureSlot.SIDE_2);
 
-	public static final ModelTemplate BISECTED_STAIRS_STRAIGHT = create("twilightforest:util/bisected_stairs", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
-	public static final ModelTemplate BISECTED_STAIRS_INNER = create("twilightforest:util/bisected_inner_stairs", "_inner", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
-	public static final ModelTemplate BISECTED_STAIRS_OUTER = create("twilightforest:util/bisected_outer_stairs", "_outer", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
+	public static final ModelTemplate BISECTED_STAIRS_STRAIGHT = create("twilightforest:util/bisected_stairs", TextureSlot.END, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
+	public static final ModelTemplate BISECTED_STAIRS_INNER = create("twilightforest:util/bisected_inner_stairs", "_inner", TextureSlot.END, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
+	public static final ModelTemplate BISECTED_STAIRS_OUTER = create("twilightforest:util/bisected_outer_stairs", "_outer", TextureSlot.END, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
 
 	public static final ModelTemplate CUBE_COLUMN_ROTATIONALLY_SPECIAL_X = create("twilightforest:util/cube_column_rotationally_special_x", "_special_x", TextureSlot.END, TFTextureSlot.SIDE_A, TFTextureSlot.SIDE_B);
 	public static final ModelTemplate CUBE_COLUMN_ROTATIONALLY_SPECIAL_Z = create("twilightforest:util/cube_column_rotationally_special_z", "_special_z", TextureSlot.END, TFTextureSlot.SIDE_A, TFTextureSlot.SIDE_B);

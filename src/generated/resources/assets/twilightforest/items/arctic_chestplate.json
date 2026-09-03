@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "neoforge:trimmed_armor",
+    "base_model": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/arctic_chestplate",
+      "tints": [
+        {
+          "type": "minecraft:dye",
+          "default": -4337703
+        }
+      ]
+    },
+    "base_trim_texture": "minecraft:trims/items/chestplate_trim"
+  }
+}

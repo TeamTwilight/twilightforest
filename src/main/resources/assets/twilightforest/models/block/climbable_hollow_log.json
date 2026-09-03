@@ -1,0 +1,66 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "#side"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [2, 16, 16],
+      "faces": {
+        "down": {"cullface": "down", "texture": "#end"},
+        "east": {"texture": "#inside"},
+        "north": {"cullface": "north", "texture": "#side"},
+        "south": {"cullface": "south", "texture": "#side"},
+        "up": {"cullface": "up", "texture": "#end"},
+        "west": {"cullface": "west", "texture": "#side"}
+      }
+    },
+    {
+      "from": [14, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"cullface": "down", "texture": "#end"},
+        "east": {"cullface": "east", "texture": "#side"},
+        "north": {"cullface": "north", "texture": "#side"},
+        "south": {"cullface": "south", "texture": "#side"},
+        "up": {"cullface": "up", "texture": "#end"},
+        "west": {"texture": "#inside"}
+      }
+    },
+    {
+      "from": [2, 0, 0],
+      "to": [14, 16, 2],
+      "faces": {
+        "down": {"cullface": "down", "texture": "#end"},
+        "east": {"cullface": "east", "texture": "#side"},
+        "north": {"cullface": "north", "texture": "#side"},
+        "south": {"texture": "#inside"},
+        "up": {"cullface": "up", "texture": "#end"},
+        "west": {"cullface": "west", "texture": "#side"}
+      }
+    },
+    {
+      "from": [2, 0, 14],
+      "to": [14, 16, 16],
+      "faces": {
+        "down": {"cullface": "down", "texture": "#end"},
+        "east": {"cullface": "east", "texture": "#side"},
+        "north": {"texture": "#inside"},
+        "south": {"cullface": "south", "texture": "#side"},
+        "up": {"cullface": "up", "texture": "#end"},
+        "west": {"cullface": "west", "texture": "#side"}
+      }
+    },
+    {
+      "from": [2, 0, 2.8],
+      "to": [14, 16, 2.8],
+      "shade": false,
+      "faces": {
+        "north": {"texture": "#climbable", "tintindex": 0},
+        "south": {"texture": "#climbable", "tintindex": 0}
+      }
+    }
+  ]
+}

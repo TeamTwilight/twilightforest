@@ -1,0 +1,368 @@
+{
+  "variants": {
+    "age=0,layers=0": {
+      "model": "twilightforest:block/essence_oreberry_bush_small"
+    },
+    "age=0,layers=1": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_height2"
+        }
+      ]
+    },
+    "age=0,layers=2": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_height4"
+        }
+      ]
+    },
+    "age=0,layers=3": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_height6"
+        }
+      ]
+    },
+    "age=0,layers=4": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_height8"
+        }
+      ]
+    },
+    "age=0,layers=5": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_height10"
+        }
+      ]
+    },
+    "age=0,layers=6": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_height12"
+        }
+      ]
+    },
+    "age=0,layers=7": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_height14"
+        }
+      ]
+    },
+    "age=0,layers=8": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_small"
+        },
+        {
+          "model": "minecraft:block/snow_block"
+        }
+      ]
+    },
+    "age=1,layers=0": {
+      "model": "twilightforest:block/essence_oreberry_bush"
+    },
+    "age=1,layers=1": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_height2"
+        }
+      ]
+    },
+    "age=1,layers=2": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_height4"
+        }
+      ]
+    },
+    "age=1,layers=3": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_height6"
+        }
+      ]
+    },
+    "age=1,layers=4": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_height8"
+        }
+      ]
+    },
+    "age=1,layers=5": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_height10"
+        }
+      ]
+    },
+    "age=1,layers=6": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_height12"
+        }
+      ]
+    },
+    "age=1,layers=7": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_height14"
+        }
+      ]
+    },
+    "age=1,layers=8": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush"
+        },
+        {
+          "model": "minecraft:block/snow_block"
+        }
+      ]
+    },
+    "age=2,layers=0": {
+      "model": "twilightforest:block/essence_oreberry_bush_large"
+    },
+    "age=2,layers=1": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_height2"
+        }
+      ]
+    },
+    "age=2,layers=2": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_height4"
+        }
+      ]
+    },
+    "age=2,layers=3": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_height6"
+        }
+      ]
+    },
+    "age=2,layers=4": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_height8"
+        }
+      ]
+    },
+    "age=2,layers=5": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_height10"
+        }
+      ]
+    },
+    "age=2,layers=6": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_height12"
+        }
+      ]
+    },
+    "age=2,layers=7": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_height14"
+        }
+      ]
+    },
+    "age=2,layers=8": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_large"
+        },
+        {
+          "model": "minecraft:block/snow_block"
+        }
+      ]
+    },
+    "age=3,layers=0": {
+      "model": "twilightforest:block/essence_oreberry_bush_ripe"
+    },
+    "age=3,layers=1": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_height2"
+        }
+      ]
+    },
+    "age=3,layers=2": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_height4"
+        }
+      ]
+    },
+    "age=3,layers=3": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_height6"
+        }
+      ]
+    },
+    "age=3,layers=4": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_height8"
+        }
+      ]
+    },
+    "age=3,layers=5": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_height10"
+        }
+      ]
+    },
+    "age=3,layers=6": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_height12"
+        }
+      ]
+    },
+    "age=3,layers=7": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_height14"
+        }
+      ]
+    },
+    "age=3,layers=8": {
+      "type": "neoforge:composite",
+      "models": [
+        {
+          "model": "twilightforest:block/essence_oreberry_bush_ripe"
+        },
+        {
+          "model": "minecraft:block/snow_block"
+        }
+      ]
+    }
+  }
+}

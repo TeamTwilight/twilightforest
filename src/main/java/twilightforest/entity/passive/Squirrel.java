@@ -63,7 +63,7 @@ public class Squirrel extends Animal {
 		if (state.is(BlockTags.LOGS)) {
 			return 15.0F;
 		}
-		if (state.is(BlockTags.DIRT)) {
+		if (state.is(BlockTags.SUBSTRATE_OVERWORLD)) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas

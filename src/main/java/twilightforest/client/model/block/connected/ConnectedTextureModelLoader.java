@@ -5,7 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
@@ -75,14 +75,14 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 
 			for (JsonElement element : object.getAsJsonArray("connectable_blocks")) {
 				if (element.getAsString().startsWith("#")) {
-					ResourceLocation tag = ResourceLocation.tryParse(element.getAsString().substring(1));
+					Identifier tag = Identifier.tryParse(element.getAsString().substring(1));
 					if (tag != null) {
 						BuiltInRegistries.BLOCK.getTagOrEmpty(TagKey.create(Registries.BLOCK, tag)).forEach(blockHolder -> blocks.add(blockHolder.value()));
 					} else {
 						throw new JsonParseException("Invalid block tag: " + element.getAsString());
 					}
 				} else {
-					Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.tryParse(element.getAsString()));
+					Block block = BuiltInRegistries.BLOCK.getValue(Identifier.tryParse(element.getAsString()));
 					if (block == Blocks.AIR) {
 						throw new JsonParseException("Invalid block: " + element.getAsString());
 					}

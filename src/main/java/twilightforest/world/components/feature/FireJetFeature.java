@@ -33,9 +33,9 @@ public class FireJetFeature extends Feature<BlockStateConfiguration> {
 				rand.nextInt(8) - rand.nextInt(8)
 			);
 
-			if (world.isEmptyBlock(dPos) && world.canSeeSkyFromBelowWater(dPos) && world.getBlockState(dPos.below()).is(BlockTags.DIRT)
-				&& world.getBlockState(dPos.east().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.west().below()).is(BlockTags.DIRT)
-				&& world.getBlockState(dPos.south().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.north().below()).is(BlockTags.DIRT)) {
+			if (world.isEmptyBlock(dPos) && world.canSeeSkyFromBelowWater(dPos) && world.getBlockState(dPos.below()).is(BlockTags.SUBSTRATE_OVERWORLD)
+				&& world.getBlockState(dPos.east().below()).is(BlockTags.SUBSTRATE_OVERWORLD) && world.getBlockState(dPos.west().below()).is(BlockTags.SUBSTRATE_OVERWORLD)
+				&& world.getBlockState(dPos.south().below()).is(BlockTags.SUBSTRATE_OVERWORLD) && world.getBlockState(dPos.north().below()).is(BlockTags.SUBSTRATE_OVERWORLD)) {
 
 				//create blocks around the jet/smoker, just in case
 				for (int gx = -2; gx <= 2; gx++) {

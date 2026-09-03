@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "twilightforest:block/transformation_planks",
+    "side": "twilightforest:block/transformation_planks",
+    "top": "twilightforest:block/transformation_planks"
+  }
+}

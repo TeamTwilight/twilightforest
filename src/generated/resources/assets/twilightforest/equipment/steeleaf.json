@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "twilightforest:steeleaf"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "twilightforest:steeleaf"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "twilightforest:steeleaf"
+      }
+    ]
+  }
+}

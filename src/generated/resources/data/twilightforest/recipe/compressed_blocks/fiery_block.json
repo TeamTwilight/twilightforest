@@ -2,20 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "tag": "c:ingots/fiery"
-    },
-    "m": {
-      "item": "twilightforest:fiery_ingot"
-    }
+    "#": "#c:ingots/fiery"
   },
   "pattern": [
     "###",
-    "#m#",
+    "###",
     "###"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:fiery_block"
   }
 }

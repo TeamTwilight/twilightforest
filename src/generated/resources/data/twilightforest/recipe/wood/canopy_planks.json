@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "tag": "twilightforest:canopy_logs"
-    }
+    "#twilightforest:canopy_logs"
   ],
   "result": {
     "count": 4,

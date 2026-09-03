@@ -4,17 +4,15 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.server.level.ServerEntity;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -29,7 +27,7 @@ import twilightforest.init.TFEntities;
 
 public class ThrownBlock extends TFThrowable {
 
-	private BlockState state = Blocks.STONE.defaultBlockState();
+	private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE_ID = SynchedEntityData.defineId(ThrownBlock.class, EntityDataSerializers.BLOCK_STATE);
 
 	public ThrownBlock(EntityType<? extends TFThrowable> type, Level worldIn) {
 		super(type, worldIn);
@@ -38,8 +36,14 @@ public class ThrownBlock extends TFThrowable {
 	public ThrownBlock(Level world, @Nullable BlockState state) {
 		super(TFEntities.THROWN_BLOCK.get(), world);
 		if (state != null) {
-			this.state = state;
+			this.setBlockState(state);
 		}
+	}
+
+	@Override
+	protected void defineSynchedData(SynchedEntityData.Builder entityData) {
+		super.defineSynchedData(entityData);
+		entityData.define(DATA_BLOCK_STATE_ID, Blocks.STONE.defaultBlockState());
 	}
 
 	@Override
@@ -50,19 +54,19 @@ public class ThrownBlock extends TFThrowable {
 	@Override
 	protected void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
-		tag.store("BlockState", BlockState.CODEC, this.state);
+		tag.store("BlockState", BlockState.CODEC, this.getBlockState());
 	}
 
 	@Override
 	protected void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
-		this.state = tag.read("BlockState", BlockState.CODEC).orElse(Blocks.AIR.defaultBlockState());
+		this.setBlockState(tag.read("BlockState", BlockState.CODEC).orElse(Blocks.STONE.defaultBlockState()));
 	}
 
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == EntityEvent.DEATH) {
-			ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, this.state);
+			ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, this.getBlockState());
 			for (int i = 0; i < 20; i++) {
 				this.level().addParticle(particle, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
 			}
@@ -92,23 +96,16 @@ public class ThrownBlock extends TFThrowable {
 		}
 	}
 
-	public BlockState getBlockState() {
-		return this.state;
+	public void setBlockState(BlockState blockState) {
+		this.entityData.set(DATA_BLOCK_STATE_ID, blockState);
 	}
 
-	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
-		return new ClientboundAddEntityPacket(this, entity, Block.getId(this.getBlockState()));
+	public BlockState getBlockState() {
+		return this.entityData.get(DATA_BLOCK_STATE_ID);
 	}
 
 	@Override
 	public Component getTypeName() {
 		return this.getBlockState().getBlock().getName();
-	}
-
-	@Override
-	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-		super.recreateFromPacket(packet);
-		this.state = Block.stateById(packet.getData());
 	}
 }

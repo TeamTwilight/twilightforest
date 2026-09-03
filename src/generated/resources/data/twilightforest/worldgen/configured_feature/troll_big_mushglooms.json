@@ -1,6 +1,10 @@
 {
   "type": "twilightforest:troll_cave_big_mushgloom",
   "config": {
+    "can_place_on": {
+      "type": "minecraft:matching_block_tag",
+      "tag": "twilightforest:huge_mushgloom_placeable"
+    },
     "cap_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {

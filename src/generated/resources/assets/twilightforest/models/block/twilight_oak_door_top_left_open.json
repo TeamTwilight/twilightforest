@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left_open",
+  "textures": {
+    "bottom": "twilightforest:block/twilight_oak_door_bottom",
+    "top": "twilightforest:block/twilight_oak_door_top"
+  }
+}

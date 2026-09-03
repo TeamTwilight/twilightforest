@@ -3,15 +3,12 @@
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": {
-      "item": "twilightforest:sorting_planks"
-    }
+    "#": "twilightforest:sorting_planks"
   },
   "pattern": [
     "##"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:sorting_pressure_plate"
   }
 }

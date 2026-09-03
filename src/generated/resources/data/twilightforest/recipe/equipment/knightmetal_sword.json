@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:ingots/knightmetal"
-    },
-    "X": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#c:ingots/knightmetal",
+    "X": "#c:rods/wooden"
   },
   "pattern": [
     "#",
@@ -15,7 +11,6 @@
     "X"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:knightmetal_sword"
   }
 }

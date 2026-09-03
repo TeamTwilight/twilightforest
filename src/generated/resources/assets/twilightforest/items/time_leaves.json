@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:block/time_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -9790441
+      }
+    ]
+  }
+}

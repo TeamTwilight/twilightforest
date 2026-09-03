@@ -2,6 +2,7 @@ package twilightforest.datagen.data.custom.structuredefinitions;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -35,17 +36,25 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		this.name = name;
 	}
 
-	protected abstract void generatePools();
+	protected abstract void generatePools(HolderLookup.Provider provider);
+
+	@Override
+	public CompletableFuture<?> run(CachedOutput cache) {
+		return this.lookupProvider.thenCompose(provider -> {
+			this.generatePools(provider);
+
+			for(Map.Entry<Identifier, Map<Identifier, TemplatePoolInstance>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
+				Identifier templateId = poolWeightsForTemplate.getKey();
+
+				this.unconditional(templateId, new StructureTemplateDefinition(poolWeightsForTemplate.getValue()));
+			}
+
+			return super.run(cache);
+		});
+	}
 
 	@Override
 	protected void gather() {
-		this.generatePools();
-
-		for(Map.Entry<Identifier, Map<Identifier, TemplatePoolInstance>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
-			Identifier templateId = poolWeightsForTemplate.getKey();
-
-			this.unconditional(templateId, new StructureTemplateDefinition(poolWeightsForTemplate.getValue()));
-		}
 	}
 
 	protected void addToAllPools(String roomId, int weight, Identifier... poolIds) {

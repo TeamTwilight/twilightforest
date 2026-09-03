@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:builtin/entity",
   "textures": {
-    "particle": "minecraft:block/candle_lit"
+    "particle": "minecraft:block/lime_candle"
   }
 }

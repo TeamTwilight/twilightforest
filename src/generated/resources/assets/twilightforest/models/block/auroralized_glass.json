@@ -4,13 +4,12 @@
     "twilightforest:auroralized_glass"
   ],
   "connected_texture": {
-    "render_disabled_faces": true,
     "tint_index": 0
   },
   "loader": "twilightforest:connected_texture_block",
-  "render_type": "minecraft:translucent",
   "textures": {
-    "overlay_connected": "twilightforest:block/auroralized_glass_ct",
-    "overlay_texture": "twilightforest:block/auroralized_glass"
+    "overlay_connected": "twilightforest:block/auroralized_glass_ctm",
+    "overlay_texture": "twilightforest:block/auroralized_glass",
+    "particle": "twilightforest:block/auroralized_glass"
   }
 }

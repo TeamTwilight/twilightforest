@@ -4,7 +4,6 @@
   ],
   "enforcement": "twilightforest:hunger",
   "locked_biome_toast": {
-    "count": 1,
     "id": "twilightforest:lich_tower_miniature_structure"
   },
   "multiplier": 1.0,

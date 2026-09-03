@@ -5,6 +5,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
@@ -12,6 +15,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.loot.TFLootTables;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public record QuestingRamContext(Map<DyeColor, Ingredient> questItems, ResourceKey<LootTable> lootTable) {
@@ -42,6 +46,10 @@ public record QuestingRamContext(Map<DyeColor, Ingredient> questItems, ResourceK
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, QuestingRamContext> STREAM_CODEC = StreamCodec.composite(
 		ByteBufCodecs.map(HashMap::new, DyeColor.STREAM_CODEC, Ingredient.CONTENTS_STREAM_CODEC), QuestingRamContext::questItems,
+		ResourceKey.streamCodec(Registries.LOOT_TABLE), QuestingRamContext::lootTable,
+		QuestingRamContext::new
+	);
+
 	private static DataResult<Map<DyeColor, Ingredient>> validate(Map<DyeColor, Ingredient> map) {
 		int colorFlags = 0;
 		for (var color : map.keySet()) {

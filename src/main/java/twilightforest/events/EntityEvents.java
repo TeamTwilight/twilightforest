@@ -22,7 +22,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
@@ -46,6 +46,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.EventHooks;
@@ -60,7 +61,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
@@ -90,6 +91,7 @@ import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.ValidatedSpawnLocations;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -133,13 +135,13 @@ public class EntityEvents {
 			EntityTransformation dataMap = event.getEntity().getType().builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
 
 			if (event.getEntity() instanceof ServerPlayer player) {
-				var zombie = EntityType.ZOMBIE.create(player.level());
+				var zombie = EntityType.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
 				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 				zombie.setCustomName(player.getName());
 				zombie.copyPosition(player);
 				zombie.setCanPickUpLoot(true);
 				zombie.setBaby(false);
-				EventHooks.finalizeMobSpawn(zombie, player.serverLevel(), player.level().getCurrentDifficultyAt(player.blockPosition()), EntitySpawnReason.CONVERSION, null);
+				EventHooks.finalizeMobSpawn(zombie, player.level(), player.level().getCurrentDifficultyAt(player.blockPosition()), EntitySpawnReason.CONVERSION, null);
 				player.level().addFreshEntity(zombie);
 			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
 				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
@@ -157,7 +159,7 @@ public class EntityEvents {
 
 	private void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
 		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
-			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
+			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent.OpenUrl(URI.create("https://discord.experiment115.com/"))))));
 		}
 	}
 
@@ -180,7 +182,7 @@ public class EntityEvents {
 	private void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		ItemStack item = event.getItemStack();
 		if (item.is(TFItems.ORE_METER.get()) && (item.has(TFDataComponents.ORE_DATA) || item.has(TFDataComponents.ORE_FILTER))) {
-			PacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
+			ClientPacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
 			item.remove(TFDataComponents.ORE_DATA);
 			item.remove(TFDataComponents.ORE_FILTER);
 			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.get(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
@@ -216,16 +218,16 @@ public class EntityEvents {
 	}
 
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them
-	private void onCasketBreak(BlockEvent.BreakEvent event) {
+	private void onCasketBreak(BreakBlockEvent event) {
 		Player player = event.getPlayer();
 		if (event.getState().getBlock() instanceof SkullChestBlock) {
 			BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
 			if (te instanceof SkullChestBlockEntity casket) {
 				ResolvableProfile checker = casket.owner;
 				if (checker != null && !casket.isEmpty()) {
-					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.gameProfile())) {
-						event.setCanceled(true);
-					}
+//					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.gameProfile())) {
+//						event.setCanceled(true);
+//					}
 				}
 			}
 		}
@@ -251,18 +253,18 @@ public class EntityEvents {
 	private void onParryProjectile(ProjectileImpactEvent event) {
 		final Projectile projectile = event.getProjectile();
 
-		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
-			if (event.getRayTraceResult() instanceof EntityHitResult result) {
-				Entity entity = result.getEntity();
-
-				if (entity instanceof LivingEntity entityBlocking) {
-					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
-						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, entityBlocking, true);
-						event.setCanceled(true);
-					}
-				}
-			}
-		}
+//		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
+//			if (event.getRayTraceResult() instanceof EntityHitResult result) {
+//				Entity entity = result.getEntity();
+//
+//				if (entity instanceof LivingEntity entityBlocking) {
+//					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
+//						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, entityBlocking, true);
+//						event.setCanceled(true);
+//					}
+//				}
+//			}
+//		}
 	}
 
 	/**
@@ -343,11 +345,11 @@ public class EntityEvents {
 	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
 		int amount = 0;
 
-		for (ItemStack armor : entity.getArmorSlots()) {
-			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
-				amount++;
-			}
-		}
+//		for (ItemStack armor : entity.getArmorSlots()) {
+//			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
+//				amount++;
+//			}
+//		}
 
 		return amount;
 	}
@@ -428,12 +430,12 @@ public class EntityEvents {
 	private void removeCastleTextIfAttacked(AttackEntityEvent event) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
-		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
-			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
-			AABB bounds = interaction.getBoundingBox();
-			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
-			interaction.discard();
-		}
+//		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
+//			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+//			AABB bounds = interaction.getBoundingBox();
+//			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
+//			interaction.discard();
+//		}
 	}
 
 	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {

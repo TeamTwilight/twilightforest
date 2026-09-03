@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "twilightforest:alpha_yeti_fur"
-    }
+    "#": "twilightforest:alpha_yeti_fur"
   },
   "pattern": [
     "# #",
@@ -13,13 +11,10 @@
   "result": {
     "components": {
       "minecraft:enchantments": {
-        "levels": {
-          "minecraft:feather_falling": 4,
-          "minecraft:protection": 2
-        }
+        "minecraft:feather_falling": 4,
+        "minecraft:protection": 2
       }
     },
-    "count": 1,
     "id": "twilightforest:yeti_boots"
   }
 }

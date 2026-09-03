@@ -91,7 +91,7 @@ public class TravellersModifiersManager {
 
 		context.register(HIGH_JUMP_ABILITY, new BuiltinTravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.HIGH_JUMP_AMPLIFIER.get()));
 		context.register(GRADUAL_GLIDE_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.GRADUALLY_GLIDING_MULTIPLIER.get(), 1 - 1 / 6F, componentText(GRADUAL_GLIDE_MODIFIER)));
-		context.register(AGILE_RANGER_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.AGILE_RANGER_MODIFIER.get(), 5F, componentText(AGILE_RANGER_MODIFIER)));
+		context.register(AGILE_RANGER_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.AGILE_RANGER_MODIFIER.get(), Unit.INSTANCE, componentText(AGILE_RANGER_MODIFIER)));
 		context.register(DOUBLE_JUMP_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.DOUBLE_JUMP.get(), Unit.INSTANCE, componentText(DOUBLE_JUMP_MODIFIER)));
 		context.register(SIDESTEP_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SIDESTEP_COOLDOWN.get(), 2 * 20L, componentText(SIDESTEP_MODIFIER, Component.keybind("key.left"), Component.keybind("key.right"))));
 
@@ -157,7 +157,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static MutableComponent getModifierTooltipComponent(Holder<TravellersModifier> modifier) {
-		return TooltipStringInterpolator.render(getKeyOrThrow(modifier).identifier().toLanguageKey(modifier.value().getPrefix()));
+		return TooltipStringInterpolator.render(getKeyOrThrow(modifier).identifier().toLanguageKey(TravellersModifier.getPrefix()));
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {

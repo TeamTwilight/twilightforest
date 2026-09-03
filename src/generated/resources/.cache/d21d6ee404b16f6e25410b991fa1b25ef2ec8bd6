@@ -1,5 +1,4 @@
-// 1.21.1	2025-09-14T23:57:27.107086	twilight/template_definition generator for Camp in twilightforest
-4ccb4137ec4407938ac0896556694ef6bda2e0c2 data/twilightforest/twilight/template_definition/_empty.json
+// 26.1.2	2026-08-29T18:13:40.9750795	twilight/template_definition generator for Camp in twilightforest
 71be33686d7161546782210477fafe3ec8a73d04 data/twilightforest/twilight/template_definition/camp/campfire_east.json
 71be33686d7161546782210477fafe3ec8a73d04 data/twilightforest/twilight/template_definition/camp/campfire_south.json
 71be33686d7161546782210477fafe3ec8a73d04 data/twilightforest/twilight/template_definition/camp/campfire_west.json
@@ -35,3 +34,4 @@ bac1af2b52432caa1a41368ee9c7fbcd504e38ed data/twilightforest/twilight/template_d
 9a4306b2081efbd0d6df36cc298d3ec246f5589b data/twilightforest/twilight/template_definition/camp/tent/luxury_tent.json
 21024e65e81690a03e3756cb8f14d3a2c1c7a9d7 data/twilightforest/twilight/template_definition/camp/tent/open_tent.json
 089fd061ee1a64258b5bdfe5f73d1bf0ede172a2 data/twilightforest/twilight/template_definition/camp/tent/solo_tent.json
+4ccb4137ec4407938ac0896556694ef6bda2e0c2 data/twilightforest/twilight/template_definition/_empty.json

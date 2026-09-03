@@ -1,9 +1,8 @@
 {
   "parent": "twilightforest:block/horizontal_hollow_log",
-  "render_type": "minecraft:cutout",
   "textures": {
-    "inner": "minecraft:block/stripped_warped_stem",
-    "side": "minecraft:block/warped_stem",
-    "top": "minecraft:block/warped_stem_top"
+    "end": "minecraft:block/warped_stem_top",
+    "inside": "minecraft:block/stripped_warped_stem",
+    "side": "minecraft:block/warped_stem"
   }
 }

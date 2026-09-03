@@ -13,7 +13,7 @@ public class NagaCourtyardStructureDefinitionGenerator extends StructureTemplate
 	}
 
 	@Override
-	protected void generatePools() {
+	protected void generatePools(HolderLookup.Provider provider) {
 		this.add("courtyard/spawner", CourtyardMain.CENTER_POOL, 100);
 	}
 }

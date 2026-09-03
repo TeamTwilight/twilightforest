@@ -12,10 +12,6 @@
     "twilightforest:ghast_trap",
     "twilightforest:fake_diamond",
     "twilightforest:fake_gold",
-    "#twilightforest:common_protections",
-    {
-      "id": "gravestone:gravestone",
-      "required": false
-    }
+    "#twilightforest:common_protections"
   ]
 }

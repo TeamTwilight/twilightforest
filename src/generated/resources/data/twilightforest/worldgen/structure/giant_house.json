@@ -40,13 +40,19 @@
           "generation": 3,
           "pages": [
             {
-              "raw": "{\"translate\":\"twilightforest.book.trollcave.1\"}"
+              "raw": {
+                "translate": "twilightforest.book.trollcave.1"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.trollcave.2\"}"
+              "raw": {
+                "translate": "twilightforest.book.trollcave.2"
+              }
             },
             {
-              "raw": "{\"translate\":\"twilightforest.book.trollcave.3\"}"
+              "raw": {
+                "translate": "twilightforest.book.trollcave.3"
+              }
             }
           ],
           "resolved": true,
@@ -56,7 +62,6 @@
         },
         "twilightforest:translatable_book": {}
       },
-      "count": 1,
       "id": "minecraft:written_book"
     },
     "hint_mob": "twilightforest:kobold"

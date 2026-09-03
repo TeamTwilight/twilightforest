@@ -3,6 +3,6 @@
   "textures": {
     "end": "twilightforest:block/stone_tiles",
     "middle": "twilightforest:block/nagastone_bare",
-    "side": "twilightforest:block/etched_nagastone_left"
+    "side": "minecraft:block/block/etched_nagastone_left"
   }
 }

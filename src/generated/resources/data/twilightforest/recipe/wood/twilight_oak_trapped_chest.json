@@ -1,22 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "redstone",
   "group": "trapped_chest",
-  "key": {
-    "#": {
-      "item": "twilightforest:twilight_oak_planks"
-    },
-    "C": {
-      "item": "minecraft:trapped_chest"
-    }
-  },
-  "pattern": [
-    "###",
-    "#C#",
-    "###"
+  "ingredients": [
+    "twilightforest:twilight_oak_chest",
+    "minecraft:tripwire_hook"
   ],
   "result": {
-    "count": 2,
     "id": "twilightforest:twilight_oak_trapped_chest"
   }
 }

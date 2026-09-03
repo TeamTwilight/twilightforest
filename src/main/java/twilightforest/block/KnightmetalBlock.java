@@ -11,6 +11,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -30,7 +34,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 
-public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
+import java.util.function.Consumer;
+
+public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, TooltipBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final MutableComponent TOOLTIP = Component.translatable("block.twilightforest.knightmetal_block.desc").withStyle(ChatFormatting.GRAY);
 	private static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
@@ -84,9 +90,8 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
 		}
 	}
 
-	//TODO can no longer be done via block, move to item
-//	@Override
-//	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-//		tooltip.add(TOOLTIP);
-//	}
+	@Override
+	public void addTooltip(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+		tooltip.accept(TOOLTIP);
+	}
 }

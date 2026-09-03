@@ -1,8 +1,8 @@
 {
   "parent": "twilightforest:block/vertical_hollow_log",
   "textures": {
-    "inner": "twilightforest:block/stripped_dark_log",
-    "side": "twilightforest:block/dark_log",
-    "top": "twilightforest:block/dark_log_top"
+    "end": "twilightforest:block/dark_log_top",
+    "inside": "twilightforest:block/stripped_dark_log",
+    "side": "twilightforest:block/dark_log"
   }
 }

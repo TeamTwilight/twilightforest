@@ -233,8 +233,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	protected void bisectedStairsBlock(Block block, Material side, Material end, Material middle) {
 		TextureMapping mapping = TextureMapping.cube(block)
-			.put(TextureSlot.BOTTOM, end)
-			.put(TextureSlot.TOP, end)
+			.put(TextureSlot.END, end)
 			.put(TextureSlot.SIDE, side)
 			.put(TFTextureSlot.MIDDLE, middle)
 			.put(TextureSlot.PARTICLE, middle);

@@ -90,8 +90,8 @@ public class SortingParticle extends SingleQuadParticle {
 		}
 	}
 
-	@Override
-	public AABB getRenderBoundingBox(float partialTicks) {
-		return AABB.INFINITE;
-	}
+//	@Override
+//	public AABB getRenderBoundingBox(float partialTicks) {
+//		return AABB.INFINITE;
+//	}
 }

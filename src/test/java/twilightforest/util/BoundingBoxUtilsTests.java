@@ -45,12 +45,12 @@ public class BoundingBoxUtilsTests {
 		CompoundTag result = BoundingBoxUtils.boundingBoxToExistingNBT(new BoundingBox(1, 2, 3, 4, 5, 6), new CompoundTag());
 
 		assertNotNull(result);
-		assertEquals(1, result.getInt("minX"));
-		assertEquals(2, result.getInt("minY"));
-		assertEquals(3, result.getInt("minZ"));
-		assertEquals(4, result.getInt("maxX"));
-		assertEquals(5, result.getInt("maxY"));
-		assertEquals(6, result.getInt("maxZ"));
+		assertEquals(1, result.getInt("minX").orElseThrow());
+		assertEquals(2, result.getInt("minY").orElseThrow());
+		assertEquals(3, result.getInt("minZ").orElseThrow());
+		assertEquals(4, result.getInt("maxX").orElseThrow());
+		assertEquals(5, result.getInt("maxY").orElseThrow());
+		assertEquals(6, result.getInt("maxZ").orElseThrow());
 	}
 
 	@Test

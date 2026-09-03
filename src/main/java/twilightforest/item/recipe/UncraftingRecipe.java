@@ -42,7 +42,7 @@ public class UncraftingRecipe extends ShapedRecipe {
 	private final ShapedRecipePattern pattern;
 
 	public UncraftingRecipe(CommonInfo commonInfo, int cost, Ingredient input, int count, ShapedRecipePattern pattern) {
-		super(commonInfo, new CraftingBookInfo(CraftingBookCategory.MISC, "uncrafting"), pattern, new ItemStackTemplate(Items.AIR, count));
+		super(commonInfo, new CraftingBookInfo(CraftingBookCategory.MISC, "uncrafting"), pattern, new ItemStackTemplate(Items.STICK, count)); //TODO: Air cannot be used
 		this.commonInfo = commonInfo;
 		this.cost = cost;
 		this.input = input;
@@ -68,13 +68,17 @@ public class UncraftingRecipe extends ShapedRecipe {
 	// Let's not talk about this...
 	@Override
 	public RecipeSerializer<ShapedRecipe> getSerializer() {
-		return (RecipeSerializer<ShapedRecipe>) (RecipeSerializer<?>) SERIALIZER;
+		@SuppressWarnings("unchecked")
+		RecipeSerializer<ShapedRecipe> serializer = (RecipeSerializer<ShapedRecipe>) (RecipeSerializer<?>) SERIALIZER;
+		return serializer;
 	}
 
 	// Or this...
 	@Override
 	public RecipeType<CraftingRecipe> getType() {
-		return (RecipeType<CraftingRecipe>) (RecipeType<?>) TFRecipes.UNCRAFTING_RECIPE.get();
+		@SuppressWarnings("unchecked")
+		RecipeType<CraftingRecipe> type = (RecipeType<CraftingRecipe>) (RecipeType<?>) TFRecipes.UNCRAFTING_RECIPE.get();
+		return type;
 	}
 
 	public Ingredient getInput() {

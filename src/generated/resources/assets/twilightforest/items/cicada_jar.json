@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "minecraft:model",
+        "model": "twilightforest:block/mason_jar"
+      },
+      {
+        "type": "minecraft:special",
+        "base": "twilightforest:block/mason_jar",
+        "model": {
+          "type": "twilightforest:mason_jar",
+          "default_lid": "twilightforest:canopy_log"
+        }
+      }
+    ]
+  }
+}

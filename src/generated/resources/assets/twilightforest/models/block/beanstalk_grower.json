@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:builtin/entity",
   "textures": {
-    "particle": "twilightforest:block/blank"
+    "particle": "twilightforest:block/huge_stalk"
   }
 }

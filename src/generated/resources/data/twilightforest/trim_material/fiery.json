@@ -1,9 +1,7 @@
 {
-  "asset_name": "fiery",
+  "asset_name": "twilightforest_fiery",
   "description": {
     "color": "#FFB53C",
     "translate": "trim_material.twilightforest.fiery"
-  },
-  "ingredient": "twilightforest:fiery_ingot",
-  "item_model_index": 0.3
+  }
 }

@@ -2,7 +2,7 @@ package twilightforest.client.overlay.display;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Player;
@@ -36,28 +36,28 @@ public class ClockDisplay implements ItemDisplay {
 	}
 
 	private static Component getGameTime(Level level, boolean use24HourFormat) {
-		if (!level.dimensionType().natural())
-			return Component.translatable("travellers_gear.modifier.twilightforest.item_display.clock.unknown");
+//		if (!level.dimensionType().natural())
+//			return Component.translatable("travellers_gear.modifier.twilightforest.item_display.clock.unknown");
 
-		long rawTime = level.dimensionType().fixedTime().orElse(level.getDayTime());
+		long rawTime = 0L /*level.dimensionType().fixedTime().orElse(level.getDayTime())*/;
 		long ticksOfDay = getMinecraftClockTimeInTicks(rawTime);
 		long secondsOfDay = (ticksOfDay * REAL_LIFE_DAY_LENGTH_IN_SECONDS) / MINECRAFT_DAY_LENGTH_IN_TICKS;
 		LocalTime localTime = LocalTime.ofSecondOfDay(secondsOfDay);
-		return Component.literal(localTime.format(use24HourFormat ? FORMAT_24 : FORMAT_12));
+		return Component.literal(localTime.format(/*use24HourFormat ? FORMAT_24 :*/ FORMAT_12));
 	}
 
 	@Override
-	public void render(ItemStack item, GuiGraphics graphics, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
+	public void render(ItemStack item, GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
 		FormattedCharSequence formattedcharsequence = this.getText(minecraft).getVisualOrderText();
-		if (minecraft.level.dimensionType().natural()) {
-			int k = this.getFrameForTime(minecraft.level.dimensionType().fixedTime().orElse(minecraft.level.getDayTime())).frame;
-			int xRow = k % 2;
-			int yRow = k / 2 % 2;
-			float xMin = xRow * 8;
-			float yMin = yRow * 8;
-			graphics.blit(TwilightForestMod.getGuiTexture("time.png"), (widestWidgetWidth / 2 - 5) - minecraft.font.width(formattedcharsequence) / 2, 0, xMin, yMin, 8, 8, 16, 16);
-		}
-		graphics.drawString(minecraft.font, formattedcharsequence, Math.max(0, (widestWidgetWidth / 2 + 5) - minecraft.font.width(formattedcharsequence) / 2), 0, 0xFFFFFF);
+//		if (minecraft.level.dimensionType().natural()) {
+//			int k = this.getFrameForTime(minecraft.level.dimensionType().fixedTime().orElse(minecraft.level.getDayTime())).frame;
+//			int xRow = k % 2;
+//			int yRow = k / 2 % 2;
+//			float xMin = xRow * 8;
+//			float yMin = yRow * 8;
+//			graphics.blit(TwilightForestMod.getGuiTexture("time.png"), (widestWidgetWidth / 2 - 5) - minecraft.font.width(formattedcharsequence) / 2, 0, xMin, yMin, 8, 8, 16, 16);
+//		}
+		graphics.text(minecraft.font, formattedcharsequence, Math.max(0, (widestWidgetWidth / 2 + 5) - minecraft.font.width(formattedcharsequence) / 2), 0, 0xFFFFFF);
 	}
 
 	private TimeFrame getFrameForTime(long dayTimeInTicks) {
@@ -68,7 +68,7 @@ public class ClockDisplay implements ItemDisplay {
 	@Override
 	public Bounds getWidgetSize(ItemStack item, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
 		int textWidth = minecraft.font.width(this.getText(minecraft));
-		boolean natural = minecraft.level.dimensionType().natural();
+		boolean natural = /*minecraft.level.dimensionType().natural();*/ true;
 		return new Bounds(Math.max(0, (widestWidgetWidth / 2 - (natural ? 5 : 0)) - (textWidth / 2)), 0, textWidth + (natural ? 10 : 0), minecraft.font.lineHeight);
 	}
 

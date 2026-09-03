@@ -136,7 +136,7 @@ public class DwarfRabbit extends Animal {
 		if (underMaterial.is(BlockTags.LEAVES) || underMaterial.is(BlockTags.LOGS)) {
 			return -1.0F;
 		}
-		if (underMaterial.is(BlockTags.DIRT)) {
+		if (underMaterial.is(BlockTags.SUBSTRATE_OVERWORLD)) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas

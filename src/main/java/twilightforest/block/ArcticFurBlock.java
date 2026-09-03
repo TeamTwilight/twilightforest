@@ -6,13 +6,19 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbilities;
 
-public class ArcticFurBlock extends Block {
+import java.util.function.Consumer;
+
+public class ArcticFurBlock extends Block implements TooltipBlock {
 	private static final MutableComponent TOOLTIP = Component.translatable("block.twilightforest.arctic_fur_block.desc").withStyle(ChatFormatting.GRAY);
 
 	public ArcticFurBlock(Properties properties) {
@@ -30,9 +36,8 @@ public class ArcticFurBlock extends Block {
 		entity.causeFallDamage(fallDistance, 0.1F, level.damageSources().fall());
 	}
 
-	//TODO can no longer be done via block, move to item
-//	@Override
-//	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-//		tooltip.add(TOOLTIP);
-//	}
+	@Override
+	public void addTooltip(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+		tooltip.accept(TOOLTIP);
+	}
 }

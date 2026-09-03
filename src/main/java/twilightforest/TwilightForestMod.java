@@ -63,7 +63,7 @@ public final class TwilightForestMod {
 		TFAttributes.ATTRIBUTES.register(bus);
 		TFAdvancements.TRIGGERS.register(bus);
 		TFMobEffects.MOB_EFFECTS.register(bus);
-		//TFItemSubPredicates.TYPES.register(bus); TODO: check comment
+		TFItemSubPredicates.TYPES.register(bus);
 		Enforcements.ENFORCEMENTS.register(bus);
 		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFDataComponents.COMPONENTS.register(bus);

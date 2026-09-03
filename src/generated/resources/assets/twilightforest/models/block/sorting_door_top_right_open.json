@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/util/corrected_door_top_right_open",
+  "textures": {
+    "bottom": "twilightforest:block/sorting_door_bottom",
+    "side": "twilightforest:block/sorting_door_side",
+    "top": "twilightforest:block/sorting_door_top"
+  }
+}

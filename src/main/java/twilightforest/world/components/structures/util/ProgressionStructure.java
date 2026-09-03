@@ -10,6 +10,8 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
@@ -75,8 +77,8 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 	}
 
 	@Override
-	public ItemStack createHintBook(RegistryAccess registryAccess) {
-		return this.hintConfig.map(config -> config.hintItem().copy()).orElse(ItemStack.EMPTY);
+	public ItemStackTemplate createHintBook(RegistryAccess registryAccess) {
+		return this.hintConfig.map(HintConfig::hintItem).orElse(new ItemStackTemplate(Items.WRITTEN_BOOK)); //TODO: only way to get a fallback
 	}
 
 	@Override

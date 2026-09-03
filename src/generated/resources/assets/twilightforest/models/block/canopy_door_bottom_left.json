@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "textures": {
+    "bottom": "twilightforest:block/canopy_door_bottom",
+    "top": "twilightforest:block/canopy_door_top"
+  }
+}

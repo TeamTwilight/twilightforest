@@ -33,6 +33,7 @@
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 1.0
@@ -62,6 +63,7 @@
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.2
@@ -81,6 +83,7 @@
         "type": "day_time",
         "from": 22331.0,
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.25,
@@ -111,6 +114,7 @@
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.16666667
@@ -140,6 +144,7 @@
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
+        "item_stack": [],
         "max": 1.0,
         "min": 0.0,
         "multiplier": 0.14285715
@@ -158,5 +163,8 @@
       "path": "bl_frame"
     }
   ],
+  "title": {
+    "translate": "magic_painting.twilightforest.music_in_the_mire.title"
+  },
   "width": 64
 }

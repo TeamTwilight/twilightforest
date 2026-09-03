@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "twilightforest:root_strand"
-    }
+    "#": "twilightforest:root_strand"
   },
   "pattern": [
     "#",

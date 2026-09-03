@@ -7,6 +7,8 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.joml.Vector3f;
@@ -18,7 +20,7 @@ import twilightforest.util.TFMathUtil;
 import java.util.Collections;
 import java.util.List;
 
-public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
+public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
 	private static final Vector3f SMALL_SWING = new Vector3f(8.0F, 8.0F, 8.0F);
@@ -169,7 +171,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 
 	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
 		this.bodyParts().forEach(modelPart -> modelPart.getAllParts().forEach(ModelPart::resetPose));
-		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
+//		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
 		TravellersWingsAnimAttachment animAttachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
 		TravellersWingsAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS);
 
@@ -220,7 +222,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		animAttachment.zRotOld = this.wingBaseRight.zRot;
 
 		// If the wing model keeps a non-changing offset then looking at it with a spyglass even 4 chunks away will reveal Z-fighting.
-		float distance = (float) (Math.sqrt(entity.distanceToSqr(this.mainCamera.getPosition())) * PART_OFFSET);
+		float distance = (float) (Math.sqrt(entity.distanceToSqr(this.mainCamera.position())) * PART_OFFSET);
 		// The below solution is to animate its offset based off of camera distance. The animation is not time-based.
 		int partCount = Math.min(this.wingPartsLeft.size(), this.wingPartsRight.size());
 		for (int partIndex = 0; partIndex < partCount; partIndex++) {
@@ -240,12 +242,12 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		);
 	}
 
-	@Override
-	protected Iterable<ModelPart> headParts() {
-		return Collections.emptyList();
-	}
+//	@Override
+//	protected Iterable<ModelPart> headParts() {
+//		return Collections.emptyList();
+//	}
 
-	@Override
+//	@Override
 	protected Iterable<ModelPart> bodyParts() {
 		return ImmutableList.of(body, leftLeg, rightLeg);
 	}

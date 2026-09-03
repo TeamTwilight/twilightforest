@@ -1,21 +1,5 @@
 {
   "parent": "twilightforest:item/special_handheld",
-  "overrides": [
-    {
-      "model": "twilightforest:item/ore_magnet_pulling_1",
-      "predicate": {
-        "minecraft:pull": 0.5,
-        "minecraft:pulling": 1.0
-      }
-    },
-    {
-      "model": "twilightforest:item/ore_magnet_pulling_2",
-      "predicate": {
-        "minecraft:pull": 1.0,
-        "minecraft:pulling": 1.0
-      }
-    }
-  ],
   "textures": {
     "layer0": "twilightforest:item/ore_magnet"
   }

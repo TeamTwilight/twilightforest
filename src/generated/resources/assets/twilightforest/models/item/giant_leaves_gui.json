@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:item/giant_block_gui",
-  "textures": {
-    "all": "minecraft:block/oak_leaves",
-    "top": "minecraft:block/oak_leaves"
-  }
-}

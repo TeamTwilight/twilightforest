@@ -4,9 +4,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.client.renderer.block.model.BlockElement;
+import net.minecraft.client.resources.model.cuboid.CuboidModelElement;
 import net.minecraft.util.GsonHelper;
-import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +23,7 @@ public class ForceFieldModelLoader implements UnbakedModelLoader<UnbakedForceFie
 	@SuppressWarnings("ConstantConditions")
 	public UnbakedForceFieldModel read(JsonObject json, JsonDeserializationContext context) throws JsonParseException {
 
-		Map<BlockElement, Condition> elementsAndConditions = new HashMap<>();
+		Map<CuboidModelElement, Condition> elementsAndConditions = new HashMap<>();
 
 		if (json.has("elements")) {
 			for (JsonElement jsonElement : GsonHelper.getAsJsonArray(json, "elements")) {
@@ -41,7 +40,7 @@ public class ForceFieldModelLoader implements UnbakedModelLoader<UnbakedForceFie
 						}
 					}
 				}
-				elementsAndConditions.put(context.deserialize(jsonElement, BlockElement.class), new Condition(direction, b, parents));
+				elementsAndConditions.put(context.deserialize(jsonElement, CuboidModelElement.class), new Condition(direction, b, parents));
 			}
 		}
 

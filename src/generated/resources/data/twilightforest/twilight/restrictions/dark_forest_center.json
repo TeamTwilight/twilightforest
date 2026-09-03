@@ -4,7 +4,6 @@
   ],
   "enforcement": "twilightforest:darkness",
   "locked_biome_toast": {
-    "count": 1,
     "id": "twilightforest:knight_phantom_trophy"
   },
   "multiplier": 0.0,

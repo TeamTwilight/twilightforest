@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "twilightforest:patch",
+  "shaggify": true,
+  "textures": {
+    "particle": "twilightforest:block/moss_patch",
+    "texture": "twilightforest:block/moss_patch"
+  }
+}

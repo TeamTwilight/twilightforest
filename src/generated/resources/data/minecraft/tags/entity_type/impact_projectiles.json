@@ -5,9 +5,9 @@
     "twilightforest:wand_bolt",
     "twilightforest:lich_bomb",
     "twilightforest:moonworm_shot",
-    "twilightforest:slime_blob",
-    "twilightforest:thrown_wep",
-    "twilightforest:thrown_ice",
+    "twilightforest:slime_projectile",
+    "twilightforest:thrown_weapon",
+    "twilightforest:ice_bomb",
     "twilightforest:falling_ice",
     "twilightforest:ice_snowball",
     "twilightforest:chain_block"

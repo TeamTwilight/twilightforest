@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/abstract_bush_small_4",
-  "textures": {
-    "all": "twilightforest:block/copper_oreberry"
-  }
-}

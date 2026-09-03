@@ -2,7 +2,6 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.mojang.math.Transformation;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -10,14 +9,11 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.SkullChestBlock;
@@ -25,11 +21,8 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KeepsakeCasketModel;
 import twilightforest.client.state.block.SkullChestRenderState;
 
-import java.util.Map;
-
 public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T, SkullChestRenderState> {
 
-	private static final Map<Direction, Transformation> TRANSFORMATIONS = Util.makeEnumMap(Direction.class, SkullChestRenderer::createModelTransformation);
 	public static final Identifier SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
 
 	private final KeepsakeCasketModel model;
@@ -46,7 +39,7 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 	public void submit(SkullChestRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.0F, 0.5F);
-		stack.mulPose(TRANSFORMATIONS.get(state.facing));
+		stack.mulPose(state.facing.getRotation());
 		stack.mulPose(Axis.XP.rotationDegrees(90.0F));
 
 		float lidRotation = state.open;
@@ -68,10 +61,6 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 		state.facing = blockEntity.getBlockState().getValue(SkullChestBlock.FACING);
 		state.texture = this.getTextureLocation(blockEntity.getBlockState());
 		state.open = blockEntity.getOpenNess(partialTicks);
-	}
-
-	private static Transformation createModelTransformation(Direction facing) {
-		return new Transformation(new Matrix4f().rotationAround(Axis.YP.rotationDegrees(-facing.toYRot()), 0.5F, 0.0F, 0.5F));
 	}
 
 	protected Identifier getTextureLocation(BlockState blockstate) {

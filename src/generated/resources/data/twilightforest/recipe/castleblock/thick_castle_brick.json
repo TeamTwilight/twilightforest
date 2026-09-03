@@ -3,18 +3,10 @@
   "category": "building",
   "key": {
     "#": [
-      {
-        "item": "twilightforest:castle_brick"
-      },
-      {
-        "item": "twilightforest:worn_castle_brick"
-      },
-      {
-        "item": "twilightforest:cracked_castle_brick"
-      },
-      {
-        "item": "twilightforest:mossy_castle_brick"
-      }
+      "twilightforest:castle_brick",
+      "twilightforest:worn_castle_brick",
+      "twilightforest:cracked_castle_brick",
+      "twilightforest:mossy_castle_brick"
     ]
   },
   "pattern": [

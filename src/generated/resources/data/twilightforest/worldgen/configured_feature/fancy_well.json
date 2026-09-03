@@ -3,19 +3,31 @@
   "config": {
     "palette_choices": [
       {
-        "data": "#twilightforest:common",
-        "weight": 8
+        "data": {
+          "data": "#twilightforest:common",
+          "weight": 8
+        },
+        "weight": 1
       },
       {
-        "data": "#twilightforest:uncommon",
-        "weight": 4
+        "data": {
+          "data": "#twilightforest:uncommon",
+          "weight": 4
+        },
+        "weight": 1
       },
       {
-        "data": "#twilightforest:rare",
-        "weight": 3
+        "data": {
+          "data": "#twilightforest:rare",
+          "weight": 3
+        },
+        "weight": 1
       },
       {
-        "data": "#twilightforest:treasure",
+        "data": {
+          "data": "#twilightforest:treasure",
+          "weight": 1
+        },
         "weight": 1
       }
     ],

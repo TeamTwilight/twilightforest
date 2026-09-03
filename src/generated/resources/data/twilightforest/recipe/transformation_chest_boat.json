@@ -3,15 +3,10 @@
   "category": "misc",
   "group": "chest_boat",
   "ingredients": [
-    {
-      "item": "twilightforest:transformation_boat"
-    },
-    {
-      "tag": "c:chests/wooden"
-    }
+    "twilightforest:transformation_boat",
+    "#c:chests/wooden"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:transformation_chest_boat"
   }
 }

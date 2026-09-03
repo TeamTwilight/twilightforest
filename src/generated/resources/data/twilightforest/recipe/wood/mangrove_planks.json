@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "tag": "twilightforest:mangrove_logs"
-    }
+    "#twilightforest:mangrove_logs"
   ],
   "result": {
     "count": 4,

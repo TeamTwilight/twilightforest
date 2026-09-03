@@ -3,15 +3,12 @@
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": {
-      "item": "twilightforest:time_planks"
-    }
+    "#": "twilightforest:time_planks"
   },
   "pattern": [
     "##"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:time_pressure_plate"
   }
 }

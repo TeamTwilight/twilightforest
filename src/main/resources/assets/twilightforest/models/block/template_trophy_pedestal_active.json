@@ -1,0 +1,164 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "top": "twilightforest:block/trophy_pedestal_top",
+    "top2": "twilightforest:block/trophy_pedestal_top_glow",
+    "particle": "#top"
+  },
+  "elements": [
+    {
+      "from": [2, 3, 2],
+      "to": [14, 13, 14],
+      "faces": {
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 0, 1],
+      "to": [15, 3, 15],
+      "faces": {
+        "down": {"cullface": "down", "texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "up": {"texture": "#top"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 13, 1],
+      "to": [15, 16, 15],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "up": {"cullface": "up", "texture": "#top"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 12, 1],
+      "to": [4, 13, 4],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [12, 12, 1],
+      "to": [15, 13, 4],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 12, 12],
+      "to": [4, 13, 15],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [12, 12, 12],
+      "to": [15, 13, 15],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [2, 3, 2],
+      "to": [14, 13, 14],
+      "light_emission": 15,
+      "faces": {
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
+      }
+    },
+    {
+      "from": [1, 0, 1],
+      "to": [15, 16, 15],
+      "light_emission": 12,
+      "faces": {
+        "down": {"cullface": "down", "texture": "#top2"},
+        "up": {"cullface": "up", "texture": "#top2"}
+      }
+    },
+    {
+      "from": [1, 12, 1],
+      "to": [4, 13, 4],
+      "light_emission": 15,
+      "faces": {
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
+      }
+    },
+    {
+      "from": [12, 12, 1],
+      "to": [15, 13, 4],
+      "light_emission": 15,
+      "faces": {
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
+      }
+    },
+    {
+      "from": [1, 12, 12],
+      "to": [4, 13, 15],
+      "light_emission": 15,
+      "faces": {
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
+      }
+    },
+    {
+      "from": [12, 12, 12],
+      "to": [15, 13, 15],
+      "light_emission": 15,
+      "faces": {
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
+      }
+    },
+    {
+      "from": [2, 3, 2],
+      "to": [14, 13, 14],
+      "light_emission": 10,
+      "faces": {
+        "east": {"texture": "#east3"},
+        "north": {"texture": "#north3"},
+        "south": {"texture": "#south3"},
+        "west": {"texture": "#west3"}
+      }
+    }
+  ]
+}

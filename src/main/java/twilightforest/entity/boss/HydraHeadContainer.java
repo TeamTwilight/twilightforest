@@ -192,6 +192,8 @@ public class HydraHeadContainer {
 			this.nextState = NEXT_AUTOMATIC;
 			this.ticksNeeded = 20;
 			this.ticksProgress = 20;
+			this.headEntity.deactivate();
+			this.performOnAllNecks(HydraPart::deactivate);
 		}
 		this.setHeadPosition();
 		this.setNeckPosition();
@@ -615,7 +617,7 @@ public class HydraHeadContainer {
 		}
 
 		vector = vector.yRot((-(this.hydra.yBodyRot + neckRotation) * Mth.PI) / 180.0F);
-		this.setNeckPosition(this.hydra.getX() + vector.x(), this.hydra.getY() + vector.y(), this.hydra.getZ() + vector.z(), this.hydra.yBodyRot);
+		this.setNeckPosition(this.hydra.getX() + vector.x(), this.hydra.getY() + vector.y() + 0.5D, this.hydra.getZ() + vector.z(), this.hydra.yBodyRot);
 	}
 
 	protected void setHeadPosition() {
@@ -649,7 +651,7 @@ public class HydraHeadContainer {
 
 		dx = this.hydra.getX() + vector.x();
 		dy = this.hydra.getY() + vector.y() + 3;
-		dz = this.hydra.getZ() + vector.z();
+		dz = this.hydra.getZ() + vector.z() + 1;
 
 		this.headEntity.setPos(dx, dy, dz);
 		this.headEntity.setMouthOpen(getCurrentMouthOpen());
@@ -775,7 +777,7 @@ public class HydraHeadContainer {
 		float curLength = this.stateNeckLength[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevLength, curLength, progress);
+		return Mth.clampedLerp(progress, prevLength, curLength);
 	}
 
 	private float getCurrentHeadXRotation() {
@@ -783,7 +785,7 @@ public class HydraHeadContainer {
 		float currentRotation = this.stateXRotations[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevRotation, currentRotation, progress);
+		return Mth.clampedLerp(progress, prevRotation, currentRotation);
 	}
 
 	private float getCurrentHeadYRotation() {
@@ -791,7 +793,7 @@ public class HydraHeadContainer {
 		float currentRotation = this.stateYRotations[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevRotation, currentRotation, progress);
+		return Mth.clampedLerp(progress, prevRotation, currentRotation);
 	}
 
 	protected float getCurrentMouthOpen() {
@@ -799,7 +801,7 @@ public class HydraHeadContainer {
 		float curOpen = this.stateMouthOpen[this.headNum].get(this.currentState);
 		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
-		return Mth.clampedLerp(prevOpen, curOpen, progress);
+		return Mth.clampedLerp(progress, prevOpen, curOpen);
 	}
 
 	/**
@@ -808,7 +810,7 @@ public class HydraHeadContainer {
 	protected void setNeckPosition(double startX, double startY, double startZ, float startYaw) {
 
 		double endX = this.headEntity.getX();
-		double endY = this.headEntity.getY() - 0.5F;
+		double endY = this.headEntity.getY();
 		double endZ = this.headEntity.getZ();
 		float endYaw = this.headEntity.getYRot();
 		float endPitch = this.headEntity.getXRot();
@@ -825,7 +827,7 @@ public class HydraHeadContainer {
 		// translate the end position back 1 unit
 		if (endPitch > 0) {
 			// if we are looking down, don't raise the first neck position, it looks weird
-			Vec3 vector = new Vec3(0.0D, 0.0D, -1.8D).yRot((-endYaw * 3.141593F) / 180.0F);
+			Vec3 vector = new Vec3(0.0D, 0.0D, -1.0D).yRot((-endYaw * 3.141593F) / 180.0F);
 			endX += vector.x();
 			endY += vector.y();
 			endZ += vector.z();

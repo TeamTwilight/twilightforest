@@ -1,53 +1,21 @@
 {
   "items": {
-    "black": {
-      "item": "minecraft:black_wool"
-    },
-    "blue": {
-      "item": "minecraft:blue_wool"
-    },
-    "brown": {
-      "item": "minecraft:brown_wool"
-    },
-    "cyan": {
-      "item": "minecraft:cyan_wool"
-    },
-    "gray": {
-      "item": "minecraft:gray_wool"
-    },
-    "green": {
-      "item": "minecraft:green_wool"
-    },
-    "light_blue": {
-      "item": "minecraft:light_blue_wool"
-    },
-    "light_gray": {
-      "item": "minecraft:light_gray_wool"
-    },
-    "lime": {
-      "item": "minecraft:lime_wool"
-    },
-    "magenta": {
-      "item": "minecraft:magenta_wool"
-    },
-    "orange": {
-      "item": "minecraft:orange_wool"
-    },
-    "pink": {
-      "item": "minecraft:pink_wool"
-    },
-    "purple": {
-      "item": "minecraft:purple_wool"
-    },
-    "red": {
-      "item": "minecraft:red_wool"
-    },
-    "white": {
-      "item": "minecraft:white_wool"
-    },
-    "yellow": {
-      "item": "minecraft:yellow_wool"
-    }
+    "black": "minecraft:black_wool",
+    "blue": "minecraft:blue_wool",
+    "brown": "minecraft:brown_wool",
+    "cyan": "minecraft:cyan_wool",
+    "gray": "minecraft:gray_wool",
+    "green": "minecraft:green_wool",
+    "light_blue": "minecraft:light_blue_wool",
+    "light_gray": "minecraft:light_gray_wool",
+    "lime": "minecraft:lime_wool",
+    "magenta": "minecraft:magenta_wool",
+    "orange": "minecraft:orange_wool",
+    "pink": "minecraft:pink_wool",
+    "purple": "minecraft:purple_wool",
+    "red": "minecraft:red_wool",
+    "white": "minecraft:white_wool",
+    "yellow": "minecraft:yellow_wool"
   },
   "reward": "twilightforest:entities/questing_ram_rewards"
 }

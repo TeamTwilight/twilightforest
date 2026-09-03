@@ -4,7 +4,6 @@
   ],
   "enforcement": "twilightforest:fire",
   "locked_biome_toast": {
-    "count": 1,
     "id": "twilightforest:meef_stroganoff"
   },
   "multiplier": 8.0,

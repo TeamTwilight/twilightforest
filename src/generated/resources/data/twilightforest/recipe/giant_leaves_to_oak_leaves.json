@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "twilightforest:giant_leaves"
-    }
+    "twilightforest:giant_leaves"
   ],
   "result": {
     "count": 64,

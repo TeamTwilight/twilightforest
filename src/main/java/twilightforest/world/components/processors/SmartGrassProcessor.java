@@ -29,7 +29,7 @@ public class SmartGrassProcessor extends StructureProcessor {
 		if (originalBlockInfo.state().getBlock() != Blocks.GRASS_BLOCK)
 			return modifiedBlockInfo;
 
-		if (level.getBlockState(modifiedBlockInfo.pos()).is(BlockTags.DIRT) || !level.isEmptyBlock(modifiedBlockInfo.pos().above()))
+		if (level.getBlockState(modifiedBlockInfo.pos()).is(BlockTags.SUBSTRATE_OVERWORLD) || !level.isEmptyBlock(modifiedBlockInfo.pos().above()))
 			return null;
 
 		for (Direction direction : RotationUtil.CARDINALS) {

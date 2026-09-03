@@ -1,0 +1,96 @@
+import net.neoforged.moddevgradle.internal.IntelliJOutputDirectoryValueSource
+
+plugins {
+	id 'java-library'
+	id 'idea'
+}
+
+repositories {
+	maven { url = 'https://maven.neoforged.net/releases' }
+	maven {
+		name 'Mojang'
+		url 'https://libraries.minecraft.net'
+	}
+	mavenCentral()
+}
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(25))
+	}
+}
+
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['../src/asm/java']
+		}
+		resources {
+			srcDirs = ['../src/asm/resources']
+		}
+	}
+}
+
+configurations {
+	fmlVersionSource {
+		canBeConsumed = false
+		canBeResolved = true
+		attributes {
+			attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_API))
+		}
+	}
+}
+
+def fmlLoaderVersion = configurations.fmlVersionSource.incoming.resolutionResult.rootComponent.map { root ->
+	def seen = new HashSet<>()
+	def queue = new ArrayDeque<>([root])
+	while (!queue.isEmpty()) {
+		def component = queue.poll()
+		if (!seen.add(component.id)) {
+			continue
+		}
+		def module = component.moduleVersion
+		if (module != null && module.group == 'net.neoforged.fancymodloader' && module.name == 'loader') {
+			return module.version
+		}
+		component.dependencies.findAll { it instanceof ResolvedDependencyResult }.each { queue.add(it.selected) }
+	}
+	throw new GradleException("Could not determine the FancyModLoader version")
+}
+
+dependencies {
+	fmlVersionSource("net.neoforged:neoforge:${project.neoforge_version}") {
+		capabilities {
+			requireCapability 'net.neoforged:neoforge-dependencies'
+		}
+		exclude group: 'net.neoforged', module: 'neoform'
+	}
+
+	compileOnly "org.jetbrains:annotations:24.0.1"
+
+	// This is for javadoc, please do not actually classload anything from the main source set!!!!!!
+	def jankAssShit = IntelliJOutputDirectoryValueSource.getIntellijOutputDirectory(rootProject)
+	if (jankAssShit != null) {
+		jankAssShit = jankAssShit.apply(rootProject).toPath().resolve('production')
+		compileOnly files(jankAssShit.resolve('classes'), jankAssShit.resolve('resources'))
+	}
+}
+
+dependencies.addProvider('compileOnly', fmlLoaderVersion.map { project.dependencyFactory.create("net.neoforged.fancymodloader:loader:$it") })
+
+jar {
+	manifest {
+		attributes(
+			'FMLModType': "LIBRARY",
+			'Specification-Title': "twilightforest-asm",
+			'Specification-Vendor': "TeamTwilight",
+			'Specification-Version': "1",
+			'Implementation-Title': project.name,
+			'Implementation-Version': project.jar.archiveVersion,
+			'Implementation-Vendor': "TeamTwilight",
+			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		)
+	}
+}

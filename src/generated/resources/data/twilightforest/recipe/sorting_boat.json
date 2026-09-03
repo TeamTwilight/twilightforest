@@ -3,16 +3,13 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "P": {
-      "item": "twilightforest:sorting_planks"
-    }
+    "P": "twilightforest:sorting_planks"
   },
   "pattern": [
     "P P",
     "PPP"
   ],
   "result": {
-    "count": 1,
     "id": "twilightforest:sorting_boat"
   }
 }

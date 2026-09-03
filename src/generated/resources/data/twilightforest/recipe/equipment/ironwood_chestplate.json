@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:ingots/ironwood"
-    }
+    "#": "#c:ingots/ironwood"
   },
   "pattern": [
     "# #",
@@ -14,12 +12,9 @@
   "result": {
     "components": {
       "minecraft:enchantments": {
-        "levels": {
-          "minecraft:protection": 1
-        }
+        "minecraft:protection": 1
       }
     },
-    "count": 1,
     "id": "twilightforest:ironwood_chestplate"
   }
 }

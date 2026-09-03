@@ -97,7 +97,7 @@ public class TravellersGearItemModel implements ItemModel {
 	}
 
 	private Material.Baked getModifierSprite(ResourceKey<TravellersModifier> modifier, MaterialBaker baker) {
-		return baker.get(new Material(modifier.identifier().withPrefix("item/" + this.modifierDirectory)), DEBUG_NAME);
+		return baker.get(new Material(modifier.identifier().withPrefix("item/" + this.modifierDirectory.getPath() + "/")), DEBUG_NAME);
 	}
 
 	public record Unbaked(ItemModel.Unbaked baseModel, Identifier modifierDirectory) implements ItemModel.Unbaked {
