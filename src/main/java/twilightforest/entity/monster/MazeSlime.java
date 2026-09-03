@@ -2,9 +2,9 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -67,20 +66,8 @@ public class MazeSlime extends Slime {
 	}
 
 	@Override
-	protected boolean spawnCustomParticles() {
-		// [VanillaCopy] from super tick with own particles
-		int i = getSize();
-		for (int j = 0; j < i * 8; ++j) {
-			float f = this.getRandom().nextFloat() * ((float) Math.PI * 2F);
-			float f1 = this.getRandom().nextFloat() * 0.5F + 0.5F;
-			float f2 = Mth.sin(f) * i * 0.5F * f1;
-			float f3 = Mth.cos(f) * i * 0.5F * f1;
-			double d0 = this.getX() + f2;
-			double d1 = this.getZ() + f3;
-			BlockState state = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
-			this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
-		}
-		return true;
+	protected ParticleOptions getParticleType() {
+		return new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState());
 	}
 
 	@Override

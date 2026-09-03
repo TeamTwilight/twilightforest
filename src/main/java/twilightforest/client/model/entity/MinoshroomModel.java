@@ -41,7 +41,7 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.offset(0.0F, -6.0F, -9.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
 				.texOffs(105, 28)

@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-28T23:40:28.47219346	Model Definitions - twilightforest
+// 26.1.2	2026-08-26T11:24:31.148374298	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -974,6 +974,7 @@ d6873cf3981e7fc851792bdd6f6b640d0c015e4c assets/twilightforest/items/root.json
 55e7801774c057a351b8788b9d94ff89af310864 assets/twilightforest/items/rope.json
 33d7fa2e00745b8e3efa1a714a3cea06d07349e3 assets/twilightforest/items/salmon_jerky.json
 e182b712f93eb0b0c38975b2bab0d2b0bdd5de51 assets/twilightforest/items/seeker_bow.json
+d17e41a816bca0d75ee83b2d16d2f6a97896cfe8 assets/twilightforest/items/shika_senbei.json
 7f500dcd5571fff8dfee2efeb938b21a716eae8d assets/twilightforest/items/sinister_spawner.json
 dbac69ac41e8a5d94a67404ce5a3d64a3496830e assets/twilightforest/items/skeleton_druid_spawn_egg.json
 28d3f09448ef594c02ddbf4fb32fec53cd8197b0 assets/twilightforest/items/skeleton_skull_candle.json
@@ -2493,6 +2494,7 @@ d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/redca
 02dbf7d47b4be510da10aa9eeca37841abd09fae assets/twilightforest/models/item/seeker_bow_pulling_1.json
 efd1f5c64c16dacd32b8b1320d9e713ddc58f339 assets/twilightforest/models/item/seeker_bow_pulling_2.json
 a450c4e34bd472d349597e9e1740eb26e6e98d80 assets/twilightforest/models/item/shield.json
+382f729f235b5bd3e589f1d289d4350bb2f94e70 assets/twilightforest/models/item/shika_senbei.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/skeleton_druid_spawn_egg.json
 6defa945ca2bb5482c56e31b4d0cba5600ace7a8 assets/twilightforest/models/item/skyberry.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/slime_beetle_spawn_egg.json

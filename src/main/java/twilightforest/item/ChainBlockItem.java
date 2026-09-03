@@ -55,6 +55,7 @@ public class ChainBlockItem extends Item {
 
 		if (!level.isClientSide()) {
 			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);
+			launchedBlock.setOwner(player);
 			level.addFreshEntity(launchedBlock);
 			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedBlock.getUUID());
 		}

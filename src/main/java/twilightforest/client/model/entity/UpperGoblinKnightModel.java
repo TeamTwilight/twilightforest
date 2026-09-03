@@ -30,7 +30,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 			PartPose.offset(0.0F, 12.0F, 0.0F));
 
 		var hat = head.addOrReplaceChild("hat", CubeListBuilder.create(),
-			PartPose.offset(0.0F, 12.0F, 0.0F));
+			PartPose.ZERO);
 
 		hat.addOrReplaceChild("helmet", CubeListBuilder.create()
 				.texOffs(0, 0)

@@ -36,7 +36,7 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWep, ThrownWepRender
 		stack.translate(-f9, -f10, -(f12 + f11));
 		stack.translate(0.0F, 0.0F, f12 + f11);
 
-		if (state.item.isEmpty()) {
+		if (!state.item.isEmpty()) {
 			state.item.submit(stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		}
 		stack.popPose();

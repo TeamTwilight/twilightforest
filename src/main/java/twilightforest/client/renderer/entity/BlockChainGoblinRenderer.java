@@ -19,7 +19,6 @@ import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
 import twilightforest.client.state.entity.BlockChainGoblinRenderState;
-import twilightforest.client.state.entity.ChainBlockRenderState;
 import twilightforest.entity.monster.BlockChainGoblin;
 
 public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGoblin, BlockChainGoblinRenderState, BlockChainGoblinModel> {
@@ -29,7 +28,6 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 
 	private final SpikeBlockModel model;
 	private final ChainModel chainModel;
-	private static final ChainBlockRenderState STATE = new ChainBlockRenderState();
 
 	public BlockChainGoblinRenderer(EntityRendererProvider.Context context) {
 		super(context, new BlockChainGoblinModel(context.bakeLayer(TFModelLayers.BLOCKCHAIN_GOBLIN)), 0.4F);
@@ -53,7 +51,7 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 		stack.mulPose(Axis.XP.rotationDegrees(state.xRot));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		collector.submitModel(this.model, STATE, stack, this.model.renderType(BLOCK_AND_CHAIN_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
+		collector.submitModel(this.model, state, stack, this.model.renderType(BLOCK_AND_CHAIN_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 		stack.popPose();
 
 		if (state.deathTime <= 0) {
@@ -76,8 +74,8 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 	@Override
 	public void extractRenderState(BlockChainGoblin entity, BlockChainGoblinRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
-		state.chainBlockPos = entity.block.position();
-		state.chainStartPos = entity.block.getEyePosition().subtract(entity.getEyePosition()).multiply(1.0D, 0.5D, 1.0D);
+		state.chainBlockPos = entity.block.getPosition(partialTick);
+		state.chainStartPos = entity.block.getEyePosition(partialTick).subtract(entity.getEyePosition(partialTick)).multiply(1.0D, 0.5D, 1.0D);
 	}
 
 	@Override

@@ -1,6 +1,10 @@
 package twilightforest.datagen.data.loot;
 
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.criterion.SlimePredicate;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -14,6 +18,7 @@ import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
@@ -319,12 +324,21 @@ public class EntityLootTables extends EntityLootSubProvider {
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
-					.add(LootItem.lootTableItem(Items.SLIME_BALL)
-						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
-						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
+					.add(LootItem.lootTableItem(TFItems.MAZE_SLIME_BALL)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+						.when(this.killedByFrog(this.registries.lookupOrThrow(Registries.ENTITY_TYPE)).invert()))
+					.add(LootItem.lootTableItem(TFItems.MAZE_SLIME_BALL)
+						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+						.when(this.killedByFrog(this.registries.lookupOrThrow(Registries.ENTITY_TYPE))))
+					.when(LootItemEntityPropertyCondition.hasProperties(
+						LootContext.EntityTarget.THIS,
+						EntityPredicate.Builder.entity().subPredicate(SlimePredicate.sized(MinMaxBounds.Ints.exactly(1)))
+					)))
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get()))
+					.when(LootItemKilledByPlayerCondition.killedByPlayer())
 					.when((LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.015F, 0.005F)))));
 
 		add(TFEntities.MINOTAUR.get(),

@@ -19,7 +19,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.DeathTomeModel;
 import twilightforest.potions.FrostedEffect;
 
-public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
+public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<? super S>> extends RenderLayer<S, M> {
 	private final RandomSource random = RandomSource.create();
 
 	public static ContextKey<Double> FROST_COUNT_KEY = new ContextKey<>(TwilightForestMod.prefix("frost_count"));

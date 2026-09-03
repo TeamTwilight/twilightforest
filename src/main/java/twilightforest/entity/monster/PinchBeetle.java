@@ -143,7 +143,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	@Override
 	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vec3(0.0F, this.getEyeHeight(), 0.75F);
+		return super.getPassengerAttachmentPoint(entity, dimensions, yRot).add(0.0F, -dimensions.height() + this.getEyeHeight(), 0.75F);
 	}
 
 	@Override
