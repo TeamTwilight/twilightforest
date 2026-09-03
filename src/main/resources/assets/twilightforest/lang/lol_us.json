@@ -8,8 +8,6 @@
   "block.twilightforest.time_planks": "Waitwood bloc",
   "block.twilightforest.uncrafting_table.disabled": "Blok not on.",
   "config.twilightforest.multiplayer_fight_adjuster.more_loot": "more lootz",
-  "config.twilightforest.optifine": "Optifine screenz",
-  "config.twilightforest.optifine.tooltip": "Hide da warn if u import teh OptiFine.",
   "config.twilightforest.portal_settings": "portal opshuns",
   "config.twilightforest.shield.tooltip": "Shield Parry is gud for parry, but these kez are for no mod install.",
   "config.twilightforest.twenty_four_hour_format": "24 hour clock",
@@ -20,8 +18,5 @@
   "container.twilightforest.uncrafting_table": "Unkrafting Tabal",
   "death.attack.twilightforest.clamped": "%1$s wuz loaf to hard bai %2$s",
   "death.attack.twilightforest.clamped.item": "%1$s wuz loaf to hard bai %2$s an %3$s",
-  "gui.twilightforest.optifine.message": "U should knuwz Optifine is known for da big crunch, vishwal rats an more badz.\n\nIf u find rat, plz scrap Optifine and see if teh rat iz still alive.\n\nTwilight Forest cat council cant fix Optifine rat.\n\nNag screen can be killz in da client opshuns.",
-  "gui.twilightforest.optifine.suggestions": "u should use teh mods here insted of being teh Optifine cat with fall ouchies:",
-  "gui.twilightforest.optifine.title": "ono optifine",
   "gui.twilightforest.uncrafting_jei": "Unkrafting"
 }
