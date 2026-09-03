@@ -73,6 +73,8 @@ import twilightforest.client.properties.*;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.block.*;
+import twilightforest.client.renderer.block.jar.JarLidResolver;
+import twilightforest.client.renderer.block.jar.JarRenderer;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
@@ -100,7 +102,6 @@ public class ClientRegistrationEvents {
 	private void setup(IEventBus bus) {
 		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
 		bus.addListener(this::bakeCustomModels);
-		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerStandalone);
 		bus.addListener(this::registerClientReloadListeners);
@@ -199,22 +200,7 @@ public class ClientRegistrationEvents {
 		event.register(new StandaloneModelKey<>(trophy_minor::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_minor));
 		event.register(new StandaloneModelKey<>(trophy_quest::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_quest));
 		event.register(new StandaloneModelKey<>(TrollsteinnModel.LIT_TROLLSTEINN::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(TrollsteinnModel.LIT_TROLLSTEINN));
-
-		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
-			Identifier location = lid.identifier();
-			String name = location.getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-			Identifier modelKey = TwilightForestMod.prefix("block/lid/" + name);
-			event.register(new StandaloneModelKey<>(modelKey::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(modelKey));
-		}
-	}
-
-	private void cacheJarLids(ModelEvent.BakingCompleted event) {
-		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
-			String name = lid.identifier().getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-//			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
-		});
+		event.register(JarRenderer.MODEL_KEY, SimpleUnbakedStandaloneModel.simpleModelWrapper(JarRenderer.MODEL));
 	}
 
 	private void clientSetup(FMLClientSetupEvent evt) {
@@ -235,6 +221,7 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {
+		event.addListener(TwilightForestMod.prefix("jar_lid_texture_cache"), new JarLidResolver.TextureCacheInvalidationReloadListener());
 		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
 		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
 	}

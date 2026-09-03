@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/jar_lid",
-  "textures": {
-    "end": "minecraft:block/stripped_dark_oak_log_top",
-    "side": "minecraft:block/stripped_dark_oak_log"
-  }
-}
