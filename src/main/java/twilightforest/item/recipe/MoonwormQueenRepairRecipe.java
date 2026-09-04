@@ -15,17 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoonwormQueenRepairRecipe extends CustomRecipe {
+	public static final MoonwormQueenRepairRecipe INSTANCE = new MoonwormQueenRepairRecipe();
+
 	public static final MapCodec<MoonwormQueenRepairRecipe> MAP_CODEC =
-		MapCodec.unit(MoonwormQueenRepairRecipe::new);
+		MapCodec.unit(INSTANCE);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MoonwormQueenRepairRecipe> STREAM_CODEC =
-		StreamCodec.unit(new MoonwormQueenRepairRecipe());
+		StreamCodec.unit(INSTANCE);
 
 	public static final RecipeSerializer<MoonwormQueenRepairRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	public MoonwormQueenRepairRecipe() {
-		super();
+	private MoonwormQueenRepairRecipe() {
 	}
 
 	@Override

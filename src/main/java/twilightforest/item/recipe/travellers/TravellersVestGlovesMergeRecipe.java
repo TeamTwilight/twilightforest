@@ -16,17 +16,18 @@ import java.util.List;
 import java.util.Optional;
 
 public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
+	public static final TravellersVestGlovesMergeRecipe INSTANCE = new TravellersVestGlovesMergeRecipe();
+
 	public static final MapCodec<TravellersVestGlovesMergeRecipe> MAP_CODEC =
-		MapCodec.unit(TravellersVestGlovesMergeRecipe::new);
+		MapCodec.unit(INSTANCE);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, TravellersVestGlovesMergeRecipe> STREAM_CODEC =
-		StreamCodec.unit(new TravellersVestGlovesMergeRecipe());
+		StreamCodec.unit(INSTANCE);
 
 	public static final RecipeSerializer<TravellersVestGlovesMergeRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	public TravellersVestGlovesMergeRecipe() {
-		super();
+	private TravellersVestGlovesMergeRecipe() {
 	}
 
 	@Override

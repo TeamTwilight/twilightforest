@@ -14,17 +14,18 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
 public class EmperorsClothRecipe extends CustomRecipe {
+	public static final EmperorsClothRecipe INSTANCE = new EmperorsClothRecipe();
+
 	public static final MapCodec<EmperorsClothRecipe> MAP_CODEC =
-		MapCodec.unit(EmperorsClothRecipe::new);
+		MapCodec.unit(INSTANCE);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, EmperorsClothRecipe> STREAM_CODEC =
-		StreamCodec.unit(new EmperorsClothRecipe());
+		StreamCodec.unit(INSTANCE);
 
 	public static final RecipeSerializer<EmperorsClothRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	public EmperorsClothRecipe() {
-		super();
+	private EmperorsClothRecipe() {
 	}
 
 	@Override

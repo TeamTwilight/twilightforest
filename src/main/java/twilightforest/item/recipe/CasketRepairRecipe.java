@@ -12,17 +12,18 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
 public class CasketRepairRecipe extends CustomRecipe {
+	public static final CasketRepairRecipe INSTANCE = new CasketRepairRecipe();
+
 	public static final MapCodec<CasketRepairRecipe> MAP_CODEC =
-		MapCodec.unit(CasketRepairRecipe::new);
+		MapCodec.unit(INSTANCE);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, CasketRepairRecipe> STREAM_CODEC =
-		StreamCodec.unit(new CasketRepairRecipe());
+		StreamCodec.unit(INSTANCE);
 
 	public static final RecipeSerializer<CasketRepairRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	public CasketRepairRecipe() {
-		super();
+	private CasketRepairRecipe() {
 	}
 
 	@Override
