@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-03T23:14:57.5261564	Twilight Forest Recipes
+// 26.1.2	2026-09-03T23:42:04.765608	Twilight Forest Recipes
 c8fdba389667cca258d6f0a2a4be48f93bd7e333 data/minecraft/advancement/recipes/drying/dead_brain_coral.json
 81aca38f20243d53b6a6ce139ab1e7237bb6a2a5 data/minecraft/advancement/recipes/drying/dead_brain_coral_block.json
 5e11c49be557cf53712364dcadcd4bf5799ae3b1 data/minecraft/advancement/recipes/drying/dead_brain_coral_fan.json
@@ -548,7 +548,7 @@ d16501eee6e910f1f3876f2e5ea70778cddc5975 data/twilightforest/recipe/drying/cooke
 aaeb61ca69e49b2eb5c5c304360a93d0390191ae data/twilightforest/recipe/drying/sapling_to_dead_bush.json
 883b36316c858dcda66b9f7eea703030ae7d3696 data/twilightforest/recipe/drying/sponge.json
 bed38754c72009881b2b9bacf450340bfaed98d1 data/twilightforest/recipe/emperors_cloth_recipe.json
-46d36a198705036bc19718feba5d1b3d9a08aa28 data/twilightforest/recipe/emperors_cloth_smithing.json
+39bc78321db3124a5e6cb9493d20fc4f634bf710 data/twilightforest/recipe/emperors_cloth_smithing.json
 6025a3d3c8a0dbf95deb126c459ec4643d30e8b8 data/twilightforest/recipe/encased_fire_jet.json
 919e3e64c28080aa28b17445b376c0d4d5a6fa76 data/twilightforest/recipe/encased_smoker.json
 d4ce1801dcb6a5961f9adb411172ecdb9b0dafb9 data/twilightforest/recipe/equipment/arctic_boots.json
