@@ -4,7 +4,9 @@ import com.google.common.base.Suppliers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraHeadModel;
 import twilightforest.client.model.entity.HydraNeckModel;
@@ -20,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class BakedMultiPartRenderers {
 	private static final Map<Identifier, Supplier<EntityRenderer<?,?>>> renderers = new HashMap<>();
 
@@ -32,7 +33,9 @@ public class BakedMultiPartRenderers {
 		renderers.put(NagaSegment.RENDERER, Suppliers.memoize(() -> new NagaSegmentRenderer(context, new NagaModel<>(context.bakeLayer(TFModelLayers.NAGA_BODY)))));
 	}
 
-	public static EntityRenderer<?,?> lookup(Identifier location) {
-		return renderers.get(location).get();
+	public static EntityRenderer<Entity, EntityRenderState> lookup(Identifier location) {
+		@SuppressWarnings("unchecked")
+		EntityRenderer<Entity, EntityRenderState> renderer = (EntityRenderer<Entity, EntityRenderState>) renderers.get(location).get();
+		return renderer;
 	}
 }

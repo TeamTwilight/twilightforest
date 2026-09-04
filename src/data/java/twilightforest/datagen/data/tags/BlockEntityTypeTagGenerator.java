@@ -4,12 +4,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.KeyTagProvider;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.tags.TFBlockEntityTypeTags;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockEntityTypeTagGenerator extends KeyTagProvider<BlockEntityType<?>> {
@@ -20,7 +20,7 @@ public class BlockEntityTypeTagGenerator extends KeyTagProvider<BlockEntityType<
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(TFBlockEntityTypeTags.RELOCATION_NOT_SUPPORTED).add(
+		this.tag(TFBlockEntityTypeTags.RELOCATION_NOT_SUPPORTED).addAll(List.of(
 			TFBlockEntities.ANTIBUILDER.getKey(),
 			TFBlockEntities.BEANSTALK_GROWER.getKey(),
 			TFBlockEntities.NAGA_SPAWNER.getKey(),
@@ -31,9 +31,9 @@ public class BlockEntityTypeTagGenerator extends KeyTagProvider<BlockEntityType<
 			TFBlockEntities.UR_GHAST_SPAWNER.getKey(),
 			TFBlockEntities.ALPHA_YETI_SPAWNER.getKey(),
 			TFBlockEntities.SNOW_QUEEN_SPAWNER.getKey(),
-			TFBlockEntities.FINAL_BOSS_SPAWNER.getKey());
+			TFBlockEntities.FINAL_BOSS_SPAWNER.getKey()));
 
-		this.tag(TFBlockEntityTypeTags.IMMOVABLE).add(
+		this.tag(TFBlockEntityTypeTags.IMMOVABLE).addAll(List.of(
 			TFBlockEntities.ANTIBUILDER.getKey(),
 			TFBlockEntities.BEANSTALK_GROWER.getKey(),
 			TFBlockEntities.NAGA_SPAWNER.getKey(),
@@ -44,7 +44,7 @@ public class BlockEntityTypeTagGenerator extends KeyTagProvider<BlockEntityType<
 			TFBlockEntities.UR_GHAST_SPAWNER.getKey(),
 			TFBlockEntities.ALPHA_YETI_SPAWNER.getKey(),
 			TFBlockEntities.SNOW_QUEEN_SPAWNER.getKey(),
-			TFBlockEntities.FINAL_BOSS_SPAWNER.getKey());
+			TFBlockEntities.FINAL_BOSS_SPAWNER.getKey()));
 	}
 
 	@Override

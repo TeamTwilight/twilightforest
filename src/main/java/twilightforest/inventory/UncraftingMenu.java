@@ -274,9 +274,9 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		TFItemStackUtils.clearInfoTag(stack, TAG_MARKER);
 	}
 
-//	public static boolean isIngredientProblematic(ItemStack ingredient) {
-//		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient)) || ingredient.is(Items.BARRIER);
-//	}
+	public static boolean isIngredientProblematic(ItemStack ingredient) {
+		return (!ingredient.isEmpty() && ingredient.getCraftingRemainder() != null) || ingredient.is(Items.BARRIER);
+	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
 		if (ingredient.getCount() > 1) {

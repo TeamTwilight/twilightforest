@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": "minecraft:chicken",
+  "result": {
+    "id": "twilightforest:chicken_jerky"
+  },
+  "show_notification": false
+}

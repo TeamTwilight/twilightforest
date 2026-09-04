@@ -493,7 +493,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 					boolean isKnightStone = knightStones.make().getStates().contains(stateBelow);
 					boolean isStrongholdStone = strongholdStones.make().getStates().contains(stateBelow);
 
-					boolean isValidSurface = !state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT));
+					boolean isValidSurface = !state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SUBSTRATE_OVERWORLD));
 					boolean isAirWithChance = state.isAir() && rand.nextInt(3) == 0;
 					boolean isStoneBelow = isKnightStone || isStrongholdStone;
 

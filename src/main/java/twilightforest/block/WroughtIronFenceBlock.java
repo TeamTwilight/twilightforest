@@ -78,12 +78,6 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		return finalShape;
 	}
 
-	//TODO can no longer be done via block, move to item
-//	@Override
-//	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-//		tooltip.add(Component.translatable("block.twilightforest.wrought_iron_fence.cap").withStyle(ChatFormatting.GRAY));
-//	}
-
 	@Override
 	protected boolean isPathfindable(BlockState state, PathComputationType computationType) {
 		return false;

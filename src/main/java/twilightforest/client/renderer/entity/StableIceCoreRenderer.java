@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -22,6 +23,15 @@ public class StableIceCoreRenderer extends MobRenderer<StableIceCore, LivingEnti
 	@Override
 	protected void scale(LivingEntityRenderState state, PoseStack stack) {
 		stack.translate(0.0F, Mth.sin(state.ageInTicks * 0.2F) * 0.15F, 0.0F);
+	}
+
+	@Override
+	protected int getModelTint(LivingEntityRenderState state) {
+		if (state.deathTime > 0.0F) {
+			return super.getModelTint(state);
+		} else {
+			return ARGB.colorFromFloat(0.6F, 1.0F, 1.0F, 1.0F);
+		}
 	}
 
 	@Override

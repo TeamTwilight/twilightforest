@@ -1,6 +1,7 @@
 package twilightforest.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.entity.ArmorModelSet;
 import twilightforest.TwilightForestMod;
 
 public class TFModelLayers {
@@ -80,8 +81,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation QUEST_RAM = register("quest_ram");
 	public static final ModelLayerLocation RAVEN = register("raven");
 	public static final ModelLayerLocation REDCAP = register("redcap");
-	public static final ModelLayerLocation REDCAP_ARMOR_OUTER = register("redcap", "outer");
-	public static final ModelLayerLocation REDCAP_ARMOR_INNER = register("redcap", "inner");
+	public static final ArmorModelSet<ModelLayerLocation> REDCAP_ARMOR = registerArmorSet("redcap");
 	public static final ModelLayerLocation RISING_ZOMBIE = register("rising_zombie");
 	public static final ModelLayerLocation ROVING_CUBE = register("roving_cube");
 	public static final ModelLayerLocation SKELETON_DRUID = register("skeleton_druid");
@@ -126,5 +126,9 @@ public class TFModelLayers {
 
 	private static ModelLayerLocation register(String p_171301_, String p_171302_) {
 		return new ModelLayerLocation(TwilightForestMod.prefix(p_171301_), p_171302_);
+	}
+
+	private static ArmorModelSet<ModelLayerLocation> registerArmorSet(String modelId) {
+		return new ArmorModelSet<>(register(modelId, "helmet"), register(modelId, "chestplate"), register(modelId, "leggings"), register(modelId, "boots"));
 	}
 }

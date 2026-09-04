@@ -254,6 +254,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.SALMON_JERKY.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TROPICAL_FISH_JERKY.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FUGU_JERKY.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.SHIKA_SENBEI.get(), ModelTemplates.FLAT_ITEM);
 
 		this.generateFlatItem(TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.GELATINOUS_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
@@ -358,7 +359,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	}
 
 	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix, int color) {
-		this.generateDynamicTrimmableItem(armor, this.createFlatItemModel(armor, ModelTemplates.FLAT_ITEM), slotTrimPrefix, color);
+		this.generateDynamicTrimmableItem(armor, this.twoLayerItem(armor, "_0", ModelTemplates.TWO_LAYERED_ITEM), slotTrimPrefix, color);
 	}
 
 	public void generateBow(Item bowItem, boolean twoLayered) {

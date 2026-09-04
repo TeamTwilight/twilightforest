@@ -137,19 +137,19 @@ neoForge {
 			it.sourceSet this.sourceSets.main
 		}
 
-		'tf-asm' {
-			it.sourceSet project(":tf-asm").sourceSets.main
-		}
-
 		"${mod_id}-data" {
 			it.sourceSet this.sourceSets.main
 			it.sourceSet this.sourceSets.data
 		}
+
+		'asm' {
+			it.sourceSet project(":asm").sourceSets.main
+		}
 	}
 
 	def mainMod = mods."${project.mod_id}"
-	def asmMod = mods."tf-asm"
 	def dataMod = mods."${project.mod_id}-data"
+	def asmMod = mods."asm"
 
 	unitTest {
 		enable()
@@ -168,7 +168,11 @@ neoForge {
 		client {
 			client()
 			systemProperty 'forge.enabledGameTestNamespaces', mod_id
-			programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
+			programArguments.addAll(
+				'--username', secrets.getProperty("username") ?: 'Dev',
+				'--accessToken', '0',
+				secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
+			)
 		}
 
 		server {
@@ -180,7 +184,12 @@ neoForge {
 		clientData {
 			clientData()
 			gameDirectory = project.file('run-data')
-			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+			programArguments.addAll(
+				'--mod', mod_id,
+				'--all',
+				'--output', file('src/generated/resources/').getAbsolutePath(),
+				'--existing', file('src/main/resources/').getAbsolutePath()
+			)
 			sourceSet = this.sourceSets.data
 			loadedMods = [dataMod, asmMod]
 		}
@@ -189,7 +198,7 @@ neoForge {
 
 afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
 	tasks.withType(RunGameTask).configureEach {
-		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('tf-asm')).toList())
+		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('/asm/build/')).toList())
 	}
 }
 
@@ -238,7 +247,7 @@ repositories {
 }
 
 dependencies {
-	jarJar implementation(project(":tf-asm"))
+	jarJar implementation(project(":asm"))
 
 	def beanification = "tamaized:beanification:${project.beanification_version}"
 	implementation beanification
@@ -247,7 +256,7 @@ dependencies {
 	testCompileOnly "${beanification}:test-sources"
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
-//	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
+	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
 //	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
 //	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.base_minecraft_version}"
 
@@ -280,7 +289,7 @@ dependencies {
 }
 
 configurations.testImplementation {
-	exclude module: 'tf-asm'
+	exclude group: 'twilightforest', module: 'asm'
 }
 
 test {
@@ -311,7 +320,6 @@ processResources {
 			]
 		])
 	}
-	exclude ".cache"
 	def lazyTree = providers.provider {
 		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"])
 	}

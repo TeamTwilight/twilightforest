@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": "minecraft:salmon",
+  "result": {
+    "id": "twilightforest:salmon_jerky"
+  },
+  "show_notification": false
+}

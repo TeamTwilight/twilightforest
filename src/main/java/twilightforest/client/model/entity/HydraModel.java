@@ -17,7 +17,6 @@ import twilightforest.client.state.entity.HydraRenderState;
 
 public class HydraModel extends EntityModel<HydraRenderState> {
 
-	private final ModelPart root;
 	private final ModelPart body;
 	private final ModelPart tail;
 	private final ModelPart rightLeg;
@@ -25,7 +24,6 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 
 	public HydraModel(ModelPart root) {
 		super(root);
-		this.root = root;
 		this.body = root.getChild("body");
 		this.tail = root.getChild("tail_1");
 		this.rightLeg = root.getChild("right_leg");
@@ -217,16 +215,11 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 	@Override
 	public void setupAnim(HydraRenderState entity) {
 		super.setupAnim(entity);
-		if (entity.renderFakeHeads) {
-			this.root.getAllParts().forEach(part -> part.visible = true);
-		} else {
-			this.root.getAllParts().forEach(part -> part.visible = false);
-			this.rightLeg.visible = true;
-			this.leftLeg.visible = true;
-			this.body.visible = true;
-			this.tail.visible = true;
-		}
-
+		this.root().getAllParts().forEach(part -> part.skipDraw = !entity.renderFakeHeads);
+		this.body.skipDraw = false;
+		this.tail.getAllParts().forEach(part -> part.skipDraw = false);
+		this.rightLeg.skipDraw = false;
+		this.leftLeg.skipDraw = false;
 		this.rightLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
 		this.leftLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
 	}

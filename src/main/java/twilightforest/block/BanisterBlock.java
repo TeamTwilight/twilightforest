@@ -1,8 +1,10 @@
 package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -10,7 +12,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -36,7 +41,9 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.enums.BanisterShape;
 import twilightforest.tags.TFBlockTags;
 
-public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+import java.util.function.Consumer;
+
+public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, TooltipBlock {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final EnumProperty<BanisterShape> SHAPE = EnumProperty.create("shape", BanisterShape.class);
@@ -189,11 +196,10 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		};
 	}
 
-	//TODO can no longer be done via block, move to item
-//	@Override
-//	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-//		tooltip.add(Component.translatable("block.twilightforest.banister.cycle").withStyle(ChatFormatting.GRAY));
-//	}
+	@Override
+	public void addTooltip(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+		tooltip.accept(Component.translatable("block.twilightforest.banister.cycle").withStyle(ChatFormatting.GRAY));
+	}
 
 	@Nullable
 	@Override

@@ -15,7 +15,7 @@ public class FinalCastleStructureDefinitionGenerator extends StructureTemplateDe
 	}
 
 	@Override
-	protected void generatePools() {
+	protected void generatePools(HolderLookup.Provider provider) {
 		this.add("final_castle/temp/large_tower", FinalCastleLargeTowerComponent.LARGE_TOWER_TEMP_POOL, 100);
 		this.add("final_castle/temp/bell_tower", FinalCastleBellTower21Component.BELL_TOWER_TEMP_POOL, 100);
 		this.add("final_castle/temp/gazebo", FinalCastleBossGazeboComponent.GAZEBO_TEMP_POOL, 100);

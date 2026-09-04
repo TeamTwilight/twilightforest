@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "drying_rack",
+  "key": {
+    "-": "twilightforest:transformation_slab"
+  },
+  "pattern": [
+    "---"
+  ],
+  "result": {
+    "id": "twilightforest:transformation_drying_rack"
+  }
+}

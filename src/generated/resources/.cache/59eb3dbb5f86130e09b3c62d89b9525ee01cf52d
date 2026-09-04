@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-18T23:26:07.7311715	Loot Tables
+// 26.1.2	2026-09-03T11:10:03.2219309	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -534,7 +534,7 @@ e81b358426c5b6741051d72da7199e0477e9be7e data/twilightforest/loot_table/entities
 dd9f751f1bc91d7ed522830b3c23fbfbf78f25e9 data/twilightforest/loot_table/entities/lich_minion.json
 dcacdd0dd24d0a1be0305513f03e3c3ea1f84af3 data/twilightforest/loot_table/entities/lower_goblin_knight.json
 afec73bba8b58715faae2bd8f84f488b2ea8922b data/twilightforest/loot_table/entities/loyal_zombie.json
-8e92a61319d33792ba494872b3a7e6162f5ee89d data/twilightforest/loot_table/entities/maze_slime.json
+4aa1dac5c85b1f85a2bd4bbe025d65d7a5d58ad1 data/twilightforest/loot_table/entities/maze_slime.json
 027795a4a78b75b19564c3a9af7c8917cca5b561 data/twilightforest/loot_table/entities/minoshroom.json
 d15c74465d23a7835caabb4e4978bd50d580f28a data/twilightforest/loot_table/entities/minotaur.json
 f57e98e67180169e4748c51bec4f27a84b70cd54 data/twilightforest/loot_table/entities/mist_wolf.json

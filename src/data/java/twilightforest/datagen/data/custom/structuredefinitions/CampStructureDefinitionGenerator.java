@@ -31,11 +31,7 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	}
 
 	@Override
-	protected void generatePools() {
-		this.lookupProvider.thenAccept(this::generatePoolsWithProvider);
-	}
-
-	private void generatePoolsWithProvider(HolderLookup.Provider provider) {
+	protected void generatePools(HolderLookup.Provider provider) {
 		Holder.Reference<TemplateMarkerHandlerList> campMarkers = this.getMarkers(provider, TemplateMarkerHandlers.CAMP_MARKER_HANDLERS);
 
 		this.add("camp/campfire_east", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));

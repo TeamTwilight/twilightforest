@@ -12,17 +12,18 @@ import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFItems;
 
 public class EssenceRepairRecipe extends CustomRecipe {
+	public static final EssenceRepairRecipe INSTANCE = new EssenceRepairRecipe();
+
 	public static final MapCodec<EssenceRepairRecipe> MAP_CODEC =
-		MapCodec.unit(EssenceRepairRecipe::new);
+		MapCodec.unit(INSTANCE);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, EssenceRepairRecipe> STREAM_CODEC =
-		StreamCodec.unit(new EssenceRepairRecipe());
+		StreamCodec.unit(INSTANCE);
 
 	public static final RecipeSerializer<EssenceRepairRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	public EssenceRepairRecipe() {
-		super();
+	private EssenceRepairRecipe() {
 	}
 
 	@Override

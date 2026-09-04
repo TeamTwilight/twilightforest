@@ -1,0 +1,109 @@
+{
+  "twilightforest:camp/deco": {
+    "height_adjustment": {
+      "ground_junction_diff_clamp": 0,
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 1
+    },
+    "ignore_world_waterlog": true,
+    "marker_handlers": "twilightforest:camp_marker_handlers",
+    "randomized_processors": [
+      [
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "twilightforest:twilight_oak_log",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "twilightforest:twilight_oak_log",
+                  "Properties": {
+                    "axis": "y"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 100
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "twilightforest:twilight_oak_log",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "twilightforest:canopy_log",
+                  "Properties": {
+                    "axis": "y"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 90
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "twilightforest:twilight_oak_log",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:oak_log",
+                  "Properties": {
+                    "axis": "y"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 80
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "twilightforest:twilight_oak_log",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:birch_log",
+                  "Properties": {
+                    "axis": "y"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 70
+        }
+      ]
+    ],
+    "terrain_adaptation": "beard_box",
+    "weight": 100
+  }
+}

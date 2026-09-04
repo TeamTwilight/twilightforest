@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": "twilightforest:raw_meef",
+  "result": {
+    "id": "twilightforest:meef_jerky"
+  },
+  "show_notification": false
+}

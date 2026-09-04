@@ -7,10 +7,10 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.client.state.entity.ChainBlockRenderState;
 
-public class SpikeBlockModel extends EntityModel<ChainBlockRenderState> {
+public class SpikeBlockModel extends EntityModel<EntityRenderState> {
 
 	public SpikeBlockModel(ModelPart root) {
 		super(root);

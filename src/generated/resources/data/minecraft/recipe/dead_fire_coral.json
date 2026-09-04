@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 40,
+  "input": "minecraft:fire_coral",
+  "result": {
+    "id": "minecraft:dead_fire_coral"
+  },
+  "show_notification": false
+}

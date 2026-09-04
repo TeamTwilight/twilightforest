@@ -35,6 +35,13 @@
       }
     },
     {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_block_tag",
+        "tag": "minecraft:air"
+      }
+    },
+    {
       "type": "twilightforest:no_structure",
       "additional_clearance": 0,
       "occupies_surface": false,

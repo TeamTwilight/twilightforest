@@ -11,17 +11,18 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFItems;
 
 public class MazeMapCloningRecipe extends CustomRecipe {
+	public static final MazeMapCloningRecipe INSTANCE = new MazeMapCloningRecipe();
+
 	public static final MapCodec<MazeMapCloningRecipe> MAP_CODEC =
-		MapCodec.unit(MazeMapCloningRecipe::new);
+		MapCodec.unit(INSTANCE);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MazeMapCloningRecipe> STREAM_CODEC =
-		StreamCodec.unit(new MazeMapCloningRecipe());
+		StreamCodec.unit(INSTANCE);
 
 	public static final RecipeSerializer<MazeMapCloningRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	public MazeMapCloningRecipe() {
-		super();
+	private MazeMapCloningRecipe() {
 	}
 
 	@Override

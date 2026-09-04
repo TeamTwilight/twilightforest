@@ -17,12 +17,12 @@ public class AdherentModel extends HumanoidModel<HumanoidRenderState> {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(32, 0)

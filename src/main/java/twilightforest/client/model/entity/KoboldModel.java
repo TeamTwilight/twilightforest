@@ -33,7 +33,7 @@ public class KoboldModel extends HumanoidModel<KoboldRenderState> {
 				.addBox(-3.5F, -7.0F, -3.0F, 7.0F, 6.0F, 6.0F),
 			PartPose.offset(0.0F, 13.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
 				.texOffs(48, 20)
@@ -85,6 +85,8 @@ public class KoboldModel extends HumanoidModel<KoboldRenderState> {
 
 	@Override
 	public void setupAnim(KoboldRenderState entity) {
+		super.setupAnim(entity);
+
 		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
 		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 
