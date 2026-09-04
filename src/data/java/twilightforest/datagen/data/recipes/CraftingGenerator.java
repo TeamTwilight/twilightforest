@@ -7,6 +7,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
+import twilightforest.datagen.data.custom.DryingRecipeBuilder;
 import twilightforest.datagen.data.custom.NoSmithingTemplateRecipeBuilder;
 import twilightforest.datagen.data.custom.ScepterRecipeBuilder;
 import twilightforest.datagen.data.custom.UncraftingGenerator;
@@ -30,6 +33,9 @@ import twilightforest.init.TFItems;
 import twilightforest.item.recipe.*;
 
 public class CraftingGenerator extends CraftingDataHelper {
+
+	private final String[] coralSpecies = {"tube", "brain", "bubble", "fire", "horn"};
+	private final String[] coralTypes = {"", "_block", "_fan"};
 
 	public CraftingGenerator(RecipeOutput output, HolderLookup.Provider provider) {
 		super(output, provider);
@@ -45,6 +51,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		equipmentRecipes(getter, this.registries);
 		emptyMapRecipes(getter);
 		woodRecipes(getter);
+		dryingRecipes(getter);
 		fieryConversions(getter);
 
 		nagastoneRecipes(getter);
@@ -782,6 +789,28 @@ public class CraftingGenerator extends CraftingDataHelper {
 		banisterBlock(getter, "cherry", TFBlocks.CHERRY_BANISTER, Blocks.CHERRY_SLAB);
 		banisterBlock(getter, "pale_oak", TFBlocks.PALE_OAK_BANISTER, Blocks.PALE_OAK_SLAB);
 
+		dryingRackBlock(getter, "canopy", TFBlocks.CANOPY_DRYING_RACK, TFBlocks.CANOPY_SLAB);
+		dryingRackBlock(getter, "dark", TFBlocks.DARK_DRYING_RACK, TFBlocks.DARK_SLAB);
+		dryingRackBlock(getter, "mangrove", TFBlocks.MANGROVE_DRYING_RACK, TFBlocks.MANGROVE_SLAB);
+		dryingRackBlock(getter, "mining", TFBlocks.MINING_DRYING_RACK, TFBlocks.MINING_SLAB);
+		dryingRackBlock(getter, "sorting", TFBlocks.SORTING_DRYING_RACK, TFBlocks.SORTING_SLAB);
+		dryingRackBlock(getter, "time", TFBlocks.TIME_DRYING_RACK, TFBlocks.TIME_SLAB);
+		dryingRackBlock(getter, "transformation", TFBlocks.TRANSFORMATION_DRYING_RACK, TFBlocks.TRANSFORMATION_SLAB);
+		dryingRackBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_DRYING_RACK, TFBlocks.TWILIGHT_OAK_SLAB);
+
+		dryingRackBlock(getter, "oak", TFBlocks.OAK_DRYING_RACK, Blocks.OAK_SLAB);
+		dryingRackBlock(getter, "spruce", TFBlocks.SPRUCE_DRYING_RACK, Blocks.SPRUCE_SLAB);
+		dryingRackBlock(getter, "birch", TFBlocks.BIRCH_DRYING_RACK, Blocks.BIRCH_SLAB);
+		dryingRackBlock(getter, "jungle", TFBlocks.JUNGLE_DRYING_RACK, Blocks.JUNGLE_SLAB);
+		dryingRackBlock(getter, "acacia", TFBlocks.ACACIA_DRYING_RACK, Blocks.ACACIA_SLAB);
+		dryingRackBlock(getter, "dark_oak", TFBlocks.DARK_OAK_DRYING_RACK, Blocks.DARK_OAK_SLAB);
+		dryingRackBlock(getter, "crimson", TFBlocks.CRIMSON_DRYING_RACK, Blocks.CRIMSON_SLAB);
+		dryingRackBlock(getter, "warped", TFBlocks.WARPED_DRYING_RACK, Blocks.WARPED_SLAB);
+		dryingRackBlock(getter, "vangrove", TFBlocks.VANGROVE_DRYING_RACK, Blocks.MANGROVE_SLAB);
+		dryingRackBlock(getter, "bamboo", TFBlocks.BAMBOO_DRYING_RACK, Blocks.BAMBOO_SLAB);
+		dryingRackBlock(getter, "cherry", TFBlocks.CHERRY_DRYING_RACK, Blocks.CHERRY_SLAB);
+		dryingRackBlock(getter, "pale_oak", TFBlocks.PALE_OAK_DRYING_RACK, Blocks.PALE_OAK_SLAB);
+
 		chestBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
 		chestBlock(getter, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_TRAPPED_CHEST, TFBlocks.CANOPY_PLANKS);
 		chestBlock(getter, "mangrove", TFBlocks.MANGROVE_CHEST, TFBlocks.MANGROVE_TRAPPED_CHEST, TFBlocks.MANGROVE_PLANKS);
@@ -799,6 +828,108 @@ public class CraftingGenerator extends CraftingDataHelper {
 		buildBoats(getter, TFItems.TRANSFORMATION_BOAT, TFItems.TRANSFORMATION_CHEST_BOAT, TFBlocks.TRANSFORMATION_PLANKS);
 		buildBoats(getter, TFItems.MINING_BOAT, TFItems.MINING_CHEST_BOAT, TFBlocks.MINING_PLANKS);
 		buildBoats(getter, TFItems.SORTING_BOAT, TFItems.SORTING_CHEST_BOAT, TFBlocks.SORTING_PLANKS);
+	}
+
+	private void dryingRecipes(HolderGetter<Item> getter) {
+		DryingRecipeBuilder.drying(getter, Tags.Items.FOODS_COOKED_MEAT, Items.LEATHER, 8.5F)
+			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))
+			.save(this.output, this.createKey("drying/cooked_meat_to_leather"));
+
+		DryingRecipeBuilder.drying(getter, ItemTags.SAPLINGS, Items.DEAD_BUSH, 6)
+			.unlockedBy("has_sapling", has(ItemTags.SAPLINGS))
+			.save(this.output, this.createKey("drying/sapling_to_dead_bush"));
+
+		DryingRecipeBuilder.drying(Items.MUD, Items.CLAY, 6)
+			.unlockedBy("has_mud", has(Items.MUD))
+			.save(this.output, this.createKey("drying/mud_to_clay"));
+
+		DryingRecipeBuilder.drying(Items.WET_SPONGE, Items.SPONGE, 2)
+			.unlockedBy("has_wet_sponge", has(Items.WET_SPONGE))
+			.save(this.output, this.createKey("drying/sponge"));
+
+		DryingRecipeBuilder.drying(Items.KELP, Items.DRIED_KELP, 3)
+			.unlockedBy("has_kelp", has(Items.KELP))
+			.save(this.output, this.createKey("drying/kelp"));
+
+		DryingRecipeBuilder.drying(Items.ROTTEN_FLESH, TFItems.MONSTER_JERKY)
+			.unlockedBy("has_meat", has(Items.ROTTEN_FLESH))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.BEEF, TFItems.BEEF_JERKY)
+			.unlockedBy("has_meat", has(Items.BEEF))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.CHICKEN, TFItems.CHICKEN_JERKY)
+			.unlockedBy("has_meat", has(Items.CHICKEN))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.PORKCHOP, TFItems.PORK_JERKY)
+			.unlockedBy("has_meat", has(Items.PORKCHOP))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.MUTTON, TFItems.MUTTON_JERKY)
+			.unlockedBy("has_meat", has(Items.MUTTON))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.RABBIT, TFItems.RABBIT_JERKY)
+			.unlockedBy("has_meat", has(Items.RABBIT))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.COD, TFItems.COD_JERKY)
+			.unlockedBy("has_meat", has(Items.COD))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.SALMON, TFItems.SALMON_JERKY)
+			.unlockedBy("has_meat", has(Items.SALMON))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.TROPICAL_FISH, TFItems.TROPICAL_FISH_JERKY)
+			.unlockedBy("has_meat", has(Items.TROPICAL_FISH))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.PUFFERFISH, TFItems.FUGU_JERKY)
+			.unlockedBy("has_meat", has(Items.PUFFERFISH))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(TFItems.RAW_VENISON, TFItems.VENISON_JERKY)
+			.unlockedBy("has_meat", has(TFItems.RAW_VENISON))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(TFItems.RAW_MEEF, TFItems.MEEF_JERKY)
+			.unlockedBy("has_meat", has(TFItems.RAW_MEEF))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(Items.SLIME_BALL, TFItems.GELATINOUS_SLIME_DROP)
+			.unlockedBy("has_slime_ball", has(Items.SLIME_BALL))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(TFItems.MAZE_SLIME_BALL, TFItems.GELATINOUS_MAZE_SLIME_DROP)
+			.unlockedBy("has_maze_slime_ball", has(TFItems.MAZE_SLIME_BALL))
+			.save(this.output);
+
+		DryingRecipeBuilder.drying(TFItems.TREATED_LEATHER, TFItems.TANNED_LEATHER)
+			.unlockedBy("has_treated", has(TFItems.TREATED_LEATHER))
+			.save(this.output);
+
+		this.dryingRackCoralRecipes();
+
+		DryingRecipeBuilder.drying(Items.BREAD, TFItems.STALE_BREAD).save(this.output);
+	}
+
+	private void dryingRackCoralRecipes() {
+		for (String species : this.coralSpecies) {
+			for (String type : this.coralTypes) {
+				this.coralDrying(species + "_coral" + type);
+			}
+		}
+	}
+
+	private void coralDrying(String coral) {
+		Identifier live = Identifier.withDefaultNamespace(coral);
+		Item liveItem = BuiltInRegistries.ITEM.getValue(live);
+		DryingRecipeBuilder.drying(liveItem, BuiltInRegistries.ITEM.getValue(live.withPrefix("dead_")), 1 / 30F)
+			.unlockedBy("has_coral", has(liveItem))
+			.save(this.output);
 	}
 
 	private void nagastoneRecipes(HolderGetter<Item> getter) {

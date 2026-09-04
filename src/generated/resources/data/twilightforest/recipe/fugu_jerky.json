@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": "minecraft:pufferfish",
+  "result": {
+    "id": "twilightforest:fugu_jerky"
+  },
+  "show_notification": false
+}

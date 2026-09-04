@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 40,
+  "input": "minecraft:fire_coral_fan",
+  "result": {
+    "id": "minecraft:dead_fire_coral_fan"
+  },
+  "show_notification": false
+}

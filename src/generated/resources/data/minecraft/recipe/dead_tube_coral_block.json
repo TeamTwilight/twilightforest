@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 40,
+  "input": "minecraft:tube_coral_block",
+  "result": {
+    "id": "minecraft:dead_tube_coral_block"
+  },
+  "show_notification": false
+}
