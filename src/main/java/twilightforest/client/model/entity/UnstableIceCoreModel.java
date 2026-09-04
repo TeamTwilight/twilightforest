@@ -68,11 +68,11 @@ public class UnstableIceCoreModel extends EntityModel<LivingEntityRenderState> {
 			this.spikes[i].yRot += i * 2.5F;
 			this.spikes[i].zRot += i * 3.0F;
 
-			this.spikes[i].x = Mth.cos((state.ageInTicks) / i) * 3.0F;
-			this.spikes[i].y = 5.0F + Mth.sin((state.ageInTicks) / i) * 3.0F;
-			this.spikes[i].z = Mth.sin((state.ageInTicks) / i) * 3.0F;
+			this.spikes[i].x = Mth.cos((state.ageInTicks) / (i + 1)) * 3.0F;
+			this.spikes[i].y = 5.0F + Mth.sin((state.ageInTicks) / (i + 1)) * 3.0F;
+			this.spikes[i].z = Mth.sin((state.ageInTicks) / (i + 1)) * 3.0F;
 
-			this.cubes[i].y = 10.0F + Mth.sin((i + state.ageInTicks) / i) * 3.0F;
+			this.cubes[i].y = 10.0F + Mth.sin((i + state.ageInTicks) / (i + 1)) * 3.0F;
 		}
 	}
 }
