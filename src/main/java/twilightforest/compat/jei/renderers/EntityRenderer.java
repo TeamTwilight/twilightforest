@@ -2,10 +2,13 @@ package twilightforest.compat.jei.renderers;
 
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
-import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.Nullable;
 import twilightforest.compat.jei.FakeEntityType;
 import twilightforest.client.EntityRenderingUtil;
 
@@ -30,20 +33,19 @@ public class EntityRenderer implements IIngredientRenderer<FakeEntityType> {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, @Nullable FakeEntityType type) {
-		if (type != null) {
-			EntityRenderingUtil.renderEntity(graphics, type.type(), this.size);
-		}
+	public void render(GuiGraphicsExtractor graphics, FakeEntityType type) {
+		Matrix3x2fStack pose = graphics.pose();
+		EntityRenderingUtil.renderEntity(graphics, type.type(), this.size, (int) pose.m20(), (int) pose.m21());
 	}
 
-	@SuppressWarnings("removal") //we are absolutely forced to use this
+	@SuppressWarnings("removal") //the interface still declares this one abstract
 	@Override
 	public List<Component> getTooltip(FakeEntityType type, TooltipFlag flag) {
 		return List.of();
 	}
 
 	@Override
-	public void getTooltip(ITooltipBuilder tooltip, FakeEntityType type, TooltipFlag flag) {
+	public void getTooltip(ITooltipBuilder tooltip, FakeEntityType type, Item.TooltipContext context, @Nullable Player player, TooltipFlag flag) {
 		tooltip.addAll(EntityRenderingUtil.getMobTooltip(type.type()));
 	}
 }

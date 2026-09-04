@@ -7,17 +7,19 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeMap;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
+import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
+import twilightforest.compat.RecipeViewerRecipes;
 import twilightforest.compat.jei.categories.*;
 import twilightforest.compat.jei.extension.*;
 import twilightforest.compat.jei.renderers.EntityHelper;
@@ -40,9 +42,9 @@ import twilightforest.item.recipe.*;
 import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @JeiPlugin
 @SuppressWarnings("unused")
@@ -51,6 +53,8 @@ public class JEICompat implements IModPlugin {
 	public static final IIngredientType<FakeEntityType> ENTITY_TYPE = () -> FakeEntityType.class;
 	public static final IIngredientType<FakeItemEntity> FAKE_ITEM_ENTITY = () -> FakeItemEntity.class;
 
+	@Autowired(dist = Dist.CLIENT)
+	private static RecipeViewerRecipes recipeCache;
 
 	public static boolean isEmiInstalled() {
 		//Skip handling if both EMI and JEI are loaded as otherwise some things behave strangely
@@ -66,15 +70,15 @@ public class JEICompat implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		if (isEmiInstalled()) return;
 		if (!TFConfig.disableEntireTable) {
-			registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), RecipeTypes.CRAFTING);
-			registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), JEIUncraftingCategory.UNCRAFTING);
+			registration.addCraftingStation(RecipeTypes.CRAFTING, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
+			registration.addCraftingStation(JEIUncraftingCategory.UNCRAFTING, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
 		}
-		registration.addRecipeCatalyst(new ItemStack(TFItems.TRANSFORMATION_POWDER.get()), TransformationPowderCategory.TRANSFORMATION);
-		registration.addRecipeCatalyst(new ItemStack(TFItems.EXANIMATE_ESSENCE.get()), OminousFireCategory.OMINOUS_FIRE);
-		registration.addRecipeCatalyst(new ItemStack(TFItems.CRUMBLE_HORN.get()), CrumbleHornCategory.CRUMBLE_HORN);
+		registration.addCraftingStation(TransformationPowderCategory.TRANSFORMATION, new ItemStack(TFItems.TRANSFORMATION_POWDER.get()));
+		registration.addCraftingStation(OminousFireCategory.OMINOUS_FIRE, new ItemStack(TFItems.EXANIMATE_ESSENCE.get()));
+		registration.addCraftingStation(CrumbleHornCategory.CRUMBLE_HORN, new ItemStack(TFItems.CRUMBLE_HORN.get()));
 
 		for (var block : BuiltInRegistries.BLOCK.getTagOrEmpty(TFBlockTags.DRYING_RACKS)) {
-			registration.addRecipeCatalyst(new ItemStack(block.value()), DryingCategory.DRYING);
+			registration.addCraftingStation(DryingCategory.DRYING, new ItemStack(block.value()));
 		}
 	}
 
@@ -105,7 +109,6 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipeCategories(new OminousFireCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new CrumbleHornCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new DryingCategory(registration.getJeiHelpers().getGuiHelper()));
-		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 	}
 
 	@Override
@@ -121,18 +124,17 @@ public class JEICompat implements IModPlugin {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void registerRecipes(IRecipeRegistration registration) {
 		if (isEmiInstalled()) return;
-		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
+		RecipeMap recipes = recipeCache.getRecipeMap();
+		ContextMap context = registration.getContextMap();
 		if (!TFConfig.disableEntireTable) {
-			List<RecipeHolder<? extends CraftingRecipe>> recipes = RecipeViewerConstants.getAllUncraftingRecipes(manager);
-			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, (List<CraftingRecipe>) recipes.stream().map(RecipeHolder::value).toList());
+			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, RecipeViewerConstants.getAllUncraftingRecipes(recipes, context));
 		}
 		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, RecipeViewerConstants.getTransformationPowderRecipes().stream().map(info -> new TransformationRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()), info.reversible())).toList());
 		registration.addRecipes(OminousFireCategory.OMINOUS_FIRE, RecipeViewerConstants.getOminousFireRecipes().stream().map(info -> new OminousFireRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()))).toList());
 		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, RecipeViewerConstants.getCrumbleHornRecipes().stream().map(info -> new CrumbleRecipe(info.getFirst(), info.getSecond())).toList());
-		registration.addRecipes(DryingCategory.DRYING, manager.getAllRecipesFor(TFRecipes.DRYING_RECIPE.get()).stream().filter(holder -> !holder.value().getResult().is(TFItems.STALE_BREAD)).map(RecipeHolder::value).toList());
+		registration.addRecipes(DryingCategory.DRYING, recipes.byType(TFRecipes.DRYING_RECIPE.get()).stream().filter(holder -> !holder.value().getResult().is(TFItems.STALE_BREAD)).map(RecipeHolder::value).toList());
 		registration.addRecipes(RecipeTypes.GRINDSTONE, GrindstoneTravellersRecipesGetter.getRecipes());
 	}
 

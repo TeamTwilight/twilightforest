@@ -7,21 +7,24 @@ import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategor
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import twilightforest.init.TFBlocks;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.CasketRepairRecipe;
-import twilightforest.item.recipe.ScepterRepairRecipe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CasketRepairExtension implements ICraftingCategoryExtension<CasketRepairRecipe> {
 
 	@Override
+	public List<SlotDisplay> getIngredients(RecipeHolder<CasketRepairRecipe> recipeHolder) {
+		return List.of();
+	}
+
+	@Override
 	public void setRecipe(RecipeHolder<CasketRepairRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
-		var casket = new ItemStack(TFItems.KEEPSAKE_CASKET, 1, DataComponentPatch.builder().set(TFDataComponents.CASKET_DAMAGE.get(), 2).build());
+		ItemStack casket = new ItemStack(TFItems.KEEPSAKE_CASKET, 1, DataComponentPatch.builder().set(TFDataComponents.CASKET_DAMAGE.get(), 2).build());
 		List<List<ItemStack>> inputs = new ArrayList<>();
 		inputs.add(List.of(casket));
 		inputs.add(List.of(TFItems.CHARM_OF_KEEPING_3.toStack()));
@@ -29,7 +32,7 @@ public class CasketRepairExtension implements ICraftingCategoryExtension<CasketR
 		craftingGridHelper.createAndSetInputs(builder, inputs, 0, 0);
 		builder.setShapeless();
 
-		var repairedScepter = new ItemStack(TFItems.KEEPSAKE_CASKET, 1, DataComponentPatch.builder().set(TFDataComponents.CASKET_DAMAGE.get(), 1).build());
-		craftingGridHelper.createAndSetOutputs(builder, List.of(repairedScepter));
+		ItemStack repairedCasket = new ItemStack(TFItems.KEEPSAKE_CASKET, 1, DataComponentPatch.builder().set(TFDataComponents.CASKET_DAMAGE.get(), 1).build());
+		craftingGridHelper.createAndSetOutputs(builder, List.of(repairedCasket));
 	}
 }

@@ -7,13 +7,12 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.jei.JEICompat;
@@ -22,7 +21,7 @@ import twilightforest.compat.jei.util.TransformationRecipe;
 import twilightforest.init.TFItems;
 
 public class TransformationPowderCategory implements IRecipeCategory<TransformationRecipe> {
-	public static final RecipeType<TransformationRecipe> TRANSFORMATION = RecipeType.create(TwilightForestMod.ID, "transformation_powder", TransformationRecipe.class);
+	public static final IRecipeType<TransformationRecipe> TRANSFORMATION = IRecipeType.create(TwilightForestMod.ID, "transformation_powder", TransformationRecipe.class);
 	private final IDrawable icon;
 	private final IDrawable arrow;
 	private final IDrawable slot;
@@ -39,7 +38,7 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 	}
 
 	@Override
-	public RecipeType<TransformationRecipe> getRecipeType() {
+	public IRecipeType<TransformationRecipe> getRecipeType() {
 		return TRANSFORMATION;
 	}
 
@@ -64,7 +63,7 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 	}
 
 	@Override
-	public void draw(TransformationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+	public void draw(TransformationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor graphics, double mouseX, double mouseY) {
 		if (recipe.isReversible()) {
 			this.doubleArrow.draw(graphics, 46, 7);
 		} else {
@@ -78,21 +77,15 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 	public void setRecipe(IRecipeLayoutBuilder builder, TransformationRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 8, 11)
 			.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
-			.addIngredient(JEICompat.ENTITY_TYPE, recipe.input());
+			.add(JEICompat.ENTITY_TYPE, recipe.input());
 
-		SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(recipe.input().type());
-		if (inputEgg != null) {
-			//make it so hovering over the entity shows its name
-			builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStack(new ItemStack(inputEgg));
-		}
+		//make it so hovering over the entity shows its name
+		SpawnEggItem.byId(recipe.input().type()).ifPresent(egg -> builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).add(new ItemStack(egg)));
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 11)
 			.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
-			.addIngredient(JEICompat.ENTITY_TYPE, recipe.output());
+			.add(JEICompat.ENTITY_TYPE, recipe.output());
 
-		SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(recipe.output().type());
-		if (outputEgg != null) {
-			//make it so hovering over the entity shows its name
-			builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(new ItemStack(outputEgg));
-		}
+		//make it so hovering over the entity shows its name
+		SpawnEggItem.byId(recipe.output().type()).ifPresent(egg -> builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).add(new ItemStack(egg)));
 	}
 }

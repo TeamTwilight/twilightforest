@@ -1,18 +1,19 @@
 package twilightforest.compat.jei.renderers;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4fStack;
+import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.jei.FakeItemEntity;
 import twilightforest.client.EntityRenderingUtil;
@@ -41,31 +42,27 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, @Nullable FakeItemEntity item) {
+	public void render(GuiGraphicsExtractor graphics, FakeItemEntity item) {
 		Level level = Minecraft.getInstance().level;
-		if (item != null && level != null) {
+		if (level != null) {
 			try {
-				Matrix4fStack modelView = RenderSystem.getModelViewStack();
-				modelView.pushMatrix();
-				modelView.mul(graphics.pose().last().pose());
-				EntityRenderingUtil.renderItemEntity(graphics, item.stack(), level, this.bobOffs);
-				modelView.popMatrix();
-				RenderSystem.applyModelViewMatrix();
+				Matrix3x2fStack pose = graphics.pose();
+				EntityRenderingUtil.renderItemEntity(graphics, item.stack(), (int) pose.m20(), (int) pose.m21(), this.bobOffs);
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.error("Error drawing item in JEI!", e);
 			}
 		}
 	}
 
-	@SuppressWarnings("removal") //we are absolutely forced to use this
+	@SuppressWarnings("removal") //the interface still declares this one abstract
 	@Override
 	public List<Component> getTooltip(FakeItemEntity item, TooltipFlag flag) {
 		return List.of();
 	}
 
 	@Override
-	public void getTooltip(ITooltipBuilder tooltip, FakeItemEntity item, TooltipFlag flag) {
-		tooltip.add(item.stack().getItem().getDescription());
+	public void getTooltip(ITooltipBuilder tooltip, FakeItemEntity item, Item.TooltipContext context, @Nullable Player player, TooltipFlag flag) {
+		tooltip.add(item.stack().getHoverName());
 		if (flag.isAdvanced()) {
 			tooltip.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.stack().getItem())).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}

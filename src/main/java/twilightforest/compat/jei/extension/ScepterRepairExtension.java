@@ -6,27 +6,33 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import twilightforest.item.recipe.ScepterRepairRecipe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ScepterRepairExtension implements ICraftingCategoryExtension<ScepterRepairRecipe> {
 
 	@Override
+	public List<SlotDisplay> getIngredients(RecipeHolder<ScepterRepairRecipe> recipeHolder) {
+		return List.of();
+	}
+
+	@Override
 	public void setRecipe(RecipeHolder<ScepterRepairRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
-		var scepter = new ItemStack(recipeHolder.value().getScepter());
+		ScepterRepairRecipe recipe = recipeHolder.value();
+		ItemStack scepter = new ItemStack(recipe.getScepter());
 		scepter.setDamageValue(scepter.getMaxDamage());
 		List<List<ItemStack>> inputs = new ArrayList<>();
 		inputs.add(List.of(scepter));
-		inputs.addAll(recipeHolder.value().getRepairItems().stream().map(ingredient -> Arrays.stream(ingredient.getItems()).toList()).toList());
+		inputs.addAll(recipe.getRepairItems().stream().map(ingredient -> ingredient.items().map(ItemStack::new).toList()).toList());
 
 		craftingGridHelper.createAndSetInputs(builder, inputs, 0, 0);
 		builder.setShapeless();
 
-		var repairedScepter = new ItemStack(recipeHolder.value().getScepter());
-		repairedScepter.setDamageValue(scepter.getMaxDamage() - recipeHolder.value().getRepairDurability());
+		ItemStack repairedScepter = new ItemStack(recipe.getScepter());
+		repairedScepter.setDamageValue(scepter.getMaxDamage() - recipe.getRepairDurability());
 		craftingGridHelper.createAndSetOutputs(builder, List.of(repairedScepter));
 	}
 }

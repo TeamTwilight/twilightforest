@@ -7,10 +7,11 @@ import net.minecraft.world.item.ItemStack;
 import twilightforest.compat.common.DefaultModifiedTravellersGearGetter;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class GrindstoneTravellersRecipesGetter {
 	public static List<IJeiGrindstoneRecipe> getRecipes() {
-		return DefaultModifiedTravellersGearGetter.getDefaultModifiedTravellersGear(Minecraft.getInstance().level.registryAccess())
+		return DefaultModifiedTravellersGearGetter.getDefaultModifiedTravellersGear(Objects.requireNonNull(Minecraft.getInstance().level).registryAccess())
 			.stream()
 			.map(GrindstoneTravellersRecipesGetter::getGrindstoneRecipe)
 			.toList();

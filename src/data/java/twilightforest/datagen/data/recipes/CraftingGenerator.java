@@ -502,12 +502,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 		charmRecipe(getter, "charm_of_keeping_3", TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_KEEPING_2);
 		charmRecipe(getter, "charm_of_life_2", TFItems.CHARM_OF_LIFE_2, TFItems.CHARM_OF_LIFE_1);
 
-		SpecialRecipeBuilder.special(MoonwormQueenRepairRecipe::new).save(this.output, this.createKey("moonworm_queen_repair_recipe"));
-		SpecialRecipeBuilder.special(MagicMapCloningRecipe::new).save(this.output, this.createKey("magic_map_cloning_recipe"));
-		SpecialRecipeBuilder.special(MazeMapCloningRecipe::new).save(this.output, this.createKey("maze_map_cloning_recipe"));
-		SpecialRecipeBuilder.special(EmperorsClothRecipe::new).save(this.output, this.createKey("emperors_cloth_recipe"));
-		SpecialRecipeBuilder.special(CasketRepairRecipe::new).save(this.output, this.createKey("casket_repair_recipe"));
-		SpecialRecipeBuilder.special(EssenceRepairRecipe::new).save(this.output, this.createKey("essence_repair_recipe"));
+		SpecialRecipeBuilder.special(() -> MoonwormQueenRepairRecipe.INSTANCE).save(this.output, this.createKey("moonworm_queen_repair_recipe"));
+		SpecialRecipeBuilder.special(() -> MagicMapCloningRecipe.INSTANCE).save(this.output, this.createKey("magic_map_cloning_recipe"));
+		SpecialRecipeBuilder.special(() -> MazeMapCloningRecipe.INSTANCE).save(this.output, this.createKey("maze_map_cloning_recipe"));
+		SpecialRecipeBuilder.special(() -> EmperorsClothRecipe.INSTANCE).save(this.output, this.createKey("emperors_cloth_recipe"));
+		SpecialRecipeBuilder.special(() -> CasketRepairRecipe.INSTANCE).save(this.output, this.createKey("casket_repair_recipe"));
+		SpecialRecipeBuilder.special(() -> EssenceRepairRecipe.INSTANCE).save(this.output, this.createKey("essence_repair_recipe"));
 
 		NoSmithingTemplateRecipeBuilder
 			.noTemplate(Ingredient.of(getter.getOrThrow(Tags.Items.ARMORS)), Ingredient.of(TFItems.EMPERORS_CLOTH), RecipeCategory.MISC)

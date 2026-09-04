@@ -1,24 +1,18 @@
 package twilightforest.compat;
 
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import mezz.jei.library.plugins.vanilla.crafting.JeiShapedRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataMaps;
@@ -28,6 +22,7 @@ import twilightforest.inventory.UncraftingMenu;
 import twilightforest.util.datamaps.EntityTransformation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,21 +42,53 @@ public class RecipeViewerConstants {
 		Util.make(new ItemStack(TFItems.MOONWORM_QUEEN.get()), stack -> stack.setDamageValue(64)),
 		new ItemStack(TFItems.MOONWORM_QUEEN.get()));
 
-	public static List<RecipeHolder<? extends CraftingRecipe>> getAllUncraftingRecipes(RecipeManager manager) {
+	public static List<RecipeHolder<CraftingRecipe>> getAllUncraftingRecipes(RecipeMap recipes, ContextMap context) {
 		if (!TFConfig.disableUncraftingOnly) { //we only do this if uncrafting is not disabled
-			List<RecipeHolder<? extends CraftingRecipe>> recipes = new ArrayList<>(manager.getAllRecipesFor(RecipeType.CRAFTING));
-			recipes = recipes.stream().filter(recipe ->
-					!recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).isEmpty() && //get rid of empty items
-						!recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).is(TFItemTags.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
-						TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) && //remove disabled recipes
-						TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) //remove blacklisted mod ids
-				.collect(Collectors.toList());
-			recipes.removeIf(recipe -> (recipe.value() instanceof ShapelessRecipe && !TFConfig.allowShapelessUncrafting));
-			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-			return recipes;
+			List<RecipeHolder<CraftingRecipe>> filtered = recipes.byType(RecipeType.CRAFTING).stream()
+				.filter(recipe -> {
+					ItemStack result = getDisplayResult(recipe.value(), context);
+					return !result.isEmpty() && //get rid of empty items
+						!result.is(TFItemTags.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
+						TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().identifier().toString()) && //remove disabled recipes
+						TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().identifier().getNamespace()); //remove blacklisted mod ids
+				})
+				.collect(Collectors.toCollection(ArrayList::new));
+			filtered.removeIf(recipe -> (recipe.value() instanceof ShapelessRecipe && !TFConfig.allowShapelessUncrafting));
+			filtered.addAll(getUncraftingOnly(recipes));
+			return filtered;
 		} else {
-			return new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+			return getUncraftingOnly(recipes);
 		}
+	}
+
+	private static List<RecipeHolder<CraftingRecipe>> getUncraftingOnly(RecipeMap recipes) {
+		@SuppressWarnings("unchecked") // Yuck
+		List<RecipeHolder<CraftingRecipe>> uncrafting = new ArrayList<>((Collection<RecipeHolder<CraftingRecipe>>) (Collection<?>) recipes.byType(TFRecipes.UNCRAFTING_RECIPE.get()));
+		return uncrafting;
+	}
+
+	public static ItemStack getDisplayResult(Recipe<?> recipe, ContextMap context) {
+		List<RecipeDisplay> displays = recipe.display();
+		if (displays.isEmpty()) {
+			return ItemStack.EMPTY;
+		}
+		return displays.getFirst().result().resolveForFirstStack(context);
+	}
+
+	public static int getDisplayWidth(Recipe<?> recipe) {
+		List<RecipeDisplay> displays = recipe.display();
+		if (!displays.isEmpty() && displays.getFirst() instanceof ShapedCraftingRecipeDisplay shaped) {
+			return shaped.width();
+		}
+		return 0;
+	}
+
+	public static int getDisplayHeight(Recipe<?> recipe) {
+		List<RecipeDisplay> displays = recipe.display();
+		if (!displays.isEmpty() && displays.getFirst() instanceof ShapedCraftingRecipeDisplay shaped) {
+			return shaped.height();
+		}
+		return 0;
 	}
 
 	//all recipe viewers run this once when initializing recipes
@@ -168,23 +195,8 @@ public class RecipeViewerConstants {
 		return time;
 	}
 
-	public static void renderFlatBlock(PoseStack stack, BlockState state, Vec3 location, float scale) {
-		Minecraft minecraft = Minecraft.getInstance();
-		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		stack.pushPose();
-		Lighting.setupForFlatItems();
-		stack.translate(location.x(), location.y(), location.z());
-		stack.scale(scale, -scale, scale);
-		minecraft.getBlockRenderer().renderSingleBlock(state, stack, bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
-		stack.popPose();
-		bufferSource.endBatch();
-		Lighting.setupFor3DItems();
-	}
-
 	//copy of JEI's CraftingGridHelper.getCraftingIndex
-	public static int getCraftingIndex(CraftingRecipe recipe, int i) {
-		int width = getRecipeWidth(recipe);
-		int height = getRecipeHeight(recipe);
+	public static int getCraftingIndex(int width, int height, int i) {
 		int index;
 		if (width == 1) {
 			if (height == 3) {
@@ -210,26 +222,6 @@ public class RecipeViewerConstants {
 			index = i;
 		}
 		return index;
-	}
-
-	public static int getRecipeWidth(CraftingRecipe recipe) {
-		if (recipe instanceof ShapedRecipe shapedRecipe) {
-			return shapedRecipe.getWidth();
-		}
-		if (recipe instanceof JeiShapedRecipe shapedRecipe) {
-			return shapedRecipe.getWidth();
-		}
-		return 0;
-	}
-
-	public static int getRecipeHeight(CraftingRecipe recipe) {
-		if (recipe instanceof ShapedRecipe shapedRecipe) {
-			return shapedRecipe.getHeight();
-		}
-		if (recipe instanceof JeiShapedRecipe shapedRecipe) {
-			return shapedRecipe.getHeight();
-		}
-		return 0;
 	}
 
 	public record TransformationPowderInfo(EntityType<?> input, EntityType<?> output, boolean reversible) {

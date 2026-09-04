@@ -8,6 +8,7 @@ import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
@@ -16,6 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TravellersVestGlovesMergeExtension implements ICraftingCategoryExtension<TravellersVestGlovesMergeRecipe> {
+
+	@Override
+	public List<SlotDisplay> getIngredients(RecipeHolder<TravellersVestGlovesMergeRecipe> recipeHolder) {
+		return List.of();
+	}
 
 	@Override
 	public void setRecipe(RecipeHolder<TravellersVestGlovesMergeRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
