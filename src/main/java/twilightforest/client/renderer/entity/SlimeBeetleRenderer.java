@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -20,8 +21,8 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, LivingEntityRe
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("slimebeetle.png");
 
 	public SlimeBeetleRenderer(EntityRendererProvider.Context context) {
-		super(context, new SlimeBeetleModel(context.bakeLayer(TFModelLayers.SLIME_BEETLE)), 0.6F);
-		this.addLayer(new OuterTailLayer(this));
+		super(context, new SlimeBeetleModel(context.bakeLayer(TFModelLayers.SLIME_BEETLE), false), 0.6F);
+		this.addLayer(new OuterTailLayer(this, context.getModelSet()));
 	}
 
 	@Override
@@ -35,16 +36,19 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, LivingEntityRe
 	}
 
 	public static class OuterTailLayer extends RenderLayer<LivingEntityRenderState, SlimeBeetleModel> {
-		public OuterTailLayer(RenderLayerParent<LivingEntityRenderState, SlimeBeetleModel> renderer) {
+
+		private final SlimeBeetleModel model;
+
+		public OuterTailLayer(RenderLayerParent<LivingEntityRenderState, SlimeBeetleModel> renderer, EntityModelSet modelSet) {
 			super(renderer);
+			this.model = new SlimeBeetleModel(modelSet.bakeLayer(TFModelLayers.SLIME_BEETLE_TAIL), true);
 		}
 
-		//TODO
 		@Override
 		public void submit(PoseStack stack, SubmitNodeCollector collector, int light, LivingEntityRenderState state, float yRot, float xRot) {
 			if (!state.isInvisible) {
-				this.getParentModel().setupAnim(state);
-				collector.submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucent(TEXTURE), light, LivingEntityRenderer.getOverlayCoords(state, 0), state.outlineColor, null);
+				collector.order(1)
+					.submitModel(this.model, state, stack, RenderTypes.entityTranslucent(TEXTURE), light, LivingEntityRenderer.getOverlayCoords(state, 0), state.outlineColor, null);
 			}
 		}
 	}

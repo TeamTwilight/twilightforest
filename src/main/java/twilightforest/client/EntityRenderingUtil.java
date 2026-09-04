@@ -26,7 +26,7 @@ import java.util.*;
 
 public class EntityRenderingUtil {
 
-	public static void renderEntity(GuiGraphicsExtractor graphics, EntityType<?> type, int size) {
+	public static void renderEntity(GuiGraphicsExtractor graphics, EntityType<?> type, int size, int x, int y) {
 		Entity entity = EntityCache.fetchEntity(type);
 		if (entity instanceof LivingEntity living) {
 			// scale down large mobs, but don't scale up small ones
@@ -38,7 +38,7 @@ public class EntityRenderingUtil {
 			}
 			// catch exceptions drawing the entity to be safe, any caught exceptions blacklist the entity
 			try {
-				renderTheEntity(graphics, size / 2, size - 2, scale, living);
+				renderTheEntity(graphics, x + size / 2, y + size - 2, scale, living);
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 				EntityCache.addEntityToBlacklist(type);

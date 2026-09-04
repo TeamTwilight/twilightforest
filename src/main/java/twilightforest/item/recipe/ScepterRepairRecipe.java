@@ -116,6 +116,10 @@ public class ScepterRepairRecipe extends CustomRecipe {
 		return this.durability;
 	}
 
+	public List<Ingredient> getRepairItems() {
+		return this.repairItems;
+	}
+
 	@Override
 	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return SERIALIZER;

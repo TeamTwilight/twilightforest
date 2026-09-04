@@ -382,6 +382,19 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 			.save(this.output, locWood(name + "_banister"));
 	}
 
+	protected final void dryingRackBlock(HolderGetter<Item> getter, String name, DeferredBlock<? extends Block> result, DeferredBlock<? extends Block> material) {
+		this.dryingRackBlock(getter, name, result, material.get());
+	}
+
+	protected final void dryingRackBlock(HolderGetter<Item> getter, String name, DeferredBlock<? extends Block> result, Block material) {
+		ShapedRecipeBuilder.shaped(getter, RecipeCategory.DECORATIONS, result)
+			.pattern("---")
+			.define('-', material)
+			.unlockedBy("has_item", has(material))
+			.group("drying_rack")
+			.save(this.output, locWood(name + "_drying_rack"));
+	}
+
 	protected final void chestBlock(HolderGetter<Item> getter, String name, DeferredBlock<? extends ChestBlock> chest, DeferredBlock<? extends TFTrappedChestBlock> trapped, DeferredBlock<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.DECORATIONS, chest)
 			.pattern("###")

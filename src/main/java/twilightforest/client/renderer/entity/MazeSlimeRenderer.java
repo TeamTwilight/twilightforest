@@ -71,15 +71,15 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeRenderState, 
 		}
 
 		@Override
-		public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, SlimeRenderState renderState, float v, float v1) {
-			boolean flag = renderState.appearsGlowing() && renderState.isInvisible;
-			if (!renderState.isInvisible || flag) {
+		public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, SlimeRenderState state, float yRot, float xRot) {
+			boolean flag = state.appearsGlowing() && state.isInvisible;
+			if (!state.isInvisible || flag) {
 				RenderType renderType;
 				if (flag) renderType = RenderTypes.outline(TEXTURE);
 				else renderType = RenderTypes.entityTranslucent(TEXTURE);
 
-				this.model.setupAnim(renderState);
-				submitNodeCollector.submitModel(this.model, renderState, poseStack, renderType, renderState.lightCoords, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), renderState.outlineColor, null);
+				submitNodeCollector.order(1)
+					.submitModel(this.model, state, poseStack, renderType, lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), state.outlineColor, null);
 			}
 		}
 	}

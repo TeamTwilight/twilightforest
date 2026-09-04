@@ -359,7 +359,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	}
 
 	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix, int color) {
-		this.generateDynamicTrimmableItem(armor, this.createFlatItemModel(armor, ModelTemplates.FLAT_ITEM), slotTrimPrefix, color);
+		this.generateDynamicTrimmableItem(armor, this.twoLayerItem(armor, "_0", ModelTemplates.TWO_LAYERED_ITEM), slotTrimPrefix, color);
 	}
 
 	public void generateBow(Item bowItem, boolean twoLayered) {

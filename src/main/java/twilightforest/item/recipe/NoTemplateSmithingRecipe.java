@@ -12,12 +12,11 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
-public class NoTemplateSmithingRecipe implements SmithingRecipe {
+public class NoTemplateSmithingRecipe extends SimpleSmithingRecipe {
 	private static final Codec<List<TypedDataComponent<?>>> DATA_COMPONENT_CODEC = DataComponentMap.CODEC.xmap(typedDataComponents -> typedDataComponents.stream().toList(), typedDataComponents -> {
 		DataComponentMap.Builder builder = DataComponentMap.builder();
 
@@ -28,26 +27,28 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	});
 
 	public static final MapCodec<NoTemplateSmithingRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+		Recipe.CommonInfo.MAP_CODEC.forGetter(o -> o.commonInfo),
 		Ingredient.CODEC.fieldOf("base").forGetter(o -> o.base),
 		Ingredient.CODEC.fieldOf("addition").forGetter(o -> o.addition),
 		DATA_COMPONENT_CODEC.optionalFieldOf("additional_data", List.of()).forGetter(o -> o.additionalData)
 	).apply(i, NoTemplateSmithingRecipe::new));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, NoTemplateSmithingRecipe> STREAM_CODEC = StreamCodec.composite(
+		Recipe.CommonInfo.STREAM_CODEC, o -> o.commonInfo,
 		Ingredient.CONTENTS_STREAM_CODEC, o -> o.base,
-		Ingredient.CONTENTS_STREAM_CODEC, o -> o.base,
+		Ingredient.CONTENTS_STREAM_CODEC, o -> o.addition,
 		TypedDataComponent.STREAM_CODEC.apply(ByteBufCodecs.list()), o -> o.additionalData,
 		NoTemplateSmithingRecipe::new
 	);
 
 	public static final RecipeSerializer<NoTemplateSmithingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-	private @Nullable PlacementInfo placementInfo;
 	private final Ingredient base;
 	private final Ingredient addition;
 	private final List<TypedDataComponent<?>> additionalData;
 
-	public NoTemplateSmithingRecipe(Ingredient base, Ingredient addition, List<TypedDataComponent<?>> additionalData) {
+	public NoTemplateSmithingRecipe(Recipe.CommonInfo commonInfo, Ingredient base, Ingredient addition, List<TypedDataComponent<?>> additionalData) {
+		super(commonInfo);
 		this.base = base;
 		this.addition = addition;
 		this.additionalData = additionalData;
@@ -58,29 +59,18 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	 */
 	@Override
 	public boolean matches(SmithingRecipeInput input, Level level) {
-		if (!input.getItem(0).isEmpty() || !this.base.test(input.getItem(1)) || !this.addition.test(input.getItem(2))) return false;
-		ItemStack armor = input.getItem(1);
+		if (!Ingredient.testOptionalIngredient(this.templateIngredient(), input.template()) || !this.base.test(input.base()) || !this.addition.test(input.addition())) return false;
 
 		for (TypedDataComponent<?> data : this.additionalData)
-			if (armor.has(data.type()))
+			if (input.base().has(data.type()))
 				return false;
 
 		return true;
 	}
 
 	@Override
-	public ItemStack assemble(SmithingRecipeInput smithingRecipeInput) {
-		return Util.make(smithingRecipeInput.getItem(1).copy(), this::setComponents);
-	}
-
-	@Override
-	public boolean showNotification() {
-		return false;
-	}
-
-	@Override
-	public String group() {
-		return "";
+	public ItemStack assemble(SmithingRecipeInput input) {
+		return Util.make(input.base().copy(), this::setComponents);
 	}
 
 	@Override
@@ -99,18 +89,11 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	}
 
 	@Override
-	public RecipeSerializer<? extends SmithingRecipe> getSerializer() {
+	public RecipeSerializer<NoTemplateSmithingRecipe> getSerializer() {
 		return SERIALIZER;
 	}
 
 	@Override
-	public PlacementInfo placementInfo() {
-		if (this.placementInfo == null) {
-			this.placementInfo = createPlacementInfo();
-		}
-		return this.placementInfo;
-	}
-
 	protected PlacementInfo createPlacementInfo() {
 		return PlacementInfo.create(
 			List.of(this.base, this.addition)

@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": "minecraft:tropical_fish",
+  "result": {
+    "id": "twilightforest:tropical_fish_jerky"
+  },
+  "show_notification": false
+}

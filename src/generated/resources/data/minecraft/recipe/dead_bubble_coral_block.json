@@ -1,0 +1,9 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 40,
+  "input": "minecraft:bubble_coral_block",
+  "result": {
+    "id": "minecraft:dead_bubble_coral_block"
+  },
+  "show_notification": false
+}

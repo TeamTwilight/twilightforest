@@ -22,7 +22,7 @@ public class NoSmithingTemplateRecipeBuilder {
 	private final RecipeCategory category;
 	private final Ingredient base;
 	private final Ingredient addition;
-	private List<TypedDataComponent<?>> additionalData = new ArrayList<>();
+	private final List<TypedDataComponent<?>> additionalData = new ArrayList<>();
 	private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
 	private NoSmithingTemplateRecipeBuilder(RecipeCategory category, Ingredient base, Ingredient addition) {
@@ -56,8 +56,8 @@ public class NoSmithingTemplateRecipeBuilder {
 			.rewards(AdvancementRewards.Builder.recipe(id))
 			.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
-		NoTemplateSmithingRecipe smithingtrimrecipe = new NoTemplateSmithingRecipe(this.base, this.addition, this.additionalData);
-		output.accept(id, smithingtrimrecipe, advancement$builder.build(id.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
+		NoTemplateSmithingRecipe recipe = new NoTemplateSmithingRecipe(new Recipe.CommonInfo(false), this.base, this.addition, this.additionalData);
+		output.accept(id, recipe, advancement$builder.build(id.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
 	}
 
 	private void ensureValid(ResourceKey<Recipe<?>> location) {
