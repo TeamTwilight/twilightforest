@@ -6,6 +6,9 @@
       "biome_lock": "twilightforest:thornlands",
       "heightmap": "OCEAN_FLOOR_WG",
       "integrity": 0.7
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }
