@@ -67,6 +67,7 @@ import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
@@ -145,6 +146,7 @@ public class ClientRegistrationEvents {
 
 	private void registerItemModels(RegisterItemModelsEvent event) {
 		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
 	}
 
 	private void registerModelLoaders(ModelEvent.RegisterLoaders event) {
