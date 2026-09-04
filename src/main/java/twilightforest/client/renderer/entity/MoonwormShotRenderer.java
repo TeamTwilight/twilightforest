@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Unit;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
@@ -20,7 +19,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot, MoonwormS
 
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel model;
-	private final MoonwormRenderState state = new MoonwormRenderState();
+	private final MoonwormRenderState moonwormRenderState = new MoonwormRenderState();
 
 	public MoonwormShotRenderer(EntityRendererProvider.Context context) {
 		super(context);
@@ -36,7 +35,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot, MoonwormS
 
 		poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 180.0F));
 		poseStack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
-		submitNodeCollector.submitModel(this.model, Unit.INSTANCE, poseStack, this.model.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		submitNodeCollector.submitModel(this.model, moonwormRenderState, poseStack, this.model.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 
 		poseStack.popPose();
 	}

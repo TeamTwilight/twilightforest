@@ -23,6 +23,7 @@ import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
 import twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer;
+import twilightforest.asm.transformers.model.AnimateSpecialModelsTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
 import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
@@ -38,6 +39,9 @@ public class TFCoreMod implements ClassProcessorProvider {
 		collector.add(new CancelArmorRenderingTransformer());
 		collector.add(new CancelElytraRenderingTransformer());
 		collector.add(new FixCapeUnrenderingTransformer());
+
+		// model
+		collector.add(new AnimateSpecialModelsTransformer());
 
 		// beardifier
 		collector.add(new InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer());

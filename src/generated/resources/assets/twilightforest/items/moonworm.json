@@ -1,6 +1,6 @@
 {
   "model": {
-    "type": "twilightforest:animated_special",
+    "type": "minecraft:special",
     "base": "twilightforest:item/moonworm",
     "model": {
       "type": "twilightforest:moonworm"
