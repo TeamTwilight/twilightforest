@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,7 +20,7 @@ public class SnowGuardianRenderer extends HumanoidMobRenderer<SnowGuardian, Huma
 
 	public SnowGuardianRenderer(EntityRendererProvider.Context context) {
 		super(context, new NoopModel<>(context.bakeLayer(TFModelLayers.NOOP)), 0.25F);
-		this.addLayer(new HumanoidArmorLayer<>(this, ArmorModelSet.bake(ModelLayers.ZOMBIE_ARMOR, context.getModelSet(), NoopModel::new), context.getEquipmentRenderer()));
+		this.addLayer(new HumanoidArmorLayer<>(this, ArmorModelSet.bake(ModelLayers.ZOMBIE_ARMOR, context.getModelSet(), HumanoidModel::new), context.getEquipmentRenderer()));
 	}
 
 	@Override
