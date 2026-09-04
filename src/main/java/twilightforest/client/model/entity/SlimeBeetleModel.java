@@ -30,8 +30,9 @@ public class SlimeBeetleModel extends EntityModel<LivingEntityRenderState> {
 	private final ModelPart tailTop;
 	private final ModelPart slime;
 	private final ModelPart slimeCenter;
+	private final boolean outerTail;
 
-	public SlimeBeetleModel(ModelPart root) {
+	public SlimeBeetleModel(ModelPart root, boolean outerTail) {
 		super(root);
 
 		this.head = root.getChild("head");
@@ -49,6 +50,9 @@ public class SlimeBeetleModel extends EntityModel<LivingEntityRenderState> {
 
 		this.slimeCenter = this.tailTop.getChild("slime_center");
 		this.slime = this.slimeCenter.getChild("slime");
+
+		this.outerTail = outerTail;
+		this.slime.visible = outerTail;
 	}
 
 	public static LayerDefinition create() {
@@ -135,7 +139,7 @@ public class SlimeBeetleModel extends EntityModel<LivingEntityRenderState> {
 				.addBox(-3.0F, -6.0F, -3.0F, 6.0F, 6.0F, 6.0F),
 			PartPose.offset(0.0F, -3.0F, 2.0F));
 
-		var center = tail2.addOrReplaceChild("slime_center", CubeListBuilder.create()
+		PartDefinition center = tail2.addOrReplaceChild("slime_center", CubeListBuilder.create()
 				.texOffs(32, 24)
 				.addBox(-4.0F, -10.0F, -7.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.offset(0.0F, -6.0F, 0.0F));
@@ -150,12 +154,11 @@ public class SlimeBeetleModel extends EntityModel<LivingEntityRenderState> {
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		this.slime.visible = false;
-		super.renderToBuffer(stack, builder, light, overlay, color);
-	}
-
-	public void renderTail(PoseStack stack, VertexConsumer builder, int light, int overlay) {
-		this.tailBottom.render(stack, builder, light, overlay);
+		if (this.outerTail) {
+			this.tailBottom.render(stack, builder, light, overlay, color);
+		} else {
+			super.renderToBuffer(stack, builder, light, overlay, color);
+		}
 	}
 
 	@Override
