@@ -1,22 +1,14 @@
 package twilightforest.client.event;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShapeRenderer;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
-import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -26,9 +18,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.ColorRGBA;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -54,9 +44,9 @@ import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.*;
+import twilightforest.client.renderer.AuroraRenderer;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.tags.TFItemTags;
@@ -71,6 +61,7 @@ import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @tamaized.beanification.Component(dist = Dist.CLIENT)
 public class ClientGameEvents {
@@ -83,16 +74,19 @@ public class ClientGameEvents {
 
 	private int aurora = 0;
 	private int lastAurora = 0;
+	private final AuroraRenderer auroraRenderer = new AuroraRenderer();
 
 	@Autowired(dist = Dist.CLIENT)
 	private HolderMatcher holderMatcher;
 
 	@PostConstruct
+	@SuppressWarnings("DuplicatedCode")
 	private void setup() {
 		NeoForge.EVENT_BUS.addListener(this::addCustomTooltips);
 		NeoForge.EVENT_BUS.addListener(this::clientTick);
 		NeoForge.EVENT_BUS.addListener(this::customizeSplashes);
 		NeoForge.EVENT_BUS.addListener(this::clearEntityRenderUtilMap);
+		NeoForge.EVENT_BUS.addListener(this::endAuroraFrame);
 		NeoForge.EVENT_BUS.addListener(this::killVignette);
 		NeoForge.EVENT_BUS.addListener(this::removeHostileMountHealth);
 		NeoForge.EVENT_BUS.addListener(this::renderAurora);
@@ -135,7 +129,7 @@ public class ClientGameEvents {
 	}
 
 	private void setMusicInDimension(SelectMusicEvent event) {
-		Music music = event.getOriginalMusic();
+		Music music = event.getOriginalMusic(); // FIXME, why is this commented out?
 		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
 //			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
 		}
@@ -146,40 +140,42 @@ public class ClientGameEvents {
 	 */
 	private void removeHostileMountHealth(RenderGuiLayerEvent.Pre event) {
 		if (VanillaGuiLayers.VEHICLE_HEALTH == event.getName()) {
-			if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
+			if (HostileMountEvents.isRidingUnfriendly(Objects.requireNonNull(Minecraft.getInstance().player))) {
 				event.setCanceled(true);
 			}
 		}
 	}
 
-	/**
-	 * Render aurora effect as needed
-	 */
 	private void renderAurora(RenderLevelStageEvent.AfterWeather event) {
-		if (Minecraft.getInstance().level == null) return;
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null)
+			return;
 
-//		if ((aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
-//			Tesselator tesselator = Tesselator.getInstance();
-//			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-//
-//			final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
-//			Vec3 pos = event.getCamera().getPosition();
-//			float y = (float) (256F - pos.y());
-//			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
-//			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-//			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-//			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
-//
-//			RenderSystem.enableBlend();
-//			RenderSystem.enableDepthTest();
-//			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
-//			TFShaders.AURORA.invokeThenEndTesselator(
-//				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
-//				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
-//			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-//			RenderSystem.disableDepthTest();
-//			RenderSystem.disableBlend();
-//		}
+		if (aurora > 0 || lastAurora > 0) {
+			BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
+			final float scale = 2048F * (mc.options.getEffectiveRenderDistance() * 16F / 32F);
+			Vec3 pos = event.getLevelRenderState().cameraRenderState.pos;
+			float y = (float) (256F - pos.y());
+			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
+
+			float alpha = Mth.lerp(mc.getDeltaTracker().getGameTimeDeltaTicks(), lastAurora, aurora) / 60F * 0.5F;
+			auroraRenderer.draw(
+				buffer.buildOrThrow(),
+				alpha,
+				Mth.abs((int) mc.level.getBiomeManager().biomeZoomSeed),
+				(float) pos.x(),
+				(float) pos.y(),
+				(float) pos.z()
+			);
+		}
+	}
+
+	private void endAuroraFrame(RenderFrameEvent.Post event) {
+		auroraRenderer.endFrame();
 	}
 
 	private void killVignette(RenderFrameEvent.Pre event) {

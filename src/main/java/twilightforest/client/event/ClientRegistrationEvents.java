@@ -72,6 +72,7 @@ import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
+import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.block.*;
@@ -128,7 +129,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
 
-//		bus.addListener(TFShaders::registerShaders);
+		bus.addListener(RegisterRenderPipelinesEvent.class, event -> event.registerPipeline(TFRenderPipelines.AURORA));
 
 		bus.addListener(OverlayHandler::registerOverlays);
 

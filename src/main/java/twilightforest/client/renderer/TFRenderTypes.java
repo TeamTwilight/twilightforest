@@ -23,8 +23,6 @@ public class TFRenderTypes {
 	public static final RenderType PROTECTION_BOX = RenderType.create("twilightforest:protection_box", RenderSetup.builder(TFRenderPipelines.PROTECTION_BOX)
 		.withTexture("Sampler0", TwilightForestMod.getModelTexture("protectionbox.png"))
 		.setTextureTransform(new ProtectionBoxTextureTransform())
-		.useLightmap()
-		.useOverlay()
 		.sortOnUpload()
 		.createRenderSetup());
 
