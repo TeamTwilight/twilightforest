@@ -5,7 +5,6 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
 
 /**
  * Class for using ModelTemplates to reference existing block models.
@@ -35,7 +34,7 @@ public class TFModelTemplates extends ModelTemplates {
 
 	public static final ModelTemplate CTM_NO_BASE = create("twilightforest:ctm_no_base", TextureSlot.PARTICLE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
 	public static final ModelTemplate CTM = create("twilightforest:ctm", TextureSlot.PARTICLE, TFTextureSlot.CTM_BASE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
-	public static final ModelTemplate GIANT_BLOCK = create("twilightforest:giant_block", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN).extend().parent(Identifier.withDefaultNamespace("block/block")).customLoader(GiantBlockBuilder::new, builder -> {}).build();
+	public static final ModelTemplate GIANT_BLOCK = create("twilightforest:giant_block", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN).extend().parent(Identifier.withDefaultNamespace("block/cube")).build();
 
 	public static final ModelTemplate BANISTER_CONNECTED = create("twilightforest:banister_connected", "_connected", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_CONNECTED_EXTENDED = create("twilightforest:banister_connected_extended", "_connected_extended", TextureSlot.TEXTURE);

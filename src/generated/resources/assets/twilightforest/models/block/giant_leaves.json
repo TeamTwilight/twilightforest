@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/block",
-  "loader": "twilightforest:giant_block",
+  "parent": "minecraft:block/cube",
   "textures": {
     "down": "minecraft:block/oak_leaves",
     "east": "minecraft:block/oak_leaves",

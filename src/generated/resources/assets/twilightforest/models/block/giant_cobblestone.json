@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/block",
-  "loader": "twilightforest:giant_block",
+  "parent": "minecraft:block/cube",
   "textures": {
     "down": "minecraft:block/cobblestone",
     "east": "minecraft:block/cobblestone",
