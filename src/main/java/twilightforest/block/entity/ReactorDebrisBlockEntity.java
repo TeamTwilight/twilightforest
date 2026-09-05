@@ -9,6 +9,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,6 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.joml.Vector3f;
 import twilightforest.init.TFBlockEntities;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
@@ -39,7 +41,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	private byte timeAlive = 0;
 	public VoxelShape shape = Shapes.empty();
 
-	public Identifier[] textures = new Identifier[6];
+	public final Identifier[] textures = Util.make(new Identifier[6], arr -> Arrays.fill(arr, DEFAULT_TEXTURE));
 	public Vector3f minPos = new Vector3f(Z_FIGHTING_MIN);
 	public Vector3f maxPos = new Vector3f(Z_FIGHTING_MAX);
 
