@@ -12,12 +12,15 @@ import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
+import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.properties.*;
@@ -198,8 +201,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateBow(TFItems.ICE_BOW.get(), true);
 		this.generateBow(TFItems.ENDER_BOW.get(), false);
 
-		this.generateGiantTool(TFItems.GIANT_SWORD.get(), Items.STONE_SWORD);
-		this.generateGiantTool(TFItems.GIANT_PICKAXE.get(), Items.STONE_PICKAXE);
+		this.generateGiantTool(TFItems.GIANT_SWORD.get(), Items.STONE_SWORD, 3.0F, 5.0F, 11.0F, 13.0F);
+		this.generateGiantTool(TFItems.GIANT_PICKAXE.get(), Items.STONE_PICKAXE, 7.0F, 2.0F, 15.0F, 10.0F);
 
 		this.generateFlatItem(TFItems.ICE_BOMB.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TWILIGHT_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -338,9 +341,18 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(item, TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/tf_banner_pattern"))), this.modelOutput)));
 	}
 
-	public void generateGiantTool(Item tool, Item baseTool) {
-		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, TextureMapping.layer0(baseTool), this.modelOutput));
-		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(tool).withSuffix("_gui"));
+	public void generateGiantTool(Item tool, Item baseTool, float u0, float v0, float u1, float v1) {
+		TextureMapping textures = TextureMapping.layer0(baseTool);
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, textures, this.modelOutput));
+		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ExtendedModelTemplateBuilder.builder()
+			.suffix("_gui")
+			.guiLight(UnbakedModel.GuiLight.FRONT)
+			.requiredTextureSlot(TextureSlot.LAYER0)
+			.element(elementBuilder ->
+				elementBuilder.from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 0.0F)
+					.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.LAYER0).uvs(u0, v0, u1, v1)))
+			.build()
+			.create(tool, textures, this.modelOutput));
 		this.itemModelOutput.accept(tool, ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 

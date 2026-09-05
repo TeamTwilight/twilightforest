@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-05T13:08:06.351503	Model Definitions - twilightforest
+// 26.1.2	2026-09-05T14:00:28.6074071	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -2374,7 +2374,9 @@ f9275524249c05baafd45618ea4792add09f82b9 assets/twilightforest/models/item/fugu_
 9fee8b688971400439c5852529cd08c7f7bac9d7 assets/twilightforest/models/item/gelatinous_slime_drop.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/giant_miner_spawn_egg.json
 3143ff12e27e0c247d02db77b100b891542d5df3 assets/twilightforest/models/item/giant_pickaxe.json
+fb1d0cc62f6aa4c4ae9f54bd62542a53352c5321 assets/twilightforest/models/item/giant_pickaxe_gui.json
 f8f5ca82ad63231d20843c16d43aa090d6cf2616 assets/twilightforest/models/item/giant_sword.json
+c485fef3b6dd901944a4c167add07cdc08e7648c assets/twilightforest/models/item/giant_sword_gui.json
 9d1ea9a2d4af16c34c90f72733fd03b951263c68 assets/twilightforest/models/item/glass_sword.json
 324c024891d2873bdecccbb8ccff46194ccad907 assets/twilightforest/models/item/gold_berry.json
 e21b89209c4ae4bdf01ecbbd79a13e5209f36681 assets/twilightforest/models/item/gold_minotaur_axe.json
