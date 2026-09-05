@@ -30,6 +30,7 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.LightableBlock;
+import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.client.state.block.SkullCandleRenderState;
 import twilightforest.components.item.SkullCandles;
@@ -79,7 +80,7 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 		state.animationProgress = blockEntity.getAnimation(partialTicks);
 		BlockState blockState = blockEntity.getBlockState();
-		if (blockState.getBlock() instanceof WallSkullBlock) {
+		if (blockState.getBlock() instanceof WallSkullCandleBlock) {
 			Direction facing = blockState.getValue(WallSkullBlock.FACING);
 			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.wallTransformation(facing);
 			state.candleTransformation = CANDLE_TRANSFORMS.wallTransformation(facing);
