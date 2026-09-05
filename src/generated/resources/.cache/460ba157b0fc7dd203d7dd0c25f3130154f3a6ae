@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-05T11:36:08.8739871	Model Definitions - twilightforest
+// 26.1.2	2026-09-05T11:45:03.950265	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -2219,8 +2219,8 @@ bccd88867a46439db0ac0b6059805f3e4dbd2c42 assets/twilightforest/models/block/twil
 899b0a0601f7597c797cb2fd7659c985627b2504 assets/twilightforest/models/block/twisted_stone.json
 6f93097ba1918984de17b9bde91d335d08477457 assets/twilightforest/models/block/twisted_stone_horizontal.json
 8f5ed153c75a31127fb78ad814805848547e6e4b assets/twilightforest/models/block/uberous_soil.json
-ad72419b6e3047a962876e735cc0a15f19f20c93 assets/twilightforest/models/block/uncrafting_table.json
-b6b9ffcd127ac3f233422e3ae1befc2062d6ce3a assets/twilightforest/models/block/uncrafting_table_activated.json
+a18776787cb9687f5d72fe05ec6b75e7d7d90a45 assets/twilightforest/models/block/uncrafting_table.json
+92d3f3b595e15b9347c0c1abde33b73e5715bd06 assets/twilightforest/models/block/uncrafting_table_activated.json
 eed2392ad51a5d0a35fdd23fada77f8030c11b11 assets/twilightforest/models/block/underbrick.json
 f9f6c8993506ac436f9365835657f29069519eab assets/twilightforest/models/block/underbrick_floor.json
 e5c1899d3ad54954c210e6399767e7c73fa58131 assets/twilightforest/models/block/unripe_trollber.json
