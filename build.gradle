@@ -264,7 +264,7 @@ dependencies {
 	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
 
 	//curse maven
-//	implementation "curse.maven:jade-324717:6170888"
+	implementation "curse.maven:jade-324717:8651070"
 //	implementation "curse.maven:cosmetic-armor-reworked-237307:5961480"
 //	runtimeOnly "curse.maven:jeed-532286:5483315"
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
