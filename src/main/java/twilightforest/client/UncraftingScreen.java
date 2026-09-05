@@ -161,6 +161,7 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractBackground(graphics, mouseX, mouseY, partialTicks);
 		int frameX = this.leftPos;
 		int frameY = (this.height - this.imageHeight) / 2;
 		graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
