@@ -83,6 +83,9 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos blockPos, BlockState blockState, ReactorDebrisBlockEntity reactorDebrisBlockEntity) {
+		if (level.isDebug())
+			return;
+
 		if (reactorDebrisBlockEntity.willDisappear && reactorDebrisBlockEntity.timeAlive == 5 ||
 			reactorDebrisBlockEntity.rerolls && RANDOM.nextInt(5) == 0) {
 			reactorDebrisBlockEntity.randomizeDimensions();
