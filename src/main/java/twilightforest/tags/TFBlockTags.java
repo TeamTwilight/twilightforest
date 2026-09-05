@@ -38,7 +38,6 @@ public class TFBlockTags {
 	public static final TagKey<Block> GENERATED_PORTAL_DECO = create("portal/generated_decoration");
 
 	public static final TagKey<Block> DARK_TOWER_ALLOWED_POTS = create("dark_tower_allowed_pots");
-	public static final TagKey<Block> TROPHIES = create("trophies");
 	public static final TagKey<Block> TROPHY_PEDESTAL_ACTIVATION_BLOCKS = create("trophy_pedestal_activation_blocks");
 	public static final TagKey<Block> FIRE_JET_FUEL = create("fire_jet_fuel");
 	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = create("ice_bomb_replaceables");
