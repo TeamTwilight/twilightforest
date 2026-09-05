@@ -108,12 +108,12 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void giantBlock(Block block, TextureMapping mapping) {
-		this.blockStateOutput.accept(createSimpleBlock(block, this.giantBlockVariant(block, mapping)));
+		this.blockStateOutput.accept(createSimpleBlock(block, this.giantBlockVariant(block, mapping, TFModelTemplates.GIANT_BLOCK)));
 		this.generateGiantBlockItem(block, mapping);
 	}
 
-	private MultiVariant giantBlockVariant(Block block, TextureMapping mapping) {
-		Identifier sourceModel = TFModelTemplates.GIANT_BLOCK.create(block, mapping, this.modelOutput);
+	private MultiVariant giantBlockVariant(Block block, TextureMapping mapping, ModelTemplate template) {
+		Identifier sourceModel = template.create(block, mapping, this.modelOutput);
 		return MultiVariant.of(new CustomBlockStateModelBuilder.Simple(new UnbakedGiantBlockStateModel(plainVariant(sourceModel).toUnbaked())));
 	}
 
@@ -124,7 +124,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void giantBlock(Block block, TextureMapping mapping, int tint) {
-		this.blockStateOutput.accept(createSimpleBlock(block, this.giantBlockVariant(block, mapping)));
+		this.blockStateOutput.accept(createSimpleBlock(block, this.giantBlockVariant(block, mapping, TFModelTemplates.GIANT_BLOCK_TINTED)));
 		this.generateGiantBlockItem(block, mapping, tint);
 	}
 

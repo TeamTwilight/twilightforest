@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cube",
+  "parent": "twilightforest:block/util/tinted_cube",
   "textures": {
     "down": "minecraft:block/oak_leaves",
     "east": "minecraft:block/oak_leaves",

@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-05T12:50:00.1188769	Model Definitions - twilightforest
+// 26.1.2	2026-09-05T13:08:06.351503	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -1503,7 +1503,7 @@ bdaefa649722a99572a95642bffccec5fbccee0a assets/twilightforest/models/block/ghas
 218b68348f2085c4dd4c4ff88641051cf1b06a17 assets/twilightforest/models/block/giant_cobblestone.json
 2b589fcf9a3189db2d1096a58288317bb89114c8 assets/twilightforest/models/block/giant_cobblestone_gui.json
 ef8c5992b3579ee0d3ccaa94f70e3ee428026ff0 assets/twilightforest/models/block/giant_cobblestone_item.json
-fd689be1d683f0d17f66fb95d755d0f2dd22f3f1 assets/twilightforest/models/block/giant_leaves.json
+e7dcaee69602b73f71bbbd4c0dadb886f8a80a39 assets/twilightforest/models/block/giant_leaves.json
 14d947d7fed256ced386e45ebd89e3538a9437f9 assets/twilightforest/models/block/giant_leaves_gui.json
 977a47d694dbd906c6ec50d30fe2d8158cbbc7b6 assets/twilightforest/models/block/giant_leaves_item.json
 5abfe51b71ceece458da55f95314da2e64877bd3 assets/twilightforest/models/block/giant_log.json
