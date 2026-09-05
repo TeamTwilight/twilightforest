@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-05T11:21:42.8404438	Model Definitions - twilightforest
+// 26.1.2	2026-09-05T11:36:08.8739871	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -1953,7 +1953,7 @@ df5a8d57f702ef72b84411e71d09946fc11c5f2c assets/twilightforest/models/block/reap
 9f539d76dd711bf9742a7b764bf47152fd5f8169 assets/twilightforest/models/block/skyberry_bush_large.json
 64c6a6a8f5c42d0a5df17b6150b175c961fe5e1a assets/twilightforest/models/block/skyberry_bush_ripe.json
 daf0ddcf24fe936d7a7a1a8ba41aad6e57372d6b assets/twilightforest/models/block/skyberry_bush_small.json
-32ee96be3e82cc2cf9850d6b2939d61e17201e1e assets/twilightforest/models/block/smoker.json
+2f188da9c031348675bd960c46be7cc2e760adde assets/twilightforest/models/block/smoker.json
 1f71929bf4dc1fd19d66c7123ffba231b1fcec46 assets/twilightforest/models/block/snowy_cloud.json
 23fbb76471b66cbcbc8937c4bd661ebb81ef2d41 assets/twilightforest/models/block/snow_queen_boss_spawner.json
 99867ecf85ce0166d1c1be13ab6c9aaf3cd8adf6 assets/twilightforest/models/block/sorting_banister_connected.json
