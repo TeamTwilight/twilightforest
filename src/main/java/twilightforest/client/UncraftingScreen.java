@@ -10,12 +10,15 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.gui.screens.recipebook.CraftingRecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
@@ -30,10 +33,10 @@ import twilightforest.tags.TFItemTags;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.network.UncraftingGuiPacket;
 
+import java.util.List;
+
 public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 	private static final Identifier TEXTURE = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
-//	private final RecipeBookComponent recipeBookComponent = new UncraftingRecipeBookComponent();
-	private boolean widthTooNarrow;
 
 	public UncraftingScreen(UncraftingMenu container, Inventory player, Component name) {
 		super(container, new CraftingRecipeBookComponent(container), player, name);
@@ -42,11 +45,6 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 	@Override
 	protected void init() {
 		super.init();
-
-		this.widthTooNarrow = this.width < 379;
-		this.addRenderableWidget(new ImageButton(this.leftPos + 145, this.topPos + 7, 20, 18, RecipeBookComponent.RECIPE_BUTTON_SPRITES, button -> {
-			this.repositionElements();
-		}));
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 22, true, button -> {
 			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(0));
@@ -75,12 +73,12 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, button -> {
 			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(4));
 			this.menu.recipeInCycle++;
-			this.menu.slotsChanged(this.menu.assemblyMatrix);
+			this.menu.slotsChanged(this.menu.getCraftSlots());
 		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_next_recipe")));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 55, false, button -> {
 			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(5));
 			this.menu.recipeInCycle--;
-			this.menu.slotsChanged(this.menu.assemblyMatrix);
+			this.menu.slotsChanged(this.menu.getCraftSlots());
 		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_back_recipe")));
 	}
 
@@ -123,7 +121,7 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(5));
 				this.menu.recipeInCycle--;
 			}
-			this.menu.slotsChanged(this.menu.assemblyMatrix);
+			this.menu.slotsChanged(this.menu.getCraftSlots());
 		}
 
 		return scrolled;
@@ -134,20 +132,11 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 		return new ScreenPosition(this.leftPos + 145, this.topPos + 7);
 	}
 
-	//	@Override
-//	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-//		if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
-//			this.renderBackground(graphics, mouseX, mouseY, partialTicks);
-//			this.recipeBookComponent.render(graphics, mouseX, mouseY, partialTicks);
-//		} else {
-//			super.render(graphics, mouseX, mouseY, partialTicks);
-//			this.recipeBookComponent.render(graphics, mouseX, mouseY, partialTicks);
-//			this.recipeBookComponent.renderGhostRecipe(graphics, this.leftPos, this.topPos, true, partialTicks);
-//		}
-//
-//		this.renderTooltip(graphics, mouseX, mouseY);
-//		this.recipeBookComponent.renderTooltip(graphics, this.leftPos, this.topPos, mouseX, mouseY);
-//	}
+	@Override
+	protected void onRecipeBookButtonClick() {
+		super.onRecipeBookButtonClick();
+		this.repositionElements();
+	}
 
 	@Override
 	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -232,13 +221,25 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 
 		for (int i = 0; i < 9; i++) {
 			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i) && !container.slots.get(11 + i).hasItem()) {
-//				graphics.tooltip(this.font, container.slots.get(2 + i).getItem(), pX, pY);
+				graphics.tooltip(
+					this.font,
+					List.of(ClientTooltipComponent.create(container.slots.get(2 + i).getItem().getStyledHoverName().getVisualOrderText())),
+					pX,
+					pY,
+					DefaultTooltipPositioner.INSTANCE,
+					container.slots.get(2 + i).getItem().get(DataComponents.TOOLTIP_STYLE));
 			}
 		}
 
 		//check if we're hovering over a banned uncraftable item
 		if (container.slots.getFirst().hasItem() && container.slots.getFirst().getItem().is(TFItemTags.BANNED_UNCRAFTABLES) && container.slots.getFirst().equals(this.hoveredSlot)) {
-//			graphics.tooltip(this.font, Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
+			graphics.tooltip(
+				this.font,
+				List.of(ClientTooltipComponent.create(Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED).getVisualOrderText())),
+				pX,
+				pY,
+				DefaultTooltipPositioner.INSTANCE,
+				null);
 		} else {
 			super.extractTooltip(graphics, pX, pY);
 		}

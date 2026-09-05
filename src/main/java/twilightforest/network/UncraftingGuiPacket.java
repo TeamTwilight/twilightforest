@@ -55,7 +55,7 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 						uncrafting.slotsChanged(uncrafting.tinkerInput);
 
 					if (message.operationType() >= 4)
-						uncrafting.slotsChanged(uncrafting.assemblyMatrix);
+						uncrafting.slotsChanged(uncrafting.getCraftSlots());
 				}
 			});
 		}
