@@ -211,6 +211,11 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 	}
 
 	@Override
+	public void setupRotationsForTrophy(float animationTicks, float yaw, float mouthAngle) {
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
+	}
+
+	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		stack.scale(0.2F, 0.2F, 0.2F);
 		stack.translate(0.0F, -1.5F, 0.0F);

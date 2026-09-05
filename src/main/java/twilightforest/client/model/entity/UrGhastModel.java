@@ -121,7 +121,8 @@ public class UrGhastModel extends TFGhastModel<TFGhastRenderState> implements Tr
 	}
 
 	@Override
-	public void setupRotationsForTrophy(float animationProgress, float mouthAngle) {
+	public void setupRotationsForTrophy(float animationProgress, float yaw, float mouthAngle) {
+		this.body.yRot = yaw * Mth.DEG_TO_RAD;
 		this.waveTentacles(animationProgress * 4.5F, animationProgress);
 	}
 

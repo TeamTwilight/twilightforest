@@ -125,6 +125,14 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 	}
 
 	@Override
+	public void setupRotationsForTrophy(float animationTicks, float yaw, float mouthAngle) {
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
+		if (this.helmet != null) {
+			this.helmet.yRot = this.head.yRot;
+		}
+	}
+
+	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		if (context == ItemDisplayContext.GUI) {
 			stack.pushPose();

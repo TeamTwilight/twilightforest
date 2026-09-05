@@ -45,7 +45,6 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 		this.modelByType = Util.memoize(variant -> createTrophyModel(context.entityModelSet(), variant));
 	}
 
-	@Nullable
 	public static TrophyBlockModel createTrophyModel(EntityModelSet set, BossVariant variant) {
 		return createTrophyModel((type, layer) -> {
 			//holy fucking shit what
@@ -59,7 +58,6 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 		}, variant);
 	}
 
-	@Nullable
 	public static TrophyBlockModel createTrophyModel(BiFunction<EntityType<?>, ModelLayerLocation, TrophyBlockModel> modelFunction, BossVariant variant) {
 		return switch (variant) {
 			case NAGA -> modelFunction.apply(TFEntities.NAGA.get(), TFModelLayers.NAGA_TROPHY);
@@ -71,11 +69,10 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 			case ALPHA_YETI -> modelFunction.apply(TFEntities.ALPHA_YETI.get(), TFModelLayers.ALPHA_YETI_TROPHY);
 			case SNOW_QUEEN -> modelFunction.apply(TFEntities.SNOW_QUEEN.get(), TFModelLayers.SNOW_QUEEN_TROPHY);
 			case QUEST_RAM -> modelFunction.apply(TFEntities.QUEST_RAM.get(), TFModelLayers.QUEST_RAM_TROPHY);
-			case FINAL_BOSS -> null; //lol
+			case FINAL_BOSS -> new NoOpTrophyBlockModel(); //lol
 		};
 	}
 
-	@Nullable
 	public static TrophyBlockModel createFallback(EntityModelSet set, BossVariant variant) {
 		return switch (variant) {
 			case NAGA -> new NagaModel<>(set.bakeLayer(TFModelLayers.NAGA_TROPHY));
@@ -87,7 +84,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 			case ALPHA_YETI -> new AlphaYetiModel(set.bakeLayer(TFModelLayers.ALPHA_YETI_TROPHY));
 			case SNOW_QUEEN -> new SnowQueenModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY));
 			case QUEST_RAM -> new QuestRamModel(set.bakeLayer(TFModelLayers.QUEST_RAM_TROPHY));
-			case FINAL_BOSS -> null; //lol
+			case FINAL_BOSS -> new NoOpTrophyBlockModel(); //lol
 		};
 	}
 
@@ -101,7 +98,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 	}
 
 	public static void submitTrophy(boolean wall, TrophyBlockModel model, float animationProgress, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
-		model.setupRotationsForTrophy(animationProgress, context == ItemDisplayContext.GUI ? 0.35F : wall ? 0.5F : 0.0F);
+		model.setupRotationsForTrophy(animationProgress, context == ItemDisplayContext.NONE ? 0.0F : 180.0F, context == ItemDisplayContext.GUI ? 0.35F : wall ? 0.5F : 0.0F);
 		model.renderTrophy(stack, collector, light, overlay, breakProgress, context);
 	}
 

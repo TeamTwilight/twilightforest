@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jspecify.annotations.Nullable;
 import twilightforest.client.renderer.entity.NagaRenderer;
@@ -35,6 +36,11 @@ public class NagaModel<T extends EntityRenderState> extends EntityModel<T> imple
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
+	}
+
+	@Override
+	public void setupRotationsForTrophy(float animationTicks, float yaw, float mouthAngle) {
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
 	}
 
 	@Override

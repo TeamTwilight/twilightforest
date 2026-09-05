@@ -5,12 +5,12 @@
   "display": {
     "gui": {
       "rotation": [ 30, 45, 0 ],
-      "translation": [ 0, 0, 12 ]
+      "translation": [ 0, -2.0785, 10.8 ]
     },
     "head": {
       "rotation": [ 180, 0, 180 ],
-      "translation": [ 0, 6, 0 ],
-      "scale": [ 1.6, 1.6, 1.6 ]
+      "translation": [ 0, 2, 0 ],
+      "scale": [ 1.7, 1.7, 1.7 ]
     },
     "fixed": {
       "rotation": [ 0, 180, 0 ],

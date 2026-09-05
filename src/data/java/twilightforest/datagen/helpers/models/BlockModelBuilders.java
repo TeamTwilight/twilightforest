@@ -8,6 +8,7 @@ import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
@@ -33,6 +34,7 @@ import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
+import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
@@ -80,7 +82,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			}
 		}
 
-		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.select(new DisplayContext(), cases));
+		this.itemModelOutput.accept(floor.asItem(), new AnimatedItemModel.Unbaked(ItemModelUtils.select(new DisplayContext(), cases)), new ClientItem.Properties(true, true, 1.0F));
 	}
 
 	public void generateSkullCandle(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall) {
