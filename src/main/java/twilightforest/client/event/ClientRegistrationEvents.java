@@ -65,7 +65,7 @@ import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockSta
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
-import twilightforest.client.model.block.patch.PatchModelLoader;
+import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
@@ -143,6 +143,7 @@ public class ClientRegistrationEvents {
 	private void registerBlockStateModels(RegisterBlockStateModels event) {
 		event.registerModel(TwilightForestMod.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
 		event.registerModel(TwilightForestMod.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
+		event.registerModel(TwilightForestMod.prefix("plant_patch"), UnbakedPlantPatchBlockStateModel.MAP_CODEC);
 	}
 
 	private void registerItemModels(RegisterItemModelsEvent event) {
@@ -151,7 +152,6 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerModelLoaders(ModelEvent.RegisterLoaders event) {
-		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
 //		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
