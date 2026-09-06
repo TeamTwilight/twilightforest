@@ -19,6 +19,7 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.spriteSet(TFParticleType.ANNIHILATE.get(), TwilightForestMod.prefix("annihilate_particle"));
 		this.spriteSet(TFParticleType.CLOUD_PUFF.get(), Identifier.withDefaultNamespace("generic"), 8, true);
 		this.spriteSet(TFParticleType.DIM_FLAME.get(), TwilightForestMod.prefix("dim_flame"));
+		this.spriteSet(TFParticleType.DOUBLE_JUMP.get(), Identifier.withDefaultNamespace("generic"), 8, true);
 		this.spriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.FALLEN_LEAF.get(), TwilightForestMod.prefix("fallen_leaf"));
 		this.spriteSet(TFParticleType.FIREFLY.get(), TwilightForestMod.prefix("firefly"));
@@ -44,6 +45,7 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.spriteSet(TFParticleType.LOG_CORE_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.spriteSet(TFParticleType.OMINOUS_FLAME.get(), TwilightForestMod.prefix("ominous_flame"));
 		this.spriteSet(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
+		this.spriteSet(TFParticleType.PERFECT_DODGE.get(), Identifier.withDefaultNamespace("generic"), 8, true);
 		this.spriteSet(TFParticleType.PROTECTION.get(), Identifier.withDefaultNamespace("glint"));
 		this.spriteSet(TFParticleType.SNOW.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.SNOW_GUARDIAN.get(), TwilightForestMod.prefix("snow"), 4, false);
