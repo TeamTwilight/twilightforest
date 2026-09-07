@@ -27,10 +27,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
@@ -52,6 +54,8 @@ import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEve
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
+import twilightforest.asmhooks.RenderHooks;
+import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
@@ -637,6 +641,9 @@ public class ClientRegistrationEvents {
 
 	private void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity living, LivingEntityRenderState state) -> {
+			if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)
+				state.setRenderData(RenderHooks.HIDE_HEAD_KEY, true);
+
 			state.setRenderData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(living));
 
 			AttributeInstance speed = living.getAttribute(Attributes.MOVEMENT_SPEED);

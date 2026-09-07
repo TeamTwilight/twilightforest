@@ -95,7 +95,6 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::setMusicInDimension);
 		NeoForge.EVENT_BUS.addListener(this::shakeCamera);
 		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
-		NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
@@ -281,18 +280,6 @@ public class ClientGameEvents {
 				event.setNewFovModifier((float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, (event.getFovModifier() * (1.0F - f * 0.15F))));
 			}
 		}
-	}
-
-	private void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?, ?> event) {
-//		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
-//		boolean visible = !(stack.getItem() instanceof TrophyItem) /*&& !areCuriosEquipped(event.getEntity())*/;
-//		boolean isPlayer = event.getRenderState() instanceof AvatarRenderState;
-//		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-//			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
-//			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-//				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
-//			}
-//		}
 	}
 
 	private boolean areCuriosEquipped(LivingEntity entity) {

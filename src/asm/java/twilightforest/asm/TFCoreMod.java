@@ -26,6 +26,7 @@ import twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
 import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
+import twilightforest.asm.transformers.render.HideHeadUnderTrophyTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
 import twilightforest.asm.transformers.snow.KeepGrassSnowyForSnowloggableBlocksTransformer;
 
@@ -85,6 +86,9 @@ public class TFCoreMod implements ClassProcessorProvider {
 		// player
 		collector.add(new GetFieldOfViewModifierTransformer());
 		collector.add(new ReduceMovementFoodExhaustionTransformer());
+
+		// render
+		collector.add(new HideHeadUnderTrophyTransformer());
 
 		// shroom
 		collector.add(new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer());
