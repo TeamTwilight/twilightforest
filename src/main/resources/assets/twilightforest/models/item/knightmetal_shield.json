@@ -1,5 +1,4 @@
 {
-  "parent": "builtin/entity",
   "gui_light": "front",
   "textures": {
     "particle": "twilightforest:block/towerwood"
@@ -40,9 +39,5 @@
       "translation": [ 4, 4, 2],
       "scale":[ 0.25, 0.25, 0.25]
     }
-  },
-  "overrides": [{
-    "predicate": { "blocking": 1 },
-    "model": "twilightforest:item/knightmetal_shield_blocking"
-  }]
+  }
 }

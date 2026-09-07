@@ -69,7 +69,6 @@ import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
-import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.TFRenderPipelines;
@@ -194,15 +193,7 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerStandalone(ModelEvent.RegisterStandalone event) {
-		Identifier trophy = TwilightForestMod.prefix("item/trophy");
-		Identifier trophy_minor = TwilightForestMod.prefix("item/trophy_minor");
-		Identifier trophy_quest = TwilightForestMod.prefix("item/trophy_quest");
-
 		event.register(ShieldLayer.SHIELD_MODEL, SimpleUnbakedStandaloneModel.quadCollection(ShieldLayer.LOC));
-		event.register(new StandaloneModelKey<>(trophy::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy));
-		event.register(new StandaloneModelKey<>(trophy_minor::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_minor));
-		event.register(new StandaloneModelKey<>(trophy_quest::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_quest));
-		event.register(new StandaloneModelKey<>(TrollsteinnModel.LIT_TROLLSTEINN::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(TrollsteinnModel.LIT_TROLLSTEINN));
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			Identifier location = lid.identifier();

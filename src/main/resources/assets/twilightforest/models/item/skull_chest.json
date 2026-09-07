@@ -1,5 +1,4 @@
 {
-  "parent": "builtin/entity",
   "textures": {
     "particle": "block/netherite_block"
   },

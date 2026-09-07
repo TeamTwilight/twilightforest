@@ -189,6 +189,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 				TFModelTemplates.FULLBRIGHT_BLOCK.createWithSuffix(TFBlocks.BUILT_BLOCK.get(), "_on", TextureMapping.cube(TextureMapping.getBlockTexture(TFBlocks.BUILT_BLOCK.get(), "_on")), this.modelOutput) :
 				TFModelTemplates.FULLBRIGHT_BLOCK.create(TFBlocks.BUILT_BLOCK.get(), TextureMapping.cube(TFBlocks.BUILT_BLOCK.get()), this.modelOutput)))));
 		this.wrapBlockItem(TFBlocks.CARMINITE_REACTOR.get(), block -> this.createTrivialBlock(block, TexturedModel.createDefault(block1 -> TFTextureMapping.threeLayerBlock(block, ""), TFModelTemplates.THREE_LAYER_BLOCK)));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.REACTOR_DEBRIS.get(), plainVariant(ModelTemplates.PARTICLE_ONLY.create(TFBlocks.REACTOR_DEBRIS.get(), TextureMapping.particle(new Material(TwilightForestMod.prefix("block/blank"))), this.modelOutput))));
 		this.wrapBlockItem(TFBlocks.LOCKED_VANISHING_BLOCK.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
 			.with(PropertyDispatch.initial(VanishingBlock.ACTIVE).generate(active -> plainVariant(active ?
 				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput) :
@@ -214,7 +215,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 			String suffix = String.format("_%d_8", 8 - bites);
 			Identifier model;
 			if (regen) {
-				model = TFModelTemplates.create("twilightforest:experiment_115" + suffix, suffix + "_regenerating", TFTextureSlot.TOP_2).create(TFBlocks.EXPERIMENT_115.get(), new TextureMapping().put(TFTextureSlot.TOP_2, new Material(TwilightForestMod.prefix("block/experiment115_sprinkle"))), this.modelOutput);
+				model = TFModelTemplates.create("twilightforest:experiment_115" + suffix, suffix + "_regenerating", TFTextureSlot.TOP_2).create(TFBlocks.EXPERIMENT_115.get(), new TextureMapping().put(TFTextureSlot.TOP_2, new Material(TwilightForestMod.prefix("block/experiment115/experiment115_sprinkle"))), this.modelOutput);
 			} else {
 				model = ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.get(), suffix);
 			}
@@ -224,7 +225,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateAuroraBlocks();
 		this.wrapBlockItem(TFBlocks.HUGE_STALK.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.createParticleOnlyBlock(TFBlocks.BEANSTALK_GROWER.get(), TFBlocks.HUGE_STALK.get());
-		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> plainVariant(ModelLocationUtils.getModelLocation(Blocks.AZALEA_LEAVES)));
+		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> this.createTrivialBlock(block, TexturedModel.createDefault(leaves -> TextureMapping.cube(Blocks.AZALEA_LEAVES), ModelTemplates.LEAVES)));
 		Identifier mushgloomInside = ModelTemplates.SINGLE_FACE.create(TwilightForestMod.prefix("huge_mushgloom_inside"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/huge_mushgloom_inside"))), this.modelOutput);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), mushgloomInside, false);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), mushgloomInside, false);

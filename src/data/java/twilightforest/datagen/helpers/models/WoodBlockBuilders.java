@@ -252,7 +252,9 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	}
 
 	public void generateChiseledBookshelf(Block shelf) {
-		MultiVariant variant = plainVariant(ModelLocationUtils.getModelLocation(shelf));
+		MultiVariant variant = plainVariant(TFModelTemplates.CHISELED_BOOKSHELF_BASE.create(shelf, new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(shelf, "_side"))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(shelf, "_top")), this.modelOutput));
 		MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(shelf);
 		forEachHorizontalDirection((direction, mutator) -> {
 				Condition condition = condition(BlockStateProperties.HORIZONTAL_FACING, direction).build();
