@@ -1,7 +1,8 @@
 {
   "attributes": {
     "minecraft:visual/fog_color": "#000000",
-    "minecraft:visual/sky_color": "#000000"
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/sky_light_factor": 0.0
   },
   "carvers": "twilightforest:tf_caves",
   "creature_spawn_probability": 0.05,

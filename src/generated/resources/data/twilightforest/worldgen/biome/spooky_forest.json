@@ -1,7 +1,10 @@
 {
   "attributes": {
     "minecraft:visual/fog_color": "#827391",
+    "minecraft:visual/fog_end_distance": 64.0,
+    "minecraft:visual/fog_start_distance": 16.0,
     "minecraft:visual/sky_color": "#20224a",
+    "minecraft:visual/sky_fog_end_distance": 64.0,
     "minecraft:visual/water_fog_color": "#bc8857"
   },
   "carvers": "twilightforest:tf_caves",
