@@ -31,12 +31,6 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 	@Nullable
 	private TFSkyRenderer skyRenderer;
 
-	//TODO: Set via EnvironmentAttribute at the DimensionType level
-//	@Override
-//	public Vec3 getBrightnessDependentFogColor(Vec3 biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
-//		return biomeFogColor.multiply(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
-//	}
-
 	// FIXME rewrite method under using new Effect System
 //	@Override
 //	public boolean isFoggyAt(int x, int y) { // true = nearFog

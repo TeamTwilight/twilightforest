@@ -10,20 +10,38 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFDimension;
+import twilightforest.init.TFDimensionData;
 
 import javax.annotation.Nullable;
 
 public class FogHandler {
 
-	private static boolean SKY_CHUNK_LOADED = false;
+//	private static boolean SKY_CHUNK_LOADED = false;
 
-	private static float SKY_FAR = 0.0F;
-	private static float SKY_NEAR = 0.0F;
+//	private static float SKY_FAR = 0.0F;
+//	private static float SKY_NEAR = 0.0F;
 
-	private static boolean TERRAIN_CHUNK_LOADED = false;
+//	private static boolean TERRAIN_CHUNK_LOADED = false;
 
-	private static float TERRAIN_FAR = 0.0F;
-	private static float TERRAIN_NEAR = 0.0F;
+//	private static float TERRAIN_FAR = 0.0F;
+//	private static float TERRAIN_NEAR = 0.0F;
+
+	protected static void colorFog(ViewportEvent.ComputeFogColor event) {
+		if (event.getCamera().entity() instanceof LocalPlayer player && player.level() instanceof ClientLevel client && client.dimension() == TFDimension.DIMENSION_KEY) {
+//			if (!isSpooky(client, player)) { //disabled due to hard cut. If it can, change the fog colour back to 0x827391
+				double time = 13000;
+				double d0 = Mth.frac(time / (double)24000.0F - (double)0.25F);
+				double d1 = (double)0.5F - Math.cos(d0 * Math.PI) / (double)2.0F;
+				double d2 = (float)(d0 * (double)2.0F + d1) / 3.0F;
+				float daylight = Mth.clamp(Mth.cos(d2 * (float) (Math.PI * 2)) * 2.0F + 0.5F, 0.0F, 1.0F);
+
+				event.setRed(event.getRed() * (daylight * 0.94F + 0.06F));
+				event.setGreen(event.getGreen() * (daylight * 0.94F + 0.06F));
+				event.setBlue(event.getBlue() * (daylight * 0.91F + 0.09F));
+			}
+//		}
+	}
 
 	protected static void renderFog(ViewportEvent.RenderFog event) {
 //		if (event.getType().equals(FogType.NONE) && Minecraft.getInstance().getCameraEntity() instanceof LocalPlayer player && player.level() instanceof ClientLevel clientLevel && clientLevel.environmentAttributes().effects() instanceof TwilightForestRenderInfo) {
@@ -67,12 +85,12 @@ public class FogHandler {
 //		}
 	}
 
-	protected static void unloadFog(LevelEvent.Unload event) { //As supernatural as the fog is, it shouldn't follow the player between worlds
-		SKY_CHUNK_LOADED = false;
-		TERRAIN_CHUNK_LOADED = false;
-	}
+//	protected static void unloadFog(LevelEvent.Unload event) { //As supernatural as the fog is, it shouldn't follow the player between worlds
+//		SKY_CHUNK_LOADED = false;
+//		TERRAIN_CHUNK_LOADED = false;
+//	}
 
-	private static boolean isSpooky(@Nullable ClientLevel level, @Nullable LocalPlayer player) {
-		return level != null && player != null && level.getBiome(player.blockPosition()).is(TFBiomes.SPOOKY_FOREST);
-	}
+//	private static boolean isSpooky(@Nullable ClientLevel level, @Nullable LocalPlayer player) {
+//		return level != null && player != null && level.getBiome(player.blockPosition()).is(TFBiomes.SPOOKY_FOREST);
+//	}
 }
