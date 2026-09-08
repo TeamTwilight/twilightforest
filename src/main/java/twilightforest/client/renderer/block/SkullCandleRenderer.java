@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
@@ -59,7 +58,8 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		stack.pushPose();
 		stack.mulPose(state.transformation);
 		SkullBlockRenderer.submitSkull(state.animationProgress, stack, collector, state.lightCoords, model, state.renderType, 0, state.breakProgress);
-
+		stack.popPose();
+		stack.pushPose();
 		stack.mulPose(state.candleTransformation);
 		submitCandles(state.candle, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 		stack.popPose();
@@ -83,7 +83,8 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		if (blockState.getBlock() instanceof WallSkullCandleBlock) {
 			Direction facing = blockState.getValue(WallSkullBlock.FACING);
 			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.wallTransformation(facing);
-			state.candleTransformation = CANDLE_TRANSFORMS.wallTransformation(facing);
+			//TODO looks like candle place to opposite position when not use the getOpposite method. mayby need better idea?
+			state.candleTransformation = CANDLE_TRANSFORMS.wallTransformation(facing.getOpposite());
 		} else {
 			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.freeTransformations(blockState.getValue(SkullBlock.ROTATION));
 			state.candleTransformation = CANDLE_TRANSFORMS.freeTransformations(0);

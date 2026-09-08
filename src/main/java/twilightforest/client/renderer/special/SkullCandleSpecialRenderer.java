@@ -2,6 +2,7 @@ package twilightforest.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -42,7 +43,12 @@ public record SkullCandleSpecialRenderer(PlayerSkinRenderCache playerSkinRenderC
 		if (rendertype == null) {
 			rendertype = info.getFirst() != null ? info.getFirst().renderType() : PlayerSkinRenderCache.DEFAULT_PLAYER_SKIN_RENDER_TYPE;
 		}
+
+		stack.pushPose();
+		stack.translate(0.5F, 0.0F, 0.5F);
+		stack.mulPose(Axis.XP.rotationDegrees(180.0F));
 		SkullBlockRenderer.submitSkull(this.animation(), stack, collector, light, this.model(), rendertype, outlineColor, null);
+		stack.popPose();
 
 		SkullCandles skullCandles = info.getSecond();
 
