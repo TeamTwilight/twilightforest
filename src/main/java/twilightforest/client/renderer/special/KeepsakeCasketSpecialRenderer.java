@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -25,6 +26,9 @@ public record KeepsakeCasketSpecialRenderer(KeepsakeCasketModel model, float ope
 
 	@Override
 	public void submit(@Nullable Integer argument, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
+		stack.translate(0.5F, 0.0F, 0.5F);
+		stack.mulPose(Axis.XP.rotationDegrees(180.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
 		collector.submitModel(this.model(), this.openness(), stack, KeepsakeCasketRenderer.getTextureLocation(argument), light, overlay, outlineColor, null);
 	}
 
