@@ -22,14 +22,12 @@ import java.util.Optional;
 @Configurable
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.TriggerInstance> {
 
-	@Autowired
-	private TriggerInstance.DrinkFromFlaskTriggerInstanceFactory factory;
 
 	@Autowired
-	private HolderMatcher holderMatcher;
+	private final HolderMatcher holderMatcher = new HolderMatcher();
 
 	public Codec<DrinkFromFlaskTrigger.TriggerInstance> codec() {
-		return factory.CODEC;
+		return TriggerInstance.DrinkFromFlaskTriggerInstanceFactory.CODEC;
 	}
 
 	public void trigger(ServerPlayer player, int doses, int seconds, Holder<Potion> potion) {
@@ -45,7 +43,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 		@Component
 		public static class DrinkFromFlaskTriggerInstanceFactory {
 
-			public final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			public static final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(DrinkFromFlaskTrigger.TriggerInstance::player),
 					MinMaxBounds.Ints.CODEC.optionalFieldOf("doses", MinMaxBounds.Ints.between(0, 4)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::doses),
 					MinMaxBounds.Ints.CODEC.optionalFieldOf("seconds", MinMaxBounds.Ints.exactly(8)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::seconds),
