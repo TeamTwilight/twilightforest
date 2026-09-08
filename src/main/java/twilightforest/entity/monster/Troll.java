@@ -239,12 +239,12 @@ public class Troll extends Monster implements RangedAttackMob {
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
 			ThrownBlock blocc = new ThrownBlock(this.level(), this.rock);
+			blocc.setPos(this.getX(), this.getY() + this.getBbHeight(), this.getZ());
 
 			double d0 = target.getX() - this.getX();
 			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - blocc.getY();
 			double d2 = target.getZ() - this.getZ();
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-			blocc.setPos(this.getX(), this.getY() + this.getBbHeight(), this.getZ());
 			blocc.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 4 - this.level().getDifficulty().getId());
 
 			this.playSound(TFSounds.TROLL_THROWS_ROCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
