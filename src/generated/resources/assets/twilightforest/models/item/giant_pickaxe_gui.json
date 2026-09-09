@@ -26,6 +26,7 @@
   ],
   "gui_light": "front",
   "textures": {
-    "layer0": "minecraft:item/stone_pickaxe"
+    "layer0": "minecraft:item/stone_pickaxe",
+    "particle": "minecraft:item/stone_pickaxe"
   }
 }

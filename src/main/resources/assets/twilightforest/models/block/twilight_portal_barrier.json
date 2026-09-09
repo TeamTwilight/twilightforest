@@ -3,7 +3,8 @@
   "parent": "block/block",
   "render_type": "minecraft:cutout",
   "textures": {
-    "all": "twilightforest:block/portal_barrier"
+    "all": "twilightforest:block/portal_barrier",
+    "particle": "#all"
   },
   "elements": [
     {

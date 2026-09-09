@@ -58,7 +58,7 @@ public class TFTextureMapping {
 	}
 
 	public static TextureMapping forcefield() {
-		var tex = new Material(TwilightForestMod.prefix("block/forcefield"));
+		Material tex = new Material(TwilightForestMod.prefix("block/forcefield_white"));
 		return new TextureMapping().put(TextureSlot.PANE, tex).put(TextureSlot.PARTICLE, tex);
 	}
 

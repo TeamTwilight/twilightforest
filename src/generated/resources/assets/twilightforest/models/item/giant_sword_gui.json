@@ -26,6 +26,7 @@
   ],
   "gui_light": "front",
   "textures": {
-    "layer0": "minecraft:item/stone_sword"
+    "layer0": "minecraft:item/stone_sword",
+    "particle": "minecraft:item/stone_sword"
   }
 }

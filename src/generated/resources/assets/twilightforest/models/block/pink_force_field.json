@@ -4,7 +4,7 @@
   "elements": [],
   "loader": "twilightforest:force_field",
   "textures": {
-    "pane": "twilightforest:block/forcefield",
-    "particle": "twilightforest:block/forcefield"
+    "pane": "twilightforest:block/forcefield_white",
+    "particle": "twilightforest:block/forcefield_white"
   }
 }

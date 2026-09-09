@@ -3,7 +3,7 @@
   "parent": "twilightforest:block/miniature/template_transforms",
   "textures": {
     "encased": "twilightforest:block/encased_towerwood",
-    "planks": "twilightforest:block/wood/planks_darkwood_3",
+    "planks": "twilightforest:block/dark_planks_3",
     "netherrack": "block/netherrack",
     "particle": "#planks"
   },

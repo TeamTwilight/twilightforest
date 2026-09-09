@@ -342,12 +342,14 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	}
 
 	public void generateGiantTool(Item tool, Item baseTool, float u0, float v0, float u1, float v1) {
-		TextureMapping textures = TextureMapping.layer0(baseTool);
+		Material toolTexture = TextureMapping.getItemTexture(baseTool);
+		TextureMapping textures = new TextureMapping().put(TextureSlot.LAYER0, toolTexture).put(TextureSlot.PARTICLE, toolTexture);
 		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, textures, this.modelOutput));
 		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ExtendedModelTemplateBuilder.builder()
 			.suffix("_gui")
 			.guiLight(UnbakedModel.GuiLight.FRONT)
 			.requiredTextureSlot(TextureSlot.LAYER0)
+			.requiredTextureSlot(TextureSlot.PARTICLE)
 			.element(elementBuilder ->
 				elementBuilder.from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 0.0F)
 					.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.LAYER0).uvs(u0, v0, u1, v1)))
