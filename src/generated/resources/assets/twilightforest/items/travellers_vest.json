@@ -50,11 +50,11 @@
           "type": "minecraft:condition",
           "on_false": {
             "type": "minecraft:model",
-            "model": "twilightforest:item/travellers_gloves"
+            "model": "twilightforest:item/travellers_modifiers/vest/gloves"
           },
           "on_true": {
             "type": "minecraft:model",
-            "model": "twilightforest:item/travellers_gloves_broken"
+            "model": "twilightforest:item/travellers_modifiers/vest/broken/gloves"
           },
           "property": "minecraft:broken"
         }

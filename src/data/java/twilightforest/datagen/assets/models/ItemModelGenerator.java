@@ -271,7 +271,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.itemModelOutput.accept(TFItems.STALE_BREAD.get(), ItemModelUtils.plainModel(ModelTemplates.FLAT_HANDHELD_ITEM.create(TFItems.STALE_BREAD.get(), TextureMapping.layer0(Items.BREAD), this.modelOutput)));
 
 		this.generateTravellersGear(TFItems.TRAVELLERS_GOGGLES.get(), TwilightForestMod.prefix("travellers_modifiers/goggles"));
-		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TwilightForestMod.prefix("travellers_modifiers/vest"));
+		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), "gloves", new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TwilightForestMod.prefix("travellers_modifiers/vest"));
 		this.generateTravellersGear(TFItems.TRAVELLERS_WINGS.get(), TwilightForestMod.prefix("travellers_modifiers/wings"));
 		this.generateTravellersGear(TFItems.TRAVELLERS_BOOTS.get(), TwilightForestMod.prefix("travellers_modifiers/boots"));
 		this.generateFlatItem(TFItems.TRAVELLERS_BELT.get(), ModelTemplates.FLAT_ITEM);
@@ -462,15 +462,20 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			new TravellersGearItemModel.Unbaked(ItemModelUtils.plainModel(this.createFlatItemModel(item, ModelTemplates.FLAT_ITEM)), modifierDirectory)));
 	}
 
-	public void generateLayeredTravellersGear(Item item, Item overlay, ConditionalItemModelProperty property, Identifier modifierDirectory) {
+	public void generateLayeredTravellersGear(Item item, Item overlay, String overlayName, ConditionalItemModelProperty property, Identifier modifierDirectory) {
 		ItemModel.Unbaked gearModel = ItemModelUtils.conditional(new Broken(),
 			new TravellersGearItemModel.Unbaked(ItemModelUtils.plainModel(this.createFlatItemModel(item, "_broken", ModelTemplates.FLAT_ITEM)), modifierDirectory.withSuffix("/broken")),
 			new TravellersGearItemModel.Unbaked(ItemModelUtils.plainModel(this.createFlatItemModel(item, ModelTemplates.FLAT_ITEM)), modifierDirectory));
 		ItemModel.Unbaked baseOverlay = ItemModelUtils.plainModel(this.createFlatItemModel(overlay, ModelTemplates.FLAT_ITEM));
 		ItemModel.Unbaked overlayModel = ItemModelUtils.conditional(new Broken(),
-			ItemModelUtils.plainModel(this.createFlatItemModel(overlay, "_broken", ModelTemplates.FLAT_ITEM)),
-			baseOverlay);
+			ItemModelUtils.plainModel(this.attachedOverlayModel(modifierDirectory.withSuffix("/broken/" + overlayName))),
+			ItemModelUtils.plainModel(this.attachedOverlayModel(modifierDirectory.withSuffix("/" + overlayName))));
 		this.itemModelOutput.accept(overlay, baseOverlay);
 		this.itemModelOutput.accept(item, ItemModelUtils.conditional(property, ItemModelUtils.composite(gearModel, overlayModel), gearModel));
+	}
+
+	public Identifier attachedOverlayModel(Identifier sprite) {
+		Identifier texture = sprite.withPrefix("item/");
+		return ModelTemplates.FLAT_ITEM.create(texture, TextureMapping.layer0(new Material(texture)), this.modelOutput);
 	}
 }
