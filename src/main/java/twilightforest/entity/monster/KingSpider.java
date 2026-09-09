@@ -78,6 +78,6 @@ public class KingSpider extends Spider {
 
 	@Override
 	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return super.getPassengerAttachmentPoint(entity, dimensions, yRot).add(0.0F, dimensions.height() * 0.15F, 0.0F);
+		return super.getPassengerAttachmentPoint(entity, dimensions, yRot).add(0.0F, -dimensions.height() * 0.15F, 0.0F);
 	}
 }
