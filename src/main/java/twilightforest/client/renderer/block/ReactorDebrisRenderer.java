@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -92,7 +93,7 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 		if (location == null)  // Handles cases with too many debris placed at once
 			return getSprite(ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
 		return spriteCache.computeIfAbsent(location, loc ->
-			new Material.Baked(Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(loc), false)
+			new Material.Baked(Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(loc), false)
 		);
 	}
 

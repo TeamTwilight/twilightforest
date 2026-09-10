@@ -31,8 +31,8 @@ public class ModelGenerator extends ModelProvider {
 		BlockStateGeneratorCollector blockModelOutput = new BlockStateGeneratorCollector(this::getKnownBlocks);
 		SimpleModelCollector modelOutput = new SimpleModelCollector();
 		this.registerModels(new BlockModelGenerator(blockModelOutput, itemModelOutput, modelOutput), new ItemModelGenerator(itemModelOutput, modelOutput));
-//		blockModelOutput.validate();
-//		itemModelOutput.finalizeAndValidate();
+		blockModelOutput.validate();
+		itemModelOutput.finalizeAndValidate();
 		return CompletableFuture.allOf(blockModelOutput.save(output, this.blocks), modelOutput.save(output, this.models), itemModelOutput.save(output, this.items));
 	}
 

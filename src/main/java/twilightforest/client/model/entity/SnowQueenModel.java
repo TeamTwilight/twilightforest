@@ -135,6 +135,11 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 	}
 
 	@Override
+	public void setupRotationsForTrophy(float animationTicks, float yaw, float mouthAngle) {
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
+	}
+
+	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(SnowQueenRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 	}

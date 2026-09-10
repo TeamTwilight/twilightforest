@@ -10,10 +10,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -22,7 +21,6 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +29,6 @@ import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
-import twilightforest.init.TFRecipes;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;
@@ -46,8 +43,6 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 	// Inaccessible grid, for uncrafting logic
 	private final UncraftingContainer uncraftingMatrix = new UncraftingContainer(this);
-	// Accessible grid, for actual crafting
-	public final CraftingContainer assemblyMatrix = new TransientCraftingContainer(this, 3, 3);
 	// Inaccessible grid, for recrafting logic
 	private final CraftingContainer combineMatrix = new TransientCraftingContainer(this, 3, 3);
 
@@ -82,19 +77,19 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		this.player = inventory.player;
 
 		this.addSlot(new Slot(this.tinkerInput, 0, 13, 35));
-		this.addSlot(new UncraftingResultSlot(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, this.tinkerResult, 0, 147, 35));
+		this.addSlot(new UncraftingResultSlot(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.craftSlots, this.tinkerResult, 0, 147, 35));
 
 		int invX;
 		int invY;
 
 		for (invX = 0; invX < 3; ++invX) {
 			for (invY = 0; invY < 3; ++invY) {
-				this.addSlot(new UncraftingSlot(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, invY + invX * 3, 300000 + invY * 18, 17 + invX * 18));
+				this.addSlot(new UncraftingSlot(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.craftSlots, invY + invX * 3, 300000 + invY * 18, 17 + invX * 18));
 			}
 		}
 		for (invX = 0; invX < 3; ++invX) {
 			for (invY = 0; invY < 3; ++invY) {
-				this.addSlot(new AssemblySlot(this.assemblyMatrix, invY + invX * 3, 62 + invY * 18, 17 + invX * 18));
+				this.addSlot(new AssemblySlot(this.craftSlots, invY + invX * 3, 62 + invY * 18, 17 + invX * 18));
 			}
 		}
 
@@ -108,7 +103,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			this.addSlot(new Slot(inventory, invX, 8 + invX * 18, 142));
 		}
 
-		this.slotsChanged(this.assemblyMatrix);
+		this.slotsChanged(this.craftSlots);
 
 		if (!FMLEnvironment.isProduction()) {
 			// Debug slot listing
@@ -134,15 +129,15 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getItem(0);
-			Recipe<?>[] recipes = getRecipesFor(inputStack, this.level);
+			CraftingRecipe[] recipes = getRecipesFor(inputStack, this.level);
 
 			int size = recipes.length;
 
 			if (size > 0 && !inputStack.is(TFItemTags.BANNED_UNCRAFTABLES)) {
 
-				Recipe<?> recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
+				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				this.storedGhostRecipe = recipe;
-//				ItemStack[] recipeItems = this.getIngredients(recipe);
+				ItemStack[] recipeItems = this.getIngredients(recipe);
 
 				if (recipe instanceof ShapedRecipe rec) {
 
@@ -154,18 +149,18 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 						for (int invX = 0; invX < recipeWidth; invX++) {
 
 							int index = invX + invY * recipeWidth;
-//							if (index >= recipeItems.length) continue;
+							if (index >= recipeItems.length) continue;
 
-//							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
-//							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
+							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
+							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
 						}
 					}
 				} else {
 					for (int i = 0; i < this.uncraftingMatrix.getContainerSize(); i++) {
-//						if (i < recipeItems.length) {
-//							ItemStack ingredient = normalizeIngredient(recipeItems[i].copy());
-//							this.uncraftingMatrix.setItem(i, ingredient);
-//						}
+						if (i < recipeItems.length) {
+							ItemStack ingredient = normalizeIngredient(recipeItems[i].copy());
+							this.uncraftingMatrix.setItem(i, ingredient);
+						}
 					}
 				}
 
@@ -186,13 +181,13 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				// mark banned items
 				for (int i = 0; i < 9; i++) {
 					ItemStack ingredient = this.uncraftingMatrix.getItem(i);
-//					if (isIngredientProblematic(ingredient)) {
-//						markStack(ingredient);
-//					}
+					if (isIngredientProblematic(ingredient)) {
+						markStack(ingredient);
+					}
 				}
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
-//				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.assemble(this.level.registryAccess()).getCount(); //Uncrafting recipes need this method call
+				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.assemble(this.craftSlots.asCraftInput()).getCount(); //Uncrafting recipes need this method call
 				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 
@@ -203,10 +198,10 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			}
 		}
 		// Now we've got the uncrafting logic set in, currently we don't modify the uncraftingMatrix. That's fine.
-		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
+		if (inventory == this.craftSlots || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
-				this.chooseRecipe(this.assemblyMatrix.asCraftInput());
+				this.chooseRecipe(this.craftSlots.asCraftInput());
 			} else {
 				// we placed an item in the assembly matrix, the next step will re-initialize these with correct values
 				this.tinkerResult.setItem(0, ItemStack.EMPTY);
@@ -216,11 +211,11 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		}
 
 		// repairing / recrafting: if there is an input item, and items in both grids, can we combine them to produce an output item that is the same type as the input item?
-		if (inventory != this.combineMatrix && !this.uncraftingMatrix.isEmpty() && !this.assemblyMatrix.isEmpty()) {
+		if (inventory != this.combineMatrix && !this.uncraftingMatrix.isEmpty() && !this.craftSlots.isEmpty()) {
 			// combine the two matrices
 			for (int i = 0; i < 9; i++) {
 
-				ItemStack assembly = this.assemblyMatrix.getItem(i);
+				ItemStack assembly = this.craftSlots.getItem(i);
 				ItemStack uncrafting = this.uncraftingMatrix.getItem(i);
 
 				if (!assembly.isEmpty()) {
@@ -238,20 +233,18 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			ItemStack result = this.tinkerResult.getItem(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
-//				if (result.getItem().isEnchantable(result)) {
-//					//store copy of input enchants
-//					ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
-//					//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
-//					if (result.has(DataComponents.ENCHANTMENTS)) {
-//						Objects.requireNonNull(result.get(DataComponents.ENCHANTMENTS)).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
-//					}
-//					//remove any incompatible enchants
-//					enchants.removeIf(holder -> !result.supportsEnchantment(holder));
-//
-//					//remove enchantments and replace with filtered list
-//					result.remove(DataComponents.ENCHANTMENTS);
-//					EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
-//				}
+				//store copy of input enchants
+				ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
+				//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
+				if (result.has(DataComponents.ENCHANTMENTS)) {
+					result.get(DataComponents.ENCHANTMENTS).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
+				}
+				//remove any incompatible enchants
+				enchants.removeIf(holder -> !result.supportsEnchantment(holder));
+
+				//remove enchantments and replace with filtered list
+				result.remove(DataComponents.ENCHANTMENTS);
+				EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
 
 				this.tinkerResult.setItem(0, result);
 				this.uncraftingMatrix.uncraftingCost = 0;
@@ -285,61 +278,71 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		return ingredient;
 	}
 
-	private static Recipe<?>[] getRecipesFor(ItemStack inputStack, Level world) {
+	private static CraftingRecipe[] getRecipesFor(ItemStack inputStack, Level world) {
 
-		List<Recipe<?>> recipes = new ArrayList<>();
+		List<CraftingRecipe> recipes = new ArrayList<>();
 
-		if (!inputStack.isEmpty()) {
-//			for (RecipeHolder<?> recipe : world.getRecipeManager().getRecipes()) {
-//				if (isRecipeSupported(recipe.value()) &&
-////					!recipe.value().isIncomplete() &&
-////					recipe.value().canCraftInDimensions(3, 3) &&
-////					!recipe.value().getIngredients().isEmpty() &&
-////					matches(inputStack, recipe.value().getResultItem(world.registryAccess())) &&
-//					TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString())) {
-////					if (TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
-////						recipes.add(recipe.value());
-////					}
-//				}
-//			}
-//			for (RecipeHolder<UncraftingRecipe> uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get())) {
-//				if (uncraftingRecipe.value().isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe.value());
-//			}
+		if (!inputStack.isEmpty() && world instanceof ServerLevel server) {
+			for (RecipeHolder<?> holder : server.recipeAccess().getRecipes()) {
+				if (holder.value() instanceof CraftingRecipe recipe) {
+					if (isRecipeSupported(inputStack, recipe) && TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(holder.id().toString())) {
+						if (TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(holder.id().identifier().getNamespace())) {
+							recipes.add(recipe);
+						}
+					}
+					if (recipe instanceof UncraftingRecipe uncraftingRecipe && uncraftingRecipe.isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe);
+				}
+			}
 		}
 
-		return recipes.toArray(new Recipe<?>[0]);
+		return recipes.toArray(new CraftingRecipe[0]);
 	}
 
-	private static boolean isRecipeSupported(Recipe<?> recipe) {
+	private static boolean isRecipeSupported(ItemStack inputStack, CraftingRecipe recipe) {
+		if (recipe instanceof ShapedRecipe shapedRecipe) {
+			return isComplete(shapedRecipe.placementInfo().ingredients()) &&
+				shapedRecipe.pattern.width() <= 3 && shapedRecipe.pattern.height() <= 3 &&
+				matches(inputStack, shapedRecipe.result);
+		} else if (TFConfig.allowShapelessUncrafting && recipe instanceof ShapelessRecipe shapelessRecipe) {
+			return isComplete(shapelessRecipe.placementInfo().ingredients()) &&
+				shapelessRecipe.placementInfo().ingredients().size() <= 9 &&
+				matches(inputStack, shapelessRecipe.result);
+		}
+
 		return TFConfig.allowShapelessUncrafting ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
 	}
 
-	private static boolean matches(ItemStack input, ItemStack output) {
-		return input.is(output.getItem()) && input.getCount() >= output.getCount();
+	protected static boolean isComplete(List<Ingredient> list) { //TODO: check if properly ported
+		return !list.isEmpty() && list.stream().noneMatch(Ingredient::isEmpty);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
-//	private static RecipeHolder<CraftingRecipe>[] getRecipesFor(CraftingInput input, Level level) {
-//		return level.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, input, level).toArray(new RecipeHolder[0]);
-//	}
+	private static boolean matches(ItemStack input, ItemStackTemplate output) {
+		return input.is(output.item()) && input.getCount() >= output.count();
+	}
+
+	private static List<RecipeHolder<CraftingRecipe>> getRecipesFor(CraftingInput input, ServerLevel level) {
+		return level.recipeAccess().recipeMap().getRecipesFor(RecipeType.CRAFTING, input, level).toList();
+	}
 
 	private void chooseRecipe(CraftingInput input) {
 
-//		RecipeHolder<CraftingRecipe>[] recipes = getRecipesFor(input, this.level);
+		if (this.level instanceof ServerLevel server) {
+			List<RecipeHolder<CraftingRecipe>> recipes = getRecipesFor(input, server);
 
-//		if (recipes.length == 0) {
-//			this.tinkerResult.setItem(0, ItemStack.EMPTY);
-//			return;
-//		}
+			if (recipes.isEmpty()) {
+				this.tinkerResult.setItem(0, ItemStack.EMPTY);
+				return;
+			}
 
-//		RecipeHolder<CraftingRecipe> recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
+			RecipeHolder<CraftingRecipe> recipe = recipes.get(Math.floorMod(this.recipeInCycle, recipes.size()));
 
-//		if (recipe != null && this.level instanceof ServerLevel server && (!server.getGameRules().get(GameRules.LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe.id()))) {
-//			this.tinkerResult.setRecipeUsed(recipe);
-//			this.tinkerResult.setItem(0, recipe.value().assemble(input));
-//		} else {
-//			this.tinkerResult.setItem(0, ItemStack.EMPTY);
-//		}
+			if (recipe != null && (!server.getGameRules().get(GameRules.LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe.id()))) {
+				this.tinkerResult.setRecipeUsed(recipe);
+				this.tinkerResult.setItem(0, recipe.value().assemble(input));
+			} else {
+				this.tinkerResult.setItem(0, ItemStack.EMPTY);
+			}
+		}
 	}
 
 	/**
@@ -371,9 +374,12 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			return true;
 		}
 
-//		if (inputStack.getItem() instanceof ArmorItem input && resultStack.getItem() instanceof ArmorItem result) {
-//			return input.getEquipmentSlot() == result.getEquipmentSlot();
-//		}
+		//TODO: best that can be done for instanceof ArmorItem
+		if (inputStack.has(DataComponents.EQUIPPABLE) && resultStack.has(DataComponents.EQUIPPABLE)) {
+			if (inputStack.is(Tags.Items.ARMORS_HUMANOID) && inputStack.is(Tags.Items.ARMORS_HUMANOID)) {
+				return inputStack.get(DataComponents.EQUIPPABLE).slot() == resultStack.get(DataComponents.EQUIPPABLE).slot();
+			}
+		}
 
 		return false;
 	}
@@ -391,7 +397,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	 */
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
-		if ((!TFConfig.disableUncraftingOnly || this.storedGhostRecipe instanceof UncraftingRecipe) && this.assemblyMatrix.isEmpty()) {
+		if ((!TFConfig.disableUncraftingOnly || this.storedGhostRecipe instanceof UncraftingRecipe) && this.craftSlots.isEmpty()) {
 			return this.storedGhostRecipe instanceof UncraftingRecipe recipe ? recipe.getCost() : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.uncraftingXpCostMultiplier);
 		}
 		return 0;
@@ -409,13 +415,11 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		}
 
 		// okay, if we're here the input item must be enchanted, and we are repairing or recrafting it
-//		if (!output.getItem().isEnchantable(output)) return 0; // Assuming the above comment is correct, we check this here and return 0 if true
-
 		int cost = 0;
 
 		if (!ItemStack.isSameItem(input, output)) {
 			// add each ingredient being used to the cost if recrafting
-			cost += this.assemblyMatrix.getItems().stream().filter(stack -> !stack.isEmpty()).toList().size();
+			cost += this.craftSlots.getItems().stream().filter(stack -> !stack.isEmpty()).toList().size();
 		}
 
 		// look at the input's enchantments and total them up
@@ -460,11 +464,11 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	@Override
 	public void clicked(int slotNum, int mouseButton, ContainerInput clickType, Player player) {
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
-		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.assemblyMatrix
+		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.craftSlots
 			&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
-			if (this.assemblyMatrix.isEmpty() && (clickType != ContainerInput.SWAP || player.getInventory().getItem(mouseButton).isEmpty())) {
+			if (this.craftSlots.isEmpty() && (clickType != ContainerInput.SWAP || player.getInventory().getItem(mouseButton).isEmpty())) {
 				slotNum -= 9;
 			}
 		}
@@ -522,9 +526,9 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		int count = matrix.getContainerSize();
 		for (int i = 0; i < matrix.getContainerSize(); i++) {
 
-//			if (isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i)) || !isDamageableComponent(matrix.getItem(i))) {
-//				count--;
-//			}
+			if (isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i)) || !isDamageableComponent(matrix.getItem(i))) {
+				count--;
+			}
 		}
 		return count;
 	}
@@ -565,7 +569,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (slot.container == this.assemblyMatrix) {
+			} else if (slot.container == this.craftSlots) {
 				if (!this.moveItemStackTo(itemstack1, 20, 56, false)) {
 					return ItemStack.EMPTY;
 				}
@@ -595,38 +599,27 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	public void removed(Player player) {
 		super.removed(player);
 		this.positionData.execute((world, pos) -> {
-			this.clearContainer(player, this.assemblyMatrix);
+			this.clearContainer(player, this.craftSlots);
 			this.clearContainer(player, this.tinkerInput);
 		});
 	}
 
-//	private ItemStack[] getIngredients(Recipe<?> recipe) {
-////		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
-//
-//		for (int i = 0; i < recipe.getIngredients().size(); i++) {
-//			ItemStack[] matchingStacks = Arrays.stream(recipe.getIngredients().get(i).getItems()).filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).toArray(ItemStack[]::new);
-//			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
-//		}
-//
-//		return stacks;
-//	}
+	private ItemStack[] getIngredients(CraftingRecipe recipe) {
+		List<Ingredient> ingredients = recipe.placementInfo().ingredients();
+		ItemStack[] stacks = new ItemStack[ingredients.size()];
+
+		for (int i = 0; i < ingredients.size(); i++) {
+			ItemStack[] matchingStacks = ingredients.get(i).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
+			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
+		}
+
+		return stacks;
+	}
 
 	@Override
 	public boolean stillValid(Player player) {
 		return !TFConfig.disableEntireTable && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
 	}
-
-	@Override
-	public void fillCraftSlotsStackedContents(StackedItemContents stackedContents) {
-		this.assemblyMatrix.fillStackedContents(stackedContents);
-	}
-
-	//	@Override
-//	public void clearCraftingContent() {
-//		this.tinkerInput.clearContent();
-//		this.assemblyMatrix.clearContent();
-//		this.tinkerResult.clearContent();
-//	}
 
 	@Override
 	public Slot getResultSlot() {
@@ -643,29 +636,12 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		return this.player;
 	}
 
-	//	@Override
-//	public int getSize() {
-//		return 20;
-//	}
+	public CraftingContainer getCraftSlots() {
+		return this.craftSlots;
+	}
 
 	@Override
 	public RecipeBookType getRecipeBookType() {
 		return RecipeBookType.CRAFTING;
 	}
-
-//	@Override
-//	public boolean shouldMoveToInventory(int slot) {
-//		return slot == 0 || (11 <= slot && slot <= 19);
-//	}
-
-//	@Override
-//	public boolean recipeMatches(RecipeHolder<Recipe<RecipeInput>> recipeHolder) {
-//		return recipeHolder.value().matches(this.assemblyMatrix.asCraftInput(), this.player.level());
-//	}
-
-//	@SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
-//	@Override
-//	public PostPlaceAction handlePlacement(boolean useMaxItems, boolean allowDroppingItemsToClear, RecipeHolder<?> recipe, ServerLevel level, Inventory inventory) {
-//		return new UncrafterPlaceRecipe<>(this).recipeClicked(player, (RecipeHolder<Recipe<RecipeInput>>) recipe, useMaxItems);
-//	}
 }

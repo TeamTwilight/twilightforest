@@ -91,6 +91,9 @@ public class TFWeatherRenderer {
 
 			// locked structures
 			renderLockedStructure(ticks, partialTicks, camera, buffer);
+
+			if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
+				bufferSource.endBatch();
 		}
 
 		//render normal weather anyway

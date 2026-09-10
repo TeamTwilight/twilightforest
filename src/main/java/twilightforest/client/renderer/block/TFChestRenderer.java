@@ -22,7 +22,7 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 	static {
 		ImmutableMap.Builder<Block, EnumMap<ChestType, SpriteId>> builder = ImmutableMap.builder();
 
-		builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight", "normal"));
+		builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight_oak", "normal"));
 		builder.put(TFBlocks.CANOPY_CHEST.get(), chestMaterial("canopy", "normal"));
 		builder.put(TFBlocks.MANGROVE_CHEST.get(), chestMaterial("mangrove", "normal"));
 		builder.put(TFBlocks.DARK_CHEST.get(), chestMaterial("darkwood", "normal"));
@@ -31,7 +31,7 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 		builder.put(TFBlocks.MINING_CHEST.get(), chestMaterial("mining", "normal"));
 		builder.put(TFBlocks.SORTING_CHEST.get(), chestMaterial("sorting", "normal"));
 
-		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), chestMaterial("twilight", "trapped"));
+		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), chestMaterial("twilight_oak", "trapped"));
 		builder.put(TFBlocks.CANOPY_TRAPPED_CHEST.get(), chestMaterial("canopy", "trapped"));
 		builder.put(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), chestMaterial("mangrove", "trapped"));
 		builder.put(TFBlocks.DARK_TRAPPED_CHEST.get(), chestMaterial("darkwood", "trapped"));

@@ -18,12 +18,15 @@ public record SkullChestSpecialRenderer(KeepsakeCasketModel model, float opennes
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
+		SkullChestRenderer.applyCasketItemPose(stack);
 		collector.submitModel(this.model(), this.openness(), stack, SkullChestRenderer.SKULL_CHEST_TEXTURE, light, overlay, outlineColor, null);
 	}
 
 	@Override
 	public void getExtents(Consumer<Vector3fc> output) {
 		PoseStack poseStack = new PoseStack();
+		SkullChestRenderer.applyCasketItemPose(poseStack);
+		this.model.setupAnim(this.openness());
 		this.model.root().getExtentsForGui(poseStack, output);
 	}
 

@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
@@ -15,13 +16,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3fc;
 import tamaized.beanification.Autowired;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.components.item.JarLid;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 
 import java.util.Optional;
@@ -35,13 +36,12 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 	@Override
 	public void submit(@Nullable DataComponentMap map, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
 		if (map != null) {
-			stack.pushPose();
 			JarLid jarLid = map.get(TFDataComponents.JAR_LID.get());
 			Item testLid = jarLid == null ? this.defaultLid().orElse(null) : jarLid.lid();
-//			Item lid = testLid == null || !JarRenderer.LIDS.containsKey(testLid) ? null : testLid;
-//			if (lid != null) {
-////				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), TFBlocks.MASON_JAR.get().defaultBlockState(), Minecraft.getInstance().getBlockRenderer(), stack, source, light, overlay);
-//			}
+			StandaloneModelKey<BlockStateModelPart> lid = testLid == null ? null : JarRenderer.LIDS.get().get(testLid);
+			if (lid != null) {
+				JarRenderer.submitModel(lid, stack, collector, light);
+			}
 
 			ItemContainerContents contents = map.get(DataComponents.CONTAINER);
 			if (contents != null) {
@@ -53,7 +53,6 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolv
 				state.submit(stack, collector, light, overlay, outlineColor);
 				stack.popPose();
 			}
-			stack.popPose();
 		}
 	}
 

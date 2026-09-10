@@ -119,8 +119,9 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 			.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
-			sc.setOwnerProfile(profile);
+			sc.setCandleInfo(new SkullCandles(AbstractSkullCandleBlock.candleToCandleColor(candle).getValue(), sc.getCandleInfo().count()));
+			if (profile != null)
+				sc.setOwnerProfile(profile);
 			sc.setChanged();
 		}
 	}
@@ -135,8 +136,9 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 			.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
-			sc.setOwnerProfile(profile);
+			sc.setCandleInfo(new SkullCandles(AbstractSkullCandleBlock.candleToCandleColor(candle).getValue(), sc.getCandleInfo().count()));
+			if (profile != null)
+				sc.setOwnerProfile(profile);
 			sc.setChanged();
 		}
 	}

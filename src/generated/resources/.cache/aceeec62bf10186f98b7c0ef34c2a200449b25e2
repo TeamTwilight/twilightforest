@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-29T17:27:00.8359613	Twilight Forest Block Tags
+// 26.1.2	2026-09-05T22:22:48.6843513	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -131,6 +131,6 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/block/timewood
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/block/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/block/transwood_logs.json
 4fba579595d0eafa048882f138be9adc9e39b7b1 data/twilightforest/tags/block/tree_roots_skip.json
-bf847accd5b18676d59a86e224adcfc328d677e6 data/twilightforest/tags/block/trophies.json
+bf847accd5b18676d59a86e224adcfc328d677e6 data/twilightforest/tags/block/trophy_pedestal_activation_blocks.json
 d94381f990d5908c2d71247b1b14946ef4a4ef3d data/twilightforest/tags/block/twilight_oak_logs.json
 1617d0033c8d1499f706c5966971b445f59be257 data/twilightforest/tags/block/worldgen_replaceables.json

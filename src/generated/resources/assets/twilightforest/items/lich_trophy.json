@@ -1,149 +1,153 @@
 {
   "model": {
-    "type": "minecraft:select",
-    "cases": [
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
+    "type": "twilightforest:animated_item_model",
+    "base_model": {
+      "type": "minecraft:select",
+      "cases": [
+        {
           "model": {
-            "type": "twilightforest:trophy",
-            "display": "none",
-            "kind": "lich"
-          }
-        },
-        "when": "none"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
-          "model": {
-            "type": "twilightforest:trophy",
-            "display": "thirdperson_lefthand",
-            "kind": "lich"
-          }
-        },
-        "when": "thirdperson_lefthand"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
-          "model": {
-            "type": "twilightforest:trophy",
-            "display": "thirdperson_righthand",
-            "kind": "lich"
-          }
-        },
-        "when": "thirdperson_righthand"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
-          "model": {
-            "type": "twilightforest:trophy",
-            "display": "firstperson_lefthand",
-            "kind": "lich"
-          }
-        },
-        "when": "firstperson_lefthand"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
-          "model": {
-            "type": "twilightforest:trophy",
-            "display": "firstperson_righthand",
-            "kind": "lich"
-          }
-        },
-        "when": "firstperson_righthand"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
-          "model": {
-            "type": "twilightforest:trophy",
-            "display": "head",
-            "kind": "lich"
-          }
-        },
-        "when": "head"
-      },
-      {
-        "model": {
-          "type": "minecraft:composite",
-          "models": [
-            {
-              "type": "minecraft:model",
-              "model": "twilightforest:item/major_boss_trophy"
-            },
-            {
-              "type": "minecraft:special",
-              "base": "twilightforest:item/template_trophy",
-              "model": {
-                "type": "twilightforest:trophy",
-                "display": "gui",
-                "kind": "lich"
-              }
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "none",
+              "kind": "lich"
             }
-          ]
+          },
+          "when": "none"
         },
-        "when": "gui"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
+        {
           "model": {
-            "type": "twilightforest:trophy",
-            "display": "ground",
-            "kind": "lich"
-          }
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "thirdperson_lefthand",
+              "kind": "lich"
+            }
+          },
+          "when": "thirdperson_lefthand"
         },
-        "when": "ground"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
+        {
           "model": {
-            "type": "twilightforest:trophy",
-            "display": "fixed",
-            "kind": "lich"
-          }
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "thirdperson_righthand",
+              "kind": "lich"
+            }
+          },
+          "when": "thirdperson_righthand"
         },
-        "when": "fixed"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
+        {
           "model": {
-            "type": "twilightforest:trophy",
-            "display": "on_shelf",
-            "kind": "lich"
-          }
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "firstperson_lefthand",
+              "kind": "lich"
+            }
+          },
+          "when": "firstperson_lefthand"
         },
-        "when": "on_shelf"
-      },
-      {
-        "model": {
-          "type": "minecraft:special",
-          "base": "twilightforest:item/template_trophy",
+        {
           "model": {
-            "type": "twilightforest:trophy",
-            "display": "twilightforest:jarred",
-            "kind": "lich"
-          }
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "firstperson_righthand",
+              "kind": "lich"
+            }
+          },
+          "when": "firstperson_righthand"
         },
-        "when": "twilightforest:jarred"
-      }
-    ],
-    "property": "minecraft:display_context"
-  }
+        {
+          "model": {
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "head",
+              "kind": "lich"
+            }
+          },
+          "when": "head"
+        },
+        {
+          "model": {
+            "type": "minecraft:composite",
+            "models": [
+              {
+                "type": "minecraft:model",
+                "model": "twilightforest:item/major_boss_trophy"
+              },
+              {
+                "type": "minecraft:special",
+                "base": "twilightforest:item/template_trophy",
+                "model": {
+                  "type": "twilightforest:trophy",
+                  "display": "gui",
+                  "kind": "lich"
+                }
+              }
+            ]
+          },
+          "when": "gui"
+        },
+        {
+          "model": {
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "ground",
+              "kind": "lich"
+            }
+          },
+          "when": "ground"
+        },
+        {
+          "model": {
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "fixed",
+              "kind": "lich"
+            }
+          },
+          "when": "fixed"
+        },
+        {
+          "model": {
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "on_shelf",
+              "kind": "lich"
+            }
+          },
+          "when": "on_shelf"
+        },
+        {
+          "model": {
+            "type": "minecraft:special",
+            "base": "twilightforest:item/template_trophy",
+            "model": {
+              "type": "twilightforest:trophy",
+              "display": "twilightforest:jarred",
+              "kind": "lich"
+            }
+          },
+          "when": "twilightforest:jarred"
+        }
+      ],
+      "property": "minecraft:display_context"
+    }
+  },
+  "oversized_in_gui": true
 }

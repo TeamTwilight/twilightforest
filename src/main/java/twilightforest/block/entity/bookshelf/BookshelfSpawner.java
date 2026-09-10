@@ -11,7 +11,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -80,24 +79,24 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				Collections.shuffle(filledSlots);
 
 				for (Pair<Integer, BooleanProperty> filledSlot : filledSlots) {
-					BooleanProperty property = filledSlot.getSecond();
-					if (state.hasProperty(property) && state.getValue(property)) {
-						if (this.attemptSpawnTome(filledSlot.getFirst(), level, pos, false, null, 0)) {
-							this.delay(level, pos);
-							break;
+					if (this.attemptSpawnTome(filledSlot.getFirst(), level, pos, false, null, 0)) {
+						this.delay(level, pos);
+						break;
+					}
+				}
+
+				BlockState currentState = level.getBlockState(pos);
+				if (currentState.hasProperty(ChiseledCanopyShelfBlock.SPAWNER)) {
+					int fullSlots = 0;
+					for (BooleanProperty property : ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES) {
+						if (currentState.getValue(property)) {
+							fullSlots++;
 						}
 					}
-				}
 
-				int fullSlots = 0;
-				for (BooleanProperty property : ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES) {
-					if (state.hasProperty(property) && state.getValue(property)) {
-						fullSlots++;
+					if (fullSlots == 0) {
+						level.setBlockAndUpdate(pos, currentState.setValue(ChiseledCanopyShelfBlock.SPAWNER, false));
 					}
-				}
-
-				if (fullSlots == 0) {
-					level.setBlockAndUpdate(pos, state.setValue(ChiseledCanopyShelfBlock.SPAWNER, false));
 				}
 			}
 		}
@@ -176,7 +175,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		BlockState shelf = level.getBlockState(pos);
 		Direction facing = shelf.getValue(HorizontalDirectionalBlock.FACING);
 		try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TwilightForestMod.LOGGER)) {
-			ValueInput input = TagValueInput.create(reporter, level.registryAccess(), this.nextSpawnData.getEntityToSpawn());
+			ValueInput input = TagValueInput.create(reporter, level.registryAccess(), data.getEntityToSpawn());
 			Optional<EntityType<?>> entityType = EntityType.by(input);
 			//if the assigned entity doesn't exist or the bookshelf is blocked off, fail early
 			if (entityType.isEmpty() || !level.getBlockState(pos.relative(facing)).canBeReplaced()) {
@@ -253,12 +252,12 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 
 				//after mob is spawned, clear that book's spot from the shelf
 				if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity be) {
-					be.setItem(slot, ItemStack.EMPTY);
+					be.removeTomeFromSlot(slot);
 				}
 				return true;
 			} else {
 				if (maxTries != 0) {
-					this.attemptSpawnTome(slot, level, pos, fire, assailant, maxTries - 1);
+					return this.attemptSpawnTome(slot, level, pos, fire, assailant, maxTries - 1);
 				}
 			}
 		}

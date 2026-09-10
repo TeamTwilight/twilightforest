@@ -12,12 +12,15 @@ import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
+import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.properties.*;
@@ -198,8 +201,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateBow(TFItems.ICE_BOW.get(), true);
 		this.generateBow(TFItems.ENDER_BOW.get(), false);
 
-		this.generateGiantTool(TFItems.GIANT_SWORD.get(), Items.STONE_SWORD);
-		this.generateGiantTool(TFItems.GIANT_PICKAXE.get(), Items.STONE_PICKAXE);
+		this.generateGiantTool(TFItems.GIANT_SWORD.get(), Items.STONE_SWORD, 3.0F, 5.0F, 11.0F, 13.0F);
+		this.generateGiantTool(TFItems.GIANT_PICKAXE.get(), Items.STONE_PICKAXE, 7.0F, 2.0F, 15.0F, 10.0F);
 
 		this.generateFlatItem(TFItems.ICE_BOMB.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TWILIGHT_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -258,8 +261,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 
 		this.generateFlatItem(TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.GELATINOUS_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateLayeredItem(TFItems.BERRY_MEDLEY.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.BERRY_MEDLEY.get()));
-		this.generateLayeredItem(TFItems.MOSS_SOUP.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.MOSS_SOUP.get()));
+		this.itemModelOutput.accept(TFItems.BERRY_MEDLEY.get(), ItemModelUtils.plainModel(this.generateLayeredItem(TFItems.BERRY_MEDLEY.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.BERRY_MEDLEY.get()))));
+		this.itemModelOutput.accept(TFItems.MOSS_SOUP.get(), ItemModelUtils.plainModel(this.generateLayeredItem(TFItems.MOSS_SOUP.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.MOSS_SOUP.get()))));
 
 		this.generateFlatItem(TFItems.MAZE_SLIME_BALL.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TANNIN.get(), ModelTemplates.FLAT_ITEM);
@@ -268,7 +271,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.itemModelOutput.accept(TFItems.STALE_BREAD.get(), ItemModelUtils.plainModel(ModelTemplates.FLAT_HANDHELD_ITEM.create(TFItems.STALE_BREAD.get(), TextureMapping.layer0(Items.BREAD), this.modelOutput)));
 
 		this.generateTravellersGear(TFItems.TRAVELLERS_GOGGLES.get(), TwilightForestMod.prefix("travellers_modifiers/goggles"));
-		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TwilightForestMod.prefix("travellers_modifiers/vest"));
+		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), "gloves", new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TwilightForestMod.prefix("travellers_modifiers/vest"));
 		this.generateTravellersGear(TFItems.TRAVELLERS_WINGS.get(), TwilightForestMod.prefix("travellers_modifiers/wings"));
 		this.generateTravellersGear(TFItems.TRAVELLERS_BOOTS.get(), TwilightForestMod.prefix("travellers_modifiers/boots"));
 		this.generateFlatItem(TFItems.TRAVELLERS_BELT.get(), ModelTemplates.FLAT_ITEM);
@@ -338,9 +341,20 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(item, TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/tf_banner_pattern"))), this.modelOutput)));
 	}
 
-	public void generateGiantTool(Item tool, Item baseTool) {
-		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, TextureMapping.layer0(baseTool), this.modelOutput));
-		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(tool).withSuffix("_gui"));
+	public void generateGiantTool(Item tool, Item baseTool, float u0, float v0, float u1, float v1) {
+		Material toolTexture = TextureMapping.getItemTexture(baseTool);
+		TextureMapping textures = new TextureMapping().put(TextureSlot.LAYER0, toolTexture).put(TextureSlot.PARTICLE, toolTexture);
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, textures, this.modelOutput));
+		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ExtendedModelTemplateBuilder.builder()
+			.suffix("_gui")
+			.guiLight(UnbakedModel.GuiLight.FRONT)
+			.requiredTextureSlot(TextureSlot.LAYER0)
+			.requiredTextureSlot(TextureSlot.PARTICLE)
+			.element(elementBuilder ->
+				elementBuilder.from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 0.0F)
+					.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.LAYER0).uvs(u0, v0, u1, v1)))
+			.build()
+			.create(tool, textures, this.modelOutput));
 		this.itemModelOutput.accept(tool, ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 
@@ -448,15 +462,20 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			new TravellersGearItemModel.Unbaked(ItemModelUtils.plainModel(this.createFlatItemModel(item, ModelTemplates.FLAT_ITEM)), modifierDirectory)));
 	}
 
-	public void generateLayeredTravellersGear(Item item, Item overlay, ConditionalItemModelProperty property, Identifier modifierDirectory) {
+	public void generateLayeredTravellersGear(Item item, Item overlay, String overlayName, ConditionalItemModelProperty property, Identifier modifierDirectory) {
 		ItemModel.Unbaked gearModel = ItemModelUtils.conditional(new Broken(),
 			new TravellersGearItemModel.Unbaked(ItemModelUtils.plainModel(this.createFlatItemModel(item, "_broken", ModelTemplates.FLAT_ITEM)), modifierDirectory.withSuffix("/broken")),
 			new TravellersGearItemModel.Unbaked(ItemModelUtils.plainModel(this.createFlatItemModel(item, ModelTemplates.FLAT_ITEM)), modifierDirectory));
 		ItemModel.Unbaked baseOverlay = ItemModelUtils.plainModel(this.createFlatItemModel(overlay, ModelTemplates.FLAT_ITEM));
 		ItemModel.Unbaked overlayModel = ItemModelUtils.conditional(new Broken(),
-			ItemModelUtils.plainModel(this.createFlatItemModel(overlay, "_broken", ModelTemplates.FLAT_ITEM)),
-			baseOverlay);
+			ItemModelUtils.plainModel(this.attachedOverlayModel(modifierDirectory.withSuffix("/broken/" + overlayName))),
+			ItemModelUtils.plainModel(this.attachedOverlayModel(modifierDirectory.withSuffix("/" + overlayName))));
 		this.itemModelOutput.accept(overlay, baseOverlay);
 		this.itemModelOutput.accept(item, ItemModelUtils.conditional(property, ItemModelUtils.composite(gearModel, overlayModel), gearModel));
+	}
+
+	public Identifier attachedOverlayModel(Identifier sprite) {
+		Identifier texture = sprite.withPrefix("item/");
+		return ModelTemplates.FLAT_ITEM.create(texture, TextureMapping.layer0(new Material(texture)), this.modelOutput);
 	}
 }

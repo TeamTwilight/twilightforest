@@ -18,7 +18,7 @@ public record FireflySpecialRenderer(FireflyModel model) implements NoDataSpecia
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
-		FireflyRenderer.submitFirefly(this.model(), BugModelAnimationHelper.currentYaw, BugModelAnimationHelper.glowIntensity, 0.0F, Direction.NORTH, stack, collector, light, overlay, outlineColor, null);
+		FireflyRenderer.submitFirefly(this.model(), BugModelAnimationHelper.currentYaw, BugModelAnimationHelper.glowIntensity, 0.0F, Direction.NORTH, stack, collector, light, overlay, null);
 	}
 
 	@Override

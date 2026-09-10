@@ -163,6 +163,11 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 	}
 
 	@Override
+	public void setupRotationsForTrophy(float animationTicks, float yaw, float mouthAngle) {
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
+	}
+
+	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		stack.translate(0.0F, 0.375F, 0.56F);
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE), light, overlay, null, -1, breakProgress);

@@ -1,7 +1,57 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/aurora_block"
+      "type": "twilightforest:noise_varying",
+      "models": [
+        {
+          "model": "twilightforest:block/aurora_block_0"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_1"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_2"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_3"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_4"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_5"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_6"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_7"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_8"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_9"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_10"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_11"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_12"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_13"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_14"
+        },
+        {
+          "model": "twilightforest:block/aurora_block_15"
+        }
+      ]
     }
   }
 }

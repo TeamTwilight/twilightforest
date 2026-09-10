@@ -1,6 +1,7 @@
 package twilightforest.inventory.slot;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -37,18 +38,22 @@ public class UncraftingResultSlot extends ResultSlot {
 
 	@Override
 	public void onTake(Player player, ItemStack stack) {
+		if (!(player.level() instanceof ServerLevel server)) {
+			//TODO: There was a FIXME on the 1.21.x branch
+			return;
+		}
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 
 		//clear the temp map, just in case
 		this.tempRemainderMap.clear();
 
-//		for (RecipeHolder<CraftingRecipe> recipe : player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix.asCraftInput(), this.player.level())) {
-//			if (ItemStack.isSameItemSameComponents(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
-//				combined = false;
-//				break;
-//			}
-//		}
+		for (RecipeHolder<CraftingRecipe> recipe : server.recipeAccess().recipeMap().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix.asCraftInput(), server).toList()) {
+			if (ItemStack.isSameItemSameComponents(recipe.value().assemble(this.assemblyMatrix.asCraftInput()), stack)) {
+				combined = false;
+				break;
+			}
+		}
 
 		if (combined) {
 			// charge the player before the stacks empty
@@ -78,26 +83,26 @@ public class UncraftingResultSlot extends ResultSlot {
 		int i = positioned.left();
 		int j = positioned.top();
 		CommonHooks.setCraftingPlayer(player);
-//		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, input, player.level());
+		NonNullList<ItemStack> remainingItems = server.recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, player.level()).map(holder -> holder.value().getRemainingItems(this.assemblyMatrix.asCraftInput())).orElse(null);
 		CommonHooks.setCraftingPlayer(null);
 
 		for (int k = 0; k < input.height(); k++) {
 			for (int l = 0; l < input.width(); l++) {
 				int index = l + i + (k + j) * this.assemblyMatrix.getWidth();
 				ItemStack currentStack = this.assemblyMatrix.getItem(index);
-//				ItemStack remainingStack = remainingItems.get(l + k * input.width());
+				ItemStack remainingStack = remainingItems.get(l + k * input.width());
 				if (!currentStack.isEmpty()) {
 					this.assemblyMatrix.removeItem(index, 1);
 					currentStack = this.assemblyMatrix.getItem(index);
 				}
 
-//				if (!remainingStack.isEmpty()) {
-//					if (currentStack.isEmpty()) {
-//						this.assemblyMatrix.setItem(index, remainingStack);
-//					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack)) {
-//						InventoryUtil.giveItemToPlayer(this.player, remainingStack);
-//					}
-//				}
+				if (!remainingStack.isEmpty()) {
+					if (currentStack.isEmpty()) {
+						this.assemblyMatrix.setItem(index, remainingStack);
+					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack)) {
+						InventoryUtil.giveItemToPlayer(this.player, remainingStack);
+					}
+				}
 			}
 		}
 		//add all remainders to the crafting grid. This prevents any extra items from being deleted during the recrafting process.

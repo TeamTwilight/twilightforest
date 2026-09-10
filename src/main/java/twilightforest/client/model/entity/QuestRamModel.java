@@ -213,6 +213,11 @@ public class QuestRamModel extends EntityModel<QuestingRamRenderState> implement
 	}
 
 	@Override
+	public void setupRotationsForTrophy(float animationTicks, float yaw, float mouthAngle) {
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
+	}
+
+	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		stack.scale(0.67F, 0.67F, 0.67F);
 		stack.translate(0.0F, 0.5F, context != ItemDisplayContext.NONE ? 0.5F : 0.67F);

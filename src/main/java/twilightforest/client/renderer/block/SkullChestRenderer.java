@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
@@ -38,9 +39,7 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 	@Override
 	public void submit(SkullChestRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
 		stack.pushPose();
-		stack.translate(0.5F, 0.0F, 0.5F);
-		stack.mulPose(state.facing.getRotation());
-		stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+		applyCasketPose(stack, state.facing);
 
 		float lidRotation = state.open;
 		lidRotation = 1.0F - lidRotation;
@@ -48,6 +47,16 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 
 		collector.submitModel(this.model, lidRotation, stack, this.model.renderType(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		stack.popPose();
+	}
+
+	public static void applyCasketPose(PoseStack stack, Direction facing) {
+		stack.translate(0.5F, 0.0F, 0.5F);
+		stack.mulPose(facing.getRotation());
+		stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+	}
+
+	public static void applyCasketItemPose(PoseStack stack) {
+		applyCasketPose(stack, Direction.NORTH);
 	}
 
 	@Override

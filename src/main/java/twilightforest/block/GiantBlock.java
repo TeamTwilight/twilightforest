@@ -32,20 +32,22 @@ public class GiantBlock extends Block {
 
 	public static int packCoords(int x, int y, int z) {
 		int length = 4;
+		int bits = 2;
 
 		int packedX = Mth.positiveModulo(x, length);
-		int packedY = Mth.positiveModulo(y, length) << length;
-		int packedZ = Mth.positiveModulo(z, length) << (length + length);
+		int packedY = Mth.positiveModulo(y, length) << bits;
+		int packedZ = Mth.positiveModulo(z, length) << (bits + bits);
 
 		return packedX | packedY | packedZ;
 	}
 
 	public static BlockPos unpackCoords(int index) {
 		int length = 4;
+		int bits = 2;
 
 		int unpackedX = Mth.positiveModulo(index, length);
-		int unpackedY = Mth.positiveModulo(index >> length, length);
-		int unpackedZ = Mth.positiveModulo(index >> (length + length), length);
+		int unpackedY = Mth.positiveModulo(index >> bits, length);
+		int unpackedZ = Mth.positiveModulo(index >> (bits + bits), length);
 
 		return new BlockPos(unpackedX, unpackedY, unpackedZ);
 	}

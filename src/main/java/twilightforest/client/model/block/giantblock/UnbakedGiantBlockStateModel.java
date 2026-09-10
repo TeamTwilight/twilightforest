@@ -127,7 +127,7 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 
 	@Override
 	public void resolveDependencies(Resolver resolver) {
-
+		this.sourceModel.resolveDependencies(resolver);
 	}
 
 	@Override

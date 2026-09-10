@@ -18,11 +18,8 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.entity.ArmorModelSet;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
@@ -31,10 +28,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
@@ -56,6 +55,8 @@ import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEve
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
+import twilightforest.asmhooks.RenderHooks;
+import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
@@ -65,12 +66,13 @@ import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockSta
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
-import twilightforest.client.model.block.patch.PatchModelLoader;
+import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
-import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
+import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.block.*;
@@ -101,7 +103,6 @@ public class ClientRegistrationEvents {
 	private void setup(IEventBus bus) {
 		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
 		bus.addListener(this::bakeCustomModels);
-		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerStandalone);
 		bus.addListener(this::registerClientReloadListeners);
@@ -127,7 +128,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
 
-//		bus.addListener(TFShaders::registerShaders);
+		bus.addListener(RegisterRenderPipelinesEvent.class, event -> event.registerPipeline(TFRenderPipelines.AURORA));
 
 		bus.addListener(OverlayHandler::registerOverlays);
 
@@ -141,14 +142,15 @@ public class ClientRegistrationEvents {
 	private void registerBlockStateModels(RegisterBlockStateModels event) {
 		event.registerModel(TwilightForestMod.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
 		event.registerModel(TwilightForestMod.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
+		event.registerModel(TwilightForestMod.prefix("plant_patch"), UnbakedPlantPatchBlockStateModel.MAP_CODEC);
 	}
 
 	private void registerItemModels(RegisterItemModelsEvent event) {
 		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
 	}
 
 	private void registerModelLoaders(ModelEvent.RegisterLoaders event) {
-		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
 //		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
@@ -172,8 +174,8 @@ public class ClientRegistrationEvents {
 //		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
 //		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 
-        BlockStateModel netherrackModel = event.getBakingResult().blockStateModels().get(Blocks.NETHERRACK.defaultBlockState());
-		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(netherrackModel));
+		BlockStateModel airModel = event.getBakingResult().blockStateModels().get(Blocks.AIR.defaultBlockState());
+		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(airModel));
 	}
 
 	private void registerSpecialModelRenders(RegisterSpecialModelRendererEvent event) {
@@ -191,31 +193,15 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerStandalone(ModelEvent.RegisterStandalone event) {
-		Identifier trophy = TwilightForestMod.prefix("item/trophy");
-		Identifier trophy_minor = TwilightForestMod.prefix("item/trophy_minor");
-		Identifier trophy_quest = TwilightForestMod.prefix("item/trophy_quest");
-
 		event.register(ShieldLayer.SHIELD_MODEL, SimpleUnbakedStandaloneModel.quadCollection(ShieldLayer.LOC));
-		event.register(new StandaloneModelKey<>(trophy::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy));
-		event.register(new StandaloneModelKey<>(trophy_minor::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_minor));
-		event.register(new StandaloneModelKey<>(trophy_quest::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_quest));
-		event.register(new StandaloneModelKey<>(TrollsteinnModel.LIT_TROLLSTEINN::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(TrollsteinnModel.LIT_TROLLSTEINN));
+		event.register(JarRenderer.JAR_MODEL, SimpleUnbakedStandaloneModel.simpleModelWrapper(JarRenderer.JAR_MODEL_LOCATION));
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
-			Identifier location = lid.identifier();
-			String name = location.getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-			Identifier modelKey = TwilightForestMod.prefix("block/lid/" + name);
-			event.register(new StandaloneModelKey<>(modelKey::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(modelKey));
+			StandaloneModelKey<BlockStateModelPart> key = JarRenderer.LIDS.get().get(lid.lid());
+			if (key != null) {
+				event.register(key, SimpleUnbakedStandaloneModel.simpleModelWrapper(lid.modelLocation()));
+			}
 		}
-	}
-
-	private void cacheJarLids(ModelEvent.BakingCompleted event) {
-		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
-			String name = lid.identifier().getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-//			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
-		});
 	}
 
 	private void clientSetup(FMLClientSetupEvent evt) {
@@ -638,6 +624,9 @@ public class ClientRegistrationEvents {
 
 	private void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity living, LivingEntityRenderState state) -> {
+			if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)
+				state.setRenderData(RenderHooks.HIDE_HEAD_KEY, true);
+
 			state.setRenderData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(living));
 
 			AttributeInstance speed = living.getAttribute(Attributes.MOVEMENT_SPEED);

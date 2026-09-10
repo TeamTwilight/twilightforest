@@ -85,7 +85,8 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 
 
 	@Override
-	public void setupRotationsForTrophy(float animationProgress, float mouthAngle) {
+	public void setupRotationsForTrophy(float animationProgress, float yaw, float mouthAngle) {
+		this.head.yRot = yaw * Mth.DEG_TO_RAD;
 		this.jaw.xRot = mouthAngle * (Mth.PI / 3.0F);
 	}
 

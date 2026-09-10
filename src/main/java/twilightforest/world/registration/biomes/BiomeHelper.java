@@ -15,6 +15,7 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.timeline.Timelines;
 import tamaized.beanification.Autowired;
 import twilightforest.enums.extensions.TFGrassColorModifierEnumExtension;
 import twilightforest.init.*;
@@ -230,7 +231,10 @@ public abstract class BiomeHelper {
 			.putAttributes(EnvironmentAttributeMap.builder()
 				.set(EnvironmentAttributes.FOG_COLOR, 0x827391)
 				.set(EnvironmentAttributes.WATER_FOG_COLOR, 0xBC8857)
-				.set(EnvironmentAttributes.SKY_COLOR, 0x20224A))
+				.set(EnvironmentAttributes.SKY_COLOR, 0x20224A)
+				.set(EnvironmentAttributes.FOG_START_DISTANCE, 16.0F)
+				.set(EnvironmentAttributes.FOG_END_DISTANCE, 64.0F)
+				.set(EnvironmentAttributes.SKY_FOG_END_DISTANCE, 64.0F))
 			.specialEffects(defaultAmbientBuilder()
 				.waterColor(0xBC8857)
 				.grassColorOverride(0xC45123)
@@ -500,7 +504,8 @@ public abstract class BiomeHelper {
 			.downfall(0.8F)
 			.putAttributes(EnvironmentAttributeMap.builder()
 				.set(EnvironmentAttributes.FOG_COLOR, 0x000000)
-				.set(EnvironmentAttributes.SKY_COLOR, 0x000000))
+				.set(EnvironmentAttributes.SKY_COLOR, 0x000000)
+				.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.0F))
 			.specialEffects(defaultAmbientBuilder()
 				.grassColorOverride(0x4B6754)
 				.foliageColorOverride(0x3B5E3F)
@@ -531,6 +536,7 @@ public abstract class BiomeHelper {
 	public static Biome.BiomeBuilder darkForestCenter(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
 		return darkForest(featureGetter, carverGetter)
 			.setAttribute(EnvironmentAttributes.FOG_COLOR, 0x493000)
+			.setAttribute(EnvironmentAttributes.SKY_LIGHT_FACTOR, Timelines.NIGHT_SKY_LIGHT_FACTOR)
 			.specialEffects(defaultAmbientBuilder()
 				.grassColorOverride(0x667540)
 				.foliageColorOverride(0xF9821E)

@@ -12,6 +12,7 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.client.renderer.block.MoonwormRenderer;
+import twilightforest.client.state.block.MoonwormRenderState;
 
 import java.util.function.Consumer;
 
@@ -19,7 +20,22 @@ public record MoonwormSpecialRenderer(MoonwormModel model) implements NoDataSpec
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
-		MoonwormRenderer.submitMoonworm(this.model(), BugModelAnimationHelper.currentRotation, 0.0F, (BugModelAnimationHelper.desiredRotation - BugModelAnimationHelper.currentRotation) - Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks(), BugModelAnimationHelper.yawWriggleDelay, Direction.NORTH, stack, collector, light, overlay, outlineColor, null);
+		float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks();
+		MoonwormRenderState state = createItemState(partialTick);
+		MoonwormRenderer.submitMoonworm(this.model(), state, stack, collector, light, overlay, outlineColor, null);
+	}
+
+	private static MoonwormRenderState createItemState(float partialTick) {
+		MoonwormRenderState state = new MoonwormRenderState();
+		state.facing = Direction.NORTH;
+		state.yaw = BugModelAnimationHelper.currentRotation;
+		state.rotation = 0.0F;
+		state.wiggleRotation =
+			(BugModelAnimationHelper.desiredRotation
+				- BugModelAnimationHelper.currentRotation)
+				- partialTick;
+		state.delay = BugModelAnimationHelper.yawWriggleDelay;
+		return state;
 	}
 
 	@Override

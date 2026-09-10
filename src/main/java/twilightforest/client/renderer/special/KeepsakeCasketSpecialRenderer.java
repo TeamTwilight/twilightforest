@@ -12,6 +12,7 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KeepsakeCasketModel;
 import twilightforest.client.renderer.block.KeepsakeCasketRenderer;
+import twilightforest.client.renderer.block.SkullChestRenderer;
 import twilightforest.init.TFDataComponents;
 
 import java.util.function.Consumer;
@@ -25,12 +26,15 @@ public record KeepsakeCasketSpecialRenderer(KeepsakeCasketModel model, float ope
 
 	@Override
 	public void submit(@Nullable Integer argument, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
+		SkullChestRenderer.applyCasketItemPose(stack);
 		collector.submitModel(this.model(), this.openness(), stack, KeepsakeCasketRenderer.getTextureLocation(argument), light, overlay, outlineColor, null);
 	}
 
 	@Override
 	public void getExtents(Consumer<Vector3fc> output) {
 		PoseStack poseStack = new PoseStack();
+		SkullChestRenderer.applyCasketItemPose(poseStack);
+		this.model.setupAnim(this.openness());
 		this.model.root().getExtentsForGui(poseStack, output);
 	}
 

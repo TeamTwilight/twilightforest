@@ -3,15 +3,19 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -28,6 +32,8 @@ import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
+
+import java.util.OptionalInt;
 
 public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
@@ -66,15 +72,39 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		//always allow spawn eggs to be clicked so spawns can be set
 		if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelf && stack.getItem() instanceof SpawnEggItem) {
+			if (state.getValue(SPAWNER)) {
+				if (this.changesSpawnType(shelf, stack)) {
+					level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.get(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
+				}
+				if (!level.isClientSide()) {
+					OptionalInt hitSlot = this.getHitSlot(result, state.getValue(HorizontalDirectionalBlock.FACING));
+					if (hitSlot.isPresent() && !state.getValue(SLOT_OCCUPIED_PROPERTIES.get(hitSlot.getAsInt()))) {
+						shelf.setItem(hitSlot.getAsInt(), new ItemStack(Items.BOOK));
+					}
+				}
+				return InteractionResult.PASS;
+			}
 			//dont swing our hand if the shelf is empty
 			if (shelf.isEmpty()) {
 				return InteractionResult.CONSUME;
 			}
 			level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.get(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
-			return InteractionResult.SUCCESS;
+			return InteractionResult.PASS;
 		}
 		if (state.getValue(SPAWNER)) return InteractionResult.FAIL;
 		return super.useItemOn(stack, state, level, pos, player, hand, result);
+	}
+
+	private boolean changesSpawnType(ChiseledCanopyShelfBlockEntity shelf, ItemStack stack) {
+		EntityType<?> eggType = SpawnEggItem.getType(stack);
+		if (eggType == null) {
+			return false;
+		}
+		SpawnData data = shelf.getSpawner().getNextSpawnData();
+		if (data == null) {
+			return true;
+		}
+		return !data.entityToSpawn().getStringOr("id", "").equals(BuiltInRegistries.ENTITY_TYPE.getKey(eggType).toString());
 	}
 
 	@Override

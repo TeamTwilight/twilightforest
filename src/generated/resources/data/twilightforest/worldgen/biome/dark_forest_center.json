@@ -1,7 +1,8 @@
 {
   "attributes": {
     "minecraft:visual/fog_color": "#493000",
-    "minecraft:visual/sky_color": "#000000"
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/sky_light_factor": 0.24
   },
   "carvers": "twilightforest:tf_caves",
   "downfall": 0.8,

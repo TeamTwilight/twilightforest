@@ -1,9 +1,12 @@
 {
   "model": {
-    "type": "minecraft:special",
-    "base": "twilightforest:item/firefly",
-    "model": {
-      "type": "twilightforest:firefly"
+    "type": "twilightforest:animated_item_model",
+    "base_model": {
+      "type": "minecraft:special",
+      "base": "twilightforest:item/firefly",
+      "model": {
+        "type": "twilightforest:firefly"
+      }
     }
   }
 }

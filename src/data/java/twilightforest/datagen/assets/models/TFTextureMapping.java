@@ -44,7 +44,8 @@ public class TFTextureMapping {
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
 			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
 			.put(TFTextureSlot.TOP_2, TextureMapping.getBlockTexture(block, "_top_glow"))
-			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.JUNGLE_PLANKS));
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.JUNGLE_PLANKS))
+			.copyForced(TextureSlot.BOTTOM, TextureSlot.PARTICLE);
 	}
 
 	public static TextureMapping uncraftingTableOn(Block block) {
@@ -57,7 +58,7 @@ public class TFTextureMapping {
 	}
 
 	public static TextureMapping forcefield() {
-		var tex = new Material(TwilightForestMod.prefix("block/forcefield"));
+		Material tex = new Material(TwilightForestMod.prefix("block/forcefield_white"));
 		return new TextureMapping().put(TextureSlot.PANE, tex).put(TextureSlot.PARTICLE, tex);
 	}
 

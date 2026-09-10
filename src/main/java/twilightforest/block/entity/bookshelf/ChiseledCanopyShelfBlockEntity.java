@@ -116,6 +116,10 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 		return super.removeItem(slot, amount);
 	}
 
+	public ItemStack removeTomeFromSlot(int slot) {
+		return super.removeItem(slot, 1);
+	}
+
 	@Override
 	public boolean canTakeItem(Container target, int slot, ItemStack stack) {
 		return !this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) && super.canTakeItem(target, slot, stack);

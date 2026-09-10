@@ -333,8 +333,9 @@ public class EntityEvents {
 		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)));
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) {
-			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
-			sc.setOwnerProfile(profile);
+			sc.setCandleInfo(new SkullCandles(AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), sc.getCandleInfo().count()));
+			if (profile != null)
+				sc.setOwnerProfile(profile);
 			sc.setChanged();
 		}
 	}

@@ -1,0 +1,32 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "south": {
+          "texture": "#layer0",
+          "uv": [
+            7.0,
+            2.0,
+            15.0,
+            10.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        0
+      ]
+    }
+  ],
+  "gui_light": "front",
+  "textures": {
+    "layer0": "minecraft:item/stone_pickaxe",
+    "particle": "minecraft:item/stone_pickaxe"
+  }
+}
