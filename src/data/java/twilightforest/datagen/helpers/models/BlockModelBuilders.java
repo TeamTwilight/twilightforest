@@ -487,9 +487,10 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/jar_side")));
 
 		Identifier jar = TFExtendedModelTemplates.MASON_JAR.create(TwilightForestMod.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), plainVariant(jar)));
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), plainVariant(jar)));
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), plainVariant(jar)));
+		Identifier jarParticle = ModelTemplates.PARTICLE_ONLY.createWithSuffix(TFBlocks.MASON_JAR.get(), "_particle", TextureMapping.particle(new Material(TwilightForestMod.prefix("block/jar_side"))), this.modelOutput);
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), plainVariant(jarParticle)));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), plainVariant(jarParticle)));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), plainVariant(jarParticle)));
 
 		this.itemModelOutput.accept(TFItems.MASON_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(jar), ItemModelUtils.specialModel(jar, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
 		this.itemModelOutput.accept(TFItems.FIREFLY_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(jar), ItemModelUtils.specialModel(jar, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
@@ -497,22 +498,21 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			Identifier item = lid.identifier();
-			String name = item.getPath();
 
 			if (lid.lid() == Items.PUMPKIN) {
 				TextureMapping lidMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
 					.put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/pumpkin_side")))
 					.put(TextureSlot.END, new Material(Identifier.withDefaultNamespace("block/pumpkin_top")));
 
-				TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
+				TFModelTemplates.JAR_LID.create(lid.modelLocation(), lidMapping, this.modelOutput);
 				continue;
 			}
-			if (lid.customPath() != null) name = lid.customPath();
+
 			TextureMapping lidMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
 				.put(TextureSlot.SIDE, new Material(Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath())))
 				.put(TextureSlot.END, new Material(Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath() + "_top")));
 
-			TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
+			TFModelTemplates.JAR_LID.create(lid.modelLocation(), lidMapping, this.modelOutput);
 		}
 	}
 

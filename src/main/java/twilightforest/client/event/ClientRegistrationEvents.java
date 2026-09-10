@@ -18,6 +18,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -102,7 +103,6 @@ public class ClientRegistrationEvents {
 	private void setup(IEventBus bus) {
 		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
 		bus.addListener(this::bakeCustomModels);
-		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerStandalone);
 		bus.addListener(this::registerClientReloadListeners);
@@ -194,22 +194,14 @@ public class ClientRegistrationEvents {
 
 	private void registerStandalone(ModelEvent.RegisterStandalone event) {
 		event.register(ShieldLayer.SHIELD_MODEL, SimpleUnbakedStandaloneModel.quadCollection(ShieldLayer.LOC));
+		event.register(JarRenderer.JAR_MODEL, SimpleUnbakedStandaloneModel.simpleModelWrapper(JarRenderer.JAR_MODEL_LOCATION));
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
-			Identifier location = lid.identifier();
-			String name = location.getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-			Identifier modelKey = TwilightForestMod.prefix("block/lid/" + name);
-			event.register(new StandaloneModelKey<>(modelKey::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(modelKey));
+			StandaloneModelKey<BlockStateModelPart> key = JarRenderer.LIDS.get().get(lid.lid());
+			if (key != null) {
+				event.register(key, SimpleUnbakedStandaloneModel.simpleModelWrapper(lid.modelLocation()));
+			}
 		}
-	}
-
-	private void cacheJarLids(ModelEvent.BakingCompleted event) {
-		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
-			String name = lid.identifier().getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-//			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
-		});
 	}
 
 	private void clientSetup(FMLClientSetupEvent evt) {
