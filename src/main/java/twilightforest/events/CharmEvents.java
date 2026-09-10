@@ -301,14 +301,6 @@ public class CharmEvents {
 			List<ItemStack> list = new ArrayList<>(casketCapacity);
 			NonNullList<ItemStack> filler = NonNullList.withSize(4, ItemStack.EMPTY);
 
-			for (int slot : CHARM_EQUIPMENT_SLOTS) {
-				TwilightForestMod.LOGGER.debug(
-					"Before casket: slot {} = {}",
-					slot,
-					player.getInventory().getItem(slot)
-				);
-			}
-
 			// Let's add our inventory exactly how it was on us.
 			list.addAll(TFItemStackUtils.sortArmorForCasket(player));
 			list.addAll(filler);
@@ -319,7 +311,6 @@ public class CharmEvents {
 			}
 
 			casket.setItems(NonNullList.of(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
-
 			getPlayerData(player).remove(CASKET_DAMAGE_TAG);
 		} else {
 			// Inventory is empty minus the casket: put the casket into the kept inventory
