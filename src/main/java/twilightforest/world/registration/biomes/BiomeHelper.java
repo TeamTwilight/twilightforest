@@ -229,7 +229,7 @@ public abstract class BiomeHelper {
 			.temperature(0.5F)
 			.downfall(1.0F)
 			.putAttributes(EnvironmentAttributeMap.builder()
-				.set(EnvironmentAttributes.FOG_COLOR, 0xCCB4E3)
+				.set(EnvironmentAttributes.FOG_COLOR, 0x827391)
 				.set(EnvironmentAttributes.WATER_FOG_COLOR, 0xBC8857)
 				.set(EnvironmentAttributes.SKY_COLOR, 0x20224A)
 				.set(EnvironmentAttributes.FOG_START_DISTANCE, 16.0F)
