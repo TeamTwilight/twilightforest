@@ -30,7 +30,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.block.CloudBlock;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.config.TFConfig;
-import twilightforest.util.MinecraftUtil;
 import twilightforest.util.RenderTypeUtil;
 import twilightforest.util.Vec2i;
 
@@ -61,7 +60,7 @@ public class CloudEvents {
 					int floorY = Mth.floor(camY);
 					int floorZ = Mth.floor(camZ);
 
-					int renderDistance = MinecraftUtil.useFancyGraphics() ? 10 : 5;
+					int renderDistance = mc.options.weatherRadius().get();
 					int precipitationDistance = TFConfig.getClientCloudBlockPrecipitationDistance();
 					BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
@@ -164,7 +163,7 @@ public class CloudEvents {
 
 			int floorY = Mth.floor(camY);
 
-			int renderDistance = MinecraftUtil.useFancyGraphics() ? 10 : 5;
+			int renderDistance = minecraft.options.weatherRadius().get();
 
 			float fullTick = (float) ticks + partialTick;
 			BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();

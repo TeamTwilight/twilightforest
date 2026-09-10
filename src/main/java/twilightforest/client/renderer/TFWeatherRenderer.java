@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.util.IntervalUtils;
-import twilightforest.util.MinecraftUtil;
 import twilightforest.util.RenderTypeUtil;
 import twilightforest.util.Restriction;
 
@@ -197,7 +196,7 @@ public class TFWeatherRenderer {
 
 	@SuppressWarnings("ConstantConditions")
 	private static void renderLockedStructure(int ticks, float partialTicks, Vec3 camera, MultiBufferSource buffer) {
-		int range = MinecraftUtil.useFancyGraphics() ? 10 : 5;
+		int range = Minecraft.getInstance().options.weatherRadius().get();
 		int px = Mth.floor(camera.x());
 		int py = Mth.floor(camera.y());
 		int pz = Mth.floor(camera.z());
@@ -391,15 +390,18 @@ public class TFWeatherRenderer {
 		} else urGhastRain = Math.max(0.0F, urGhastRain - 0.02F);
 
 		//TF - factor in the Ur-Ghast being alive when determining rain level
-		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (MinecraftUtil.useFancyGraphics() ? 1.0F : 2.0F);
+		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain);
 		if (rainLevel > 0.0F) {
 			RandomSource randomsource = RandomSource.create((long) partialTicks * 312987231L);
 			BlockPos blockpos1 = null;
-			int i = (int) (100.0F * rainLevel * rainLevel) / (Minecraft.getInstance().options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
+			int weatherRadius = Minecraft.getInstance().options.weatherRadius().get();
+			int weatherDiameter = 2 * weatherRadius + 1;
+			int weatherArea = weatherDiameter * weatherDiameter;
+			int i = (int) (0.225F * (float)weatherArea * rainLevel * rainLevel) / (Minecraft.getInstance().options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
 
 			for (int j = 0; j < i; ++j) {
-				int k = randomsource.nextInt(21) - 10;
-				int l = randomsource.nextInt(21) - 10;
+				int k = randomsource.nextInt(weatherDiameter) - weatherRadius;
+				int l = randomsource.nextInt(weatherDiameter) - weatherRadius;
 				BlockPos blockpos2 = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos.offset(k, 0, l));
 				if (blockpos2.getY() > level.getMinY() && blockpos2.getY() <= blockpos.getY() + 10 && blockpos2.getY() >= blockpos.getY() - 10 && getPrecipitationAt(level, blockpos2) == Biome.Precipitation.RAIN) {
 					blockpos1 = blockpos2.below();
