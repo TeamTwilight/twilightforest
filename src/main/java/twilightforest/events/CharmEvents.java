@@ -330,7 +330,7 @@ public class CharmEvents {
 	 * Maybe we kept some stuff for the player!
 	 */
 	private static void returnStoredItems(Player player) {
-		TwilightForestMod.LOGGER.warn("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
+		TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
 		if (!player.level().isClientSide() && player.hasData(TFDataAttachments.CHARM_INVENTORY)) {
 			CharmAttachment attachment = player.getData(TFDataAttachments.CHARM_INVENTORY);
