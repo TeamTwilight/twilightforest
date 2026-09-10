@@ -85,6 +85,7 @@ public class Experiment115Block extends Block {
 				}
 				return InteractionResult.SUCCESS;
 			}
+			return InteractionResult.TRY_WITH_EMPTY_HAND;
 		} else {
 			if (!state.getValue(REGENERATE)) {
 				if (bitesTaken < 7) {
