@@ -52,7 +52,7 @@ public class RedThreadRenderer implements BlockEntityRenderer<RedThreadBlockEnti
 			stack.mulPose(Axis.XP.rotationDegrees(getXPDegrees(sides.getKey())));
 			stack.pushPose();
 			stack.translate(0.5D, 0D, 0.5D);
-			this.renderSide(sides.getValue(), sides.getKey(), stack, collector, state.glowing ? TFRenderTypes.RED_THREAD : RenderTypes.entityCutout(TEXTURE), state.glowing ? LightCoordsUtil.FULL_BRIGHT : state.lightCoords);
+			this.renderSide(sides.getValue(), sides.getKey(), stack, collector, state.glowing ? TFRenderTypes.RED_THREAD : RenderTypes.entityCutoutCull(TEXTURE), state.glowing ? LightCoordsUtil.FULL_BRIGHT : state.lightCoords);
 			stack.popPose();
 			stack.popPose();
 		}
