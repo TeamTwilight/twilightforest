@@ -27,6 +27,7 @@ import twilightforest.compat.curios.renderer.CharmOfLifeNecklaceRenderer;
 import twilightforest.compat.curios.renderer.CurioHeadRenderer;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
@@ -76,7 +77,7 @@ public class CuriosCompat {
 	public static void keepCurios(DropRulesEvent event) {
 		if (event.getEntity() instanceof Player player) {
 			CompoundTag playerData = CharmEvents.getPlayerData(player);
-			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CONSUMED_CHARM_TAG) && playerData.contains(CharmEvents.CHARM_INV_TAG) && playerData.getList(CharmEvents.CHARM_INV_TAG).isPresent()) {
+			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CONSUMED_CHARM_TAG) && player.hasData(TFDataAttachments.CHARM_INVENTORY) && !player.getData(TFDataAttachments.CHARM_INVENTORY).isEmpty()) {
 				//Keep all Curios items
 				CuriosApi.getCuriosInventory(player).ifPresent(modifiable -> {
 					for (int i = 0; i < modifiable.getSlots(); ++i) {
