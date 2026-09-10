@@ -34,6 +34,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.inventory.InventoryUtil;
 import twilightforest.init.TFBlockEntities;
 
@@ -133,6 +134,8 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 				int candles = state.getValue(CANDLES);
 				if (candles < 4) {
 					level.setBlockAndUpdate(pos, state.setValue(CANDLES, candles + 1));
+					sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().color(), candles + 1));
+					sc.setChanged();
 
 					level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 					stack.consume(1, player);
@@ -150,6 +153,8 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 			int newCandleAmount = state.getValue(CANDLES) - 1;
 			if (newCandleAmount > 0) {
 				level.setBlockAndUpdate(pos, state.setValue(CANDLES, newCandleAmount));
+				sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().color(), newCandleAmount));
+				sc.setChanged();
 			} else {
 				boolean wall = state.getBlock() instanceof WallSkullCandleBlock;
 				Block newBlock = getNoCandleSkull(wall);

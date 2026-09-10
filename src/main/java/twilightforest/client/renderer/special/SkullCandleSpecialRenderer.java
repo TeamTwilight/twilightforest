@@ -2,6 +2,7 @@ package twilightforest.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Transformation;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -18,6 +19,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.SkullBlock;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 import twilightforest.client.renderer.block.SkullCandleRenderer;
@@ -28,6 +31,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public record SkullCandleSpecialRenderer(PlayerSkinRenderCache playerSkinRenderCache, SkullModelBase model, float animation, @Nullable RenderType type) implements SpecialModelRenderer<Pair<PlayerSkinRenderCache.RenderInfo, SkullCandles>> {
+
+	private static final Transformation SKULL_TRANSFORM = new Transformation(new Vector3f(0.5F, 0.0F, 0.5F), new Quaternionf().rotationX((float) Math.PI), null, null);
 
 	@Override
 	public Pair<PlayerSkinRenderCache.RenderInfo, SkullCandles> extractArgument(ItemStack stack) {
@@ -42,22 +47,31 @@ public record SkullCandleSpecialRenderer(PlayerSkinRenderCache playerSkinRenderC
 		if (rendertype == null) {
 			rendertype = info.getFirst() != null ? info.getFirst().renderType() : PlayerSkinRenderCache.DEFAULT_PLAYER_SKIN_RENDER_TYPE;
 		}
+		stack.pushPose();
+		stack.mulPose(SKULL_TRANSFORM);
 		SkullBlockRenderer.submitSkull(this.animation(), stack, collector, light, this.model(), rendertype, outlineColor, null);
+		stack.popPose();
 
 		SkullCandles skullCandles = info.getSecond();
 
 		if (skullCandles != null) {
-			stack.translate(0.0F, 0.5F, 0.0F);
+			stack.pushPose();
+			stack.mulPose(SkullCandleRenderer.CANDLE_TRANSFORMS.freeTransformations(0));
 			BlockModelRenderState state = new BlockModelRenderState();
-			SkullCandleRenderer.updateSkullCandle(skullCandles, Minecraft.getInstance().getBlockModelResolver(), state, false);
+			SkullCandleRenderer.updateSkullCandle(skullCandles.color(), skullCandles.count(), Minecraft.getInstance().getBlockModelResolver(), state, false);
 			SkullCandleRenderer.submitCandles(state, stack, collector, light, overlay, outlineColor);
+			stack.popPose();
 		}
 	}
 
 	@Override
 	public void getExtents(Consumer<Vector3fc> output) {
 		PoseStack poseStack = new PoseStack();
-		this.model.root().getExtentsForGui(poseStack, output);
+		poseStack.mulPose(SKULL_TRANSFORM);
+		SkullModelBase.State modelState = new SkullModelBase.State();
+		modelState.animationPos = this.animation();
+		this.model().setupAnim(modelState);
+		this.model().root().getExtentsForGui(poseStack, output);
 	}
 
 	public record Unbaked(SkullBlock.Type kind, Optional<Identifier> textureOverride, float animation) implements SpecialModelRenderer.Unbaked<Pair<PlayerSkinRenderCache.RenderInfo, SkullCandles>> {
