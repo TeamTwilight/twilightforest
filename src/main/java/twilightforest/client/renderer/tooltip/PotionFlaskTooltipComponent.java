@@ -101,11 +101,11 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	public void extractImage(Font font, int x, int y, int w, int h, GuiGraphicsExtractor graphics) {
 		int offs = 113; //TODO replace with 4th param in 1.21.2+ so things properly center
 		if (this.component.potion().potion().isEmpty()) {
-			graphics.textWithWordWrap(font, EMPTY_DESCRIPTION, x, y, WIDTH, 11184810);
+			graphics.textWithWordWrap(font, EMPTY_DESCRIPTION, x, y, WIDTH, 0xFFAAAAAA);
 		} else {
 			int height = 0;
 			for (var component : this.getPotionTooltips()) {
-				int color = component.getStyle().getColor() != null ? component.getStyle().getColor().getValue() : 11184810;
+				int color = component.getStyle().getColor() != null ? component.getStyle().getColor().getValue() | 0xFF000000 : 0xFFAAAAAA;
 				if (component.getString().isEmpty()) {
 					height += font.lineHeight;
 				} else {
@@ -120,7 +120,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	private void drawPotionBar(int x, int y, Font font, GuiGraphicsExtractor graphics) {
 		int segmentSplit = this.getWidth(font) / this.maxDoses;
 		if (this.component.doses() <= 0) {
-			graphics.centeredText(font, Component.translatable("item.twilightforest.flask.empty"), x + (WIDTH / 2) + 1, y + 3, 16777215);
+			graphics.centeredText(font, Component.translatable("item.twilightforest.flask.empty"), x + (WIDTH / 2) + 1, y + 3, 0xFFFFFFFF);
 		}
 
 		this.renderPotion(graphics, x + 1, y + 13, this.component.doses() * segmentSplit - 1, 13, this.component.potion().getColor());

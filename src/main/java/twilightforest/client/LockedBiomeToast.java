@@ -27,7 +27,7 @@ public class LockedBiomeToast implements Toast {
 		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
 		graphics.fakeItem(this.item, 6, 8);
 		graphics.text(font, TITLE, 25, 7, -256, false);
-		graphics.text(font, DESCRIPTION, 25, 18, 16777215, false);
+		graphics.text(font, DESCRIPTION, 25, 18, 0xFFFFFFFF, false);
 	}
 
 	@Override

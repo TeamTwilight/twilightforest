@@ -24,7 +24,7 @@ public class MoonDialDisplay implements ItemDisplay {
 		int xMin = xRow * 8;
 		int yMin = yRow * 8;
 		graphics.blit(TwilightForestMod.getGuiTexture("moon.png"), (widestWidgetWidth / 2 - 5) - minecraft.font.width(formattedcharsequence) / 2, 0, xMin, yMin, 8, 8, 32, 16);
-		graphics.text(minecraft.font, formattedcharsequence, Math.max(0, (widestWidgetWidth / 2 + 5) - minecraft.font.width(formattedcharsequence) / 2), 0, 0xFFFFFF);
+		graphics.text(minecraft.font, formattedcharsequence, Math.max(0, (widestWidgetWidth / 2 + 5) - minecraft.font.width(formattedcharsequence) / 2), 0, 0xFFFFFFFF);
 	}
 
 	private Component getText(Minecraft minecraft, BlockPos pos) {

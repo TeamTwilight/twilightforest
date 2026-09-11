@@ -13,7 +13,7 @@ public abstract class SimpleTextDisplay implements ItemDisplay {
 
 	@Override
 	public void render(ItemStack item, GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
-		graphics.centeredText(minecraft.font, this.getText(item, minecraft, gui, player), widestWidgetWidth / 2, 0, 0xFFFFFF);
+		graphics.centeredText(minecraft.font, this.getText(item, minecraft, gui, player), widestWidgetWidth / 2, 0, 0xFFFFFFFF);
 	}
 
 	@Override

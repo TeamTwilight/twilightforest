@@ -164,9 +164,9 @@ public class RecipeViewerConstants {
 
 	public static int getXPColor(int cost) {
 		if (Minecraft.getInstance().player.experienceLevel < cost && !Minecraft.getInstance().player.getAbilities().instabuild) {
-			return 0xA00000;
+			return 0xFFA00000;
 		} else {
-			return 0x80FF20;
+			return 0xFF80FF20;
 		}
 	}
 
