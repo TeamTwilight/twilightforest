@@ -31,13 +31,6 @@ plugins {
 
 apply plugin: 'tamaized.beanification'
 
-// Beanification mutates compiled classes in place, but its IDEA task does not
-// declare the compile tasks as inputs. Without this, Gradle may transform the
-// main output while compileJava is still writing it.
-tasks.named('beanificationTransformClassesIdea') {
-	dependsOn tasks.named('compileJava'), tasks.named('compileDataJava')
-}
-
 repositories {
 	gradlePluginPortal()
 }
@@ -99,7 +92,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape"
+	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
 	options.encoding = 'UTF-8'
 }
 
@@ -286,7 +279,7 @@ dependencies {
 
 	//mods we dont have compat with but are nice to have
 //	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.4.3+1.21.4"
-	runtimeOnly "curse.maven:world-edit-225608:8037379"
+//	runtimeOnly "curse.maven:world-edit-225608:6013137"
 
 	testImplementation "net.neoforged:testframework:${project.neoforge_version}"
 	testImplementation "org.junit.jupiter:junit-jupiter:6.0.1"
@@ -331,13 +324,8 @@ processResources {
 		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"])
 	}
 	doLast {
-		lazyTree.get().each { File file ->
-			try {
-				def parsed = new JsonSlurper().setType(groovy.json.JsonParserType.LAX).parse(file)
-				file.setText(JsonOutput.toJson(parsed))
-			} catch (Exception e) {
-				logger.warn("Failed to minify JSON file: ${file.path} - ${e.message}")
-			}
+		lazyTree.get().each {
+			File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
 		}
 	}
 }
