@@ -47,9 +47,9 @@ public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(final ItemStack stack, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		if (stack.is(item.asItem())) {
-			Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TwilightForestMod.LOGGER::error);
-			if (tag.isPresent()) {
-				persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, tag.get());
+			if (saveItemToTag) {
+				Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TwilightForestMod.LOGGER::error);
+				tag.ifPresent(value -> persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, value));
 			}
 			BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 			if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
