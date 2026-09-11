@@ -37,59 +37,19 @@
       ]
     },
     "age=0,layers=4": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush_small"
-        },
-        {
-          "model": "minecraft:block/snow_height8"
-        }
-      ]
+      "model": "minecraft:block/snow_height8"
     },
     "age=0,layers=5": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush_small"
-        },
-        {
-          "model": "minecraft:block/snow_height10"
-        }
-      ]
+      "model": "minecraft:block/snow_height10"
     },
     "age=0,layers=6": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush_small"
-        },
-        {
-          "model": "minecraft:block/snow_height12"
-        }
-      ]
+      "model": "minecraft:block/snow_height12"
     },
     "age=0,layers=7": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush_small"
-        },
-        {
-          "model": "minecraft:block/snow_height14"
-        }
-      ]
+      "model": "minecraft:block/snow_height14"
     },
     "age=0,layers=8": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush_small"
-        },
-        {
-          "model": "minecraft:block/snow_block"
-        }
-      ]
+      "model": "minecraft:block/snow_block"
     },
     "age=1,layers=0": {
       "model": "twilightforest:block/skyberry_bush"
@@ -150,37 +110,13 @@
       ]
     },
     "age=1,layers=6": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush"
-        },
-        {
-          "model": "minecraft:block/snow_height12"
-        }
-      ]
+      "model": "minecraft:block/snow_height12"
     },
     "age=1,layers=7": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush"
-        },
-        {
-          "model": "minecraft:block/snow_height14"
-        }
-      ]
+      "model": "minecraft:block/snow_height14"
     },
     "age=1,layers=8": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush"
-        },
-        {
-          "model": "minecraft:block/snow_block"
-        }
-      ]
+      "model": "minecraft:block/snow_block"
     },
     "age=2,layers=0": {
       "model": "twilightforest:block/skyberry_bush_large"
@@ -189,7 +125,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_large"
+          "model": "twilightforest:block/skyberry_bush_large_1"
         },
         {
           "model": "minecraft:block/snow_height2"
@@ -200,7 +136,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_large"
+          "model": "twilightforest:block/skyberry_bush_large_2"
         },
         {
           "model": "minecraft:block/snow_height4"
@@ -211,7 +147,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_large"
+          "model": "twilightforest:block/skyberry_bush_large_3"
         },
         {
           "model": "minecraft:block/snow_height6"
@@ -222,7 +158,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_large"
+          "model": "twilightforest:block/skyberry_bush_large_4"
         },
         {
           "model": "minecraft:block/snow_height8"
@@ -233,7 +169,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_large"
+          "model": "twilightforest:block/skyberry_bush_large_5"
         },
         {
           "model": "minecraft:block/snow_height10"
@@ -244,7 +180,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_large"
+          "model": "twilightforest:block/skyberry_bush_large_6"
         },
         {
           "model": "minecraft:block/snow_height12"
@@ -255,7 +191,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_large"
+          "model": "twilightforest:block/skyberry_bush_large_7"
         },
         {
           "model": "minecraft:block/snow_height14"
@@ -263,15 +199,7 @@
       ]
     },
     "age=2,layers=8": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush_large"
-        },
-        {
-          "model": "minecraft:block/snow_block"
-        }
-      ]
+      "model": "minecraft:block/snow_block"
     },
     "age=3,layers=0": {
       "model": "twilightforest:block/skyberry_bush_ripe"
@@ -280,7 +208,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_ripe"
+          "model": "twilightforest:block/skyberry_bush_ripe_1"
         },
         {
           "model": "minecraft:block/snow_height2"
@@ -291,7 +219,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_ripe"
+          "model": "twilightforest:block/skyberry_bush_ripe_2"
         },
         {
           "model": "minecraft:block/snow_height4"
@@ -302,7 +230,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_ripe"
+          "model": "twilightforest:block/skyberry_bush_ripe_3"
         },
         {
           "model": "minecraft:block/snow_height6"
@@ -313,7 +241,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_ripe"
+          "model": "twilightforest:block/skyberry_bush_ripe_4"
         },
         {
           "model": "minecraft:block/snow_height8"
@@ -324,7 +252,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_ripe"
+          "model": "twilightforest:block/skyberry_bush_ripe_5"
         },
         {
           "model": "minecraft:block/snow_height10"
@@ -335,7 +263,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_ripe"
+          "model": "twilightforest:block/skyberry_bush_ripe_6"
         },
         {
           "model": "minecraft:block/snow_height12"
@@ -346,7 +274,7 @@
       "type": "neoforge:composite",
       "models": [
         {
-          "model": "twilightforest:block/skyberry_bush_ripe"
+          "model": "twilightforest:block/skyberry_bush_ripe_7"
         },
         {
           "model": "minecraft:block/snow_height14"
@@ -354,15 +282,7 @@
       ]
     },
     "age=3,layers=8": {
-      "type": "neoforge:composite",
-      "models": [
-        {
-          "model": "twilightforest:block/skyberry_bush_ripe"
-        },
-        {
-          "model": "minecraft:block/snow_block"
-        }
-      ]
+      "model": "minecraft:block/snow_block"
     }
   }
 }
