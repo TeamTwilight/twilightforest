@@ -20,6 +20,7 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.spriteSet(TFParticleType.CLOUD_PUFF.get(), Identifier.withDefaultNamespace("generic"), 8, true);
 		this.spriteSet(TFParticleType.DIM_FLAME.get(), TwilightForestMod.prefix("dim_flame"));
 		this.spriteSet(TFParticleType.DOUBLE_JUMP.get(), Identifier.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.DRYING_RACK.get(), Identifier.withDefaultNamespace("generic"), 8, true);
 		this.spriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.FALLEN_LEAF.get(), TwilightForestMod.prefix("fallen_leaf"));
 		this.spriteSet(TFParticleType.FIREFLY.get(), TwilightForestMod.prefix("firefly"));
