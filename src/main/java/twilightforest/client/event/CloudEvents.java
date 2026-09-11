@@ -30,7 +30,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.block.CloudBlock;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.config.TFConfig;
-import twilightforest.util.MinecraftUtil;
 import twilightforest.util.RenderTypeUtil;
 import twilightforest.util.Vec2i;
 
@@ -61,7 +60,7 @@ public class CloudEvents {
 					int floorY = Mth.floor(camY);
 					int floorZ = Mth.floor(camZ);
 
-					int renderDistance = MinecraftUtil.useFancyGraphics() ? 10 : 5;
+					int renderDistance = mc.options.weatherRadius().get();
 					int precipitationDistance = TFConfig.getClientCloudBlockPrecipitationDistance();
 					BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
@@ -98,14 +97,17 @@ public class CloudEvents {
 				if (!RENDER_HELPER.isEmpty()) {
 					RandomSource randomsource = RandomSource.create((long) mc.levelRenderer.getTicks() * 312987231L);
 					BlockPos particlePos = null;
-					int particleCount = 100 / (mc.options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
+					int weatherRadius = mc.options.weatherRadius().get();
+					int weatherDiameter = 2 * weatherRadius + 1;
+					int weatherArea = weatherDiameter * weatherDiameter;
+					int particleCount = (int) (0.225F * weatherArea) / (mc.options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
 
 					boolean yetToMakeASound = true;
 					BlockPos camPos = BlockPos.containing(vec3);
 
 					List<Vec2i> particleChecks = new ArrayList<>();
 					for (int i = 0; i < particleCount; ++i) {
-						particleChecks.add(new Vec2i(randomsource.nextInt(21) - 10 + camPos.getX(), randomsource.nextInt(21) - 10 + camPos.getZ()));
+						particleChecks.add(new Vec2i(randomsource.nextInt(weatherDiameter) - weatherRadius + camPos.getX(), randomsource.nextInt(weatherDiameter) - weatherRadius + camPos.getZ()));
 					}
 
 					for (PrecipitationRenderHelper helper : RENDER_HELPER) {
@@ -164,7 +166,7 @@ public class CloudEvents {
 
 			int floorY = Mth.floor(camY);
 
-			int renderDistance = MinecraftUtil.useFancyGraphics() ? 10 : 5;
+			int renderDistance = minecraft.options.weatherRadius().get();
 
 			float fullTick = (float) ticks + partialTick;
 			BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
