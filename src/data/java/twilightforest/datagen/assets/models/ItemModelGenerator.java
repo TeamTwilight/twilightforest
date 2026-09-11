@@ -188,7 +188,10 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateDynamicTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
 		this.generateDynamicTrimmableItem(TFItems.NAGA_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
 
-		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN.get(), ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN.get()), new MysticCrownSpecialRenderer.Unbaked()));
+		Identifier mysticCrown = ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN.get());
+		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN.get(), ItemModelUtils.select(new DisplayContext(),
+			ItemModelUtils.specialModel(mysticCrown, new MysticCrownSpecialRenderer.Unbaked(ItemDisplayContext.NONE)),
+			ItemModelUtils.when(ItemDisplayContext.GUI, ItemModelUtils.specialModel(mysticCrown, new MysticCrownSpecialRenderer.Unbaked(ItemDisplayContext.GUI)))));
 
 		this.generateFlatItem(TFItems.MAZEBREAKER_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.DIAMOND_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);

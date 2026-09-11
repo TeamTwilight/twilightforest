@@ -1,9 +1,27 @@
 {
   "model": {
-    "type": "minecraft:special",
-    "base": "twilightforest:item/mystic_crown",
-    "model": {
-      "type": "twilightforest:mystic_crown"
-    }
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:special",
+          "base": "twilightforest:item/mystic_crown",
+          "model": {
+            "type": "twilightforest:mystic_crown",
+            "display": "gui"
+          }
+        },
+        "when": "gui"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:special",
+      "base": "twilightforest:item/mystic_crown",
+      "model": {
+        "type": "twilightforest:mystic_crown",
+        "display": "none"
+      }
+    },
+    "property": "minecraft:display_context"
   }
 }

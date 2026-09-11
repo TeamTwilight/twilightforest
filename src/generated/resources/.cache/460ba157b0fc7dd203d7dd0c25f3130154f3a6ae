@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-09T20:34:53.7579971	Model Definitions - twilightforest
+// 26.1.2	2026-09-10T22:29:01.1486917	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -923,7 +923,7 @@ f035a304d86bd5972da1837efcedf0dfe39d4004 assets/twilightforest/items/music_disc_
 b9e27b15ac9a50ddaa84943f0d55138f3a1f3d9e assets/twilightforest/items/music_disc_thread.json
 2bd751399010366f0dd89a7d7d128a108caba6c0 assets/twilightforest/items/music_disc_wayfarer.json
 e8168e4cd9d137b260b678037bbaaa50e2ec9c57 assets/twilightforest/items/mutton_jerky.json
-ea9e8e2ab39b78ff0a7963cb8354fc4f52800fcd assets/twilightforest/items/mystic_crown.json
+cb35d5ec95630888e2f6607a14de832804702d00 assets/twilightforest/items/mystic_crown.json
 4278a0455f92ac2ae843a6192002f64075ca3048 assets/twilightforest/items/nagastone.json
 df5299aee478937a344b991feda6357c4bd345ec assets/twilightforest/items/nagastone_head.json
 c0b5feab2f4a4ee817b237ce24abf72e3d4cb602 assets/twilightforest/items/nagastone_pillar.json
