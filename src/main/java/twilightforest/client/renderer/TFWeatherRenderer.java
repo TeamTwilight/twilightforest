@@ -382,7 +382,7 @@ public class TFWeatherRenderer {
 	 * [VanillaCopy]:<br>
 	 * {@link net.minecraft.client.renderer.WeatherEffectRenderer#tickRainParticles(ClientLevel, Camera, int, ParticleStatus, int)}<br>
 	 */
-	public static boolean tickRain(ClientLevel level, int partialTicks, BlockPos blockpos) {
+	public static boolean tickRain(ClientLevel level, int ticks, BlockPos blockpos) {
 		//TF - render rain if the Ur-Ghast is alive as well
 		if (urGhastAlive) {
 			urGhastRain = Math.min(1.0F, urGhastRain + 0.1F);
@@ -392,12 +392,12 @@ public class TFWeatherRenderer {
 		//TF - factor in the Ur-Ghast being alive when determining rain level
 		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain);
 		if (rainLevel > 0.0F) {
-			RandomSource randomsource = RandomSource.create((long) partialTicks * 312987231L);
+			RandomSource randomsource = RandomSource.create((long) ticks * 312987231L);
 			BlockPos blockpos1 = null;
 			int weatherRadius = Minecraft.getInstance().options.weatherRadius().get();
 			int weatherDiameter = 2 * weatherRadius + 1;
 			int weatherArea = weatherDiameter * weatherDiameter;
-			int i = (int) (0.225F * (float)weatherArea * rainLevel * rainLevel) / (Minecraft.getInstance().options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
+			int i = (int) (0.225F * weatherArea * rainLevel * rainLevel) / (Minecraft.getInstance().options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
 
 			for (int j = 0; j < i; ++j) {
 				int k = randomsource.nextInt(weatherDiameter) - weatherRadius;

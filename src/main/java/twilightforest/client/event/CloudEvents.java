@@ -97,14 +97,17 @@ public class CloudEvents {
 				if (!RENDER_HELPER.isEmpty()) {
 					RandomSource randomsource = RandomSource.create((long) mc.levelRenderer.getTicks() * 312987231L);
 					BlockPos particlePos = null;
-					int particleCount = 100 / (mc.options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
+					int weatherRadius = mc.options.weatherRadius().get();
+					int weatherDiameter = 2 * weatherRadius + 1;
+					int weatherArea = weatherDiameter * weatherDiameter;
+					int particleCount = (int) (0.225F * weatherArea) / (mc.options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
 
 					boolean yetToMakeASound = true;
 					BlockPos camPos = BlockPos.containing(vec3);
 
 					List<Vec2i> particleChecks = new ArrayList<>();
 					for (int i = 0; i < particleCount; ++i) {
-						particleChecks.add(new Vec2i(randomsource.nextInt(21) - 10 + camPos.getX(), randomsource.nextInt(21) - 10 + camPos.getZ()));
+						particleChecks.add(new Vec2i(randomsource.nextInt(weatherDiameter) - weatherRadius + camPos.getX(), randomsource.nextInt(weatherDiameter) - weatherRadius + camPos.getZ()));
 					}
 
 					for (PrecipitationRenderHelper helper : RENDER_HELPER) {
