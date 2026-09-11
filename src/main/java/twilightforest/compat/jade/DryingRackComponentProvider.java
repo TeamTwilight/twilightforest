@@ -15,11 +15,10 @@ public enum DryingRackComponentProvider implements IBlockComponentProvider {
 	@Override
 	public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
 		CompoundTag data = accessor.getServerData();
-		if (data.contains("progress")) {
-			int progress = data.getIntOr("progress", 0);
-			int total = data.getIntOr("total", 0);
-			tooltip.add(JadeUI.text(Component.translatable("jade.drying_rack.remaining", RecipeViewerConstants.getDryingTime(total - progress))).offset(10, 0));
-		}
+		data.getInt("progress").ifPresent(progress -> {
+			int remaining = data.getIntOr("total", 0) - progress;
+			tooltip.add(JadeUI.text(Component.translatable("jade.drying_rack.remaining", RecipeViewerConstants.getDryingTime(remaining))).offset(10, 0));
+		});
 	}
 
 	@Override
