@@ -5,12 +5,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.IElementHelper;
+import snownee.jade.api.ui.JadeUI;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.util.ColorUtil;
@@ -18,7 +17,6 @@ import twilightforest.util.ColorUtil;
 import java.util.Map;
 
 public enum QuestRamWoolProvider implements IEntityComponentProvider {
-
 	INSTANCE;
 
 	@Override
@@ -28,9 +26,9 @@ public enum QuestRamWoolProvider implements IEntityComponentProvider {
 			for (Map.Entry<DyeColor, Block> entry : ColorUtil.WOOL_TO_DYE_IN_RAM_ORDER.entrySet()) {
 				if (!ram.isColorPresent(entry.getKey())) {
 					if (getRenderedWools % 8 == 0) {
-						tooltip.add(IElementHelper.get().smallItem(new ItemStack(entry.getValue())).size(new Vec2(4.0F, 4.0F)));
+						tooltip.add(JadeUI.smallItem(new ItemStack(entry.getValue())).size(4, 4));
 					} else {
-						tooltip.append(IElementHelper.get().smallItem(new ItemStack(entry.getValue())).size(new Vec2(4.0F, 4.0F)));
+						tooltip.append(JadeUI.smallItem(new ItemStack(entry.getValue())).size(4, 4));
 					}
 					tooltip.append(Component.literal(" "));
 					getRenderedWools++;

@@ -15,11 +15,11 @@ public class JadeCompat implements IWailaPlugin {
 	public void registerClient(IWailaClientRegistration registration) {
 		registration.registerEntityComponent(QuestRamWoolProvider.INSTANCE, QuestRam.class);
 		registration.registerBlockComponent(ChiseledBookshelfSpawnProvider.INSTANCE, ChiseledCanopyShelfBlock.class);
-		registration.registerBlockComponent(DryingRackProvider.INSTANCE, DryingRackBlock.class);
+		registration.registerBlockComponent(DryingRackComponentProvider.INSTANCE, DryingRackBlock.class);
 	}
 
 	@Override
 	public void register(IWailaCommonRegistration registration) {
-		registration.registerBlockDataProvider(DryingRackProvider.INSTANCE, DryingRackBlock.class);
+		registration.registerBlockDataProvider(DryingRackDataProvider.INSTANCE, DryingRackBlock.class);
 	}
 }
