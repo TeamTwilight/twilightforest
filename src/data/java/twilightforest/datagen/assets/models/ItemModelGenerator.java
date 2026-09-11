@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
+import net.minecraft.client.renderer.special.ShieldSpecialRenderer;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
@@ -366,9 +367,9 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	}
 
 	public void generateKnightmetalShield(Item shieldItem) {
-		var normal = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem), new KnightmetalShieldSpecialRenderer.Unbaked());
-		var blocking = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem, "_blocking"), new KnightmetalShieldSpecialRenderer.Unbaked());
-		this.generateBooleanDispatch(shieldItem, ItemModelUtils.isUsingItem(), blocking, normal);
+		ItemModel.Unbaked normal = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem), new KnightmetalShieldSpecialRenderer.Unbaked());
+		ItemModel.Unbaked blocking = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem, "_blocking"), new KnightmetalShieldSpecialRenderer.Unbaked());
+		this.itemModelOutput.accept(shieldItem, ItemModelUtils.conditional(ShieldSpecialRenderer.DEFAULT_TRANSFORMATION, ItemModelUtils.isUsingItem(), blocking, normal));
 	}
 
 	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix) {
