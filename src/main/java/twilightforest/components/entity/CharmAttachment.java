@@ -43,18 +43,17 @@ public record CharmAttachment(List<ItemStackWithSlot> items) {
 
 	public Inventory toInventory(Player player) {
 		Inventory inventory = new Inventory(player, new EntityEquipment());
-
-		for (ItemStackWithSlot item : items) {
-			inventory.setItem(item.slot(), item.stack().copy());
-		}
-
+		this.applyTo(inventory);
 		return inventory;
 	}
 
-
 	public void applyTo(Inventory inventory) {
 		for (ItemStackWithSlot item : items) {
-			inventory.setItem(item.slot(), item.stack().copy());
+			if (inventory.getItem(item.slot()).isEmpty()) {
+				inventory.setItem(item.slot(), item.stack().copy());
+			} else {
+				inventory.add(item.stack().copy());
+			}
 		}
 	}
 

@@ -68,7 +68,7 @@ public class TFItemStackUtils {
 
 	public static NonNullList<ItemStack> sortArmorForCasket(Player player) {
 		NonNullList<ItemStack> armor = NonNullList.create();
-		for (int i = Inventory.INVENTORY_SIZE; i < Inventory.SLOT_BODY_ARMOR; i++) {
+		for (int i = Inventory.INVENTORY_SIZE; i < Inventory.SLOT_OFFHAND; i++) {
 			armor.add(player.getInventory().getItem(i));
 		}
 		Collections.reverse(armor);
@@ -77,13 +77,13 @@ public class TFItemStackUtils {
 
 	public static NonNullList<ItemStack> sortInvForCasket(Player player) {
 		NonNullList<ItemStack> inv = NonNullList.create();
-		for (int i = 0; i < 36; i++) {
+		for (int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
 			inv.add(player.getInventory().getItem(i));
 		}
 		NonNullList<ItemStack> sorted = NonNullList.create();
 		//hotbar at the bottom
-		sorted.addAll(inv.subList(9, 36));
-		sorted.addAll(inv.subList(0, 9));
+		sorted.addAll(inv.subList(Inventory.SELECTION_SIZE, Inventory.INVENTORY_SIZE));
+		sorted.addAll(inv.subList(0, Inventory.SELECTION_SIZE));
 
 		return sorted;
 	}

@@ -30,6 +30,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
+import twilightforest.util.TFItemStackUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -136,13 +137,14 @@ public class CuriosCompat {
 		return slot.isPresent() && slot.get().slotContext() != null && slot.get().slotContext().visible();
 	}
 
-	public static boolean findAndConsumeCurio(Item item, Player player) {
+	public static boolean findAndConsumeCurio(Item item, Player player, boolean saveItemToTag) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
-		if (slot.isPresent()) {
-//			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(player.registryAccess()));
-			slot.get().stack().shrink(1);
-			return true;
-		}
-		return false;
+		return slot.isPresent() && TFItemStackUtils.consumeInventoryItem(
+			slot.get().stack(),
+			item,
+			CharmEvents.getPlayerData(player),
+			saveItemToTag,
+			player.registryAccess()
+		);
 	}
 }
