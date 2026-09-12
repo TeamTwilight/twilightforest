@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-09T19:46:13.6460072	Loot Tables
+// 26.1.2	2026-09-12T13:09:08.0938277	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -206,7 +206,7 @@ c739669025622d4e3b57a795ed1203efeadab59a data/twilightforest/loot_table/blocks/i
 cea113c43650365f1cb585e71846dd0907f50187 data/twilightforest/loot_table/blocks/iron_oreberry_bush_berries.json
 c615f3316b9deb500c021b5665729ca49639ba13 data/twilightforest/loot_table/blocks/jungle_banister.json
 79e0aebc8175f2c135da4da833ac42fab8cd51c7 data/twilightforest/loot_table/blocks/jungle_drying_rack.json
-75f861b8ca95c4400bf22fd312420306a316301b data/twilightforest/loot_table/blocks/keepsake_casket.json
+754275ca46f7fdaf540c90684d09aed6496dfabc data/twilightforest/loot_table/blocks/keepsake_casket.json
 8b178ab9d6562c428e911e9fd51d63623780be56 data/twilightforest/loot_table/blocks/knightmetal_block.json
 987a3f9e2b2a1417c6281e6750f8db1115c2ca1d data/twilightforest/loot_table/blocks/knight_phantom_trophy.json
 48c340fc13fbd8cae6f8bd034a86c0b6de02a9ef data/twilightforest/loot_table/blocks/lich_tower_miniature_structure.json

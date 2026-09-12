@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -112,34 +111,16 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (level instanceof ServerLevel sl && !player.isCreative() && sl.getGameRules().get(GameRules.BLOCK_DROPS)) {
-			BlockEntity tile = level.getBlockEntity(pos);
-			if (tile instanceof SkullChestBlockEntity chest) {
-				ItemStack stack = new ItemStack(this);
-				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-				this.modifyDrop(state, stack);
-				if (chest.hasCustomName()) {
-					if (chest.owner != null)
-						itementity.setCustomName(chest.getDisplayName());
-					else itementity.setCustomName(chest.getCustomName());
-				}
-				if (state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
-					Block block = state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock();
-					if (block != Blocks.AIR) {
-						ItemStack blockstack = new ItemStack(block);
-						ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), blockstack);
-						item.setDefaultPickUpDelay();
-						level.addFreshEntity(item);
-					}
-				}
-				itementity.setDefaultPickUpDelay();
-				level.addFreshEntity(itementity);
+		if (level instanceof ServerLevel sl && !player.isCreative() && sl.getGameRules().get(GameRules.BLOCK_DROPS) && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
+			Block block = state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock();
+			if (block != Blocks.AIR) {
+				ItemStack blockstack = new ItemStack(block);
+				ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), blockstack);
+				item.setDefaultPickUpDelay();
+				level.addFreshEntity(item);
 			}
 		}
 		return super.playerWillDestroy(level, pos, state, player);
-	}
-
-	protected void modifyDrop(BlockState state, ItemStack stack) {
 	}
 
 	@Override

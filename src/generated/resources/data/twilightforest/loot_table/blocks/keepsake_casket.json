@@ -13,13 +13,6 @@
                 "minecraft:custom_name"
               ],
               "source": "block_entity"
-            },
-            {
-              "block": "twilightforest:keepsake_casket",
-              "function": "minecraft:copy_state",
-              "properties": [
-                "damage"
-              ]
             }
           ],
           "name": "twilightforest:keepsake_casket"

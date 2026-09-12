@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
@@ -31,6 +32,8 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
+
+import java.util.List;
 
 public class KeepsakeCasketBlock extends SkullChestBlock {
 	public static final IntegerProperty BREAKAGE = IntegerProperty.create("damage", 0, 2);
@@ -83,9 +86,16 @@ public class KeepsakeCasketBlock extends SkullChestBlock {
 	}
 
 	@Override
-	protected void modifyDrop(BlockState state, ItemStack stack) {
-		if (state.getValue(BREAKAGE) > 0)
-			stack.set(TFDataComponents.CASKET_DAMAGE, state.getValue(BREAKAGE));
+	protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+		List<ItemStack> drops = super.getDrops(state, params);
+		int breakage = state.getValue(BREAKAGE);
+		if (breakage > 0) {
+			for (ItemStack stack : drops) {
+				if (stack.is(this.asItem()))
+					stack.set(TFDataComponents.CASKET_DAMAGE, breakage);
+			}
+		}
+		return drops;
 	}
 
 	@Override
