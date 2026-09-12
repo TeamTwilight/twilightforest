@@ -111,24 +111,16 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (level instanceof ServerLevel sl && !player.isCreative() && sl.getGameRules().get(GameRules.BLOCK_DROPS)) {
-			BlockEntity tile = level.getBlockEntity(pos);
-			if (tile instanceof SkullChestBlockEntity) {
-				if (state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
-					Block block = state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock();
-					if (block != Blocks.AIR) {
-						ItemStack blockstack = new ItemStack(block);
-						ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), blockstack);
-						item.setDefaultPickUpDelay();
-						level.addFreshEntity(item);
-					}
-				}
+		if (level instanceof ServerLevel sl && !player.isCreative() && sl.getGameRules().get(GameRules.BLOCK_DROPS) && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
+			Block block = state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock();
+			if (block != Blocks.AIR) {
+				ItemStack blockstack = new ItemStack(block);
+				ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), blockstack);
+				item.setDefaultPickUpDelay();
+				level.addFreshEntity(item);
 			}
 		}
 		return super.playerWillDestroy(level, pos, state, player);
-	}
-
-	protected void modifyDrop(BlockState state, ItemStack stack) {
 	}
 
 	@Override
