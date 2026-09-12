@@ -58,8 +58,8 @@
       "to": [14, 16, 2.8],
       "shade": false,
       "faces": {
-        "north": {"texture": "#climbable", "tintindex": 0},
-        "south": {"texture": "#climbable", "tintindex": 0}
+        "north": {"texture": "#climbable", "tintindex": 1},
+        "south": {"texture": "#climbable", "tintindex": 1}
       }
     }
   ]
