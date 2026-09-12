@@ -46,4 +46,5 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("sidestep_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT.fieldOf("last_side_step_count")).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_GRADUALLY_GLIDING = ATTACHMENT_TYPES.register("is_gradually_gliding", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL.fieldOf("gliding")).sync(ByteBufCodecs.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SlimySolesAttachment>> SLIMY_SOLES_BOUNCE_INFO = ATTACHMENT_TYPES.register("slimy_soles_bounce_info", () -> AttachmentType.builder(SlimySolesAttachment::new).serialize(SlimySolesAttachment.CODEC).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<CharmAttachment>> CHARM_INVENTORY = ATTACHMENT_TYPES.register("charm_inventory", () -> AttachmentType.builder(() -> new CharmAttachment()).serialize(CharmAttachment.CODEC).copyOnDeath().build());
 }
