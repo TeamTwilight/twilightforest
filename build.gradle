@@ -279,7 +279,7 @@ dependencies {
 
 	//mods we dont have compat with but are nice to have
 //	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.4.3+1.21.4"
-//	runtimeOnly "curse.maven:world-edit-225608:6013137"
+	runtimeOnly "curse.maven:world-edit-225608:8037379"
 
 	testImplementation "net.neoforged:testframework:${project.neoforge_version}"
 	testImplementation "org.junit.jupiter:junit-jupiter:6.0.1"

@@ -27,8 +27,10 @@ import twilightforest.compat.curios.renderer.CharmOfLifeNecklaceRenderer;
 import twilightforest.compat.curios.renderer.CurioHeadRenderer;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
+import twilightforest.util.TFItemStackUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -76,7 +78,7 @@ public class CuriosCompat {
 	public static void keepCurios(DropRulesEvent event) {
 		if (event.getEntity() instanceof Player player) {
 			CompoundTag playerData = CharmEvents.getPlayerData(player);
-			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CONSUMED_CHARM_TAG) && playerData.contains(CharmEvents.CHARM_INV_TAG) && playerData.getList(CharmEvents.CHARM_INV_TAG).isPresent()) {
+			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CONSUMED_CHARM_TAG) && player.hasData(TFDataAttachments.CHARM_INVENTORY) && !player.getData(TFDataAttachments.CHARM_INVENTORY).isEmpty()) {
 				//Keep all Curios items
 				CuriosApi.getCuriosInventory(player).ifPresent(modifiable -> {
 					for (int i = 0; i < modifiable.getSlots(); ++i) {
@@ -135,13 +137,14 @@ public class CuriosCompat {
 		return slot.isPresent() && slot.get().slotContext() != null && slot.get().slotContext().visible();
 	}
 
-	public static boolean findAndConsumeCurio(Item item, Player player) {
+	public static boolean findAndConsumeCurio(Item item, Player player, boolean saveItemToTag) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
-		if (slot.isPresent()) {
-//			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(player.registryAccess()));
-			slot.get().stack().shrink(1);
-			return true;
-		}
-		return false;
+		return slot.isPresent() && TFItemStackUtils.consumeInventoryItem(
+			slot.get().stack(),
+			item,
+			CharmEvents.getPlayerData(player),
+			saveItemToTag,
+			player.registryAccess()
+		);
 	}
 }

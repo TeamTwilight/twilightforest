@@ -976,31 +976,54 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), this.modelOutput), new ChestSpecialRenderer.Unbaked(texture)));
 	}
 
-	//TODO god I hope this works as I want it to
 	public void generateBush(Block bush) {
-		Identifier small = TFModelTemplates.SMALL_BUSH.createWithSuffix(bush, "_small", TextureMapping.cube(bush), this.modelOutput);
-		MultiVariant medium = plainVariant(TFModelTemplates.MEDIUM_BUSH.create(bush, TextureMapping.cube(bush), this.modelOutput));
-		MultiVariant large = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_large", TextureMapping.cube(bush), this.modelOutput));
-		MultiVariant grown = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush,"_ripe", TextureMapping.cube(TextureMapping.getBlockTexture(bush, "_ripe")), this.modelOutput));
+		TextureMapping baseTexture = TextureMapping.cube(bush);
+		TextureMapping ripeTexture = TextureMapping.cube(TextureMapping.getBlockTexture(bush, "_ripe"));
+
+		Identifier small = TFModelTemplates.SMALL_BUSH.createWithSuffix(bush, "_small", baseTexture, this.modelOutput);
+		MultiVariant smallBush = plainVariant(small);
+		MultiVariant medium = plainVariant(TFModelTemplates.MEDIUM_BUSH.create(bush, baseTexture, this.modelOutput));
+
+		MultiVariant[] large = new MultiVariant[SnowLoggable.MAX_SNOW_LAYERS];
+		MultiVariant[] grown = new MultiVariant[SnowLoggable.MAX_SNOW_LAYERS];
+		large[0] = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_large", baseTexture, this.modelOutput));
+		grown[0] = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_ripe", ripeTexture, this.modelOutput));
+		for (int layers = 1; layers < SnowLoggable.MAX_SNOW_LAYERS; layers++) {
+			large[layers] = plainVariant(TFExtendedModelTemplates.SNOW_LOGGED_LARGE_BUSHES[layers].createWithSuffix(bush, "_large_" + layers, baseTexture, this.modelOutput));
+			grown[layers] = plainVariant(TFExtendedModelTemplates.SNOW_LOGGED_LARGE_BUSHES[layers].createWithSuffix(bush, "_ripe_" + layers, ripeTexture, this.modelOutput));
+		}
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(bush).with(PropertyDispatch.initial(TFBushBlock.AGE, TFBushBlock.SNOW_LAYERS).generate((age, snow) -> {
+			if (snow == SnowLoggable.MIN_SNOW_LAYERS) {
+				return switch (age) {
+					case 1 -> medium;
+					case 2 -> large[0];
+					case 3 -> grown[0];
+					default -> smallBush;
+				};
+			}
+
+			MultiVariant snowModel = snow < SnowLoggable.MAX_SNOW_LAYERS ? plainVariant(ModelLocationUtils.getModelLocation(Blocks.SNOW, "_height" + snow * 2)) : plainVariant(ModelLocationUtils.getModelLocation(Blocks.SNOW_BLOCK));
+			int bushHeight = switch (age) {
+				case 1 -> 12;
+				case 2, 3 -> 16;
+				default -> 8;
+			};
+			if (snow * 2 >= bushHeight)
+				return snowModel;
+
 			MultiVariant bushModel = switch (age) {
 				case 1 -> medium;
-				case 2 -> large;
-				case 3 -> grown;
-				default -> plainVariant(small);
+				case 2 -> large[snow];
+				case 3 -> grown[snow];
+				default -> smallBush;
 			};
-			if (snow > 0) {
-				MultiVariant snowModel = snow < 8 ? plainVariant(ModelLocationUtils.getModelLocation(Blocks.SNOW, "_height" + snow * 2)) : plainVariant(ModelLocationUtils.getModelLocation(Blocks.SNOW_BLOCK));
 
-				CompositeBlockStateModelBuilder builder = new CompositeBlockStateModelBuilder();
-				builder.addPartModel(bushModel.toUnbaked());
-				builder.addPartModel(snowModel.toUnbaked());
+			CompositeBlockStateModelBuilder builder = new CompositeBlockStateModelBuilder();
+			builder.addPartModel(bushModel.toUnbaked());
+			builder.addPartModel(snowModel.toUnbaked());
 
-				return MultiVariant.of(builder);
-			} else {
-				return bushModel;
-			}
+			return MultiVariant.of(builder);
 		})));
 		this.itemModelOutput.accept(bush.asItem(), ItemModelUtils.plainModel(small));
 	}

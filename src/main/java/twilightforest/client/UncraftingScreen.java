@@ -140,11 +140,11 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 
 	@Override
 	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-		graphics.text(this.font, this.title, 6, 6, 4210752, false);
+		graphics.text(this.font, this.title, 6, 6, 0xFF404040, false);
 		if (TFConfig.disableUncraftingOnly) {
-			graphics.text(this.font, Component.translatable("container.twilightforest.uncrafting_table.uncrafting_disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752, false);
+			graphics.text(this.font, Component.translatable("container.twilightforest.uncrafting_table.uncrafting_disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 0xFF404040, false);
 		} else {
-			graphics.text(this.font, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752, false);
+			graphics.text(this.font, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 0xFF404040, false);
 		}
 	}
 
@@ -176,9 +176,9 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 			int color;
 			String cost = "" + costVal;
 			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.getAbilities().instabuild) {
-				color = 0xA00000;
+				color = 0xFFA00000;
 			} else {
-				color = 0x80FF20;
+				color = 0xFF80FF20;
 			}
 			graphics.text(this.font, cost, frameX + 48 - this.font.width(cost), frameY + 38, color);
 		}
@@ -188,9 +188,9 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 			int color;
 			String cost = "" + costVal;
 			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.getAbilities().instabuild) {
-				color = 0xA00000;
+				color = 0xFFA00000;
 			} else {
-				color = 0x80FF20;
+				color = 0xFF80FF20;
 			}
 			graphics.text(this.font, cost, frameX + 130 - this.font.width(cost), frameY + 38, color);
 		}

@@ -43,7 +43,7 @@ public class KeepGrassSnowyForSnowloggableBlocksTransformer extends SimpleMethod
 	@Override
 	public Set<Target> targets() {
 		return Set.of(new Target(
-			"net.minecraft.world.level.block.SnowyDirtBlock",
+			"net.minecraft.world.level.block.SnowyBlock",
 			"isSnowySetting",
 			"(Lnet/minecraft/world/level/block/state/BlockState;)Z"
 		));
