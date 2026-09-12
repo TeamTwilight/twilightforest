@@ -674,8 +674,8 @@ public class TFCreativeTabs {
 
 		ItemStack loreSword = new ItemStack(TFItems.GLASS_SWORD.get());
 
-		List<Component> GLASS_SWORD_COMPONENTS = List.of(Component.translatable("item.twilightforest.glass_sword.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
-		loreSword.set(DataComponents.LORE, new ItemLore(GLASS_SWORD_COMPONENTS, GLASS_SWORD_COMPONENTS));
+		List<Component> glassSwordComponents = List.of(Component.translatable("item.twilightforest.glass_sword.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY).withItalic(false)));
+		loreSword.set(DataComponents.LORE, new ItemLore(glassSwordComponents));
 		loreSword.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);
 		loreSword.set(TFDataComponents.INFINITE_GLASS_SWORD, Unit.INSTANCE);
 
