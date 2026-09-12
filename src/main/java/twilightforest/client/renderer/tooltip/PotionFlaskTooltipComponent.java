@@ -14,6 +14,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -58,7 +59,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	private int getDescriptionHeight(Font font) {
 		if (this.component.potion().potion().isPresent()) {
 			var height = 0;
-			for (var component : this.getPotionTooltips()) {
+			for (Component component : this.getPotionTooltips()) {
 				if (component.getString().isEmpty()) {
 					height += font.lineHeight;
 				}
@@ -104,8 +105,8 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 			graphics.textWithWordWrap(font, EMPTY_DESCRIPTION, x, y, WIDTH, 0xFFAAAAAA);
 		} else {
 			int height = 0;
-			for (var component : this.getPotionTooltips()) {
-				int color = component.getStyle().getColor() != null ? component.getStyle().getColor().getValue() | 0xFF000000 : 0xFFAAAAAA;
+			for (Component component : this.getPotionTooltips()) {
+				int color = component.getStyle().getColor() != null ? ARGB.opaque(component.getStyle().getColor().getValue()) : 0xFFAAAAAA;
 				if (component.getString().isEmpty()) {
 					height += font.lineHeight;
 				} else {
