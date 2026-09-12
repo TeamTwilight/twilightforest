@@ -458,6 +458,18 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MOSS_PATCH, "Moss Patch");
 		this.addBlock(TFBlocks.CLOVER_PATCH, "Clover Patch");
 		this.addBlock(TFBlocks.TORCHBERRY_PLANT, "Torchberry Plant");
+		this.addBlock(TFBlocks.IRON_OREBERRY_BUSH, "Iron Oreberry Bush");
+		this.addBlock(TFBlocks.GOLD_OREBERRY_BUSH, "Gold Oreberry Bush");
+		this.addBlock(TFBlocks.COPPER_OREBERRY_BUSH, "Copper Oreberry Bush");
+		this.addBlock(TFBlocks.ESSENCE_OREBERRY_BUSH, "Essence Berry Bush");
+		this.addBlock(TFBlocks.RASPBERRY_BUSH, "Raspberry Bush");
+		this.addBlock(TFBlocks.BLUEBERRY_BUSH, "Blueberry Bush");
+		this.addBlock(TFBlocks.BLACKBERRY_BUSH, "Blackberry Bush");
+		this.addBlock(TFBlocks.MALOBERRY_BUSH, "Maloberry Bush");
+		this.addBlock(TFBlocks.BLIGHTBERRY_BUSH, "Blightberry Bush");
+		this.addBlock(TFBlocks.DUSKBERRY_BUSH, "Duskberry Bush");
+		this.addBlock(TFBlocks.SKYBERRY_BUSH, "Skyberry Bush");
+		this.addBlock(TFBlocks.STINGBERRY_BUSH, "Stingberry Bush");
 		this.addBlock(TFBlocks.ROOT_STRAND, "Root Strands");
 		this.addBlock(TFBlocks.FALLEN_LEAVES, "Fallen Leaves");
 		this.addBlock(TFBlocks.MAYAPPLE, "Mayapple");
