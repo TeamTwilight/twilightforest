@@ -624,6 +624,16 @@ public class ClientRegistrationEvents {
 
 			state.setRenderData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(living));
 
+			if (living.getItemBySlot(EquipmentSlot.LEGS).has(TFDataComponents.TRAVELLERS_HAS_WINGS)) {
+				TravellersWingsModel.WingsPose wingsPose = TravellersWingsModel.advanceAnimation(
+					living.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM),
+					living.getData(TFDataAttachments.TRAVELLERS_WINGS),
+					state.ageInTicks,
+					state.walkAnimationSpeed
+				);
+				state.setRenderData(TravellersWingsModel.WINGS_POSE_KEY, wingsPose);
+			}
+
 			AttributeInstance speed = living.getAttribute(Attributes.MOVEMENT_SPEED);
 			if (speed == null)
 				return;

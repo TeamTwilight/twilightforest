@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -196,6 +197,21 @@ public class TravellersGearLogic {
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
 		if (TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
+	}
+
+	public static void travellersGogglesZoom(LivingEntity livingEntity) {
+		ItemStack headStack = livingEntity.getItemBySlot(EquipmentSlot.HEAD);
+		if (headStack.isEmpty())
+			return;
+
+		boolean isUsingZoom = livingEntity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
+		if (isUsingZoom == headStack.has(TFDataComponents.IS_USING_GOGGLES_ZOOM))
+			return;
+
+		if (isUsingZoom)
+			headStack.set(TFDataComponents.IS_USING_GOGGLES_ZOOM, Unit.INSTANCE);
+		else
+			headStack.remove(TFDataComponents.IS_USING_GOGGLES_ZOOM);
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
