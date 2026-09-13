@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-12T22:41:46.441153	Model Definitions - twilightforest
+// 26.1.2	2026-09-13T15:21:54.838733835	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -1124,7 +1124,7 @@ c8e2f23e5c7b1a7fd3bd82879c2b85d199ecc701 assets/twilightforest/items/travellers_
 d4a03054fa7cf6221f0c8c1d1d2108556ca4eb07 assets/twilightforest/items/triple_bow.json
 dfac6c869e8ced9691ba593d4590aa62ee6a48b9 assets/twilightforest/items/troll_spawn_egg.json
 a931070fe8986e602b3d3eea58afc2ca8443b9a9 assets/twilightforest/items/trollber.json
-4a4595c495110687a2966b7f80c8a5841cbff175 assets/twilightforest/items/trollsteinn.json
+811f3bae14ecfc843c6646af7a5a55a82a1541e3 assets/twilightforest/items/trollsteinn.json
 3d4efeb866d72998131656e4155f5f164a9a11dc assets/twilightforest/items/trollvidr.json
 c8cabf21dea0401bab2a163bd61b97f528c88627 assets/twilightforest/items/trophy_pedestal.json
 cb675d2c62c89e71ec24e96b4547e09cb9e660e3 assets/twilightforest/items/tropical_fish_jerky.json
@@ -2325,7 +2325,6 @@ f5a1f36517ae65e67789b02bec76def966564446 assets/twilightforest/models/block/tran
 4b6a9d6130919d1d0379f6741be485725f05f224 assets/twilightforest/models/block/transformation_wood.json
 99316a18f585c6fb5bcb7f01b71f6bca1abc52b3 assets/twilightforest/models/block/trollber.json
 164b3216edcb2065d9c9add1370aaba79c7196f1 assets/twilightforest/models/block/trollsteinn.json
-143fcec33946ad1372d8bdba061bc72f5838b117 assets/twilightforest/models/block/trollsteinn_inventory.json
 273cd204249b874688211889b695b4ce6c5fc258 assets/twilightforest/models/block/trollvidr.json
 8d6bfc055e9e2cb70259e7247daeff3395e922ac assets/twilightforest/models/block/trophy_pedestal.json
 5bdd94f51a6807152d6627684a6aa10df6a54f1e assets/twilightforest/models/block/trophy_pedestal_1.json
@@ -2776,6 +2775,8 @@ da8ccbaaf7197d8de6f5a670061779d6c9bd69b8 assets/twilightforest/models/item/tripl
 1e9c9118a16e3aae53792c02900e73a27d2e8855 assets/twilightforest/models/item/triple_bow_pulling_2.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/troll_spawn_egg.json
 91a98f44c463398931104d5f6ff8589e820267c5 assets/twilightforest/models/item/trollber.json
+143fcec33946ad1372d8bdba061bc72f5838b117 assets/twilightforest/models/item/trollsteinn.json
+93593e7779b3cc6b8401375cec38388a3c9692f5 assets/twilightforest/models/item/trollsteinn_light.json
 c40a954fe657d4d44a308596d3fcdc3ad6de9faf assets/twilightforest/models/item/trollvidr.json
 2753d13c35e8708a90f89d2c6f55d202216f9d24 assets/twilightforest/models/item/tropical_fish_jerky.json
 ef21acc3297ac54d490d74b2a786ff5719d1ee37 assets/twilightforest/models/item/twilight_oak_boat.json

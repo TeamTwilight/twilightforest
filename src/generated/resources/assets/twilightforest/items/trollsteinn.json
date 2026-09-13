@@ -1,6 +1,13 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "twilightforest:block/trollsteinn_inventory"
+    "type": "twilightforest:trollsteinn",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/trollsteinn"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/trollsteinn_light"
+    }
   }
 }
