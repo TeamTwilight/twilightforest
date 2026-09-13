@@ -4,6 +4,6 @@
   "additional_data": {
     "twilightforest:emperors_cloth": {}
   },
-  "base": "#c:armors",
+  "base": "#twilightforest:emperors_cloth_applicable",
   "show_notification": false
 }

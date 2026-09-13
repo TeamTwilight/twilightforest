@@ -25,6 +25,22 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 
 		this.tag(TFBlockTags.ARTIFACTS_CAMPSITE_CHESTS).addTag(TFBlockTags.TF_CHESTS);
 
+		this.tag(TFBlockTags.CHEST_MOUNTED_STORAGE).addTag(TFBlockTags.TF_CHESTS).add(
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
+			TFBlocks.CANOPY_TRAPPED_CHEST.get(),
+			TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
+			TFBlocks.DARK_TRAPPED_CHEST.get(),
+			TFBlocks.TIME_TRAPPED_CHEST.get(),
+			TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
+			TFBlocks.MINING_TRAPPED_CHEST.get(),
+			TFBlocks.SORTING_TRAPPED_CHEST.get());
+		this.tag(TFBlockTags.PASSIVE_BOILER_HEATERS).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY);
+		this.tag(TFBlockTags.TREE_ATTACHMENTS).add(
+				TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
+				TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get(),
+				TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(),
+				TFBlocks.MANGROVE_ROOT.get(), TFBlocks.FIREFLY.get(), TFBlocks.CICADA.get());
+
 		this.tag(TFBlockTags.FD_COMPOST_ACTIVATORS).add(TFBlocks.UBEROUS_SOIL.get(), TFBlocks.MUSHGLOOM.get());
 		this.tag(TFBlockTags.FD_HEAT_SOURCES).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY);
 	}

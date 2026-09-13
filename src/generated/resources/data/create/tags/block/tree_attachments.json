@@ -1,0 +1,13 @@
+{
+  "values": [
+    "twilightforest:time_log_core",
+    "twilightforest:transformation_log_core",
+    "twilightforest:mining_log_core",
+    "twilightforest:sorting_log_core",
+    "twilightforest:root",
+    "twilightforest:liveroot_block",
+    "twilightforest:mangrove_root",
+    "twilightforest:firefly",
+    "twilightforest:cicada"
+  ]
+}

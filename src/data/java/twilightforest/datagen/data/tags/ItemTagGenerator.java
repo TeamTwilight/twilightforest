@@ -36,6 +36,28 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.copy(TFBlockTags.MINING_LOGS, TFItemTags.MINING_LOGS);
 		this.copy(TFBlockTags.SORTING_LOGS, TFItemTags.SORTING_LOGS);
 
+		this.tag(Tags.Items.STRIPPED_LOGS).add(
+				TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.value().asItem(),
+				TFBlocks.STRIPPED_CANOPY_LOG.value().asItem(),
+				TFBlocks.STRIPPED_MANGROVE_LOG.value().asItem(),
+				TFBlocks.STRIPPED_DARK_LOG.value().asItem(),
+				TFBlocks.STRIPPED_TIME_LOG.value().asItem(),
+				TFBlocks.STRIPPED_TRANSFORMATION_LOG.value().asItem(),
+				TFBlocks.STRIPPED_MINING_LOG.value().asItem(),
+				TFBlocks.STRIPPED_SORTING_LOG.value().asItem()
+		);
+
+		this.tag(Tags.Items.STRIPPED_WOODS).add(
+				TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.value().asItem(),
+				TFBlocks.STRIPPED_CANOPY_WOOD.value().asItem(),
+				TFBlocks.STRIPPED_MANGROVE_WOOD.value().asItem(),
+				TFBlocks.STRIPPED_DARK_WOOD.value().asItem(),
+				TFBlocks.STRIPPED_TIME_WOOD.value().asItem(),
+				TFBlocks.STRIPPED_TRANSFORMATION_WOOD.value().asItem(),
+				TFBlocks.STRIPPED_MINING_WOOD.value().asItem(),
+				TFBlocks.STRIPPED_SORTING_WOOD.value().asItem()
+		);
+
 		this.copy(TFBlockTags.TF_LOGS, TFItemTags.TWILIGHT_LOGS);
 		this.tag(ItemTags.LOGS).addTag(TFItemTags.TWILIGHT_LOGS);
 		this.tag(ItemTags.LOGS_THAT_BURN)
@@ -65,6 +87,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.copy(BlockTags.STANDING_SIGNS, ItemTags.SIGNS);
 
 		this.copy(Tags.Blocks.CHESTS_WOODEN, Tags.Items.CHESTS_WOODEN);
+		this.copy(Tags.Blocks.CHESTS_TRAPPED, Tags.Items.CHESTS_TRAPPED);
 
 		this.copy(TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR, TFItemTags.STORAGE_BLOCKS_ARCTIC_FUR);
 		this.copy(TFBlockTags.STORAGE_BLOCKS_CARMINITE, TFItemTags.STORAGE_BLOCKS_CARMINITE);
@@ -80,6 +103,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 
 		this.copy(TFBlockTags.TOWERWOOD, TFItemTags.TOWERWOOD);
 		this.copy(TFBlockTags.BANISTERS, TFItemTags.BANISTERS);
+		this.copy(TFBlockTags.DRYING_RACKS, TFItemTags.DRYING_RACKS);
 
 		this.tag(TFItemTags.PAPER).add(Items.PAPER);
 		this.tag(Tags.Items.FEATHERS).add(TFItems.RAVEN_FEATHER.get());
@@ -132,7 +156,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.YETI_HELMET.get(),
 			TFItems.YETI_CHESTPLATE.get(),
 			TFItems.YETI_LEGGINGS.get(),
-			TFItems.YETI_BOOTS.get()
+			TFItems.YETI_BOOTS.get(),
+			TFItems.TRAVELLERS_VEST.get(),
+			TFItems.TRAVELLERS_BOOTS.get()
 		);
 
 		this.tag(TFItemTags.WIP).add(
@@ -145,13 +171,12 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFBlocks.CINDER_LOG.asItem(),
 			TFBlocks.CINDER_WOOD.asItem(),
 			TFBlocks.SLIDER.asItem(),
-			TFBlocks.BRAZIER.asItem(),
-			TFBlocks.MAZE_SLIME_BLOCK.asItem()
+			TFBlocks.BRAZIER.asItem()
 		);
 
 		this.tag(TFItemTags.KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
 		this.tag(TFItemTags.BOAR_TEMPT_ITEMS).addTag(Tags.Items.CROPS_CARROT).addTag(Tags.Items.CROPS_POTATO).addTag(Tags.Items.CROPS_BEETROOT);
-		this.tag(TFItemTags.DEER_TEMPT_ITEMS).addTag(Tags.Items.CROPS_WHEAT).add(Items.APPLE);
+		this.tag(TFItemTags.DEER_TEMPT_ITEMS).addTag(Tags.Items.CROPS_WHEAT).add(Items.APPLE).add(TFItems.SHIKA_SENBEI.get());
 		this.tag(TFItemTags.DWARF_RABBIT_TEMPT_ITEMS).addTag(Tags.Items.CROPS_CARROT).add(Items.GOLDEN_CARROT).add(Items.DANDELION);
 		this.tag(TFItemTags.PENGUIN_TEMPT_ITEMS).addTag(ItemTags.FISHES);
 		this.tag(TFItemTags.RAVEN_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
@@ -264,6 +289,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.get().asItem());
 
 		this.tag(ItemTags.TRIM_MATERIALS).add(TFItems.IRONWOOD_INGOT.get(), TFItems.STEELEAF_INGOT.get(), TFItems.KNIGHTMETAL_INGOT.get(), TFItems.NAGA_SCALE.get(), TFItems.CARMINITE.get(), TFItems.FIERY_INGOT.get());
+		this.tag(TFItemTags.TRAVELLERS_AGILE_RANGER_WHITELISTED)
+				.add(TFItems.MOONWORM_QUEEN.get());
 
 		this.tag(TFItemTags.REPAIRS_IRONWOOD_TOOLS).addTag(TFItemTags.IRONWOOD_INGOTS);
 		this.tag(TFItemTags.REPAIRS_STEELEAF_TOOLS).addTag(TFItemTags.STEELEAF_INGOTS);
@@ -272,10 +299,37 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(TFItemTags.REPAIRS_GIANT_TOOLS).add(TFBlocks.GIANT_COBBLESTONE.asItem());
 		this.tag(TFItemTags.REPAIRS_ICE_TOOLS).add(Blocks.ICE.asItem(), Blocks.PACKED_ICE.asItem(), Blocks.BLUE_ICE.asItem());
 
-		this.tag(ItemTags.MEAT).add(TFItems.RAW_VENISON.get(), TFItems.COOKED_VENISON.get(), TFItems.RAW_MEEF.get(), TFItems.COOKED_MEEF.get(), TFItems.MEEF_STROGANOFF.get(), TFItems.EXPERIMENT_115.get(), TFItems.HYDRA_CHOP.get());
+		this.tag(ItemTags.MEAT).add(
+				TFItems.RAW_VENISON.get(),
+				TFItems.COOKED_VENISON.get(),
+				TFItems.RAW_MEEF.get(),
+				TFItems.COOKED_MEEF.get(),
+				TFItems.MEEF_STROGANOFF.get(),
+				TFItems.EXPERIMENT_115.get(),
+				TFItems.HYDRA_CHOP.get(),
+				TFItems.MONSTER_JERKY.get(),
+				TFItems.BEEF_JERKY.get(),
+				TFItems.PORK_JERKY.get(),
+				TFItems.CHICKEN_JERKY.get(),
+				TFItems.RABBIT_JERKY.get(),
+				TFItems.MUTTON_JERKY.get(),
+				TFItems.VENISON_JERKY.get(),
+				TFItems.MEEF_JERKY.get(),
+				TFItems.COD_JERKY.get(),
+				TFItems.SALMON_JERKY.get(),
+				TFItems.TROPICAL_FISH_JERKY.get(),
+				TFItems.FUGU_JERKY.get()
+		);
 		this.tag(ItemTags.BEACON_PAYMENT_ITEMS).addTags(TFItemTags.IRONWOOD_INGOTS, TFItemTags.STEELEAF_INGOTS, TFItemTags.KNIGHTMETAL_INGOTS, TFItemTags.FIERY_INGOTS);
 
-		this.tag(ItemTags.TRIMMABLE_ARMOR).remove(TFItems.YETI_HELMET.get());
+		this.tag(ItemTags.TRIMMABLE_ARMOR)
+				.remove(TFItems.YETI_HELMET.get())
+				.remove(TFItems.TRAVELLERS_GOGGLES.get())
+				.remove(TFItems.TRAVELLERS_VEST.get())
+				.remove(TFItems.TRAVELLERS_GLOVES.get())
+				.remove(TFItems.TRAVELLERS_BELT.get())
+				.remove(TFItems.TRAVELLERS_WINGS.get())
+				.remove(TFItems.TRAVELLERS_BOOTS.get());
 
 		this.tag(ItemTags.HEAD_ARMOR).add(
 			TFItems.IRONWOOD_HELMET.get(),
@@ -284,7 +338,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.ARCTIC_HELMET.get(),
 			TFItems.YETI_HELMET.get(),
 			TFItems.FIERY_HELMET.get(),
-			TFItems.PHANTOM_HELMET.get());
+			TFItems.PHANTOM_HELMET.get(),
+			TFItems.TRAVELLERS_GOGGLES.get());
 
 		this.tag(ItemTags.CHEST_ARMOR).add(
 			TFItems.IRONWOOD_CHESTPLATE.get(),
@@ -294,7 +349,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.YETI_CHESTPLATE.get(),
 			TFItems.FIERY_CHESTPLATE.get(),
 			TFItems.PHANTOM_CHESTPLATE.get(),
-			TFItems.NAGA_CHESTPLATE.get());
+			TFItems.NAGA_CHESTPLATE.get(),
+			TFItems.TRAVELLERS_VEST.get(),
+			TFItems.TRAVELLERS_GLOVES.get());
 
 		this.tag(ItemTags.LEG_ARMOR).add(
 			TFItems.IRONWOOD_LEGGINGS.get(),
@@ -303,7 +360,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.ARCTIC_LEGGINGS.get(),
 			TFItems.YETI_LEGGINGS.get(),
 			TFItems.FIERY_LEGGINGS.get(),
-			TFItems.NAGA_LEGGINGS.get());
+			TFItems.NAGA_LEGGINGS.get(),
+			TFItems.TRAVELLERS_WINGS.get(),
+			TFItems.TRAVELLERS_BELT.get());
 
 		this.tag(ItemTags.FOOT_ARMOR).add(
 			TFItems.IRONWOOD_BOOTS.get(),
@@ -311,7 +370,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.KNIGHTMETAL_BOOTS.get(),
 			TFItems.ARCTIC_BOOTS.get(),
 			TFItems.YETI_BOOTS.get(),
-			TFItems.FIERY_BOOTS.get());
+			TFItems.FIERY_BOOTS.get(),
+			TFItems.TRAVELLERS_BOOTS.get());
 
 		//this.tag(ItemTags.DYEABLE).add(TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 		this.tag(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
@@ -329,10 +389,23 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.EQUIPPABLE_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		this.tag(ItemTags.BREAKS_DECORATED_POTS).add(TFItems.BLOCK_AND_CHAIN.get());
 
-		this.tag(Tags.Items.FOODS_BERRY).add(TFItems.TORCHBERRIES.get());
+		this.tag(Tags.Items.FOODS).addTag(TFItemTags.FOODS_JERKY).add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), TFItems.BERRY_MEDLEY.get(), TFItems.MAZE_WAFER.get());
+		this.tag(TFItemTags.FOODS_JERKY).add(
+				TFItems.MONSTER_JERKY.get(), TFItems.BEEF_JERKY.get(),
+				TFItems.PORK_JERKY.get(), TFItems.CHICKEN_JERKY.get(),
+				TFItems.RABBIT_JERKY.get(), TFItems.MUTTON_JERKY.get(),
+				TFItems.VENISON_JERKY.get(), TFItems.MEEF_JERKY.get(),
+				TFItems.COD_JERKY.get(), TFItems.SALMON_JERKY.get(),
+				TFItems.TROPICAL_FISH_JERKY.get(), TFItems.FUGU_JERKY.get());
+		this.tag(Tags.Items.FOODS_BERRY).add(
+				TFItems.TORCHBERRIES.get(), TFItems.RASPBERRY.get(),
+				TFItems.BLACKBERRY.get(), TFItems.BLUEBERRY.get(),
+				TFItems.MALOBERRY.get(), TFItems.DUSKBERRY.get(),
+				TFItems.SKYBERRY.get(), TFItems.BLIGHTBERRY.get(),
+				TFItems.STINGBERRY.get());
 		this.tag(Tags.Items.FOODS_RAW_MEAT).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 		this.tag(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
-		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get());
+		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get(), TFItems.MOSS_SOUP.get());
 		this.tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
 		this.tag(Tags.Items.ROPES).add(TFItems.ROPE.get());
 		this.tag(Tags.Items.MUSHROOMS).add(TFBlocks.MUSHGLOOM.get().asItem());
@@ -341,6 +414,24 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.MUSIC_DISC_HOME.get(), TFItems.MUSIC_DISC_WAYFARER.get(), TFItems.MUSIC_DISC_FINDINGS.get(),
 			TFItems.MUSIC_DISC_MAKER.get(), TFItems.MUSIC_DISC_THREAD.get(), TFItems.MUSIC_DISC_MOTION.get()
 		);
+		this.tag(Tags.Items.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
+		this.copy(Tags.Blocks.STORAGE_BLOCKS_SLIME, Tags.Items.STORAGE_BLOCKS_SLIME);
+
+		this.tag(TFItemTags.RENDER_LOWER_ON_DRYING_RACK)
+				.add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get())
+				.add(TFItems.ZOMBIE_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get())
+				.add(Items.POINTED_DRIPSTONE, Items.RECOVERY_COMPASS, Items.CLOCK, Items.SPYGLASS, Items.TRIDENT)
+				.addTag(ItemTags.BANNERS)
+				.addTag(Tags.Items.TOOLS)
+				.remove(Tags.Items.TOOLS_SHIELD);
+
+		this.tag(TFItemTags.TROPHIES).add(
+				TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(),
+				TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(),
+				TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(),
+				TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get());
+
+		this.tag(TFItemTags.EMPERORS_CLOTH_APPLICABLE).addTag(Tags.Items.ARMORS).add(Items.ELYTRA);
 	}
 
 	@Override

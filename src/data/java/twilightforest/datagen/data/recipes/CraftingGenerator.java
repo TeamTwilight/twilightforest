@@ -517,7 +517,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SpecialRecipeBuilder.special(() -> EssenceRepairRecipe.INSTANCE).save(this.output, this.createKey("essence_repair_recipe"));
 
 		NoSmithingTemplateRecipeBuilder
-			.noTemplate(Ingredient.of(getter.getOrThrow(Tags.Items.ARMORS)), Ingredient.of(TFItems.EMPERORS_CLOTH), RecipeCategory.MISC)
+			.noTemplate(Ingredient.of(getter.getOrThrow(TFItemTags.EMPERORS_CLOTH_APPLICABLE)), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
 			.attachData(TFDataComponents.EMPERORS_CLOTH::value, Unit.INSTANCE)
 			.unlocks("has_cloth", has(TFItems.EMPERORS_CLOTH))
 			.save(this.output, this.createKey("emperors_cloth_smithing"));

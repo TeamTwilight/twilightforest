@@ -105,6 +105,8 @@ public class TFItemTags {
 	public static final TagKey<Item> CA_PLANTS = create("createaddition", "plants");
 	public static final TagKey<Item> CA_PLANT_FOODS = create("createaddition", "plant_foods");
 
+	public static final TagKey<Item> FA_MODIFIER_ETERNAL_INCOMPATIBLE = create("forbidden_arcanus", "modifier/eternal_incompatible");
+
 	public static final TagKey<Item> FD_CABBAGE_ROLL_INGREDIENTS = create("farmersdelight", "cabbage_roll_ingredients");
 
 	public static final TagKey<Item> RANDOMIUM_BLACKLIST = create("randomium", "blacklist");

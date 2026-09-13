@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
-import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -76,6 +75,8 @@ public class ModdedItemTagGenerator extends BlockTagCopyingItemTagProvider {
 			TFBlocks.MUSHGLOOM.get().asItem(), TFBlocks.TORCHBERRY_PLANT.get().asItem(),
 			TFBlocks.ROOT_STRAND.get().asItem(), TFBlocks.FALLEN_LEAVES.get().asItem(),
 			TFBlocks.HEDGE.get().asItem(), TFBlocks.ROOT_BLOCK.get().asItem(), TFBlocks.LIVEROOT_BLOCK.get().asItem());
+
+		this.tag(TFItemTags.FA_MODIFIER_ETERNAL_INCOMPATIBLE).add(TFItems.GLASS_SWORD.value());
 
 		this.tag(TFItemTags.FD_CABBAGE_ROLL_INGREDIENTS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 
