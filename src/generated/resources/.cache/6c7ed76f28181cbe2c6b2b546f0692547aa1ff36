@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-13T00:41:28.258477	Twilight Forest Recipes
+// 26.1.2	2026-09-13T19:31:42.271011503	Twilight Forest Recipes
 c8fdba389667cca258d6f0a2a4be48f93bd7e333 data/minecraft/advancement/recipes/drying/dead_brain_coral.json
 81aca38f20243d53b6a6ce139ab1e7237bb6a2a5 data/minecraft/advancement/recipes/drying/dead_brain_coral_block.json
 5e11c49be557cf53712364dcadcd4bf5799ae3b1 data/minecraft/advancement/recipes/drying/dead_brain_coral_fan.json
@@ -14,6 +14,14 @@ e691cd491b40d4810a75440cf69e96e3a610a2a8 data/minecraft/advancement/recipes/dryi
 d0d61ec4327dfa839c8b47a06e2f06dcfce165be data/minecraft/advancement/recipes/drying/dead_tube_coral.json
 aaa4dcc91b9552e75897beaab76b0eac72d217d5 data/minecraft/advancement/recipes/drying/dead_tube_coral_block.json
 21a8d4e4922798b726a3d814b15004ec89e2747f data/minecraft/advancement/recipes/drying/dead_tube_coral_fan.json
+7c211767879690570d072f211ba8d6bd3a3762b3 data/minecraft/advancement/recipes/misc/arctic_boots_dyed.json
+f59070fe5495cff0e64e120172727f6b466943a4 data/minecraft/advancement/recipes/misc/arctic_chestplate_dyed.json
+6a1f99cbbde9e5225cb32243443fc746303ca3ef data/minecraft/advancement/recipes/misc/arctic_helmet_dyed.json
+5e63beb81ae31d624d0f564002b0a66f3fc0c469 data/minecraft/advancement/recipes/misc/arctic_leggings_dyed.json
+9a83779528c18d95c03cc9932759bbd4dc21514d data/minecraft/recipe/arctic_boots_dyed.json
+1847719741279ee08f73478c762bd2a236268832 data/minecraft/recipe/arctic_chestplate_dyed.json
+11470ae854233e074c026b5223ab935518552570 data/minecraft/recipe/arctic_helmet_dyed.json
+3620660ef072821aaabfb8b46e3c0b08f72862cb data/minecraft/recipe/arctic_leggings_dyed.json
 1613ab42721a39a102ad40d4d95d8c389f8d4f3b data/minecraft/recipe/dead_brain_coral.json
 d2578c0cfd1e01be25d6aab36b0f12d24aa1f7b5 data/minecraft/recipe/dead_brain_coral_block.json
 c7d695b03828f88475b3314c23298437819ded9a data/minecraft/recipe/dead_brain_coral_fan.json
