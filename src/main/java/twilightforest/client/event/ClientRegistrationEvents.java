@@ -70,6 +70,7 @@ import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
+import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.TFRenderPipelines;
@@ -148,6 +149,7 @@ public class ClientRegistrationEvents {
 
 	private void registerItemModels(RegisterItemModelsEvent event) {
 		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("trollsteinn"), TrollsteinnItemModel.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
 	}
 
@@ -166,9 +168,6 @@ public class ClientRegistrationEvents {
 	}
 
 	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-//		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
-//		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
-
 		BlockStateModel airModel = event.getBakingResult().blockStateModels().get(Blocks.AIR.defaultBlockState());
 		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(airModel));
 	}

@@ -233,7 +233,16 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), mushgloomInside, false);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), mushgloomInside, false);
 		Identifier trollsteinnInside = ModelTemplates.SINGLE_FACE.create(TwilightForestMod.prefix("trollsteinn_inside"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/trollsteinn_light"))), this.modelOutput);
-		this.createMultifaceBlock(TFBlocks.TROLLSTEINN.get(), trollsteinnInside, true);
+		this.createMultifaceBlockWithoutItem(TFBlocks.TROLLSTEINN.get(), trollsteinnInside, true);
+		Identifier trollsteinn_light = ModelTemplates.CUBE_ALL.create(TwilightForestMod.prefix("item/trollsteinn_light"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/trollsteinn_light"))) , this.modelOutput);
+		Identifier trollsteinn = ModelTemplates.CUBE_ALL.create(TwilightForestMod.prefix("item/trollsteinn"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/trollsteinn"))) , this.modelOutput);
+		this.itemModelOutput.accept(
+				TFBlocks.TROLLSTEINN.asItem(),
+				new TrollsteinnItemModel.Unbaked(
+					ItemModelUtils.plainModel(trollsteinn_light),
+					ItemModelUtils.plainModel(trollsteinn)
+				)
+		);
 		this.createCrossBlockWithDefaultItem(TFBlocks.TROLLVIDR.get(), PlantType.NOT_TINTED);
 		this.createCrossBlockWithDefaultItem(TFBlocks.UNRIPE_TROLLBER.get(), PlantType.NOT_TINTED);
 		this.createCrossBlockWithDefaultItem(TFBlocks.TROLLBER.get(), PlantType.EMISSIVE_NOT_TINTED);
