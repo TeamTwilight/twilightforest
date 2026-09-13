@@ -165,6 +165,7 @@ public class TFRemapper {
 		remapEntry(itemReg, "alpha_fur", "alpha_yeti_fur");
 		remapEntry(itemReg, "questing_ram_banner_pattern", "quest_ram_banner_pattern");
 		remapEntry(itemReg, "travellers_chest", "travellers_vest");
+		itemReg.addAlias(TwilightForestMod.prefix("copper_nugget"), Identifier.withDefaultNamespace("copper_nugget")); //replace TF copper nuggets with vanilla's
 
 		remapEntry(itemReg, "bunny_spawn_egg", "dwarf_rabbit_spawn_egg");
 		remapEntry(itemReg, "goblin_knight_lower_spawn_egg", "lower_goblin_knight_spawn_egg");
