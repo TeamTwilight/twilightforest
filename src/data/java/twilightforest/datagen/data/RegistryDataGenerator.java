@@ -7,6 +7,9 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.datagen.data.worldgen.TFBiomeGenerator;
+import twilightforest.datagen.data.worldgen.TFBiomeLayerGenerator;
+import twilightforest.datagen.data.worldgen.TFDimensionGenerator;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 
@@ -23,12 +26,12 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
 		.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
 		.add(Registries.DENSITY_FUNCTION, TFDensityFunctions::bootstrap)
-		.add(Registries.NOISE_SETTINGS, TFDimensionData::bootstrapNoise)
-		.add(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack::bootstrap)
-		.add(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeLayerStack::bootstrapData)
-		.add(Registries.DIMENSION_TYPE, TFDimensionData::bootstrapType)
-		.add(Registries.LEVEL_STEM, TFDimensionData::bootstrapStem)
-		.add(Registries.BIOME, TFBiomes::bootstrap)
+		.add(Registries.NOISE_SETTINGS, TFDimensionGenerator::bootstrapNoise)
+		.add(TFRegistries.Keys.BIOME_STACK, TFBiomeLayerGenerator::bootstrap)
+		.add(TFRegistries.Keys.BIOME_TERRAIN_DATA, TFBiomeLayerGenerator::bootstrapData)
+		.add(Registries.DIMENSION_TYPE, TFDimensionGenerator::bootstrapType)
+		.add(Registries.LEVEL_STEM, TFDimensionGenerator::bootstrapStem)
+		.add(Registries.BIOME, TFBiomeGenerator::bootstrap)
 		.add(TFRegistries.Keys.WOOD_PALETTES, WoodPalettes::bootstrap)
 		.add(Registries.DAMAGE_TYPE, TFDamageTypes::bootstrap)
 		.add(Registries.TRIM_MATERIAL, TFTrimMaterials::bootstrap)

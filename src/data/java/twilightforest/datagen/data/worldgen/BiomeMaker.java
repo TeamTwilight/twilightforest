@@ -1,4 +1,4 @@
-package twilightforest.world.registration.biomes;
+package twilightforest.datagen.data.worldgen;
 
 import it.unimi.dsi.fastutil.doubles.Double2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.doubles.Double2ObjectSortedMap;

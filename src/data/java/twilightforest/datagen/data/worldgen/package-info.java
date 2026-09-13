@@ -1,4 +1,4 @@
 @NullMarked
-package twilightforest.world.registration.biomes;
+package twilightforest.datagen.data.worldgen;
 
 import org.jspecify.annotations.NullMarked;

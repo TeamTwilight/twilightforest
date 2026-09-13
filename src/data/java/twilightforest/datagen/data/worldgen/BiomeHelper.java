@@ -1,4 +1,4 @@
-package twilightforest.world.registration.biomes;
+package twilightforest.datagen.data.worldgen;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.particles.ParticleTypes;
@@ -9,6 +9,7 @@ import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.attribute.AmbientParticle;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.attribute.modifier.FloatModifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
@@ -235,6 +236,7 @@ public abstract class BiomeHelper {
 				.set(EnvironmentAttributes.FOG_START_DISTANCE, 16.0F)
 				.set(EnvironmentAttributes.FOG_END_DISTANCE, 64.0F)
 				.set(EnvironmentAttributes.SKY_FOG_END_DISTANCE, 64.0F))
+				.modifyAttribute(EnvironmentAttributes.WATER_FOG_END_DISTANCE, FloatModifier.MULTIPLY, 0.85F)
 			.specialEffects(defaultAmbientBuilder()
 				.waterColor(0xBC8857)
 				.grassColorOverride(0xC45123)
@@ -444,6 +446,7 @@ public abstract class BiomeHelper {
 				.set(EnvironmentAttributes.FOG_COLOR, 0x003F21)
 				.set(EnvironmentAttributes.WATER_FOG_COLOR, 0x95B55F)
 				.set(EnvironmentAttributes.SKY_COLOR, 0x002112))
+				.modifyAttribute(EnvironmentAttributes.WATER_FOG_END_DISTANCE, FloatModifier.MULTIPLY, 0.85F)
 			.specialEffects(defaultAmbientBuilder()
 				.grassColorOverride(0x5C694E)
 				.foliageColorOverride(0x496137)
@@ -484,6 +487,7 @@ public abstract class BiomeHelper {
 				.set(EnvironmentAttributes.SKY_COLOR, 0x002112)
 				.set(EnvironmentAttributes.SNOW_GOLEM_MELTS, true)
 				.set(EnvironmentAttributes.AMBIENT_PARTICLES, List.of(new AmbientParticle(ParticleTypes.WHITE_ASH, 0.015f))))
+				.modifyAttribute(EnvironmentAttributes.WATER_FOG_END_DISTANCE, FloatModifier.MULTIPLY, 0.85F)
 			.specialEffects(defaultAmbientBuilder()
 				.waterColor(0x2D0700)
 				.grassColorOverride(0x572E23)

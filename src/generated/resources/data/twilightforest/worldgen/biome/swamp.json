@@ -2,7 +2,11 @@
   "attributes": {
     "minecraft:visual/fog_color": "#003f21",
     "minecraft:visual/sky_color": "#002112",
-    "minecraft:visual/water_fog_color": "#95b55f"
+    "minecraft:visual/water_fog_color": "#95b55f",
+    "minecraft:visual/water_fog_end_distance": {
+      "argument": 0.85,
+      "modifier": "multiply"
+    }
   },
   "carvers": "twilightforest:tf_caves",
   "downfall": 0.9,
