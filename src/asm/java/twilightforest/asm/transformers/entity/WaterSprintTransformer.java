@@ -39,18 +39,18 @@ public class WaterSprintTransformer extends SimpleMethodProcessor {
 		)));
 	}
 
-	private static void injectIsInFluidType(MethodNode node) {
+	private static void injectIsInFluidMatching(MethodNode node) {
 		ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
-			"net/minecraft/client/player/LocalPlayer",
-			"isInFluidType",
-			"(Ljava/util/function/BiPredicate;)Z"
+			"net/minecraft/world/entity/EntityFluidInteraction",
+			"isInFluidMatching",
+			"(Lnet/minecraft/world/entity/Entity;Lnet/neoforged/neoforge/fluids/InFluidPredicate;)Z"
 		).forEach(call -> node.instructions.insertBefore(call, ASMUtil.listOf(
 			new VarInsnNode(Opcodes.ALOAD, 0),
 			new MethodInsnNode(
 				Opcodes.INVOKESTATIC,
 				"twilightforest/asmhooks/EntityHooks",
 				"unrestrainedSwimPredicate",
-				"(Ljava/util/function/BiPredicate;Lnet/minecraft/world/entity/LivingEntity;)Ljava/util/function/BiPredicate;",
+				"(Lnet/neoforged/neoforge/fluids/InFluidPredicate;Lnet/minecraft/world/entity/LivingEntity;)Lnet/neoforged/neoforge/fluids/InFluidPredicate;",
 				false
 			)
 		)));
@@ -59,15 +59,15 @@ public class WaterSprintTransformer extends SimpleMethodProcessor {
 	@Override
 	public void transform(MethodNode node, SimpleTransformationContext context) {
 		injectIsInWater(node);
-		injectIsInFluidType(node);
+		injectIsInFluidMatching(node);
 	}
 
 	@Override
 	public Set<SimpleMethodProcessor.Target> targets() {
 		return Set.of(new SimpleMethodProcessor.Target(
 			"net.minecraft.client.player.LocalPlayer",
-			"aiStep",
-			"()V"
+			"shouldStopSwimSprinting",
+			"()Z"
 		));
 	}
 }

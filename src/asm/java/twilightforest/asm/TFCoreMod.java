@@ -17,6 +17,7 @@ import twilightforest.asm.transformers.damagesources.DamageSourcesTransformer;
 import twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer;
 import twilightforest.asm.transformers.entity.ResetStuckUnrestrainedTransformer;
 import twilightforest.asm.transformers.entity.UnrestrainedBlockSpeedAndJumpFactorTransformer;
+import twilightforest.asm.transformers.entity.WaterCollisionTransformer;
 import twilightforest.asm.transformers.entity.WaterSprintTransformer;
 import twilightforest.asm.transformers.entity.WaterWalkTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
@@ -65,6 +66,7 @@ public class TFCoreMod implements ClassProcessorProvider {
 
 		// entity
 		collector.add(new WaterWalkTransformer());
+		collector.add(new WaterCollisionTransformer());
 		collector.add(new WaterSprintTransformer());
 		collector.add(new PathFinderUnrestrainedByLeashTransformer());
 		collector.add(new UnrestrainedBlockSpeedAndJumpFactorTransformer());

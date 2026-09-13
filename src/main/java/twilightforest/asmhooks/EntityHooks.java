@@ -7,16 +7,13 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.fluids.FluidType;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.fluids.InFluidPredicate;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 
-import java.util.function.BiPredicate;
-
-@SuppressWarnings({"JavadocReference", "unused"})
 public class EntityHooks {
 
 	/**
@@ -25,7 +22,6 @@ public class EntityHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.world.entity.LivingEntity#canStandOnFluid(FluidState)}
 	 */
-	@Nullable
 	public static boolean processWaterWalking(boolean o, LivingEntity livingEntity, FluidState fluidState) {
 		if (!fluidState.is(FluidTags.WATER))
 			return o;
@@ -33,17 +29,30 @@ public class EntityHooks {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
 			return o;
 
-		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
+		boolean isWaterWalking = TravellersGearLogic.isWaterWalking(livingEntity);
 		if (livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
 			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
 		return isWaterWalking;
 	}
 
 	/**
+	 * {@link twilightforest.asm.transformers.entity.WaterCollisionTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.LivingEntity#getLiquidCollisionShape()}
+	 */
+	public static VoxelShape processLiquidCollisionShape(VoxelShape o, LivingEntity livingEntity) {
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
+			return o;
+
+		return TravellersGearLogic.isWaterWalking(livingEntity) ? TravellersGearLogic.WATER_WALKING_COLLISION_SHAPE : o;
+	}
+
+	/**
 	 * {@link twilightforest.asm.transformers.entity.WaterSprintTransformer}<p/>
 	 * <p>
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.LocalPlayer#aiStep()}
+	 * {@link net.minecraft.client.player.LocalPlayer#shouldStopSwimSprinting()}
 	 * Targets: {@link Entity#isInWater()}
 	 */
 	public static boolean unrestrainedSprintingInWater(boolean isInWater, LivingEntity livingEntity) {
@@ -56,13 +65,12 @@ public class EntityHooks {
 	 * {@link twilightforest.asm.transformers.entity.WaterSprintTransformer}<p/>
 	 * <p>
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.LocalPlayer#aiStep()}
-	 * Targets: {@link net.neoforged.neoforge.common.extensions.IEntityExtension#isInFluidType(java.util.function.BiPredicate<net.neoforged.neoforge.fluids.FluidType, Double>)}
+	 * {@link net.minecraft.client.player.LocalPlayer#shouldStopSwimSprinting()}
+	 * Targets: {@link net.minecraft.world.entity.EntityFluidInteraction#isInFluidMatching(Entity, InFluidPredicate)}
 	 */
-	public static BiPredicate<FluidType, Double> unrestrainedSwimPredicate(BiPredicate<FluidType, Double> o, LivingEntity livingEntity) {
-		return (fluidType, height) -> {
-			FluidState fs = livingEntity.level().getFluidState(livingEntity.blockPosition());
-			boolean oResult = o.test(fluidType, height);
+	public static <E extends Entity> InFluidPredicate<E> unrestrainedSwimPredicate(InFluidPredicate<E> o, LivingEntity livingEntity) {
+		return (entity, fluidType, height) -> {
+			boolean oResult = o.test(entity, fluidType, height);
 			if (fluidType != NeoForgeMod.WATER_TYPE.value())
 				return oResult;
 			return unrestrainedSprintingInWater(oResult, livingEntity);
