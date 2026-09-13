@@ -104,6 +104,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			this.addSlot(new Slot(inventory, invX, 8 + invX * 18, 142));
 		}
 
+		this.addDataSlots(this.uncraftingMatrix);
+
 		this.slotsChanged(this.craftSlots);
 
 		if (!FMLEnvironment.isProduction()) {
@@ -122,6 +124,9 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 	@Override
 	public void slotsChanged(Container inventory) {
+		if (!(this.level instanceof ServerLevel))
+			return;
+
 		// we need to see what inventory is calling this, and update appropriately
 		if (inventory == this.tinkerInput) {
 
