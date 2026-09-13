@@ -12,10 +12,9 @@ import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 
 public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
-	private static final Identifier BACKGROUND_SPRITE = Identifier.withDefaultNamespace("container/bundle/background");
-	private static final Identifier SLOT_SPRITE = Identifier.withDefaultNamespace("container/bundle/slot");
-	private static final int SLOT_WIDTH = 18;
-	private static final int SLOT_HEIGHT = 20;
+	private static final Identifier SLOT_BACKGROUND_SPRITE = Identifier.withDefaultNamespace("container/bundle/slot_background");
+	private static final int SLOT_SIZE = 24;
+	private static final int ITEM_INSET = 4;
 
 	private final NonNullList<ItemStack> contents;
 
@@ -25,28 +24,27 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 
 	@Override
 	public void extractImage(Font font, int x, int y, int w, int h, GuiGraphicsExtractor guiGraphics) {
-		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
 		int k = 0;
 
 		for (int gridY = 0; gridY < gridSizeY(); gridY++) {
 			for (int gridX = 0; gridX < gridSizeX(); gridX++) {
-				int renderX = x + gridX * SLOT_WIDTH + 1;
-				int renderY = y + gridY * SLOT_HEIGHT + 1;
+				int renderX = x + gridX * SLOT_SIZE;
+				int renderY = y + gridY * SLOT_SIZE;
 				this.renderSlot(renderX, renderY, k++, guiGraphics, font);
 			}
 		}
 	}
 
 	private void renderSlot(int x, int y, int itemIndex, GuiGraphicsExtractor graphics, Font font) {
-		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_SPRITE, x, y, SLOT_WIDTH, SLOT_HEIGHT);
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_BACKGROUND_SPRITE, x, y, SLOT_SIZE, SLOT_SIZE);
 
 		if (itemIndex < this.contents.size()) {
 			ItemStack itemstack = this.contents.get(itemIndex);
 			if (itemstack.isEmpty()) {
 				this.renderBlankSlot(graphics, itemIndex, x, y);
 			} else {
-				graphics.item(itemstack, x + 1, y + 1, itemIndex);
-				graphics.itemDecorations(font, itemstack, x + 1, y + 1);
+				graphics.item(itemstack, x + ITEM_INSET, y + ITEM_INSET, itemIndex);
+				graphics.itemDecorations(font, itemstack, x + ITEM_INSET, y + ITEM_INSET);
 			}
 		} else {
 			this.renderBlankSlot(graphics, itemIndex, x, y);
@@ -54,17 +52,18 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	}
 
 	private void renderBlankSlot(GuiGraphicsExtractor graphics, int index, int x, int y) {
-		if (index < 0 || index >= ItemDisplayContents.LAYOUT.size()) return;
+		if (index < 0 || index >= ItemDisplayContents.LAYOUT.size())
+			return;
 		ItemDisplayType type = ItemDisplayContents.LAYOUT.get(index).get();
-		type.slotTexture().ifPresent(identifier -> graphics.blit(identifier, x + 1, y + 1, 0, 0, 16, 16, 16, 16));
+		type.slotTexture().ifPresent(identifier -> graphics.blit(RenderPipelines.GUI_TEXTURED, identifier, x + ITEM_INSET, y + ITEM_INSET, 0, 0, 16, 16, 16, 16));
 	}
 
 	private int backgroundWidth() {
-		return this.gridSizeX() * SLOT_WIDTH + 2;
+		return this.gridSizeX() * SLOT_SIZE;
 	}
 
 	private int backgroundHeight() {
-		return this.gridSizeY() * SLOT_HEIGHT + 2;
+		return this.gridSizeY() * SLOT_SIZE;
 	}
 
 	private int gridSizeX() {
