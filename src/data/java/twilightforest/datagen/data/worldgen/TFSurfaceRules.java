@@ -1,4 +1,4 @@
-package twilightforest.world.registration.surface_rules;
+package twilightforest.datagen.data.worldgen;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;

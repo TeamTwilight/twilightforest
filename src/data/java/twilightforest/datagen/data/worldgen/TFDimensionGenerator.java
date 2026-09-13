@@ -29,7 +29,6 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
-import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
 import java.util.Optional;
