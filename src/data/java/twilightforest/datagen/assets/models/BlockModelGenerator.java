@@ -20,6 +20,7 @@ import twilightforest.block.*;
 import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.item.AnimatedItemModel;
+import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.helpers.models.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
