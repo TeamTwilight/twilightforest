@@ -49,6 +49,7 @@ import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.inventory.InventoryUtil;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -251,7 +252,7 @@ public class TravellersGearEvents {
 		if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR) || !armor.isDamageableItem())
 			return;
 
-		if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
+		if (TravellersArmorItem.isTravellersArmorAndBroken(armor)) {
 			if (armor.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
 				Set<ItemAttributeModifiers.Entry> entries = new LinkedHashSet<>(armor.get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers());
 				if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
