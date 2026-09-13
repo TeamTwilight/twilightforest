@@ -617,6 +617,19 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
+		event.registerMapModifier(new MagicMapPlayerIconRenderer());
+		ConqueredMapIconRenderer conquered = new ConqueredMapIconRenderer();
+		event.registerMapDecorationModifier(TFMapDecorations.QUEST_GROVE.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.NAGA_COURTYARD.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.LICH_TOWER.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.LABYRINTH.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.HYDRA_LAIR.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.KNIGHT_STRONGHOLD.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.DARK_TOWER.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.YETI_LAIR.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.AURORA_PALACE.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.FINAL_CASTLE.getKey(), conquered);
+
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity living, LivingEntityRenderState state) -> {
 			if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)
 				state.setRenderData(RenderHooks.HIDE_HEAD_KEY, true);
