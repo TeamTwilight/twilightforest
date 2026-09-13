@@ -45,7 +45,7 @@ public record SpawnFallenLeafFromPacket(BlockPos pos, Vec3 motion) implements Cu
 			int r = Mth.clamp(((color >> 16) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
 			int g = Mth.clamp(((color >> 8) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
 			int b = Mth.clamp((color & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF.get(), r, g, b),
+			level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF.get(), r / 255F, g / 255F, b / 255F),
 				message.pos().getX() + level.getRandom().nextFloat(),
 				message.pos().getY(),
 				message.pos().getZ() + level.getRandom().nextFloat(),

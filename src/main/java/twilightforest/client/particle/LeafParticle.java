@@ -99,7 +99,7 @@ public class LeafParticle extends SingleQuadParticle {
 		@Override
 		public Particle createParticle(ColorParticleOption data, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			LeafParticle particle = new LeafParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite.get(random));
-			particle.setColor(data.getRed() / 255.0F, data.getGreen() / 255.0F, data.getBlue() / 255.0F);
+			particle.setColor(data.getRed(), data.getGreen(), data.getBlue());
 			return particle;
 		}
 	}
