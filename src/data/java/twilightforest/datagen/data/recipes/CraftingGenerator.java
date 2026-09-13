@@ -190,6 +190,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ingotRecipes("smelted", SmeltingRecipe::new, 200);
 		ingotRecipes("blasted", BlastingRecipe::new, 100);
 
+		oreberryRecipes("smelted", SmeltingRecipe::new, 200);
+		oreberryRecipes("blasted", BlastingRecipe::new, 100);
+
 		crackedWoodRecipes();
 		crackedStoneRecipes();
 
@@ -1036,6 +1039,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 	private <T extends AbstractCookingRecipe> void ingotRecipes(String processName, AbstractCookingRecipe.Factory<T> factory, int smeltingTime) {
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER), RecipeCategory.MISC, CookingBookCategory.MISC, TFItems.KNIGHTMETAL_INGOT, 1.0F, smeltingTime, factory).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER)).group("knightmetal_ingot").save(this.output, this.createKey("material/" + processName + "_knightmetal_ingot"));
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_IRONWOOD), RecipeCategory.MISC, CookingBookCategory.MISC, TFItems.IRONWOOD_INGOT, 1.0F, smeltingTime, factory).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD)).group("ironwood_ingot").save(this.output, this.createKey("material/" + processName + "_ironwood_ingot"));
+	}
+
+	private <T extends AbstractCookingRecipe> void oreberryRecipes(String processName, AbstractCookingRecipe.Factory<T> factory, int smeltingTime) {
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.IRON_BERRY.get()), RecipeCategory.MISC, CookingBookCategory.MISC, Items.IRON_NUGGET, 1.0F, smeltingTime, factory).unlockedBy("has_item", has(TFItems.IRON_BERRY.get())).group("iron_nugget").save(this.output, this.createKey("material/" + processName + "_iron_nugget"));
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.GOLD_BERRY.get()), RecipeCategory.MISC, CookingBookCategory.MISC, Items.GOLD_NUGGET, 1.0F, smeltingTime, factory).unlockedBy("has_item", has(TFItems.GOLD_BERRY.get())).group("gold_nugget").save(this.output, this.createKey("material/" + processName + "_gold_nugget"));
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.COPPER_BERRY.get()), RecipeCategory.MISC, CookingBookCategory.MISC, Items.COPPER_NUGGET, 1.0F, smeltingTime, factory).unlockedBy("has_item", has(TFItems.COPPER_BERRY.get())).group("copper_nugget").save(this.output, this.createKey("material/" + processName + "_copper_nugget"));
 	}
 
 	private void crackedWoodRecipes() {
