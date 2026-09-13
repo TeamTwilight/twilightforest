@@ -3,11 +3,8 @@ package twilightforest.datagen.assets.models;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
 
@@ -51,11 +48,6 @@ public class TFTextureMapping {
 		return uncraftingTable(block).put(TFTextureSlot.SIDE_2, TextureMapping.getBlockTexture(block, "_glow"));
 	}
 
-	public static TextureMapping ctmBlock(Block block) {
-		var overlay = TextureMapping.getBlockTexture(block);
-		return ctmBlock(null, overlay.sprite());
-	}
-
 	public static TextureMapping giantBlock(Block block) {
 		var tex = TextureMapping.getBlockTexture(block);
 		return giantBlock(tex, tex);
@@ -70,16 +62,6 @@ public class TFTextureMapping {
 			.put(TextureSlot.WEST, side)
 			.put(TextureSlot.UP, end)
 			.put(TextureSlot.DOWN, end);
-	}
-
-	public static TextureMapping ctmBlock(@Nullable Identifier base, Identifier overlay) {
-		TextureMapping mapping = new TextureMapping();
-		if (base != null) {
-			mapping = mapping.put(TFTextureSlot.CTM_BASE, new Material(base)).put(TextureSlot.PARTICLE, new Material(base));
-		} else {
-			mapping = mapping.put(TextureSlot.PARTICLE, new Material(overlay));
-		}
-		return mapping.put(TFTextureSlot.CTM_OVERLAY, new Material(overlay)).put(TFTextureSlot.CTM_OVERLAY_CONNECTED, new Material(overlay.withSuffix("_ctm")));
 	}
 
 	public static TextureMapping sideDoor(Block block) {

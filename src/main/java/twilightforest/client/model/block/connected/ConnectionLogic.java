@@ -1,6 +1,7 @@
 package twilightforest.client.model.block.connected;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.cuboid.CuboidFace;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 
 //let the magic begin.
@@ -54,12 +55,18 @@ public enum ConnectionLogic {
 		}
 	}
 
-	public TextureAtlasSprite chooseTexture(TextureAtlasSprite[] sprites) {
+	/**
+	 * @param sprites index 0 is the plain overlay texture, index 1 is the packed 2x2 connected texture sheet
+	 */
+	public Material.Baked chooseTexture(Material.Baked[] sprites) {
 		return sprites[this.texture];
 	}
 
-	public float[] remapUVs(float[] uvs) {
-		return new float[]{this.getU(uvs[0]), this.getV(uvs[1]), this.getU(uvs[2]), this.getV(uvs[3])};
+	/**
+	 * Remaps face UVs (in the usual 0-16 model space) into this connection type's quadrant of its texture.
+	 */
+	public CuboidFace.UVs remapUVs(CuboidFace.UVs uvs) {
+		return new CuboidFace.UVs(this.getU(uvs.minU()), this.getV(uvs.minV()), this.getU(uvs.maxU()), this.getV(uvs.maxV()));
 	}
 
 	public float getU(float delta) {

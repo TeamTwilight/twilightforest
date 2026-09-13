@@ -1,20 +1,7 @@
 {
-  "parent": "minecraft:block/block",
-  "connectable_blocks": [
-    "twilightforest:blue_castle_door",
-    "twilightforest:pink_castle_door",
-    "twilightforest:violet_castle_door",
-    "twilightforest:yellow_castle_door"
-  ],
-  "connected_texture": {
-    "emissivity": 15,
-    "tint_index": 0
-  },
-  "loader": "twilightforest:connected_texture_block",
+  "parent": "twilightforest:block/util/two_layer_block_tinted_15",
   "textures": {
-    "base_texture": "twilightforest:block/castle_door",
-    "overlay_connected": "twilightforest:block/castle_door_runes_ctm",
-    "overlay_texture": "twilightforest:block/castle_door_runes",
-    "particle": "twilightforest:block/castle_door"
+    "all": "twilightforest:block/castle_door",
+    "all2": "twilightforest:block/castle_door_rune_corners"
   }
 }

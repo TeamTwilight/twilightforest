@@ -1,10 +1,40 @@
 {
   "variants": {
     "vanish=false": {
-      "model": "twilightforest:block/yellow_castle_door"
+      "type": "twilightforest:connected_texture_block",
+      "connectable_blocks": [
+        "twilightforest:blue_castle_door",
+        "twilightforest:pink_castle_door",
+        "twilightforest:violet_castle_door",
+        "twilightforest:yellow_castle_door"
+      ],
+      "connected_texture": {
+        "emissivity": 15,
+        "tint_index": 0
+      },
+      "textures": {
+        "base_texture": "twilightforest:block/castle_door",
+        "overlay_connected": "twilightforest:block/castle_door_rune_ctm",
+        "overlay_texture": "twilightforest:block/castle_door_rune_corners"
+      }
     },
     "vanish=true": {
-      "model": "twilightforest:block/yellow_castle_door_vanished"
+      "type": "twilightforest:connected_texture_block",
+      "connectable_blocks": [
+        "twilightforest:blue_castle_door",
+        "twilightforest:pink_castle_door",
+        "twilightforest:violet_castle_door",
+        "twilightforest:yellow_castle_door"
+      ],
+      "connected_texture": {
+        "emissivity": 15,
+        "tint_index": 0
+      },
+      "textures": {
+        "base_texture": "twilightforest:block/castle_door_vanished",
+        "overlay_connected": "twilightforest:block/castle_door_rune_ctm",
+        "overlay_texture": "twilightforest:block/castle_door_rune_corners"
+      }
     }
   }
 }

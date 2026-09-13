@@ -1,7 +1,17 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/auroralized_glass"
+      "type": "twilightforest:connected_texture_block",
+      "connectable_blocks": [
+        "twilightforest:auroralized_glass"
+      ],
+      "connected_texture": {
+        "tint_index": 0
+      },
+      "textures": {
+        "overlay_connected": "twilightforest:block/auroralized_glass_ct",
+        "overlay_texture": "twilightforest:block/auroralized_glass"
+      }
     }
   }
 }

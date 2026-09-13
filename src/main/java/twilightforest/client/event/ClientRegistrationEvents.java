@@ -63,7 +63,7 @@ import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
-import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
+import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateModel;
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
 import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
@@ -109,7 +109,6 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerAtlases);
 		bus.addListener(this::registerEntityRenderers);
 		bus.addListener(this::registerLayerDefinitions);
-		bus.addListener(this::registerModelLoaders);
 		bus.addListener(this::registerBlockStateModels);
 		bus.addListener(this::registerScreens);
 		bus.addListener(this::registerSpecialModelRenders);
@@ -140,6 +139,7 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerBlockStateModels(RegisterBlockStateModels event) {
+		event.registerModel(TwilightForestMod.prefix("connected_texture_block"), UnbakedConnectedTextureModel.MAP_CODEC);
 		event.registerModel(TwilightForestMod.prefix("force_field"), UnbakedForceFieldBlockStateModel.MAP_CODEC);
 		event.registerModel(TwilightForestMod.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
 		event.registerModel(TwilightForestMod.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
@@ -149,11 +149,6 @@ public class ClientRegistrationEvents {
 	private void registerItemModels(RegisterItemModelsEvent event) {
 		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
-	}
-
-	private void registerModelLoaders(ModelEvent.RegisterLoaders event) {
-		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
-//		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 	}
 
 	private void registerConditionalProperties(RegisterConditionalItemModelPropertyEvent event) {

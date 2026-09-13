@@ -31,8 +31,8 @@ public class TFModelTemplates extends ModelTemplates {
 
 	public static final ModelTemplate FULLBRIGHT_BLOCK = create("twilightforest:util/fullbright_cube", TextureSlot.ALL);
 
-	public static final ModelTemplate CTM_NO_BASE = create("twilightforest:ctm_no_base", TextureSlot.PARTICLE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
-	public static final ModelTemplate CTM = create("twilightforest:ctm", TextureSlot.PARTICLE, TFTextureSlot.CTM_BASE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(Identifier.withDefaultNamespace("block/block")).build();
+	public static final ModelTemplate TINTED_CUBE_ALL = create("twilightforest:util/tinted_cube_all", TextureSlot.ALL);
+	public static final ModelTemplate TWO_LAYER_BLOCK_TINTED_15 = create("twilightforest:util/two_layer_block_tinted_15", TextureSlot.ALL, TFTextureSlot.ALL_2);
 	public static final ModelTemplate GIANT_BLOCK = create("twilightforest:giant_block", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN).extend().parent(Identifier.withDefaultNamespace("block/cube")).build();
 	public static final ModelTemplate GIANT_BLOCK_TINTED = create("twilightforest:giant_block_tinted", TextureSlot.PARTICLE, TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN).extend().parent(TwilightForestMod.prefix("block/util/tinted_cube")).build();
 

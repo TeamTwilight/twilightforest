@@ -16,21 +16,19 @@ import net.minecraft.client.renderer.special.ChestSpecialRenderer;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.client.model.block.CompositeBlockModel;
 import net.neoforged.neoforge.client.model.generators.blockstate.CompositeBlockStateModelBuilder;
 import net.neoforged.neoforge.client.model.generators.blockstate.CustomBlockStateModelBuilder;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
-import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
+import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateModel;
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
@@ -99,14 +97,27 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void basicCtmBlock(Block block) {
-		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput))));
+		this.blockStateOutput.accept(createSimpleBlock(block, ctmVariant(UnbakedConnectedTextureModel.builder(TextureMapping.getBlockTexture(block)).connectsTo(block).build())));
+		// make a plain cube for the block's item since registering the ctm model is overkill
+		ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(block), this.modelOutput);
 		this.generateBlockItem(block);
 	}
 
+	public static MultiVariant ctmVariant(UnbakedConnectedTextureModel model) {
+		return MultiVariant.of(new CustomBlockStateModelBuilder.Simple(model));
+	}
+
 	public void castleDoor(Block block, int tint) {
-		Function<Boolean, Identifier> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
-		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(CastleDoorBlock.VANISHED).select(true, plainVariant(door.apply(true))).select(false, plainVariant(door.apply(false)))));
-		this.registerSimpleTintedItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"), ItemModelUtils.constantTint(tint));
+		Material runes = new Material(TwilightForestMod.prefix("block/castle_door_rune_corners"));
+		Material runesCtm = new Material(TwilightForestMod.prefix("block/castle_door_rune_ctm"));
+		Function<Boolean, MultiVariant> door = vanished -> ctmVariant(UnbakedConnectedTextureModel.builder(runes, runesCtm)
+			.base(new Material(TwilightForestMod.prefix("block/castle_door" + (vanished ? "_vanished" : ""))))
+			.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get())
+			.overlayEmissivity(15).overlayTintIndex(0)
+			.build());
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(CastleDoorBlock.VANISHED).select(true, door.apply(true)).select(false, door.apply(false))));
+		Identifier itemModel = TFModelTemplates.TWO_LAYER_BLOCK_TINTED_15.create(block, new TextureMapping().put(TextureSlot.ALL, new Material(TwilightForestMod.prefix("block/castle_door"))).put(TFTextureSlot.ALL_2, runes), this.modelOutput);
+		this.registerSimpleTintedItemModel(block, itemModel, ItemModelUtils.constantTint(tint));
 	}
 
 	public void giantBlock(Block block, TextureMapping mapping) {
@@ -967,7 +978,10 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		Identifier top = TFModelTemplates.TINTED_SLAB_TOP.create(slab, slabMap, this.modelOutput);
 		this.wrapTintedBlockItem(slab, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSlab(block, plainVariant(bottom), plainVariant(top), plainVariant(ModelLocationUtils.getModelLocation(pillar)))));
 
-		this.wrapTintedBlockItem(TFBlocks.AURORALIZED_GLASS.get(), ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.setOverlayTintIndex(0).connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)))));
+		this.wrapTintedBlockItem(TFBlocks.AURORALIZED_GLASS.get(), ItemModelUtils.constantTint(-9181501), block -> {
+			this.blockStateOutput.accept(createSimpleBlock(block, ctmVariant(UnbakedConnectedTextureModel.builder(TextureMapping.getBlockTexture(block), "_ct").overlayTintIndex(0).connectsTo(block).build())));
+			TFModelTemplates.TINTED_CUBE_ALL.create(block, TextureMapping.cube(block), this.modelOutput);
+		});
 	}
 
 	public void createTFChest(Block chestBlock, Block particleBlock, Identifier texture) {
