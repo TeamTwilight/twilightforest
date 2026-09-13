@@ -1,0 +1,18 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:side_step",
+  "pattern": {
+    "key": {
+      "B": "#c:bones",
+      "P": "minecraft:piston",
+      "S": "#c:strings",
+      "W": "twilightforest:travellers_wings"
+    },
+    "pattern": [
+      "SBS",
+      "PWP",
+      "SBS"
+    ]
+  }
+}
