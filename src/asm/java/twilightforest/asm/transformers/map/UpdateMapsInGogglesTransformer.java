@@ -49,7 +49,7 @@ public class UpdateMapsInGogglesTransformer extends SimpleMethodProcessor {
 		return Set.of(new Target(
 			"net.minecraft.world.level.saveddata.maps.MapItemSavedData",
 			"tickCarriedBy",
-			"(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;)V"
+			"(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/decoration/ItemFrame;)V"
 		));
 	}
 
