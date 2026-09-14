@@ -24,7 +24,7 @@ public class TripleBowItem extends BowItem {
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
 		if (living instanceof Player player) {
-			boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getTagEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+			boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
 			ItemStack itemstack = player.getProjectile(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
@@ -53,13 +53,13 @@ public class TripleBowItem extends BowItem {
 
 							if (f == 1.0F) abstractArrow.setCritArrow(true);
 
-							int p = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+							int p = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
 							if (p > 0) abstractArrow.setBaseDamage(abstractArrow.getBaseDamage() + j * 0.5D + 0.5D);
 
-							int k = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+							int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
 							if (k > 0) abstractArrow.setKnockback(k);
 
-							if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0)
+							if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0)
 								abstractArrow.setSecondsOnFire(100);
 
 							level.addFreshEntity(abstractArrow);

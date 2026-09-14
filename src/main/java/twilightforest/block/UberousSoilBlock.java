@@ -28,6 +28,8 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
 import org.jetbrains.annotations.Nullable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +37,20 @@ import java.util.List;
 public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D);
+
+	// applyBonemeal is private on vanilla BoneMealItem and relies on a Forge Access Transformer
+	// to be publicly callable. Environments that don't apply that AT at runtime (e.g. Sinytra
+	// Connector) would throw IllegalAccessError on a direct call, so we invoke it reflectively instead.
+	private static final Method APPLY_BONEMEAL;
+
+	static {
+		try {
+			APPLY_BONEMEAL = BoneMealItem.class.getDeclaredMethod("applyBonemeal", ItemStack.class, Level.class, BlockPos.class, Player.class);
+			APPLY_BONEMEAL.setAccessible(true);
+		} catch (NoSuchMethodException e) {
+			throw new ExceptionInInitializerError(e);
+		}
+	}
 
 	public UberousSoilBlock(Properties properties) {
 		super(properties);
@@ -101,8 +117,13 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
 				server.tell(new TickTask(server.getTickCount(), () -> {
 					//We need to use a tick task so that plants that grow into tall variants don't just break upon growth
-					for (int i = 0; i < 15; i++)
-						BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+					for (int i = 0; i < 15; i++) {
+						try {
+							APPLY_BONEMEAL.invoke(null, new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+						} catch (IllegalAccessException | InvocationTargetException e) {
+							throw new RuntimeException(e);
+						}
+					}
 				}));
 			}
 

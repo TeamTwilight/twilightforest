@@ -28,6 +28,13 @@ public class StrongholdPieceWeight {
 		this.minimumDepth = minDepth;
 	}
 
+	/**
+	 * Fresh copy with a zeroed spawn counter, for use by a single stronghold
+	 */
+	public StrongholdPieceWeight copy() {
+		return new StrongholdPieceWeight(this.factory, this.pieceWeight, this.instancesLimit, this.minimumDepth);
+	}
+
 	public boolean isDeepEnough(int depth) {
 		return canSpawnMoreStructures() && depth >= this.minimumDepth;
 	}

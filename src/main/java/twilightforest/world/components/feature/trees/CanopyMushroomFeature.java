@@ -19,7 +19,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature {
-    private int bugsLeft;
+    // place() runs concurrently for different chunks on this singleton Feature, so per-placement state must be thread-local
+    private final ThreadLocal<Integer> bugsLeft = ThreadLocal.withInitial(() -> 0);
 
     public CanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec) {
         super(featureConfigurationCodec);
@@ -40,7 +41,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
             if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
                 this.setBlock(levelAccessor, mutableBlockPos, featureConfiguration.stemProvider.getState(random, pos));
 
-                if (this.bugsLeft > 0 && i > height / 2 && random.nextInt(10) == 9) addFirefly(levelAccessor, mutableBlockPos, random);
+                if (this.bugsLeft.get() > 0 && i > height / 2 && random.nextInt(10) == 9) addFirefly(levelAccessor, mutableBlockPos, random);
             } else {
                 height = i;
                 break;
@@ -65,7 +66,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
             if (!levelAccessor.getBlockState(bugPos).isSolidRender(levelAccessor, bugPos)) {
                 BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
                 this.setBlock(levelAccessor, bugPos, bugState);
-                this.bugsLeft--;
+                this.bugsLeft.set(this.bugsLeft.get() - 1);
             }
         }
     }
@@ -106,7 +107,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 
             this.setBlock(levelAccessor, blockPos, blockstate);
 
-            if (this.bugsLeft > 0 && i > Math.min(src.getY(), dest.getY()) / 2 && random.nextInt(20) == 0) addFirefly(levelAccessor, blockPos, random);
+            if (this.bugsLeft.get() > 0 && i > Math.min(src.getY(), dest.getY()) / 2 && random.nextInt(20) == 0) addFirefly(levelAccessor, blockPos, random);
         }
 
         this.makeCap(levelAccessor, random, dest, 1, new BlockPos.MutableBlockPos(), featureConfiguration);//Branches need caps as well, height in this case is set to 1
@@ -146,7 +147,11 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 
     @Override
     public boolean place(FeaturePlaceContext<HugeMushroomFeatureConfiguration> context) {
-        this.bugsLeft = Math.max(0, context.random().nextInt(10) - 4) / 2; //Weird math, I know, but I like the odds (and weird math, sue me)
-        return super.place(context);
+        this.bugsLeft.set(Math.max(0, context.random().nextInt(10) - 4) / 2); //Weird math, I know, but I like the odds (and weird math, sue me)
+        try {
+            return super.place(context);
+        } finally {
+            this.bugsLeft.remove();
+        }
     }
 }

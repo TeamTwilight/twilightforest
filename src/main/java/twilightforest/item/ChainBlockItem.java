@@ -122,7 +122,7 @@ public class ChainBlockItem extends Item {
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
 		if (stack.getTag() == null || !stack.getTag().contains(THROWN_UUID_KEY)) return false;
-		if (EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0) {
+		if (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0) {
 			if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
 					|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
 				return TierSortingRegistry.isCorrectTierForDrops(this.getHarvestLevel(stack), state);
@@ -131,7 +131,7 @@ public class ChainBlockItem extends Item {
 	}
 
 	public Tier getHarvestLevel(ItemStack stack) {
-		int enchantLevel = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack);
+		int enchantLevel = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack);
 		if (enchantLevel == 2) {
 			return Tiers.STONE;
 		} else if (enchantLevel >= 3) {

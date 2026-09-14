@@ -840,16 +840,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(@Nullable ChunkGeneratorTwilight key, StructureManager structureManager, MobCategory classification, BlockPos pos) {
 		Iterable<Structure> structures = structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE);
 		if (key != null) {
-			List<Structure> l = ControlledSpawnsCache.CONTROLLED_SPAWNS.get(key);
-			if (l == null) {
+			Iterable<Structure> allStructures = structures;
+			structures = ControlledSpawnsCache.CONTROLLED_SPAWNS.computeIfAbsent(key, k -> {
 				List<Structure> list = new ArrayList<>();
-				for (Structure structure : structures)
+				for (Structure structure : allStructures)
 					if (structure instanceof ControlledSpawns)
 						list.add(structure);
-				ControlledSpawnsCache.CONTROLLED_SPAWNS.put(key, list);
-				structures = list;
-			} else
-				structures = l;
+				return List.copyOf(list);
+			});
 		}
 		for (Structure structure : structures) {
 			if (structure instanceof ControlledSpawns landmark) {

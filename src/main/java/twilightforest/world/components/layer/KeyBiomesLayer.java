@@ -29,7 +29,8 @@ import java.util.function.LongFunction;
  * @author Ben
  */
 public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements AreaTransformer1 {
-	private static final Random RANDOM = new Random();
+	// Biome sampling happens concurrently on chunk worker threads; setSeed()+nextInt() on a shared Random is not atomic
+	private static final ThreadLocal<Random> RANDOM = ThreadLocal.withInitial(Random::new);
 
 	@Override
 	public int getParentX(int x) {
@@ -43,11 +44,12 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 
 	@Override
 	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
-		RANDOM.setSeed(TFDimensionSettings.seed + (x & -4) * 25117L + (z & -4) * 151121L);
-		int ox = RANDOM.nextInt(2) + 1;
-		int oz = RANDOM.nextInt(2) + 1;
-		RANDOM.setSeed(TFDimensionSettings.seed + (x / 8) * 25117L + (z / 8) * 151121L);
-		int offset = RANDOM.nextInt(3);
+		Random random = RANDOM.get();
+		random.setSeed(TFDimensionSettings.seed + (x & -4) * 25117L + (z & -4) * 151121L);
+		int ox = random.nextInt(2) + 1;
+		int oz = random.nextInt(2) + 1;
+		random.setSeed(TFDimensionSettings.seed + (x / 8) * 25117L + (z / 8) * 151121L);
+		int offset = random.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4
 			if ((x & 4) == 0) {

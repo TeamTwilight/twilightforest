@@ -5,13 +5,17 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class StrongholdPieces {
 
-	private static final StrongholdPieceWeight[] pieceWeightArray = new StrongholdPieceWeight[]{
+	// Immutable templates. Every StrongholdPieces instance works on its own copies, because structure
+	// starts are generated concurrently on worker threads and the spawn counters must not be shared.
+	private static final StrongholdPieceWeight[] PIECE_WEIGHT_TEMPLATES = new StrongholdPieceWeight[]{
 			new StrongholdPieceWeight(StrongholdSmallHallwayComponent::new, 40, 0),
 			new StrongholdPieceWeight(StrongholdLeftTurnComponent::new, 20, 0),
 			new StrongholdPieceWeight(StrongholdCrossingComponent::new, 10, 4),
@@ -26,20 +30,22 @@ public class StrongholdPieces {
 			new StrongholdPieceWeight(StrongholdTreasureRoomComponent::new, 5, 1, 4),
 			new StrongholdPieceWeight(StrongholdBossRoomComponent::new, 15, 1, 4)};
 
-	private List<StrongholdPieceWeight> pieceList;
-	static int totalWeight = 0;
+	private final List<StrongholdPieceWeight> pieceList = new ArrayList<>();
+	private int totalWeight = 0;
 
-	private static StrongholdPieceWeight lastPieceMade;
+	@Nullable
+	private StrongholdPieceWeight lastPieceMade;
 
 	/**
 	 * sets up Arrays with the Structure pieces and their weights
 	 */
 	public void prepareStructurePieces() {
-		pieceList = new ArrayList<>();
+		this.pieceList.clear();
+		this.lastPieceMade = null;
+		this.totalWeight = 0;
 
-		for (StrongholdPieceWeight piece : pieceWeightArray) {
-			piece.instancesSpawned = 0;
-			pieceList.add(piece);
+		for (StrongholdPieceWeight template : PIECE_WEIGHT_TEMPLATES) {
+			this.pieceList.add(template.copy());
 		}
 	}
 

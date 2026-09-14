@@ -13,7 +13,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
-    private int altHeads = 0;
+    // Rolled per placement; thread-local because the Feature singleton is shared between chunk worker threads
+    private final ThreadLocal<Integer> altHeads = ThreadLocal.withInitial(() -> 0);
 
     public RedCanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec) {
         super(featureConfigurationCodec);
@@ -21,8 +22,12 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 
     @Override
     public boolean place(FeaturePlaceContext<HugeMushroomFeatureConfiguration> context) {
-        this.altHeads = context.random().nextInt(100) + 1; //Roll the dice on the style of cap
-        return super.place(context);
+        this.altHeads.set(context.random().nextInt(100) + 1); //Roll the dice on the style of cap
+        try {
+            return super.place(context);
+        } finally {
+            this.altHeads.remove();
+        }
     }
 
     @Override
@@ -48,11 +53,12 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
      */
     @Override
     protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
-        if (this.altHeads <= 33) {
+        int altHeads = this.altHeads.get();
+        if (altHeads <= 33) {
             this.makeVanillaCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
-        } else if (this.altHeads <= 66) {
+        } else if (altHeads <= 66) {
             this.makeSmoothCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
-        } else if (this.altHeads <= 99) {
+        } else if (altHeads <= 99) {
             this.makeSpheroidCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
         } else super.makeCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
     }
