@@ -1,27 +1,19 @@
 package twilightforest.client.renderer.tooltip;
 
-import com.mojang.blaze3d.opengl.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.Holder;
-import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL46C;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.item.PotionFlaskItem;
@@ -34,6 +26,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 
 	private static final Identifier BORDER_SPRITE = TwilightForestMod.prefix("flask_bar_border");
 	private static final Identifier DOSE_SPRITE = TwilightForestMod.prefix("flask_dose_bar");
+	private static final SpriteId WATER_SPRITE = Sheets.BLOCKS_MAPPER.defaultNamespaceApply("water_still");
 	private static final Component EMPTY_DESCRIPTION = Component.translatable("item.twilightforest.flask.empty_description");
 
 	public static final int WIDTH = 115; //hehe
@@ -58,7 +51,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 
 	private int getDescriptionHeight(Font font) {
 		if (this.component.potion().potion().isPresent()) {
-			var height = 0;
+			int height = 0;
 			for (Component component : this.getPotionTooltips()) {
 				if (component.getString().isEmpty()) {
 					height += font.lineHeight;
@@ -131,7 +124,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 		}
 		int widthProg = segmentSplit;
 		for (int i = 1; i < this.maxDoses; i++) {
-			graphics.blit(RenderPipelines.GUI_TEXTURED, DOSE_SPRITE, x + widthProg, y, 0, 0, 1, 13, 1, 13);
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, DOSE_SPRITE, x + widthProg, y, 1, 13);
 			widthProg += segmentSplit;
 		}
 
@@ -139,10 +132,11 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	}
 
 	private void renderPotion(GuiGraphicsExtractor guiGraphics, int xPosition, int yPosition, int desiredWidth, int desiredHeight, int color) {
-		if (desiredWidth <= 0 || desiredHeight <= 0) return;
+		if (desiredWidth <= 0 || desiredHeight <= 0)
+			return;
 
-		Identifier waterLocation = Identifier.withDefaultNamespace("block/water_still");
-
+		TextureAtlasSprite sprite = guiGraphics.getSprite(WATER_SPRITE);
+		int tint = ARGB.opaque(color);
 		int startY = yPosition - desiredHeight;
 
 		for (int x = 0; x < desiredWidth; x += 16) {
@@ -150,17 +144,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 
 			for (int y = 0; y < desiredHeight; y += 16) {
 				int height = Math.min(16, desiredHeight - y);
-
-				guiGraphics.blit(
-					RenderPipelines.GUI_TEXTURED,
-					waterLocation,
-					xPosition + x,
-					startY + y,
-					0, 0,
-					width, height,
-					16, 16,
-					color
-				);
+				guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, xPosition + x, startY + y, width, height, tint);
 			}
 		}
 	}
