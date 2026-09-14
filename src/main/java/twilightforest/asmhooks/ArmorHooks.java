@@ -1,9 +1,9 @@
 package twilightforest.asmhooks;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,11 +31,10 @@ public class ArmorHooks {
 
 	/**
 	 * {@link twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer}<p/>
-	 * {@link twilightforest.asm.transformers.armor.CancelElytraRenderingTransformer}<p/>
 	 *
-	 * Injection Points:<br/>
-	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel, float, float, float, float, float, float)}
-	 * {@link net.minecraft.client.renderer.entity.layers.ElytraLayer#shouldRender(ItemStack, LivingEntity)}
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, SubmitNodeCollector, ItemStack, EquipmentSlot, int, HumanoidRenderState)}<br/>
+	 * Targets: {@code shouldRender(equippable, slot)}.
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
 		if (o && stack.has(TFDataComponents.EMPERORS_CLOTH)) {
@@ -45,10 +44,22 @@ public class ArmorHooks {
 	}
 
 	/**
+	 * {@link twilightforest.asm.transformers.armor.CancelWingsRenderingTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.entity.layers.WingsLayer#submit(PoseStack, SubmitNodeCollector, int, HumanoidRenderState, float, float)}<br/>
+	 * Targets: {@code equippable.assetId().isEmpty()};
+	 */
+	public static boolean cancelWingsRendering(boolean o, ItemStack stack) {
+		return o || stack.has(TFDataComponents.EMPERORS_CLOTH);
+	}
+
+	/**
 	 * {@link twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.entity.layers.CapeLayer#render(PoseStack, MultiBufferSource, int, AbstractClientPlayer, float, float, float, float, float, float)}
+	 * {@link net.minecraft.client.renderer.entity.layers.CapeLayer#hasLayer(ItemStack, EquipmentClientInfo.LayerType)}<br/>
+	 * Targets: IRETURN
 	 */
 	public static boolean fixCapeRendering(boolean o, ItemStack stack) {
 		return o && !stack.has(TFDataComponents.EMPERORS_CLOTH);

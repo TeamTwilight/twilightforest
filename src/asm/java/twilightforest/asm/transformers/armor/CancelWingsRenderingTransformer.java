@@ -12,31 +12,31 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.asmhooks.ArmorHooks#cancelArmorRendering}
+ * {@link twilightforest.asmhooks.ArmorHooks#cancelWingsRendering}
  */
-public class CancelArmorRenderingTransformer extends SimpleMethodProcessor {
+public class CancelWingsRenderingTransformer extends SimpleMethodProcessor {
 
 	@Override
 	public ProcessorName name() {
-		return ASMUtil.named("cancel_armor_rendering");
+		return ASMUtil.named("cancel_wings_rendering");
 	}
 
 	@Override
 	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findMethodInstructions(
 			node,
-			Opcodes.INVOKESTATIC,
-			"net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer",
-			"shouldRender",
-			"(Lnet/minecraft/world/item/equipment/Equippable;Lnet/minecraft/world/entity/EquipmentSlot;)Z"
+			Opcodes.INVOKEVIRTUAL,
+			"java/util/Optional",
+			"isEmpty",
+			"()Z"
 		).findFirst().ifPresent(target -> node.instructions.insert(
 			target,
 			ASMUtil.listOf(
-				new VarInsnNode(Opcodes.ALOAD, 3), // ItemStack itemStack
+				new VarInsnNode(Opcodes.ALOAD, 7), // itemStack
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/ArmorHooks",
-					"cancelArmorRendering",
+					"cancelWingsRendering",
 					"(ZLnet/minecraft/world/item/ItemStack;)Z"
 				)
 			)
@@ -46,9 +46,9 @@ public class CancelArmorRenderingTransformer extends SimpleMethodProcessor {
 	@Override
 	public Set<Target> targets() {
 		return Set.of(new Target(
-			"net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer",
-			"renderArmorPiece",
-			"(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V"
+			"net.minecraft.client.renderer.entity.layers.WingsLayer",
+			"submit",
+			"(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FF)V"
 		));
 	}
 

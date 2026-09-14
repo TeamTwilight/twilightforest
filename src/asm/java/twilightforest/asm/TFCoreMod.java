@@ -3,7 +3,7 @@ package twilightforest.asm;
 import net.neoforged.neoforgespi.transformation.ClassProcessorProvider;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
-import twilightforest.asm.transformers.armor.CancelElytraRenderingTransformer;
+import twilightforest.asm.transformers.armor.CancelWingsRenderingTransformer;
 import twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer;
 import twilightforest.asm.transformers.beardifier.InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
@@ -38,7 +38,7 @@ public class TFCoreMod implements ClassProcessorProvider {
 		// armor
 		collector.add(new ArmorVisibilityRenderingTransformer());
 		collector.add(new CancelArmorRenderingTransformer());
-		collector.add(new CancelElytraRenderingTransformer());
+		collector.add(new CancelWingsRenderingTransformer());
 		collector.add(new FixCapeUnrenderingTransformer());
 
 		// beardifier

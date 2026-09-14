@@ -23,32 +23,29 @@ public class FixCapeUnrenderingTransformer extends SimpleMethodProcessor {
 
 	@Override
 	public void transform(MethodNode node, SimpleTransformationContext context) {
-		ASMUtil.findMethodInstructions(
-				node,
-				Opcodes.INVOKEVIRTUAL,
-				"net/minecraft/world/item/ItemStack",
-				"is",
-				"(Lnet/minecraft/world/item/Item;)Z"
-		).findFirst().ifPresent(target -> node.instructions.insert(
-				target,
-				ASMUtil.listOf(
-					new VarInsnNode(Opcodes.ALOAD, 12),
-					new MethodInsnNode(
-						Opcodes.INVOKESTATIC,
-						"twilightforest/asmhooks/ArmorHooks",
-						"fixCapeRendering",
-						"(ZLnet/minecraft/world/item/ItemStack;)Z"
-					)
+		ASMUtil.findInstructions(
+			node,
+			Opcodes.IRETURN
+		).forEach(target -> node.instructions.insertBefore(
+			target,
+			ASMUtil.listOf(
+				new VarInsnNode(Opcodes.ALOAD, 1),
+				new MethodInsnNode(
+					Opcodes.INVOKESTATIC,
+					"twilightforest/asmhooks/ArmorHooks",
+					"fixCapeRendering",
+					"(ZLnet/minecraft/world/item/ItemStack;)Z"
 				)
-			));
+			)
+		));
 	}
 
 	@Override
 	public Set<Target> targets() {
 		return Set.of(new Target(
 			"net.minecraft.client.renderer.entity.layers.CapeLayer",
-			"render",
-			"(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/player/AbstractClientPlayer;FFFFFF)V"
+			"hasLayer",
+			"(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;)Z"
 		));
 	}
 
