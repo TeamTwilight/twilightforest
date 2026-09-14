@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -58,6 +59,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 					mapdata.ore = message.ore();
 					mapdata.yCenter = message.yCenter();
 					message.inner().applyToMap(mapdata);
+					Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
 
 					MapItemSavedData saved = clientLevel.getMapData(message.inner().mapId());
 
