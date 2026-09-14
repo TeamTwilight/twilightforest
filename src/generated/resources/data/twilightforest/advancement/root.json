@@ -22,7 +22,7 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "twilightforest:textures/block/mazestone_large_brick.png",
+    "background": "twilightforest:block/mazestone_large_brick",
     "description": {
       "translate": "advancement.twilightforest.root.desc"
     },
