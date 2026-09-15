@@ -11,7 +11,7 @@ public class ItemHooks {
 	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}
+	 * {@link net.minecraft.world.item.ItemStack#getCustomName()}
 	 */
 	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
 		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {

@@ -2,11 +2,11 @@ package twilightforest.asmhooks;
 
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
@@ -24,10 +24,10 @@ public class PlayerHooks {
 	 *
 	 * Injection Points:<br/>
 	 * {@link net.minecraft.server.level.ServerPlayer#checkMovementStatistics(double dx, double dy, double dz)}
-	 * {@link net.minecraft.world.entity.player.Player#jumpFromGround()}
+	 * {@link net.minecraft.server.level.ServerPlayer#jumpFromGround()}
 	 */
 
-	public static float getFoodExhaustion(float f, Player player) {
+	public static float getFoodExhaustion(float f, ServerPlayer player) {
 		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
 		Float divisor = chestStack.get(TFDataComponents.EFFICIENT_EATER);
 		if (!TravellersModifiersManager.isModifierActive(player, chestStack, TravellersModifiersManager.EFFICIENT_EATER_MODIFIER) || divisor == null)

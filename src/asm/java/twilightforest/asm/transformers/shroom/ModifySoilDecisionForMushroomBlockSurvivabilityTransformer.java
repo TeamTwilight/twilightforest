@@ -28,7 +28,7 @@ public class ModifySoilDecisionForMushroomBlockSurvivabilityTransformer extends 
 			Opcodes.INVOKEVIRTUAL,
 			"net/minecraft/world/level/block/state/BlockState",
 			"canSustainPlant",
-			"(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/neoforged/neoforge/common/util/TriState;"
+			"(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/util/TriState;"
 		).forEach(target -> node.instructions.insert(
 			target,
 			ASMUtil.listOf(
@@ -38,7 +38,7 @@ public class ModifySoilDecisionForMushroomBlockSurvivabilityTransformer extends 
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/BlockHooks",
 					"modifySoilDecisionForMushroomBlockSurvivability",
-					"(Lnet/neoforged/neoforge/common/util/TriState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Lnet/neoforged/neoforge/common/util/TriState;"
+					"(Lnet/minecraft/util/TriState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/util/TriState;"
 				)
 			)
 		));
