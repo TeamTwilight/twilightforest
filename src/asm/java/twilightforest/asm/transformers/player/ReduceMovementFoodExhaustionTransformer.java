@@ -22,17 +22,10 @@ public class ReduceMovementFoodExhaustionTransformer extends SimpleMethodProcess
 
 	@Override
 	public void transform(MethodNode node, SimpleTransformationContext context) {
-		Stream.concat(
-			ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
-				"net/minecraft/world/entity/player/Player",
-				"causeFoodExhaustion",
-				"(F)V"
-			),
-			ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
-				"net/minecraft/server/level/ServerPlayer",
-				"causeFoodExhaustion",
-				"(F)V"
-			)
+		ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+			"net/minecraft/server/level/ServerPlayer",
+			"causeFoodExhaustion",
+			"(F)V"
 		).forEach(target -> node.instructions.insertBefore(
 			target,
 			ASMUtil.listOf(
@@ -41,7 +34,7 @@ public class ReduceMovementFoodExhaustionTransformer extends SimpleMethodProcess
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/PlayerHooks",
 					"getFoodExhaustion",
-					"(FLnet/minecraft/world/entity/player/Player;)F"
+					"(FLnet/minecraft/server/level/ServerPlayer;)F"
 				)
 			)
 		));
@@ -55,7 +48,7 @@ public class ReduceMovementFoodExhaustionTransformer extends SimpleMethodProcess
 				"(DDD)V"
 			),
 			new Target(
-				"net.minecraft.world.entity.player.Player",
+				"net.minecraft.server.level.ServerPlayer",
 				"jumpFromGround",
 				"()V"
 			)

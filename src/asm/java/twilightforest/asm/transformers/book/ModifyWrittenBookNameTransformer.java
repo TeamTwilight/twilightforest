@@ -23,12 +23,17 @@ public class ModifyWrittenBookNameTransformer extends SimpleMethodProcessor {
 
 	@Override
 	public void transform(MethodNode node, SimpleTransformationContext context) {
-		ASMUtil.findInstructions(node, Opcodes.ARETURN)
-			.findFirst()
-			.ifPresent(target -> node.instructions.insertBefore(
+		ASMUtil.findMethodInstructions(
+			node,
+			Opcodes.INVOKESTATIC,
+			"net/minecraft/network/chat/Component",
+			"literal",
+			"(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;"
+		).findFirst()
+			.ifPresent(target -> node.instructions.insert(
 				target,
 				ASMUtil.listOf(
-					new VarInsnNode(Opcodes.ALOAD, 1),
+					new VarInsnNode(Opcodes.ALOAD, 0),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
 						"twilightforest/asmhooks/ItemHooks",
@@ -42,9 +47,9 @@ public class ModifyWrittenBookNameTransformer extends SimpleMethodProcessor {
 	@Override
 	public Set<Target> targets() {
 		return Set.of(new Target(
-			"net.minecraft.world.item.WrittenBookItem",
-			"getName",
-			"(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;"
+			"net.minecraft.world.item.ItemStack",
+			"getCustomName",
+			"()Lnet/minecraft/network/chat/Component;"
 		));
 	}
 
