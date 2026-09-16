@@ -42,7 +42,6 @@ import twilightforest.item.recipe.*;
 import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class JEICompat implements IModPlugin {
 	public static final IIngredientType<FakeEntityType> ENTITY_TYPE = () -> FakeEntityType.class;
 	public static final IIngredientType<FakeItemEntity> FAKE_ITEM_ENTITY = () -> FakeItemEntity.class;
 
-	@Autowired(dist = Dist.CLIENT)
+	@Autowired(dist = Dist.CLIENT, requiresModIdsLoaded = "jei")
 	private static RecipeViewerRecipes recipeCache;
 
 	public static boolean isEmiInstalled() {
