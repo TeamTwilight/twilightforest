@@ -15,8 +15,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.sounds.Music;
-import net.minecraft.sounds.Musics;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -92,7 +90,6 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::renderAurora);
 		NeoForge.EVENT_BUS.addListener(this::renderCustomBossbars);
 		NeoForge.EVENT_BUS.addListener(this::renderGiantBlockOutlines);
-		NeoForge.EVENT_BUS.addListener(this::setMusicInDimension);
 		NeoForge.EVENT_BUS.addListener(this::shakeCamera);
 		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
@@ -124,13 +121,6 @@ public class ClientGameEvents {
 
 	private void clearEntityRenderUtilMap(ScreenEvent.Closing event) {
 		EntityCache.clearCache();
-	}
-
-	private void setMusicInDimension(SelectMusicEvent event) {
-		Music music = event.getOriginalMusic(); // FIXME, why is this commented out?
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
-//			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
-		}
 	}
 
 	/**
