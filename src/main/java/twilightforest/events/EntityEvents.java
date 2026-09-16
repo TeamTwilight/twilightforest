@@ -431,12 +431,11 @@ public class EntityEvents {
 	private void removeCastleTextIfAttacked(AttackEntityEvent event) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
-//		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
-//			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
-//			AABB bounds = interaction.getBoundingBox();
-//			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
-//			interaction.discard();
-//		}
+		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction && interaction.entityTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+			AABB bounds = interaction.getBoundingBox();
+			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
+			interaction.discard();
+		}
 	}
 
 	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
