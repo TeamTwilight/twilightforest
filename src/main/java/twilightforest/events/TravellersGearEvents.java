@@ -115,6 +115,9 @@ public class TravellersGearEvents {
 		HitResult rayResult = event.getRayTraceResult();
 		if (!(rayResult instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
 			return;
+		Projectile projectile = event.getProjectile();
+		if (projectile.getOwner() == livingEntity)
+			return;
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
@@ -126,7 +129,6 @@ public class TravellersGearEvents {
 		}
 		if (probability <= level.getRandom().nextFloat())
 			return;
-		Entity projectile = event.getEntity();
 		Vec3 hitPosition = projectile.position();
 		level.playSound(null, hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.get(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch());
 		event.setCanceled(true);
