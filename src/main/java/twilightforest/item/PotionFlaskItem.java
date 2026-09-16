@@ -108,16 +108,6 @@ public class PotionFlaskItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack, LivingEntity entity) {
-		return 32;
-	}
-
-	@Override
-	public ItemUseAnimation getUseAnimation(ItemStack stack) {
-		return ItemUseAnimation.DRINK;
-	}
-
-	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
 		if (flaskContents.potion() != PotionContents.EMPTY) {
@@ -155,7 +145,7 @@ public class PotionFlaskItem extends Item {
 				}
 			}
 		}
-		return super.finishUsingItem(stack, level, entity);
+		return stack;
 	}
 
 	private void changeAndConsumeFlask(ItemStack stack, Player player, Consumer<ItemStack> onDrink) {
