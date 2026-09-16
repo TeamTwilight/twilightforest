@@ -2,10 +2,8 @@ package twilightforest.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -110,28 +108,6 @@ public class PotionFlaskItem extends Item {
 	}
 
 	@Override
-	public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
-		super.onUseTick(level, livingEntity, itemStack, ticksRemaining);
-		// This logic was mostly derived from emitParticlesAndSounds & shouldEmitParticlesAndSounds in the Consumable component class
-		int useDuration = getUseDuration(itemStack, livingEntity);
-		int ticksUsed = useDuration - ticksRemaining;
-		int waitTicks = (int) (useDuration * 0.21875F);
-		if (ticksUsed > waitTicks && ticksRemaining % 4 == 0) {
-			livingEntity.playSound(SoundEvents.GENERIC_DRINK.value(), 0.5F, Mth.randomBetween(livingEntity.getRandom(), 0.9F, 1.0F));
-		}
-	}
-
-	@Override
-	public int getUseDuration(ItemStack stack, LivingEntity entity) {
-		return 32;
-	}
-
-	@Override
-	public ItemUseAnimation getUseAnimation(ItemStack stack) {
-		return ItemUseAnimation.DRINK;
-	}
-
-	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
 		if (flaskContents.potion() != PotionContents.EMPTY) {
@@ -169,7 +145,7 @@ public class PotionFlaskItem extends Item {
 				}
 			}
 		}
-		return super.finishUsingItem(stack, level, entity);
+		return stack;
 	}
 
 	private void changeAndConsumeFlask(ItemStack stack, Player player, Consumer<ItemStack> onDrink) {
