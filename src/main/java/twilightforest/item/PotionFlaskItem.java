@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stats;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -109,41 +108,55 @@ public class PotionFlaskItem extends Item {
 
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
-		if (flaskContents.potion() != PotionContents.EMPTY) {
-			if (entity instanceof ServerPlayer player) {
-				for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
-					if (mobeffectinstance.is(MobEffects.INSTANT_DAMAGE) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
-						//custom harming death message for the advancement
-						entity.hurtServer(player.level(), entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
-					} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
-						mobeffectinstance.getEffect().value().applyInstantenousEffect(player.level(), player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
-					} else {
-						player.addEffect(new MobEffectInstance(mobeffectinstance));
-					}
-				}
-				if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
-					flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
-				}
+		super.finishUsingItem(stack, level, entity);
+		boolean single = stack.isEmpty();
+		if (single) {
+			stack.setCount(1);
+		}
 
-				player.awardStat(Stats.ITEM_USED.get(this));
-				if (!player.isCreative()) {
-					this.changeAndConsumeFlask(stack, player, flask -> {
-						flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> {
-							component = component.removeDose();
-							if (component.breakable()) {
-								if (component.breakage() >= DOSES) {
-									flask.shrink(1);
-									level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
-								} else {
-									level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.get(), player.getSoundSource(), 1.5F, 2.0F);
-								}
-							}
-							return component;
-						});
-					});
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		if (flaskContents.potion() == PotionContents.EMPTY)
+			return stack;
+
+		if (entity instanceof ServerPlayer player) {
+			for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
+				if (mobeffectinstance.is(MobEffects.INSTANT_DAMAGE) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
+					//custom harming death message for the advancement
+					entity.hurtServer(player.level(), entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
+				} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
+					mobeffectinstance.getEffect().value().applyInstantenousEffect(player.level(), player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
+				} else {
+					player.addEffect(new MobEffectInstance(mobeffectinstance));
 				}
 			}
+			if (!player.hasInfiniteMaterials() && !player.isSpectator()) {
+				flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, player));
+			}
+		}
+
+		if (entity.hasInfiniteMaterials())
+			return stack;
+
+		ItemStack drunk = single ? stack : stack.copyWithCount(1);
+		PotionFlaskComponent remaining = flaskContents.removeDose();
+		if (remaining.breakable()) {
+			if (remaining.breakage() >= DOSES) {
+				if (!level.isClientSide()) {
+					level.playSound(null, entity, TFSounds.BRITTLE_FLASK_BREAK.get(), entity.getSoundSource(), 1.5F, 0.7F);
+				}
+				if (single) {
+					stack.shrink(1);
+				}
+				return stack;
+			}
+			if (!level.isClientSide()) {
+				level.playSound(null, entity, TFSounds.BRITTLE_FLASK_CRACK.get(), entity.getSoundSource(), 1.5F, 2.0F);
+			}
+		}
+
+		drunk.set(TFDataComponents.POTION_FLASK_CONTENTS, remaining);
+		if (!single && entity instanceof Player player) {
+			InventoryUtil.giveItemToPlayer(player, drunk);
 		}
 		return stack;
 	}
