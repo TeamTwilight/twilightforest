@@ -12,6 +12,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import twilightforest.util.ArmorUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -103,6 +104,8 @@ public class NoTemplateSmithingRecipe extends SimpleSmithingRecipe {
 	private void setComponents(ItemStack itemstack) {
 		for (TypedDataComponent<?> data : this.additionalData)
 			setComponent(data, itemstack);
+
+		ArmorUtil.updateEmperorsClothEquippable(itemstack);
 	}
 
 	private static <T> void setComponent(TypedDataComponent<T> data, ItemStack stack) {

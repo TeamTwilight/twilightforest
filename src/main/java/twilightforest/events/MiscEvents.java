@@ -36,6 +36,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
+import twilightforest.util.ArmorUtil;
 
 @Component
 public class MiscEvents {
@@ -119,6 +120,7 @@ public class MiscEvents {
 		if (event.getItemStack().has(TFDataComponents.EMPERORS_CLOTH)) {
 			LayeredCauldronBlock.lowerFillLevel(state, event.getLevel(), event.getPos());
 			event.getItemStack().remove(TFDataComponents.EMPERORS_CLOTH);
+			ArmorUtil.updateEmperorsClothEquippable(event.getItemStack());
 			event.getEntity().awardStat(Stats.CLEAN_ARMOR);
 			event.setCancellationResult(InteractionResult.SUCCESS);
 			event.setCanceled(true);

@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
+import twilightforest.util.ArmorUtil;
 
 public class EmperorsClothRecipe extends CustomRecipe {
 	public static final EmperorsClothRecipe INSTANCE = new EmperorsClothRecipe();
@@ -65,6 +66,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 
 		ItemStack copy = item.copy();
 		copy.set(TFDataComponents.EMPERORS_CLOTH, Unit.INSTANCE);
+		ArmorUtil.updateEmperorsClothEquippable(copy);
 		return copy;
 	}
 

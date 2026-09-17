@@ -2,9 +2,6 @@ package twilightforest.asm;
 
 import net.neoforged.neoforgespi.transformation.ClassProcessorProvider;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
-import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
-import twilightforest.asm.transformers.armor.CancelWingsRenderingTransformer;
-import twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer;
 import twilightforest.asm.transformers.beardifier.InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
@@ -35,9 +32,6 @@ public class TFCoreMod implements ClassProcessorProvider {
 	public void createProcessors(Context context, Collector collector) {
 		// armor
 		collector.add(new ArmorVisibilityRenderingTransformer());
-		collector.add(new CancelArmorRenderingTransformer());
-		collector.add(new CancelWingsRenderingTransformer());
-		collector.add(new FixCapeUnrenderingTransformer());
 
 		// beardifier
 		collector.add(new InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer());
