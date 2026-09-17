@@ -9,11 +9,14 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import tamaized.beanification.Autowired;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
+import twilightforest.util.ArmorUtil;
 
 public class EmperorsClothRecipe extends CustomRecipe {
+
 	public static final EmperorsClothRecipe INSTANCE = new EmperorsClothRecipe();
 
 	public static final MapCodec<EmperorsClothRecipe> MAP_CODEC =
@@ -24,6 +27,9 @@ public class EmperorsClothRecipe extends CustomRecipe {
 
 	public static final RecipeSerializer<EmperorsClothRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
+	@Autowired
+	private static ArmorUtil armorUtil;
 
 	private EmperorsClothRecipe() {
 	}
@@ -65,6 +71,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 
 		ItemStack copy = item.copy();
 		copy.set(TFDataComponents.EMPERORS_CLOTH, Unit.INSTANCE);
+		armorUtil.updateEmperorsClothEquippable(copy);
 		return copy;
 	}
 

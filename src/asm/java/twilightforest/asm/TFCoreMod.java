@@ -2,9 +2,6 @@ package twilightforest.asm;
 
 import net.neoforged.neoforgespi.transformation.ClassProcessorProvider;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
-import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
-import twilightforest.asm.transformers.armor.CancelWingsRenderingTransformer;
-import twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer;
 import twilightforest.asm.transformers.beardifier.InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
@@ -23,7 +20,6 @@ import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
 import twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
-import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.asm.transformers.render.HideHeadUnderTrophyTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
@@ -35,9 +31,6 @@ public class TFCoreMod implements ClassProcessorProvider {
 	public void createProcessors(Context context, Collector collector) {
 		// armor
 		collector.add(new ArmorVisibilityRenderingTransformer());
-		collector.add(new CancelArmorRenderingTransformer());
-		collector.add(new CancelWingsRenderingTransformer());
-		collector.add(new FixCapeUnrenderingTransformer());
 
 		// beardifier
 		collector.add(new InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer());
@@ -78,7 +71,6 @@ public class TFCoreMod implements ClassProcessorProvider {
 		collector.add(new SendDirtyEntityDataTransformer());
 
 		// player
-		collector.add(new GetFieldOfViewModifierTransformer());
 		collector.add(new ReduceMovementFoodExhaustionTransformer());
 
 		// render

@@ -50,6 +50,7 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::handleDoubleJump);
 		NeoForge.EVENT_BUS.addListener(this::handleAgileRanger);
 		NeoForge.EVENT_BUS.addListener(this::handleStraightAhead);
+		NeoForge.EVENT_BUS.addListener(this::excludeStraightAheadFromFov);
 		NeoForge.EVENT_BUS.addListener(this::speedUpControlledWhileSneaking);
 		NeoForge.EVENT_BUS.addListener(this::handleSidestep);
 		NeoForge.EVENT_BUS.addListener(this::handleStealth);
@@ -93,6 +94,24 @@ public class TravellersClientEvents {
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.moveVector = new Vec2((float) (input.getMoveVector().x / multiplier), input.getMoveVector().y);
+	}
+
+	private void excludeStraightAheadFromFov(ComputeFovModifierEvent event) {
+		Player player = event.getPlayer();
+		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
+		if (attributeInstance == null)
+			return;
+		AttributeModifier modifier = attributeInstance.getModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION);
+		if (modifier == null || modifier.amount() == 0)
+			return;
+		float walkingSpeed = player.getAbilities().getWalkingSpeed();
+		if (walkingSpeed == 0)
+			return;
+
+		float speed = (float) attributeInstance.getValue();
+		float speedWithoutModifier = speed / (1.0F + (float) modifier.amount());
+		float ratio = (speedWithoutModifier / walkingSpeed + 1.0F) / (speed / walkingSpeed + 1.0F);
+		event.setNewFovModifier(event.getNewFovModifier() + event.getFovScale() * event.getFovModifier() * (ratio - 1.0F));
 	}
 
 	private void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
@@ -151,8 +170,8 @@ public class TravellersClientEvents {
 	}
 
 	private void updateZoomState(ComputeFovModifierEvent event) {
-		LocalPlayer player = Minecraft.getInstance().player;
-		if (player == null) return;
+		if (!(event.getPlayer() instanceof LocalPlayer player))
+			return;
 		boolean wasUsingZoom = player.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
@@ -169,7 +188,8 @@ public class TravellersClientEvents {
 
 	private void updateGradualGlideState(RenderFrameEvent.Pre event) {
 		LocalPlayer player = Minecraft.getInstance().player;
-		if (player == null) return;
+		if (player == null)
+			return;
 		boolean wasGraduallyGliding = player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
 		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
@@ -190,7 +210,8 @@ public class TravellersClientEvents {
 		if (!TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick())
 			return;
 		Player player = Minecraft.getInstance().player;
-		if (!(player instanceof LocalPlayer localPlayer)) return;
+		if (!(player instanceof LocalPlayer localPlayer))
+			return;
 		ItemStack legArmor = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
 		if (!TravellersArmorBeltItem.hasSwapHotbar(player, legArmor) || containerContents == null)
