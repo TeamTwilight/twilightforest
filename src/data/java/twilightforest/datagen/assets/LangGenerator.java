@@ -679,6 +679,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.moon_dial.phase_7", "Waxing Gibbous");
 		this.add("item.twilightforest.moon_dial.phase_unknown", "Moon phase indeterminate");
 		this.add("item.twilightforest.moon_dial.phase_unknown_fools", "404 moon not found");
+		this.add("item.twilightforest.moon_dial.dimension", "Currently Attuned To: %s");
 
 		this.addItem(TFItems.POCKET_WATCH, "Rabbit's Pocket Watch");
 		this.add("item.twilightforest.pocket_watch.desc", "It seems to always be running late");

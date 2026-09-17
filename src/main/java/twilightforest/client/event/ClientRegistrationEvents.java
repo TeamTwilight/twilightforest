@@ -161,6 +161,7 @@ public class ClientRegistrationEvents {
 	private void registerRangeProperties(RegisterRangeSelectItemModelPropertyEvent event) {
 		event.register(TwilightForestMod.prefix("potion_flask_dosage"), PotionFlaskDosage.TYPE);
 		event.register(TwilightForestMod.prefix("potion_flask_damage"), PotionFlaskDamage.TYPE);
+		event.register(TwilightForestMod.prefix("moon_dial_phase"), MoonDialPhaseProperty.MAP_CODEC);
 	}
 
 	private void registerSelectProperties(RegisterSelectItemModelPropertyEvent event) {

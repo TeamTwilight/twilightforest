@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-16T00:51:02.989569	Model Definitions - twilightforest
+// 26.1.2	2026-09-16T20:35:47.852498466	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -897,7 +897,7 @@ f4eb93333db97d8aa2c70ecd49c6c20b0e62401d assets/twilightforest/items/minoshroom_
 0badf5014ad17e870c99b4cd4937c0469196e0f9 assets/twilightforest/items/minotaur_spawn_egg.json
 0058ba4d799b6f780b0cbef3543df283fd59451a assets/twilightforest/items/mist_wolf_spawn_egg.json
 5d51b3499de8802730f786cd3d889ab1aa28acd8 assets/twilightforest/items/monster_jerky.json
-828958e2008e322efbece76cd55c42a78d9a7399 assets/twilightforest/items/moon_dial.json
+30c7f6d4cb23007484efe7143cfa568b54500ba3 assets/twilightforest/items/moon_dial.json
 ead53b9a69267ad1daead37d7dd7a6f6837fc370 assets/twilightforest/items/moonworm.json
 9325cfe5fbe9be707e60e5705a7d24b7bdd219ce assets/twilightforest/items/moonworm_queen.json
 fc6160ce02b01ff84324edf1e70f253918fa2abc assets/twilightforest/items/mosquito_swarm_spawn_egg.json

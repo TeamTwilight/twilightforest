@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.item.properties.conditional.Broken;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperty;
 import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.client.renderer.item.properties.numeric.Count;
-import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.special.ShieldSpecialRenderer;
@@ -407,17 +406,12 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	}
 
 	public void generateMoonDial(Item dial) {
-		List<RangeSelectItemModel.Entry> list = new ArrayList<>();
-		ItemModel.Unbaked itemmodel$unbaked = ItemModelUtils.plainModel(this.createFlatItemModel(dial, TFModelTemplates.MOON_DIAL));
-		list.add(ItemModelUtils.override(itemmodel$unbaked, 0.0F));
-
-		for (int i = 1; i < 8; i++) {
-			ItemModel.Unbaked phase = ItemModelUtils.plainModel(this.createFlatItemModel(dial, "_" + i, TFModelTemplates.MOON_DIAL));
-			list.add(ItemModelUtils.override(phase, (float) i - 0.5F));
+		List<RangeSelectItemModel.Entry> entries = new ArrayList<>(8);
+		for (int phase = 0; phase < 8; phase++) {
+			ItemModel.Unbaked model = ItemModelUtils.plainModel(this.createFlatItemModel(dial, phase == 0 ? "" : "_" + phase, TFModelTemplates.MOON_DIAL));
+			entries.add(ItemModelUtils.override(model, (float) phase));
 		}
-
-		list.add(ItemModelUtils.override(itemmodel$unbaked, 7.5F));
-		this.itemModelOutput.accept(dial, ItemModelUtils.rangeSelect(new Time(false, Time.TimeSource.MOON_PHASE), 8.0F, list));
+		this.itemModelOutput.accept(dial, ItemModelUtils.rangeSelect(new MoonDialPhaseProperty(), 1.0F, entries));
 	}
 
 	public void generatePotionFlask(Item flask, boolean crackable, Identifier empty) {

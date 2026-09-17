@@ -8,6 +8,7 @@ import twilightforest.TwilightForestMod;
 public class TFDimensionTypeTags {
 
 	public static final TagKey<DimensionType> ALLOWS_MAGIC_MAP_CHARTING = create("allows_magic_map_charting");
+	public static final TagKey<DimensionType> MOON_DIAL_INDETERMINATE = create("moon_dial_indeterminate");
 
 	private static TagKey<DimensionType> create(String tagName) {
 		return TagKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix(tagName));
