@@ -20,7 +20,6 @@ import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
 import twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
-import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.asm.transformers.render.HideHeadUnderTrophyTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
@@ -72,7 +71,6 @@ public class TFCoreMod implements ClassProcessorProvider {
 		collector.add(new SendDirtyEntityDataTransformer());
 
 		// player
-		collector.add(new GetFieldOfViewModifierTransformer());
 		collector.add(new ReduceMovementFoodExhaustionTransformer());
 
 		// render
