@@ -45,7 +45,7 @@ public class GenerateBookCommand {
 				}
 			}
 		} else {
-			if (source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE).get(structureKey.key()).orElseThrow() instanceof StructureHints hint) {
+			if (structureKey.value() instanceof StructureHints hint) {
 				ItemStackTemplate book = hint.createHintBook(source.registryAccess());
 				if (!book.create().isEmpty()) {
 					if (!player.addItem(book.create())) {
