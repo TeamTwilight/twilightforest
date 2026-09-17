@@ -55,7 +55,7 @@ public class ReduceMovementFoodExhaustionTransformer extends SimpleMethodProcess
 				"(DDD)V"
 			),
 			new Target(
-				"net.minecraft.world.entity.player.Player",
+				"net.minecraft.server.level.ServerPlayer",
 				"jumpFromGround",
 				"()V"
 			)

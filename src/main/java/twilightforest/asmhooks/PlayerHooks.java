@@ -24,7 +24,7 @@ public class PlayerHooks {
 	 *
 	 * Injection Points:<br/>
 	 * {@link net.minecraft.server.level.ServerPlayer#checkMovementStatistics(double dx, double dy, double dz)}
-	 * {@link net.minecraft.world.entity.player.Player#jumpFromGround()}
+	 * {@link net.minecraft.server.level.ServerPlayer#jumpFromGround()}
 	 */
 
 	public static float getFoodExhaustion(float f, Player player) {
