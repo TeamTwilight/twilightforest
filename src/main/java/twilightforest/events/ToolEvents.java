@@ -224,16 +224,17 @@ public class ToolEvents {
 		OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
 
 		//collect all tags
-		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.listTagIds().filter(location -> location.location().getNamespace().equals("c")).toList()) {
+		List<TagKey<Block>> commonTags = BuiltInRegistries.BLOCK.listTagIds().filter(location -> location.location().getNamespace().equals("c")).toList();
+		for (TagKey<Block> tag : commonTags) {
 			//check if the tag is a valid ore tag
-			if (tag.location().getPath().contains("ores_in_ground/")) {
+			if (tag.location().getPath().startsWith("ores_in_ground/")) {
 				//grab the part after the slash for use later
 				String oreground = tag.location().getPath().substring(15);
 				//check if a tag for ore grounds matches up with our ores in ground tag
-				if (BuiltInRegistries.BLOCK.listTagIds().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
+				if (commonTags.stream().anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
-					BuiltInRegistries.BLOCK.get(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).orElseThrow().forEach(ground ->
-						BuiltInRegistries.BLOCK.get(tag).orElseThrow().forEach(ore -> {
+					BuiltInRegistries.BLOCK.getOrThrow(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).forEach(ground ->
+						BuiltInRegistries.BLOCK.getOrThrow(tag).forEach(ore -> {
 							//exclude ignored ores
 							if (!ore.value().defaultBlockState().is(TFBlockTags.ORE_MAGNET_IGNORE)) {
 								OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
