@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -21,6 +22,7 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.tags.TFDimensionTypeTags;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class MoonDialItem extends Item {
@@ -36,42 +38,52 @@ public class MoonDialItem extends Item {
 			return InteractionResult.SUCCESS;
 		}
 
+		MoonDialComponent data = stack.get(TFDataComponents.MOON_DIAL);
+		MoonDialComponent.DisplayMode current = data != null ? data.mode() : MoonDialComponent.DisplayMode.CURRENT_DIMENSION;
+
 		MoonDialComponent.DisplayMode mode = player.isShiftKeyDown()
-			? MoonDialComponent.DisplayMode.OVERWORLD
-			: MoonDialComponent.DisplayMode.CURRENT_DIMENSION;
+			? (current == MoonDialComponent.DisplayMode.CURRENT_DIMENSION ? MoonDialComponent.DisplayMode.OVERWORLD : MoonDialComponent.DisplayMode.CURRENT_DIMENSION)
+			: current;
 
 		attune(stack, serverLevel, mode);
 		return InteractionResult.SUCCESS;
 	}
 
 	private static void attune(ItemStack stack, ServerLevel level, MoonDialComponent.DisplayMode mode) {
-		ServerLevel attunedLevel = switch (mode) {
-			case OVERWORLD -> level.getServer().overworld();
-			case CURRENT_DIMENSION -> level.dimensionTypeRegistration().is(TFDimensionTypeTags.MOON_DIAL_INDETERMINATE)
-				? level.getServer().overworld()
-				: level;
-		};
+		ResourceKey<Level> dimension;
+		Optional<MoonPhase> phase;
 
-		MoonPhase phase = attunedLevel.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, BlockPos.ZERO);
-		stack.set(TFDataComponents.MOON_DIAL.get(), new MoonDialComponent(attunedLevel.dimension(), phase, mode));
+		if (mode == MoonDialComponent.DisplayMode.OVERWORLD) {
+			ServerLevel overworld = level.getServer().overworld();
+			dimension = overworld.dimension();
+			phase = Optional.of(overworld.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, BlockPos.ZERO));
+		} else if (level.dimensionTypeRegistration().is(TFDimensionTypeTags.MOON_DIAL_INDETERMINATE)) {
+			dimension = level.dimension();
+			phase = Optional.empty();
+		} else {
+			dimension = level.dimension();
+			phase = Optional.of(level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, BlockPos.ZERO));
+		}
+
+		stack.set(TFDataComponents.MOON_DIAL.get(), new MoonDialComponent(dimension, phase, mode));
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
 		MoonDialComponent data = stack.get(TFDataComponents.MOON_DIAL);
 
+		builder.accept(getMoonPhaseComponent(data != null ? data.phase().orElse(null) : null).withStyle(ChatFormatting.GRAY)); // Indeterminate if null
+
 		if (data == null) {
-			builder.accept(
-				getMoonPhaseComponent(null).withStyle(ChatFormatting.GRAY)
-			);
-			return;
+			return; // Not yet attuned (e.g. in the creative menu)
 		}
 
-
-		builder.accept(getMoonPhaseComponent(data.phase()).withStyle(ChatFormatting.GRAY));
 		builder.accept(
-			Component.translatable("item.twilightforest.moon_dial.dimension",
-				Component.translatable("dimension." + data.dimension().identifier().toString().replace(':', '.'))
+			Component.translatable(
+				"item.twilightforest.moon_dial.dimension",
+				Component.translatable(
+					"dimension." + data.dimension().identifier().toString().replace(':', '.')
+				)
 			).withStyle(ChatFormatting.GRAY)
 		);
 	}
