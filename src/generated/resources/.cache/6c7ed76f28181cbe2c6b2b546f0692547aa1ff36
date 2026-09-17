@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-13T15:49:27.6737932	Twilight Forest Recipes
+// 26.1.2	2026-09-16T21:30:58.1620427	Twilight Forest Recipes
 c8fdba389667cca258d6f0a2a4be48f93bd7e333 data/minecraft/advancement/recipes/drying/dead_brain_coral.json
 81aca38f20243d53b6a6ce139ab1e7237bb6a2a5 data/minecraft/advancement/recipes/drying/dead_brain_coral_block.json
 5e11c49be557cf53712364dcadcd4bf5799ae3b1 data/minecraft/advancement/recipes/drying/dead_brain_coral_fan.json
@@ -730,7 +730,7 @@ d569be87578a0f59f61322c42bfa1148e4da1883 data/twilightforest/recipe/snowy_cloud.
 53f04eb25e37441ff73b0fad8f7429ed28f2d885 data/twilightforest/recipe/snow_queen_banner_pattern.json
 8826e18eaf53a399374b04624383942a3268d22a data/twilightforest/recipe/sorting_boat.json
 5a502ae90385113beedc0566c32474130e532e7b data/twilightforest/recipe/sorting_chest_boat.json
-f0974c0ad46c9feaa1f768748b304f3b31f1ea05 data/twilightforest/recipe/stale_bread.json
+1f9f1d867d847e0d52816e45ef6a0405fb7a4afb data/twilightforest/recipe/stale_bread.json
 3c7cb2eed10a4f15f9ed5880852d263cfc49650c data/twilightforest/recipe/stonecutting/acacia_log/hollow_acacia_log.json
 6e1f69a4246f9d667730b2c4e586cc70f91d980d data/twilightforest/recipe/stonecutting/birch_log/hollow_birch_log.json
 4e14732a9585932974be062cf32b3c50458650f2 data/twilightforest/recipe/stonecutting/bold_castle_brick_pillar/bold_castle_brick_stairs.json

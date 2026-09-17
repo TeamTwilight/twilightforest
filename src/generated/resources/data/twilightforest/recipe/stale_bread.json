@@ -3,6 +3,9 @@
   "filter_time": 6000,
   "input": "minecraft:bread",
   "result": {
+    "components": {
+      "minecraft:damage_type": "twilightforest:stale_sandwich"
+    },
     "id": "twilightforest:stale_bread"
   },
   "show_notification": false

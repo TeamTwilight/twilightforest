@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -35,6 +36,7 @@ import twilightforest.datagen.data.custom.UncraftingGenerator;
 import twilightforest.datagen.helpers.CraftingDataHelper;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -1207,7 +1209,10 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		this.dryingRackCoralRecipes();
 
-		DryingRecipeBuilder.drying(Items.BREAD, TFItems.STALE_BREAD).save(this.output);
+		DryingRecipeBuilder.drying(Ingredient.of(Items.BREAD), new ItemStackTemplate(TFItems.STALE_BREAD, 1, DataComponentPatch.builder()
+			.set(DataComponents.DAMAGE_TYPE, this.registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(TFDamageTypes.STALE_SANDWICH))
+			.build()
+		)).save(this.output);
 	}
 
 	private void dryingRackCoralRecipes() {
