@@ -61,8 +61,9 @@ public interface StructureHints {
 			.toList();
 
 		return new ItemStackTemplate(book, DataComponentPatch.builder()
+			.set(DataComponents.ITEM_NAME, Component.translatable(TwilightForestMod.ID + ".book." + key))
 			.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
-				Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
+				Filterable.passThrough(""),
 				BOOK_AUTHOR,
 				3,
 				list,

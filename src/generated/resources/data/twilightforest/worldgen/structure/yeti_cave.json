@@ -29,6 +29,9 @@
   "hint_creature": {
     "hint_item": {
       "components": {
+        "minecraft:item_name": {
+          "translate": "twilightforest.book.yeticave"
+        },
         "minecraft:written_book_content": {
           "author": "twilightforest.book.author",
           "generation": 3,
@@ -51,7 +54,7 @@
           ],
           "resolved": true,
           "title": {
-            "raw": "twilightforest.book.yeticave"
+            "raw": ""
           }
         },
         "twilightforest:translatable_book": {}
