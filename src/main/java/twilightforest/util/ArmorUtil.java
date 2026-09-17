@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Component
 public class ArmorUtil {
+
 	public float getShroudedArmorPercentage(LivingEntity entity) {
 		int shroudedArmor = 0;
 		int armorSlots = 0;
@@ -35,7 +36,7 @@ public class ArmorUtil {
 		return armorSlots > 0 ? (float) shroudedArmor / (float) armorSlots : 0.0F;
 	}
 
-	public static void updateEmperorsClothEquippable(ItemStack stack) {
+	public void updateEmperorsClothEquippable(ItemStack stack) {
 		Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
 
 		if (equippable == null)
@@ -62,4 +63,5 @@ public class ArmorUtil {
 			stack.set(DataComponents.EQUIPPABLE, stack.getPrototype().get(DataComponents.EQUIPPABLE));
 		}
 	}
+
 }

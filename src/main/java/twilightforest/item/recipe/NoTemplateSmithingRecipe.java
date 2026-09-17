@@ -12,12 +12,14 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import tamaized.beanification.Autowired;
 import twilightforest.util.ArmorUtil;
 
 import java.util.List;
 import java.util.Optional;
 
 public class NoTemplateSmithingRecipe extends SimpleSmithingRecipe {
+
 	private static final Codec<List<TypedDataComponent<?>>> DATA_COMPONENT_CODEC = DataComponentMap.CODEC.xmap(typedDataComponents -> typedDataComponents.stream().toList(), typedDataComponents -> {
 		DataComponentMap.Builder builder = DataComponentMap.builder();
 
@@ -43,6 +45,9 @@ public class NoTemplateSmithingRecipe extends SimpleSmithingRecipe {
 	);
 
 	public static final RecipeSerializer<NoTemplateSmithingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
+	@Autowired
+	private static ArmorUtil armorUtil;
 
 	private final Ingredient base;
 	private final Ingredient addition;
@@ -105,7 +110,7 @@ public class NoTemplateSmithingRecipe extends SimpleSmithingRecipe {
 		for (TypedDataComponent<?> data : this.additionalData)
 			setComponent(data, itemstack);
 
-		ArmorUtil.updateEmperorsClothEquippable(itemstack);
+		armorUtil.updateEmperorsClothEquippable(itemstack);
 	}
 
 	private static <T> void setComponent(TypedDataComponent<T> data, ItemStack stack) {
