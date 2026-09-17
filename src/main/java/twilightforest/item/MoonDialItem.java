@@ -9,6 +9,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,21 +33,31 @@ public class MoonDialItem extends Item {
 	}
 
 	@Override
+	public void inventoryTick(ItemStack itemStack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
+		if (level.getGameTime() % 20 != 0) { // Let's not update too frequently...
+			return;
+		}
+
+		MoonDialComponent data = itemStack.get(TFDataComponents.MOON_DIAL);
+		MoonDialComponent.DisplayMode mode = data != null ? data.mode() : MoonDialComponent.DisplayMode.CURRENT_DIMENSION;
+		attune(itemStack, level, mode);
+	}
+
+	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!(level instanceof ServerLevel serverLevel)) {
-			return InteractionResult.SUCCESS;
+		if (!(level instanceof ServerLevel serverLevel) || !player.isShiftKeyDown()) {
+			return InteractionResult.PASS;
 		}
 
 		MoonDialComponent data = stack.get(TFDataComponents.MOON_DIAL);
 		MoonDialComponent.DisplayMode current = data != null ? data.mode() : MoonDialComponent.DisplayMode.CURRENT_DIMENSION;
+		MoonDialComponent.DisplayMode next = current == MoonDialComponent.DisplayMode.CURRENT_DIMENSION
+			? MoonDialComponent.DisplayMode.OVERWORLD
+			: MoonDialComponent.DisplayMode.CURRENT_DIMENSION;
 
-		MoonDialComponent.DisplayMode mode = player.isShiftKeyDown()
-			? (current == MoonDialComponent.DisplayMode.CURRENT_DIMENSION ? MoonDialComponent.DisplayMode.OVERWORLD : MoonDialComponent.DisplayMode.CURRENT_DIMENSION)
-			: current;
-
-		attune(stack, serverLevel, mode);
+		attune(stack, serverLevel, next); // Called after changing the mode to prevent brief desync
 		return InteractionResult.SUCCESS;
 	}
 
