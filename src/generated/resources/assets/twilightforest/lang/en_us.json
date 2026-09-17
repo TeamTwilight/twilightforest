@@ -1255,6 +1255,7 @@
   "item.twilightforest.mist_wolf_spawn_egg": "Mist Wolf Spawn Egg",
   "item.twilightforest.monster_jerky": "Monster Jerky",
   "item.twilightforest.moon_dial": "Moon Dial",
+  "item.twilightforest.moon_dial.dimension": "Currently Attuned To: %s",
   "item.twilightforest.moon_dial.phase_0": "Full Moon",
   "item.twilightforest.moon_dial.phase_1": "Waning Gibbous",
   "item.twilightforest.moon_dial.phase_2": "Third Quarter",

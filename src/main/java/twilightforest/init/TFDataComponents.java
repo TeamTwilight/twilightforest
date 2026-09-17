@@ -80,6 +80,7 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> SWIFT_SWIM = COMPONENTS.register("swift_swim", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> HIGH_STEP = COMPONENTS.register("high_step", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> AQUATIC_AGILITY = COMPONENTS.register("aquatic_agility", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<MoonDialComponent>> MOON_DIAL = COMPONENTS.register("moon_dial", () -> DataComponentType.<MoonDialComponent>builder().persistent(MoonDialComponent.CODEC).networkSynchronized(MoonDialComponent.STREAM_CODEC).cacheEncoding().build());
 
 	private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {
 		return register(name, codec, null);
