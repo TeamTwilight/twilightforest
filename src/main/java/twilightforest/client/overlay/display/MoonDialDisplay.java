@@ -17,7 +17,7 @@ public class MoonDialDisplay implements ItemDisplay {
 	@Override
 	public void render(ItemStack item, GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
 		MoonDialComponent data = item.get(TFDataComponents.MOON_DIAL);
-		int k = data != null ? data.phase().index() : 0;
+		int k = (data != null && data.phase().isPresent()) ? data.phase().orElseThrow().index() : 0;
 		FormattedCharSequence formattedcharsequence = this.getText(item).getVisualOrderText();
 		int xRow = k % 4;
 		int yRow = k / 4 % 2;
@@ -35,6 +35,6 @@ public class MoonDialDisplay implements ItemDisplay {
 
 	private Component getText(ItemStack item) {
 		MoonDialComponent data = item.get(TFDataComponents.MOON_DIAL);
-		return MoonDialItem.getMoonPhaseComponent(data != null ? data.phase() : null);
+		return MoonDialItem.getMoonPhaseComponent((data != null && data.phase().isPresent()) ? data.phase().orElseThrow() : null);
 	}
 }

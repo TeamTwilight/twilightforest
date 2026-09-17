@@ -11,13 +11,15 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.MoonPhase;
 
-public record MoonDialComponent(ResourceKey<Level> dimension, MoonPhase phase, DisplayMode mode) {
+import java.util.Optional;
+
+public record MoonDialComponent(ResourceKey<Level> dimension, Optional<MoonPhase> phase, DisplayMode mode) {
 	public static final Codec<MoonDialComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 		ResourceKey.codec(Registries.DIMENSION)
 			.fieldOf("dimension")
 			.forGetter(MoonDialComponent::dimension),
 		MoonPhase.CODEC
-			.fieldOf("phase")
+			.optionalFieldOf("phase")
 			.forGetter(MoonDialComponent::phase),
 		DisplayMode.CODEC
 			.fieldOf("mode")
@@ -27,7 +29,7 @@ public record MoonDialComponent(ResourceKey<Level> dimension, MoonPhase phase, D
 	public static final StreamCodec<RegistryFriendlyByteBuf, MoonDialComponent> STREAM_CODEC = StreamCodec.composite(
 		ResourceKey.streamCodec(Registries.DIMENSION),
 		MoonDialComponent::dimension,
-		ByteBufCodecs.VAR_INT.map(index -> MoonPhase.values()[index], MoonPhase::index),
+		ByteBufCodecs.VAR_INT.map(index -> MoonPhase.values()[index], MoonPhase::index).apply(ByteBufCodecs::optional),
 		MoonDialComponent::phase,
 		ByteBufCodecs.VAR_INT.map(index -> DisplayMode.values()[index], DisplayMode::ordinal),
 		MoonDialComponent::mode,
