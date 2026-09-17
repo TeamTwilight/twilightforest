@@ -56,7 +56,7 @@ public class BlockHooks {
 	 * {@link twilightforest.asm.transformers.snow.KeepGrassSnowyForSnowloggableBlocksTransformer}
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.block.SnowyDirtBlock.isSnowySetting(BlockState)}<br/>
+	 * {@link net.minecraft.world.level.block.SnowyBlock#isSnowySetting(BlockState)}<br/>
 	 * Targets: IRETURN
 	 */
 	public static boolean keepSnowyStateForSnowloggableBlocks(boolean o, BlockState state) {
