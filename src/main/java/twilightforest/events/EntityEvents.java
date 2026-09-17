@@ -253,18 +253,18 @@ public class EntityEvents {
 	private void onParryProjectile(ProjectileImpactEvent event) {
 		final Projectile projectile = event.getProjectile();
 
-//		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
-//			if (event.getRayTraceResult() instanceof EntityHitResult result) {
-//				Entity entity = result.getEntity();
-//
-//				if (entity instanceof LivingEntity entityBlocking) {
-//					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
-//						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, entityBlocking, true);
-//						event.setCanceled(true);
-//					}
-//				}
-//			}
-//		}
+		if (!projectile.level().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
+			if (event.getRayTraceResult() instanceof EntityHitResult result) {
+				Entity entity = result.getEntity();
+
+				if (entity instanceof LivingEntity entityBlocking) {
+					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
+						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, EntityReference.of(entityBlocking), true);
+						event.setCanceled(true);
+					}
+				}
+			}
+		}
 	}
 
 	/**
