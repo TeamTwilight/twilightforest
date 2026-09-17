@@ -12,7 +12,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.init.TFDimension;
 import twilightforest.util.Codecs;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 	}
 
 	public static void handle(StructureProtectionPacket message, IPayloadContext ctx) {
-		CustomWeatherEffectRenderer info = CustomEnvironmentEffectsRendererManager.getCustomWeatherEffectRenderer(TFDimension.DIMENSION_RENDERER);
+		CustomWeatherEffectRenderer info = CustomEnvironmentEffectsRendererManager.getCustomWeatherEffectRenderer(TwilightForestRenderInfo.WEATHER_RENDERER);
 
 		if (info instanceof TwilightForestRenderInfo) {
 			ctx.enqueueWork(() ->

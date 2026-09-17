@@ -1,5 +1,7 @@
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -41,6 +43,11 @@ public class ProtectionBoxModel extends EntityModel<ProtectionBoxRenderState> {
 		if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
 			this.resizeBoxElement(pixelsX, pixelsY, pixelsZ);
 		}
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
+		this.box.render(stack, builder, light, overlay, color);
 	}
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
