@@ -346,11 +346,12 @@ public class EntityEvents {
 	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
 		int amount = 0;
 
-//		for (ItemStack armor : entity.getArmorSlots()) {
-//			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
-//				amount++;
-//			}
-//		}
+		for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR) {
+			ItemStack armor = entity.getItemBySlot(slot);
+			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
+				amount++;
+			}
+		}
 
 		return amount;
 	}
