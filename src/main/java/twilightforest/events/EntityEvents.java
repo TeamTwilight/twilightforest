@@ -225,9 +225,9 @@ public class EntityEvents {
 			if (te instanceof SkullChestBlockEntity casket) {
 				ResolvableProfile checker = casket.owner;
 				if (checker != null && !casket.isEmpty()) {
-//					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.gameProfile())) {
-//						event.setCanceled(true);
-//					}
+					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getUUID().equals(casket.owner.partialProfile().id())) {
+						event.setCanceled(true);
+					}
 				}
 			}
 		}
