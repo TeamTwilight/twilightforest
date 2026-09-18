@@ -581,7 +581,7 @@ public class KnightPhantom extends BaseTFBoss {
 		this.totalKnownKnights = compound.getIntOr("TotalKnownKnights", 0);
 		this.setNumber(compound.getIntOr("MyNumber", 0));
 		this.switchToFormationByNumber(compound.getIntOr("Formation", 0));
-		this.setTicksProgress(compound.getInt("TicksProgress").get());
+		this.setTicksProgress(compound.getIntOr("TicksProgress", 0));
 		this.getEntityData().set(IT_IS_OVER, compound.getBooleanOr("IsItOver", false));
 	}
 
