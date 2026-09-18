@@ -74,14 +74,28 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		BlockPos fromPos = pos.above();
-		BlockState above = level.getBlockState(fromPos);
-		if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(this))) {
-			if (above.isSolid()) FarmlandBlock.turnToDirt(null, state, level, pos);
+		BlockPos abovePos = pos.above();
+		BlockState above = level.getBlockState(abovePos);
+		if (above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(this)) {
+			growAbove(state, level, pos, abovePos, above, bonemealableBlock);
+			return;
+		}
+		if (above.isSolid()) {
+			FarmlandBlock.turnToDirt(null, state, level, pos);
 			return;
 		}
 
+		BlockPos belowPos = pos.below();
+		if (!(level.getBlockState(belowPos).getBlock() instanceof BonemealableBlock))
+			return;
+
+		level.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), level, pos));
+		scheduleBonemeal(level, belowPos);
+	}
+
+	private void growAbove(BlockState state, ServerLevel level, BlockPos pos, BlockPos abovePos, BlockState above, BonemealableBlock bonemealableBlock) {
 		BlockState newState = Blocks.DIRT.defaultBlockState();
 
 		if (above.is(BlockTags.CROPS))
@@ -90,54 +104,33 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 			newState = Blocks.MYCELIUM.defaultBlockState();
 		else if (bonemealableBlock instanceof BushBlock)
 			newState = Blocks.GRASS_BLOCK.defaultBlockState();
-//		else if (bonemealableBlock instanceof MossBlock mossBlock)
-//			newState = mossBlock.defaultBlockState();
-
-		if (level instanceof ServerLevel serverLevel) {
-			if (bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
-				//This seems a bit hacky, but it's the easiest way of letting the mushgloom only be grown by uberous soil
-				//If we make it growable by bonemeal as well, just delete this if statement and update the appropriate method inside the mushgloom class
-				level.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, level, pos));
-				mushgloomBlock.growMushroom(serverLevel, fromPos, above, serverLevel.getRandom());
-				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15); // Bonemeal particles
-				return;
-			}
-			level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15); // Bonemeal particles
-		}
-
+		else if (bonemealableBlock instanceof BonemealableFeaturePlacerBlock mossBlock)
+			newState = mossBlock.defaultBlockState();
 
 		//The block must be set to a new one before we attempt to bonemeal the plant, otherwise, we can end up with an infinite block update loop
 		//For example, if we try to grow a mushroom but there isn't enough room for it to grow. (For some reason mushroom code does a block update when failing to grow)
 		level.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, level, pos));
 
-		if (level instanceof ServerLevel serverLevel) {
-			MinecraftServer server = serverLevel.getServer();
-			FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
-			server.schedule(new TickTask(server.getTickCount(), () -> {
-				//We need to use a tick task so that plants that grow into tall variants don't just break upon growth
-				for (int i = 0; i < 15; i++)
-					BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
-			}));
+		if (bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
+			//This seems a bit hacky, but it's the easiest way of letting the mushgloom only be grown by uberous soil
+			//If we make it growable by bonemeal as well, just delete this if statement and update the appropriate method inside the mushgloom class
+			mushgloomBlock.growMushroom(level, abovePos, above, level.getRandom());
+			level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, abovePos, 15); // Bonemeal particles
+			return;
 		}
 
-		level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15);
+		scheduleBonemeal(level, abovePos);
+	}
 
-		BlockState below = level.getBlockState(fromPos);
-		if (!(below.getBlock() instanceof BonemealableBlock)) return;
-
-		level.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), level, pos));
-
-		if (level instanceof ServerLevel serverLevel) {
-			MinecraftServer server = serverLevel.getServer();
-			FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
-			server.schedule(new TickTask(server.getTickCount(), () -> {
-				for (int i = 0; i < 15; i++) BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
-			}));
-
-			level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15); // Bonemeal particles
-		}
-
-		level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15);
+	private void scheduleBonemeal(ServerLevel level, BlockPos target) {
+		MinecraftServer server = level.getServer();
+		FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(level);
+		server.schedule(new TickTask(server.getTickCount(), () -> {
+			//We need to use a tick task so that plants that grow into tall variants don't just break upon growth
+			for (int i = 0; i < 15; i++)
+				BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), level, target, fakePlayer);
+		}));
+		level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, target, 15); // Bonemeal particles
 	}
 
 	@Override
