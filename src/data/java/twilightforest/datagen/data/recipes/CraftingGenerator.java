@@ -1357,9 +1357,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void dyedRecipes() {
-		this.dyedItem(TFItems.ARCTIC_BOOTS.get(), "dyed_armor");
-		this.dyedItem(TFItems.ARCTIC_CHESTPLATE.get(), "dyed_armor");
-		this.dyedItem(TFItems.ARCTIC_HELMET.get(), "dyed_armor");
-		this.dyedItem(TFItems.ARCTIC_LEGGINGS.get(), "dyed_armor");
+		dyedEquipment(TFItems.ARCTIC_HELMET, "dyed_armor");
+		dyedEquipment(TFItems.ARCTIC_CHESTPLATE, "dyed_armor");
+		dyedEquipment(TFItems.ARCTIC_LEGGINGS, "dyed_armor");
+		dyedEquipment(TFItems.ARCTIC_BOOTS, "dyed_armor");
 	}
 }

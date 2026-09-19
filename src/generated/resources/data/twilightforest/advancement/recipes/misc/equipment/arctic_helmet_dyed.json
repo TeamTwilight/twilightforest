@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:arctic_helmet_dyed"
+        "recipe": "twilightforest:equipment/arctic_helmet_dyed"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:arctic_helmet_dyed"
+      "twilightforest:equipment/arctic_helmet_dyed"
     ]
   }
 }
