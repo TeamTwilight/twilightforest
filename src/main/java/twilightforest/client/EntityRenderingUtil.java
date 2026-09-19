@@ -38,7 +38,7 @@ public class EntityRenderingUtil {
 			}
 			// catch exceptions drawing the entity to be safe, any caught exceptions blacklist the entity
 			try {
-				renderTheEntity(graphics, x + size / 2, y + size - 2, scale, living);
+				renderTheEntity(graphics, x, y, size, scale, living);
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 				EntityCache.addEntityToBlacklist(type);
@@ -47,10 +47,12 @@ public class EntityRenderingUtil {
 	}
 
 	//[VanillaCopy] of InventoryScreen.renderEntityInInventory, with added rotations and some other modified values
-	private static void renderTheEntity(GuiGraphicsExtractor graphics, int x, int y, int scale, LivingEntity entity) {
+	private static void renderTheEntity(GuiGraphicsExtractor graphics, int x, int y, int size, int scale, LivingEntity entity) {
 		Quaternionf rotation = Axis.ZP.rotationDegrees(180.0F);
 		Quaternionf xRotation = Axis.XP.rotationDegrees(20.0F);
 		rotation.mul(xRotation);
+		rotation.mul(Axis.XN.rotationDegrees(35.0F));
+		rotation.mul(Axis.YN.rotationDegrees(145.0F));
 		float f2 = entity.yBodyRot;
 		float f3 = entity.getYRot();
 		float f4 = entity.getXRot();
@@ -63,11 +65,13 @@ public class EntityRenderingUtil {
 		entity.yHeadRotO = entity.getYRot();
 
 		EntityRenderState renderState = Minecraft.getInstance().getEntityRenderDispatcher().extractEntity(entity, 0f);
+		renderState.shadowPieces.clear();
+		renderState.outlineColor = 0;
 
 		Vector3f translation = new Vector3f(entity.getBbWidth() > 1.0F ? -0.175F : 0.0F, renderState.boundingBoxHeight / 2.0F + 0.15F, 0.0F);
 		scale = applyAdditionalTransforms(entity.getType(), translation, rotation, scale);
 
-		graphics.entity(renderState, scale * 0.75F, translation, rotation, new Quaternionf(), x, y, x + 32, y + 32);
+		graphics.entity(renderState, scale * 0.75F, translation, rotation, xRotation, x, y, x + size, y + size);
 
 		entity.yBodyRot = f2;
 		entity.setYRot(f3);
