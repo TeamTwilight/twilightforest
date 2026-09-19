@@ -1255,6 +1255,8 @@
   "item.twilightforest.mist_wolf_spawn_egg": "ミストウルフのスポーンエッグ",
   "item.twilightforest.monster_jerky": "モンスタージャーキー",
   "item.twilightforest.moon_dial": "月齢計",
+  "item.twilightforest.moon_dial.dimension": "%2$sの月相は%1$sです",
+  "item.twilightforest.moon_dial.dimension_error": "%2$sで%1$s",
   "item.twilightforest.moon_dial.phase_0": "満月",
   "item.twilightforest.moon_dial.phase_1": "十八夜",
   "item.twilightforest.moon_dial.phase_2": "下弦",
