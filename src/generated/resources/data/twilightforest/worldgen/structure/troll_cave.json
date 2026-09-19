@@ -61,6 +61,9 @@
   "hint_creature": {
     "hint_item": {
       "components": {
+        "minecraft:item_name": {
+          "translate": "twilightforest.book.trollcave"
+        },
         "minecraft:written_book_content": {
           "author": "twilightforest.book.author",
           "generation": 3,
@@ -83,7 +86,7 @@
           ],
           "resolved": true,
           "title": {
-            "raw": "twilightforest.book.trollcave"
+            "raw": ""
           }
         },
         "twilightforest:translatable_book": {}

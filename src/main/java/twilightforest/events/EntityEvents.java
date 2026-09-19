@@ -225,9 +225,9 @@ public class EntityEvents {
 			if (te instanceof SkullChestBlockEntity casket) {
 				ResolvableProfile checker = casket.owner;
 				if (checker != null && !casket.isEmpty()) {
-//					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.gameProfile())) {
-//						event.setCanceled(true);
-//					}
+					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getUUID().equals(checker.partialProfile().id())) {
+						event.setCanceled(true);
+					}
 				}
 			}
 		}
@@ -253,18 +253,18 @@ public class EntityEvents {
 	private void onParryProjectile(ProjectileImpactEvent event) {
 		final Projectile projectile = event.getProjectile();
 
-//		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
-//			if (event.getRayTraceResult() instanceof EntityHitResult result) {
-//				Entity entity = result.getEntity();
-//
-//				if (entity instanceof LivingEntity entityBlocking) {
-//					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
-//						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, entityBlocking, true);
-//						event.setCanceled(true);
-//					}
-//				}
-//			}
-//		}
+		if (!projectile.level().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
+			if (event.getRayTraceResult() instanceof EntityHitResult result) {
+				Entity entity = result.getEntity();
+
+				if (entity instanceof LivingEntity entityBlocking) {
+					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
+						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, EntityReference.of(entityBlocking), true);
+						event.setCanceled(true);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -346,11 +346,12 @@ public class EntityEvents {
 	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
 		int amount = 0;
 
-//		for (ItemStack armor : entity.getArmorSlots()) {
-//			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
-//				amount++;
-//			}
-//		}
+		for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR) {
+			ItemStack armor = entity.getItemBySlot(slot);
+			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
+				amount++;
+			}
+		}
 
 		return amount;
 	}
@@ -431,12 +432,11 @@ public class EntityEvents {
 	private void removeCastleTextIfAttacked(AttackEntityEvent event) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
-//		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
-//			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
-//			AABB bounds = interaction.getBoundingBox();
-//			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
-//			interaction.discard();
-//		}
+		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction && interaction.entityTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+			AABB bounds = interaction.getBoundingBox();
+			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
+			interaction.discard();
+		}
 	}
 
 	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {

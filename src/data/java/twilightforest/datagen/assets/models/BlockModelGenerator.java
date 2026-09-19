@@ -20,6 +20,7 @@ import twilightforest.block.*;
 import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.item.AnimatedItemModel;
+import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.helpers.models.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
@@ -194,9 +195,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.CARMINITE_REACTOR.get(), block -> this.createTrivialBlock(block, TexturedModel.createDefault(block1 -> TFTextureMapping.threeLayerBlock(block, ""), TFModelTemplates.THREE_LAYER_BLOCK)));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.REACTOR_DEBRIS.get(), plainVariant(ModelTemplates.PARTICLE_ONLY.create(TFBlocks.REACTOR_DEBRIS.get(), TextureMapping.particle(new Material(TwilightForestMod.prefix("block/blank"))), this.modelOutput))));
 		this.wrapBlockItem(TFBlocks.LOCKED_VANISHING_BLOCK.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
-			.with(PropertyDispatch.initial(VanishingBlock.ACTIVE).generate(active -> plainVariant(active ?
-				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput) :
-				TFModelTemplates.THREE_LAYER_BLOCK.create(block, TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput))))));
+			.with(PropertyDispatch.initial(LockedVanishingBlock.LOCKED).generate(active -> plainVariant(active ?
+					TFModelTemplates.THREE_LAYER_BLOCK.create(block, TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput) :
+					TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput))))));
 		this.wrapBlockItem(TFBlocks.VANISHING_BLOCK.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
 			.with(PropertyDispatch.initial(VanishingBlock.ACTIVE).generate(active -> plainVariant(active ?
 				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput) :
@@ -233,7 +234,16 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), mushgloomInside, false);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), mushgloomInside, false);
 		Identifier trollsteinnInside = ModelTemplates.SINGLE_FACE.create(TwilightForestMod.prefix("trollsteinn_inside"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/trollsteinn_light"))), this.modelOutput);
-		this.createMultifaceBlock(TFBlocks.TROLLSTEINN.get(), trollsteinnInside, true);
+		this.createMultifaceBlockWithoutItem(TFBlocks.TROLLSTEINN.get(), trollsteinnInside, true);
+		Identifier trollsteinn_light = ModelTemplates.CUBE_ALL.create(TwilightForestMod.prefix("item/trollsteinn_light"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/trollsteinn_light"))) , this.modelOutput);
+		Identifier trollsteinn = ModelTemplates.CUBE_ALL.create(TwilightForestMod.prefix("item/trollsteinn"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/trollsteinn"))) , this.modelOutput);
+		this.itemModelOutput.accept(
+				TFBlocks.TROLLSTEINN.asItem(),
+				new TrollsteinnItemModel.Unbaked(
+					ItemModelUtils.plainModel(trollsteinn_light),
+					ItemModelUtils.plainModel(trollsteinn)
+				)
+		);
 		this.createCrossBlockWithDefaultItem(TFBlocks.TROLLVIDR.get(), PlantType.NOT_TINTED);
 		this.createCrossBlockWithDefaultItem(TFBlocks.UNRIPE_TROLLBER.get(), PlantType.NOT_TINTED);
 		this.createCrossBlockWithDefaultItem(TFBlocks.TROLLBER.get(), PlantType.EMISSIVE_NOT_TINTED);

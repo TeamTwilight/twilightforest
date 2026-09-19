@@ -51,7 +51,8 @@ configurations {
 
 shadowJar {
 	mustRunAfter jar
-	archiveClassifier.set('')
+	archiveClassifier.set('universal')
+	from tasks.named('jarJar')
 	configurations = [project.configurations.shade]
 	relocate(new SimpleRelocator('tamaized', 'twilightforest')) {
 		exclude 'twilightforest.**'

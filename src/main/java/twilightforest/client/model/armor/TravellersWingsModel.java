@@ -1,26 +1,24 @@
 package twilightforest.client.model.armor;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.context.ContextKey;
 import org.joml.Vector3f;
+import twilightforest.TwilightForestMod;
 import twilightforest.components.entity.TravellersWingsAnimAttachment;
 import twilightforest.components.entity.TravellersWingsAttachment;
-import twilightforest.init.TFDataAttachments;
 import twilightforest.util.TFMathUtil;
 
-import java.util.Collections;
 import java.util.List;
 
 public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
+
+	public static final ContextKey<WingsPose> WINGS_POSE_KEY = new ContextKey<>(TwilightForestMod.prefix("travellers_wings_pose"));
+
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
 	private static final Vector3f SMALL_SWING = new Vector3f(8.0F, 8.0F, 8.0F);
@@ -33,7 +31,6 @@ public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 	private final ModelPart wingBaseLeft;
 	private final List<ModelPart> wingPartsRight;
 	private final List<ModelPart> wingPartsLeft;
-	private final Camera mainCamera;
 
 	public TravellersWingsModel(ModelPart root) {
 		super(root);
@@ -55,7 +52,6 @@ public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 			this.wingBaseRight.getChild("wingAuxRight")
 		);
 		this.body.skipDraw = true;
-		this.mainCamera = Minecraft.getInstance().gameRenderer.getMainCamera();
 	}
 
 	public static LayerDefinition createLayer(float deformation) {
@@ -169,60 +165,66 @@ public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 		);
 	}
 
-	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
-		this.bodyParts().forEach(modelPart -> modelPart.getAllParts().forEach(ModelPart::resetPose));
-//		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
-		TravellersWingsAnimAttachment animAttachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
-		TravellersWingsAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS);
-
+	public static WingsPose advanceAnimation(TravellersWingsAnimAttachment animAttachment, TravellersWingsAttachment attachment, float ageInTicks, float walkAnimationSpeed) {
 		double dtInTicks = ageInTicks - animAttachment.oldAgeInTicks;
-
-		//slightly move wings down when crouching so they arent detached
-		if (entity.isCrouching()) {
-			this.wingBaseRight.y += 2;
-			this.wingBaseLeft.y += 2;
-		}
+		if (dtInTicks <= 0)
+			return new WingsPose(animAttachment.xRotOld, animAttachment.yRotOldRight, animAttachment.yRotOldLeft, animAttachment.zRotOld);
 
 		Vector3f rightWingRotations;  // must be initialized later
 		double interpolationSpeed = TAU;
-		float targetLeftWingY;
 		switch (attachment.state) {
 			case DOUBLE_JUMP -> {
 				rightWingRotations = new Vector3f(-0.4F, -0.8F, -0.1F);
 				interpolationSpeed = TAU - 1;
 			}
-			case RIDE -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
-			case SWIM -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, BIG_SWING);
-			case FALL_SLOW -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, BIG_SWING);
-			case FALL_FAST -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, SMALL_SWING);
-			case SPRINT -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, BIG_SWING);
-			case SIDESTEP -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, attachment.sidestepLeft ? -0.6F : 0.4F, 0.0F, BIG_SWING);
+			case RIDE -> rightWingRotations = calculateRotations(animAttachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
+			case SWIM -> rightWingRotations = calculateRotations(animAttachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, BIG_SWING);
+			case FALL_SLOW -> rightWingRotations = calculateRotations(animAttachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, BIG_SWING);
+			case FALL_FAST -> rightWingRotations = calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, SMALL_SWING);
+			case SPRINT -> rightWingRotations = calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, BIG_SWING);
+			case SIDESTEP -> rightWingRotations = calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, attachment.sidestepLeft ? -0.6F : 0.4F, 0.0F, BIG_SWING);
 			default -> {
-				float phaseDivisor = entity.walkAnimation.speed() > 0.1 ? 4.0F : 20.0F;  // use 0.1 instead of isMoving to avoid increasing animation speed when legs barely move
-				rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, phaseDivisor, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
+				float phaseDivisor = walkAnimationSpeed > 0.1 ? 4.0F : 20.0F;  // use 0.1 instead of isMoving to avoid increasing animation speed when legs barely move
+				rightWingRotations = calculateRotations(animAttachment, dtInTicks, phaseDivisor, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
 			}
 		}
 
-		this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(animAttachment.xRotOld, rightWingRotations.x, dtInTicks, interpolationSpeed);
-		this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(animAttachment.yRotOldRight, rightWingRotations.y, dtInTicks, interpolationSpeed);
-		this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(animAttachment.zRotOld, rightWingRotations.z, dtInTicks, interpolationSpeed);
-
-		targetLeftWingY = attachment.state.equals(TravellersWingsAttachment.WingState.SIDESTEP)
-			? this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, attachment.sidestepLeft ? -0.4F : 0.6F, 0.0F, BIG_SWING).y()
+		float targetLeftWingY = attachment.state.equals(TravellersWingsAttachment.WingState.SIDESTEP)
+			? calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, attachment.sidestepLeft ? -0.4F : 0.6F, 0.0F, BIG_SWING).y()
 			: -rightWingRotations.y();
-		this.wingBaseLeft.xRot = this.wingBaseRight.xRot;
-		this.wingBaseLeft.yRot = (float) TFMathUtil.interpolateToTarget(animAttachment.yRotOldLeft, targetLeftWingY, dtInTicks, interpolationSpeed);
-		this.wingBaseLeft.zRot = -this.wingBaseRight.zRot;
 
 		animAttachment.accumulatedPhase = animAttachment.accumulatedPhase % Mth.TWO_PI;
 		animAttachment.oldAgeInTicks = ageInTicks;
-		animAttachment.xRotOld = this.wingBaseRight.xRot;
-		animAttachment.yRotOldRight = this.wingBaseRight.yRot;
-		animAttachment.yRotOldLeft = this.wingBaseLeft.yRot;
-		animAttachment.zRotOld = this.wingBaseRight.zRot;
+		animAttachment.xRotOld = (float) TFMathUtil.interpolateToTarget(animAttachment.xRotOld, rightWingRotations.x, dtInTicks, interpolationSpeed);
+		animAttachment.yRotOldRight = (float) TFMathUtil.interpolateToTarget(animAttachment.yRotOldRight, rightWingRotations.y, dtInTicks, interpolationSpeed);
+		animAttachment.yRotOldLeft = (float) TFMathUtil.interpolateToTarget(animAttachment.yRotOldLeft, targetLeftWingY, dtInTicks, interpolationSpeed);
+		animAttachment.zRotOld = (float) TFMathUtil.interpolateToTarget(animAttachment.zRotOld, rightWingRotations.z, dtInTicks, interpolationSpeed);
+
+		return new WingsPose(animAttachment.xRotOld, animAttachment.yRotOldRight, animAttachment.yRotOldLeft, animAttachment.zRotOld);
+	}
+
+	@Override
+	public void setupAnim(HumanoidRenderState state) {
+		super.setupAnim(state);
+		WingsPose pose = state.getRenderData(WINGS_POSE_KEY);
+		if (pose == null)
+			return;
+
+		//slightly move wings down when crouching so they arent detached
+		if (state.isCrouching) {
+			this.wingBaseRight.y += 2;
+			this.wingBaseLeft.y += 2;
+		}
+
+		this.wingBaseRight.xRot = pose.xRot();
+		this.wingBaseRight.yRot = pose.yRotRight();
+		this.wingBaseRight.zRot = pose.zRot();
+		this.wingBaseLeft.xRot = pose.xRot();
+		this.wingBaseLeft.yRot = pose.yRotLeft();
+		this.wingBaseLeft.zRot = -pose.zRot();
 
 		// If the wing model keeps a non-changing offset then looking at it with a spyglass even 4 chunks away will reveal Z-fighting.
-		float distance = (float) (Math.sqrt(entity.distanceToSqr(this.mainCamera.position())) * PART_OFFSET);
+		float distance = (float) (Math.sqrt(state.distanceToCameraSq) * PART_OFFSET);
 		// The below solution is to animate its offset based off of camera distance. The animation is not time-based.
 		int partCount = Math.min(this.wingPartsLeft.size(), this.wingPartsRight.size());
 		for (int partIndex = 0; partIndex < partCount; partIndex++) {
@@ -232,7 +234,7 @@ public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 		}
 	}
 
-	private Vector3f calculateRotations(TravellersWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, Vector3f sinDivisors) {
+	private static Vector3f calculateRotations(TravellersWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, Vector3f sinDivisors) {
 		attachment.accumulatedPhase += dtInTicks / phaseDivisor;
 		float sinT = (float) Math.sin(attachment.accumulatedPhase);
 		return new Vector3f(
@@ -240,16 +242,6 @@ public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 			sinT / sinDivisors.y + yOffset,
 			sinT / sinDivisors.z + zOffset
 		);
-	}
-
-//	@Override
-//	protected Iterable<ModelPart> headParts() {
-//		return Collections.emptyList();
-//	}
-
-//	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(body, leftLeg, rightLeg);
 	}
 
 	public static void skipWings(ModelPart leggingsLayer, boolean skip) {
@@ -281,5 +273,8 @@ public class TravellersWingsModel extends HumanoidModel<HumanoidRenderState> {
 		body.getChild("sideRight").skipDraw = skip;
 		body.getChild("sideLeft").skipDraw = skip;
 		body.getChild("back").skipDraw = skip;
+	}
+
+	public record WingsPose(float xRot, float yRotRight, float yRotLeft, float zRot) {
 	}
 }

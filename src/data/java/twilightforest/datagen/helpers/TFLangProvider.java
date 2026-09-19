@@ -147,6 +147,15 @@ public abstract class TFLangProvider extends LanguageProvider {
 	public void addMusicDisc(DeferredItem<Item> disc, ResourceKey<JukeboxSong> song, String description) {
 		this.addItem(disc, "Music Disc");
 		this.add(Util.makeDescriptionId("jukebox_song", song.identifier()), description);
+
+		// The name string is not obtained from the music disc but actually comes from the sound file itself.
+		//  We just happen to have all of our music tracks available for the Jukebox to play.
+		this.addToastMusicName(song.identifier().getPath(), description);
+	}
+
+	public void addToastMusicName(String name, String description) {
+		// Referenced from NowPlayingToast#getCurrentSongName / MusicManager#getCurrentMusicTranslationKey
+		this.add("%s.music.%s".formatted(TwilightForestMod.ID, name), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {

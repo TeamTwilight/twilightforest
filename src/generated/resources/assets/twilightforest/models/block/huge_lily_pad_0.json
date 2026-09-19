@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/lily_pad",
+  "parent": "twilightforest:block/huge_lily_pad",
   "textures": {
     "texture": "twilightforest:block/huge_lily_pad_0"
   }

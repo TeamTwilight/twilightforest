@@ -25,6 +25,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.entity.monster.DeathTome;
@@ -36,9 +37,13 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
+import twilightforest.util.ArmorUtil;
 
 @Component
 public class MiscEvents {
+
+	@Autowired
+	private ArmorUtil armorUtil;
 
 	@PostConstruct
 	private void setup() {
@@ -119,6 +124,7 @@ public class MiscEvents {
 		if (event.getItemStack().has(TFDataComponents.EMPERORS_CLOTH)) {
 			LayeredCauldronBlock.lowerFillLevel(state, event.getLevel(), event.getPos());
 			event.getItemStack().remove(TFDataComponents.EMPERORS_CLOTH);
+			armorUtil.updateEmperorsClothEquippable(event.getItemStack());
 			event.getEntity().awardStat(Stats.CLEAN_ARMOR);
 			event.setCancellationResult(InteractionResult.SUCCESS);
 			event.setCanceled(true);

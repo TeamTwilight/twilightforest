@@ -61,18 +61,18 @@ public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 		switch (this.slot) {
 			case HEAD -> this.head.getAllParts().forEach(part -> part.visible = true);
 			case CHEST -> {
-				this.body.visible = true;
-				this.rightArm.visible = true;
-				this.leftArm.visible = true;
+				this.body.getAllParts().forEach(part -> part.visible = true);
+				this.rightArm.getAllParts().forEach(part -> part.visible = true);
+				this.leftArm.getAllParts().forEach(part -> part.visible = true);
 			}
 			case LEGS -> {
-				this.body.visible = true;
-				this.rightLeg.visible = true;
-				this.leftLeg.visible = true;
+				this.body.getAllParts().forEach(part -> part.visible = true);
+				this.rightLeg.getAllParts().forEach(part -> part.visible = true);
+				this.leftLeg.getAllParts().forEach(part -> part.visible = true);
 			}
 			case FEET -> {
-				this.rightLeg.visible = true;
-				this.leftLeg.visible = true;
+				this.rightLeg.getAllParts().forEach(part -> part.visible = true);
+				this.leftLeg.getAllParts().forEach(part -> part.visible = true);
 			}
 			default -> {
 			}

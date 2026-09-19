@@ -39,6 +39,23 @@ public class HideHeadUnderTrophyTransformer extends SimpleMethodProcessor {
 					false)
 			));
 		});
+
+		ASMUtil.findLast(ASMUtil.findMethodInstructions(
+			node,
+			Opcodes.INVOKEVIRTUAL,
+			"com/mojang/blaze3d/vertex/PoseStack",
+			"popPose",
+			"()V"
+		)).ifPresent(target -> {
+			node.instructions.insertBefore(target, ASMUtil.listOf(
+				new VarInsnNode(Opcodes.ALOAD, 1),
+				new MethodInsnNode(Opcodes.INVOKESTATIC,
+					"twilightforest/asmhooks/RenderHooks",
+					"restoreHeadVisibility",
+					"(Lnet/minecraft/client/renderer/SubmitNodeStorage$ModelSubmit;)V",
+					false)
+			));
+		});
 	}
 
 	@Override

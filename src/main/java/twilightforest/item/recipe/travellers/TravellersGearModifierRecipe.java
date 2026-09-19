@@ -1,14 +1,11 @@
 package twilightforest.item.recipe.travellers;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import org.apache.commons.lang3.StringUtils;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -72,22 +69,6 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	protected static @Nullable ItemStack getModifiableArmor(Iterable<ItemStack> items) {
 		return StreamSupport.stream(items.spliterator(), false)
 			.filter(stack -> stack.getItem() instanceof TravellersModifiable modifiable && modifiable.getModifierSlots() > 0).findFirst().orElse(null);
-	}
-
-	public static ItemStack getModifiableArmorFromIngredients(Iterable<Ingredient> ingredients) {
-		return StreamSupport.stream(ingredients.spliterator(), false)
-			.flatMap(Ingredient::items)
-			.map(ItemStack::new)
-			.filter(stack -> stack.getItem() instanceof TravellersModifiable modifiable && modifiable.getModifierSlots() > 0)
-			.findFirst()
-			.orElseThrow();
-	}
-
-	public Identifier getId() {
-		return TravellersModifiersManager.getKeyOrThrow(travellersModifierHolder).identifier()
-			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(placementInfo().ingredients()).getItem().getDescriptionId(), '.') + "/")
-			.withPrefix("add_modifier_to_travellers_gear/")
-			.withSuffix("_modifier");
 	}
 
 	public Holder<TravellersModifier> getTravellersModifierHolder() {

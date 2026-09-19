@@ -933,22 +933,47 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.registerSimpleItemModel(mushroomBlock, TexturedModel.CUBE.createWithSuffix(mushroomBlock, "_inventory", this.modelOutput));
 	}
 
+	public void createMultifaceBlockWithoutItem(Block mushroomBlock, Identifier inside, boolean invertConditions) {
+		Identifier outside = ModelTemplates.SINGLE_FACE.create(mushroomBlock, TextureMapping.defaultTexture(mushroomBlock), this.modelOutput);
+		this.blockStateOutput.accept(MultiPartGenerator.multiPart(mushroomBlock)
+			.with(condition(BlockStateProperties.NORTH, !invertConditions), plainVariant(outside))
+			.with(condition(BlockStateProperties.EAST, !invertConditions), plainVariant(outside).with(Y_ROT_90).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.SOUTH, !invertConditions), plainVariant(outside).with(Y_ROT_180).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.WEST, !invertConditions), plainVariant(outside).with(Y_ROT_270).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.UP, !invertConditions), plainVariant(outside).with(X_ROT_270).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.DOWN, !invertConditions), plainVariant(outside).with(X_ROT_90).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.NORTH, invertConditions), plainVariant(inside))
+			.with(condition(BlockStateProperties.EAST, invertConditions), plainVariant(inside).with(Y_ROT_90).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.SOUTH, invertConditions), plainVariant(inside).with(Y_ROT_180).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.WEST, invertConditions), plainVariant(inside).with(Y_ROT_270).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.UP, invertConditions), plainVariant(inside).with(X_ROT_270).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.DOWN, invertConditions), plainVariant(inside).with(X_ROT_90).with(VariantMutator.UV_LOCK.withValue(false)))
+		);
+	}
+
 	public void generateHugeLilyPad() {
 		Block block = TFBlocks.HUGE_LILY_PAD.get();
 		Identifier[] models = new Identifier[4];
 		for (int i = 0; i < models.length; i++) {
 			Identifier texture = ModelLocationUtils.getModelLocation(block, "_" + i);
-			models[i] = TFModelTemplates.create(texture.toString(), TextureSlot.TEXTURE).extend().parent(ModelLocationUtils.getModelLocation(Blocks.LILY_PAD)).build().create(texture, TextureMapping.defaultTexture(new Material(texture)), this.modelOutput);
+			models[i] = TFModelTemplates.create(texture.toString(), TextureSlot.TEXTURE).extend().parent(ModelLocationUtils.getModelLocation(block)).build().create(texture, TextureMapping.defaultTexture(new Material(texture)), this.modelOutput);
 		}
 
 		Map<Direction, Map<HugeLilypadPiece, Identifier>> stateMap = ImmutableMap.of(
-			Direction.NORTH, ImmutableMap.of(HugeLilypadPiece.NW, models[0], HugeLilypadPiece.NE, models[1], HugeLilypadPiece.SE, models[2], HugeLilypadPiece.SW, models[3]),
-			Direction.WEST, ImmutableMap.of(HugeLilypadPiece.NW, models[1], HugeLilypadPiece.NE, models[2], HugeLilypadPiece.SE, models[3], HugeLilypadPiece.SW, models[0]),
-			Direction.SOUTH, ImmutableMap.of(HugeLilypadPiece.NW, models[2], HugeLilypadPiece.NE, models[3], HugeLilypadPiece.SE, models[0], HugeLilypadPiece.SW, models[1]),
-			Direction.EAST, ImmutableMap.of(HugeLilypadPiece.NW, models[3], HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[2])
+			Direction.NORTH, ImmutableMap.of(HugeLilypadPiece.NW, models[1], HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[3], HugeLilypadPiece.SW, models[2]),
+			Direction.EAST, ImmutableMap.of(HugeLilypadPiece.NW, models[2], HugeLilypadPiece.NE, models[1], HugeLilypadPiece.SE, models[0], HugeLilypadPiece.SW, models[3]),
+			Direction.SOUTH, ImmutableMap.of(HugeLilypadPiece.NW, models[3], HugeLilypadPiece.NE, models[2], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[0]),
+			Direction.WEST, ImmutableMap.of(HugeLilypadPiece.NW, models[0], HugeLilypadPiece.NE, models[3], HugeLilypadPiece.SE, models[2], HugeLilypadPiece.SW, models[1])
 		);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> createRotatedVariants(plainModel(stateMap.get(facing).get(piece))))));
+		Map<Direction, VariantMutator> rotationMap = ImmutableMap.of(
+			Direction.NORTH, NOP,
+			Direction.EAST, Y_ROT_90,
+			Direction.SOUTH, Y_ROT_180,
+			Direction.WEST, Y_ROT_270
+		);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> plainVariant(stateMap.get(facing).get(piece)).with(rotationMap.get(facing)))));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(block), this.modelOutput), ItemModelUtils.constantTint(-9321636)));
 	}
 

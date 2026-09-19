@@ -1,0 +1,49 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:double_jump",
+  "pattern": {
+    "key": {
+      "L": {
+        "neoforge:ingredient_type": "neoforge:compound",
+        "children": [
+          {
+            "neoforge:ingredient_type": "neoforge:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:leaping"
+              }
+            },
+            "items": "minecraft:potion"
+          },
+          {
+            "neoforge:ingredient_type": "neoforge:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:long_leaping"
+              }
+            },
+            "items": "minecraft:potion"
+          },
+          {
+            "neoforge:ingredient_type": "neoforge:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:strong_leaping"
+              }
+            },
+            "items": "minecraft:potion"
+          }
+        ]
+      },
+      "P": "minecraft:piston",
+      "S": "#c:strings",
+      "W": "twilightforest:travellers_wings"
+    },
+    "pattern": [
+      " L ",
+      "SWS",
+      "P P"
+    ]
+  }
+}

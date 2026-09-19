@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "l": "twilightforest:tanned_leather",
+    "w": "#minecraft:wool"
+  },
+  "pattern": [
+    "l l",
+    "lwl",
+    "lwl"
+  ],
+  "result": {
+    "id": "twilightforest:travellers_vest"
+  }
+}

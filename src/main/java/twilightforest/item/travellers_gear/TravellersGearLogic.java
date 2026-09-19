@@ -11,7 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,9 +24,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -45,6 +48,7 @@ import java.util.function.Consumer;
 public class TravellersGearLogic {
 
 	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
+	public static final VoxelShape WATER_WALKING_COLLISION_SHAPE = Block.column(16.0, 0.0, 8.0);
 	private static final double AUTO_REPAIR_SUNLIGHT_BOOST = 3;
 	private static final double AUTO_REPAIR_TWILIGHT_BOOST = AUTO_REPAIR_SUNLIGHT_BOOST / 2;
 
@@ -88,8 +92,12 @@ public class TravellersGearLogic {
 	}
 
 	public static boolean isBelowMaxWaterWalkingSubmergedHeight(LivingEntity livingEntity) {
-		double waterHeight = livingEntity.getFluidHeight(FluidTags.WATER);
+		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
 		return waterHeight < WATER_WALKING_MAX_SUBMERGED_HEIGHT;
+	}
+
+	public static boolean isWaterWalking(LivingEntity livingEntity) {
+		return isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
 	}
 
 	public static void travellersBootsStraightAhead(LivingEntity livingEntity) {
@@ -196,6 +204,21 @@ public class TravellersGearLogic {
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
 		if (TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
+	}
+
+	public static void travellersGogglesZoom(LivingEntity livingEntity) {
+		ItemStack headStack = livingEntity.getItemBySlot(EquipmentSlot.HEAD);
+		if (headStack.isEmpty())
+			return;
+
+		boolean isUsingZoom = livingEntity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
+		if (isUsingZoom == headStack.has(TFDataComponents.IS_USING_GOGGLES_ZOOM))
+			return;
+
+		if (isUsingZoom)
+			headStack.set(TFDataComponents.IS_USING_GOGGLES_ZOOM, Unit.INSTANCE);
+		else
+			headStack.remove(TFDataComponents.IS_USING_GOGGLES_ZOOM);
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {

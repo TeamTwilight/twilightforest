@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "gold_nugget",
+  "ingredient": "twilightforest:gold_berry",
+  "result": {
+    "id": "minecraft:gold_nugget"
+  }
+}

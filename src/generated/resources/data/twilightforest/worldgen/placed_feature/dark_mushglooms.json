@@ -13,6 +13,44 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
+      "type": "minecraft:environment_scan",
+      "allowed_search_condition": {
+        "type": "minecraft:any_of",
+        "predicates": [
+          {
+            "type": "minecraft:replaceable"
+          },
+          {
+            "type": "minecraft:matching_block_tag",
+            "tag": "minecraft:leaves"
+          },
+          {
+            "type": "minecraft:matching_blocks",
+            "blocks": "twilightforest:hardened_dark_leaves"
+          }
+        ]
+      },
+      "direction_of_search": "down",
+      "max_steps": 32,
+      "target_condition": {
+        "type": "minecraft:all_of",
+        "predicates": [
+          {
+            "type": "minecraft:replaceable"
+          },
+          {
+            "type": "minecraft:matching_block_tag",
+            "offset": [
+              0,
+              -1,
+              0
+            ],
+            "tag": "minecraft:substrate_overworld"
+          }
+        ]
+      }
+    },
+    {
       "type": "minecraft:biome"
     },
     {
@@ -53,6 +91,14 @@
           }
         ]
       }
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "additional_clearance": 1,
+      "occupies_surface": false,
+      "occupies_underground": false,
+      "occupies_vegetation": true,
+      "structures_allowed": []
     }
   ]
 }

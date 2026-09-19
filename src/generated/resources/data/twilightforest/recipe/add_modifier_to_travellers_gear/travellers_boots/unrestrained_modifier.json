@@ -1,0 +1,18 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:unrestrained",
+  "pattern": {
+    "key": {
+      "b": "twilightforest:travellers_boots",
+      "i": "#c:ingots/iron",
+      "k": "#c:ingots/knightmetal",
+      "n": "#c:nuggets/iron"
+    },
+    "pattern": [
+      "n n",
+      "kbk",
+      "i i"
+    ]
+  }
+}

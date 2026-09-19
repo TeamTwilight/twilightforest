@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "iron_nugget",
+  "ingredient": "twilightforest:iron_berry",
+  "result": {
+    "id": "minecraft:iron_nugget"
+  }
+}

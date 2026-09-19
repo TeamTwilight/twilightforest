@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "g": "#c:ingots/gold",
+    "l": "twilightforest:tanned_leather",
+    "p": "#c:glass_panes/colorless"
+  },
+  "pattern": [
+    "l l",
+    "plp",
+    "g g"
+  ],
+  "result": {
+    "id": "twilightforest:travellers_goggles"
+  }
+}

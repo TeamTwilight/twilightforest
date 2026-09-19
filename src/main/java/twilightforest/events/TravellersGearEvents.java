@@ -49,6 +49,7 @@ import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.inventory.InventoryUtil;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -114,6 +115,9 @@ public class TravellersGearEvents {
 		HitResult rayResult = event.getRayTraceResult();
 		if (!(rayResult instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
 			return;
+		Projectile projectile = event.getProjectile();
+		if (projectile.getOwner() == livingEntity)
+			return;
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
@@ -125,7 +129,6 @@ public class TravellersGearEvents {
 		}
 		if (probability <= level.getRandom().nextFloat())
 			return;
-		Entity projectile = event.getEntity();
 		Vec3 hitPosition = projectile.position();
 		level.playSound(null, hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.get(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch());
 		event.setCanceled(true);
@@ -240,6 +243,7 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
 		TravellersGearLogic.determineWingState(livingEntity);
+		TravellersGearLogic.travellersGogglesZoom(livingEntity);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
@@ -250,7 +254,7 @@ public class TravellersGearEvents {
 		if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR) || !armor.isDamageableItem())
 			return;
 
-		if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
+		if (TravellersArmorItem.isTravellersArmorAndBroken(armor)) {
 			if (armor.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
 				Set<ItemAttributeModifiers.Entry> entries = new LinkedHashSet<>(armor.get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers());
 				if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {

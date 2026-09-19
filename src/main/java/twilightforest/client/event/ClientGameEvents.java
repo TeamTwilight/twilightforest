@@ -15,9 +15,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.sounds.Music;
-import net.minecraft.sounds.Musics;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +29,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.client.CustomBlockOutlineRenderer;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
@@ -92,7 +88,6 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::renderAurora);
 		NeoForge.EVENT_BUS.addListener(this::renderCustomBossbars);
 		NeoForge.EVENT_BUS.addListener(this::renderGiantBlockOutlines);
-		NeoForge.EVENT_BUS.addListener(this::setMusicInDimension);
 		NeoForge.EVENT_BUS.addListener(this::shakeCamera);
 		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
@@ -124,13 +119,6 @@ public class ClientGameEvents {
 
 	private void clearEntityRenderUtilMap(ScreenEvent.Closing event) {
 		EntityCache.clearCache();
-	}
-
-	private void setMusicInDimension(SelectMusicEvent event) {
-		Music music = event.getOriginalMusic(); // FIXME, why is this commented out?
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
-//			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
-		}
 	}
 
 	/**
@@ -312,15 +300,15 @@ public class ClientGameEvents {
 			return;
 		}
 
-		event.addCustomRenderer((CustomBlockOutlineRenderer) (renderState, buffer, poseStack, translucentPass, levelRenderState) -> {
+		event.addCustomRenderer((renderState, buffer, poseStack, translucentPass, levelRenderState) -> {
 			LocalPlayer player = Minecraft.getInstance().player;
 			if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
-				event.setCanceled(true);
 				if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
 					BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
 					VertexConsumer consumer = buffer.getBuffer(RenderTypes.lines());
 					Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().position());
-					ShapeRenderer.renderShape(poseStack, consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), ARGB.colorFromFloat(0.0F, 0.0F, 0.0F, 0.45F), Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth);
+					int outlineColor = renderState.highContrast() ? 0xff_57_ff_e1 : 0x66_00_00_00;
+					ShapeRenderer.renderShape(poseStack, consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), outlineColor, Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth);
 				}
 				return true;
 			}

@@ -70,6 +70,7 @@ import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
+import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.TFRenderPipelines;
@@ -148,6 +149,7 @@ public class ClientRegistrationEvents {
 
 	private void registerItemModels(RegisterItemModelsEvent event) {
 		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("trollsteinn"), TrollsteinnItemModel.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
 	}
 
@@ -166,9 +168,6 @@ public class ClientRegistrationEvents {
 	}
 
 	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-//		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
-//		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
-
 		BlockStateModel airModel = event.getBakingResult().blockStateModels().get(Blocks.AIR.defaultBlockState());
 		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(airModel));
 	}
@@ -618,11 +617,34 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
+		event.registerMapModifier(new MagicMapPlayerIconRenderer());
+		ConqueredMapIconRenderer conquered = new ConqueredMapIconRenderer();
+		event.registerMapDecorationModifier(TFMapDecorations.QUEST_GROVE.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.NAGA_COURTYARD.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.LICH_TOWER.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.LABYRINTH.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.HYDRA_LAIR.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.KNIGHT_STRONGHOLD.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.DARK_TOWER.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.YETI_LAIR.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.AURORA_PALACE.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.FINAL_CASTLE.getKey(), conquered);
+
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity living, LivingEntityRenderState state) -> {
 			if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)
 				state.setRenderData(RenderHooks.HIDE_HEAD_KEY, true);
 
 			state.setRenderData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(living));
+
+			if (living.getItemBySlot(EquipmentSlot.LEGS).has(TFDataComponents.TRAVELLERS_HAS_WINGS)) {
+				TravellersWingsModel.WingsPose wingsPose = TravellersWingsModel.advanceAnimation(
+					living.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM),
+					living.getData(TFDataAttachments.TRAVELLERS_WINGS),
+					state.ageInTicks,
+					state.walkAnimationSpeed
+				);
+				state.setRenderData(TravellersWingsModel.WINGS_POSE_KEY, wingsPose);
+			}
 
 			AttributeInstance speed = living.getAttribute(Attributes.MOVEMENT_SPEED);
 			if (speed == null)

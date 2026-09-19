@@ -109,7 +109,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 			return;
 
 		//mark as selected so map properly updates
-		mapItem.inventoryTick(map, level, owner, slot);
+		mapItem.inventoryTick(map, level, owner, EquipmentSlot.MAINHAND);
 		//send update packets here instead as the goggles aren't considered a complex item
 		if (owner instanceof ServerPlayer player) {
 			player.synchronizeSpecialItemUpdates(map);

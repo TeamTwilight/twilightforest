@@ -1,0 +1,16 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:slimy_soles",
+  "pattern": {
+    "key": {
+      "B": "twilightforest:travellers_boots",
+      "S": "minecraft:slime_block",
+      "W": "#c:strings"
+    },
+    "pattern": [
+      "WBW",
+      "S S"
+    ]
+  }
+}

@@ -25,11 +25,11 @@ public class TravellersGearModels {
 		if (slim) {
 			root.addOrReplaceChild("right_arm",
 				CubeListBuilder.create().texOffs(40, 0).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, deform),
-				PartPose.offset(-5.0F, 2.5F, 0.0F)
+				PartPose.offset(-5.0F, 2.0F, 0.0F)
 			);
 			root.addOrReplaceChild("left_arm",
 				CubeListBuilder.create().texOffs(40, 0).mirror().addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, deform),
-				PartPose.offset(5.0F, 2.5F, 0.0F)
+				PartPose.offset(5.0F, 2.0F, 0.0F)
 			);
 		} else {
 			root.addOrReplaceChild("right_arm",

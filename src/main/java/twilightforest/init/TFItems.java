@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BlocksAttacks;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -96,9 +97,9 @@ public class TFItems {
 	public static final DeferredItem<Item> FIERY_PICKAXE = register("fiery_pickaxe", FieryPickItem::new, () -> new Item.Properties().pickaxe(TFToolMaterials.FIERY, 1.0F, -2.8F).fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> TRAVELLERS_GOGGLES = register("travellers_goggles", properties -> new TravellersGogglesItem(3, properties), () -> TravellersArmorItem.gogglesProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.HELMET)));
 	public static final DeferredItem<Item> TRAVELLERS_VEST = register("travellers_vest", properties -> new TravellersArmorItem(3, properties), () -> TravellersArmorItem.chestProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.CHESTPLATE)));
-	public static final DeferredItem<Item> TRAVELLERS_GLOVES = register("travellers_gloves", properties -> new TravellersArmorItem(0, properties), () -> TravellersArmorItem.glovesProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.CHESTPLATE).durability(0).stacksTo(1)));
+	public static final DeferredItem<Item> TRAVELLERS_GLOVES = register("travellers_gloves", properties -> new TravellersArmorItem(0, properties), () -> TravellersArmorItem.glovesProperties(TravellersArmorItem.undamageableArmorProperties(new Item.Properties().stacksTo(1), ArmorType.CHESTPLATE)));
 	public static final DeferredItem<Item> TRAVELLERS_WINGS = register("travellers_wings", properties -> new TravellersArmorBeltItem(3, properties), () -> TravellersArmorItem.wingsProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.LEGGINGS)));
-	public static final DeferredItem<Item> TRAVELLERS_BELT = register("travellers_belt", properties -> new TravellersArmorBeltItem(0, properties), () -> TravellersArmorBeltItem.beltProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.LEGGINGS).durability(0).stacksTo(1)));
+	public static final DeferredItem<Item> TRAVELLERS_BELT = register("travellers_belt", properties -> new TravellersArmorBeltItem(0, properties), () -> TravellersArmorBeltItem.beltProperties(TravellersArmorItem.undamageableArmorProperties(new Item.Properties().stacksTo(1), ArmorType.LEGGINGS)));
 	public static final DeferredItem<Item> TRAVELLERS_BOOTS = register("travellers_boots", properties -> new TravellersArmorItem(3, properties), () -> TravellersArmorItem.bootsProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.BOOTS)));
 	public static final DeferredItem<Item> STEELEAF_INGOT = register("steeleaf_ingot", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> STEELEAF_HELMET = register("steeleaf_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.HELMET));
@@ -123,8 +124,8 @@ public class TFItems {
 	public static final DeferredItem<Item> CRUMBLE_HORN = register("crumble_horn", CrumbleHornItem::new, () -> new Item.Properties().durability(1024).rarity(Rarity.RARE));
 	public static final DeferredItem<Item> PEACOCK_FEATHER_FAN = register("peacock_feather_fan", PeacockFanItem::new, () -> new Item.Properties().durability(1024).rarity(Rarity.RARE));
 	public static final DeferredItem<Item> MOONWORM_QUEEN = register("moonworm_queen", MoonwormQueenItem::new, () -> new Item.Properties().durability(256).rarity(Rarity.RARE));
-	public static final DeferredItem<Item> BRITTLE_FLASK = register("brittle_potion_flask", PotionFlaskItem::new, () -> new Item.Properties().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY));
-	public static final DeferredItem<Item> GREATER_FLASK = register("greater_potion_flask", PotionFlaskItem::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY_UNBREAKABLE));
+	public static final DeferredItem<Item> BRITTLE_FLASK = register("brittle_potion_flask", PotionFlaskItem::new, () -> new Item.Properties().component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK).component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY));
+	public static final DeferredItem<Item> GREATER_FLASK = register("greater_potion_flask", PotionFlaskItem::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK).component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY_UNBREAKABLE));
 	public static final DeferredItem<Item> CHARM_OF_LIFE_1 = register("charm_of_life_1", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CHARM_OF_LIFE_2 = register("charm_of_life_2", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CHARM_OF_KEEPING_1 = register("charm_of_keeping_1", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
@@ -202,7 +203,7 @@ public class TFItems {
 	public static final DeferredItem<Item> FOUR_LEAF_CLOVER = register("four_leaf_clover", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> CROWN_SPLINTER = register("crown_splinter", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> MYSTIC_CROWN = register("mystic_crown", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).attributes(ItemAttributeModifiers.builder().add(Attributes.ARMOR, new AttributeModifier(Identifier.withDefaultNamespace("armor." + EquipmentSlot.HEAD.getName()), 2.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD).build()).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> STALE_BREAD = register("stale_bread", properties -> new CustomDamageSwordItem(TFDamageTypes.STALE_SANDWICH, properties), () -> new Item.Properties().stacksTo(1).component(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.ATTRIBUTE_MODIFIERS, true)).sword(ToolMaterial.WOOD, 3, -2.4F));
+	public static final DeferredItem<Item> STALE_BREAD = register("stale_bread", Item::new, () -> new Item.Properties().stacksTo(1).component(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.ATTRIBUTE_MODIFIERS, true)).sword(ToolMaterial.WOOD, 3, -2.4F));
 
 	public static final DeferredItem<Item> KEEPSAKE_CASKET = register("keepsake_casket", KeepsakeCasketItem::new, () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> HUGE_LILY_PAD = register("huge_lily_pad", properties -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());

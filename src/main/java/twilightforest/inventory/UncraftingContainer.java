@@ -4,10 +4,11 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.config.TFConfig;
 
-public class UncraftingContainer implements Container {
+public class UncraftingContainer implements Container, ContainerData {
 
 	private final NonNullList<ItemStack> contents = NonNullList.withSize(9, ItemStack.EMPTY);
 
@@ -101,5 +102,29 @@ public class UncraftingContainer implements Container {
 	@Override
 	public void clearContent() {
 		this.contents.clear();
+	}
+
+	@Override
+	public int get(int dataId) {
+		return switch (dataId) {
+			case 0 -> this.numberOfInputItems;
+			case 1 -> this.uncraftingCost;
+			case 2 -> this.recraftingCost;
+			default -> 0;
+		};
+	}
+
+	@Override
+	public void set(int dataId, int value) {
+		switch (dataId) {
+			case 0 -> this.numberOfInputItems = value;
+			case 1 -> this.uncraftingCost = value;
+			case 2 -> this.recraftingCost = value;
+		}
+	}
+
+	@Override
+	public int getCount() {
+		return 3;
 	}
 }

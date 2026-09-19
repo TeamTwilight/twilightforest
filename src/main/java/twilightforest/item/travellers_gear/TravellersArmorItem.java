@@ -26,6 +26,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.Equippable;
 import net.neoforged.neoforge.common.util.ConcatenatedListView;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -95,6 +96,18 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 				.build());
 	}
 
+	public static Properties undamageableArmorProperties(Properties properties, ArmorType type) {
+		ArmorMaterial material = TFArmorMaterials.TRAVELLERS_GEAR;
+		return properties
+			.attributes(defaultArmorProperties(type).build())
+			.enchantable(material.enchantmentValue())
+			.component(DataComponents.EQUIPPABLE, Equippable.builder(type.getSlot())
+				.setEquipSound(material.equipSound())
+				.setAsset(material.assetId())
+				.build())
+			.repairable(material.repairIngredient());
+	}
+
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
 		super.appendHoverText(stack, context, display, builder, flag);
@@ -151,7 +164,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
-		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
+		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() > 0 && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}
 
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
@@ -182,14 +195,12 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			super(TFModelLayers.TRAVELLERS_ARMOR_HELMET, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM, TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS, TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
 		}
 
-		//TODO I dont know how to check the entity for this anymore.
-		//we dont even have access to the renderstate which wouldve been a way around it, but alas
 		@Nullable
 		@Override
 		public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier def) {
-//			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
-//				TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
-				return super.getArmorTexture(stack, type, layer, def);
+			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && stack.has(TFDataComponents.IS_USING_GOGGLES_ZOOM) ?
+				TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
+				super.getArmorTexture(stack, type, layer, def);
 		}
 
 		@Override
@@ -234,12 +245,6 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 				}
 			}
 			return super.getHumanoidArmorModel(stack, layerType, model);
-		}
-
-		@Override
-		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, @SuppressWarnings("rawtypes") Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-//			if (model instanceof TravellersWingsModel wingsModel)
-//				wingsModel.setupModelAnimations(livingEntity, ageInTicks);
 		}
 
 		private boolean isModelSlim(Model<?> model) {

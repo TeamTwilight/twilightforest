@@ -1,5 +1,6 @@
 package twilightforest.inventory;
 
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
@@ -103,6 +104,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			this.addSlot(new Slot(inventory, invX, 8 + invX * 18, 142));
 		}
 
+		this.addDataSlots(this.uncraftingMatrix);
+
 		this.slotsChanged(this.craftSlots);
 
 		if (!FMLEnvironment.isProduction()) {
@@ -121,6 +124,9 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 	@Override
 	public void slotsChanged(Container inventory) {
+		if (!(this.level instanceof ServerLevel))
+			return;
+
 		// we need to see what inventory is calling this, and update appropriately
 		if (inventory == this.tinkerInput) {
 
@@ -605,11 +611,20 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	}
 
 	private ItemStack[] getIngredients(CraftingRecipe recipe) {
-		List<Ingredient> ingredients = recipe.placementInfo().ingredients();
-		ItemStack[] stacks = new ItemStack[ingredients.size()];
+		PlacementInfo placement = recipe.placementInfo();
+		List<Ingredient> ingredients = placement.ingredients();
+		IntList slots = placement.slotsToIngredientIndex();
+		ItemStack[] stacks = new ItemStack[slots.size()];
 
-		for (int i = 0; i < ingredients.size(); i++) {
-			ItemStack[] matchingStacks = ingredients.get(i).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
+		for (int i = 0; i < slots.size(); i++) {
+			int index = slots.getInt(i);
+
+			if (index == PlacementInfo.EMPTY_SLOT) {
+				stacks[i] = ItemStack.EMPTY;
+				continue;
+			}
+
+			ItemStack[] matchingStacks = ingredients.get(index).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
 			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
 		}
 
