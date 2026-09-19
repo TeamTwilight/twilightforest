@@ -5,9 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.criterion.SingleComponentItemPredicate;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.neoforged.neoforge.common.advancements.critereon.PiglinCurrencyItemPredicate;
 
 //TODO: Delete this
 public record ItemColorPredicate(int color) implements SingleComponentItemPredicate<DyedItemColor> {
@@ -24,8 +22,7 @@ public record ItemColorPredicate(int color) implements SingleComponentItemPredic
 
 	@Override
 	public boolean matches(DyedItemColor value) {
-//		if (stack.has(DataComponents.DYED_COLOR) && this.color() == -1) return true;
-		return value.rgb() == this.color();
+		return color() == -1 || value.rgb() == color();
 	}
 
 	public static ItemColorPredicate anyColor() {

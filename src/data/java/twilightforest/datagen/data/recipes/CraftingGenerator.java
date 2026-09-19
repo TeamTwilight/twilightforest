@@ -210,6 +210,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		crackedWoodRecipes();
 		crackedStoneRecipes();
+		dyedRecipes();
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, TFBlocks.CHISELED_CANOPY_BOOKSHELF)
 			.pattern("---")
@@ -1353,5 +1354,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.MAZESTONE_BRICK), RecipeCategory.BUILDING_BLOCKS, CookingBookCategory.BLOCKS, TFBlocks.CRACKED_MAZESTONE, 0.1F, 200).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK)).save(this.output, this.createKey("maze_stone/" + "smelted" + "_maze_stone_cracked"));
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.CASTLE_BRICK), RecipeCategory.BUILDING_BLOCKS, CookingBookCategory.BLOCKS, TFBlocks.CRACKED_CASTLE_BRICK, 0.1F, 200).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK)).save(this.output, this.createKey("castleblock/" + "smelted" + "_cracked_castle_brick"));
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.UNDERBRICK), RecipeCategory.BUILDING_BLOCKS, CookingBookCategory.BLOCKS, TFBlocks.CRACKED_UNDERBRICK, 0.1F, 200).unlockedBy("has_item", has(TFBlocks.UNDERBRICK)).save(this.output, this.createKey("smelted" + "_cracked_underbrick"));
+	}
+
+	private void dyedRecipes() {
+		dyedEquipment(TFItems.ARCTIC_HELMET, "dyed_armor");
+		dyedEquipment(TFItems.ARCTIC_CHESTPLATE, "dyed_armor");
+		dyedEquipment(TFItems.ARCTIC_LEGGINGS, "dyed_armor");
+		dyedEquipment(TFItems.ARCTIC_BOOTS, "dyed_armor");
 	}
 }

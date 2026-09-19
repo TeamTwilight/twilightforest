@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.DyeRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -152,6 +153,14 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 			.define('#', material)
 			.unlockedBy("has_item", has(material))
 			.save(this.output, locEquip(result.getId().getPath()));
+	}
+
+	protected final void dyedEquipment(DeferredItem<? extends Item> result, String group) {
+		Item target = result.get();
+		CustomCraftingRecipeBuilder.customCrafting(RecipeCategory.MISC, (commonInfo, bookInfo) -> new DyeRecipe(commonInfo, bookInfo, Ingredient.of(target), tag(ItemTags.DYES), new ItemStackTemplate(target)))
+			.unlockedBy(getHasName(target), has(target))
+			.group(group)
+			.save(this.output, locEquip(result.getId().getPath() + "_dyed"));
 	}
 
 	protected final void pickaxeItem(HolderGetter<Item> getter, DeferredItem<? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
