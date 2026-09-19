@@ -8,6 +8,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 import twilightforest.loot.conditions.GiantPickUsedCondition;
@@ -21,10 +22,9 @@ public class LootModifierGenerator extends GlobalLootModifierProvider {
 		super(output, provider, TwilightForestMod.ID);
 	}
 
-	//TODO: No longer necessary?
 	@Override
 	protected void start() {
-//		add("fiery_pick_smelting", new FieryToolSmeltingModifier(new LootItemCondition[]{MatchTool.toolMatches(ItemPredicate.Builder.item().of(this.registries.lookupOrThrow(Registries.ITEM), TFItems.FIERY_PICKAXE.get())).build()}));
-//		add("giant_pick_grouping", new GiantToolGroupingModifier(new LootItemCondition[]{GiantPickUsedCondition.builder(LootContext.EntityTarget.THIS).build()}));
+		add("fiery_pick_smelting", new FieryToolSmeltingModifier(new LootItemCondition[]{MatchTool.toolMatches(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.FIERY_PICKAXE.get())).build()}, IGlobalLootModifier.DEFAULT_PRIORITY));
+		add("giant_pick_grouping", new GiantToolGroupingModifier(new LootItemCondition[]{GiantPickUsedCondition.builder(LootContext.EntityTarget.THIS).build()}, IGlobalLootModifier.DEFAULT_PRIORITY));
 	}
 }

@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:fiery_pick_smelting",
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "items": "twilightforest:fiery_pickaxe"
+      }
+    }
+  ]
+}
