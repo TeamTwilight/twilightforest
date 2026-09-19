@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/casket_solid",
+  "textures": {
+    "side": "minecraft:block/obsidian",
+    "top": "minecraft:block/obsidian"
+  }
+}

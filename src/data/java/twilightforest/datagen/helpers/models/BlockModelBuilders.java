@@ -34,13 +34,12 @@ import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateM
 import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.renderer.block.JarRenderer;
-import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
-import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
-import twilightforest.client.renderer.special.TrophySpecialRenderer;
+import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.assets.models.TFExtendedModelTemplates;
 import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
 import twilightforest.datagen.assets.models.TFTextureSlot;
+import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.HugeLilypadPiece;
 import twilightforest.enums.NagastoneVariant;
@@ -250,6 +249,28 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.select(Direction.EAST, plainVariant(model).with(Y_ROT_90).with(X_ROT_90))
 		));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
+	}
+
+	protected void skullCasketModels() {
+		Identifier obsidian = TFModelTemplates.CASKET_SOLID.create(TwilightForestMod.prefix("block/casket_obsidian"), new TextureMapping().put(TextureSlot.TOP, new Material(Identifier.withDefaultNamespace("block/obsidian"))).put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/obsidian"))), this.modelOutput);
+		Identifier stone = TFModelTemplates.CASKET_SOLID.create(TwilightForestMod.prefix("block/casket_stone"), new TextureMapping().put(TextureSlot.TOP, new Material(Identifier.withDefaultNamespace("block/stone"))).put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/stone"))), this.modelOutput);
+		Identifier basalt = TFModelTemplates.CASKET_SOLID.create(TwilightForestMod.prefix("block/casket_basalt"), new TextureMapping().put(TextureSlot.TOP, new Material(Identifier.withDefaultNamespace("block/basalt_top"))).put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/basalt_side"))), this.modelOutput);
+
+		this.casketBlockAndItemModels(TFBlocks.KEEPSAKE_CASKET.get(), _ -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.KEEPSAKE_CASKET.get(), Blocks.NETHERITE_BLOCK), obsidian, stone, basalt);
+		this.casketBlockAndItemModels(TFBlocks.SKULL_CHEST.get(), _ -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.SKULL_CHEST.get(), Blocks.LIGHT_GRAY_CONCRETE_POWDER), obsidian, stone, basalt);
+	}
+
+	private <B extends Block> void casketBlockAndItemModels(B block, Function<B, ItemModel.Unbaked> itemModel, MultiVariant particleOnlyBlockModel, Identifier obsidian, Identifier stone, Identifier basalt) {
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+				PropertyDispatch.initial(BlockLoggingEnum.MULTILOGGED)
+						.select(BlockLoggingEnum.AIR, particleOnlyBlockModel)
+						.select(BlockLoggingEnum.WATER, particleOnlyBlockModel)
+						.select(BlockLoggingEnum.LAVA, particleOnlyBlockModel)
+						.select(BlockLoggingEnum.OBSIDIAN, plainVariant(obsidian))
+						.select(BlockLoggingEnum.STONE, plainVariant(stone))
+						.select(BlockLoggingEnum.BASALT, plainVariant(basalt))
+		));
+		this.itemModelOutput.accept(block.asItem(), itemModel.apply(block));
 	}
 
 	protected void bisectedStairsBlock(Block block, Material side, Material end, Material middle) {
