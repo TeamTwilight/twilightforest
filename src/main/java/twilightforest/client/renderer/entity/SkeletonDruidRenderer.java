@@ -14,7 +14,7 @@ public class SkeletonDruidRenderer extends HumanoidMobRenderer<SkeletonDruid, Sk
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("skeletondruid.png");
 
 	public SkeletonDruidRenderer(EntityRendererProvider.Context context) {
-		super(context, new SkeletonDruidModel(context.bakeLayer(TFModelLayers.SKELETON_DRUID)), 0.5F);
+		super(context, new SkeletonDruidModel(context.bakeLayer(TFModelLayers.SKELETON_DRUID)), new SkeletonDruidModel(context.bakeLayer(TFModelLayers.SKELETON_DRUID_BABY)), 0.5F);
 	}
 
 	@Override

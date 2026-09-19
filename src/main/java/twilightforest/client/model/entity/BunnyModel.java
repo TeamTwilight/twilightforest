@@ -6,13 +6,18 @@
 
 package twilightforest.client.model.entity;
 
+import net.minecraft.client.model.BabyModelTransform;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import twilightforest.client.state.entity.DwarfRabbitRenderState;
 
+import java.util.Set;
+
 public class BunnyModel extends QuadrupedModel<DwarfRabbitRenderState> {
+
+	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(true, 8.5F, 0.0F, Set.of("head"));
 
 	public BunnyModel(ModelPart root) {
 		super(root);
