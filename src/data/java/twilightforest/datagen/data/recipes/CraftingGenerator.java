@@ -730,7 +730,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("SBS")
 				.pattern("L L")
 				.define('B', TFItems.TRAVELLERS_BOOTS)
-				.define('S', TFItems.MAZE_SLIME_BALL)
+				.define('S', TFItemTags.MAZE_SLIME_BALLS)
 				.define('L', Items.LILY_PAD)
 				.build(),
 			TravellersModifiersManager.WATER_WALK_MODIFIER).save(this.output);
@@ -1202,8 +1202,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_slime_ball", has(Items.SLIME_BALL))
 			.save(this.output);
 
-		DryingRecipeBuilder.drying(TFItems.MAZE_SLIME_BALL, TFItems.GELATINOUS_MAZE_SLIME_DROP)
-			.unlockedBy("has_maze_slime_ball", has(TFItems.MAZE_SLIME_BALL))
+		DryingRecipeBuilder.drying(getter, TFItemTags.MAZE_SLIME_BALLS, TFItems.GELATINOUS_MAZE_SLIME_DROP, 5)
+			.unlockedBy("has_maze_slime_ball", has(TFItemTags.MAZE_SLIME_BALLS))
 			.save(this.output);
 
 		DryingRecipeBuilder.drying(TFItems.TREATED_LEATHER, TFItems.TANNED_LEATHER)
