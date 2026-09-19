@@ -339,7 +339,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				.add(TFBlocks.MAYAPPLE.get());
 
 		this.tag(TFBlockTags.TF_BERRY_BUSHES_SURVIVE)
-				.addTags(BlockTags.DIRT)
+				.addTags(BlockTags.SUBSTRATE_OVERWORLD)
 				.add(Blocks.SNOW_BLOCK);
 
 		this.tag(TFBlockTags.DARK_TOWER_BERRY_BUSHES_SURVIVE)
