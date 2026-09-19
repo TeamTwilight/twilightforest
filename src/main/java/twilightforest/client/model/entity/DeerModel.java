@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import java.util.Set;
 
 public class DeerModel extends QuadrupedModel<LivingEntityRenderState> {
-	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 8.0F, 4.0F, Set.of("head"));
+	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(true, 15.25F, 4.0F, Set.of("head"));
 
 	public DeerModel(ModelPart root) {
 		super(root);
@@ -93,8 +93,8 @@ public class DeerModel extends QuadrupedModel<LivingEntityRenderState> {
 
 	@Override
 	public void setupAnim(LivingEntityRenderState state) {
-		this.head.getChild("right_antler").visible = !state.isBaby;
-		this.head.getChild("left_antler").visible = !state.isBaby;
+		head.getChild("right_antler").visible = !state.isBaby;
+		head.getChild("left_antler").visible = !state.isBaby;
 		super.setupAnim(state);
 	}
 }
