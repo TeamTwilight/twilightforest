@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -112,6 +113,13 @@ public class DryingRackBlockEntity extends BlockEntity {
 		ItemStack theItem = this.getTheItem();
 		this.setTheItem(ItemStack.EMPTY);
 		return theItem;
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null) {
+			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), takeTheItem());
+		}
 	}
 
 	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel level) {
