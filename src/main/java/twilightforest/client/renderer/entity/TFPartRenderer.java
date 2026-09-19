@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.state.entity.PartEntityState;
 import twilightforest.entity.TFPart;
@@ -104,7 +105,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntitySt
 		}
 
 		state.isInWater = entity.isInWater()/* || entity.isInFluidType((fluidType, height) -> entity.canSwimInFluidType(fluidType))*/;
-		state.hasRedOverlay = entity.hurtTime > 0 || entity.deathTime > 0;
+		state.hasRedOverlay = entity.hurtTime > 0 || entity.deathTime > 0 || entity.getParent() instanceof LivingEntity living && (living.hurtTime > 0 || living.deathTime > 0);
 		state.deathTime = entity.deathTime > 0 ? (float) entity.deathTime + partialTick : 0.0F;
 		Minecraft minecraft = Minecraft.getInstance();
 		state.isInvisibleToPlayer = state.isInvisible && entity.isInvisibleTo(minecraft.player);
