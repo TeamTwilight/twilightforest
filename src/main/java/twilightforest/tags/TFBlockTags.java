@@ -83,6 +83,7 @@ public class TFBlockTags {
 	public static final TagKey<Block> STORAGE_BLOCKS_FIERY = makeCommonTag("storage_blocks/fiery");
 	public static final TagKey<Block> STORAGE_BLOCKS_IRONWOOD = makeCommonTag("storage_blocks/ironwood");
 	public static final TagKey<Block> STORAGE_BLOCKS_KNIGHTMETAL = makeCommonTag("storage_blocks/knightmetal");
+	public static final TagKey<Block> STORAGE_BLOCKS_MAZE_SLIME = makeCommonTag("storage_blocks/slime/maze");
 	public static final TagKey<Block> STORAGE_BLOCKS_STEELEAF = makeCommonTag("storage_blocks/steeleaf");
 
 	public static final TagKey<Block> INCORRECT_FOR_IRONWOOD_TOOL = create("incorrect_for_ironwood_tool");

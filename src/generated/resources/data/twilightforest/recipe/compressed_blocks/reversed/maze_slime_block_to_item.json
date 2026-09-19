@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:storage_blocks/slime/maze"
+  ],
+  "result": {
+    "count": 9,
+    "id": "twilightforest:maze_slime_ball"
+  }
+}

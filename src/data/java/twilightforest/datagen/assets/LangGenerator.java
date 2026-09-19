@@ -1141,6 +1141,7 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(TFItemTags.STORAGE_BLOCKS_FIERY, "Fiery Storage Blocks");
 		this.translateTag(TFItemTags.STORAGE_BLOCKS_IRONWOOD, "Ironwood Storage Blocks");
 		this.translateTag(TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL, "Knightmetal Storage Blocks");
+		this.translateTag(TFItemTags.STORAGE_BLOCKS_MAZE_SLIME, "Maze Slime Storage Blocks");
 		this.translateTag(TFItemTags.STORAGE_BLOCKS_STEELEAF, "Steeleaf Storage Blocks");
 		this.translateTag(TFItemTags.ARCTIC_FUR, "Arctic Fur");
 		this.translateTag(TFItemTags.BANNED_UNCRAFTABLES, "Can't be Uncrafted");

@@ -894,6 +894,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		reverseCompressBlock(getter, "carminite_block_to_item", TFItems.CARMINITE, TFItemTags.STORAGE_BLOCKS_CARMINITE);
 		reverseCompressBlock(getter, "ironwood_block_ingot", TFItems.IRONWOOD_INGOT, TFItemTags.STORAGE_BLOCKS_IRONWOOD);
 		reverseCompressBlock(getter, "knightmetal_block_ingot", TFItems.KNIGHTMETAL_INGOT, TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL);
+		reverseCompressBlock(getter, "maze_slime_block_to_item", TFItems.MAZE_SLIME_BALL, TFItemTags.STORAGE_BLOCKS_MAZE_SLIME);
 		reverseCompressBlock(getter, "steeleaf_block_ingot", TFItems.STEELEAF_INGOT, TFItemTags.STORAGE_BLOCKS_STEELEAF);
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.FIERY_INGOT, 9)
@@ -907,6 +908,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		compressedBlock(getter, "fiery_block", TFBlocks.FIERY_BLOCK, TFItemTags.FIERY_INGOTS);
 		compressedBlock(getter, "ironwood_block", TFBlocks.IRONWOOD_BLOCK, TFItemTags.IRONWOOD_INGOTS);
 		compressedBlock(getter, "knightmetal_block", TFBlocks.KNIGHTMETAL_BLOCK, TFItemTags.KNIGHTMETAL_INGOTS);
+		compressedBlock(getter, "maze_slime_block", TFBlocks.MAZE_SLIME_BLOCK, TFItemTags.MAZE_SLIME_BALLS);
 		compressedBlock(getter, "steeleaf_block", TFBlocks.STEELEAF_BLOCK, TFItemTags.STEELEAF_INGOTS);
 	}
 

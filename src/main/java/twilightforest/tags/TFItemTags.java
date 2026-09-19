@@ -32,6 +32,7 @@ public class TFItemTags {
 	public static final TagKey<Item> FIERY_INGOTS = makeCommonTag("ingots/fiery");
 	public static final TagKey<Item> IRONWOOD_INGOTS = makeCommonTag("ingots/ironwood");
 	public static final TagKey<Item> KNIGHTMETAL_INGOTS = makeCommonTag("ingots/knightmetal");
+	public static final TagKey<Item> MAZE_SLIME_BALLS = makeCommonTag("slime_balls/maze");
 	public static final TagKey<Item> STEELEAF_INGOTS = makeCommonTag("ingots/steeleaf");
 	public static final TagKey<Item> WROUGHT_IRON_INGOTS = makeCommonTag("ingots/wrought_iron");
 
@@ -40,6 +41,7 @@ public class TFItemTags {
 	public static final TagKey<Item> STORAGE_BLOCKS_FIERY = makeCommonTag("storage_blocks/fiery");
 	public static final TagKey<Item> STORAGE_BLOCKS_IRONWOOD = makeCommonTag("storage_blocks/ironwood");
 	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = makeCommonTag("storage_blocks/knightmetal");
+	public static final TagKey<Item> STORAGE_BLOCKS_MAZE_SLIME = makeCommonTag("storage_blocks/slime/maze");
 	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = makeCommonTag("storage_blocks/steeleaf");
 
 	public static final TagKey<Item> RAW_MATERIALS_IRONWOOD = makeCommonTag("raw_materials/ironwood");

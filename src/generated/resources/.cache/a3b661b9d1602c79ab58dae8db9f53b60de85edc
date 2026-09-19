@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-13T01:33:30.713244	Twilight Forest Item Tags
+// 26.1.2	2026-09-19T16:46:11.292463	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -29,6 +29,7 @@ d6057311598b61ea8d097a01a73d1e48e960285c data/c/tags/item/mushrooms.json
 4148b1147e82840f7df067661493919bf23a189c data/c/tags/item/raw_materials/knightmetal.json
 d2e681a14efc494b83a43b07b35d26dad2fff850 data/c/tags/item/ropes.json
 6e6210d00b0671be154425e43be74b7c659180d7 data/c/tags/item/slime_balls.json
+6e6210d00b0671be154425e43be74b7c659180d7 data/c/tags/item/slime_balls/maze.json
 e31cfd841db5296d9df27b154f3e502b3c2a0a35 data/c/tags/item/storage_blocks.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/c/tags/item/storage_blocks/arctic_fur.json
 bb31db15f2b155aafc5bc956c01454bb27f14f72 data/c/tags/item/storage_blocks/carminite.json
@@ -36,6 +37,7 @@ c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/item/storage_blocks/fiery.j
 b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/c/tags/item/storage_blocks/ironwood.json
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/item/storage_blocks/knightmetal.json
 eb02dad5585025bae46b1a33a10ef57f1c33b78f data/c/tags/item/storage_blocks/slime.json
+eb02dad5585025bae46b1a33a10ef57f1c33b78f data/c/tags/item/storage_blocks/slime/maze.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/c/tags/item/storage_blocks/steeleaf.json
 96e133a68b59752179daf0ace7f09c7aa6f86a6d data/c/tags/item/stripped_logs.json
 44805839a86579813bbaa5d7948e5adc4a4421a7 data/c/tags/item/stripped_woods.json
