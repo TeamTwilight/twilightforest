@@ -409,9 +409,9 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		List<RangeSelectItemModel.Entry> entries = new ArrayList<>(8);
 		for (int phase = 0; phase < 8; phase++) {
 			ItemModel.Unbaked model = ItemModelUtils.plainModel(this.createFlatItemModel(dial, phase == 0 ? "" : "_" + phase, TFModelTemplates.MOON_DIAL));
-			entries.add(ItemModelUtils.override(model, (float) phase));
+			entries.add(ItemModelUtils.override(model, phase));
 		}
-		this.itemModelOutput.accept(dial, ItemModelUtils.rangeSelect(new MoonDialPhaseProperty(), 1.0F, entries));
+		this.itemModelOutput.accept(dial, ItemModelUtils.rangeSelect(new MoonDialPhaseProperty(8), 1.0F, entries));
 	}
 
 	public void generatePotionFlask(Item flask, boolean crackable, Identifier empty) {
