@@ -9,11 +9,15 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.MoonPhase;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +26,7 @@ import twilightforest.components.item.*;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.custom.MagicPaintingVariants;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class TFDataComponents {
@@ -80,7 +85,11 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> SWIFT_SWIM = COMPONENTS.register("swift_swim", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> HIGH_STEP = COMPONENTS.register("high_step", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> AQUATIC_AGILITY = COMPONENTS.register("aquatic_agility", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).cacheEncoding().build());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<MoonDialComponent>> MOON_DIAL = COMPONENTS.register("moon_dial", () -> DataComponentType.<MoonDialComponent>builder().persistent(MoonDialComponent.CODEC).networkSynchronized(MoonDialComponent.STREAM_CODEC).cacheEncoding().build());
+
+	// Phase and DimensionType must sync for the Moon Dial's model property and Level for tooltip. DimensionType is the only one allowed to trigger the swap animation in first-person hand
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Optional<MoonPhase>>> MOON_DIAL_PHASE = COMPONENTS.register("moon_dial_phase", () -> DataComponentType.<Optional<MoonPhase>>builder().persistent(ExtraCodecs.optionalEmptyMap(MoonPhase.CODEC)).networkSynchronized(ByteBufCodecs.VAR_INT.map(index -> MoonPhase.values()[index], MoonPhase::index).apply(ByteBufCodecs::optional)).cacheEncoding().ignoreSwapAnimation().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceKey<DimensionType>>> MOON_DIAL_DIMENSION = COMPONENTS.register("moon_dial_dimension", () -> DataComponentType.<ResourceKey<DimensionType>>builder().persistent(ResourceKey.codec(Registries.DIMENSION_TYPE)).networkSynchronized(ResourceKey.streamCodec(Registries.DIMENSION_TYPE)).cacheEncoding().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceKey<Level>>> MOON_DIAL_LEVEL = COMPONENTS.register("moon_dial_level", () -> DataComponentType.<ResourceKey<Level>>builder().persistent(ResourceKey.codec(Registries.DIMENSION)).networkSynchronized(ResourceKey.streamCodec(Registries.DIMENSION)).ignoreSwapAnimation().build());
 
 	private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {
 		return register(name, codec, null);
