@@ -17,9 +17,14 @@ public class HeavySpearAttackGoal extends Goal {
 	}
 
 	@Override
+	public boolean requiresUpdateEveryTick() {
+		return true;
+	}
+
+	@Override
 	public void tick() {
-		if (this.entity.heavySpearTimer == 25) {
-			this.entity.landHeavySpearAttack();
+		if (entity.heavySpearTimer == 25) {
+			entity.landHeavySpearAttack();
 		}
 	}
 
