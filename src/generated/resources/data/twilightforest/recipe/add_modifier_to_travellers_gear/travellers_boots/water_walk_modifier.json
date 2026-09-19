@@ -6,7 +6,7 @@
     "key": {
       "B": "twilightforest:travellers_boots",
       "L": "minecraft:lily_pad",
-      "S": "twilightforest:maze_slime_ball"
+      "S": "#c:slime_balls/maze"
     },
     "pattern": [
       "SBS",

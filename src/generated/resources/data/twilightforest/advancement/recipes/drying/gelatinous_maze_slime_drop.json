@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "twilightforest:maze_slime_ball"
+            "items": "#c:slime_balls/maze"
           }
         ]
       },
