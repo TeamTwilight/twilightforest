@@ -102,6 +102,7 @@ public final class TwilightForestMod {
 		bus.addListener(CuriosCompat::registerCuriosCapabilities);
 		bus.addListener(CuriosCompat::registerCurioRenderers);
 		bus.addListener(CuriosCompat::registerCurioLayers);
+		bus.addListener(CuriosCompat::registerCustomRenderData);
 	}
 
 	public static Identifier prefix(String name) {
