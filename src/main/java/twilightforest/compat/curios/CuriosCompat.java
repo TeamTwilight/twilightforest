@@ -1,16 +1,21 @@
 package twilightforest.compat.curios;
 
+import com.google.common.reflect.TypeToken;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
@@ -20,6 +25,8 @@ import top.theillusivec4.curios.api.client.ICurioRenderer;
 import top.theillusivec4.curios.api.common.DropRule;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
+import twilightforest.asmhooks.RenderHooks;
+import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.compat.curios.model.CharmOfLifeNecklaceModel;
 import twilightforest.compat.curios.renderer.CharmOfKeepingRenderer;
@@ -128,6 +135,14 @@ public class CuriosCompat {
 		});
 	}
 
+	public static void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
+		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {
+		}, (LivingEntity living, LivingEntityRenderState state) -> {
+			if (isCurioEquippedAndVisible(living, itemStack -> itemStack.getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)) {
+				state.setRenderData(RenderHooks.HIDE_HEAD_KEY, true);
+			}
+		});
+	}
 	public static boolean isCurioEquipped(LivingEntity entity, Predicate<ItemStack> stackPredicate) {
 		return CuriosApi.getCuriosInventory(entity).flatMap(handler -> handler.findFirstCurio(stackPredicate)).isPresent();
 	}
