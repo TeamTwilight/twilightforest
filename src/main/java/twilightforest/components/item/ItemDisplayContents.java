@@ -6,6 +6,8 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -136,6 +138,15 @@ public class ItemDisplayContents implements TooltipComponent {
 			return this.chosenMapSlot;
 		}
 
+		private int findItemIndex(ItemDisplayType type) {
+			for (int i = 0; i < LAYOUT.size(); i++) {
+				if (LAYOUT.get(i).get() == type) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
 		private int findSwapSlot(ItemStack stack) {
 			for (int i = 0; i < LAYOUT.size(); i++) {
 				if (LAYOUT.get(i).get().validItems().test(stack)) {
@@ -230,6 +241,22 @@ public class ItemDisplayContents implements TooltipComponent {
 					return true;
 			}
 			return false;
+		}
+
+		/** Returns true if updated */
+		public boolean updateMoonDial(ServerLevel level, Entity owner) {
+			int itemIndex = this.findItemIndex(ItemDisplays.MOON_DIAL.value());
+
+			if (itemIndex < 0) {
+				return false;
+			}
+
+			ItemStack itemStack = this.items.get(itemIndex);
+			ItemStack prior = itemStack.copy();
+
+			itemStack.inventoryTick(level, owner, null);
+
+			return !prior.equals(itemStack);
 		}
 	}
 

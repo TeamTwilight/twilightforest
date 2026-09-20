@@ -100,6 +100,19 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		if (contents == null || contents.isEmpty())
 			return;
 
+		this.updateMap(level, owner, contents);
+		ItemDisplayContents updatedContents = this.updateInstruments(level, owner, contents);
+		if (updatedContents != null) {
+			stack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
+		}
+	}
+
+    private @Nullable ItemDisplayContents updateInstruments(ServerLevel level, Entity owner, ItemDisplayContents contents) {
+		ItemDisplayContents.Mutable mutable = new ItemDisplayContents.Mutable(contents);
+        return mutable.updateMoonDial(level, owner) ? mutable.toImmutable() : null;
+    }
+
+	private void updateMap(ServerLevel level, Entity owner, ItemDisplayContents contents) {
 		int mapSlot = contents.findActiveMapSlot();
 		if (mapSlot == -1)
 			return;
