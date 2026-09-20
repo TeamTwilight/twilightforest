@@ -6,8 +6,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -19,6 +22,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -38,6 +42,7 @@ public class HydraMortar extends ThrowableProjectile {
 	@SuppressWarnings("this-escape")
 	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
 		super(type, world);
+		setOwner(head.getParent());
 
 		Vec3 vector = head.getLookAngle();
 
@@ -61,15 +66,35 @@ public class HydraMortar extends ThrowableProjectile {
 
 	@Override
 	public void tick() {
-		super.tick();
-
-		if (this.onGround()) {
-			this.getDeltaMovement().multiply(0.9D, 0.9D, 0.9D);
-
-			if (!this.level().isClientSide() && this.fuse-- <= 0) {
-				this.detonate();
-			}
+		if (!onGround()) {
+			super.tick();
+			return;
 		}
+
+		baseTick();
+		applyGravity();
+		move(MoverType.SELF, getDeltaMovement());
+		applyEffectsFromBlocks();
+		setDeltaMovement(getDeltaMovement().scale(0.99D));
+
+		if (onGround())
+			setDeltaMovement(getDeltaMovement().x(), 0.0D, getDeltaMovement().z());
+
+		if (level().isClientSide())
+			return;
+		if (horizontalCollision) {
+			detonate();
+			return;
+		}
+		for (Entity entity : level().getEntities(this, getBoundingBox(), this::canHitEntity)) {
+			EntityHitResult result = new EntityHitResult(entity);
+			if (!EventHooks.onProjectileImpact(this, result))
+				hitTargetOrDeflectSelf(result);
+			if (!isAlive())
+				return;
+		}
+		if (fuse-- <= 0)
+			detonate();
 	}
 
 	public void setToBlasting() {
@@ -101,10 +126,17 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
+	protected boolean canHitEntity(Entity entity) {
+		if (!super.canHitEntity(entity) || (getOwner() != null && entity.is(getOwner())) || isPartOfHydra(entity))
+			return false;
+		return !(entity instanceof HydraMortar mortar) || (getOwner() != null && mortar.getOwner() != null && getOwner().is(mortar.getOwner()));
+	}
+
+	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
 		if (!this.level().isClientSide() && this.getOwner() != null) {
-			if ((!(entity instanceof HydraMortar mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
+			if ((!(entity instanceof HydraMortar mortar) || mortar.getOwner() != null && mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
 				this.detonate();
 			}
 		}
@@ -141,17 +173,21 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
+	public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflectingEntity, @Nullable EntityReference<Entity> newOwner, boolean byAttack) {
+		setOnGround(false);
+		return super.deflect(deflection, deflectingEntity, newOwner, byAttack);
+	}
+
+	@Override
 	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
 		super.hurtServer(server, source, amount);
 
 		if (source.getEntity() != null && !this.level().isClientSide()) {
-			Vec3 vec3d = source.getEntity().getLookAngle();
-			if (vec3d != null) {
-				// reflect faster and more accurately
-				this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);  // reflect faster and more accurately
-				this.setOnGround(false);
-				this.fuse += 20;
-			}
+			Vec3 lookAngle = source.getEntity().getLookAngle();
+			// reflect faster and more accurately
+			this.shoot(lookAngle.x(), lookAngle.y(), lookAngle.z(), 1.5F, 0.1F);  // reflect faster and more accurately
+			this.setOnGround(false);
+			this.fuse += 20;
 
 			if (source.getEntity() instanceof LivingEntity) {
 				this.setOwner(source.getEntity());
