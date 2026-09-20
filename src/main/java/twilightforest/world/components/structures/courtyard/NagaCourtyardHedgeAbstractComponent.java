@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.world.components.processors.NagastoneVariants;
@@ -30,6 +31,7 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 		super(ctx, piece, nbt);
 		this.HEDGE = hedge;
 		this.HEDGE_BIG = hedgeBig;
+		setup(ctx.structureTemplateManager());
 	}
 
 	@SuppressWarnings("WeakerAccess")
@@ -47,10 +49,9 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
-		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors();
-		if (TEMPLATE == null) // FIXME: this should never be null in the first place
-			LAZY_TEMPLATE_LOADER.run();
-		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.clearProcessors().addProcessor(NagastoneVariants.INSTANCE), random, 18);
-		templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(BlockIgnoreProcessor.AIR).addProcessor(new BlockRotProcessor(CourtyardMain.HEDGE_FLOOF)), random, 18);
+		StructurePlaceSettings hedgeSettings = placeSettings.copy().setBoundingBox(structureBoundingBox).clearProcessors().addProcessor(NagastoneVariants.INSTANCE);
+		StructurePlaceSettings hedgeBigSettings = hedgeSettings.copy().addProcessor(BlockIgnoreProcessor.AIR).addProcessor(new BlockRotProcessor(CourtyardMain.HEDGE_FLOOF));
+		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, hedgeSettings, random, 18);
+		templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, hedgeBigSettings, random, 18);
 	}
 }

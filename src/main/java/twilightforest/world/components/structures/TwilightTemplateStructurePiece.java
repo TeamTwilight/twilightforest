@@ -23,12 +23,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.util.ArrayUtil;
-import twilightforest.util.BoundingBoxUtils;
 
 public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece {
 	protected final StructureTemplateManager structureManager;
-	private final BlockPos originalPlacement;
-	private final BoundingBox originalBox;
 
 	protected int placeFlag;
 
@@ -39,9 +36,6 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 		this.mirror = this.getMirror();
 
 		this.structureManager = ctx.structureTemplateManager();
-
-		this.originalPlacement = this.templatePosition;
-		this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
 
 		// Fixes Ladders
 		this.placeSettings.setKnownShape(true);
@@ -55,9 +49,6 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 		this.mirror = this.getMirror();
 
 		this.structureManager = structureManager;
-
-		this.originalPlacement = this.templatePosition;
-		this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
 
 		// Fixes Ladders
 		this.placeSettings.setKnownShape(true);
@@ -81,15 +72,8 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 	@Deprecated
 	// This will be required if you want to dig a piece into a noise beard
 	protected void placePieceAdjusted(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, BlockPos pos, int dY) {
-		this.templatePosition = this.templatePosition.above(dY);
-
 		// Call this class's overridden method instead of the supermethod to ensure execution of our custom handleDataMarker() method
-		this.customPostProcess(level, chunkGenerator, random, boundingBox, pos.above(dY));
-
-		this.templatePosition = this.originalPlacement;
-		this.boundingBox = BoundingBoxUtils.clone(this.originalBox);
-
-		this.placeSettings.setBoundingBox(this.boundingBox);
+		this.customPostProcess(level, chunkGenerator, random, boundingBox, pos.above(dY), this.templatePosition.above(dY));
 	}
 
 	public static StructurePlaceSettings readSettings(CompoundTag compoundTag) {
@@ -115,16 +99,16 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 	// VANILLACOPY: Same as the supercall except without the dumb jigsaw code
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
-		this.customPostProcess(level, chunkGen, random, chunkBounds, structureBottomCenter);
+		this.customPostProcess(level, chunkGen, random, chunkBounds, structureBottomCenter, this.templatePosition);
 	}
 
-	private void customPostProcess(WorldGenLevel level, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, BlockPos structureBottomCenter) {
-		this.placeSettings.setBoundingBox(chunkBounds);
-		this.boundingBox = this.template.getBoundingBox(this.placeSettings, this.templatePosition);
-		if (this.template.placeInWorld(level, this.templatePosition, structureBottomCenter, this.placeSettings, random, this.placeFlag)) {
-			Rotation rotation = this.placeSettings.getRotation();
+	private void customPostProcess(WorldGenLevel level, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, BlockPos structureBottomCenter, BlockPos templatePosition) {
+		StructurePlaceSettings chunkSettings = this.placeSettings.copy().setBoundingBox(chunkBounds);
+		this.boundingBox = this.template.getBoundingBox(chunkSettings, this.templatePosition);
+		if (this.template.placeInWorld(level, templatePosition, structureBottomCenter, chunkSettings, random, this.placeFlag)) {
+			Rotation rotation = chunkSettings.getRotation();
 			for (StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo : this.template
-				.filterBlocks(this.templatePosition, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
+				.filterBlocks(templatePosition, chunkSettings, Blocks.STRUCTURE_BLOCK)) {
 				if (structuretemplate$structureblockinfo.nbt() != null) {
 					StructureMode structuremode = StructureMode.valueOf(structuretemplate$structureblockinfo.nbt().getString("mode").orElseThrow());
 					if (structuremode == StructureMode.DATA) {

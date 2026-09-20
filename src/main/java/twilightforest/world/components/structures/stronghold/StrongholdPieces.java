@@ -27,9 +27,9 @@ public class StrongholdPieces {
 		new StrongholdPieceWeight(StrongholdBossRoomComponent::new, 15, 1, 4)};
 
 	private List<StrongholdPieceWeight> pieceList;
-	static int totalWeight = 0;
+	private int totalWeight = 0;
 
-	private static StrongholdPieceWeight lastPieceMade;
+	private StrongholdPieceWeight lastPieceMade;
 
 	/**
 	 * sets up Arrays with the Structure pieces and their weights

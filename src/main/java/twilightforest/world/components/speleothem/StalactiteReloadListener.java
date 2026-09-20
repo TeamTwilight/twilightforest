@@ -20,10 +20,15 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 
 	public static final String STALACTITE_DIRECTORY = "twilight/stalactites";
 
-	public static final Map<String, SpeleothemVarietyConfig> HILL_CONFIGS = new HashMap<>();
-	public static final Map<String, List<Stalactite>> STALACTITES_PER_HILL = new HashMap<>();
-	public static final Map<String, List<Stalactite>> ORE_STALACTITES_PER_HILL = new HashMap<>();
-	public static final Map<String, List<Stalactite>> STALAGMITES_PER_HILL = new HashMap<>();
+	public static volatile Map<String, SpeleothemVarietyConfig> HILL_CONFIGS = Map.of();
+	public static volatile Map<String, List<Stalactite>> STALACTITES_PER_HILL = Map.of();
+	public static volatile Map<String, List<Stalactite>> ORE_STALACTITES_PER_HILL = Map.of();
+	public static volatile Map<String, List<Stalactite>> STALAGMITES_PER_HILL = Map.of();
+
+	private Map<String, SpeleothemVarietyConfig> loadingHillConfigs = Map.of();
+	private Map<String, List<Stalactite>> loadingStalactites = Map.of();
+	private Map<String, List<Stalactite>> loadingOreStalactites = Map.of();
+	private Map<String, List<Stalactite>> loadingStalagmites = Map.of();
 
 	public StalactiteReloadListener() {
 		super(STALACTITE_DIRECTORY, SpeleothemVarietyConfig.CODEC);
@@ -31,26 +36,31 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 
 	@Override
 	protected void apply(Map<Identifier, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
-		HILL_CONFIGS.clear();
-		ORE_STALACTITES_PER_HILL.clear();
-		STALAGMITES_PER_HILL.clear();
-		HILL_CONFIGS.clear();
+		loadingHillConfigs = new HashMap<>();
+		loadingStalactites = new HashMap<>();
+		loadingOreStalactites = new HashMap<>();
+		loadingStalagmites = new HashMap<>();
 
 		super.apply(map, manager, profiler);
+
+		HILL_CONFIGS = loadingHillConfigs;
+		STALACTITES_PER_HILL = loadingStalactites;
+		ORE_STALACTITES_PER_HILL = loadingOreStalactites;
+		STALAGMITES_PER_HILL = loadingStalagmites;
 	}
 
 	@Override
 	protected void forLocation(ResourceManager manager, Identifier location, SpeleothemVarietyConfig config) {
-		if (!HILL_CONFIGS.containsKey(config.type()) || config.replace()) {
-			HILL_CONFIGS.put(config.type(), config);
+		if (!loadingHillConfigs.containsKey(config.type()) || config.replace()) {
+			loadingHillConfigs.put(config.type(), config);
 			if (config.replace()) {
 				TwilightForestMod.LOGGER.info("Stalactite Config {} wiped by {}", config.type(), location.getNamespace());
 			}
 		}
 
-		this.populateList(manager, config, config.baseStalactites(), STALACTITES_PER_HILL);
-		this.populateList(manager, config, config.oreStalactites(), ORE_STALACTITES_PER_HILL);
-		this.populateList(manager, config, config.stalagmites(), STALAGMITES_PER_HILL);
+		this.populateList(manager, config, config.baseStalactites(), loadingStalactites);
+		this.populateList(manager, config, config.oreStalactites(), loadingOreStalactites);
+		this.populateList(manager, config, config.stalagmites(), loadingStalagmites);
 	}
 
 	private void populateList(ResourceManager manager, SpeleothemVarietyConfig config, List<Identifier> rawEntries, Map<String, List<Stalactite>> stalactiteDict) {
