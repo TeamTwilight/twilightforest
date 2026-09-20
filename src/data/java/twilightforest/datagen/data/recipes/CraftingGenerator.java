@@ -593,6 +593,22 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING))
 			.save(this.output, locEquip(TFItems.BLOCK_AND_CHAIN.getId().getPath()));
 
+		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.TANNIN)
+				.requires(this.potionIngredient(Potions.WATER))
+				.requires(TFBlocks.TWILIGHT_OAK_SAPLING)
+				.requires(TFBlocks.ROOT_STRAND)
+				.requires(TFBlocks.TWILIGHT_OAK_LEAVES)
+				.unlockedBy("has_block", this.has(TFBlocks.TWILIGHT_OAK_SAPLING))
+				.unlockedBy("has_block", this.has(TFBlocks.ROOT_STRAND))
+				.unlockedBy("has_block", this.has(TFBlocks.TWILIGHT_OAK_LEAVES))
+				.save(this.output);
+
+		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.TREATED_LEATHER)
+				.requires(TFItems.TANNIN)
+				.requires(Tags.Items.LEATHERS)
+				.unlockedBy("has_tannin", this.has(TFItems.TANNIN))
+				.save(this.output);
+
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.MISC, TFItems.KNIGHTMETAL_RING)
 			.pattern(" - ")
 			.pattern("- -")

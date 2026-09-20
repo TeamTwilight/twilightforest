@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minecraft:water"
+        }
+      },
+      "items": "minecraft:potion"
+    },
+    "twilightforest:twilight_oak_sapling",
+    "twilightforest:root_strand",
+    "twilightforest:twilight_oak_leaves"
+  ],
+  "result": {
+    "id": "twilightforest:tannin"
+  }
+}
