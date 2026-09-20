@@ -186,8 +186,6 @@ public class Hydra extends BaseTFBoss {
 		// update fight variables for difficulty setting
 		this.setDifficultyVariables();
 
-		super.aiStep();
-
 		// set body part positions
 		float angle;
 		double dx, dy, dz;
@@ -204,6 +202,11 @@ public class Hydra extends BaseTFBoss {
 		dy = this.getY() + 0.1D;
 		dz = this.getZ() + Mth.cos(angle) * 10.5D;
 		this.tail.setPos(dx, dy, dz);
+
+		this.leftLeg.setPos(getX() - Mth.cos(angle) * 3.0D, getY(), getZ() - Mth.sin(angle) * 3.0D);
+        this.rightLeg.setPos(getX() + Mth.cos(angle) * 3.0D, getY(), getZ() + Mth.sin(angle) * 3.0D);
+
+		super.aiStep();
 
 		if (this.hurtTime == 0) {
 			this.collideWithEntities(this.level().getEntities(this, this.body.getBoundingBox()), this.body);
