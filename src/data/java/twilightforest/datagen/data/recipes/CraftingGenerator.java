@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -197,6 +198,25 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('X', TFItems.MAZE_MAP_FOCUS)
 			.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE))
 			.save(this.output.withConditions(UncraftingTableCondition.INSTANCE), this.createKey("uncrafting_table"));
+
+		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.FOOD, TFItems.MOSS_SOUP)
+				.requires(TFBlocks.MOSS_PATCH)
+				.requires(Items.BOWL)
+				.requires(DataComponentIngredient.of(false, new ItemStackTemplate(Items.POTION, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build())))
+				.unlockedBy("has_moss", this.has(TFBlocks.MOSS_PATCH))
+				.save(this.output);
+
+		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.FOOD, TFItems.BERRY_MEDLEY)
+				.requires(Items.BOWL)
+				.requires(TFItems.RASPBERRY)
+				.requires(TFItems.BLUEBERRY)
+				.requires(TFItems.BLACKBERRY)
+				.requires(TFItems.MALOBERRY)
+				.unlockedBy("has_raspberry", this.has(TFItems.RASPBERRY))
+				.unlockedBy("has_blueberry", this.has(TFItems.BLUEBERRY))
+				.unlockedBy("has_blackberry", this.has(TFItems.BLACKBERRY))
+				.unlockedBy("has_maloberry", this.has(TFItems.MALOBERRY))
+				.save(this.output);
 
 		cookingRecipes("smelted", SmeltingRecipe::new, 200);
 		cookingRecipes("smoked", SmokingRecipe::new, 100);

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bowl",
+    "twilightforest:raspberry",
+    "twilightforest:blueberry",
+    "twilightforest:blackberry",
+    "twilightforest:maloberry"
+  ],
+  "result": {
+    "id": "twilightforest:berry_medley"
+  }
+}
