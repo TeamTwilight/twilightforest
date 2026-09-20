@@ -1,10 +1,12 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
@@ -13,6 +15,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -35,6 +39,7 @@ import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 public class MagicMapItem extends MapItem {
@@ -101,6 +106,7 @@ public class MagicMapItem extends MapItem {
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		MapDataManager.saveServerMagicMapData(level, freeMapId, mapdata); // call our own save method
 		stack.set(DataComponents.MAP_ID, freeMapId);
+		stack.set(DataComponents.TOOLTIP_DISPLAY, stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT).withHidden(DataComponents.MAP_ID, true));
 		return mapdata;
 	}
 
@@ -194,20 +200,20 @@ public class MagicMapItem extends MapItem {
 		return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
 	}
 
-//	@Override
-//	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
-//		MapId mapId = stack.get(DataComponents.MAP_ID);
-//		if (mapId != null) {
-//			if (flag.isAdvanced()) {
-//				MapItemSavedData mapitemsaveddata = TFMagicMapData.getClientMagicMapData(getMapName(mapId.id()));
-//				if (mapitemsaveddata != null) {
-//					builder.accept((Component.translatable("filled_map.id", mapId.id())).withStyle(ChatFormatting.GRAY));
-//					builder.accept((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
-//					builder.accept((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
-//				} else {
-//					builder.accept((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
-//				}
-//			}
-//		}
-//	}
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		if (mapId != null) {
+			if (flag.isAdvanced()) {
+				MapItemSavedData mapitemsaveddata = MapDataManager.getClientMagicMapData(mapId);
+				if (mapitemsaveddata != null) {
+					builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+					builder.accept(Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale).withStyle(ChatFormatting.GRAY));
+					builder.accept(Component.translatable("filled_map.level", mapitemsaveddata.scale, 4).withStyle(ChatFormatting.GRAY));
+				} else {
+					builder.accept(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
+				}
+			} else builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+		}
+	}
 }
