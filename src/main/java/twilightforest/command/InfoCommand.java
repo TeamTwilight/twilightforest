@@ -68,7 +68,7 @@ public class InfoCommand {
 		boxInfo.add("" + boundingBox.maxX());
 		boxInfo.add("" + boundingBox.maxY());
 		boxInfo.add("" + boundingBox.maxZ());
-		source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.boundaries", boxInfo), false);
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.boundaries", boxInfo.toString()), false);
 
 		if (boundingBox.isInside(pos)) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
