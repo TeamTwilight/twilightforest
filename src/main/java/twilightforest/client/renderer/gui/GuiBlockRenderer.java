@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.block.model.BlockDisplayContext;
 import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.LightCoordsUtil;
 
 public class GuiBlockRenderer extends PictureInPictureRenderer<GuiBlockRenderState> {
 
@@ -32,7 +33,7 @@ public class GuiBlockRenderer extends PictureInPictureRenderer<GuiBlockRenderSta
 		poseStack.translate(-0.5F, -0.5F, -0.5F);
 		FeatureRenderDispatcher dispatcher = minecraft.gameRenderer.getFeatureRenderDispatcher();
 		minecraft.getBlockModelResolver().update(blockModelRenderState, renderState.blockState(), displayContext);
-		blockModelRenderState.submit(poseStack, dispatcher.getSubmitNodeStorage(), 15728880, OverlayTexture.NO_OVERLAY, 0);
+		blockModelRenderState.submit(poseStack, dispatcher.getSubmitNodeStorage(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
 		dispatcher.renderAllFeatures();
 	}
 
