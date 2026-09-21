@@ -78,7 +78,6 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			SkullBlock.Types type = (SkullBlock.Types) skull.getType();
 			boolean wall = blockstate.getBlock() instanceof WallSkullBlock;
 			switch (type) {
-
 				case SKELETON -> {
 					if (wall) makeWallSkull(level, pos, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), candle);
 					else makeFloorSkull(level, pos, TFBlocks.SKELETON_SKULL_CANDLE.get(), candle);
@@ -98,6 +97,10 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 				case CREEPER -> {
 					if (wall) makeWallSkull(level, pos, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), candle);
 					else makeFloorSkull(level, pos, TFBlocks.CREEPER_SKULL_CANDLE.get(), candle);
+				}
+				case PIGLIN -> {
+					if (wall) makeWallSkull(level, pos, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), candle);
+					else makeFloorSkull(level, pos, TFBlocks.PIGLIN_SKULL_CANDLE.get(), candle);
 				}
 				default -> {
 					return false;
