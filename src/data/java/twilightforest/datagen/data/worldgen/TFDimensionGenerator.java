@@ -17,7 +17,6 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.timeline.Timeline;
-import net.minecraft.world.timeline.Timelines;
 import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -65,7 +64,7 @@ public class TFDimensionGenerator {
                         .set(EnvironmentAttributes.CREAKING_ACTIVE, true)
                         .set(EnvironmentAttributes.EYEBLOSSOM_OPEN, TriState.TRUE)
                         .set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
-                        .set(EnvironmentAttributes.SKY_LIGHT_LEVEL, Timelines.DAY_SKY_LIGHT_LEVEL)
+                        .set(EnvironmentAttributes.SKY_LIGHT_LEVEL, 9.0F)
                         .set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
                         .set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.colorFromFloat(1.0F, 0.65F, 0.65F, 1.0F))
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
