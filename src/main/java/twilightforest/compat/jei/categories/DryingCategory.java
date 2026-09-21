@@ -14,9 +14,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Matrix3x2f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.renderer.gui.GuiBlockRenderState;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.recipe.DryingRecipe;
@@ -27,11 +30,13 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 	private final IDrawable icon;
 	private final IDrawable arrow;
 	private final Component localizedName;
+	private final BlockState rack;
 
 	public DryingCategory(IGuiHelper helper) {
 		this.arrow = helper.createAnimatedRecipeArrow(20 * 60);
 		this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, TFBlocks.SORTING_DRYING_RACK.get().asItem().getDefaultInstance());
 		this.localizedName = Component.translatable("gui.twilightforest.drying_jei");
+		this.rack = TFBlocks.OAK_DRYING_RACK.get().defaultBlockState();
 	}
 
 	@Override
@@ -68,9 +73,10 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 		Component time = RecipeViewerConstants.getDryingTime(recipe.getDryingTime());
 		graphics.text(font, time, 35 - font.width(time.getString()) / 2, 20, 0xFF808080, false);
 
-		ItemStack rack = new ItemStack(TFBlocks.OAK_DRYING_RACK.get());
-		graphics.item(rack, -1, 14);
-		graphics.item(rack, 51, 14);
+		Matrix3x2f pose = new Matrix3x2f(graphics.pose());
+		ScreenRectangle scissor = graphics.peekScissorStack();
+		graphics.submitPictureInPictureRenderState(new GuiBlockRenderState(this.rack, pose, -1, -1, 19, 19, 20.0F, scissor));
+		graphics.submitPictureInPictureRenderState(new GuiBlockRenderState(this.rack, pose, 51, -1, 71, 19, 20.0F, scissor));
 	}
 
 	@Override

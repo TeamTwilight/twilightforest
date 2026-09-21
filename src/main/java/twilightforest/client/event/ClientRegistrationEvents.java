@@ -82,6 +82,8 @@ import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
+import twilightforest.client.renderer.gui.GuiBlockRenderState;
+import twilightforest.client.renderer.gui.GuiBlockRenderer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.special.*;
@@ -124,6 +126,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerItemModels);
 		bus.addListener(this::registerCustomEnvironmentRenderers);
 		bus.addListener(this::registerCustomRenderData);
+		bus.addListener(this::registerPictureInPictureRenderers);
 
 		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
@@ -663,6 +666,10 @@ public class ClientRegistrationEvents {
 			state.setRenderData(IceLayer.FROST_COUNT_KEY, frost.amount());
 			state.setRenderData(IceLayer.FROST_ID_KEY, living.getId());
 		});
+	}
+
+	private void registerPictureInPictureRenderers(RegisterPictureInPictureRenderersEvent event) {
+		event.register(GuiBlockRenderState.class, GuiBlockRenderer::new);
 	}
 
 	private void registerCustomEnvironmentRenderers(RegisterCustomEnvironmentEffectRendererEvent event) {
