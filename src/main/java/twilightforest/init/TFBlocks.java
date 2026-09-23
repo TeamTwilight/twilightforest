@@ -2,10 +2,13 @@ package twilightforest.init;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
@@ -57,9 +60,9 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> ENCASED_SMOKER = registerWithItem("encased_smoker", EncasedSmokerBlock::new, () -> BlockBehaviour.Properties.of().ignitedByLava().mapColor(MapColor.SAND).requiresCorrectToolForDrops().sound(SoundType.WOOD).strength(1.5F, 6.0F));
 	public static final DeferredBlock<Block> FIRE_JET = registerWithItem("fire_jet", FireJetBlock::new, () -> BlockBehaviour.Properties.of().lightLevel((state) -> state.getValue(FireJetBlock.STATE) != FireJetVariant.FLAME ? 0 : 15).mapColor(MapColor.GRASS).randomTicks().sound(SoundType.GRASS).strength(1.5F, 6.0F));
 	public static final DeferredBlock<Block> ENCASED_FIRE_JET = registerWithItem("encased_fire_jet", EncasedFireJetBlock::new, () -> BlockBehaviour.Properties.of().ignitedByLava().lightLevel((state) -> state.getValue(FireJetBlock.STATE) != FireJetVariant.FLAME ? 0 : 15).mapColor(MapColor.SAND).requiresCorrectToolForDrops().sound(SoundType.WOOD).strength(1.5F, 6.0F));
-	public static final DeferredBlock<Block> FIREFLY = registerWithItem("firefly", FireflyBlock::new, () -> BlockBehaviour.Properties.of().instabreak().lightLevel((state) -> 15).noCollision().noTerrainParticles().pushReaction(PushReaction.DESTROY).sound(SoundType.SLIME_BLOCK));
-	public static final DeferredBlock<Block> CICADA = registerWithItem("cicada", CicadaBlock::new, () -> BlockBehaviour.Properties.of().instabreak().noCollision().noTerrainParticles().pushReaction(PushReaction.DESTROY).sound(SoundType.SLIME_BLOCK));
-	public static final DeferredBlock<Block> MOONWORM = registerWithItem("moonworm", MoonwormBlock::new, () -> BlockBehaviour.Properties.of().forceSolidOff().instabreak().lightLevel((state) -> 14).noCollision().noTerrainParticles().pushReaction(PushReaction.DESTROY).sound(SoundType.SLIME_BLOCK));
+	public static final DeferredBlock<Block> FIREFLY = registerCritter("firefly", FireflyBlock::new, () -> BlockBehaviour.Properties.of().instabreak().lightLevel((state) -> 15).noCollision().noTerrainParticles().pushReaction(PushReaction.DESTROY).sound(SoundType.SLIME_BLOCK));
+	public static final DeferredBlock<Block> CICADA = registerCritter("cicada", CicadaBlock::new, () -> BlockBehaviour.Properties.of().instabreak().noCollision().noTerrainParticles().pushReaction(PushReaction.DESTROY).sound(SoundType.SLIME_BLOCK));
+	public static final DeferredBlock<Block> MOONWORM = registerCritter("moonworm", MoonwormBlock::new, () -> BlockBehaviour.Properties.of().forceSolidOff().instabreak().lightLevel((state) -> 14).noCollision().noTerrainParticles().pushReaction(PushReaction.DESTROY).sound(SoundType.SLIME_BLOCK));
 	public static final DeferredBlock<Block> HUGE_LILY_PAD = register("huge_lily_pad", HugeLilyPadBlock::new, () -> BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).sound(SoundType.LILY_PAD));
 	public static final DeferredBlock<Block> HUGE_WATER_LILY = register("huge_water_lily", HugeWaterLilyBlock::new, () -> BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.PLANT).noCollision().pushReaction(PushReaction.DESTROY).sound(SoundType.LILY_PAD));
 	public static final DeferredBlock<Block> SLIDER = registerWithItem("slider", SliderBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).noLootTable().noOcclusion().randomTicks().strength(2.0F, 10.0F));
@@ -673,6 +676,10 @@ public class TFBlocks {
 
 	public static <T extends Block> DeferredBlock<T> registerWithItem(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties) {
 		return registerWithItem(name, block, properties, Item.Properties::new);
+	}
+
+	public static <T extends Block> DeferredBlock<T> registerCritter(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties) {
+		return registerWithItem(name, block, properties, () -> new Item.Properties().component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD).build()));
 	}
 
 	public static <T extends Block> DeferredBlock<T> registerWithItem(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties, Supplier<Item.Properties> itemProperties) {
