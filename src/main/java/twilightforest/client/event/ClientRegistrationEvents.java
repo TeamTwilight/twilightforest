@@ -84,6 +84,8 @@ import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.gui.GuiBlockRenderState;
 import twilightforest.client.renderer.gui.GuiBlockRenderer;
+import twilightforest.client.renderer.gui.GuiMapRenderState;
+import twilightforest.client.renderer.gui.GuiMapRenderer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.special.*;
@@ -670,6 +672,7 @@ public class ClientRegistrationEvents {
 
 	private void registerPictureInPictureRenderers(RegisterPictureInPictureRenderersEvent event) {
 		event.register(GuiBlockRenderState.class, GuiBlockRenderer::new);
+		event.register(GuiMapRenderState.class, GuiMapRenderer::new);
 	}
 
 	private void registerCustomEnvironmentRenderers(RegisterCustomEnvironmentEffectRendererEvent event) {
