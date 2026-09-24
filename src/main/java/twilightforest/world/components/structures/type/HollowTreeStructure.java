@@ -9,18 +9,13 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -31,13 +26,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.world.components.structures.TreeGrowerStartable;
-import twilightforest.world.components.structures.hollowtree.HollowTreePiece;
 import twilightforest.world.components.structures.hollowtree.HollowTreeTrunk;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class HollowTreeStructure extends Structure implements DecorationClearance, TreeGrowerStartable {
 	public static final MapCodec<HollowTreeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -222,29 +214,4 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		return this.decorationConfig.chunkClearanceRadius();
 	}
 
-	public static HollowTreeStructure buildStructureConfig(boolean allowInWater, HolderSet<Biome> biomes) {
-		return new HollowTreeStructure(
-			new Structure.StructureSettings(
-				biomes,
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
-				GenerationStep.Decoration.SURFACE_STRUCTURES,
-				TerrainAdjustment.NONE
-			),
-			new DecorationClearance.DecorationConfig(0.5f, false, true, true),
-			HollowTreePiece.DEFAULT_HEIGHT,
-			HollowTreePiece.DEFAULT_RADIUS,
-			HollowTreePiece.DEFAULT_LOG,
-			HollowTreePiece.DEFAULT_WOOD,
-			HollowTreePiece.DEFAULT_ROOT,
-			HollowTreePiece.DEFAULT_LEAVES,
-			HollowTreePiece.DEFAULT_VINE,
-			HollowTreePiece.DEFAULT_BUG,
-			HollowTreePiece.DEFAULT_WOOD,
-			HollowTreePiece.DEFAULT_DUNGEON_AIR,
-			HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK,
-			HollowTreePiece.DEFAULT_DUNGEON_LOOT_TABLE,
-			HollowTreePiece.DEFAULT_DUNGEON_MONSTER,
-			allowInWater
-		);
-	}
 }

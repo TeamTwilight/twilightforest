@@ -1,13 +1,9 @@
 package twilightforest.init;
 
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
-import twilightforest.tags.TFBiomeTags;
-import twilightforest.world.components.structures.type.*;
 
 public class TFStructures {
 
@@ -42,28 +38,4 @@ public class TFStructures {
 		return ResourceKey.create(Registries.STRUCTURE, TwilightForestMod.prefix(name));
 	}
 
-	public static void bootstrap(BootstrapContext<Structure> context) {
-		context.register(FALLEN_TRUNK, FallenTrunkStructure.buildStructureConfig(context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
-		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(false, context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
-		context.register(SWAMP_HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(true, HolderSet.direct(context.lookup(Registries.BIOME).getOrThrow(TFBiomes.SWAMP))));
-		context.register(CAMP, CampStructure.buildStructureConfig(context));
-		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
-		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));
-		context.register(HOLLOW_HILL_SMALL, HollowHillStructure.buildSmallHillConfig(context));
-		context.register(HOLLOW_HILL_MEDIUM, HollowHillStructure.buildMediumHillConfig(context));
-		context.register(HOLLOW_HILL_LARGE, HollowHillStructure.buildLargeHillConfig(context));
-		context.register(NAGA_COURTYARD, NagaCourtyardStructure.buildStructureConfig(context));
-		context.register(LICH_TOWER, LichTowerStructure.buildLichTowerConfig(context));
-		context.register(LABYRINTH, LabyrinthStructure.buildLabyrinthConfig(context));
-		context.register(HYDRA_LAIR, HydraLairStructure.buildHydraLairConfig(context));
-		context.register(KNIGHT_STRONGHOLD, KnightStrongholdStructure.buildKnightStrongholdConfig(context));
-		context.register(DARK_TOWER, DarkTowerStructure.buildDarkTowerConfig(context));
-		context.register(YETI_CAVE, YetiCaveStructure.buildYetiCaveConfig(context));
-		context.register(AURORA_PALACE, AuroraPalaceStructure.buildAuroraPalaceConfig(context));
-		context.register(TROLL_CAVE, TrollCaveStructure.buildTrollCaveConfig(context));
-		context.register(GIANT_HOUSE, GiantHouseStructure.buildGiantHouseConfig(context));
-		context.register(FINAL_CASTLE, FinalCastleStructure.buildFinalCastleConfig(context));
-
-		context.register(MUSHROOM_TOWER, MushroomTowerStructure.buildStructureConfig(context));
-	}
 }

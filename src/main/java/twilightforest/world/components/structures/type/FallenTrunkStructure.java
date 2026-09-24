@@ -10,21 +10,15 @@ import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.loot.TFLootTables;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.fallentrunk.FallenTrunkPiece;
@@ -32,7 +26,6 @@ import twilightforest.world.components.structures.fallentrunk.TrunkUnderDensityF
 import twilightforest.world.components.structures.util.DecorationClearance;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class FallenTrunkStructure extends Structure implements CustomDensitySource, DecorationClearance {
 	public static final MapCodec<FallenTrunkStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -49,7 +42,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	private final BlockStateProvider log;
 	private final ResourceKey<LootTable> chestLootTable;
 
-	protected FallenTrunkStructure(StructureSettings settings, IntProvider length, IntProvider bigTrunkLength, BlockStateProvider log, ResourceKey<LootTable> chestLootTable) {
+	public FallenTrunkStructure(StructureSettings settings, IntProvider length, IntProvider bigTrunkLength, BlockStateProvider log, ResourceKey<LootTable> chestLootTable) {
 		super(settings);
 		this.length = length;
 		this.bigTrunkLength = bigTrunkLength;
@@ -122,18 +115,6 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.FALLEN_TRUNK.get();
-	}
-
-	public static FallenTrunkStructure buildStructureConfig(HolderSet<Biome> biomes) {
-		return new FallenTrunkStructure(
-			new Structure.StructureSettings(
-				biomes,
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
-				GenerationStep.Decoration.SURFACE_STRUCTURES,
-				TerrainAdjustment.NONE
-			),
-			UniformInt.of(17, 24), UniformInt.of(22, 28), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.FALLEN_TRUNK_LOOT
-		);
 	}
 
 	@Override

@@ -4,24 +4,13 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
-import twilightforest.tags.TFBiomeTags;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
@@ -30,10 +19,7 @@ import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.YetiCaveComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class YetiCaveStructure extends ControlledSpawningStructure implements CustomDensitySource {
 	public static final MapCodec<YetiCaveStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -58,26 +44,6 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.YETI_CAVE.get();
-	}
-
-	public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {
-		return new YetiCaveStructure(
-			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 1, 2), 5)
-				.build()
-			),
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
-			Optional.of(new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get())),
-			Optional.of(new DecorationConfig(2, true, false, false)),
-			false, Optional.of(TFMapDecorations.YETI_LAIR),
-			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_YETI_CAVE_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
-				GenerationStep.Decoration.SURFACE_STRUCTURES,
-				TerrainAdjustment.NONE
-			),
-			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.YETI_CAVE)
-		);
 	}
 
 	@SuppressWarnings("UnnecessaryLocalVariable")

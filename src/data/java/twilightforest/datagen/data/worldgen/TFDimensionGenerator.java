@@ -21,7 +21,6 @@ import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
-import twilightforest.init.TFDensityFunctions;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.BiomeLayerStack;
@@ -76,7 +75,7 @@ public class TFDimensionGenerator {
 
     public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
         HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
-        DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctions.SKYLIGHT_TERRAIN : TFDensityFunctions.FORESTED_TERRAIN));
+        DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctionGenerator.SKYLIGHT_TERRAIN : TFDensityFunctionGenerator.FORESTED_TERRAIN));
 
         NoiseSettings tfNoise = NoiseSettings.create(
             -32, //TODO Deliberate over this. For now it'll be -32

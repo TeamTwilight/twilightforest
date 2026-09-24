@@ -6,25 +6,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.TwilightForestMod;
-import twilightforest.tags.TFBiomeTags;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -38,7 +28,6 @@ import twilightforest.world.components.structures.lichtowerrevamp.LichYardBox;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LichTowerStructure extends ControlledSpawningStructure implements CustomDensitySource {
 	public static final MapCodec<LichTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -79,39 +68,6 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.LICH_TOWER.get();
-	}
-
-	@SuppressWarnings("unchecked")
-	public static LichTowerStructure buildLichTowerConfig(BootstrapContext<Structure> context) {
-		final ControlledSpawningConfig monsters;
-		WeightedList<MobSpawnSettings.SpawnerData> yardSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-			.add(new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), 1, 2), 2)
-			.build();
-		WeightedList<MobSpawnSettings.SpawnerData> interiorSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-			.add(new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 1, 2), 10)
-			.add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
-			.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 1)
-			.add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2), 1)
-			.add(new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 2, 3), 10)
-			.add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
-			.build();
-		monsters = ControlledSpawningConfig.justMonsters(
-			yardSpawns,
-			interiorSpawns
-		);
-		return new LichTowerStructure(
-			monsters,
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
-			Optional.of(new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get())),
-			Optional.of(new DecorationConfig(0, false, true, false, true)),
-			true, Optional.of(TFMapDecorations.LICH_TOWER),
-			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_LICH_TOWER_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
-				GenerationStep.Decoration.SURFACE_STRUCTURES,
-				TerrainAdjustment.BEARD_THIN
-			)
-		);
 	}
 
 	@Override

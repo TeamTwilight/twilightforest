@@ -5,27 +5,21 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.tags.TFBiomeTags;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.camp.CampPieces;
 import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
-import java.util.Map;
 import java.util.Optional;
 
 public class CampStructure extends Structure implements DecorationClearance {
@@ -40,7 +34,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 		Structure.settingsCodec(instance)
 	).apply(instance, CampStructure::new));
 
-	protected CampStructure(StructureSettings settings) {
+	public CampStructure(StructureSettings settings) {
 		super(settings);
 	}
 
@@ -72,15 +66,6 @@ public class CampStructure extends Structure implements DecorationClearance {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.CAMP.value();
-	}
-
-	public static CampStructure buildStructureConfig(BootstrapContext<Structure> context) {
-		return new CampStructure(new StructureSettings(
-			context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_CAMP_BIOMES),
-			Map.of(),
-			GenerationStep.Decoration.SURFACE_STRUCTURES,
-			TerrainAdjustment.BEARD_BOX
-		));
 	}
 
 	@Override
