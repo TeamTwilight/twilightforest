@@ -8,6 +8,7 @@ import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategor
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import twilightforest.init.TFDataComponents;
@@ -27,8 +28,11 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 	@Override
 	public void setRecipe(RecipeHolder<TravellersGearModifierRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
 		TravellersGearModifierRecipe recipe = recipeHolder.value();
-		List<Ingredient> ingredients = recipe.placementInfo().ingredients();
-		List<List<ItemStack>> inputs = new ArrayList<>(ingredients.stream().map(ingredient -> ingredient.items().map(ItemStack::new).toList()).toList());
+		PlacementInfo placementInfo = recipe.placementInfo();
+		List<Ingredient> ingredients = placementInfo.ingredients();
+		List<List<ItemStack>> inputs = placementInfo.slotsToIngredientIndex().intStream()
+			.mapToObj(index -> index == PlacementInfo.EMPTY_SLOT ? List.<ItemStack>of() : ingredients.get(index).items().map(ItemStack::new).toList())
+			.toList();
 
 		List<ItemStack> representatives = inputs.stream().map(stacks -> stacks.isEmpty() ? ItemStack.EMPTY : stacks.getFirst()).toList();
 		CraftingInput input = CraftingInput.of(1, representatives.size(), representatives);
@@ -46,7 +50,8 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 		if (outputs.isEmpty())
 			return;
 
-		if (recipe.isShapeless()) builder.setShapeless();
+		if (recipe.isShapeless())
+			builder.setShapeless();
 		craftingGridHelper.createAndSetInputs(builder, inputs, recipe.getWidth(), recipe.getHeight());
 		// output slot; use RENDER_ONLY to prevent displaying modifier recipes when using the "Show Recipe" key
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 95, 19).setOutputSlotBackground().addItemStacks(outputs);
