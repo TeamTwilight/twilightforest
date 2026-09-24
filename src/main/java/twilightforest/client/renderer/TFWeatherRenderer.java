@@ -145,8 +145,9 @@ public class TFWeatherRenderer {
 							random.setSeed((long) dx * dx * 3121 + dx * 45238971L ^ (long) dz * dz * 418711 + dz * 13761L);
 
 							WeatherRenderType nextType = getRenderType(restriction.get());
-							if (nextType == null) continue;
-							if (currentType != nextType) currentType = nextType;
+							if (nextType == null)
+								continue;
+							currentType = nextType;
 
 							double xRange = (double) ((float) dx + 0.5F) - camera.x();
 							double zRange = (double) ((float) dz + 0.5F) - camera.z();
@@ -187,7 +188,8 @@ public class TFWeatherRenderer {
 									float countFactor = ((float) (ticks + dx * dx * 3121 + dx * 45238971 + dz * dz * 418711 + dz * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
 									float uFactor = random.nextFloat();
 									float vFactor = random.nextFloat();
-									int worldBrightness = LevelRenderer.getLightCoords(level, pos);
+									int terrainHeight = level.getHeight(Heightmap.Types.MOTION_BLOCKING, dx, dz);
+									int worldBrightness = LevelRenderer.getLightCoords(level, pos.set(dx, Math.max(py, terrainHeight), dz));
 									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, worldBrightness, buffer);
 								}
 							}
@@ -270,8 +272,10 @@ public class TFWeatherRenderer {
 		List<BoundingBox> protectedBoxes = new ArrayList<>();
 		List<BoundingBox> unprotectedBoxes = new ArrayList<>();
 		for (Pair<BoundingBox, Boolean> pair : intersectingBoxesData) {
-			if (pair.getSecond()) protectedBoxes.add(pair.getFirst());
-			else unprotectedBoxes.add(pair.getFirst());
+			if (pair.getSecond())
+				protectedBoxes.add(pair.getFirst());
+			else
+				unprotectedBoxes.add(pair.getFirst());
 		}
 
 		rainIntervals = new HashMap<>();
@@ -355,12 +359,18 @@ public class TFWeatherRenderer {
 		progressionEnforced = enforce;
 	}
 
-	private static @Nullable TFWeatherRenderer.WeatherRenderType getRenderType(Restriction restriction) {
-		if (restriction.enforcement().equals(Enforcements.FROST.getKey())) return WeatherRenderType.BLIZZARD;
-		else if (restriction.enforcement().equals(Enforcements.HUNGER.getKey())) return WeatherRenderType.MOSQUITO;
-		else if (restriction.enforcement().equals(Enforcements.FIRE.getKey())) return WeatherRenderType.ASHES;
-		else if (restriction.enforcement().equals(Enforcements.DARKNESS.getKey())) return random.nextBoolean() ? WeatherRenderType.DARK_STREAM : null;
-		else if (restriction.enforcement().equals(Enforcements.ACID_RAIN.getKey())) return WeatherRenderType.BIG_RAIN;
+	@Nullable
+	private static TFWeatherRenderer.WeatherRenderType getRenderType(Restriction restriction) {
+		if (restriction.enforcement().equals(Enforcements.FROST.getKey()))
+			return WeatherRenderType.BLIZZARD;
+		else if (restriction.enforcement().equals(Enforcements.HUNGER.getKey()))
+			return WeatherRenderType.MOSQUITO;
+		else if (restriction.enforcement().equals(Enforcements.FIRE.getKey()))
+			return WeatherRenderType.ASHES;
+		else if (restriction.enforcement().equals(Enforcements.DARKNESS.getKey()))
+			return random.nextBoolean() ? WeatherRenderType.DARK_STREAM : null;
+		else if (restriction.enforcement().equals(Enforcements.ACID_RAIN.getKey()))
+			return WeatherRenderType.BIG_RAIN;
 		return null;
 	}
 
@@ -391,7 +401,9 @@ public class TFWeatherRenderer {
 		if (urGhastAlive) {
 			urGhastRain = Math.min(1.0F, urGhastRain + 0.1F);
 			urGhastAlive = false;
-		} else urGhastRain = Math.max(0.0F, urGhastRain - 0.02F);
+		} else {
+			urGhastRain = Math.max(0.0F, urGhastRain - 0.02F);
+		}
 
 		//TF - factor in the Ur-Ghast being alive when determining rain level
 		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain);
