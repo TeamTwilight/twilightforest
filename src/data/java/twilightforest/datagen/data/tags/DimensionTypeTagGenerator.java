@@ -7,7 +7,7 @@ import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFDimensionData;
+import twilightforest.init.TFDimension;
 import twilightforest.tags.TFDimensionTypeTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,9 +20,9 @@ public class DimensionTypeTagGenerator extends KeyTagProvider<DimensionType> {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(TFDimensionTypeTags.ALLOWS_MAGIC_MAP_CHARTING).add(TFDimensionData.TWILIGHT_DIM_TYPE);
+		this.tag(TFDimensionTypeTags.ALLOWS_MAGIC_MAP_CHARTING).add(TFDimension.TWILIGHT_DIM_TYPE);
 		this.tag(TFDimensionTypeTags.MOON_DIAL_INDETERMINATE)
-			.add(TFDimensionData.TWILIGHT_DIM_TYPE)
+			.add(TFDimension.TWILIGHT_DIM_TYPE)
 			.add(BuiltinDimensionTypes.NETHER)
 			.add(BuiltinDimensionTypes.END);
 	}

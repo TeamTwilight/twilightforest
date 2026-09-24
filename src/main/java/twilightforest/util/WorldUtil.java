@@ -28,7 +28,7 @@ import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFDimensionData;
+import twilightforest.init.TFDimension;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
@@ -97,7 +97,7 @@ public final class WorldUtil {
 	public static int getGeneratorSeaLevel(LevelAccessor level) {
 		return level.getChunkSource() instanceof ServerChunkCache chunkSource
 			? chunkSource.chunkMap.generator().getSeaLevel()
-			: TFDimensionData.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
+			: TFDimension.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
 	}
 
 	public static Optional<Pair<BlockPos, Holder<Structure>>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, boolean skipKnownStructures) {

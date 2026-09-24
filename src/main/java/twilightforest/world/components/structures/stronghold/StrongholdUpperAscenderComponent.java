@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFDimensionData;
+import twilightforest.init.TFDimension;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -40,7 +40,7 @@ public class StrongholdUpperAscenderComponent extends KnightStrongholdComponent 
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		if (y < TFDimensionData.SEALEVEL + 5) { // FIXME Fix this when we overhaul this structure
+		if (y < TFDimension.SEALEVEL + 5) { // FIXME Fix this when we overhaul this structure
 			this.exitTop = true;
 			return BoundingBox.orientBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
 		} else /*if (y < -32)*/ { // FIXME world.minBuildHeight

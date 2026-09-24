@@ -23,7 +23,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.TFDensityFunctions;
 import twilightforest.init.TFDimension;
-import twilightforest.init.TFDimensionData;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
@@ -40,7 +39,7 @@ public class TFDimensionGenerator {
 
     public static void bootstrapType(BootstrapContext<DimensionType> context) {
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
-        context.register(TFDimensionData.TWILIGHT_DIM_TYPE, new DimensionType(
+        context.register(TFDimension.TWILIGHT_DIM_TYPE, new DimensionType(
                 true, //fixed time
                 true, //skylight
                 false, //ceiling
@@ -109,7 +108,7 @@ public class TFDimensionGenerator {
             ),
             TFSurfaceRules.tfSurface(),
             List.of(),
-            TFDimensionData.SEALEVEL,
+            TFDimension.SEALEVEL,
             false,
             false,
             false,
@@ -134,7 +133,7 @@ public class TFDimensionGenerator {
         );
 
         LevelStem stem = new LevelStem(
-                dimTypes.getOrThrow(TFDimensionData.TWILIGHT_DIM_TYPE),
+                dimTypes.getOrThrow(TFDimension.TWILIGHT_DIM_TYPE),
                 twilightChunkGenerator
         );
 

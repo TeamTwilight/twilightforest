@@ -178,7 +178,7 @@ public class TravellersGearLogic {
 			return baseProb;
 
 		double boostFactor;  // 1 tick in boost ≈ boostFactor ticks without boost
-		if (level.dimensionTypeRegistration().is(TFDimensionData.TWILIGHT_DIM_TYPE))
+		if (level.dimensionTypeRegistration().is(TFDimension.TWILIGHT_DIM_TYPE))
 			boostFactor = AUTO_REPAIR_TWILIGHT_BOOST;
 		else if (level.isBrightOutside())
 			boostFactor = AUTO_REPAIR_SUNLIGHT_BOOST;
