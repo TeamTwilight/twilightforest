@@ -1,10 +1,12 @@
 package twilightforest.compat.jei.extension;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
+import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -28,10 +30,13 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 	@Override
 	public void setRecipe(RecipeHolder<TravellersGearModifierRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
 		TravellersGearModifierRecipe recipe = recipeHolder.value();
+		// output slot; use RENDER_ONLY to prevent displaying modifier recipes when using the "Show Recipe" key
+		IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 95, 19).setOutputSlotBackground();
+		ContextMap context = outputSlot.getContextMap();
 		PlacementInfo placementInfo = recipe.placementInfo();
 		List<Ingredient> ingredients = placementInfo.ingredients();
 		List<List<ItemStack>> inputs = placementInfo.slotsToIngredientIndex().intStream()
-			.mapToObj(index -> index == PlacementInfo.EMPTY_SLOT ? List.<ItemStack>of() : ingredients.get(index).items().map(ItemStack::new).toList())
+			.mapToObj(index -> index == PlacementInfo.EMPTY_SLOT ? List.<ItemStack>of() : ingredients.get(index).display().resolveForStacks(context))
 			.toList();
 
 		List<ItemStack> representatives = inputs.stream().map(stacks -> stacks.isEmpty() ? ItemStack.EMPTY : stacks.getFirst()).toList();
@@ -53,7 +58,6 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 		if (recipe.isShapeless())
 			builder.setShapeless();
 		craftingGridHelper.createAndSetInputs(builder, inputs, recipe.getWidth(), recipe.getHeight());
-		// output slot; use RENDER_ONLY to prevent displaying modifier recipes when using the "Show Recipe" key
-		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 95, 19).setOutputSlotBackground().addItemStacks(outputs);
+		outputSlot.addItemStacks(outputs);
 	}
 }
