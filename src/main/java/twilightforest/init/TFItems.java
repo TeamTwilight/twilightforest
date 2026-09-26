@@ -105,7 +105,7 @@ public class TFItems {
 	public static final DeferredItem<Item> STEELEAF_CHESTPLATE = register("steeleaf_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.CHESTPLATE));
 	public static final DeferredItem<Item> STEELEAF_LEGGINGS = register("steeleaf_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.LEGGINGS));
 	public static final DeferredItem<Item> STEELEAF_BOOTS = register("steeleaf_boots", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.BOOTS));
-	public static final DeferredItem<Item> STEELEAF_SWORD = register("steeleaf_sword", Item::new, () -> new Item.Properties().sword(TFToolMaterials.KNIGHTMETAL, 3.0F, -2.4F));
+	public static final DeferredItem<Item> STEELEAF_SWORD = register("steeleaf_sword", Item::new, () -> new Item.Properties().sword(TFToolMaterials.STEELEAF, 3.0F, -2.4F));
 	public static final DeferredItem<Item> STEELEAF_SHOVEL = register("steeleaf_shovel", properties -> new ShovelItem(TFToolMaterials.STEELEAF, 1.5F, -3.0F, properties), Item.Properties::new);
 	public static final DeferredItem<Item> STEELEAF_PICKAXE = register("steeleaf_pickaxe", Item::new, () -> new Item.Properties().pickaxe(TFToolMaterials.STEELEAF, 1.0F, -2.8F));
 	public static final DeferredItem<Item> STEELEAF_AXE = register("steeleaf_axe", properties -> new AxeItem(TFToolMaterials.STEELEAF, 6.0F, -3.0F, properties), Item.Properties::new);
