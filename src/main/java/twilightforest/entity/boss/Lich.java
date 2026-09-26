@@ -247,8 +247,8 @@ public class Lich extends BaseTFBoss {
 			Optional<Set<UUID>> cloneList = valueInput.get().read("UUIDs", UUIDUtil.CODEC_SET);
 			cloneList.ifPresent(this.summonedClones::addAll);
 		}
-		this.setShieldStrength(input.getIntOr("ShieldStrength", 0));
-		this.setMinionsToSummon(input.getIntOr("MinionsToSummon", 0));
+		this.setShieldStrength(input.getIntOr("ShieldStrength", this.getShieldStrength()));
+		this.setMinionsToSummon(input.getIntOr("MinionsToSummon", this.getMinionsToSummon()));
 		this.babyMinionsSummoned = input.getIntOr("BabyMinionsSummoned", 0);
 		this.hitsWithoutTeleport = input.getIntOr("HitsWithoutTeleport", 0);
 	}
@@ -502,7 +502,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	public void setMasterUUID(@Nullable UUID lich) {
-		this.getBossBar().setVisible(lich != null);
+		this.getBossBar().setVisible(lich == null);
 		if (lich != null) {
 			this.getEntityData().set(MASTER_LICH, Optional.of(EntityReference.of(lich)));
 		} else {
