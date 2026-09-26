@@ -6,6 +6,7 @@ import twilightforest.asm.transformers.beardifier.InjectCustomTerrainBeardifierD
 import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
 import twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer;
+import twilightforest.asm.transformers.bossbar.BossHealthOverlayNeoForgeFixTmpTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
@@ -39,6 +40,9 @@ public class TFCoreMod implements ClassProcessorProvider {
 		collector.add(new SlimeBlockMomentumTransformer());
 		collector.add(new SlimeBlockBounceUpTransformer());
 		collector.add(new UnrestrainedFrictionTransformer());
+
+		// bossbar
+		collector.add(new BossHealthOverlayNeoForgeFixTmpTransformer());
 
 		// chunk
 		collector.add(new ChunkStatusTaskTransformer());
