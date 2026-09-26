@@ -47,7 +47,7 @@ public class TFItems {
 
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(TwilightForestMod.ID);
 
-	public static final DeferredItem<Item> NAGA_SCALE = register("naga_scale", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> NAGA_SCALE = register("naga_scale", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).trimMaterial(TFTrimMaterials.NAGA_SCALE));
 	public static final DeferredItem<Item> NAGA_CHESTPLATE = register("naga_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.NAGA, ArmorType.CHESTPLATE).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> NAGA_LEGGINGS = register("naga_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.NAGA, ArmorType.LEGGINGS).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> TWILIGHT_SCEPTER = register("twilight_scepter", TwilightWandItem::new, () -> new Item.Properties().durability(99).rarity(Rarity.UNCOMMON));
@@ -70,7 +70,7 @@ public class TFItems {
 	public static final DeferredItem<Item> ORE_MAP = register("ore_map", properties -> new EmptyMazeMapItem(true, properties), Item.Properties::new);
 	public static final DeferredItem<Item> LIVEROOT = register("liveroot", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> RAW_IRONWOOD = register("raw_ironwood", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> IRONWOOD_INGOT = register("ironwood_ingot", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> IRONWOOD_INGOT = register("ironwood_ingot", Item::new, () -> new Item.Properties().trimMaterial(TFTrimMaterials.IRONWOOD));
 	public static final DeferredItem<Item> IRONWOOD_HELMET = register("ironwood_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.IRONWOOD, ArmorType.HELMET));
 	public static final DeferredItem<Item> IRONWOOD_CHESTPLATE = register("ironwood_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.IRONWOOD, ArmorType.CHESTPLATE));
 	public static final DeferredItem<Item> IRONWOOD_LEGGINGS = register("ironwood_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.IRONWOOD, ArmorType.LEGGINGS));
@@ -87,7 +87,7 @@ public class TFItems {
 	public static final DeferredItem<Item> TANNIN = register("tannin", Item::new, () -> new Item.Properties().craftRemainder(Items.GLASS_BOTTLE));
 	public static final DeferredItem<Item> FIERY_BLOOD = register("fiery_blood", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FIERY_TEARS = register("fiery_tears", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> FIERY_INGOT = register("fiery_ingot", Item::new, () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> FIERY_INGOT = register("fiery_ingot", Item::new, () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).trimMaterial(TFTrimMaterials.FIERY));
 	public static final DeferredItem<Item> FIERY_HELMET = register("fiery_helmet", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.HELMET).fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FIERY_CHESTPLATE = register("fiery_chestplate", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.CHESTPLATE).fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FIERY_LEGGINGS = register("fiery_leggings", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.LEGGINGS).fireResistant().rarity(Rarity.UNCOMMON));
@@ -100,7 +100,7 @@ public class TFItems {
 	public static final DeferredItem<Item> TRAVELLERS_WINGS = register("travellers_wings", properties -> new TravellersArmorBeltItem(3, properties), () -> TravellersArmorItem.wingsProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.LEGGINGS)));
 	public static final DeferredItem<Item> TRAVELLERS_BELT = register("travellers_belt", properties -> new TravellersArmorBeltItem(0, properties), () -> TravellersArmorBeltItem.beltProperties(TravellersArmorItem.undamageableArmorProperties(new Item.Properties().stacksTo(1), ArmorType.LEGGINGS)));
 	public static final DeferredItem<Item> TRAVELLERS_BOOTS = register("travellers_boots", properties -> new TravellersArmorItem(3, properties), () -> TravellersArmorItem.bootsProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.BOOTS)));
-	public static final DeferredItem<Item> STEELEAF_INGOT = register("steeleaf_ingot", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> STEELEAF_INGOT = register("steeleaf_ingot", Item::new, () -> new Item.Properties().trimMaterial(TFTrimMaterials.STEELEAF));
 	public static final DeferredItem<Item> STEELEAF_HELMET = register("steeleaf_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.HELMET));
 	public static final DeferredItem<Item> STEELEAF_CHESTPLATE = register("steeleaf_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.CHESTPLATE));
 	public static final DeferredItem<Item> STEELEAF_LEGGINGS = register("steeleaf_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.LEGGINGS));
@@ -136,7 +136,7 @@ public class TFItems {
 	public static final DeferredItem<Item> ESSENCE_BERRY = register("essence_berry", EssenceBerryItem::new, Item.Properties::new);
 	public static final DeferredItem<Item> TOWER_KEY = register("tower_key", Item::new, () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> BORER_ESSENCE = register("borer_essence", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> CARMINITE = register("carminite", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> CARMINITE = register("carminite", Item::new, () -> new Item.Properties().trimMaterial(TFTrimMaterials.CARMINITE));
 	public static final DeferredItem<Item> EXPERIMENT_115 = register("experiment_115", properties -> new Experiment115Item(TFBlocks.EXPERIMENT_115.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().food(TFFoods.EXPERIMENT_115));
 	public static final DeferredItem<Item> ROPE = register("rope", properties -> new RopeItem(TFBlocks.ROPE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final DeferredItem<Item> MASON_JAR = register("mason_jar", properties -> new JarItem.MasonJarItem(TFBlocks.MASON_JAR.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
@@ -144,7 +144,7 @@ public class TFItems {
 	public static final DeferredItem<Item> CICADA_JAR = register("cicada_jar", properties -> new JarItem(TFBlocks.CICADA_JAR.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final DeferredItem<Item> ARMOR_SHARD = register("armor_shard", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = register("armor_shard_cluster", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = register("knightmetal_ingot", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = register("knightmetal_ingot", Item::new, () -> new Item.Properties().trimMaterial(TFTrimMaterials.KNIGHTMETAL));
 	public static final DeferredItem<Item> KNIGHTMETAL_HELMET = register("knightmetal_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.HELMET));
 	public static final DeferredItem<Item> KNIGHTMETAL_CHESTPLATE = register("knightmetal_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.CHESTPLATE));
 	public static final DeferredItem<Item> KNIGHTMETAL_LEGGINGS = register("knightmetal_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.LEGGINGS));
