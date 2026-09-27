@@ -270,7 +270,6 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 			ice.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 14 - this.level().getDifficulty().getId() * 4);
 
 			this.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.level().addFreshEntity(ice);
 		}
 	}

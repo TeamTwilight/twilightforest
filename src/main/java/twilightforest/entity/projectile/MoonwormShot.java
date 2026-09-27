@@ -78,10 +78,7 @@ public class MoonwormShot extends TFThrowable {
 		BlockPos pos = result.getBlockPos().relative(result.getDirection());
 		BlockState currentState = this.level().getBlockState(pos);
 		if (currentState.canBeReplaced() && !currentState.is(BlockTags.FIRE) && MoonwormBlock.canSurvive(this.level(), pos, result.getDirection()) && !currentState.is(Blocks.LAVA)) {
-			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState()
-				.setValue(DirectionalBlock.FACING, result.getDirection()));
-
-			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
+			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
 			this.level().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		} else {
 			if (this.level() instanceof ServerLevel serverLevel) {
