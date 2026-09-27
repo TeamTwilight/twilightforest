@@ -113,6 +113,9 @@ public class TFBlockTags {
 	public static final TagKey<Block> FD_COMPOST_ACTIVATORS = create("farmersdelight", "compost_activators");
 	public static final TagKey<Block> FD_HEAT_SOURCES = create("farmersdelight", "heat_sources");
 
+	public static final TagKey<Block> SUPPLEMENTARIES_MAP_FOLIAGE = create("supplementaries", "map_tint_foliage_color");
+	public static final TagKey<Block> SUPPLEMENTARIES_MAP_GRASS = create("supplementaries", "map_tint_grass_color");
+
 	private static TagKey<Block> create(String tagName) {
 		return BlockTags.create(TwilightForestMod.prefix(tagName));
 	}

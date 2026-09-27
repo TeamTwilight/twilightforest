@@ -43,5 +43,8 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 
 		this.tag(TFBlockTags.FD_COMPOST_ACTIVATORS).add(TFBlocks.UBEROUS_SOIL.get(), TFBlocks.MUSHGLOOM.get());
 		this.tag(TFBlockTags.FD_HEAT_SOURCES).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY);
+
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_FOLIAGE).add(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.FALLEN_LEAVES.get());
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_GRASS).add(TFBlocks.FIDDLEHEAD.get());
 	}
 }
