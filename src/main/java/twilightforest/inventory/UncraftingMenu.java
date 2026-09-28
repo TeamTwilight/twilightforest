@@ -243,7 +243,11 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
 				//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
 				if (result.has(DataComponents.ENCHANTMENTS)) {
-					result.get(DataComponents.ENCHANTMENTS).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
+					result.get(DataComponents.ENCHANTMENTS).entrySet().forEach(enchantment -> {
+						if (EnchantmentHelper.isEnchantmentCompatible(enchants.keySet(), enchantment.getKey())) {
+							enchants.set(enchantment.getKey(), enchantment.getIntValue());
+						}
+					});
 				}
 				//remove any incompatible enchants
 				enchants.removeIf(holder -> !result.supportsEnchantment(holder));
