@@ -2,6 +2,7 @@ package twilightforest.datagen.helpers.models;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Quadrant;
+import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
@@ -58,6 +59,14 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	public BlockModelBuilders(Consumer<BlockModelDefinitionGenerator> stateOutput, ItemModelOutput itemOutput, BiConsumer<Identifier, ModelInstance> modelOutput) {
 		super(stateOutput, itemOutput, modelOutput);
+	}
+
+	public void generateMiniatureStructure(Block miniature, Identifier model, ItemTintSource tint, boolean oversized) {
+		this.itemModelOutput.accept(miniature.asItem(), ItemModelUtils.tintedModel(model, tint), new ClientItem.Properties(true, oversized, 1.0F));
+	}
+
+	public void generateMiniatureStructure(Block miniature, Identifier model, boolean oversized) {
+		this.itemModelOutput.accept(miniature.asItem(), ItemModelUtils.plainModel(model), new ClientItem.Properties(true, oversized, 1.0F));
 	}
 
 	public void generateTrophy(TrophyBlock floor, TrophyWallBlock wall, ItemModel.Unbaked backplate) {

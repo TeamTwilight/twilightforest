@@ -9,5 +9,6 @@
         "temperature": 0.5
       }
     ]
-  }
+  },
+  "oversized_in_gui": true
 }
