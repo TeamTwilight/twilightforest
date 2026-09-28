@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
+import twilightforest.tags.TFItemTags;
 
 public class CasketRepairRecipe extends CustomRecipe {
 	public static final CasketRepairRecipe INSTANCE = new CasketRepairRecipe();
@@ -37,7 +38,7 @@ public class CasketRepairRecipe extends CustomRecipe {
 				if (stackInQuestion.is(TFItems.KEEPSAKE_CASKET) && stackInQuestion.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0) > 0) {
 					if (casket) return false;
 					casket = true;
-				} else if (stackInQuestion.is(TFItems.CHARM_OF_KEEPING_3.get())) {
+				} else if (stackInQuestion.is(TFItemTags.KEEPSAKE_CASKET_REPAIR_ITEMS)) {
 					if (charm) return false;
 					charm = true;
 				} else {

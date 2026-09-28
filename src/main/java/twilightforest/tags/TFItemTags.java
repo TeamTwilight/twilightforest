@@ -92,6 +92,7 @@ public class TFItemTags {
 	public static final TagKey<Item> SCEPTERS = create("scepters");
 	public static final TagKey<Item> SCEPTER_MAX_REPAIR_ITEMS = create("scepter_max_repair_items");
 	public static final TagKey<Item> MOONWORM_QUEEN_REPAIR_ITEMS = create("moonworm_queen_repair_items");
+	public static final TagKey<Item> KEEPSAKE_CASKET_REPAIR_ITEMS = create("keepsake_casket_repair_items");
 	public static final TagKey<Item> IMMUNE_TO_THORNS = create("immune_to_thorns");
 
 	public static final TagKey<Item> FOODS_JERKY = makeCommonTag("foods/jerky");
