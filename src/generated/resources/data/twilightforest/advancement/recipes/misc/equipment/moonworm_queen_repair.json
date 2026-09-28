@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_queen": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:moonworm_queen"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:equipment/moonworm_queen_repair"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_queen"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:equipment/moonworm_queen_repair"
+    ]
+  }
+}

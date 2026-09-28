@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "add_material_count_to_result": true,
+  "category": "misc",
+  "group": "map_cloning",
+  "input": "twilightforest:filled_magic_map",
+  "material": "twilightforest:magic_map",
+  "material_count": {
+    "max": 8,
+    "min": 1
+  },
+  "result": {
+    "id": "twilightforest:filled_magic_map"
+  }
+}

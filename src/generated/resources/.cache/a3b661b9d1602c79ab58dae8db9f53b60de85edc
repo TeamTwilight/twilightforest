@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-19T16:46:11.292463	Twilight Forest Item Tags
+// 26.1.2	2026-09-28T05:26:50.929281796	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -121,6 +121,7 @@ a0f401c3c8c79c599a3c1ad8d6b92d06e9f38bb0 data/twilightforest/tags/item/kept_on_d
 4d9da34d4bf61010eb3d0412d33e1ce3d6436449 data/twilightforest/tags/item/lower_on_drying_rack.json
 089e4347e6320066de4cd4d08b3e04a9442f4090 data/twilightforest/tags/item/mangrove_logs.json
 9a0837862b33f048722739e6314f5c471d56b2d6 data/twilightforest/tags/item/mining_logs.json
+932db6906454527b9d89f0655bd6071261e0ebd3 data/twilightforest/tags/item/moonworm_queen_repair_items.json
 46917e7306850aedf22c53f9664894363b91fed9 data/twilightforest/tags/item/penguin_tempt_items.json
 d7160b3ddc802c57f798147148a479d2477adf34 data/twilightforest/tags/item/portal/activator.json
 788e6e34a201c014ae3783bc128afbd75443273b data/twilightforest/tags/item/raven_tempt_items.json
@@ -130,6 +131,7 @@ ce0b1d11997aa9ce60beaa2ddb3d36a5fd917b0e data/twilightforest/tags/item/repairs_f
 06e495833668db6f9fc9023f604c95c54b2dc24c data/twilightforest/tags/item/repairs_ironwood_tools.json
 aa59d6912b5c452ce1afb82ed5bdcb891f3bd95e data/twilightforest/tags/item/repairs_knightmetal_tools.json
 71b2e2daefc54eb925dbfaee220d018ee9ad7a99 data/twilightforest/tags/item/repairs_steeleaf_tools.json
+5efc217b2e2af8bef7b5fa71d1f8194cfdf1f339 data/twilightforest/tags/item/scepter_max_repair_items.json
 b27431397fb46bfe7b5d2404ff6f36491fe202f4 data/twilightforest/tags/item/scepters.json
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/item/sortwood_logs.json
 788e6e34a201c014ae3783bc128afbd75443273b data/twilightforest/tags/item/squirrel_tempt_items.json

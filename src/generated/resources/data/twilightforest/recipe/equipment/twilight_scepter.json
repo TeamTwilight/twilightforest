@@ -1,8 +1,8 @@
 {
-  "type": "twilightforest:scepter_repair",
+  "type": "twilightforest:complex_repair",
   "durability": 9,
+  "input": "twilightforest:twilight_scepter",
   "repair_ingredients": [
     "#c:ender_pearls"
-  ],
-  "scepter": "twilightforest:twilight_scepter"
+  ]
 }

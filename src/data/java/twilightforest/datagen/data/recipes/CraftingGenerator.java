@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,8 +29,7 @@ import twilightforest.TFRegistries;
 import twilightforest.datagen.data.custom.CartesianShapedRecipeBuilder;
 import twilightforest.datagen.data.custom.CartesianShapelessRecipeBuilder;
 import twilightforest.datagen.data.custom.DryingRecipeBuilder;
-import twilightforest.datagen.data.custom.NoSmithingTemplateRecipeBuilder;
-import twilightforest.datagen.data.custom.ScepterRecipeBuilder;
+import twilightforest.datagen.data.custom.ComponentSmithingRecipeBuilder;
 import twilightforest.datagen.data.custom.TravellersGearComponentModifierBuilder;
 import twilightforest.datagen.data.custom.UncraftingGenerator;
 import twilightforest.datagen.helpers.CraftingDataHelper;
@@ -46,6 +44,7 @@ import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 public class CraftingGenerator extends CraftingDataHelper {
@@ -200,23 +199,23 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.save(this.output.withConditions(UncraftingTableCondition.INSTANCE), this.createKey("uncrafting_table"));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.FOOD, TFItems.MOSS_SOUP)
-				.requires(TFBlocks.MOSS_PATCH)
-				.requires(Items.BOWL)
-				.requires(this.potionIngredient(Potions.WATER))
-				.unlockedBy("has_moss", this.has(TFBlocks.MOSS_PATCH))
-				.save(this.output);
+			.requires(TFBlocks.MOSS_PATCH)
+			.requires(Items.BOWL)
+			.requires(this.potionIngredient(Potions.WATER))
+			.unlockedBy("has_moss", this.has(TFBlocks.MOSS_PATCH))
+			.save(this.output);
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.FOOD, TFItems.BERRY_MEDLEY)
-				.requires(Items.BOWL)
-				.requires(TFItems.RASPBERRY)
-				.requires(TFItems.BLUEBERRY)
-				.requires(TFItems.BLACKBERRY)
-				.requires(TFItems.MALOBERRY)
-				.unlockedBy("has_raspberry", this.has(TFItems.RASPBERRY))
-				.unlockedBy("has_blueberry", this.has(TFItems.BLUEBERRY))
-				.unlockedBy("has_blackberry", this.has(TFItems.BLACKBERRY))
-				.unlockedBy("has_maloberry", this.has(TFItems.MALOBERRY))
-				.save(this.output);
+			.requires(Items.BOWL)
+			.requires(TFItems.RASPBERRY)
+			.requires(TFItems.BLUEBERRY)
+			.requires(TFItems.BLACKBERRY)
+			.requires(TFItems.MALOBERRY)
+			.unlockedBy("has_raspberry", this.has(TFItems.RASPBERRY))
+			.unlockedBy("has_blueberry", this.has(TFItems.BLUEBERRY))
+			.unlockedBy("has_blackberry", this.has(TFItems.BLACKBERRY))
+			.unlockedBy("has_maloberry", this.has(TFItems.MALOBERRY))
+			.save(this.output);
 
 		cookingRecipes("smelted", SmeltingRecipe::new, 200);
 		cookingRecipes("smoked", SmokingRecipe::new, 100);
@@ -550,16 +549,36 @@ public class CraftingGenerator extends CraftingDataHelper {
 		charmRecipe(getter, "charm_of_keeping_3", TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_KEEPING_2);
 		charmRecipe(getter, "charm_of_life_2", TFItems.CHARM_OF_LIFE_2, TFItems.CHARM_OF_LIFE_1);
 
-		SpecialRecipeBuilder.special(() -> MoonwormQueenRepairRecipe.INSTANCE).save(this.output, this.createKey("moonworm_queen_repair_recipe"));
-		SpecialRecipeBuilder.special(() -> MagicMapCloningRecipe.INSTANCE).save(this.output, this.createKey("magic_map_cloning_recipe"));
-		SpecialRecipeBuilder.special(() -> MazeMapCloningRecipe.INSTANCE).save(this.output, this.createKey("maze_map_cloning_recipe"));
 		SpecialRecipeBuilder.special(() -> EmperorsClothRecipe.INSTANCE).save(this.output, this.createKey("emperors_cloth_recipe"));
 		SpecialRecipeBuilder.special(() -> CasketRepairRecipe.INSTANCE).save(this.output, this.createKey("casket_repair_recipe"));
-		SpecialRecipeBuilder.special(() -> EssenceRepairRecipe.INSTANCE).save(this.output, this.createKey("essence_repair_recipe"));
 		SpecialRecipeBuilder.special(() -> TravellersVestGlovesMergeRecipe.INSTANCE).save(this.output, this.createKey("travellers_vest_gloves_merge_recipe"));
+		TransmuteRecipeBuilder.transmute(RecipeCategory.MISC, Ingredient.of(TFItems.FILLED_MAGIC_MAP), Ingredient.of(TFItems.MAGIC_MAP), new ItemStackTemplate(TFItems.FILLED_MAGIC_MAP))
+			.addMaterialCountToOutput()
+			.setMaterialCount(TransmuteRecipe.FULL_RANGE_MATERIAL_COUNT)
+			.group("map_cloning")
+			.unlockedBy("has_filled_map", this.has(TFItems.FILLED_MAGIC_MAP))
+			.save(this.output, this.createKey("magic_map_cloning"));
+		TransmuteRecipeBuilder.transmute(RecipeCategory.MISC, Ingredient.of(TFItems.FILLED_MAZE_MAP), Ingredient.of(TFItems.MAZE_MAP), new ItemStackTemplate(TFItems.FILLED_MAZE_MAP))
+			.addMaterialCountToOutput()
+			.setMaterialCount(TransmuteRecipe.FULL_RANGE_MATERIAL_COUNT)
+			.group("map_cloning")
+			.unlockedBy("has_filled_map", this.has(TFItems.FILLED_MAZE_MAP))
+			.save(this.output, this.createKey("maze_map_cloning"));
+		TransmuteRecipeBuilder.transmute(RecipeCategory.MISC, Ingredient.of(TFItems.FILLED_ORE_MAP), Ingredient.of(TFItems.ORE_MAP), new ItemStackTemplate(TFItems.FILLED_ORE_MAP))
+			.addMaterialCountToOutput()
+			.setMaterialCount(TransmuteRecipe.FULL_RANGE_MATERIAL_COUNT)
+			.group("map_cloning")
+			.unlockedBy("has_filled_map", this.has(TFItems.FILLED_ORE_MAP))
+			.save(this.output, this.createKey("ore_map_cloning"));
+		SpecialRecipeBuilder.special(() -> new SimpleRepairRecipe(Ingredient.of(getter.getOrThrow(TFItemTags.SCEPTERS)), Ingredient.of(getter.getOrThrow(TFItemTags.SCEPTER_MAX_REPAIR_ITEMS)), 1, 99))
+			.unlockedBy("has_scepter", has(TFItemTags.SCEPTERS))
+			.save(this.output, locEquip("exanimate_essence_scepter_repair"));
+		SpecialRecipeBuilder.special(() -> new SimpleRepairRecipe(Ingredient.of(TFItems.MOONWORM_QUEEN), Ingredient.of(getter.getOrThrow(TFItemTags.MOONWORM_QUEEN_REPAIR_ITEMS)), 4, 64))
+			.unlockedBy("has_queen", has(TFItems.MOONWORM_QUEEN))
+			.save(this.output, locEquip("moonworm_queen_repair"));
 
-		NoSmithingTemplateRecipeBuilder
-			.noTemplate(Ingredient.of(getter.getOrThrow(TFItemTags.EMPERORS_CLOTH_APPLICABLE)), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
+		ComponentSmithingRecipeBuilder
+			.smithing(null, Ingredient.of(getter.getOrThrow(TFItemTags.EMPERORS_CLOTH_APPLICABLE)), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
 			.attachData(TFDataComponents.EMPERORS_CLOTH::value, Unit.INSTANCE)
 			.unlocks("has_cloth", has(TFItems.EMPERORS_CLOTH))
 			.save(this.output, this.createKey("emperors_cloth_smithing"));
@@ -594,20 +613,20 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.save(this.output, locEquip(TFItems.BLOCK_AND_CHAIN.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.TANNIN)
-				.requires(this.potionIngredient(Potions.WATER))
-				.requires(TFBlocks.TWILIGHT_OAK_SAPLING)
-				.requires(TFBlocks.ROOT_STRAND)
-				.requires(TFBlocks.TWILIGHT_OAK_LEAVES)
-				.unlockedBy("has_block", this.has(TFBlocks.TWILIGHT_OAK_SAPLING))
-				.unlockedBy("has_block", this.has(TFBlocks.ROOT_STRAND))
-				.unlockedBy("has_block", this.has(TFBlocks.TWILIGHT_OAK_LEAVES))
-				.save(this.output);
+			.requires(this.potionIngredient(Potions.WATER))
+			.requires(TFBlocks.TWILIGHT_OAK_SAPLING)
+			.requires(TFBlocks.ROOT_STRAND)
+			.requires(TFBlocks.TWILIGHT_OAK_LEAVES)
+			.unlockedBy("has_block", this.has(TFBlocks.TWILIGHT_OAK_SAPLING))
+			.unlockedBy("has_block", this.has(TFBlocks.ROOT_STRAND))
+			.unlockedBy("has_block", this.has(TFBlocks.TWILIGHT_OAK_LEAVES))
+			.save(this.output);
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.TREATED_LEATHER)
-				.requires(TFItems.TANNIN)
-				.requires(Tags.Items.LEATHERS)
-				.unlockedBy("has_tannin", this.has(TFItems.TANNIN))
-				.save(this.output);
+			.requires(TFItems.TANNIN)
+			.requires(Tags.Items.LEATHERS)
+			.unlockedBy("has_tannin", this.has(TFItems.TANNIN))
+			.save(this.output);
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.MISC, TFItems.KNIGHTMETAL_RING)
 			.pattern(" - ")
@@ -628,25 +647,30 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING))
 			.save(this.output, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(getter, TFItems.LIFEDRAIN_SCEPTER, 9)
-			.addRepairIngredient(Items.FERMENTED_SPIDER_EYE)
+		SpecialRecipeBuilder.special(() -> new ComplexRepairRecipe(Ingredient.of(TFItems.LIFEDRAIN_SCEPTER),
+				List.of(Ingredient.of(Items.FERMENTED_SPIDER_EYE)), 9))
+			.unlockedBy("has_scepter", has(TFItems.LIFEDRAIN_SCEPTER))
 			.save(this.output, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(getter, TFItems.FORTIFICATION_SCEPTER, 9)
-			.addRepairIngredient(Ingredient.of(Items.GOLDEN_APPLE))
+		SpecialRecipeBuilder.special(() -> new ComplexRepairRecipe(Ingredient.of(TFItems.FORTIFICATION_SCEPTER),
+				List.of(Ingredient.of(Items.GOLDEN_APPLE)), 9))
+			.unlockedBy("has_scepter", has(TFItems.FORTIFICATION_SCEPTER))
 			.save(this.output, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(getter, TFItems.TWILIGHT_SCEPTER, 9)
-			.addRepairIngredient(Tags.Items.ENDER_PEARLS)
+		SpecialRecipeBuilder.special(() -> new ComplexRepairRecipe(Ingredient.of(TFItems.TWILIGHT_SCEPTER),
+				List.of(Ingredient.of(getter.getOrThrow(Tags.Items.ENDER_PEARLS))), 9))
+			.unlockedBy("has_scepter", has(TFItems.TWILIGHT_SCEPTER))
 			.save(this.output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(getter, TFItems.ZOMBIE_SCEPTER, 9)
-			.addRepairIngredient(CompoundIngredient.of(
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH), Items.POTION),
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH), Items.POTION),
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH), Items.POTION)
-			))
-			.addRepairIngredient(Items.ROTTEN_FLESH)
+		SpecialRecipeBuilder.special(() -> new ComplexRepairRecipe(Ingredient.of(TFItems.ZOMBIE_SCEPTER),
+				List.of(
+					Ingredient.of(Items.ROTTEN_FLESH),
+					CompoundIngredient.of(
+						DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH), Items.POTION),
+						DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH), Items.POTION),
+						DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH), Items.POTION)
+					)), 9))
+			.unlockedBy("has_scepter", has(TFItems.ZOMBIE_SCEPTER))
 			.save(this.output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 
 		this.travellersModifierRecipes(getter, provider.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS));

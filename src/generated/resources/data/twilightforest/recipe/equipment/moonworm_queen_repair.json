@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:simple_repair",
+  "input": "twilightforest:moonworm_queen",
+  "max_repair_items": 4,
+  "repair_durability_per_item": 64,
+  "repair_ingredient": "#twilightforest:moonworm_queen_repair_items"
+}

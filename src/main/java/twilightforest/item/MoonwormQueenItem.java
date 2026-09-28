@@ -33,6 +33,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
+import twilightforest.tags.TFItemTags;
 
 public class MoonwormQueenItem extends Item {
 
@@ -44,7 +45,7 @@ public class MoonwormQueenItem extends Item {
 
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack self, ItemStack other, Slot slot, ClickAction clickAction, Player player, SlotAccess carriedItem) {
-		if (self.isDamaged() && other.is(TFItems.TORCHBERRIES)) {
+		if (self.isDamaged() && other.is(TFItemTags.MOONWORM_QUEEN_REPAIR_ITEMS)) {
 			other.shrink(1);
 			player.level().playLocalSound(player.blockPosition(), SoundEvents.CAMEL_EAT, SoundSource.PLAYERS, 0.75F, 1.5F + (player.getRandom().nextFloat() * 0.25F), false);
 			self.setDamageValue(self.getDamageValue() - 64);
@@ -55,7 +56,7 @@ public class MoonwormQueenItem extends Item {
 
 	@Override
 	public boolean overrideStackedOnOther(ItemStack self, Slot slot, ClickAction clickAction, Player player) {
-		if (self.isDamaged() && slot.getItem().is(TFItems.TORCHBERRIES)) {
+		if (self.isDamaged() && slot.getItem().is(TFItemTags.MOONWORM_QUEEN_REPAIR_ITEMS)) {
 			slot.getItem().shrink(1);
 			player.level().playLocalSound(player.blockPosition(), SoundEvents.CAMEL_EAT, SoundSource.PLAYERS, 0.75F, 1.5F + (player.getRandom().nextFloat() * 0.25F), false);
 			self.setDamageValue(self.getDamageValue() - 64);

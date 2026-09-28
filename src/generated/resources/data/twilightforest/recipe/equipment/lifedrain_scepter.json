@@ -1,8 +1,8 @@
 {
-  "type": "twilightforest:scepter_repair",
+  "type": "twilightforest:complex_repair",
   "durability": 9,
+  "input": "twilightforest:lifedrain_scepter",
   "repair_ingredients": [
     "minecraft:fermented_spider_eye"
-  ],
-  "scepter": "twilightforest:lifedrain_scepter"
+  ]
 }

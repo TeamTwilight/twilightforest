@@ -1,7 +1,9 @@
 {
-  "type": "twilightforest:scepter_repair",
+  "type": "twilightforest:complex_repair",
   "durability": 9,
+  "input": "twilightforest:zombie_scepter",
   "repair_ingredients": [
+    "minecraft:rotten_flesh",
     {
       "neoforge:ingredient_type": "neoforge:compound",
       "children": [
@@ -33,8 +35,6 @@
           "items": "minecraft:potion"
         }
       ]
-    },
-    "minecraft:rotten_flesh"
-  ],
-  "scepter": "twilightforest:zombie_scepter"
+    }
+  ]
 }

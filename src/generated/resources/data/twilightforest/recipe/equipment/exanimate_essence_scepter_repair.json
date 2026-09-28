@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:simple_repair",
+  "input": "#twilightforest:scepters",
+  "max_repair_items": 1,
+  "repair_durability_per_item": 99,
+  "repair_ingredient": "#twilightforest:scepter_max_repair_items"
+}

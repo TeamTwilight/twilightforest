@@ -12,39 +12,42 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import twilightforest.item.recipe.NoTemplateSmithingRecipe;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.item.recipe.ComponentAttachingSmithingRecipe;
 
 import java.util.*;
 import java.util.function.Supplier;
 
-public class NoSmithingTemplateRecipeBuilder {
+public class ComponentSmithingRecipeBuilder {
 
 	private final RecipeCategory category;
+	private final Optional<Ingredient> template;
 	private final Ingredient base;
-	private final Ingredient addition;
+	private final Optional<Ingredient> addition;
 	private final List<TypedDataComponent<?>> additionalData = new ArrayList<>();
 	private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-	private NoSmithingTemplateRecipeBuilder(RecipeCategory category, Ingredient base, Ingredient addition) {
+	private ComponentSmithingRecipeBuilder(RecipeCategory category, Optional<Ingredient> template, Ingredient base, Optional<Ingredient> addition) {
 		this.category = category;
+		this.template = template;
 		this.base = base;
 		this.addition = addition;
 	}
 
-	public static NoSmithingTemplateRecipeBuilder noTemplate(Ingredient base, Ingredient addition, RecipeCategory category) {
-		return new NoSmithingTemplateRecipeBuilder(category, base, addition);
+	public static ComponentSmithingRecipeBuilder smithing(@Nullable Ingredient template, Ingredient base, @Nullable Ingredient addition, RecipeCategory category) {
+		return new ComponentSmithingRecipeBuilder(category, Optional.ofNullable(template), base, Optional.ofNullable(addition));
 	}
 
-	public NoSmithingTemplateRecipeBuilder unlocks(String key, Criterion<?> criterion) {
+	public ComponentSmithingRecipeBuilder unlocks(String key, Criterion<?> criterion) {
 		this.criteria.put(key, criterion);
 		return this;
 	}
 
-	public <T> NoSmithingTemplateRecipeBuilder attachData(Supplier<DataComponentType<T>> type, T element) {
+	public <T> ComponentSmithingRecipeBuilder attachData(Supplier<DataComponentType<T>> type, T element) {
 		return attachData(new TypedDataComponent<>(type.get(), element));
 	}
 
-	public NoSmithingTemplateRecipeBuilder attachData(TypedDataComponent<?> component) {
+	public ComponentSmithingRecipeBuilder attachData(TypedDataComponent<?> component) {
 		this.additionalData.add(component);
 		return this;
 	}
@@ -56,7 +59,7 @@ public class NoSmithingTemplateRecipeBuilder {
 			.rewards(AdvancementRewards.Builder.recipe(id))
 			.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
-		NoTemplateSmithingRecipe recipe = new NoTemplateSmithingRecipe(new Recipe.CommonInfo(false), this.base, this.addition, this.additionalData);
+		ComponentAttachingSmithingRecipe recipe = new ComponentAttachingSmithingRecipe(new Recipe.CommonInfo(false), this.template, this.base, this.addition, this.additionalData);
 		output.accept(id, recipe, advancement$builder.build(id.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
 	}
 

@@ -110,14 +110,15 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipeCategories(new DryingCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
+	//TODO
+	//I couldnt figure out how to make the new SimpleRepairRecipe and ComplexRepairRecipe display here.
+	//If someone wants to tackle it go nuts, otherwise I'll look into it later when I'm more in the groove again. Its currently 5am and I am exhausted.
+	// -Gizmo
 	@Override
 	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
 		if (isEmiInstalled()) return;
-		registration.getSmithingCategory().addExtension(NoTemplateSmithingRecipe.class, new NoTemplateSmithingExtension());
-		registration.getCraftingCategory().addExtension(ScepterRepairRecipe.class, new ScepterRepairExtension());
+		registration.getSmithingCategory().addExtension(ComponentAttachingSmithingRecipe.class, new ComponentSmithingExtension());
 		registration.getCraftingCategory().addExtension(TravellersGearModifierRecipe.class, new TravellersGearModifierExtension());
-		registration.getCraftingCategory().addExtension(MoonwormQueenRepairRecipe.class, new MoonwormQueenExtension());
-		registration.getCraftingCategory().addExtension(EssenceRepairRecipe.class, new ExanimateEssenceRepairExtension());
 		registration.getCraftingCategory().addExtension(CasketRepairRecipe.class, new CasketRepairExtension());
 		registration.getCraftingCategory().addExtension(TravellersVestGlovesMergeRecipe.class, new TravellersVestGlovesMergeExtension());
 	}

@@ -14,7 +14,8 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFItems;
 import twilightforest.inventory.InventoryUtil;
-import twilightforest.item.recipe.ScepterRepairRecipe;
+import twilightforest.item.recipe.ComplexRepairRecipe;
+import twilightforest.tags.TFItemTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +31,16 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 
 	public static void applyRecharge(ServerLevel level, ItemStack item, Entity entity) {
 		if (entity instanceof Player player && item.getDamageValue() == item.getMaxDamage()) {
-			List<ScepterRepairRecipe> recipes = level.recipeAccess().recipeMap().byType(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder::value).map(ScepterRepairRecipe.class::cast).toList();
+			List<ComplexRepairRecipe> recipes = level.recipeAccess().recipeMap().byType(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ComplexRepairRecipe).map(RecipeHolder::value).map(ComplexRepairRecipe.class::cast).toList();
 			List<Integer> slotsToConsume = new ArrayList<>();
 			for (var recipe : recipes) {
-				if (item.is(recipe.getScepter())) {
+				if (recipe.getInput().test(item)) {
 					var ingredientCopy = new ArrayList<>(recipe.placementInfo().ingredients());
 					scepterItemsCheck:
 					for (int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
 						var stack = player.getInventory().getItem(i);
 						if (stack.isEmpty()) continue;
-						if (stack.is(TFItems.EXANIMATE_ESSENCE)) {
+						if (stack.is(TFItemTags.SCEPTER_MAX_REPAIR_ITEMS)) {
 							stack.shrink(1);
 							item.setDamageValue(0);
 							return;
