@@ -4,6 +4,10 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import twilightforest.TwilightForestMod;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class TFModelLayers {
 
 	public static final ModelLayerLocation ARCTIC_ARMOR_INNER = register("arctic_armor", "inner");
@@ -117,22 +121,23 @@ public class TFModelLayers {
 	public static final ModelLayerLocation MOONWORM = register("moonworm");
 	public static final ModelLayerLocation BRAZIER = register("brazier");
 
+	private static final List<ModelLayerLocation> CHEST_BOATS = new ArrayList<>();
 	public static final ModelLayerLocation TWILIGHT_OAK_BOAT = register("boat/twilight_oak");
-	public static final ModelLayerLocation TWILIGHT_OAK_CHEST_BOAT = register("chest_boat/twilight_oak");
+	public static final ModelLayerLocation TWILIGHT_OAK_CHEST_BOAT = registerChestBoat("twilight_oak");
 	public static final ModelLayerLocation CANOPY_BOAT = register("boat/canopy");
-	public static final ModelLayerLocation CANOPY_CHEST_BOAT = register("chest_boat/canopy");
+	public static final ModelLayerLocation CANOPY_CHEST_BOAT = registerChestBoat("canopy");
 	public static final ModelLayerLocation MANGROVE_BOAT = register("boat/mangrove");
-	public static final ModelLayerLocation MANGROVE_CHEST_BOAT = register("chest_boat/mangrove");
+	public static final ModelLayerLocation MANGROVE_CHEST_BOAT = registerChestBoat("mangrove");
 	public static final ModelLayerLocation DARK_BOAT = register("boat/dark");
-	public static final ModelLayerLocation DARK_CHEST_BOAT = register("chest_boat/dark");
+	public static final ModelLayerLocation DARK_CHEST_BOAT = registerChestBoat("dark");
 	public static final ModelLayerLocation TIME_BOAT = register("boat/time");
-	public static final ModelLayerLocation TIME_CHEST_BOAT = register("chest_boat/time");
+	public static final ModelLayerLocation TIME_CHEST_BOAT = registerChestBoat("time");
 	public static final ModelLayerLocation TRANSFORMATION_BOAT = register("boat/transformation");
-	public static final ModelLayerLocation TRANSFORMATION_CHEST_BOAT = register("chest_boat/transformation");
+	public static final ModelLayerLocation TRANSFORMATION_CHEST_BOAT = registerChestBoat("transformation");
 	public static final ModelLayerLocation MINING_BOAT = register("boat/mining");
-	public static final ModelLayerLocation MINING_CHEST_BOAT = register("chest_boat/mining");
+	public static final ModelLayerLocation MINING_CHEST_BOAT = registerChestBoat("mining");
 	public static final ModelLayerLocation SORTING_BOAT = register("boat/sorting");
-	public static final ModelLayerLocation SORTING_CHEST_BOAT = register("chest_boat/sorting");
+	public static final ModelLayerLocation SORTING_CHEST_BOAT = registerChestBoat("sorting");
 
 	public static final ModelLayerLocation RED_THREAD = register("red_thread");
 
@@ -146,6 +151,16 @@ public class TFModelLayers {
 
 	private static ModelLayerLocation register(String p_171301_, String p_171302_) {
 		return new ModelLayerLocation(TwilightForestMod.prefix(p_171301_), p_171302_);
+	}
+
+	private static ModelLayerLocation registerChestBoat(String name) {
+		ModelLayerLocation location = register("chest_boat/" + name);
+		CHEST_BOATS.add(location);
+		return location;
+	}
+
+	public static List<ModelLayerLocation> getChestBoats() {
+		return Collections.unmodifiableList(CHEST_BOATS);
 	}
 
 	private static ArmorModelSet<ModelLayerLocation> registerArmorSet(String modelId) {
