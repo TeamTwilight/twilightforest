@@ -24,7 +24,6 @@ import twilightforest.TwilightForestMod;
 import java.util.Collections;
 import java.util.Set;
 
-//TODO fix other chest loot table directories next breaking version (1.21.4)
 public class TFLootTables {
 	// For easy testing:
 	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
@@ -34,15 +33,15 @@ public class TFLootTables {
 
 	// Chest loot
 	public static final ResourceKey<LootTable> SUSPICIOUS_STEW = register("chests/suspicious_stew");
-	public static final ResourceKey<LootTable> SMALL_HOLLOW_HILL = register("hill_1");
-	public static final ResourceKey<LootTable> MEDIUM_HOLLOW_HILL = register("hill_2");
-	public static final ResourceKey<LootTable> LARGE_HOLLOW_HILL = register("hill_3");
-	public static final ResourceKey<LootTable> HEDGE_MAZE = register("hedge_maze");
-	public static final ResourceKey<LootTable> HEDGE_CLOTH = register("hedge_cloth");
-	public static final ResourceKey<LootTable> FANCY_WELL = register("fancy_well");
-	public static final ResourceKey<LootTable> WELL = register("well");
-	public static final ResourceKey<LootTable> LABYRINTH_ROOM = register("labyrinth_room");
-	public static final ResourceKey<LootTable> LABYRINTH_DEAD_END = register("labyrinth_dead_end");
+	public static final ResourceKey<LootTable> SMALL_HOLLOW_HILL = register("chests/hill_1");
+	public static final ResourceKey<LootTable> MEDIUM_HOLLOW_HILL = register("chests/hill_2");
+	public static final ResourceKey<LootTable> LARGE_HOLLOW_HILL = register("chests/hill_3");
+	public static final ResourceKey<LootTable> HEDGE_MAZE = register("chests/hedge_maze");
+	public static final ResourceKey<LootTable> HEDGE_CLOTH = register("chests/hedge_cloth");
+	public static final ResourceKey<LootTable> FANCY_WELL = register("chests/fancy_well");
+	public static final ResourceKey<LootTable> WELL = register("chests/well");
+	public static final ResourceKey<LootTable> LABYRINTH_ROOM = register("chests/labyrinth_room");
+	public static final ResourceKey<LootTable> LABYRINTH_DEAD_END = register("chests/labyrinth_dead_end");
 	public static final ResourceKey<LootTable> TOWER_ROOM = register("chests/tower_room");
 	public static final ResourceKey<LootTable> TOWER_LIBRARY = register("chests/tower_library");
 	public static final ResourceKey<LootTable> TOWER_POTION = register("chests/tower_potion");
@@ -55,28 +54,28 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> CASKET_LOOT = register("chests/casket_loot");
 	public static final ResourceKey<LootTable> BASEMENT = register("chests/basement");
 	public static final ResourceKey<LootTable> HUT_JUNK = register("chests/hut_junk");
-	public static final ResourceKey<LootTable> FOUNDATION_BASEMENT = register("foundation_basement");
-	public static final ResourceKey<LootTable> LABYRINTH_VAULT = register("labyrinth_vault");
-	public static final ResourceKey<LootTable> LABYRINTH_VAULT_JACKPOT = register("labyrinth_vault_jackpot");
-	public static final ResourceKey<LootTable> DARKTOWER_CACHE = register("darktower_cache");
-	public static final ResourceKey<LootTable> DARKTOWER_KEY = register("darktower_key");
-	public static final ResourceKey<LootTable> DARKTOWER_BOSS = register("darktower_boss");
-	public static final ResourceKey<LootTable> TREE_CACHE = register("tree_cache");
-	public static final ResourceKey<LootTable> FALLEN_TRUNK_LOOT = register("fallen_trunk_loot");
-	public static final ResourceKey<LootTable> STRONGHOLD_CACHE = register("stronghold_cache");
-	public static final ResourceKey<LootTable> STRONGHOLD_ROOM = register("stronghold_room");
-	public static final ResourceKey<LootTable> AURORA_CACHE = register("aurora_cache");
-	public static final ResourceKey<LootTable> AURORA_ROOM = register("aurora_room");
-	public static final ResourceKey<LootTable> TROLL_GARDEN = register("troll_garden");
-	public static final ResourceKey<LootTable> TROLL_VAULT = register("troll_vault");
-	public static final ResourceKey<LootTable> TROLL_VAULT_WITH_LAMP = register("troll_vault_with_lamp");
-	public static final ResourceKey<LootTable> GRAVEYARD = register("graveyard");
-	public static final ResourceKey<LootTable> QUEST_GROVE = register("quest_grove_dropper");
-	public static final ResourceKey<LootTable> USELESS_LOOT = register("useless");
-	public static final ResourceKey<LootTable> CAMP_TENT = register("camp_tent");
-	public static final ResourceKey<LootTable> CAMP_ARMOR_RACK = register("camp_armor_rack");
-	public static final ResourceKey<LootTable> CAMP_DRYING_RACK = register("camp_drying_rack");
-	public static final ResourceKey<LootTable> CAMP_POT = register("camp_pot");
+	public static final ResourceKey<LootTable> FOUNDATION_BASEMENT = register("chests/foundation_basement");
+	public static final ResourceKey<LootTable> LABYRINTH_VAULT = register("chests/labyrinth_vault");
+	public static final ResourceKey<LootTable> LABYRINTH_VAULT_JACKPOT = register("chests/labyrinth_vault_jackpot");
+	public static final ResourceKey<LootTable> DARKTOWER_CACHE = register("chests/darktower_cache");
+	public static final ResourceKey<LootTable> DARKTOWER_KEY = register("chests/darktower_key");
+	public static final ResourceKey<LootTable> DARKTOWER_BOSS = register("chests/darktower_boss");
+	public static final ResourceKey<LootTable> TREE_CACHE = register("chests/tree_cache");
+	public static final ResourceKey<LootTable> FALLEN_TRUNK_LOOT = register("chests/fallen_trunk_loot");
+	public static final ResourceKey<LootTable> STRONGHOLD_CACHE = register("chests/stronghold_cache");
+	public static final ResourceKey<LootTable> STRONGHOLD_ROOM = register("chests/stronghold_room");
+	public static final ResourceKey<LootTable> AURORA_CACHE = register("chests/aurora_cache");
+	public static final ResourceKey<LootTable> AURORA_ROOM = register("chests/aurora_room");
+	public static final ResourceKey<LootTable> TROLL_GARDEN = register("chests/troll_garden");
+	public static final ResourceKey<LootTable> TROLL_VAULT = register("chests/troll_vault");
+	public static final ResourceKey<LootTable> TROLL_VAULT_WITH_LAMP = register("chests/troll_vault_with_lamp");
+	public static final ResourceKey<LootTable> GRAVEYARD = register("chests/graveyard");
+	public static final ResourceKey<LootTable> QUEST_GROVE = register("chests/quest_grove_dropper");
+	public static final ResourceKey<LootTable> USELESS_LOOT = register("chests/useless");
+	public static final ResourceKey<LootTable> CAMP_TENT = register("chests/camp_tent");
+	public static final ResourceKey<LootTable> CAMP_ARMOR_RACK = register("chests/camp_armor_rack");
+	public static final ResourceKey<LootTable> CAMP_DRYING_RACK = register("chests/camp_drying_rack");
+	public static final ResourceKey<LootTable> CAMP_POT = register("chests/camp_pot");
 
 	// Sheep wool drops
 	public static final ResourceKey<LootTable> BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");
@@ -97,12 +96,12 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> BIGHORN_SHEEP_BLACK = register("entities/bighorn_sheep/black");
 
 	// Special loot
-	public static final ResourceKey<LootTable> QUESTING_RAM_REWARDS = register("entities/questing_ram_rewards");
-	public static final ResourceKey<LootTable> QUESTING_RAM_REWARD_BLOCKS = register("entities/questing_ram_reward_blocks");
-	public static final ResourceKey<LootTable> DEATH_TOME_HURT = register("entities/death_tome_hurt");
-	public static final ResourceKey<LootTable> DEATH_TOME_BOOKS = register("entities/death_tome_books");
-	public static final ResourceKey<LootTable> LIFEDRAIN_SCEPTER_KILL_BONUS = register("items/lifedrain_scepter_kill_bonus");
-	public static final ResourceKey<LootTable> KNIGHT_PHANTOM_DEFEATED = register("entities/knight_phantom_defeated");
+	public static final ResourceKey<LootTable> QUESTING_RAM_REWARDS = register("gameplay/questing_ram_rewards");
+	public static final ResourceKey<LootTable> QUESTING_RAM_REWARD_BLOCKS = register("gameplay/questing_ram_reward_blocks");
+	public static final ResourceKey<LootTable> DEATH_TOME_HURT = register("gameplay/death_tome_hurt");
+	public static final ResourceKey<LootTable> DEATH_TOME_BOOKS = register("gameplay/death_tome_books");
+	public static final ResourceKey<LootTable> LIFEDRAIN_SCEPTER_KILL_BONUS = register("gameplay/lifedrain_scepter_kill_bonus");
+	public static final ResourceKey<LootTable> KNIGHT_PHANTOM_DEFEATED = register("gameplay/knight_phantom_defeated");
 
 	public static final ResourceKey<LootTable> OMINOUS_SPAWNER_DROPS = register("blocks/ominous_spawner_drops");
 

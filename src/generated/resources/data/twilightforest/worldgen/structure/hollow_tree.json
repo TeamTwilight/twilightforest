@@ -48,7 +48,7 @@
       }
     }
   },
-  "dungeon_loot_table": "twilightforest:tree_cache",
+  "dungeon_loot_table": "twilightforest:chests/tree_cache",
   "dungeon_monster": "twilightforest:swarm_spider",
   "dungeon_wood": {
     "type": "minecraft:simple_state_provider",

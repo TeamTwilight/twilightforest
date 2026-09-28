@@ -105,7 +105,6 @@ public class FallingIce extends Entity {
 		return !this.isRemoved();
 	}
 
-	//TODO: Necessary method
 	@Override
 	public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
 		return false;

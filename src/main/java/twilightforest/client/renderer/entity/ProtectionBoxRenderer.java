@@ -36,7 +36,6 @@ public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, Protect
 		if (state.life < 20) alpha = state.life / 20.0F;
 
 		this.boxModel.setupAnim(state);
-		//TODO Need to fix RenderType
 		submitNodeCollector.submitModel(this.boxModel, state, poseStack, TFRenderTypes.PROTECTION_BOX, state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.white(alpha), null, state.outlineColor, null);
 	}
 

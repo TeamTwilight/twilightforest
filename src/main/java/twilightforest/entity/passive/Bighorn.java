@@ -31,33 +31,6 @@ public class Bighorn extends Sheep {
 		super(type, world);
 	}
 
-	//TODO: Moved to loot tables
-//	@Override
-//	public ResourceKey<LootTable> getDefaultLootTable() {
-//		if (this.isSheared()) {
-//			return this.getType().getDefaultLootTable();
-//		} else {
-//			return switch (this.getColor()) {
-//				case ORANGE -> TFLootTables.BIGHORN_SHEEP_ORANGE;
-//				case MAGENTA -> TFLootTables.BIGHORN_SHEEP_MAGENTA;
-//				case LIGHT_BLUE -> TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE;
-//				case YELLOW -> TFLootTables.BIGHORN_SHEEP_YELLOW;
-//				case LIME -> TFLootTables.BIGHORN_SHEEP_LIME;
-//				case PINK -> TFLootTables.BIGHORN_SHEEP_PINK;
-//				case GRAY -> TFLootTables.BIGHORN_SHEEP_GRAY;
-//				case LIGHT_GRAY -> TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY;
-//				case CYAN -> TFLootTables.BIGHORN_SHEEP_CYAN;
-//				case PURPLE -> TFLootTables.BIGHORN_SHEEP_PURPLE;
-//				case BLUE -> TFLootTables.BIGHORN_SHEEP_BLUE;
-//				case BROWN -> TFLootTables.BIGHORN_SHEEP_BROWN;
-//				case GREEN -> TFLootTables.BIGHORN_SHEEP_GREEN;
-//				case RED -> TFLootTables.BIGHORN_SHEEP_RED;
-//				case BLACK -> TFLootTables.BIGHORN_SHEEP_BLACK;
-//				default -> TFLootTables.BIGHORN_SHEEP_WHITE;
-//			};
-//		}
-//	}
-
 	private static DyeColor getRandomFleeceColor(RandomSource random) {
 		return random.nextBoolean()
 			? DyeColor.BROWN
@@ -72,6 +45,7 @@ public class Bighorn extends Sheep {
 		return livingdata;
 	}
 
+	@Nullable
 	@Override
 	public Sheep getBreedOffspring(ServerLevel world, AgeableMob ageable) {
 		if (!(ageable instanceof Bighorn otherParent)) {

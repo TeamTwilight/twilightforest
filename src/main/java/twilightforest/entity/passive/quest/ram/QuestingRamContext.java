@@ -40,7 +40,7 @@ public record QuestingRamContext(Map<DyeColor, Ingredient> questItems, ResourceK
 		TFLootTables.QUESTING_RAM_REWARDS);
 
 	public static final Codec<QuestingRamContext> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-		Codec.unboundedMap(DyeColor.CODEC, Ingredient.CODEC).validate(QuestingRamContext::validate).fieldOf("items").forGetter(QuestingRamContext::questItems), //FIXME: NONEMPTY_CODEC does not exist
+		Codec.unboundedMap(DyeColor.CODEC, Ingredient.CODEC).validate(QuestingRamContext::validate).fieldOf("items").forGetter(QuestingRamContext::questItems),
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("reward").forGetter(QuestingRamContext::lootTable)
 	).apply(instance, QuestingRamContext::new));
 

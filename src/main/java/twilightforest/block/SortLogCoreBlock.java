@@ -39,7 +39,6 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		return !TFConfig.disableSortingCore;
 	}
 
-	//TODO fuckkkkkkkkk
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		Map<List<ResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();

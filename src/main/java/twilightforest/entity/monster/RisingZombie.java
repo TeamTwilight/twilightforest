@@ -83,7 +83,7 @@ public class RisingZombie extends Monster {
 			}
 		} else if (this.tickCount % 10 == 0) {
 			var player = this.level().getNearestPlayer(this, this.getAttributeValue(Attributes.FOLLOW_RANGE) / 2);
-			if (player != null && this.isLookingInMyDirection(player, 0.5D, false, true, this.getEyeY(), this.getY() + 0.5D * (double)this.getScale(), (this.getEyeY() + this.getY()) / 2.0D)) {
+			if (player != null && this.isLookingAtMe(player, 0.5D, false, true, this.getEyeY(), this.getY() + 0.5D * (double)this.getScale(), (this.getEyeY() + this.getY()) / 2.0D)) {
 				this.getEntityData().set(RISING_TICKS, 1);
 			}
 		}
@@ -109,23 +109,6 @@ public class RisingZombie extends Monster {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.ZOMBIE_DEATH;
-	}
-
-	//TODO replace with LivingEntity.isLookingAtMe in 1.21.4+
-	public boolean isLookingInMyDirection(Player player, double width, boolean useLength, boolean checkAir, double... offsets) {
-		Vec3 vec3 = player.getViewVector(1.0F).normalize();
-
-		for (double yOffs : offsets) {
-			Vec3 vec31 = new Vec3(this.getX() - player.getX(), yOffs - player.getEyeY(), this.getZ() - player.getZ());
-			double d1 = vec31.length();
-			vec31 = vec31.normalize();
-			double d2 = vec3.dot(vec31);
-			if (d2 > 1.0 - width / (useLength ? d1 : 1.0D) && this.hasLineOfSight(player, checkAir ? ClipContext.Block.VISUAL : ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, yOffs)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public boolean hasLineOfSight(Player player, ClipContext.Block blockClip, ClipContext.Fluid fluidClip, double yOffs) {

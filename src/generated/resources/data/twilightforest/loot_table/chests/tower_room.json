@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "value": "twilightforest:useless",
+          "value": "twilightforest:chests/useless",
           "weight": 25
         },
         {

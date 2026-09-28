@@ -158,7 +158,7 @@
         }
       }
     },
-    "loot_table": "twilightforest:foundation_basement",
+    "loot_table": "twilightforest:chests/foundation_basement",
     "random_floor_chance": {
       "type": "minecraft:uniform",
       "max_exclusive": 1.0,

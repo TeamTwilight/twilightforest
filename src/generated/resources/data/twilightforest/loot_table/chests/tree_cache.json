@@ -13,33 +13,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_potion",
-              "id": "minecraft:water"
-            }
-          ],
-          "name": "minecraft:potion",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 6.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:rotten_flesh",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
@@ -118,53 +91,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:water_bucket",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:torch",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:mushroom_stew",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:milk_bucket",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 7.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:sweet_berries",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
           "functions": [
             {
               "add": false,
@@ -177,6 +103,16 @@
             }
           ],
           "name": "minecraft:melon_seeds",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:water_bucket",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:milk_bucket",
           "weight": 75
         }
       ],
@@ -192,13 +128,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:bread"
+          "name": "twilightforest:twilight_oak_sapling"
         },
         {
           "type": "minecraft:item",
@@ -213,7 +149,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:shika_senbei"
+          "name": "twilightforest:canopy_sapling"
         },
         {
           "type": "minecraft:item",
@@ -222,13 +158,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 6.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:cooked_beef"
+          "name": "twilightforest:mangrove_sapling"
         },
         {
           "type": "minecraft:item",
@@ -237,13 +173,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:cooked_porkchop"
+          "name": "twilightforest:darkwood_sapling"
         },
         {
           "type": "minecraft:item",
@@ -252,43 +188,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
+                "max": 12.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:baked_potato"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 10.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:cooked_chicken"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:cooked_cod"
+          "name": "twilightforest:firefly"
         }
       ],
       "rolls": 2.0
@@ -309,7 +215,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:glistering_melon_slice",
+          "name": "minecraft:pumpkin_pie",
           "weight": 75
         },
         {
@@ -330,55 +236,13 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:map",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
           "name": "twilightforest:charm_of_keeping_1",
           "weight": 75
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:golden_apple",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:golden_carrot",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:cake",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:oak_boat",
-          "weight": 25
+          "name": "twilightforest:charm_of_life_1",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -387,17 +251,27 @@
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:music_disc_home",
-          "weight": 15
+          "name": "twilightforest:time_sapling",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:music_disc_radiance",
-          "weight": 15
+          "name": "twilightforest:transformation_sapling",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:mining_sapling",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:sorting_sapling",
+          "weight": 25
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "twilightforest:chests/basement"
+  "random_sequence": "twilightforest:chests/tree_cache"
 }

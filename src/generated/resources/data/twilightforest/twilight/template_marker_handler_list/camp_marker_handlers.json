@@ -16,7 +16,7 @@
               }
             }
           },
-          "loot_table": "twilightforest:camp_drying_rack"
+          "loot_table": "twilightforest:chests/camp_drying_rack"
         },
         "camp_armor_rack": {
           "type": "twilightforest:drying_rack",
@@ -30,7 +30,7 @@
               }
             }
           },
-          "loot_table": "twilightforest:camp_armor_rack"
+          "loot_table": "twilightforest:chests/camp_armor_rack"
         },
         "painting": {
           "type": "twilightforest:painting",
@@ -49,7 +49,7 @@
               }
             }
           },
-          "loot_table": "twilightforest:camp_pot"
+          "loot_table": "twilightforest:chests/camp_pot"
         },
         "twilight_oak_slab": {
           "type": "twilightforest:block_placement",

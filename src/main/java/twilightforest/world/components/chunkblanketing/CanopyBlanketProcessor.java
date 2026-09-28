@@ -122,7 +122,7 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
 					int treeTop = treeBottom + (int) (thickness);
 
 					for (int y = treeBottom; y < treeTop; y++) {
-						chunk.setBlockState(pos.atY(y), canopyBlock.getState(level, random, pos), 3); //TODO Idk, verify this.
+						chunk.setBlockState(pos.atY(y), canopyBlock.getState(level, random, pos), 3);
 					}
 				}
 			}

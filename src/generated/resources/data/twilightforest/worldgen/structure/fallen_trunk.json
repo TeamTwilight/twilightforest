@@ -6,7 +6,7 @@
     "min_inclusive": 22
   },
   "biomes": "#twilightforest:valid_hollow_tree_biomes",
-  "chest_loot_table": "twilightforest:fallen_trunk_loot",
+  "chest_loot_table": "twilightforest:chests/fallen_trunk_loot",
   "length": {
     "type": "minecraft:uniform",
     "max_inclusive": 24,

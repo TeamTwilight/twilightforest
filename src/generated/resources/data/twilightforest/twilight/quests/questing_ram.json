@@ -17,5 +17,5 @@
     "white": "minecraft:white_wool",
     "yellow": "minecraft:yellow_wool"
   },
-  "reward": "twilightforest:entities/questing_ram_rewards"
+  "reward": "twilightforest:gameplay/questing_ram_rewards"
 }

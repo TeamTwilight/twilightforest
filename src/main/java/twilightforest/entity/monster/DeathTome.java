@@ -73,7 +73,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 			protected void findTarget() {
 				if (this.mob instanceof DeathTome tome && tome.isOnLectern()) {
 					this.target = tome.level().getNearestPlayer(tome.getX(), tome.getY(), tome.getZ(), 3.0D, entity ->
-						entity instanceof Player player && !player.isShiftKeyDown() && tome.isInPlayersView(player, 0.25D, false, true, tome.getEyeY(), tome.getY() + 0.5D * tome.getScale(), (tome.getEyeY() + tome.getY()) / 2.0D) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player));
+						entity instanceof Player player && !player.isShiftKeyDown() && tome.isLookingAtMe(player, 0.25D, false, true, tome.getEyeY(), tome.getY() + 0.5D * tome.getScale(), (tome.getEyeY() + tome.getY()) / 2.0D) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player));
 				} else super.findTarget();
 			}
 		});
@@ -158,24 +158,6 @@ public class DeathTome extends Monster implements RangedAttackMob {
 			this.level().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
 				0.0D, 0.5D, 0.0D);
 		}
-	}
-
-	//TODO replace with LivingEntity.isLookingAtMe in 1.21.4
-	private boolean isInPlayersView(LivingEntity target, double tolerance, boolean scaleByDistance, boolean visual, double... yValues) {
-		Vec3 vec3 = target.getViewVector(1.0F).normalize();
-
-		for (double d0 : yValues) {
-			Vec3 vec31 = new Vec3(this.getX() - target.getX(), d0 - target.getEyeY(), this.getZ() - target.getZ());
-			double d1 = vec31.length();
-			vec31 = vec31.normalize();
-			double d2 = vec3.dot(vec31);
-			if (d2 > 1.0 - tolerance / (scaleByDistance ? d1 : 1.0)
-				&& this.hasLineOfSight(target, visual ? ClipContext.Block.VISUAL : ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, d0)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public boolean hasLineOfSight(Entity entity, ClipContext.Block block, ClipContext.Fluid fluid, double eyeHeight) {

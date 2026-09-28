@@ -7,7 +7,6 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.DyedItemColor;
 
-//TODO: Delete this
 public record ItemColorPredicate(int color) implements SingleComponentItemPredicate<DyedItemColor> {
 
 	public static final Codec<ItemColorPredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
