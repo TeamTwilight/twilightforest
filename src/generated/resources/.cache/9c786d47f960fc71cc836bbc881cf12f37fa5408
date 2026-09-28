@@ -1,8 +1,11 @@
-// 26.1.2	2026-08-18T23:26:07.7301717	Twilight Forest Biome Tags
+// 26.1.2	2026-09-28T16:30:53.405743076	Twilight Forest Biome Tags
+d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_cold_variant_farm_animals.json
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_cold_variant_frogs.json
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_snow_foxes.json
+6fcfc9f11967d4486971cf630ce3613738d77290 data/minecraft/tags/worldgen/biome/spawns_warm_variant_farm_animals.json
 6fcfc9f11967d4486971cf630ce3613738d77290 data/minecraft/tags/worldgen/biome/spawns_warm_variant_frogs.json
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_white_rabbits.json
+2264bc2c827db22a02e3bf9668499d1051780e3f data/minecraft/tags/worldgen/biome/water_on_map_outlines.json
 cb846337ee5998dbc62b197a9a1f006cbc978bf2 data/minecraft/tags/worldgen/biome/without_wandering_trader_spawns.json
 cb846337ee5998dbc62b197a9a1f006cbc978bf2 data/minecraft/tags/worldgen/biome/without_zombie_sieges.json
 0c664e7a353239e4d176a7b59ae493337633edc6 data/twilightforest/tags/worldgen/biome/in_twilight_forest.json

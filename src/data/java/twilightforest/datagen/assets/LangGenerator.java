@@ -1160,7 +1160,6 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(TFItemTags.RAVEN_TEMPT_ITEMS, "Raven Temptables");
 		this.translateTag(TFItemTags.SQUIRREL_TEMPT_ITEMS, "Squirrel Temptables");
 		this.translateTag(TFItemTags.TINY_BIRD_TEMPT_ITEMS, "Tiny Bird Temptables");
-		this.translateTag(TFItemTags.TWILIGHT_LOGS, "Twilight Forest Logs");
 		this.translateTag(TFItemTags.MANGROVE_LOGS, "Mangrove Logs");
 		this.translateTag(TFItemTags.MINING_LOGS, "Miningwood Logs");
 		this.translateTag(TFItemTags.PORTAL_ACTIVATOR, "Twilight Forest Portal Activators");

@@ -1,12 +1,9 @@
 package twilightforest.datagen.data.tags;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.tags.TFBiomeTags;
@@ -116,10 +113,13 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		//other vanilla tags
 		this.tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addTag(TFBiomeTags.IS_TWILIGHT);
 		this.tag(BiomeTags.WITHOUT_ZOMBIE_SIEGES).addTag(TFBiomeTags.IS_TWILIGHT);
+		this.tag(BiomeTags.WATER_ON_MAP_OUTLINES).addAll(List.of(TFBiomes.STREAM, TFBiomes.LAKE));
 
 		//even though we won't spawn vanilla frogs, we'll still add support for the variants
 		this.tag(BiomeTags.SPAWNS_COLD_VARIANT_FROGS).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));
+		this.tag(BiomeTags.SPAWNS_COLD_VARIANT_FARM_ANIMALS).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));
 		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).addAll(List.of(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP));
+		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS).addAll(List.of(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP));
 
 		this.tag(BiomeTags.SPAWNS_SNOW_FOXES).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));
 		this.tag(BiomeTags.SPAWNS_WHITE_RABBITS).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));

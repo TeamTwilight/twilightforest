@@ -14,15 +14,14 @@ public class TFBlockTags {
 	public static final TagKey<Block> DEADROCK = create("deadrock");
 	public static final TagKey<Block> CASTLE_BLOCKS = create("castle_blocks");
 
-	public static final TagKey<Block> TF_LOGS = create("logs");
 	public static final TagKey<Block> TWILIGHT_OAK_LOGS = create("twilight_oak_logs");
 	public static final TagKey<Block> CANOPY_LOGS = create("canopy_logs");
 	public static final TagKey<Block> MANGROVE_LOGS = create("mangrove_logs");
-	public static final TagKey<Block> DARKWOOD_LOGS = create("darkwood_logs");
-	public static final TagKey<Block> TIME_LOGS = create("timewood_logs");
-	public static final TagKey<Block> TRANSFORMATION_LOGS = create("transwood_logs");
+	public static final TagKey<Block> DARKWOOD_LOGS = create("dark_logs");
+	public static final TagKey<Block> TIME_LOGS = create("time_logs");
+	public static final TagKey<Block> TRANSFORMATION_LOGS = create("transformation_logs");
 	public static final TagKey<Block> MINING_LOGS = create("mining_logs");
-	public static final TagKey<Block> SORTING_LOGS = create("sortwood_logs");
+	public static final TagKey<Block> SORTING_LOGS = create("sorting_logs");
 
 	public static final TagKey<Block> HOLLOW_LOGS = create("hollow_logs");
 	public static final TagKey<Block> HOLLOW_LOGS_HORIZONTAL = create("hollow_logs_horizontal");

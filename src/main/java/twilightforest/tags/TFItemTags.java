@@ -11,12 +11,11 @@ public class TFItemTags {
 	public static final TagKey<Item> TWILIGHT_OAK_LOGS = create("twilight_oak_logs");
 	public static final TagKey<Item> CANOPY_LOGS = create("canopy_logs");
 	public static final TagKey<Item> MANGROVE_LOGS = create("mangrove_logs");
-	public static final TagKey<Item> DARKWOOD_LOGS = create("darkwood_logs");
-	public static final TagKey<Item> TIME_LOGS = create("timewood_logs");
-	public static final TagKey<Item> TRANSFORMATION_LOGS = create("transwood_logs");
+	public static final TagKey<Item> DARKWOOD_LOGS = create("dark_logs");
+	public static final TagKey<Item> TIME_LOGS = create("time_logs");
+	public static final TagKey<Item> TRANSFORMATION_LOGS = create("transformation_logs");
 	public static final TagKey<Item> MINING_LOGS = create("mining_logs");
-	public static final TagKey<Item> SORTING_LOGS = create("sortwood_logs");
-	public static final TagKey<Item> TWILIGHT_LOGS = create("logs");
+	public static final TagKey<Item> SORTING_LOGS = create("sorting_logs");
 
 	public static final TagKey<Item> BANISTERS = create("banisters");
 	public static final TagKey<Item> DRYING_RACKS = create("drying_racks");
@@ -24,6 +23,7 @@ public class TFItemTags {
 	public static final TagKey<Item> PAPER = makeCommonTag("paper");
 
 	public static final TagKey<Item> TOWERWOOD = create("towerwood");
+	public static final TagKey<Item> CLOUDS = create("clouds");
 
 	public static final TagKey<Item> FIERY_VIAL = create("fiery_vial");
 

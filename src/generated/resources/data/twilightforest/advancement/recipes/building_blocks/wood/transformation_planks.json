@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#twilightforest:transwood_logs"
+            "items": "#twilightforest:transformation_logs"
           }
         ]
       },

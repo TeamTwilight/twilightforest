@@ -1,5 +1,12 @@
 {
   "values": [
-    "#twilightforest:logs"
+    "#twilightforest:twilight_oak_logs",
+    "#twilightforest:canopy_logs",
+    "#twilightforest:mangrove_logs",
+    "#twilightforest:dark_logs",
+    "#twilightforest:time_logs",
+    "#twilightforest:transformation_logs",
+    "#twilightforest:mining_logs",
+    "#twilightforest:sorting_logs"
   ]
 }

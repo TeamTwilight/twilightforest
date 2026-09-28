@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#twilightforest:sortwood_logs"
+            "items": "#twilightforest:sorting_logs"
           }
         ]
       },

@@ -3,7 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    "#twilightforest:darkwood_logs"
+    "#twilightforest:dark_logs"
   ],
   "result": {
     "count": 4,
