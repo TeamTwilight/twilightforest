@@ -3,13 +3,9 @@
   "criteria": {
     "ore_map": {
       "conditions": {
-        "items": [
-          {
-            "items": "twilightforest:filled_ore_map"
-          }
-        ]
+        "recipe_id": "twilightforest:ore_map"
       },
-      "trigger": "minecraft:inventory_changed"
+      "trigger": "minecraft:recipe_crafted"
     }
   },
   "display": {
