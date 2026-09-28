@@ -77,7 +77,7 @@ public class TeleporterCache extends SavedData {
 				links.add(link);
 			});
 			ct.put("links", links);
-			ct.putString("name", rl.toString());
+			ct.putString("name", rl.identifier().toString());
 			dcc.add(ct);
 		});
 		tag.put("dest", dcc);
@@ -90,7 +90,9 @@ public class TeleporterCache extends SavedData {
 
 		for (int i = 0; i < destList.size(); i++) {
 			CompoundTag dest = destList.getCompoundOrEmpty(i);
-			Identifier name = Identifier.parse(dest.getString("name").get());
+			Identifier name = dest.getString("name").map(Identifier::tryParse).orElse(null);
+			if (name == null)
+				continue;
 			ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, name);
 
 			cache.destinationCoordinateCache.putIfAbsent(levelKey, Maps.newHashMapWithExpectedSize(4096));
