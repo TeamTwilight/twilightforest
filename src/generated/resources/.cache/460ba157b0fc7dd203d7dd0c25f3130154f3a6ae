@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-19T16:05:16.473369	Model Definitions - twilightforest
+// 26.1.2	2026-09-28T07:08:20.276451016	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -2440,11 +2440,11 @@ f8714a502b067e2da62d70efe2da45a7044f91d1 assets/twilightforest/models/block/yell
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
 274c3000936ceb00dccb80ac0b861098b26be25f assets/twilightforest/models/item/alpha_yeti_fur.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/alpha_yeti_spawn_egg.json
-f94118b9a6f4b2575c6b78af6c763867206c31aa assets/twilightforest/models/item/arctic_boots.json
-62f0591f767447adefba35d17eeff2ebdd0a3b21 assets/twilightforest/models/item/arctic_chestplate.json
+a1daec9431c47a739e43be2cb26af67df3ad73a1 assets/twilightforest/models/item/arctic_boots.json
+89158d7f88d1b89e49b0a43f138ccbf8e2ab2646 assets/twilightforest/models/item/arctic_chestplate.json
 43aefce702a3d2f7e1d77cc74ebbe4b71b31edc7 assets/twilightforest/models/item/arctic_fur.json
-813f6b046253b6007dd912a879499d51edeb72fb assets/twilightforest/models/item/arctic_helmet.json
-df8d2976d7e31a05d269085a675b64500f312969 assets/twilightforest/models/item/arctic_leggings.json
+1d7e70211875952f4f0c1782416c1a9fc3f4e2cd assets/twilightforest/models/item/arctic_helmet.json
+c38adc222831e6381ab713501245238e066b0f93 assets/twilightforest/models/item/arctic_leggings.json
 0efc097cbb44aa1a043e535d92cefcdf2ccfce70 assets/twilightforest/models/item/armor_shard.json
 cb2255d73af1355ad61e69229c59abeeffff5808 assets/twilightforest/models/item/armor_shard_cluster.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/armored_giant_spawn_egg.json

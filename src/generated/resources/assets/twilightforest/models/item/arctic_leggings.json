@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:item/arctic_leggings",
-    "layer1": "twilightforest:item/arctic_leggings_0"
+    "layer0": "twilightforest:item/arctic_leggings_0",
+    "layer1": "twilightforest:item/arctic_leggings"
   }
 }
