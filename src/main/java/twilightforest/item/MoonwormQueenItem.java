@@ -5,11 +5,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +31,7 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
 public class MoonwormQueenItem extends Item {
@@ -35,6 +40,28 @@ public class MoonwormQueenItem extends Item {
 
 	public MoonwormQueenItem(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack self, ItemStack other, Slot slot, ClickAction clickAction, Player player, SlotAccess carriedItem) {
+		if (self.isDamaged() && other.is(TFItems.TORCHBERRIES)) {
+			other.shrink(1);
+			player.level().playLocalSound(player.blockPosition(), SoundEvents.CAMEL_EAT, SoundSource.PLAYERS, 0.75F, 1.5F + (player.getRandom().nextFloat() * 0.25F), false);
+			self.setDamageValue(self.getDamageValue() - 64);
+			return true;
+		}
+		return super.overrideOtherStackedOnMe(self, other, slot, clickAction, player, carriedItem);
+	}
+
+	@Override
+	public boolean overrideStackedOnOther(ItemStack self, Slot slot, ClickAction clickAction, Player player) {
+		if (self.isDamaged() && slot.getItem().is(TFItems.TORCHBERRIES)) {
+			slot.getItem().shrink(1);
+			player.level().playLocalSound(player.blockPosition(), SoundEvents.CAMEL_EAT, SoundSource.PLAYERS, 0.75F, 1.5F + (player.getRandom().nextFloat() * 0.25F), false);
+			self.setDamageValue(self.getDamageValue() - 64);
+			return true;
+		}
+		return super.overrideStackedOnOther(self, slot, clickAction, player);
 	}
 
 	@Override
@@ -54,7 +81,6 @@ public class MoonwormQueenItem extends Item {
 		InteractionResult placeResult = this.place(new BlockPlaceContext(context));
 		return !placeResult.consumesAction() ? super.use(context.getLevel(), context.getPlayer(), context.getHand()) : placeResult;
 	}
-
 
 	@Override
 	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {

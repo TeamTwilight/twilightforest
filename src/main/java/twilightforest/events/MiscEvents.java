@@ -23,6 +23,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.Autowired;
@@ -36,6 +37,7 @@ import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.util.ArmorUtil;
 
@@ -51,6 +53,7 @@ public class MiscEvents {
 		NeoForge.EVENT_BUS.addListener(this::updateCicadaSoundsOnHead);
 		NeoForge.EVENT_BUS.addListener(this::addTomesToLecterns);
 		NeoForge.EVENT_BUS.addListener(this::washOffCloth);
+		NeoForge.EVENT_BUS.addListener(this::playQueenRefillSound);
 	}
 
 	private void addPrey(EntityJoinLevelEvent event) {
@@ -128,6 +131,12 @@ public class MiscEvents {
 			event.getEntity().awardStat(Stats.CLEAN_ARMOR);
 			event.setCancellationResult(InteractionResult.SUCCESS);
 			event.setCanceled(true);
+		}
+	}
+
+	private void playQueenRefillSound(PlayerEvent.ItemCraftedEvent event) {
+		if (event.getCrafting().is(TFItems.MOONWORM_QUEEN)) {
+			event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), SoundEvents.CAMEL_EAT, SoundSource.PLAYERS, 0.75F, 1.5F + (event.getEntity().getRandom().nextFloat() * 0.25F), false);
 		}
 	}
 }
