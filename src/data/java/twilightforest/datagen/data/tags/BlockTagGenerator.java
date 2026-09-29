@@ -177,27 +177,28 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BlockTags.BEACON_BASE_BLOCKS).addTags(TFBlockTags.STORAGE_BLOCKS_FIERY, TFBlockTags.STORAGE_BLOCKS_IRONWOOD, TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL, TFBlockTags.STORAGE_BLOCKS_STEELEAF);
 
-
-		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.SUBSTRATE_OVERWORLD);
 		this.tag(TFBlockTags.PORTAL_POOL).add(Blocks.WATER);
+
+		//GUIDELINE: The portal frame requires dirt. The blocks we use are all essentially that with their nature unchanged (e.g unlike Mud) and remain similar-looking.
+		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND).addTags(BlockTags.DIRT, BlockTags.GRASS_BLOCKS);
+
+		//GUIDELINE: Organic vegetation. No vegetation from alien, hostile worlds like the Nether or End.
+		//Vegetation from dimensions more similar to the Overworld (e.g. The Aether, Tropics, etc.) would logically work.
+		//Must be placed on top of the frame blocks and/or supported by them (e.g. no Cocoa Beans that float above it/are grown from another block).
 		this.tag(TFBlockTags.PORTAL_DECO).add(
-				Blocks.BAMBOO,
+				Blocks.BAMBOO, Blocks.BAMBOO_SAPLING,
 				Blocks.SHORT_GRASS, Blocks.TALL_GRASS,
 				Blocks.FERN, Blocks.LARGE_FERN,
-				Blocks.DEAD_BUSH,
+				Blocks.DEAD_BUSH, Blocks.BUSH, Blocks.FIREFLY_BUSH,
 				Blocks.SUGAR_CANE,
-				Blocks.CHORUS_PLANT, Blocks.CHORUS_FLOWER,
 				Blocks.SWEET_BERRY_BUSH,
-				Blocks.NETHER_WART,
-				Blocks.COCOA,
-				Blocks.VINE, Blocks.GLOW_LICHEN,
+				Blocks.GLOW_LICHEN,
 				Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM,
-				Blocks.WARPED_FUNGUS, Blocks.CRIMSON_FUNGUS,
 				Blocks.ATTACHED_MELON_STEM, Blocks.ATTACHED_PUMPKIN_STEM,
-				Blocks.MOSS_CARPET,
-				Blocks.PINK_PETALS,
-				Blocks.BIG_DRIPLEAF,
-				Blocks.BIG_DRIPLEAF_STEM,
+				Blocks.PINK_PETALS, Blocks.WILDFLOWERS,
+				Blocks.LEAF_LITTER,
+				Blocks.SHORT_DRY_GRASS, Blocks.TALL_DRY_GRASS,
+				Blocks.BIG_DRIPLEAF, Blocks.BIG_DRIPLEAF_STEM,
 				Blocks.SMALL_DRIPLEAF,
 				TFBlocks.FIDDLEHEAD.get(),
 				TFBlocks.MOSS_PATCH.get(),
@@ -206,8 +207,15 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.MUSHGLOOM.get(),
 				TFBlocks.FALLEN_LEAVES.get(),
 				TFBlocks.GIANT_LEAVES.get(),
-				TFBlocks.STEELEAF_BLOCK.get(),
-				TFBlocks.HARDENED_DARK_LEAVES.get())
+				TFBlocks.HARDENED_DARK_LEAVES.get(),
+				TFBlocks.RASPBERRY_BUSH.get(),
+				TFBlocks.BLACKBERRY_BUSH.get(),
+				TFBlocks.BLUEBERRY_BUSH.get(),
+				TFBlocks.MALOBERRY_BUSH.get(),
+				TFBlocks.COPPER_OREBERRY_BUSH.get(),
+				TFBlocks.IRON_OREBERRY_BUSH.get(),
+				TFBlocks.GOLD_OREBERRY_BUSH.get(),
+				TFBlocks.ESSENCE_OREBERRY_BUSH.get())
 			.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS);
 
 		this.tag(TFBlockTags.GENERATED_PORTAL_DECO)
