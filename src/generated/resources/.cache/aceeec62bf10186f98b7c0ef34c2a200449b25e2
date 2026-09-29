@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-28T19:23:01.653069218	Twilight Forest Block Tags
+// 26.1.2	2026-09-29T09:00:36.188028267	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -74,6 +74,7 @@ a38455b4823af52dbf83abb21b248cc66dc496d2 data/minecraft/tags/block/replaceable_b
 c1c4b1bbf5dca762f8c2dc1b6021bf08b541ac8f data/minecraft/tags/block/saplings.json
 e33c5143db03e28da803a9f265902c39e93589e2 data/minecraft/tags/block/sculk_replaceable.json
 bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/block/slabs.json
+4304b5a72638ce0626ae45be178a5669cea32d38 data/minecraft/tags/block/small_flowers.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/block/stairs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/block/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/block/strider_warm_blocks.json
