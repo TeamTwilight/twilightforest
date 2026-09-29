@@ -341,7 +341,6 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
 		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get(), TFItems.MOSS_SOUP.get());
 		this.tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
-		this.tag(Tags.Items.ROPES).add(TFItems.ROPE.get());
 		this.tag(Tags.Items.MUSHROOMS).add(TFBlocks.MUSHGLOOM.get().asItem());
 		this.tag(Tags.Items.MUSIC_DISCS).add(
 			TFItems.MUSIC_DISC_RADIANCE.get(), TFItems.MUSIC_DISC_STEPS.get(), TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),

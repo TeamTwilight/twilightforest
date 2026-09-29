@@ -1,7 +1,8 @@
-// 26.1.2	2026-09-28T16:32:23.684704859	Twilight Forest Item Tags
+// 26.1.2	2026-09-28T19:24:20.865626883	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
+58b5e0d0eea5536fb5d46cc844c5b8b71bc34f86 data/c/tags/item/bookshelves.json
 dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/item/chests/trapped.json
 44154bfab8aa5f48a23729d5e1312a8b8c0ae87c data/c/tags/item/chests/wooden.json
 3fc964a8f6314a307c994f9481e1ad6ca6d39785 data/c/tags/item/feathers.json
@@ -15,6 +16,7 @@ a9956ad8e4792ffb57c8825a50c8715ad893ba0b data/c/tags/item/foods/edible_when_plac
 5ef039d70a6ec1a2fd586b176d2737a954c0f889 data/c/tags/item/foods/soup.json
 bdd0576fc21bdaef37e030e39e717039d885ad56 data/c/tags/item/gems.json
 59f0dea7ea969cac60bf1ef1576b47003387759e data/c/tags/item/gems/carminite.json
+1c8be16360ba840051ed917f6b9667c66376d4ee data/c/tags/item/glass_blocks.json
 16ede5ab05d9c3eccdef8cac15306de9f682ef0f data/c/tags/item/ingots.json
 c4ca6360cc73d65fd4a4a4c6cf7de2143124ccbf data/c/tags/item/ingots/fiery.json
 bed43612fb08f85dd3dc7dbc5a4a871f7440b9d7 data/c/tags/item/ingots/ironwood.json
@@ -23,7 +25,10 @@ bed43612fb08f85dd3dc7dbc5a4a871f7440b9d7 data/c/tags/item/ingots/ironwood.json
 7ae35dbf17ae8b58c9b692d0af6ee31961282467 data/c/tags/item/ingots/wrought_iron.json
 d6057311598b61ea8d097a01a73d1e48e960285c data/c/tags/item/mushrooms.json
 066e2fc42c34ca191dfa9e388b2ff46cbaa16fff data/c/tags/item/music_discs.json
+da4fe6d526e679add7a12e7cfd9cb89a7148e2d2 data/c/tags/item/natural_logs.json
+c81b6c3d76393f1f1992c3f6183e7e0510864f4c data/c/tags/item/natural_woods.json
 886e5e1db1abef8583882d996f8600275f839c37 data/c/tags/item/paper.json
+13ef2169fcd31b20ffd1e70c9f7b4855e786d936 data/c/tags/item/player_workstations/crafting_tables.json
 1b1e724c7125d97aba3327a044b945a2e3189e29 data/c/tags/item/raw_materials.json
 2973f905270dbbc53a2d666941d72485a9e85946 data/c/tags/item/raw_materials/ironwood.json
 4148b1147e82840f7df067661493919bf23a189c data/c/tags/item/raw_materials/knightmetal.json

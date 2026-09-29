@@ -238,6 +238,26 @@ public abstract class BlockItemTagGenerator {
 			TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME);
 
 		this.tag(Tags.Blocks.STORAGE_BLOCKS_SLIME, Tags.Items.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.get());
+		this.tag(Tags.Blocks.NATURAL_LOGS, Tags.Items.NATURAL_LOGS).add(
+			TFBlocks.TWILIGHT_OAK_LOG.get(),
+			TFBlocks.CANOPY_LOG.get(),
+			TFBlocks.MANGROVE_LOG.get(),
+			TFBlocks.DARK_LOG.get(),
+			TFBlocks.TIME_LOG.get(),
+			TFBlocks.TRANSFORMATION_LOG.get(),
+			TFBlocks.MINING_LOG.get(),
+			TFBlocks.SORTING_LOG.get());
+
+		this.tag(Tags.Blocks.NATURAL_WOODS, Tags.Items.NATURAL_WOODS).add(
+			TFBlocks.TWILIGHT_OAK_WOOD.get(),
+			TFBlocks.CANOPY_WOOD.get(),
+			TFBlocks.MANGROVE_WOOD.get(),
+			TFBlocks.DARK_WOOD.get(),
+			TFBlocks.TIME_WOOD.get(),
+			TFBlocks.TRANSFORMATION_WOOD.get(),
+			TFBlocks.MINING_WOOD.get(),
+			TFBlocks.SORTING_WOOD.get());
+
 		this.tag(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(),
 			TFBlocks.STRIPPED_CANOPY_LOG.get(),
@@ -257,6 +277,11 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(),
 			TFBlocks.STRIPPED_MINING_WOOD.get(),
 			TFBlocks.STRIPPED_SORTING_WOOD.get());
+
+		this.tag(Tags.Blocks.BOOKSHELVES, Tags.Items.BOOKSHELVES).add(TFBlocks.CANOPY_BOOKSHELF.get());
+		this.tag(Tags.Blocks.GLASS_BLOCKS, Tags.Items.GLASS_BLOCKS).add(TFBlocks.AURORALIZED_GLASS.get());
+		this.tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFBlocks.UNCRAFTING_TABLE.get());
+		this.tag(Tags.Blocks.ROPES, Tags.Items.ROPES).add(TFBlocks.ROPE.get());
 
 		//-----------
 		//  TF TAGS
