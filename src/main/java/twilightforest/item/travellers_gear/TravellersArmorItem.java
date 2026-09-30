@@ -99,7 +99,6 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	public static Properties undamageableArmorProperties(Properties properties, ArmorType type) {
 		ArmorMaterial material = TFArmorMaterials.TRAVELLERS_GEAR;
 		return properties
-			.attributes(defaultArmorProperties(type).build())
 			.enchantable(material.enchantmentValue())
 			.component(DataComponents.EQUIPPABLE, Equippable.builder(type.getSlot())
 				.setEquipSound(material.equipSound())
