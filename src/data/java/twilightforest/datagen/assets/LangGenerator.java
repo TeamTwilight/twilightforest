@@ -650,7 +650,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.ICE_SWORD, "Ice Sword");
 		this.addItem(TFItems.ICE_BOMB, "Ice Bomb");
 		this.addItem(TFItems.GLASS_SWORD, "Glass Sword");
-		this.add("item.twilightforest.glass_sword.desc", "Creative Mode only");
+		this.add("item.twilightforest.glass_sword.desc", "Creative-Mode only");
 		this.addItem(TFItems.TRIPLE_BOW, "Tri-Bow");
 		this.addItem(TFItems.SEEKER_BOW, "Seeker Bow");
 		this.addItem(TFItems.ICE_BOW, "Ice Bow");
