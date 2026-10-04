@@ -22,18 +22,19 @@ public class FierySwordItem extends Item {
 
 	@Override
 	public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!target.fireImmune()) {
-			target.igniteForSeconds(15);
-			if (attacker instanceof ServerPlayer serverPlayer) {
-				ParticlePacket packet = new ParticlePacket();
-				for (int var1 = 0; var1 < 20; ++var1) {
-					double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-					double py = target.getY() + target.level().getRandom().nextFloat() * target.getBbHeight();
-					double pz = target.getZ() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-					packet.queueParticle(ParticleTypes.FLAME, false, true, px, py, pz, 0.02, 0.02, 0.02);
-				}
-				PacketDistributor.sendToPlayer(serverPlayer, packet);
+		if (target.level().isClientSide() || target.fireImmune())
+			return;
+
+		target.igniteForSeconds(15);
+		if (attacker instanceof ServerPlayer serverPlayer) {
+			ParticlePacket packet = new ParticlePacket();
+			for (int var1 = 0; var1 < 20; ++var1) {
+				double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				double py = target.getY() + target.level().getRandom().nextFloat() * target.getBbHeight();
+				double pz = target.getZ() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				packet.queueParticle(ParticleTypes.FLAME, false, true, px, py, pz, 0.02, 0.02, 0.02);
 			}
+			PacketDistributor.sendToPlayer(serverPlayer, packet);
 		}
 	}
 
