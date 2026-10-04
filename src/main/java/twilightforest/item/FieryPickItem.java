@@ -22,13 +22,14 @@ public class FieryPickItem extends Item {
 
 	@Override
 	public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!target.fireImmune()) {
-			target.igniteForSeconds(15);
-			if (attacker instanceof ServerPlayer serverPlayer) {
-				ParticlePacket packet = new ParticlePacket();
-				packet.queueParticle(ParticleTypes.FLAME, false, true, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
-				PacketDistributor.sendToPlayer(serverPlayer, packet);
-			}
+		if (target.level().isClientSide() || target.fireImmune())
+			return;
+
+		target.igniteForSeconds(15);
+		if (attacker instanceof ServerPlayer serverPlayer) {
+			ParticlePacket packet = new ParticlePacket();
+			packet.queueParticle(ParticleTypes.FLAME, false, true, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
+			PacketDistributor.sendToPlayer(serverPlayer, packet);
 		}
 	}
 
