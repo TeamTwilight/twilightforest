@@ -6,6 +6,7 @@ import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,10 +46,7 @@ import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFGameRules;
-import twilightforest.network.AreaProtectionPacket;
-import twilightforest.network.EnforceProgressionStatusPacket;
-import twilightforest.network.MissingAdvancementToastPacket;
-import twilightforest.network.StructureProtectionPacket;
+import twilightforest.network.*;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFItemTags;
 import twilightforest.util.Enforcement;
@@ -277,13 +275,14 @@ public class ProgressionEvents {
 			}
 
 			Random rand = new Random();
+			ParticlePacket packet = new ParticlePacket();
 			for (int i = 0; i < 2; i++) {
 				double vx = rand.nextGaussian() * 0.02D;
 				double vy = rand.nextGaussian() * 0.02D;
 				double vz = rand.nextGaussian() * 0.02D;
-
-//				level.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				packet.queueParticle(SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1.0F), false, true,  qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
+			PacketDistributor.sendToPlayersNear(level, null, qualified.getX(), qualified.getY() + 0.2D, qualified.getZ(), 32.0D, packet);
 
 			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
