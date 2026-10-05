@@ -71,6 +71,9 @@ public class TFDimensionGenerator {
 						.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
                         .set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.colorFromFloat(1.0F, 0.65F, 0.65F, 1.0F))
 						.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, -16119286)
+						.set(EnvironmentAttributes.CLOUD_HEIGHT, 128.0F)
+						.set(EnvironmentAttributes.CLOUD_COLOR, ARGB.colorFromFloat(1.0F, 0.5F, 0.5F, 0.55F))
+						.set(EnvironmentAttributes.CLOUD_FOG_END_DISTANCE, 768.0F)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_WEATHER_EFFECTS, TwilightForestRenderInfo.WEATHER_RENDERER)
                         .build(),
