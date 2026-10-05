@@ -44,6 +44,7 @@ public class DataGenerator {
 		generator.addProvider(true, new ItemTagGenerator(output, lookupProvider, blocktags.contentsGetter()));
 		generator.addProvider(true, new PaintingVariantTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new StructureTagGenerator(output, lookupProvider));
+		generator.addProvider(true, new TimelineTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new WoodPaletteTagGenerator(output, lookupProvider));
 
 		//the other stuff

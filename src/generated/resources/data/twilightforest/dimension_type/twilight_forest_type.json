@@ -27,6 +27,7 @@
     "minecraft:gameplay/eyeblossom_open": true,
     "minecraft:gameplay/piglins_zombify": false,
     "minecraft:gameplay/sky_light_level": 9.0,
+    "minecraft:visual/ambient_light_color": "#0a0a0a",
     "minecraft:visual/sky_light_color": "#a5a5ff",
     "minecraft:visual/sky_light_factor": 0.35,
     "minecraft:visual/star_brightness": 1.0,
@@ -34,6 +35,7 @@
     "neoforge:custom_weather_effects": "twilightforest:weather"
   },
   "coordinate_scale": 0.125,
+  "default_clock": "twilightforest:twilight_forest",
   "has_ceiling": false,
   "has_ender_dragon_fight": false,
   "has_fixed_time": true,
@@ -48,5 +50,5 @@
     "max_inclusive": 7,
     "min_inclusive": 0
   },
-  "timelines": "#minecraft:universal"
+  "timelines": "#twilightforest:in_twilight"
 }

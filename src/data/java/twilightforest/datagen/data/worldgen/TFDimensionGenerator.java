@@ -11,6 +11,8 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.TriState;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.*;
+import net.minecraft.world.clock.WorldClock;
+import net.minecraft.world.clock.WorldClocks;
 import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -21,9 +23,11 @@ import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
+import twilightforest.datagen.data.TFWorldClockGenerator;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.tags.TFTimelineTags;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
 
@@ -38,6 +42,7 @@ public class TFDimensionGenerator {
 
     public static void bootstrapType(BootstrapContext<DimensionType> context) {
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
+		HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
         context.register(TFDimension.TWILIGHT_DIM_TYPE, new DimensionType(
                 true, //fixed time
                 true, //skylight
@@ -63,13 +68,14 @@ public class TFDimensionGenerator {
                         .set(EnvironmentAttributes.EYEBLOSSOM_OPEN, TriState.TRUE)
                         .set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
                         .set(EnvironmentAttributes.SKY_LIGHT_LEVEL, 9.0F)
-                        .set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
+						.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
                         .set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.colorFromFloat(1.0F, 0.65F, 0.65F, 1.0F))
+						.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, -16119286)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_WEATHER_EFFECTS, TwilightForestRenderInfo.WEATHER_RENDERER)
                         .build(),
-            timelines.getOrThrow(TimelineTags.UNIVERSAL), //timelines
-            Optional.empty() //clock
+            timelines.getOrThrow(TFTimelineTags.IN_TWILIGHT), //timelines
+            Optional.of(clocks.getOrThrow(TFWorldClockGenerator.TWILIGHT_FOREST)) //clock
         ));
     }
 

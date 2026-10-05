@@ -14,12 +14,10 @@ public class FogHandler {
 	protected static void colorFog(ViewportEvent.ComputeFogColor event) {
 		if (event.getCamera().entity() instanceof LocalPlayer player && player.level() instanceof ClientLevel client && client.dimension() == TFDimension.DIMENSION_KEY) {
 			float[] colors = new float[]{event.getRed(), event.getGreen(), event.getBlue()};
-
-			double time = 13000;
-			double d0 = Mth.frac(time / (double) 24000.0F - (double) 0.25F);
-			double d1 = (double) 0.5F - Math.cos(d0 * Math.PI) / (double) 2.0F;
-			double d2 = (float) (d0 * (double) 2.0F + d1) / 3.0F;
-			float daylight = Mth.clamp(Mth.cos(d2 * (float) (Math.PI * 2)) * 2.0F + 0.5F, 0.0F, 1.0F);
+			int spooky = 0x827391; //TODO: If there is a better way to get the base biome fog colour, feel free to do so here.
+			float red = ((spooky >> 16) & 0xFF) / 255.0F;
+			float green = ((spooky >> 8) & 0xFF) / 255.0F;
+			float blue = ((spooky >> 0) & 0xFF) / 255.0F;
 
 			if (client.getBiome(player.blockPosition()).is(TFBiomes.SPOOKY_FOREST)) {
 				spookyPercent += 0.005F;
@@ -28,10 +26,9 @@ public class FogHandler {
 			}
 			spookyPercent = Mth.clamp(spookyPercent, 0F, 1F);
 
-			event.setRed(Mth.clampedLerp(spookyPercent, colors[0] * daylight * 0.94F + 0.06F, colors[0]));
-			event.setGreen(Mth.clampedLerp(spookyPercent, colors[1] * daylight * 0.94F + 0.06F, colors[1]));
-			event.setBlue(Mth.clampedLerp(spookyPercent, colors[2] * daylight * 0.91F + 0.09F, colors[2]));
+			event.setRed(Mth.clampedLerp(spookyPercent, colors[0], red));
+			event.setGreen(Mth.clampedLerp(spookyPercent, colors[1], green));
+			event.setBlue(Mth.clampedLerp(spookyPercent, colors[2], blue));
 		}
 	}
-
 }
