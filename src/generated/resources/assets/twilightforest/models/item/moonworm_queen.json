@@ -1,6 +1,11 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "twilightforest:item/moonworm_queen"
+    "layer0": {
+      "neoforge_data": {
+        "light_emission": 15
+      },
+      "sprite": "twilightforest:item/moonworm_queen"
+    }
   }
 }

@@ -47,7 +47,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.FILLED_MAGIC_MAP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FILLED_MAZE_MAP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FILLED_ORE_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TORCHBERRIES.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TORCHBERRIES.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_ITEM);
 		this.generateFlatItem(TFItems.RAVEN_FEATHER.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAGIC_MAP_FOCUS.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAZE_MAP_FOCUS.get(), ModelTemplates.FLAT_ITEM);
@@ -92,8 +92,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_1", ModelTemplates.FLAT_ITEM)), 16.0F / 64.0F),
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_2", ModelTemplates.FLAT_ITEM)), 32.0F / 64.0F))));
 		this.generateTwoLayerItem(TFItems.BORER_ESSENCE.get(), "_particles", ModelTemplates.TWO_LAYERED_ITEM);
-		this.generateFlatItem(TFItems.CARMINITE.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TOWER_KEY.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CARMINITE.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_ITEM);
+		this.generateFlatItem(TFItems.TOWER_KEY.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAGIC_BEANS.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MUSIC_DISC_THREAD.get(), ModelTemplates.MUSIC_DISC);
 		this.generateFlatItem(TFItems.MUSIC_DISC_FINDINGS.get(), ModelTemplates.MUSIC_DISC);
@@ -225,8 +225,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN.get(), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)));
 		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN.get(), ItemModelUtils.conditional(new MoonwormQueenPulse(),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), "_alt", TFExtendedModelTemplates.FULL_BRIGHT_FLAT_HANDHELD_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_HANDHELD_ITEM))));
 		this.generateFlatItem(TFItems.MAGIC_PAINTING.get(), ModelTemplates.FLAT_ITEM);
 
 		this.generateFlatItem(TFItems.CUBE_TALISMAN.get(), ModelTemplates.FLAT_ITEM);
