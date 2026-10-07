@@ -79,7 +79,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.KNIGHTMETAL_RING.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FIERY_BLOOD.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FIERY_TEARS.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FIERY_INGOT.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FIERY_INGOT.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_ITEM);
 		this.generateFlatItem(TFItems.ARCTIC_FUR.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ALPHA_YETI_FUR.get(), ModelTemplates.FLAT_ITEM);
 		Identifier empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/blank"))), this.modelOutput);
@@ -165,12 +165,13 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
 		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD.get());
 
-		this.generateDynamicTrimmableItem(TFItems.FIERY_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
-		this.generateFlatItem(TFItems.FIERY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFullbrightDynamicTrimmableItem(TFItems.FIERY_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateFullbrightDynamicTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateFullbrightDynamicTrimmableItem(TFItems.FIERY_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateFullbrightDynamicTrimmableItem(TFItems.FIERY_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
+
+		this.generateFlatItem(TFItems.FIERY_SWORD.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_HANDHELD_ITEM);
 
 		this.generateDynamicTrimmableItem(TFItems.ARCTIC_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET, ArcticArmorItem.DEFAULT_COLOR);
 		this.generateDynamicTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE, ArcticArmorItem.DEFAULT_COLOR);
@@ -377,6 +378,10 @@ public class ItemModelGenerator extends ItemModelBuilders {
 
 	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix, int color) {
 		this.generateDynamicTrimmableItem(armor, this.twoLayerItem(armor, "", "_0", "", ModelTemplates.TWO_LAYERED_ITEM), slotTrimPrefix, color);
+	}
+
+	public void generateFullbrightDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix) {
+		this.generateDynamicTrimmableItem(armor, this.createFlatItemModel(armor, TFExtendedModelTemplates.FULL_BRIGHT_FLAT_ITEM), slotTrimPrefix);
 	}
 
 	public void generateBow(Item bowItem, boolean twoLayered) {

@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-28T07:33:09.01197053	Model Definitions - twilightforest
+// 26.1.2	2026-10-07T16:47:34.161443	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -2522,13 +2522,13 @@ c12a5c0ad2812a47a64c6838f927aa9c3ec1d98c assets/twilightforest/models/item/exani
 801236d4cfd188d04b0fb89d2b1b5e0d21942d0d assets/twilightforest/models/item/fallen_leaves.json
 47b5e16cf269b2e6645653c5c184984eb596f6ca assets/twilightforest/models/item/fiddlehead.json
 d72400c69238734c9e25d9fbac2cd71419aa2ac9 assets/twilightforest/models/item/fiery_blood.json
-f9296a1f9bf001ef5dd10de79e604944361e5b31 assets/twilightforest/models/item/fiery_boots.json
-e5cb424a9bf5e44587a66af356efe2baa3ef3298 assets/twilightforest/models/item/fiery_chestplate.json
-802ca595cedba2ff3c390f645e7c8ca8863f3d67 assets/twilightforest/models/item/fiery_helmet.json
-014347b78f3680d29f2025ef8b988d8f6bce9f4a assets/twilightforest/models/item/fiery_ingot.json
-de42d10e78a1f1a44e0c2cf17db686a045c82d8a assets/twilightforest/models/item/fiery_leggings.json
-a950fc3e879f22ec4bbc6ea73780f31fb49d0813 assets/twilightforest/models/item/fiery_pickaxe.json
-5a511fe94d38150879285fe402ee1f4f4600689a assets/twilightforest/models/item/fiery_sword.json
+9118957bc93752e3fc68322327f0baf124967dc0 assets/twilightforest/models/item/fiery_boots.json
+706c491c60aecda8d5004681d732a97f193deed8 assets/twilightforest/models/item/fiery_chestplate.json
+fc791b3f26f934490b76b5dc0e993f0898f1328b assets/twilightforest/models/item/fiery_helmet.json
+f10f79149788352998f4d15569f0d92ad090117d assets/twilightforest/models/item/fiery_ingot.json
+2fde49ede8c2839ad4026f77a1bf76f848a3273f assets/twilightforest/models/item/fiery_leggings.json
+c2565448183ac7fd1c3d2e02c2015d75e83b1d9c assets/twilightforest/models/item/fiery_pickaxe.json
+e45b2053d9ede38a95bc99fb9d43893e44cd537f assets/twilightforest/models/item/fiery_sword.json
 d895c75381c7feefb45bb9b9554f3530b3ab90c6 assets/twilightforest/models/item/fiery_tears.json
 5181d8a26402dcc3029d8f006e5d7619e80b1f77 assets/twilightforest/models/item/filled_magic_map.json
 2cee91b73f1e622d13636ea951266294a7f8858f assets/twilightforest/models/item/filled_maze_map.json

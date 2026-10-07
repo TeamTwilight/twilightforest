@@ -5,6 +5,7 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
+import net.neoforged.neoforge.client.model.ExtraFaceData;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplate;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import twilightforest.block.SnowLoggable;
@@ -13,6 +14,18 @@ import twilightforest.block.SnowLoggable;
  * Class for using ExtenderModelTemplate builders to generate block models from scratch.
  */
 public class TFExtendedModelTemplates extends TFModelTemplates {
+	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_HANDHELD_ITEM = ExtendedModelTemplateBuilder.builder()
+		.parent(Identifier.withDefaultNamespace("item/handheld"))
+		.requiredTextureSlot(TextureSlot.LAYER0)
+		.itemLayerFaceData("layer0", new ExtraFaceData(0xFFFFFFFF, 15, true))
+		.build();
+
+	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_ITEM = ExtendedModelTemplateBuilder.builder()
+		.parent(Identifier.withDefaultNamespace("item/generated"))
+		.requiredTextureSlot(TextureSlot.LAYER0)
+		.itemLayerFaceData("layer0", new ExtraFaceData(0xFFFFFFFF, 15, true))
+		.build();
+
 	public static final ExtendedModelTemplate MASON_JAR = ExtendedModelTemplateBuilder.builder()
 		.parent(Identifier.withDefaultNamespace("block/block"))
 		.requiredTextureSlot(TextureSlot.PARTICLE)
