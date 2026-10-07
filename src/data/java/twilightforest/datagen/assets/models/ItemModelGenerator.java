@@ -169,7 +169,6 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFullbrightDynamicTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
 		this.generateFullbrightDynamicTrimmableItem(TFItems.FIERY_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
 		this.generateFullbrightDynamicTrimmableItem(TFItems.FIERY_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
-
 		this.generateFlatItem(TFItems.FIERY_SWORD.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_HANDHELD_ITEM);
 
