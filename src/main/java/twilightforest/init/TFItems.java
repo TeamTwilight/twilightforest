@@ -302,10 +302,10 @@ public class TFItems {
 	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = register("snow_queen_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.SNOW_QUEEN_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
 	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = register("quest_ram_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.QUESTING_RAM_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
 
-	public static final DeferredItem<Item> RASPBERRY = register("raspberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
-	public static final DeferredItem<Item> BLUEBERRY = register("blueberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
-	public static final DeferredItem<Item> BLACKBERRY = register("blackberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
-	public static final DeferredItem<Item> MALOBERRY = register("maloberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
+	public static final DeferredItem<Item> RASPBERRY = register("raspberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
+	public static final DeferredItem<Item> BLUEBERRY = register("blueberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
+	public static final DeferredItem<Item> BLACKBERRY = register("blackberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
+	public static final DeferredItem<Item> MALOBERRY = register("maloberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
 	public static final DeferredItem<Item> BLIGHTBERRY = register("blightberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.BLIGHTBERRY));
 	public static final DeferredItem<Item> DUSKBERRY = register("duskberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.DUSKBERRY));
 	public static final DeferredItem<Item> SKYBERRY = register("skyberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.SKYBERRY));
