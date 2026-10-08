@@ -213,6 +213,16 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.TROPICAL_FISH_JERKY.get(),
 			TFItems.FUGU_JERKY.get()
 		);
+		this.tag(ItemTags.LOOM_PATTERNS).add(
+			TFItems.NAGA_BANNER_PATTERN.get(),
+			TFItems.LICH_BANNER_PATTERN.get(),
+			TFItems.MINOSHROOM_BANNER_PATTERN.get(),
+			TFItems.HYDRA_BANNER_PATTERN.get(),
+			TFItems.KNIGHT_PHANTOM_BANNER_PATTERN.get(),
+			TFItems.UR_GHAST_BANNER_PATTERN.get(),
+			TFItems.ALPHA_YETI_BANNER_PATTERN.get(),
+			TFItems.SNOW_QUEEN_BANNER_PATTERN.get(),
+			TFItems.QUEST_RAM_BANNER_PATTERN.get());
 
 		this.tag(Tags.Items.FEATHERS).add(TFItems.RAVEN_FEATHER.get());
 		this.tag(Tags.Items.FOODS).addTag(TFItemTags.FOODS_JERKY).add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), TFItems.BERRY_MEDLEY.get(), TFItems.MAZE_WAFER.get());

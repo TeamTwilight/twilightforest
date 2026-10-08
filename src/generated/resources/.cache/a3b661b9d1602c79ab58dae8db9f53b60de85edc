@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-29T09:00:36.195764373	Twilight Forest Item Tags
+// 26.1.2	2026-10-08T17:32:55.757812962	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -82,6 +82,7 @@ b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/minecraft/tags/item/hoes.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/item/leaves.json
 254ea448382315685abec81ddfec26119189ac76 data/minecraft/tags/item/leg_armor.json
 8744807d0184f7920d2931c98640d7f844a7c96c data/minecraft/tags/item/logs_that_burn.json
+fe6b753067536250761a2bed9cd6f7d83ab17a62 data/minecraft/tags/item/loom_patterns.json
 9ecca1bc94295ee86f1876f8ebfb3a05dfb5f6bd data/minecraft/tags/item/meat.json
 d0c2ba230b8d0a14f4466fd4671d81843854a19a data/minecraft/tags/item/noteblock_top_instruments.json
 387c3d6fc3d958d7d90aea6c542e7a1a46ed16d9 data/minecraft/tags/item/pickaxes.json
