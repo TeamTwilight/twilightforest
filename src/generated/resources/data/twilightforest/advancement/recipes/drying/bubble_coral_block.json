@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:brain_coral"
+            "items": "minecraft:bubble_coral_block"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dead_brain_coral"
+        "recipe": "twilightforest:drying/bubble_coral_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dead_brain_coral"
+      "twilightforest:drying/bubble_coral_block"
     ]
   }
 }

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:brain_coral_block"
+            "items": "minecraft:fire_coral"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dead_brain_coral_block"
+        "recipe": "twilightforest:drying/fire_coral"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dead_brain_coral_block"
+      "twilightforest:drying/fire_coral"
     ]
   }
 }

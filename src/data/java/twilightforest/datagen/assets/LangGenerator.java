@@ -741,7 +741,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addItem(TFItems.TREATED_LEATHER, "Treated Leather");
 		this.addItem(TFItems.TANNED_LEATHER, "Tanned Leather");
-		this.addItem(TFItems.STALE_BREAD, "Stale Bread");
+		this.add("item.twilightforest.stale_bread", "Stale Bread");
 
 		this.addItem(TFItems.IRON_BERRY, "Iron Oreberry");
 		this.addItem(TFItems.GOLD_BERRY, "Gold Oreberry");

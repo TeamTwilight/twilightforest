@@ -4,20 +4,30 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Tool;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.Weapon;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
@@ -26,6 +36,7 @@ import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
 import twilightforest.TFRegistries;
+import twilightforest.TwilightForestMod;
 import twilightforest.datagen.data.custom.CartesianShapedRecipeBuilder;
 import twilightforest.datagen.data.custom.CartesianShapelessRecipeBuilder;
 import twilightforest.datagen.data.custom.DryingRecipeBuilder;
@@ -1272,10 +1283,30 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		this.dryingRackCoralRecipes();
 
-		DryingRecipeBuilder.drying(Ingredient.of(Items.BREAD), new ItemStackTemplate(TFItems.STALE_BREAD, 1, DataComponentPatch.builder()
+		DryingRecipeBuilder.drying(DataComponentIngredient.of(DataComponents.ITEM_NAME, Component.translatable("item.minecraft.bread"), Items.BREAD), new ItemStackTemplate(Items.BREAD, 1, DataComponentPatch.builder()
 			.set(DataComponents.DAMAGE_TYPE, this.registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(TFDamageTypes.STALE_SANDWICH))
+			.set(DataComponents.MAX_STACK_SIZE, 1)
+			.set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 3.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				.add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.4F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				.build())
+			.set(DataComponents.WEAPON, new Weapon(1))
+			.set(DataComponents.TOOL,
+				new Tool(
+					List.of(
+						Tool.Rule.minesAndDrops(HolderSet.direct(Blocks.COBWEB.builtInRegistryHolder()), 15.0F),
+						Tool.Rule.overrideSpeed(this.registries.getOrThrow(BlockTags.SWORD_INSTANTLY_MINES), Float.MAX_VALUE),
+						Tool.Rule.overrideSpeed(this.registries.getOrThrow(BlockTags.SWORD_EFFICIENT), 1.5F)
+					),
+					1.0F,
+					2,
+					false
+				))
+			.set(DataComponents.ITEM_NAME, Component.translatable("item.twilightforest.stale_bread"))
+			.set(DataComponents.ITEM_MODEL, TwilightForestMod.prefix("stale_bread"))
+			.remove(DataComponents.FOOD).remove(DataComponents.CONSUMABLE)
 			.build()
-		)).save(this.output);
+		)).save(this.output, this.createKey("drying/stale_bread"));
 	}
 
 	private void dryingRackCoralRecipes() {
@@ -1291,7 +1322,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		Item liveItem = BuiltInRegistries.ITEM.getValue(live);
 		DryingRecipeBuilder.drying(liveItem, BuiltInRegistries.ITEM.getValue(live.withPrefix("dead_")), 1 / 30F)
 			.unlockedBy("has_coral", has(liveItem))
-			.save(this.output);
+			.save(this.output, this.createKey("drying/" + coral));
 	}
 
 	private void nagastoneRecipes(HolderGetter<Item> getter) {

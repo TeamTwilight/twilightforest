@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:horn_coral_fan"
+            "items": "minecraft:horn_coral"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dead_horn_coral_fan"
+        "recipe": "twilightforest:drying/horn_coral"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dead_horn_coral_fan"
+      "twilightforest:drying/horn_coral"
     ]
   }
 }

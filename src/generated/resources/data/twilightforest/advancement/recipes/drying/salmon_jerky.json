@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:salmon_jerky"
+        "recipe": "twilightforest:drying/salmon_jerky"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:salmon_jerky"
+      "twilightforest:drying/salmon_jerky"
     ]
   }
 }

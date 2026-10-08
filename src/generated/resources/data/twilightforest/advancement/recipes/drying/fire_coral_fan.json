@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:bubble_coral"
+            "items": "minecraft:fire_coral_fan"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dead_bubble_coral"
+        "recipe": "twilightforest:drying/fire_coral_fan"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dead_bubble_coral"
+      "twilightforest:drying/fire_coral_fan"
     ]
   }
 }

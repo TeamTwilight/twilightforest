@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:horn_coral_block"
+            "items": "minecraft:fire_coral_block"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dead_horn_coral_block"
+        "recipe": "twilightforest:drying/fire_coral_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dead_horn_coral_block"
+      "twilightforest:drying/fire_coral_block"
     ]
   }
 }

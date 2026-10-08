@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:tube_coral_fan"
+            "items": "minecraft:tube_coral_block"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dead_tube_coral_fan"
+        "recipe": "twilightforest:drying/tube_coral_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dead_tube_coral_fan"
+      "twilightforest:drying/tube_coral_block"
     ]
   }
 }

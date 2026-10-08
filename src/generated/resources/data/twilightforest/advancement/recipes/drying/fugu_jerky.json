@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:fugu_jerky"
+        "recipe": "twilightforest:drying/fugu_jerky"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:fugu_jerky"
+      "twilightforest:drying/fugu_jerky"
     ]
   }
 }

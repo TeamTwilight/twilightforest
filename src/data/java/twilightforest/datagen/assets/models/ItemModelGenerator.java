@@ -3,6 +3,7 @@ package twilightforest.datagen.assets.models;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
 import net.minecraft.client.renderer.item.properties.conditional.Broken;
@@ -271,7 +272,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.TANNIN.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TREATED_LEATHER.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TANNED_LEATHER.get(), ModelTemplates.FLAT_ITEM);
-		this.itemModelOutput.accept(TFItems.STALE_BREAD.get(), ItemModelUtils.plainModel(ModelTemplates.FLAT_HANDHELD_ITEM.create(TFItems.STALE_BREAD.get(), TextureMapping.layer0(Items.BREAD), this.modelOutput)));
+		this.itemModelOutput.register(TwilightForestMod.prefix("stale_bread"), new ClientItem(ItemModelUtils.plainModel(ModelTemplates.FLAT_HANDHELD_ITEM.create(TwilightForestMod.prefix("item/stale_bread"), TextureMapping.layer0(Items.BREAD), this.modelOutput)), ClientItem.Properties.DEFAULT));
 
 		this.generateTravellersGear(TFItems.TRAVELLERS_GOGGLES.get(), TwilightForestMod.prefix("travellers_modifiers/goggles"));
 		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), "gloves", new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TwilightForestMod.prefix("travellers_modifiers/vest"));
