@@ -3,7 +3,7 @@
   "textures": {
     "layer0": {
       "neoforge_data": {
-        "light_emission": 15
+        "light_emission": 7
       },
       "sprite": "twilightforest:item/carminite"
     }

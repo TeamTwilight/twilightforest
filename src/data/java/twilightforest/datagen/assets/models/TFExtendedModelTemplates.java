@@ -1,6 +1,7 @@
 package twilightforest.datagen.assets.models;
 
 import com.mojang.math.Quadrant;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -14,15 +15,11 @@ import twilightforest.block.SnowLoggable;
  * Class for using ExtenderModelTemplate builders to generate block models from scratch.
  */
 public class TFExtendedModelTemplates extends TFModelTemplates {
-	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_HANDHELD_ITEM = ExtendedModelTemplateBuilder.builder()
-		.parent(Identifier.withDefaultNamespace("item/handheld"))
-		.requiredTextureSlot(TextureSlot.LAYER0)
+	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_HANDHELD_ITEM = ExtendedModelTemplateBuilder.of(ModelTemplates.FLAT_HANDHELD_ITEM)
 		.itemLayerFaceData("layer0", new ExtraFaceData(0xFFFFFFFF, 15, true))
 		.build();
 
-	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_ITEM = ExtendedModelTemplateBuilder.builder()
-		.parent(Identifier.withDefaultNamespace("item/generated"))
-		.requiredTextureSlot(TextureSlot.LAYER0)
+	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_ITEM = ExtendedModelTemplateBuilder.of(ModelTemplates.FLAT_ITEM)
 		.itemLayerFaceData("layer0", new ExtraFaceData(0xFFFFFFFF, 15, true))
 		.build();
 

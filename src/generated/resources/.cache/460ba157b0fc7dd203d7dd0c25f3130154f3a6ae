@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-07T19:45:33.885514	Model Definitions - twilightforest
+// 26.1.2	2026-10-08T08:06:22.516272	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -2476,7 +2476,7 @@ e1139510edd55c4d52f005d55dc60b8df95badd4 assets/twilightforest/models/item/canop
 8d4c5efd0250471a58e9cb2c730fe05f28903ad0 assets/twilightforest/models/item/canopy_sign.json
 9070b9c1f049002422c47a06e6a137a13ff9b06c assets/twilightforest/models/item/canopy_trapped_chest.json
 a64c3df922b7017d7f103ae983d021d17fe7aaa3 assets/twilightforest/models/item/canopy_window_pane.json
-0ca6869fec98e886a6564e8a95d29a150639855f assets/twilightforest/models/item/carminite.json
+3c44ce616c4f6a23519b3295b6f217bfb1517697 assets/twilightforest/models/item/carminite.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/carminite_broodling_spawn_egg.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/carminite_ghastguard_spawn_egg.json
 d6bf05f37008983c797d1a3a292340d72a0a3d90 assets/twilightforest/models/item/carminite_ghastling_spawn_egg.json

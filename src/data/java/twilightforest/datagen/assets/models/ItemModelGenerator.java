@@ -20,6 +20,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.client.model.ExtraFaceData;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.item.TravellersGearItemModel;
@@ -92,7 +93,9 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_1", ModelTemplates.FLAT_ITEM)), 16.0F / 64.0F),
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_2", ModelTemplates.FLAT_ITEM)), 32.0F / 64.0F))));
 		this.generateTwoLayerItem(TFItems.BORER_ESSENCE.get(), "_particles", ModelTemplates.TWO_LAYERED_ITEM);
-		this.generateFlatItem(TFItems.CARMINITE.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_ITEM);
+		this.generateFlatItem(TFItems.CARMINITE.get(), ModelTemplates.FLAT_ITEM.extend()
+			.itemLayerFaceData("layer0", new ExtraFaceData(0xFFFFFFFF, 7, true))
+			.build());
 		this.generateFlatItem(TFItems.TOWER_KEY.get(), TFExtendedModelTemplates.FULL_BRIGHT_FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAGIC_BEANS.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MUSIC_DISC_THREAD.get(), ModelTemplates.MUSIC_DISC);
