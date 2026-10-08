@@ -1,6 +1,11 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:block/forcefield_white"
+    "layer0": {
+      "neoforge_data": {
+        "light_emission": 15
+      },
+      "sprite": "twilightforest:block/forcefield_white"
+    }
   }
 }
