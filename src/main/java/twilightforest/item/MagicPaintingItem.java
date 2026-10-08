@@ -74,11 +74,7 @@ public class MagicPaintingItem extends Item {
 		Holder<MagicPaintingVariant> magicPainting = itemStack.get(TFDataComponents.MAGIC_PAINTING_VARIANT);
 
 		if (magicPainting != null) {
-			MagicPaintingVariant painting = magicPainting.value();
-			Identifier location = magicPainting.unwrapKey().orElse(MagicPaintingVariants.DEFAULT).identifier();
-			builder.accept(Component.translatable(location.toLanguageKey("magic_painting", "title")).withStyle(ChatFormatting.YELLOW));
-			builder.accept(Component.empty().withStyle(ChatFormatting.GRAY).append(painting.author()));
-			builder.accept(Component.translatable("painting.dimensions", Mth.positiveCeilDiv(painting.width(), 16), Mth.positiveCeilDiv(painting.height(), 16)));
+			magicPainting.value().addToTooltip(context, builder, tooltipFlag, itemStack.getComponents());
 		}
 	}
 }

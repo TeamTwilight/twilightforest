@@ -29,6 +29,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -56,6 +57,8 @@ import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
+import net.neoforged.neoforge.common.tooltip.TooltipAppender;
+import net.neoforged.neoforge.event.RegisterTooltipAppendersEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
@@ -131,6 +134,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerCustomEnvironmentRenderers);
 		bus.addListener(this::registerCustomRenderData);
 		bus.addListener(this::registerPictureInPictureRenderers);
+		bus.addListener(this::registerComponentTooltips);
 
 		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
@@ -718,5 +722,9 @@ public class ClientRegistrationEvents {
 	private void registerCustomEnvironmentRenderers(RegisterCustomEnvironmentEffectRendererEvent event) {
 		event.registerSkyboxRenderer(TwilightForestRenderInfo.SKY_RENDERER, new TwilightForestRenderInfo());
 		event.registerWeatherEffectRenderer(TwilightForestRenderInfo.WEATHER_RENDERER, new TwilightForestRenderInfo());
+	}
+
+	private void registerComponentTooltips(RegisterTooltipAppendersEvent event) {
+		event.registerComponentAppenderAfter(TFDataComponents.SKULL_CANDLES, DataComponents.LORE, TooltipAppender.createComponentAppender(TFDataComponents.SKULL_CANDLES.get()));
 	}
 }
