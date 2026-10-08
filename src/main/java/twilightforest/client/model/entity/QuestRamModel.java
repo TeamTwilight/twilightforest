@@ -224,7 +224,7 @@ public class QuestRamModel extends EntityModel<QuestingRamRenderState> implement
 		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(QuestRamRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
-		collector.order(1).submitModelPart(this.head, stack, RenderTypes.entityTranslucent(QuestRamRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+		collector.order(1).submitModelPart(this.head, stack, RenderTypes.entityTranslucent(QuestRamRenderer.LINE_TEXTURE), light, overlay, null, -1, breakProgress);
 		stack.popPose();
 	}
 }
