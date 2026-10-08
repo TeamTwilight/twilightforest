@@ -26,15 +26,15 @@ public class FierySwordItem extends Item {
 			return;
 
 		target.igniteForSeconds(15);
-		if (attacker instanceof ServerPlayer serverPlayer) {
+		if (attacker instanceof ServerPlayer) {
 			ParticlePacket packet = new ParticlePacket();
 			for (int var1 = 0; var1 < 20; ++var1) {
 				double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
 				double py = target.getY() + target.level().getRandom().nextFloat() * target.getBbHeight();
 				double pz = target.getZ() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				packet.queueParticle(ParticleTypes.FLAME, false, true, px, py, pz, 0.02, 0.02, 0.02);
+				packet.queueParticle(ParticleTypes.FLAME, false, false, px, py, pz, 0.02, 0.02, 0.02);
 			}
-			PacketDistributor.sendToPlayer(serverPlayer, packet);
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(target, packet);
 		}
 	}
 
