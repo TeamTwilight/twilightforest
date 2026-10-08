@@ -82,7 +82,7 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 			double d9 = (double) j1 * d4 + random.nextGaussian() * 0.01D;
 			double d10 = (double) j2 * d4 + random.nextGaussian() * 0.01D;
 			double d11 = (double) k2 * d4 + random.nextGaussian() * 0.01D;
-			packet.queueParticle(ParticleTypes.CLOUD, false, true, d6, d8, d30, d9, d10, d11);
+			packet.queueParticle(ParticleTypes.CLOUD, false, false, d6, d8, d30, d9, d10, d11);
 		}
 		PacketDistributor.sendToPlayersNear(level, null, d18, d24, d28, 32.0D, packet);
 	}
