@@ -280,7 +280,7 @@ public class ProgressionEvents {
 				double vx = rand.nextGaussian() * 0.02D;
 				double vy = rand.nextGaussian() * 0.02D;
 				double vz = rand.nextGaussian() * 0.02D;
-				packet.queueParticle(SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1.0F), false, true,  qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				packet.queueParticle(SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1.0F), false, false,  qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
 			PacketDistributor.sendToPlayersNear(level, null, qualified.getX(), qualified.getY() + 0.2D, qualified.getZ(), 32.0D, packet);
 
