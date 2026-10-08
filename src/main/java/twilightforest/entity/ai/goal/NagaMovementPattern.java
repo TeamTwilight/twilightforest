@@ -208,7 +208,7 @@ public class NagaMovementPattern extends Goal {
 					packet.queueParticle(
 						ParticleTypes.CRIT,
 						false,
-						true,
+						false,
 						(this.naga.getX() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
 						this.naga.getY() + this.naga.getRandom().nextFloat() * this.naga.getBbHeight(),
 						(this.naga.getZ() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
