@@ -203,7 +203,7 @@ public class TravellersGearLogic {
 
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
 		if (TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
-			livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), Vec3.ZERO);
+			livingEntity.stuckSpeedMultiplier = Vec3.ZERO;
 	}
 
 	public static void travellersGogglesZoom(LivingEntity livingEntity) {
