@@ -1281,7 +1281,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersDescription(TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Repairs durability over time");
 
 		this.addTravellersModifier(TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Aquatic Agility");
-		this.addTravellersDescription(TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Respiration and Aqua Affinity in one");
+		this.addTravellersDescription(TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Grants Respiration and Aqua Affinity");
 		this.addTravellersModifier(TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Red Thread Vision (keybind: ${tfkeybinds/" + TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
 		this.addTravellersDescription(TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Allows you to see placed Red Thread");
 		this.addTravellersModifier(TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER, "All-Night Goggles");
@@ -1321,7 +1321,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersModifier(TravellersModifiersManager.UNRESTRAINED_MODIFIER, "Unrestrained");
 		this.addTravellersDescription(TravellersModifiersManager.UNRESTRAINED_MODIFIER, "Prevents blocks from slowing you down");
 		this.addTravellersModifier(TravellersModifiersManager.WATER_WALK_MODIFIER, "Water Walk");
-		this.addTravellersDescription(TravellersModifiersManager.WATER_WALK_MODIFIER, "Allows you to walk on Water");
+		this.addTravellersDescription(TravellersModifiersManager.WATER_WALK_MODIFIER, "Allows for walking on Water");
 
 		// Other Traveller's gear components
 		this.add("travellers_gear.ability", "Ability: %s");
