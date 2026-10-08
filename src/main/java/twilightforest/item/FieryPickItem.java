@@ -26,10 +26,10 @@ public class FieryPickItem extends Item {
 			return;
 
 		target.igniteForSeconds(15);
-		if (attacker instanceof ServerPlayer serverPlayer) {
+		if (attacker instanceof ServerPlayer) {
 			ParticlePacket packet = new ParticlePacket();
-			packet.queueParticle(ParticleTypes.FLAME, false, true, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
-			PacketDistributor.sendToPlayer(serverPlayer, packet);
+			packet.queueParticle(ParticleTypes.FLAME, false, false, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(target, packet);
 		}
 	}
 
