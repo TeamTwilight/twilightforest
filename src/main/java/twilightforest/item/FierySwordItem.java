@@ -3,7 +3,6 @@ package twilightforest.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,16 +25,14 @@ public class FierySwordItem extends Item {
 			return;
 
 		target.igniteForSeconds(15);
-		if (attacker instanceof ServerPlayer) {
-			ParticlePacket packet = new ParticlePacket();
-			for (int var1 = 0; var1 < 20; ++var1) {
-				double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				double py = target.getY() + target.level().getRandom().nextFloat() * target.getBbHeight();
-				double pz = target.getZ() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				packet.queueParticle(ParticleTypes.FLAME, false, false, px, py, pz, 0.02, 0.02, 0.02);
-			}
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(target, packet);
+		ParticlePacket packet = new ParticlePacket();
+		for (int var1 = 0; var1 < 20; ++var1) {
+			double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+			double py = target.getY() + target.level().getRandom().nextFloat() * target.getBbHeight();
+			double pz = target.getZ() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+			packet.queueParticle(ParticleTypes.FLAME, false, false, px, py, pz, 0.02, 0.02, 0.02);
 		}
+		PacketDistributor.sendToPlayersTrackingEntityAndSelf(target, packet);
 	}
 
 	@Override
