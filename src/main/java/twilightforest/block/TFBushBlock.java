@@ -131,7 +131,13 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (state.getValue(AGE) == MAX_AGE) {
 			if (level instanceof ServerLevel serverLevel) {
-				Block.dropFromBlockInteractLootTable(serverLevel, this.berryLoot, state, level.getBlockEntity(pos), null, player, (level1, stack) -> Block.popResource(level1, pos, stack));
+				Block.dropFromBlockInteractLootTable(serverLevel, this.berryLoot, state, level.getBlockEntity(pos), null, player,
+					(level1, stack) -> {
+						if (!player.addItem(stack)) {
+							Block.popResource(level1, pos, stack);
+						}
+					}
+				);
 
 				level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.getRandom().nextFloat() * 0.4F);
 				BlockState newState = state.setValue(AGE, MAX_AGE - 1);
