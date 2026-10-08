@@ -1,6 +1,7 @@
 package twilightforest.datagen.assets.models;
 
 import com.mojang.math.Quadrant;
+import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Direction;
@@ -15,13 +16,9 @@ import twilightforest.block.SnowLoggable;
  * Class for using ExtenderModelTemplate builders to generate block models from scratch.
  */
 public class TFExtendedModelTemplates extends TFModelTemplates {
-	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_HANDHELD_ITEM = ExtendedModelTemplateBuilder.of(ModelTemplates.FLAT_HANDHELD_ITEM)
-		.itemLayerFaceData("layer0", new ExtraFaceData(0xFFFFFFFF, 15, true))
-		.build();
 
-	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_ITEM = ExtendedModelTemplateBuilder.of(ModelTemplates.FLAT_ITEM)
-		.itemLayerFaceData("layer0", new ExtraFaceData(0xFFFFFFFF, 15, true))
-		.build();
+	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_HANDHELD_ITEM = emissiveItem(ModelTemplates.FLAT_HANDHELD_ITEM, "layer0", 15);
+	public static final ExtendedModelTemplate FULL_BRIGHT_FLAT_ITEM = emissiveItem(ModelTemplates.FLAT_ITEM, "layer0", 15);
 
 	public static final ExtendedModelTemplate MASON_JAR = ExtendedModelTemplateBuilder.builder()
 		.parent(Identifier.withDefaultNamespace("block/block"))
@@ -112,4 +109,10 @@ public class TFExtendedModelTemplates extends TFModelTemplates {
 				).build();
 		}
 	});
+
+	public static ExtendedModelTemplate emissiveItem(ModelTemplate template, String layer, int lightEmission) {
+		return ExtendedModelTemplateBuilder.of(template)
+			.itemLayerFaceData(layer, new ExtraFaceData(ExtraFaceData.DEFAULT.color(), lightEmission, ExtraFaceData.DEFAULT.ambientOcclusion()))
+			.build();
+	}
 }
