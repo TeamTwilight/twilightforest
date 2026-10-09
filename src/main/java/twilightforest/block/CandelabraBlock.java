@@ -4,9 +4,9 @@ import com.google.common.collect.Iterables;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +21,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,6 +45,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.components.item.CandelabraData;
 import twilightforest.inventory.InventoryUtil;
@@ -55,11 +55,11 @@ import twilightforest.init.TFSounds;
 import twilightforest.tags.TFItemTags;
 
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings("deprecation")
 public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, SimpleWaterloggedBlock {
 
+	public static final Identifier CANDLE_DYNAMIC_DROP_ID = TwilightForestMod.prefix("candles");
 	public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final List<BooleanProperty> CANDLES = List.of(BooleanProperty.create("has_candle_1"), BooleanProperty.create("has_candle_2"), BooleanProperty.create("has_candle_3"));
@@ -358,24 +358,14 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-		List<ItemStack> drops = super.getDrops(state, builder);
-		Optional<ItemStack> base = drops.stream().filter(item -> item.is(this.asItem())).findFirst();
-		if (base.isPresent()) {
-			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-			if (blockEntity instanceof CandelabraBlockEntity candelabra) {
-				RegistryAccess access = blockEntity.getLevel().registryAccess();
-				if (builder.getOptionalParameter(LootContextParams.TOOL) != null && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(access.holderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
-					ItemStack newStack = new ItemStack(this);
-					newStack.applyComponents(candelabra.collectComponents());
-					drops.remove(base.get());
-					drops.add(newStack);
-				} else {
-					candelabra.getCandles().ordered().forEach(block -> drops.add(new ItemStack(block)));
-				}
-			}
+		BlockEntity maybeEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (maybeEntity instanceof CandelabraBlockEntity entity) {
+			builder.withDynamicDrop(CANDLE_DYNAMIC_DROP_ID, output -> {
+				entity.getCandles().ordered().forEach(block -> output.accept(new ItemStack(block)));
+			});
 		}
 
-		return drops;
+		return super.getDrops(state, builder);
 	}
 
 	@Override

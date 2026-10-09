@@ -285,7 +285,17 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());
 		add(TFBlocks.SKULL_CHEST.get(), skullChestInfo(TFBlocks.SKULL_CHEST.get()));
 		add(TFBlocks.KEEPSAKE_CASKET.get(), skullChestInfo(TFBlocks.KEEPSAKE_CASKET.get()));
-		dropSelf(TFBlocks.CANDELABRA.get());
+		this.add(TFBlocks.CANDELABRA.get(), block -> LootTable.lootTable()
+			.withPool(LootPool.lootPool()
+				.add(DynamicLoot.dynamicEntry(AbstractSkullCandleBlock.CANDLE_DYNAMIC_DROP_ID)
+					.when(this.doesNotHaveSilkTouch())))
+			.withPool(LootPool.lootPool()
+				.add(AlternativesEntry.alternatives(
+					LootItem.lootTableItem(block)
+						.when(this.doesNotHaveSilkTouch())
+						.otherwise(LootItem.lootTableItem(block)
+							.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+								.include(TFDataComponents.CANDELABRA_DATA.get())))))));
 		dropSelf(TFBlocks.WROUGHT_IRON_FENCE.get());
 		dropSelf(TFBlocks.TERRORCOTTA_ARCS.value());
 		dropSelf(TFBlocks.TERRORCOTTA_CURVES.value());
