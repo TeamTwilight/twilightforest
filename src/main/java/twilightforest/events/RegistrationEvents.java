@@ -242,6 +242,7 @@ public class RegistrationEvents {
 		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
 		registrar.playToClient(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC, SyncQuestsPacket::handle);
 		registrar.playToClient(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket.STREAM_CODEC, TravellersWingsStatePacket::handle);
+		registrar.playToClient(AddEmitterPacket.TYPE, AddEmitterPacket.STREAM_CODEC, AddEmitterPacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {

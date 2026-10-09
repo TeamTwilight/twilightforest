@@ -5,8 +5,6 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
@@ -269,20 +266,11 @@ public class ProgressionEvents {
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
-
 					return; // Item qualifies, but the player doesn't
 				}
 			}
 
-			Random rand = new Random();
-			ParticlePacket packet = new ParticlePacket();
-			for (int i = 0; i < 2; i++) {
-				double vx = rand.nextGaussian() * 0.02D;
-				double vy = rand.nextGaussian() * 0.02D;
-				double vz = rand.nextGaussian() * 0.02D;
-				packet.queueParticle(SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1.0F), false, false,  qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
-			}
-			PacketDistributor.sendToPlayersNear(level, null, qualified.getX(), qualified.getY() + 0.2D, qualified.getZ(), 32.0D, packet);
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(qualified, new AddEmitterPacket(qualified.getId()));
 
 			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
