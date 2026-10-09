@@ -266,6 +266,7 @@ public class ProgressionEvents {
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
+
 					return; // Item qualifies, but the player doesn't
 				}
 			}
