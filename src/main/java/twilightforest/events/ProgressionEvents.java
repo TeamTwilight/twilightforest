@@ -271,7 +271,7 @@ public class ProgressionEvents {
 				}
 			}
 
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(qualified, new AddEmitterPacket(qualified.getId()));
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(qualified, new CreatePortalItemEmitterPacket(qualified.getId()));
 
 			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);

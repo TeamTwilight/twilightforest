@@ -12,11 +12,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.emitter.PortalItemEmitter;
 
-public record AddEmitterPacket(int entityID) implements CustomPacketPayload {
-	public static final CustomPacketPayload.Type<AddEmitterPacket> TYPE = new CustomPacketPayload.Type<>(TwilightForestMod.prefix("create_invalid_portal_emitter"));
-	public static final StreamCodec<RegistryFriendlyByteBuf, AddEmitterPacket> STREAM_CODEC = CustomPacketPayload.codec(AddEmitterPacket::write, AddEmitterPacket::new);
+public record CreatePortalItemEmitterPacket(int entityID) implements CustomPacketPayload {
+	public static final CustomPacketPayload.Type<CreatePortalItemEmitterPacket> TYPE = new CustomPacketPayload.Type<>(TwilightForestMod.prefix("create_portal_item_emitter_packet"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, CreatePortalItemEmitterPacket> STREAM_CODEC = CustomPacketPayload.codec(CreatePortalItemEmitterPacket::write, CreatePortalItemEmitterPacket::new);
 
-	public AddEmitterPacket(FriendlyByteBuf buf) {
+	public CreatePortalItemEmitterPacket(FriendlyByteBuf buf) {
 		this(buf.readInt());
 	}
 
@@ -29,7 +29,7 @@ public record AddEmitterPacket(int entityID) implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public static void handle(AddEmitterPacket message, IPayloadContext ctx) {
+	public static void handle(CreatePortalItemEmitterPacket message, IPayloadContext ctx) {
 		if (ctx.flow().isClientbound()) {
 			ctx.enqueueWork(() -> {
 				ClientLevel level = Minecraft.getInstance().level;
