@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-05T23:38:03.1159925	Registries
+// 26.1.2	2026-10-09T10:25:48.228402	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -157,13 +157,13 @@ cfff12d3b6df3fcb0ae0375ac74d01bf037dd165 data/twilightforest/worldgen/biome/fina
 a1106b9e9a7c21c6db08c63e01b9a1efa3c07f9c data/twilightforest/worldgen/biome/firefly_forest.json
 3309c6400489b46ee288c5dc9e79860a5ec07d21 data/twilightforest/worldgen/biome/fire_swamp.json
 f4eb1ecda08c0f16a51d7daa5ff993799b042f84 data/twilightforest/worldgen/biome/forest.json
-665afb61c76fb3a82c4f1d2777cafd07d432fd62 data/twilightforest/worldgen/biome/glacier.json
+04767d5fe12d784850606c034d6f771a223cbbc2 data/twilightforest/worldgen/biome/glacier.json
 048512cbde4f50c59179185a0f2fd40d205e4d21 data/twilightforest/worldgen/biome/highlands.json
 a41682b7e204a7da8733c5a473552b4c053c0b46 data/twilightforest/worldgen/biome/highlands_underground.json
 60fe01b2c564732bc7b43ed761b792a12b28f7c4 data/twilightforest/worldgen/biome/lake.json
 deb68890f9072fea4cb2b5ac9c2fef3d00385786 data/twilightforest/worldgen/biome/mushroom_forest.json
 78061d931d20340aeb17d887353b1fd20393fddd data/twilightforest/worldgen/biome/oak_savannah.json
-c275962d2aa96c9346abdad6ebc0860f71e373ab data/twilightforest/worldgen/biome/snowy_forest.json
+f925a716b5fd0d1fffe2397590f1ccaf57829515 data/twilightforest/worldgen/biome/snowy_forest.json
 82b0adaee792ddd1ad663dd253c79730eb9f30ae data/twilightforest/worldgen/biome/spooky_forest.json
 d994e8d6148bc65c520d0720ef4cb78e2d9d6dda data/twilightforest/worldgen/biome/stream.json
 82829504021434afa68fca86345b779de34afd4c data/twilightforest/worldgen/biome/swamp.json
