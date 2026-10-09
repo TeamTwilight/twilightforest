@@ -8,6 +8,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.ParticlePacket;
 
 import java.util.function.Consumer;
 
@@ -19,13 +21,13 @@ public class FieryPickItem extends Item {
 
 	@Override
 	public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!target.fireImmune()) {
-			if (!target.level().isClientSide()) {
-				target.igniteForSeconds(15);
-			} else {
-				target.level().addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
-			}
-		}
+		if (target.level().isClientSide() || target.fireImmune())
+			return;
+
+		target.igniteForSeconds(15);
+		ParticlePacket packet = new ParticlePacket();
+		packet.queueParticle(ParticleTypes.FLAME, false, false, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
+		PacketDistributor.sendToPlayersTrackingEntityAndSelf(target, packet);
 	}
 
 	@Override
