@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-08T17:33:57.161537441	Model Definitions - twilightforest
+// 26.1.2	2026-10-08T18:35:14.873461012	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -1988,7 +1988,7 @@ e6fbe08eae2af4c7e5ac59255e168371a9fb5230 assets/twilightforest/models/block/moss
 9f7d8d23bbd1a999dbc0234cbc1708996195033a assets/twilightforest/models/block/mossy_towerwood.json
 33d5ae1c13ae92090a05b6d3cf4085f10622408c assets/twilightforest/models/block/mossy_underbrick.json
 23fbb76471b66cbcbc8937c4bd661ebb81ef2d41 assets/twilightforest/models/block/naga_boss_spawner.json
-79b23c24b4324d6295ec74fdb586bd64c1a911ad assets/twilightforest/models/block/nagastone_head.json
+2718a7261b9b370461b5cda2ad69db4aef6bc8ce assets/twilightforest/models/block/nagastone_head.json
 aa9c8d2a2bc8ae90a87934af98fe5687c9ca67a6 assets/twilightforest/models/block/nagastone_pillar.json
 a5d262f5809673fc18032fb2eafe6aa67803a001 assets/twilightforest/models/block/nagastone_pillar_alt.json
 8274ec20d898476a327009ffb7221ac404511a9e assets/twilightforest/models/block/nagastone_solid.json
