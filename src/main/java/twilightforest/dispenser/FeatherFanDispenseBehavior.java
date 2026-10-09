@@ -14,11 +14,12 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 import java.util.List;
 
@@ -59,12 +60,11 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 	}
 
 	//Particle woooosh
-	//[VanillaCopy] of WorldRender.playEvent(case 2000), but with further range and a different particle
 	@Override
 	protected void playAnimation(BlockSource source, Direction direction) {
 		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
-		Level world = source.level();
-		RandomSource random = world.getRandom();
+		ServerLevel level = source.level();
+		RandomSource random = level.getRandom();
 
 		int j1 = direction.getStepX();
 		int j2 = direction.getStepY();
@@ -73,6 +73,7 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 		double d24 = (double) blockpos.getY() + (double) j2 * 0.6D + 0.5D;
 		double d28 = (double) blockpos.getZ() + (double) k2 * 0.6D + 0.5D;
 
+		ParticlePacket packet = new ParticlePacket();
 		for (int i = 0; i < 30; ++i) {
 			double d4 = random.nextDouble() * 0.2D + 0.01D;
 			double d6 = d18 + (double) j1 * 0.01D + (random.nextDouble() - 0.5D) * (double) k2 * 0.5D;
@@ -81,7 +82,8 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 			double d9 = (double) j1 * d4 + random.nextGaussian() * 0.01D;
 			double d10 = (double) j2 * d4 + random.nextGaussian() * 0.01D;
 			double d11 = (double) k2 * d4 + random.nextGaussian() * 0.01D;
-			world.addParticle(ParticleTypes.CLOUD, d6, d8, d30, d9, d10, d11);
+			packet.queueParticle(ParticleTypes.CLOUD, false, false, d6, d8, d30, d9, d10, d11);
 		}
+		PacketDistributor.sendToPlayersNear(level, null, d18, d24, d28, 32.0D, packet);
 	}
 }
