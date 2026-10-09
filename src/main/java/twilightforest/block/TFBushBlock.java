@@ -11,6 +11,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,6 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
+import twilightforest.init.TFBlocks;
 import twilightforest.inventory.InventoryUtil;
 
 public abstract class TFBushBlock extends Block implements SnowLoggable {
@@ -146,13 +148,16 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (stack.getItem() instanceof BlockItem block && block.getBlock() instanceof TFBushBlock bush && bush.defaultBlockState().canSurvive(level, pos.relative(hitResult.getDirection()))) {
+			return InteractionResult.PASS;
+		}
+
 		if (!stack.is(Items.SNOW) || state.getValue(SNOW_LAYERS) == MAX_SNOW_LAYERS || !Blocks.SNOW.defaultBlockState().canSurvive(level, pos))
 			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 		BlockState newState = state.setValue(SNOW_LAYERS, state.getValue(SNOW_LAYERS) + 1);
 		if (isColliding(player, pos, newState))
 			return InteractionResult.FAIL;
-		if (!player.hasInfiniteMaterials())
-			stack.shrink(1);
+		stack.consume(1, player);
 		level.setBlock(pos, newState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
 		level.playSound(player, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS);
 		updateSnowBeneath(level, pos);
