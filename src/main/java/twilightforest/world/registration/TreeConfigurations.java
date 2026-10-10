@@ -260,9 +260,9 @@ public class TreeConfigurations {
 
 	public static final TreeConfiguration SORT_TREE = new TreeConfiguration.TreeConfigurationBuilder(
 		BlockStateProvider.simple(TFBlocks.SORTING_LOG.get()),
-		new StraightTrunkPlacer(3, 0, 0),
+		new StraightTrunkPlacer(5, 0, 0),
 		BlockStateProvider.simple(TFBlocks.SORTING_LEAVES.get()),
-		new LeafSpheroidFoliagePlacer(1.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.5f, 0),
+		new LeafSpheroidFoliagePlacer(1.5F, 2.5F, ConstantInt.of(-2), 0, 0, 0.5F, 0),
 		new TwoLayersFeatureSize(1, 1, 1)
 	)
 		.ignoreVines()

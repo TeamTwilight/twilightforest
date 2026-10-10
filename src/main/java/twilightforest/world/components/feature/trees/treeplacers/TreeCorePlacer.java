@@ -30,7 +30,7 @@ public class TreeCorePlacer extends TreeDecorator {
 
 	@Override
 	public void place(Context context) {
-		BlockPos pos = context.logs().get(0).offset(0, this.corePos, 0);
+		BlockPos pos = context.logs().get(this.corePos);
 		context.setBlock(pos, this.core.getState(context.level(), context.random(), pos));
 	}
 }
