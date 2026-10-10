@@ -5,7 +5,6 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
@@ -45,10 +43,7 @@ import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFGameRules;
-import twilightforest.network.AreaProtectionPacket;
-import twilightforest.network.EnforceProgressionStatusPacket;
-import twilightforest.network.MissingAdvancementToastPacket;
-import twilightforest.network.StructureProtectionPacket;
+import twilightforest.network.*;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFItemTags;
 import twilightforest.util.Enforcement;
@@ -276,14 +271,7 @@ public class ProgressionEvents {
 				}
 			}
 
-			Random rand = new Random();
-			for (int i = 0; i < 2; i++) {
-				double vx = rand.nextGaussian() * 0.02D;
-				double vy = rand.nextGaussian() * 0.02D;
-				double vz = rand.nextGaussian() * 0.02D;
-
-//				level.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
-			}
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(qualified, new CreatePortalItemEmitterPacket(qualified.getId()));
 
 			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
