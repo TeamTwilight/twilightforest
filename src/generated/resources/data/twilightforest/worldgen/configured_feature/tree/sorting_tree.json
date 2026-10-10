@@ -31,7 +31,7 @@
             "Name": "twilightforest:sorting_log_core",
             "Properties": {
               "active": "false",
-              "axis": "y"
+              "facing": "up"
             }
           }
         }

@@ -2,34 +2,49 @@ package twilightforest.block;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
+public abstract class SpecialMagicLogBlock extends DirectionalBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	protected SpecialMagicLogBlock(BlockBehaviour.Properties properties) {
-		super(properties.strength(2.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(ACTIVE) ? 15 : 0));
+		super(properties);
 
-		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(ACTIVE, false));
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return this.defaultBlockState().setValue(FACING, context.getClickedFace());
+	}
+
+	@Override
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder.add(ACTIVE));
+		builder.add(FACING, ACTIVE);
 	}
 
 	//No longer an override, but keep here for sanity

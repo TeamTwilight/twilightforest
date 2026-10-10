@@ -247,7 +247,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	public void generateTreeCore(Block log, Block core) {
 		Identifier off = ModelTemplates.CUBE_COLUMN.create(core, TextureMapping.column(TextureMapping.getBlockTexture(core), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
 		Identifier on = ModelTemplates.CUBE_COLUMN.createWithSuffix(core, "_on", TextureMapping.column(TextureMapping.getBlockTexture(core, "_on"), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
-		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(core).with(PropertyDispatch.initial(SpecialMagicLogBlock.ACTIVE).generate(active -> plainVariant(active ? on : off))));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(core).with(PropertyDispatch.initial(SpecialMagicLogBlock.ACTIVE).generate(active -> plainVariant(active ? on : off))).with(ROTATIONS_COLUMN_WITH_FACING));
 		this.generateBlockItem(core);
 	}
 

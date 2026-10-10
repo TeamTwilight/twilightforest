@@ -473,10 +473,10 @@ public class TFBlocks {
 	public static final DeferredBlock<RotatedPillarBlock> STRIPPED_MINING_WOOD = registerWithItem("stripped_mining_wood", RotatedPillarBlock::new, () -> MINING_STRIPPED_PROPS);
 	public static final DeferredBlock<RotatedPillarBlock> STRIPPED_SORTING_WOOD = registerWithItem("stripped_sorting_wood", RotatedPillarBlock::new, () -> SORTING_STRIPPED_PROPS);
 
-	public static final DeferredBlock<Block> TIME_LOG_CORE = registerWithItem("time_log_core", TimeLogCoreBlock::new, () -> TIME_LOG_PROPS);
-	public static final DeferredBlock<Block> TRANSFORMATION_LOG_CORE = registerWithItem("transformation_log_core", TransLogCoreBlock::new, () -> TRANSFORMATION_LOG_PROPS);
-	public static final DeferredBlock<Block> MINING_LOG_CORE = registerWithItem("mining_log_core", MineLogCoreBlock::new, () -> MINING_LOG_PROPS);
-	public static final DeferredBlock<Block> SORTING_LOG_CORE = registerWithItem("sorting_log_core", SortLogCoreBlock::new, () -> SORTING_LOG_PROPS);
+	public static final DeferredBlock<Block> TIME_LOG_CORE = registerWithItem("time_log_core", TimeLogCoreBlock::new, () -> coreProperties(MapColor.DIRT, MapColor.PODZOL));
+	public static final DeferredBlock<Block> TRANSFORMATION_LOG_CORE = registerWithItem("transformation_log_core", TransLogCoreBlock::new, () -> coreProperties(MapColor.WOOD, MapColor.PODZOL));
+	public static final DeferredBlock<Block> MINING_LOG_CORE = registerWithItem("mining_log_core", MineLogCoreBlock::new, () -> coreProperties(MapColor.SAND, MapColor.QUARTZ));
+	public static final DeferredBlock<Block> SORTING_LOG_CORE = registerWithItem("sorting_log_core", SortLogCoreBlock::new, () -> coreProperties(MapColor.PODZOL, MapColor.COLOR_BROWN));
 
 	public static final DeferredBlock<Block> MANGROVE_ROOT = registerWithItem("mangrove_root", Block::new, () -> BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.STONE).sound(SoundType.WOOD).strength(2.0F));
 
@@ -716,6 +716,10 @@ public class TFBlocks {
 
 	private static BlockBehaviour.Properties logProperties(MapColor top, MapColor side) {
 		return BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
+	}
+
+	private static BlockBehaviour.Properties coreProperties(MapColor top, MapColor side) {
+		return BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(state -> state.getValue(DirectionalBlock.FACING).getAxis() == Direction.Axis.Y ? top : side).strength(2.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(SpecialMagicLogBlock.ACTIVE) ? 15 : 0);
 	}
 
 	public static BlockBehaviour.Properties copyAndScaleProperties(Block block, float scale) {
