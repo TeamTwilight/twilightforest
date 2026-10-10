@@ -32,7 +32,7 @@ public class EmptyMazeMapItem extends Item {
 			if (itemStack.isEmpty()) {
 				return InteractionResult.SUCCESS.heldItemTransformedTo(map);
 			} else {
-				InventoryUtil.giveItemToPlayer(player, map.copy());
+				InventoryUtil.giveItemToPlayer(player, map.copy(), false);
 
 				return InteractionResult.SUCCESS;
 			}
