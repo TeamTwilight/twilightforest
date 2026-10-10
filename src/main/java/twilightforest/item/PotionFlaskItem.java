@@ -58,7 +58,7 @@ public class PotionFlaskItem extends Item {
 			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
 				if (!player.getAbilities().instabuild) {
 					other.shrink(1);
-					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE), false);
 				}
 
 				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
@@ -79,7 +79,7 @@ public class PotionFlaskItem extends Item {
 			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
 				if (!player.getAbilities().instabuild) {
 					other.shrink(1);
-					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE), false);
 				}
 
 				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
@@ -156,7 +156,7 @@ public class PotionFlaskItem extends Item {
 
 		drunk.set(TFDataComponents.POTION_FLASK_CONTENTS, remaining);
 		if (!single && entity instanceof Player player) {
-			InventoryUtil.giveItemToPlayer(player, drunk);
+			InventoryUtil.giveItemToPlayer(player, drunk, false);
 		}
 		return stack;
 	}
@@ -168,7 +168,7 @@ public class PotionFlaskItem extends Item {
 			stack.shrink(1);
 
 			onDrink.accept(copy);
-			InventoryUtil.giveItemToPlayer(player, copy);
+			InventoryUtil.giveItemToPlayer(player, copy, false);
 		} else {
 			//otherwise just use the existing stack. Having it jump around the inventory is weird
 			onDrink.accept(stack);

@@ -60,7 +60,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 							stack.shrink(1);
 							ItemStackTemplate remainder = stack.getCraftingRemainder();
 							if (remainder != null) {
-								InventoryUtil.giveItemToPlayer(player, remainder.create());
+								InventoryUtil.giveItemToPlayer(player, remainder.create(), false);
 							}
 						}
 						item.setDamageValue(item.getDamageValue() - recipe.getRepairDurability());

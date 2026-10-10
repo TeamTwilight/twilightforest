@@ -97,7 +97,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 			if (!level.isClientSide()) {
 				ItemStack item = rack.takeTheItem();
 				if (!item.isEmpty()) {
-					InventoryUtil.giveItemToPlayer(player, item);
+					InventoryUtil.giveItemToPlayer(player, item, false);
 					level.playSound(null, pos, TFSounds.DRYING_RACK_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.75F, 0.75F + level.getRandom().nextFloat() * 0.5F);
 					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 				} else return InteractionResult.CONSUME;
