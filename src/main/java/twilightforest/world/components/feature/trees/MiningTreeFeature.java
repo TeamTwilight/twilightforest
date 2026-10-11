@@ -55,7 +55,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		// place minewood core
 		BlockState stateAtCorePos = world.getBlockState(pos.above());
 		if (stateAtCorePos.is(BlockTags.LOGS) || stateAtCorePos.canBeReplaced()) {
-			world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), Block.UPDATE_ALL);
+			world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.get().defaultBlockState(), Block.UPDATE_ALL);
 			world.scheduleTick(pos.above(), TFBlocks.MINING_LOG_CORE.get(), 20);
 		}
 
