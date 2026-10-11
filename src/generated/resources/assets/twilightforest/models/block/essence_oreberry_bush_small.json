@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:block/util/small_bush",
+  "parent": "twilightforest:block/util/small_bush_emissive",
   "textures": {
     "all": "twilightforest:block/essence_oreberry_bush"
   }

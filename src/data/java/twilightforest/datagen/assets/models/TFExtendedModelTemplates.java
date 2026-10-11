@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 import net.neoforged.neoforge.client.model.ExtraFaceData;
+import net.neoforged.neoforge.client.model.generators.template.ElementBuilder;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplate;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import twilightforest.block.SnowLoggable;
@@ -94,21 +95,36 @@ public class TFExtendedModelTemplates extends TFModelTemplates {
 	public static final ExtendedModelTemplate[] SNOW_LOGGED_LARGE_BUSHES = Util.make(new ExtendedModelTemplate[SnowLoggable.MAX_SNOW_LAYERS], templates -> {
 		for (int layers = 1; layers < templates.length; layers++) {
 			float bottom = layers * 2.0F + SnowLoggable.SNOW_Z_FIGHTING;
-			templates[layers] = ExtendedModelTemplateBuilder.builder()
-				.parent(Identifier.withDefaultNamespace("block/cube_all"))
-				.requiredTextureSlot(TextureSlot.ALL)
-				.element(elementBuilder -> elementBuilder
-					.from(SnowLoggable.SNOW_Z_FIGHTING, bottom, SnowLoggable.SNOW_Z_FIGHTING)
-					.to(16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING)
-					.face(Direction.UP, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.UP))
-					.face(Direction.DOWN, faceBuilder -> faceBuilder.texture(TextureSlot.ALL))
-					.face(Direction.NORTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.NORTH))
-					.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.SOUTH))
-					.face(Direction.WEST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.WEST))
-					.face(Direction.EAST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.EAST))
-				).build();
+			templates[layers] = ExtendedModelTemplateBuilder.of(ModelTemplates.CUBE_ALL)
+				.element(elementBuilder -> createSnowLoggedLargeBushElement(elementBuilder, bottom,0))
+				.build();
 		}
 	});
+
+	public static final ExtendedModelTemplate[] SNOW_LOGGED_LARGE_BUSHES_EMISSIVE = Util.make(new ExtendedModelTemplate[SnowLoggable.MAX_SNOW_LAYERS], templates -> {
+		for (int layers = 1; layers < templates.length; layers++) {
+			float bottom = layers * 2.0F + SnowLoggable.SNOW_Z_FIGHTING;
+			templates[layers] = ExtendedModelTemplateBuilder.of(ModelTemplates.CUBE_ALL)
+				.element(elementBuilder -> createSnowLoggedLargeBushElement(elementBuilder, bottom, 3))
+				.build();
+		}
+	});
+
+	private static void createSnowLoggedLargeBushElement(ElementBuilder elementBuilder, float bottom, int lightEmission) {
+		if (lightEmission > 0) {
+			elementBuilder.lightEmission(lightEmission);
+		}
+
+		elementBuilder
+			.from(SnowLoggable.SNOW_Z_FIGHTING, bottom, SnowLoggable.SNOW_Z_FIGHTING)
+			.to(16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING)
+			.face(Direction.UP, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.UP))
+			.face(Direction.DOWN, faceBuilder -> faceBuilder.texture(TextureSlot.ALL))
+			.face(Direction.NORTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.NORTH))
+			.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.SOUTH))
+			.face(Direction.WEST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.WEST))
+			.face(Direction.EAST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.EAST));
+	}
 
 	public static ExtendedModelTemplate emissiveItem(ModelTemplate template, String layer, int lightEmission) {
 		return ExtendedModelTemplateBuilder.of(template)
