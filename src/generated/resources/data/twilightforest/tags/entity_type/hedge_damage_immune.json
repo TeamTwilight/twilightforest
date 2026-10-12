@@ -1,0 +1,11 @@
+{
+  "values": [
+    "minecraft:spider",
+    "minecraft:cave_spider",
+    "twilightforest:hedge_spider",
+    "twilightforest:swarm_spider",
+    "twilightforest:king_spider",
+    "twilightforest:carminite_broodling",
+    "minecraft:item"
+  ]
+}
