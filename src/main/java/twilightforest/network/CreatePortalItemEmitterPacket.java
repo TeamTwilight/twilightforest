@@ -41,9 +41,7 @@ public record CreatePortalItemEmitterPacket(int entityID) implements CustomPacke
 					return;
 
 				boolean alreadyExists = Minecraft.getInstance().particleEngine.trackingEmitters.stream()
-					.filter(PortalItemEmitter.class::isInstance)
-					.map(PortalItemEmitter.class::cast)
-					.anyMatch(emitter -> emitter.isTrackingEntity(item));
+					.anyMatch(emitter -> emitter instanceof PortalItemEmitter portalEmitter && portalEmitter.isTrackingEntity(item));
 
 				if (!alreadyExists) {
 					Minecraft.getInstance().particleEngine.trackingEmitters.add(new PortalItemEmitter(level, item));
