@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "twilightforest:block/nagastone_bottom_tip",
+    "east": "twilightforest:block/nagastone_cross_section",
+    "north": "twilightforest:block/nagastone_left_up",
+    "particle": "twilightforest:block/nagastone_cross_section",
+    "south": "twilightforest:block/nagastone_right_up",
+    "up": "twilightforest:block/nagastone_cross_section",
+    "west": "twilightforest:block/nagastone_tip_down"
+  }
+}
