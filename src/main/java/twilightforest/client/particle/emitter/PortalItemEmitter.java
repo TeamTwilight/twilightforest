@@ -10,19 +10,21 @@ import net.minecraft.world.entity.Entity;
 public class PortalItemEmitter extends TrackingEmitter {
 	private final Entity entity;
 	private final ClientLevel level;
+	private boolean initialized;
 
 	public PortalItemEmitter(ClientLevel level, Entity entity) {
 		super(level, entity, new SimpleParticleType(false), Integer.MAX_VALUE); // The particleType and lifeTime values here will not be used
 		this.entity = entity;
 		this.level = level;
+		this.initialized = true;
 	}
 
 	@Override
 	public void tick() {
-		if (this.entity == null) // TrackingEmitter will call the overridden tick method from its ctor, so we need a guard
+		if (!this.initialized) // TrackingEmitter will call the overridden tick method from its ctor, so we need a guard
 			return;
 
-		if (this.entity.isRemoved() || this.entity.level() != this.level) {
+		if (this.entity == null || this.entity.isRemoved() || this.entity.level() != this.level) {
 			this.remove();
 			return;
 		}
