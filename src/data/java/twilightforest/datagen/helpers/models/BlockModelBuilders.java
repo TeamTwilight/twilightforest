@@ -160,7 +160,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_long_side")))
 			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/nagastone_bottom_long")))
 			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/nagastone_turn_top")));
-		Identifier solid = TFModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(TFBlocks.NAGASTONE.get(), "_solid", solidMapping, this.modelOutput);
+		Identifier solidModel = TFModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(TFBlocks.NAGASTONE.get(), "_solid", solidMapping, this.modelOutput);
 
 		TextureMapping downMapping = new TextureMapping()
 			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
@@ -170,7 +170,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/nagastone_left_down")))
 			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
 			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/nagastone_right_down")));
-		Identifier down = ModelTemplates.CUBE.create(TwilightForestMod.prefix("block/naga_segment/down"), downMapping, this.modelOutput);
+		Identifier downModel = ModelTemplates.CUBE.create(TwilightForestMod.prefix("block/naga_segment/down"), downMapping, this.modelOutput);
 
 		TextureMapping upMapping = new TextureMapping()
 			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
@@ -180,7 +180,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/nagastone_left_up")))
 			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
 			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/nagastone_right_up")));
-		Identifier up = ModelTemplates.CUBE.create(TwilightForestMod.prefix("block/naga_segment/up"), upMapping, this.modelOutput);
+		Identifier upModel = ModelTemplates.CUBE.create(TwilightForestMod.prefix("block/naga_segment/up"), upMapping, this.modelOutput);
 
 		TextureMapping horizontalMapping = new TextureMapping()
 			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
@@ -190,18 +190,18 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/nagastone_long_side")))
 			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
 			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/nagastone_long_side")));
-		Identifier horizontal = ModelTemplates.CUBE.create(TwilightForestMod.prefix("block/naga_segment/horizontal"), horizontalMapping, this.modelOutput);
+		Identifier horizontalModel = ModelTemplates.CUBE.create(TwilightForestMod.prefix("block/naga_segment/horizontal"), horizontalMapping, this.modelOutput);
 
 		TextureMapping verticalMapping = new TextureMapping()
 			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
 			.put(TextureSlot.END, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
 			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_long_vertical")));
-		Identifier vertical = ModelTemplates.CUBE_COLUMN.extend()
+		Identifier verticalModel = ModelTemplates.CUBE_COLUMN.extend()
 			.requiredTextureSlot(TextureSlot.PARTICLE)
 			.build()
 			.create(TwilightForestMod.prefix("block/naga_segment/vertical"), verticalMapping, this.modelOutput);
 
-		TextureMapping faceMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD.get())
+		TextureMapping headMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD.get())
 			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/nagastone_top_tip")))
 			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/nagastone_bottom_tip")))
 			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
@@ -209,28 +209,28 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/nagastone_face_left")))
 			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/nagastone_face_right")))
 			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/nagastone_face_front")));
-		Identifier face = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD.get(), faceMapping, this.modelOutput);
+		Identifier headModel = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD.get(), headMapping, this.modelOutput);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE_HEAD.get(), plainVariant(face)).with(ROTATION_HORIZONTAL_FACING));
-		this.itemModelOutput.accept(TFBlocks.NAGASTONE_HEAD.asItem(), ItemModelUtils.plainModel(face));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE_HEAD.get(), plainVariant(headModel)).with(ROTATION_HORIZONTAL_FACING));
+		this.itemModelOutput.accept(TFBlocks.NAGASTONE_HEAD.asItem(), ItemModelUtils.plainModel(headModel));
 
-		this.itemModelOutput.accept(TFBlocks.NAGASTONE.asItem(), ItemModelUtils.plainModel(solid));
+		this.itemModelOutput.accept(TFBlocks.NAGASTONE.asItem(), ItemModelUtils.plainModel(solidModel));
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE.get()).with(
 			PropertyDispatch.initial(NagastoneBlock.VARIANT)
-				.select(NagastoneVariant.NORTH_DOWN, plainVariant(down).with(Y_ROT_270))
-				.select(NagastoneVariant.SOUTH_DOWN, plainVariant(down).with(Y_ROT_90))
-				.select(NagastoneVariant.WEST_DOWN, plainVariant(down).with(Y_ROT_180))
-				.select(NagastoneVariant.EAST_DOWN, plainVariant(down))
+				.select(NagastoneVariant.NORTH_DOWN, plainVariant(downModel).with(Y_ROT_270))
+				.select(NagastoneVariant.SOUTH_DOWN, plainVariant(downModel).with(Y_ROT_90))
+				.select(NagastoneVariant.WEST_DOWN, plainVariant(downModel).with(Y_ROT_180))
+				.select(NagastoneVariant.EAST_DOWN, plainVariant(downModel))
 
-				.select(NagastoneVariant.NORTH_UP, plainVariant(up).with(Y_ROT_270))
-				.select(NagastoneVariant.SOUTH_UP, plainVariant(up).with(Y_ROT_90))
-				.select(NagastoneVariant.WEST_UP, plainVariant(up).with(Y_ROT_180))
-				.select(NagastoneVariant.EAST_UP, plainVariant(up))
+				.select(NagastoneVariant.NORTH_UP, plainVariant(upModel).with(Y_ROT_270))
+				.select(NagastoneVariant.SOUTH_UP, plainVariant(upModel).with(Y_ROT_90))
+				.select(NagastoneVariant.WEST_UP, plainVariant(upModel).with(Y_ROT_180))
+				.select(NagastoneVariant.EAST_UP, plainVariant(upModel))
 
-				.select(NagastoneVariant.AXIS_X, plainVariant(horizontal))
-				.select(NagastoneVariant.AXIS_Y, plainVariant(vertical))
-				.select(NagastoneVariant.AXIS_Z, plainVariant(horizontal).with(Y_ROT_90))
-				.select(NagastoneVariant.SOLID, plainVariant(solid))
+				.select(NagastoneVariant.AXIS_X, plainVariant(horizontalModel))
+				.select(NagastoneVariant.AXIS_Y, plainVariant(verticalModel))
+				.select(NagastoneVariant.AXIS_Z, plainVariant(horizontalModel).with(Y_ROT_90))
+				.select(NagastoneVariant.SOLID, plainVariant(solidModel))
 		));
 
 		nagastonePillar(TFBlocks.NAGASTONE_PILLAR.get(), "");
