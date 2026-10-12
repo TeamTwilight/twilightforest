@@ -4,19 +4,24 @@ import net.minecraft.core.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ColumnPos;
-import net.minecraft.server.level.FullChunkStatus;
+import net.minecraft.server.level.ChunkLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
+import net.minecraft.server.level.Ticket;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.entity.ai.village.poi.PoiRecord;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.portal.TeleportTransition;
@@ -30,6 +35,7 @@ import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
+import twilightforest.init.TFPOITypes;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFStructureTags;
 import twilightforest.util.iterators.DiagonalSpiralIterator;
@@ -127,58 +133,15 @@ public class TFTeleporter {
 
 	@Nullable
 	private static BlockPos getPortalPosition(ServerLevel destDim, BlockPos pos) {
-		int i = 200; // scan radius up to 200, and also un-inline this variable back into below
-		double d0 = Double.MAX_VALUE;
-		BlockPos result = null;
-
-		for (int i1 = -i; i1 <= i; ++i1) {
-			BlockPos blockpos2;
-
-			for (int j1 = -i; j1 <= i; ++j1) {
-
-				// skip positions outside current world border (MC-114796)
-				if (!destDim.getWorldBorder().isWithinBounds(pos.offset(i1, 0, j1))) {
-					continue;
-				}
-
-				ChunkPos chunkPos = ChunkPos.containing(pos.offset(i1, 0, j1));
-				LevelChunk chunk = destDim.getChunkSource().getChunkNow(chunkPos.x(), chunkPos.z());
-
-				// skip chunks that aren't generated
-				if (chunk == null || chunk.getFullStatus() == FullChunkStatus.INACCESSIBLE) {
-					continue;
-				}
-
-				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= destDim.getMinY(); blockpos1 = blockpos2) {
-					blockpos2 = blockpos1.below();
-
-					// don't lookup state if inner condition would fail
-					if (d0 >= 0.0D && blockpos1.distSqr(pos) >= d0) {
-						continue;
-					}
-
-					// use our portal block
-					if (isPortal(chunk.getBlockState(blockpos1))) {
-						for (blockpos2 = blockpos1.below(); isPortal(chunk.getBlockState(blockpos2)); blockpos2 = blockpos2.below()) {
-							blockpos1 = blockpos2;
-						}
-
-						float d1 = (float) blockpos1.distSqr(pos);
-						if (d0 < 0.0D || d1 < d0) {
-							d0 = d1;
-							result = blockpos1;
-							// restrict search radius to new distance
-							i = Mth.ceil(Mth.sqrt(d1));
-						}
-					}
-				}
-			}
-		}
-		return result;
-	}
-
-	private static int getScanHeight(ServerLevel world, BlockPos pos) {
-		return getScanHeight(world, pos.getX(), pos.getZ());
+		PoiManager poiManager = destDim.getPoiManager();
+		int radius = 200;
+		poiManager.ensureLoadedAndValid(destDim, pos, radius);
+		return poiManager.getInSquare(type -> type.is(TFPOITypes.TWILIGHT_PORTAL.getKey()), pos, radius, PoiManager.Occupancy.ANY)
+			.map(PoiRecord::getPos)
+			.filter(destDim.getWorldBorder()::isWithinBounds)
+			.filter(portalPos -> isPortal(destDim.getBlockState(portalPos)))
+			.min(Comparator.<BlockPos>comparingDouble(portalPos -> portalPos.distSqr(pos)).thenComparingInt(Vec3i::getY))
+			.orElse(null);
 	}
 
 	private static int getScanHeight(ServerLevel world, int x, int z) {
@@ -316,7 +279,9 @@ public class TFTeleporter {
 			.map(HolderSet.ListBacked::iterator)
 			.orElse(Collections.emptyIterator());
 
-		LevelChunk chunkAt = destLevel.getChunkAt(pos);
+		// Safety checks need structure references, not fully generated terrain.
+		ChunkAccess chunkAt = destLevel.getChunk(SectionPos.blockToSectionCoord(pos.getX()),
+			SectionPos.blockToSectionCoord(pos.getZ()), ChunkStatus.STRUCTURE_REFERENCES);
 
 		while (landmarksInChunk.hasNext()) {
 			Holder<Structure> structureHolder = landmarksInChunk.next();
@@ -385,7 +350,14 @@ public class TFTeleporter {
 	protected static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
 
 		int x = Mth.floor(pos.x()) >> 4;
-		int z = Mth.floor(pos.y()) >> 4;
+		int z = Mth.floor(pos.z()) >> 4;
+
+		// Register the same tickets as getChunk before waiting, so generation can overlap.
+		for (int dx = -2; dx <= 2; dx++) {
+			for (int dz = -2; dz <= 2; dz++) {
+				world.getChunkSource().addTicket(new Ticket(TicketType.UNKNOWN, ChunkLevel.byStatus(ChunkStatus.FULL)), new ChunkPos(x + dx, z + dz));
+			}
+		}
 
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
