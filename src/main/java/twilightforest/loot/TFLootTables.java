@@ -105,6 +105,8 @@ public class TFLootTables {
 
 	public static final ResourceKey<LootTable> OMINOUS_SPAWNER_DROPS = register("blocks/ominous_spawner_drops");
 
+	public static final ResourceKey<LootTable> TORCHBERRY_INTERACT_DROPS = register("blocks/torchberry_interact_drops");
+
 	// Big bug squish loot
 	public static final ResourceKey<LootTable> CICADA_SQUISH_DROPS = register("blocks/cicada_squish");
 	public static final ResourceKey<LootTable> FIREFLY_SQUISH_DROPS = register("blocks/firefly_squish");
