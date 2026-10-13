@@ -40,7 +40,6 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
-import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
@@ -50,6 +49,7 @@ import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.tags.TFBlockTags;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.tags.TFItemTags;
 import twilightforest.util.Enforcement;
 import twilightforest.util.PlayerHelper;
@@ -180,11 +180,10 @@ public class ProgressionEvents {
 		return false;
 	}
 
-	//TODO make ignored entities into a tag
 	private void preventLockedAreaEntityDamage(LivingIncomingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas
-		if (living.level() instanceof ServerLevel serverLevel && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
+		if (living.level() instanceof ServerLevel serverLevel && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living.is(TFEntityTypeTags.PROGRESSION_LOCK_VULNERABLE))
 			&& isAreaProtected(serverLevel, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);

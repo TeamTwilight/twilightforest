@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-29T09:00:36.149108439	Twilight Forest Entity Tags
+// 26.1.2	2026-10-12T22:12:22.256361	Twilight Forest Entity Tags
 d208fff881b5ab7116f15e79ec1b5954653479cd data/aether/tags/entity_type/deflectable_projectiles.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/aether/tags/entity_type/fire_mob.json
 3ddb086fa7ad80a4f7018142796566c22407e7e4 data/aether/tags/entity_type/pigs.json
@@ -35,5 +35,6 @@ bfe454dfc8b286c9a748229c8338e4e382fb5348 data/twilightforest/tags/entity_type/do
 6787368a63a113d6f8b2e25cd08d952fd7467436 data/twilightforest/tags/entity_type/lich_poppables.json
 20a1f4f56dc7667b8bc729dfd372c2e9f5d7ad1e data/twilightforest/tags/entity_type/lifedrain_drops_no_flesh.json
 c5eb251bcb3f4e958ddcb4f254b0d3563e7d28e7 data/twilightforest/tags/entity_type/multiplayer_inclusive_entities.json
+c807b02a464cd7ad44084e38928a9258569ae60f data/twilightforest/tags/entity_type/progression_lock_vulnerable.json
 3ee8c8fc2a97ac50a0823d806c70f772cf32f52b data/twilightforest/tags/entity_type/rides_obstruct_snatching.json
 f42bc250a191bdb941d3e073c78555e3139a09b9 data/twilightforest/tags/entity_type/sortable_entities.json
