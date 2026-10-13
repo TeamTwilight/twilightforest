@@ -43,7 +43,11 @@ import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFGameRules;
-import twilightforest.network.*;
+import twilightforest.network.AreaProtectionPacket;
+import twilightforest.network.CreatePortalItemEmitterPacket;
+import twilightforest.network.EnforceProgressionStatusPacket;
+import twilightforest.network.MissingAdvancementToastPacket;
+import twilightforest.network.StructureProtectionPacket;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFItemTags;
 import twilightforest.util.Enforcement;
@@ -193,11 +197,12 @@ public class ProgressionEvents {
 		ServerLevel level = player.level();
 
 		// check for portal creation, at least if it's not disabled
-		if (!TFConfig.disablePortalCreation && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
+		int portalCheckInterval = !TFConfig.checkPortalPlacement ? 100 : 20;
+		if (!TFConfig.disablePortalCreation && player.tickCount % portalCheckInterval == 0) {
 			// skip non admin players when the option is on
 			if (level.getServer().getProfilePermissions(player.nameAndId()).level().isEqualOrHigherThan(TFConfig.portalCreationPermission)) {
 				// reduce range to 4.0 if config is set to admins/owners only
-				checkForPortalCreation(player, level, TFConfig.portalCreationPermission.isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F);
+				checkForPortalCreation(player, level, TFConfig.portalCreationPermission.isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F, portalCheckInterval);
 			}
 		}
 
@@ -234,7 +239,7 @@ public class ProgressionEvents {
 		}).orElse(false);
 	}
 
-	private static void checkForPortalCreation(ServerPlayer player, ServerLevel level, float rangeToCheck) {
+	private void checkForPortalCreation(ServerPlayer player, ServerLevel level, float rangeToCheck, int checkInterval) {
 		if (level.dimension().identifier().equals(Identifier.parse(TFConfig.originDimension))
 			|| TFDimension.isTwilightPortalDestination(level)
 			|| TFConfig.allowPortalsInOtherDimensions) {
@@ -271,10 +276,10 @@ public class ProgressionEvents {
 				}
 			}
 
-			PacketDistributor.sendToPlayersTrackingEntity(qualified, new CreatePortalItemEmitterPacket(qualified.getId()));
-
 			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
+			else
+				PacketDistributor.sendToPlayersTrackingEntity(qualified, new CreatePortalItemEmitterPacket(qualified.getId(), checkInterval));
 
 		}
 	}

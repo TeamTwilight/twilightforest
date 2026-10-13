@@ -12,16 +12,18 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.emitter.PortalItemEmitter;
 
-public record CreatePortalItemEmitterPacket(int entityID) implements CustomPacketPayload {
+public record CreatePortalItemEmitterPacket(int entityID, int lifetime) implements CustomPacketPayload {
+
 	public static final CustomPacketPayload.Type<CreatePortalItemEmitterPacket> TYPE = new CustomPacketPayload.Type<>(TwilightForestMod.prefix("create_portal_item_emitter_packet"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, CreatePortalItemEmitterPacket> STREAM_CODEC = CustomPacketPayload.codec(CreatePortalItemEmitterPacket::write, CreatePortalItemEmitterPacket::new);
 
 	public CreatePortalItemEmitterPacket(FriendlyByteBuf buf) {
-		this(buf.readInt());
+		this(buf.readInt(), buf.readInt());
 	}
 
 	public void write(FriendlyByteBuf buf) {
-		buf.writeInt(this.entityID());
+		buf.writeInt(entityID());
+		buf.writeInt(lifetime());
 	}
 
 	@Override
@@ -37,15 +39,8 @@ public record CreatePortalItemEmitterPacket(int entityID) implements CustomPacke
 					return;
 
 				Entity entity = level.getEntity(message.entityID());
-				if (!(entity instanceof ItemEntity item))
-					return;
-
-				boolean alreadyExists = Minecraft.getInstance().particleEngine.trackingEmitters.stream()
-					.anyMatch(emitter -> emitter instanceof PortalItemEmitter portalEmitter && portalEmitter.isTrackingEntity(item));
-
-				if (!alreadyExists) {
-					Minecraft.getInstance().particleEngine.trackingEmitters.add(new PortalItemEmitter(level, item));
-				}
+				if (entity instanceof ItemEntity item)
+					Minecraft.getInstance().particleEngine.add(new PortalItemEmitter(level, item, message.lifetime()));
 			});
 		}
 	}
