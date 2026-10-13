@@ -126,6 +126,8 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> ESSENCE_BERRY_BUSH_DROPS = register("blocks/essence_berry_bush_berries");
 	public static final ResourceKey<LootTable> TORCHBERRY_PLANT_DROPS = register("blocks/torchberry_plant_berries");
 
+	public static final ResourceKey<LootTable> LIVEROOT_STRIP_DROPS = register("blocks/liveroot_strip");
+
 	//public static final Identifier ALL_BOSSES = register("entities/all_bosses");
 
 	public static void generateChest(WorldGenLevel world, BlockPos pos, Direction dir, boolean trapped, ResourceKey<LootTable> lootTable) {

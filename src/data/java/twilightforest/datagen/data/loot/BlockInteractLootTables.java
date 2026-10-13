@@ -1,12 +1,17 @@
 package twilightforest.datagen.data.loot;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
 import twilightforest.init.TFItems;
 import twilightforest.loot.TFLootTables;
 
@@ -31,5 +36,14 @@ public record BlockInteractLootTables(HolderLookup.Provider registries) implemen
 		consumer.accept(TFLootTables.ESSENCE_BERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.ESSENCE_BERRY))));
 
 		consumer.accept(TFLootTables.TORCHBERRY_PLANT_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.TORCHBERRIES))));
+		consumer.accept(
+			TFLootTables.LIVEROOT_STRIP_DROPS,
+			LootTable.lootTable().withPool(
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1))
+					.add(LootItem.lootTableItem(TFItems.LIVEROOT).apply(ApplyBonusCount.addOreBonusCount(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE))))
+					.when(CanItemPerformAbility.canItemPerformAbility(ItemAbilities.AXE_STRIP))
+			)
+		);
 	}
 }
