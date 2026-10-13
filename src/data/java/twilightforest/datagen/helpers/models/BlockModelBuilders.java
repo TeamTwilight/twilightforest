@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.blockstate.CompositeBlockStateModelBuilder;
 import net.neoforged.neoforge.client.model.generators.blockstate.CustomBlockStateModelBuilder;
+import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplate;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -1076,21 +1077,26 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), this.modelOutput), new ChestSpecialRenderer.Unbaked(texture)));
 	}
 
-	public void generateBush(Block bush) {
+	public void generateBush(Block bush, boolean emissive) {
 		TextureMapping baseTexture = TextureMapping.cube(bush);
 		TextureMapping ripeTexture = TextureMapping.cube(TextureMapping.getBlockTexture(bush, "_ripe"));
 
-		Identifier small = TFModelTemplates.SMALL_BUSH.createWithSuffix(bush, "_small", baseTexture, this.modelOutput);
+		ModelTemplate smallBushTemplate = emissive ? TFModelTemplates.SMALL_BUSH_EMISSIVE : TFModelTemplates.SMALL_BUSH;
+		ModelTemplate mediumBushTemplate = emissive ? TFModelTemplates.MEDIUM_BUSH_EMISSIVE : TFModelTemplates.MEDIUM_BUSH;
+		ModelTemplate largeBushTemplate = emissive ? TFModelTemplates.LARGE_BUSH_EMISSIVE : TFModelTemplates.LARGE_BUSH;
+		ExtendedModelTemplate[] largeSnowLoggedBushTemplates = emissive ? TFExtendedModelTemplates.SNOW_LOGGED_LARGE_BUSHES_EMISSIVE : TFExtendedModelTemplates.SNOW_LOGGED_LARGE_BUSHES;
+
+		Identifier small = smallBushTemplate.createWithSuffix(bush, "_small", baseTexture, this.modelOutput);
 		MultiVariant smallBush = plainVariant(small);
-		MultiVariant medium = plainVariant(TFModelTemplates.MEDIUM_BUSH.create(bush, baseTexture, this.modelOutput));
+		MultiVariant medium = plainVariant(mediumBushTemplate.create(bush, baseTexture, this.modelOutput));
 
 		MultiVariant[] large = new MultiVariant[SnowLoggable.MAX_SNOW_LAYERS];
 		MultiVariant[] grown = new MultiVariant[SnowLoggable.MAX_SNOW_LAYERS];
-		large[0] = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_large", baseTexture, this.modelOutput));
-		grown[0] = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_ripe", ripeTexture, this.modelOutput));
+		large[0] = plainVariant(largeBushTemplate.createWithSuffix(bush, "_large", baseTexture, this.modelOutput));
+		grown[0] = plainVariant(largeBushTemplate.createWithSuffix(bush, "_ripe", ripeTexture, this.modelOutput));
 		for (int layers = 1; layers < SnowLoggable.MAX_SNOW_LAYERS; layers++) {
-			large[layers] = plainVariant(TFExtendedModelTemplates.SNOW_LOGGED_LARGE_BUSHES[layers].createWithSuffix(bush, "_large_" + layers, baseTexture, this.modelOutput));
-			grown[layers] = plainVariant(TFExtendedModelTemplates.SNOW_LOGGED_LARGE_BUSHES[layers].createWithSuffix(bush, "_ripe_" + layers, ripeTexture, this.modelOutput));
+			large[layers] = plainVariant(largeSnowLoggedBushTemplates[layers].createWithSuffix(bush, "_large_" + layers, baseTexture, this.modelOutput));
+			grown[layers] = plainVariant(largeSnowLoggedBushTemplates[layers].createWithSuffix(bush, "_ripe_" + layers, ripeTexture, this.modelOutput));
 		}
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(bush).with(PropertyDispatch.initial(TFBushBlock.AGE, TFBushBlock.SNOW_LAYERS).generate((age, snow) -> {

@@ -91,24 +91,28 @@ public class TFExtendedModelTemplates extends TFModelTemplates {
 				.face(Direction.EAST, faceBuilder -> faceBuilder.texture(TextureSlot.TOP).uvs(3, 4, 4, 12).rotation(Quadrant.R90))
 		).build();
 
-	public static final ExtendedModelTemplate[] SNOW_LOGGED_LARGE_BUSHES = Util.make(new ExtendedModelTemplate[SnowLoggable.MAX_SNOW_LAYERS], templates -> {
-		for (int layers = 1; layers < templates.length; layers++) {
-			float bottom = layers * 2.0F + SnowLoggable.SNOW_Z_FIGHTING;
-			templates[layers] = ExtendedModelTemplateBuilder.builder()
-				.parent(Identifier.withDefaultNamespace("block/cube_all"))
-				.requiredTextureSlot(TextureSlot.ALL)
-				.element(elementBuilder -> elementBuilder
-					.from(SnowLoggable.SNOW_Z_FIGHTING, bottom, SnowLoggable.SNOW_Z_FIGHTING)
-					.to(16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING)
-					.face(Direction.UP, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.UP))
-					.face(Direction.DOWN, faceBuilder -> faceBuilder.texture(TextureSlot.ALL))
-					.face(Direction.NORTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.NORTH))
-					.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.SOUTH))
-					.face(Direction.WEST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.WEST))
-					.face(Direction.EAST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.EAST))
-				).build();
-		}
-	});
+	public static final ExtendedModelTemplate[] SNOW_LOGGED_LARGE_BUSHES = snowLoggedLargeBushes(0);
+	public static final ExtendedModelTemplate[] SNOW_LOGGED_LARGE_BUSHES_EMISSIVE = snowLoggedLargeBushes(3);
+
+	private static ExtendedModelTemplate[] snowLoggedLargeBushes(int lightEmission) {
+		return Util.make(new ExtendedModelTemplate[SnowLoggable.MAX_SNOW_LAYERS], templates -> {
+			for (int layers = 1; layers < templates.length; layers++) {
+				float bottom = layers * 2.0F + SnowLoggable.SNOW_Z_FIGHTING;
+				templates[layers] = ExtendedModelTemplateBuilder.of(ModelTemplates.CUBE_ALL)
+					.element(elementBuilder -> elementBuilder
+						.from(SnowLoggable.SNOW_Z_FIGHTING, bottom, SnowLoggable.SNOW_Z_FIGHTING)
+						.to(16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING, 16.0F - SnowLoggable.SNOW_Z_FIGHTING)
+						.lightEmission(lightEmission)
+						.face(Direction.UP, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.UP))
+						.face(Direction.DOWN, faceBuilder -> faceBuilder.texture(TextureSlot.ALL))
+						.face(Direction.NORTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.NORTH))
+						.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.SOUTH))
+						.face(Direction.WEST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.WEST))
+						.face(Direction.EAST, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).cullface(Direction.EAST))
+					).build();
+			}
+		});
+	}
 
 	public static ExtendedModelTemplate emissiveItem(ModelTemplate template, String layer, int lightEmission) {
 		return ExtendedModelTemplateBuilder.of(template)
