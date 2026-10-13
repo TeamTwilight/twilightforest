@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-08T18:29:06.179073277	Loot Tables
+// 26.1.2	2026-10-12T23:04:04.835289	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
 752190be1f464cbcb3312adb8333f98a58360d40 data/twilightforest/loot_table/blocks/acacia_drying_rack.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_table/blocks/alpha_yeti_trophy.json
@@ -412,6 +412,7 @@ cc89413a5cc8f2b68132f71db16fd133c1db2502 data/twilightforest/loot_table/blocks/t
 d442e7ba6f58ee63e6640eb65a4ba98a430f7ba8 data/twilightforest/loot_table/blocks/time_trapdoor.json
 b516c0089e48e04b1922cbde1755fd95290dd999 data/twilightforest/loot_table/blocks/time_trapped_chest.json
 864672ea541741b3be3370040ada280174b95aa1 data/twilightforest/loot_table/blocks/time_wood.json
+6b878a6abe33da5dbd6d2f2d122453b683fbac3f data/twilightforest/loot_table/blocks/torchberry_interact_drops.json
 5a89890d2925dbe28b9e73ee1217ff73ccfe0363 data/twilightforest/loot_table/blocks/torchberry_plant.json
 31ec47db3132ff4cd4cdb820325c8879a31ae34b data/twilightforest/loot_table/blocks/towerwood.json
 aa38607f8216428c5f8162bcb15cdcf3697da7ff data/twilightforest/loot_table/blocks/transformation_banister.json
