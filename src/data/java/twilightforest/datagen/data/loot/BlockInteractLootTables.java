@@ -36,6 +36,7 @@ public record BlockInteractLootTables(HolderLookup.Provider registries) implemen
 		consumer.accept(TFLootTables.ESSENCE_BERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.ESSENCE_BERRY))));
 
 		consumer.accept(TFLootTables.TORCHBERRY_PLANT_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.TORCHBERRIES))));
+		consumer.accept(TFLootTables.TROLLBER_PLANT_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.TORCHBERRIES))));
 		consumer.accept(
 			TFLootTables.LIVEROOT_STRIP_DROPS,
 			LootTable.lootTable().withPool(
