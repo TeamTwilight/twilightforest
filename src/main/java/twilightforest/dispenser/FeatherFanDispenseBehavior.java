@@ -6,12 +6,13 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -32,13 +33,17 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 		ServerLevel level = source.level();
 		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		int damage = stack.getMaxDamage() - stack.getDamageValue();
-		List<LivingEntity> thingsToPush = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
+		List<Entity> thingsToPush = level.getEntitiesOfClass(Entity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
 		if (!(thingsToPush.size() >= damage)) {
 			for (Entity entity : thingsToPush) {
 				Vec3i lookVec = level.getBlockState(source.pos()).getValue(DispenserBlock.FACING).getUnitVec3i();
 
 				if (entity.isPushable() || entity instanceof ItemEntity) {
 					entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
+					entity.needsSync = true;
+					if (entity instanceof ServerPlayer serverPlayer) {
+						serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(serverPlayer));
+					}
 					stack.hurtAndBreak(1, level, null, item -> {});
 				}
 			}
