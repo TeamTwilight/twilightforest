@@ -4,10 +4,8 @@ import net.minecraft.core.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ColumnPos;
-import net.minecraft.server.level.ChunkLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
-import net.minecraft.server.level.Ticket;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -19,8 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -135,12 +133,12 @@ public class TFTeleporter {
 	private static BlockPos getPortalPosition(ServerLevel destDim, BlockPos pos) {
 		PoiManager poiManager = destDim.getPoiManager();
 		int radius = 200;
-		poiManager.ensureLoadedAndValid(destDim, pos, radius);
 		return poiManager.getInSquare(type -> type.is(TFPOITypes.TWILIGHT_PORTAL.getKey()), pos, radius, PoiManager.Occupancy.ANY)
 			.map(PoiRecord::getPos)
 			.filter(destDim.getWorldBorder()::isWithinBounds)
+			.sorted(Comparator.<BlockPos>comparingDouble(portalPos -> portalPos.distSqr(pos)).thenComparingInt(Vec3i::getY))
 			.filter(portalPos -> isPortal(destDim.getBlockState(portalPos)))
-			.min(Comparator.<BlockPos>comparingDouble(portalPos -> portalPos.distSqr(pos)).thenComparingInt(Vec3i::getY))
+			.findFirst()
 			.orElse(null);
 	}
 
@@ -280,8 +278,8 @@ public class TFTeleporter {
 			.orElse(Collections.emptyIterator());
 
 		// Safety checks need structure references, not fully generated terrain.
-		ChunkAccess chunkAt = destLevel.getChunk(SectionPos.blockToSectionCoord(pos.getX()),
-			SectionPos.blockToSectionCoord(pos.getZ()), ChunkStatus.STRUCTURE_REFERENCES);
+		ChunkPos chunkPos = ChunkPos.containing(pos);
+		ChunkAccess chunkAt = destLevel.getChunk(chunkPos.x(), chunkPos.z(), ChunkStatus.STRUCTURE_REFERENCES);
 
 		while (landmarksInChunk.hasNext()) {
 			Holder<Structure> structureHolder = landmarksInChunk.next();
@@ -353,11 +351,7 @@ public class TFTeleporter {
 		int z = Mth.floor(pos.z()) >> 4;
 
 		// Register the same tickets as getChunk before waiting, so generation can overlap.
-		for (int dx = -2; dx <= 2; dx++) {
-			for (int dz = -2; dz <= 2; dz++) {
-				world.getChunkSource().addTicket(new Ticket(TicketType.UNKNOWN, ChunkLevel.byStatus(ChunkStatus.FULL)), new ChunkPos(x + dx, z + dz));
-			}
-		}
+		world.getChunkSource().addTicketWithRadius(TicketType.UNKNOWN, new ChunkPos(x, z), 2);
 
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
