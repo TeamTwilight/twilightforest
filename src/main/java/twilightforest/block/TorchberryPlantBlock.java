@@ -56,11 +56,20 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 			level.setBlockAndUpdate(pos, state.setValue(HAS_BERRIES, false));
 			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (level instanceof ServerLevel serverLevel) {
-				dropFromBlockInteractLootTable(serverLevel, TFLootTables.TORCHBERRY_INTERACT_DROPS, state, null, null, player,
-					(server, stack) -> {
-						ItemEntity item = new ItemEntity(server, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, stack);
-						server.addFreshEntity(item);
-					}
+				dropFromBlockInteractLootTable(
+					serverLevel,
+					TFLootTables.TORCHBERRY_PLANT_DROPS,
+					state,
+					null,
+					null,
+					player,
+					(_, stack) -> serverLevel.addFreshEntity(new ItemEntity(
+						serverLevel,
+						pos.getX() + 0.5D,
+						pos.getY(),
+						pos.getZ() + 0.5D,
+						stack
+					))
 				);
 				player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
 			}

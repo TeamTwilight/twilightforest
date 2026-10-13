@@ -105,8 +105,6 @@ public class TFLootTables {
 
 	public static final ResourceKey<LootTable> OMINOUS_SPAWNER_DROPS = register("blocks/ominous_spawner_drops");
 
-	public static final ResourceKey<LootTable> TORCHBERRY_INTERACT_DROPS = register("blocks/torchberry_interact_drops");
-
 	// Big bug squish loot
 	public static final ResourceKey<LootTable> CICADA_SQUISH_DROPS = register("blocks/cicada_squish");
 	public static final ResourceKey<LootTable> FIREFLY_SQUISH_DROPS = register("blocks/firefly_squish");
@@ -126,6 +124,7 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> IRON_OREBERRY_BUSH_DROPS = register("blocks/iron_oreberry_bush_berries");
 	public static final ResourceKey<LootTable> GOLD_OREBERRY_BUSH_DROPS = register("blocks/gold_oreberry_bush_berries");
 	public static final ResourceKey<LootTable> ESSENCE_BERRY_BUSH_DROPS = register("blocks/essence_berry_bush_berries");
+	public static final ResourceKey<LootTable> TORCHBERRY_PLANT_DROPS = register("blocks/torchberry_plant_berries");
 
 	//public static final Identifier ALL_BOSSES = register("entities/all_bosses");
 

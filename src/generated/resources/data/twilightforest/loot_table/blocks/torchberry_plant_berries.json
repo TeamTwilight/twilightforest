@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:empty",
+  "type": "minecraft:block_interact",
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -12,5 +12,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "twilightforest:blocks/torchberry_interact_drops"
+  "random_sequence": "twilightforest:blocks/torchberry_plant_berries"
 }
