@@ -40,7 +40,7 @@ public class EmptyMagicMapItem extends Item {
 			if (emptyMapStack.isEmpty()) {
 				return InteractionResult.SUCCESS.heldItemTransformedTo(newMapStack);
 			} else {
-				InventoryUtil.giveItemToPlayer(player, newMapStack.copy(), false);
+				InventoryUtil.giveItemToPlayer(player, newMapStack.copy());
 				return InteractionResult.SUCCESS;
 			}
 		}

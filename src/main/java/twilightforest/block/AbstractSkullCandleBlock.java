@@ -164,7 +164,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					player.getInventory().add(candle);
 				}
 			} else {
-				InventoryUtil.giveItemToPlayer(player, candle, false);
+				InventoryUtil.giveItemToPlayer(player, candle);
 			}
 			return InteractionResult.SUCCESS;
 		}

@@ -168,7 +168,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 							player.getInventory().add(itemstack);
 						}
 					} else {
-						InventoryUtil.giveItemToPlayer(player, itemstack, false);
+						InventoryUtil.giveItemToPlayer(player, itemstack);
 					}
 					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 					return InteractionResult.SUCCESS;
