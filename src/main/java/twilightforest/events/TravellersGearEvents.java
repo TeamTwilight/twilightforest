@@ -5,6 +5,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -275,14 +276,24 @@ public class TravellersGearEvents {
 	private void stopDamagingTravellersGear(ArmorHurtEvent event) {
 		if (event.isCanceled())
 			return;
-		event.getArmorMap().forEach((slot, entry) -> {
+
+		event.getArmorMap().forEach((slot, _) -> {
 			ItemStack damagedStack = event.getArmorItemStack(slot);
 			if (!damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
 				return;
-			if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
-				event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
-			} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
-				player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK.value(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch(), false);
+
+			int currentDamage = damagedStack.getDamageValue();
+			float incomingDamage = event.getNewDamage(slot);
+			int maxDamage = damagedStack.getMaxDamage();
+
+			if (currentDamage < maxDamage - 1 && currentDamage + incomingDamage >= maxDamage - 1 && event.getEntity() instanceof ServerPlayer player) {
+				player.connection.send(
+					new ClientboundSoundPacket(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, player.getX(), player.getY(), player.getZ(), 1.0F, player.getVoicePitch(), player.getRandom().nextLong())
+				);
+			}
+
+			if (currentDamage + incomingDamage >= maxDamage) {
+				event.setNewDamage(slot, maxDamage - currentDamage - 1);
 			}
 		});
 	}
