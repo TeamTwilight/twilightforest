@@ -33,15 +33,20 @@ public record CreatePortalItemEmitterPacket(int entityID, int lifetime) implemen
 
 	public static void handle(CreatePortalItemEmitterPacket message, IPayloadContext ctx) {
 		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(() -> {
-				ClientLevel level = Minecraft.getInstance().level;
-				if (level == null)
-					return;
+			@SuppressWarnings("Convert2Lambda")
+			Runnable work = new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel level = Minecraft.getInstance().level;
+					if (level == null)
+						return;
 
-				Entity entity = level.getEntity(message.entityID());
-				if (entity instanceof ItemEntity item)
-					Minecraft.getInstance().particleEngine.add(new PortalItemEmitter(level, item, message.lifetime()));
-			});
+					Entity entity = level.getEntity(message.entityID());
+					if (entity instanceof ItemEntity item)
+						Minecraft.getInstance().particleEngine.add(new PortalItemEmitter(level, item, message.lifetime()));
+				}
+			};
+			ctx.enqueueWork(work);
 		}
 	}
 }
