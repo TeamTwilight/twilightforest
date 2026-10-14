@@ -163,7 +163,7 @@ public class TravellersGearLogic {
 
 			Float probability = stack.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
 			if (probability == null || !TravellersModifiersManager.isModifierActive(livingEntity, stack, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
-				return;
+				continue;
 			Level level = livingEntity.level();
 			double boostedProbability = getAutoRepairChance(probability, level, livingEntity.blockPosition());
 
