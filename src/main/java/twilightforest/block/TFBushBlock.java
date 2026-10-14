@@ -17,9 +17,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
@@ -84,7 +84,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		if (state.getValue(SNOW_LAYERS) > 0) {
 			if (!Blocks.SNOW.defaultBlockState().canSurvive(level, pos)) {
-				if (level instanceof LevelAccessor accessor) {
+				if (level instanceof LevelAccessor accessor && !accessor.isClientSide()) {
 					accessor.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SNOW.defaultBlockState()));
 				}
 				return state.setValue(SNOW_LAYERS, 0);
