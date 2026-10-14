@@ -55,7 +55,9 @@ public class VanishingBlock extends Block {
 		int limit = 512;
 		Deque<BlockPos> queue = new ArrayDeque<>();
 		Set<BlockPos> checked = new HashSet<>();
+
 		queue.offer(start);
+		checked.add(start);
 
 		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
 			BlockPos cur = queue.pop();
@@ -64,12 +66,10 @@ public class VanishingBlock extends Block {
 				return true;
 			}
 
-			checked.add(cur);
-
 			if (state.getBlock() instanceof VanishingBlock) {
 				for (Direction facing : Direction.values()) {
 					BlockPos neighbor = cur.relative(facing);
-					if (!checked.contains(neighbor)) {
+					if (checked.add(neighbor)) {
 						queue.offer(neighbor);
 					}
 				}
@@ -101,11 +101,7 @@ public class VanishingBlock extends Block {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
-			if (areBlocksLocked(level, pos)) {
-				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
-			} else {
-				this.activate(level, pos);
-			}
+			this.activateOrPlayLockSound(level, pos);
 			return InteractionResult.SUCCESS;
 		}
 
@@ -128,7 +124,7 @@ public class VanishingBlock extends Block {
 			return;
 		}
 
-		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos) && !areBlocksLocked(level, pos)) {
+		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos)) {
 			this.activate(level, pos);
 		}
 	}
@@ -190,10 +186,27 @@ public class VanishingBlock extends Block {
 	}
 
 	private void activate(Level level, BlockPos pos) {
+		this.tryActivate(level, pos, false);
+	}
+
+	private void activateOrPlayLockSound(Level level, BlockPos pos) {
+		this.tryActivate(level, pos, true);
+	}
+
+	private void tryActivate(Level level, BlockPos pos, boolean playLockSound) {
 		BlockState state = level.getBlockState(pos);
-		if (state.getBlock() instanceof VanishingBlock && !isVanished(state) && !state.getValue(ACTIVE)) {
-			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-			level.scheduleTick(pos, state.getBlock(), 2 + level.getRandom().nextInt(5));
+		if (!(state.getBlock() instanceof VanishingBlock) || isVanished(state) || state.getValue(ACTIVE)) {
+			return;
 		}
+
+		if (areBlocksLocked(level, pos)) {
+			if (playLockSound) {
+				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
+			}
+			return;
+		}
+
+		level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
+		level.scheduleTick(pos, state.getBlock(), 2 + level.getRandom().nextInt(5));
 	}
 }
