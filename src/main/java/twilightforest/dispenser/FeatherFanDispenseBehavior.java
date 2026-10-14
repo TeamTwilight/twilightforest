@@ -1,94 +1,38 @@
 package twilightforest.dispenser;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.init.TFSounds;
-import twilightforest.network.ParticlePacket;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Configurable;
+import twilightforest.action.PeacockFeatherFanAction;
 
-import java.util.List;
-
+@Configurable
 public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 
-	boolean fired = false;
+	@Autowired
+	private PeacockFeatherFanAction peacockFeatherFanAction;
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
 		ServerLevel level = source.level();
-		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
-		int damage = stack.getMaxDamage() - stack.getDamageValue();
-		List<Entity> thingsToPush = level.getEntitiesOfClass(Entity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
-		if (!(thingsToPush.size() >= damage)) {
-			for (Entity entity : thingsToPush) {
-				Vec3i lookVec = level.getBlockState(source.pos()).getValue(DispenserBlock.FACING).getUnitVec3i();
-
-				if (entity.isPushable() || entity instanceof ItemEntity) {
-					entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
-					entity.needsSync = true;
-					if (entity instanceof ServerPlayer serverPlayer) {
-						serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(serverPlayer));
-					}
-					stack.hurtAndBreak(1, level, null, item -> {});
-				}
-			}
-			this.fired = true;
-		}
-
+		int fanned = peacockFeatherFanAction.fan(level, source.center(), source.state().getValue(DispenserBlock.FACING).getUnitVec3(), stack);
+		stack.hurtAndBreak(fanned + 1, level, null, _ -> {});
 		return stack;
 	}
 
 	@Override
 	protected void playSound(BlockSource source) {
-		if (this.fired) {
-			RandomSource random = source.level().getRandom();
-			source.level().playSound(null, source.pos(), TFSounds.FAN_WHOOSH.get(), SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
-			this.fired = false;
-		} else {
-			source.level().levelEvent(LevelEvent.SOUND_DISPENSER_FAIL, source.pos(), 0);
-		}
+		peacockFeatherFanAction.playWhoosh(source.level(), source.pos(), SoundSource.BLOCKS);
 	}
 
 	//Particle woooosh
 	@Override
 	protected void playAnimation(BlockSource source, Direction direction) {
-		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
-		ServerLevel level = source.level();
-		RandomSource random = level.getRandom();
-
-		int j1 = direction.getStepX();
-		int j2 = direction.getStepY();
-		int k2 = direction.getStepZ();
-		double d18 = (double) blockpos.getX() + (double) j1 * 0.6D + 0.5D;
-		double d24 = (double) blockpos.getY() + (double) j2 * 0.6D + 0.5D;
-		double d28 = (double) blockpos.getZ() + (double) k2 * 0.6D + 0.5D;
-
-		ParticlePacket packet = new ParticlePacket();
-		for (int i = 0; i < 30; ++i) {
-			double d4 = random.nextDouble() * 0.2D + 0.01D;
-			double d6 = d18 + (double) j1 * 0.01D + (random.nextDouble() - 0.5D) * (double) k2 * 0.5D;
-			double d8 = d24 + (double) j2 * 0.01D + (random.nextDouble() - 0.5D) * (double) j2 * 0.5D;
-			double d30 = d28 + (double) k2 * 0.01D + (random.nextDouble() - 0.5D) * (double) j1 * 0.5D;
-			double d9 = (double) j1 * d4 + random.nextGaussian() * 0.01D;
-			double d10 = (double) j2 * d4 + random.nextGaussian() * 0.01D;
-			double d11 = (double) k2 * d4 + random.nextGaussian() * 0.01D;
-			packet.queueParticle(ParticleTypes.CLOUD, false, false, d6, d8, d30, d9, d10, d11);
-		}
-		PacketDistributor.sendToPlayersNear(level, null, d18, d24, d28, 32.0D, packet);
+		peacockFeatherFanAction.spawnParticles(source.level(), source.center(), direction.getUnitVec3());
 	}
 }
