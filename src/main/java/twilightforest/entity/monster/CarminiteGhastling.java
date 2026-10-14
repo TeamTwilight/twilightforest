@@ -46,7 +46,8 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	public static AttributeSupplier.Builder registerAttributes() {
 		return CarminiteGhastguard.registerAttributes()
 			.add(Attributes.MAX_HEALTH, 10)
-			.add(Attributes.FOLLOW_RANGE, 16.0D);
+			.add(Attributes.FOLLOW_RANGE, 16.0D)
+			.add(Attributes.FLYING_SPEED, 0.01D);
 	}
 
 	@Override
