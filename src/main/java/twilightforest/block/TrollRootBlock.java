@@ -2,14 +2,13 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -23,9 +22,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
+import twilightforest.loot.TFLootTables;
 
 public class TrollRootBlock extends Block {
 
@@ -41,15 +40,29 @@ public class TrollRootBlock extends Block {
 		return state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(TFBlocks.TROLLVIDR) || state.is(TFBlocks.TROLLBER) || state.is(TFBlocks.UNRIPE_TROLLBER);
 	}
 
-	//TODO loot table
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (state.is(TFBlocks.TROLLBER)) {
 			level.setBlock(pos, TFBlocks.TROLLVIDR.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES.get()));
-			level.addFreshEntity(torchberries);
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
+			if (level instanceof ServerLevel serverLevel) {
+				dropFromBlockInteractLootTable(
+					serverLevel,
+					TFLootTables.TROLLBER_PLANT_DROPS,
+					state,
+					null,
+					null,
+					player,
+					(_, stack) -> serverLevel.addFreshEntity(new ItemEntity(
+						serverLevel,
+						pos.getX() + 0.5D,
+						pos.getY(),
+						pos.getZ() + 0.5D,
+						stack
+					))
+				);
+				player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
+			}
 			return InteractionResult.SUCCESS;
 		}
 		return super.useWithoutItem(state, level, pos, player, result);

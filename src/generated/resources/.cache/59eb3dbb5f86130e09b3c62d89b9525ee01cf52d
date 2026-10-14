@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-13T11:30:43.318097	Loot Tables
+// 26.1.2	2026-10-13T19:13:11.957359	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
 752190be1f464cbcb3312adb8333f98a58360d40 data/twilightforest/loot_table/blocks/acacia_drying_rack.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_table/blocks/alpha_yeti_trophy.json
@@ -437,6 +437,7 @@ fad0a9aa19b26734a620ac0edaeb2466bc77007a data/twilightforest/loot_table/blocks/t
 fc91a8ec60fe94fc343219a07a44f3973a1b5f08 data/twilightforest/loot_table/blocks/transformation_trapped_chest.json
 e4df64bb29059e0404503e7a94016abef68191c1 data/twilightforest/loot_table/blocks/transformation_wood.json
 cc275d9b2b99f3727c23afcbca8f07601d5bd445 data/twilightforest/loot_table/blocks/trollber.json
+b318bfaf5eec2d89a525505c86bd4c84c2ea4f35 data/twilightforest/loot_table/blocks/trollber_plant_berries.json
 7184c6f3cc755dc7639f7bfa5e3cc3ed030473c6 data/twilightforest/loot_table/blocks/trollsteinn.json
 2774a155d225e0ff55b7c2fbd44208cff2e8a533 data/twilightforest/loot_table/blocks/trollvidr.json
 438daa1fc06a38e400b9a4ae5ef58d8c70c67f73 data/twilightforest/loot_table/blocks/trophy_pedestal.json
