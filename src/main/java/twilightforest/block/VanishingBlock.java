@@ -101,7 +101,7 @@ public class VanishingBlock extends Block {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
-			this.activateOrPlayLockSound(level, pos);
+			this.tryActivate(level, pos, true);
 			return InteractionResult.SUCCESS;
 		}
 
@@ -125,7 +125,7 @@ public class VanishingBlock extends Block {
 		}
 
 		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos)) {
-			this.activate(level, pos);
+			this.tryActivate(level, pos, false);
 		}
 	}
 
@@ -156,7 +156,7 @@ public class VanishingBlock extends Block {
 				level.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.get() ? TFSounds.REAPPEAR_POOF.get() : TFSounds.VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
-					this.activate(level, pos.relative(e));
+					this.tryActivate(level, pos.relative(e), false);
 				}
 			}
 		}
@@ -185,22 +185,14 @@ public class VanishingBlock extends Block {
 		}
 	}
 
-	private void activate(Level level, BlockPos pos) {
-		this.tryActivate(level, pos, false);
-	}
-
-	private void activateOrPlayLockSound(Level level, BlockPos pos) {
-		this.tryActivate(level, pos, true);
-	}
-
-	private void tryActivate(Level level, BlockPos pos, boolean playLockSound) {
+	private void tryActivate(Level level, BlockPos pos, boolean playSoundWhenLocked) {
 		BlockState state = level.getBlockState(pos);
 		if (!(state.getBlock() instanceof VanishingBlock) || isVanished(state) || state.getValue(ACTIVE)) {
 			return;
 		}
 
 		if (areBlocksLocked(level, pos)) {
-			if (playLockSound) {
+			if (playSoundWhenLocked) {
 				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			}
 			return;
