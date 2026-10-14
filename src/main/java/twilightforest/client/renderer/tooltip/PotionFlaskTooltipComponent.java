@@ -87,13 +87,12 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 		return List.of();
 	}
 
-	private int getContentXOffset(int offs) {
-		return (offs - WIDTH) / 2;
+	private int getContentXOffset(int tooltipWidth) {
+		return (tooltipWidth - WIDTH) / 2;
 	}
 
 	@Override
 	public void extractImage(Font font, int x, int y, int w, int h, GuiGraphicsExtractor graphics) {
-		int offs = 113; //TODO replace with 4th param in 1.21.2+ so things properly center
 		if (this.component.potion().potion().isEmpty()) {
 			graphics.textWithWordWrap(font, EMPTY_DESCRIPTION, x, y, WIDTH, 0xFFAAAAAA);
 		} else {
@@ -108,7 +107,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 				height += font.split(component, WIDTH).size() * font.lineHeight + 1;
 			}
 		}
-		this.drawPotionBar(x + this.getContentXOffset(offs), y + this.getDescriptionHeight(font) + 4, font, graphics);
+		this.drawPotionBar(x + this.getContentXOffset(w), y + this.getDescriptionHeight(font) + 4, font, graphics);
 	}
 
 	private void drawPotionBar(int x, int y, Font font, GuiGraphicsExtractor graphics) {
