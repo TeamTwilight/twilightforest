@@ -28,16 +28,17 @@ public class WroughtIronFenceItem extends BlockItem {
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		Block block = this.getBlock();
-		if (context.isSecondaryUseActive() && level.getBlockState(pos).is(block) && !level.getBlockState(pos.above()).is(block)) {
-			BlockState state = level.getBlockState(pos);
-			boolean capped = state.getValue(WroughtIronFenceBlock.POST) == WroughtIronFenceBlock.PostState.CAPPED;
-			if (capped || level.getBlockState(pos.above()).canBeReplaced()) {
-				level.setBlockAndUpdate(pos, state.setValue(WroughtIronFenceBlock.POST, capped ? WroughtIronFenceBlock.makePost(level, state, pos, false) : WroughtIronFenceBlock.PostState.CAPPED));
-			}
-			level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.get(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
-			return InteractionResult.SUCCESS;
+		if (!context.isSecondaryUseActive())
+			return super.useOn(context);
+		BlockState state = level.getBlockState(pos);
+		if (!state.is(block) || level.getBlockState(pos.above()).is(block))
+			return super.useOn(context);
+		boolean capped = state.getValue(WroughtIronFenceBlock.POST) == WroughtIronFenceBlock.PostState.CAPPED;
+		if (capped || level.getBlockState(pos.above()).canBeReplaced()) {
+			level.setBlockAndUpdate(pos, state.setValue(WroughtIronFenceBlock.POST, capped ? WroughtIronFenceBlock.makePost(level, state, pos, false) : WroughtIronFenceBlock.PostState.CAPPED));
 		}
-		return super.useOn(context);
+		level.playSound(null, pos, TFSounds.WROUGHT_IRON_FENCE_EXTENDED.get(), SoundSource.BLOCKS, 0.35F, level.getRandom().nextFloat() * 0.1F + 0.75F);
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override

@@ -59,19 +59,19 @@ public class TripleBowItem extends BowItem {
 
 		for (int i = 0; i < arrows.size(); i++) {
 			ItemStack itemstack = arrows.get(i);
-			if (!itemstack.isEmpty()) {
-				float f4 = f2 + f3 * (float)((i + 1) / 2) * f1;
-				f3 = -f3;
-				stack.hurtAndBreak(this.getDurabilityUse(itemstack), living, hand);
+			if (itemstack.isEmpty())
+				continue;
+			float f4 = f2 + f3 * (float)((i + 1) / 2) * f1;
+			f3 = -f3;
+			stack.hurtAndBreak(this.getDurabilityUse(itemstack), living, hand);
 
-				for (int j = -1; j <= 1; j++) {
-					ItemStack copy = itemstack.copy();
-					if (j != 0) copy.set(DataComponents.INTANGIBLE_PROJECTILE, Unit.INSTANCE);
-					Projectile projectile = this.createProjectile(level, living, stack, copy, crit);
-					this.shootProjectile(living, projectile, i, speed, accuracy, f4, target);
-					projectile.setDeltaMovement(projectile.getDeltaMovement().add(0.0D, 0.0075D * 20D * j, 0.0D));
-					level.addFreshEntity(projectile);
-				}
+			for (int j = -1; j <= 1; j++) {
+				ItemStack copy = itemstack.copy();
+				if (j != 0) copy.set(DataComponents.INTANGIBLE_PROJECTILE, Unit.INSTANCE);
+				Projectile projectile = this.createProjectile(level, living, stack, copy, crit);
+				this.shootProjectile(living, projectile, i, speed, accuracy, f4, target);
+				projectile.setDeltaMovement(projectile.getDeltaMovement().add(0.0D, 0.0075D * 20D * j, 0.0D));
+				level.addFreshEntity(projectile);
 			}
 		}
 	}

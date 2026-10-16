@@ -20,11 +20,12 @@ public class TwilightWandItem extends ScepterItem {
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
 		player.playSound(TFSounds.TWILIGHT_SCEPTER_USE.get(), 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
 
-		if (!level.isClientSide()) {
-			level.addFreshEntity(new TwilightWandBolt(level, player));
-			if (!player.isCreative() && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
-				stack.hurtWithoutBreaking(1, player);
-			}
+		if (level.isClientSide())
+			return InteractionResult.SUCCESS;
+
+		level.addFreshEntity(new TwilightWandBolt(level, player));
+		if (!player.isCreative() && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
+			stack.hurtWithoutBreaking(1, player);
 		}
 		return InteractionResult.SUCCESS;
 	}
