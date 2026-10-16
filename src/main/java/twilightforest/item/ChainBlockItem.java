@@ -39,7 +39,7 @@ public class ChainBlockItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-		if (!level.isClientSide() && stack.get(TFDataComponents.THROWN_PROJECTILE) != null && this.getThrownEntity(level, stack) == null) {
+		if (stack.get(TFDataComponents.THROWN_PROJECTILE) != null && this.getThrownEntity(level, stack) == null) {
 			stack.remove(TFDataComponents.THROWN_PROJECTILE);
 		}
 	}

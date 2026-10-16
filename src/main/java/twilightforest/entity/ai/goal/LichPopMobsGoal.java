@@ -56,7 +56,7 @@ public class LichPopMobsGoal extends Goal {
 	public void tick() {
 		if (this.lich.getTeleportInvisibility() > 0) return;
 		super.tick();
-		if (this.lich.getScepterTimeLeft() > 0 || this.lich.level().isClientSide()) return;
+		if (this.lich.getScepterTimeLeft() > 0) return;
 		for (Mob mob : this.lich.level().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.is(TFEntityTypeTags.LICH_POPPABLES) && e != this.lich)) {
 			if (this.lich.getSensing().hasLineOfSight(mob)) {
 				mob.discard();

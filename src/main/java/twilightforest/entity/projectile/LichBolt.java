@@ -62,7 +62,7 @@ public class LichBolt extends TFThrowable {
 	public boolean hurtServer(ServerLevel server, DamageSource damagesource, float amount) {
 		super.hurtServer(server, damagesource, amount);
 
-		if (!this.level().isClientSide() && damagesource.getEntity() != null) {
+		if (damagesource.getEntity() != null) {
 			Vec3 vec3d = damagesource.getEntity().getLookAngle();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);  // reflect faster and more accurately

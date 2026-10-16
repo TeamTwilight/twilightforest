@@ -41,7 +41,7 @@ public class OreMeterItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-		if (level.isClientSide() || !stack.has(TFDataComponents.ORE_SCANNING))
+		if (!stack.has(TFDataComponents.ORE_SCANNING))
 			return;
 
 		OreScannerComponent newScan = stack.get(TFDataComponents.ORE_SCANNING).tickScan(level);

@@ -41,10 +41,10 @@ public abstract class ScepterItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-		if (owner.tickCount % 20 == 0 && level instanceof ServerLevel serverLevel && stack.has(DataComponents.ENCHANTMENTS) && slot == null) {
+		if (owner.tickCount % 20 == 0 && stack.has(DataComponents.ENCHANTMENTS) && slot == null) {
 			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(level.holderOrThrow(TFEnchantments.RENEWAL));
 			if (renewal > 0) {
-				RechargeScepterEffect.applyRecharge(serverLevel, stack, owner);
+				RechargeScepterEffect.applyRecharge(level, stack, owner);
 			}
 		}
 	}
