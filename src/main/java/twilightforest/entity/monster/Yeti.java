@@ -42,7 +42,7 @@ import java.util.Optional;
 public class Yeti extends Monster implements IHostileMount {
 
 	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("anger_follow_boost"), 8, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("anger_follow_boost"), 9.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
 	public Yeti(EntityType<? extends Yeti> type, Level world) {
 		super(type, world);
@@ -66,9 +66,9 @@ public class Yeti extends Monster implements IHostileMount {
 				super.stop();
 			}
 		});
-		this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
 		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D, 0.8F));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
@@ -77,7 +77,7 @@ public class Yeti extends Monster implements IHostileMount {
 		return Monster.createMonsterAttributes()
 			.add(Attributes.MAX_HEALTH, 20.0D)
 			.add(Attributes.MOVEMENT_SPEED, 0.38D)
-			.add(Attributes.ATTACK_DAMAGE, 0.0D)
+			.add(Attributes.ATTACK_DAMAGE, 1.0D)
 			.add(Attributes.FOLLOW_RANGE, 4.0D);
 	}
 
