@@ -147,12 +147,14 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	}
 
 	public void generateTrapdoor(Block trapdoor, boolean orientable) {
-		TextureMapping texturemapping = TextureMapping.defaultTexture(trapdoor);
-		MultiVariant top = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).create(trapdoor, texturemapping, this.modelOutput));
-		Identifier bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).create(trapdoor, texturemapping, this.modelOutput);
-		MultiVariant open = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).create(trapdoor, texturemapping, this.modelOutput));
-		this.blockStateOutput.accept(createTrapdoor(trapdoor, top, plainVariant(bottom), open));
-		this.registerSimpleItemModel(trapdoor, bottom);
+		TextureMapping textureMapping = TextureMapping.defaultTexture(trapdoor);
+		MultiVariant topVariant = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).create(trapdoor, textureMapping, this.modelOutput));
+		Identifier bottomModel = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).create(trapdoor, textureMapping, this.modelOutput);
+		MultiVariant bottomVariant = plainVariant(bottomModel);
+		MultiVariant openVariant = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).create(trapdoor, textureMapping, this.modelOutput));
+		BlockModelDefinitionGenerator definitionGenerator = orientable ? createOrientableTrapdoor(trapdoor, topVariant, bottomVariant, openVariant) : createTrapdoor(trapdoor, topVariant, bottomVariant, openVariant);
+		this.blockStateOutput.accept(definitionGenerator);
+		this.registerSimpleItemModel(trapdoor, bottomModel);
 	}
 
 	//holy ternary batman
