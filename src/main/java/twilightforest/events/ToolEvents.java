@@ -123,11 +123,11 @@ public class ToolEvents {
 							container.setNewDamage(container.getNewDamage() + KNIGHTMETAL_BONUS_DAMAGE);
 						}
 						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
 					} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
 						container.setNewDamage(container.getOriginalDamage() + KNIGHTMETAL_BONUS_DAMAGE);
 						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
 					}
 				}
 			}
@@ -143,7 +143,7 @@ public class ToolEvents {
 				if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
 					container.setNewDamage(container.getNewDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
 					// enchantment attack sparkles
-					((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+					((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
 				}
 			}
 		}
