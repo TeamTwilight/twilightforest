@@ -229,7 +229,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	protected void customServerAiStep(ServerLevel server) {
 		super.customServerAiStep(server);
-		if (!this.level().isClientSide()) this.tickBossBar();
+		this.tickBossBar();
 	}
 
 	protected void tickBossBar() {

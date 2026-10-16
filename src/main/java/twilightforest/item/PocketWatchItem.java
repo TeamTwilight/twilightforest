@@ -26,7 +26,7 @@ public class PocketWatchItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack itemStack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-		if (level.isClientSide() || !(owner instanceof Player player))
+		if (!(owner instanceof Player player))
 			return;
 
 		if (slot == null) {

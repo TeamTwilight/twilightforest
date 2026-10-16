@@ -208,14 +208,12 @@ public class TowerwoodBorer extends Monster {
 
 							// TF - Change block check
 							if (state.is(TFBlocks.INFESTED_TOWERWOOD)) {
-								if (world instanceof ServerLevel server) {
-									if (EventHooks.canEntityGrief(server, this.borer)) {
-										world.destroyBlock(offsetPos, true);
-										this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
-									} else {
-										// TF - reset to normal tower wood
-										world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), Block.UPDATE_ALL);
-									}
+								if (EventHooks.canEntityGrief(getServerLevel(world), this.borer)) {
+									world.destroyBlock(offsetPos, true);
+									this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
+								} else {
+									// TF - reset to normal tower wood
+									world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), Block.UPDATE_ALL);
 								}
 
 								if (random.nextBoolean()) {

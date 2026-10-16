@@ -158,9 +158,7 @@ public class EntityUtil {
 				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
 
-			if (entity.level() instanceof ServerLevel level) {
-				EnchantmentHelper.doPostAttackEffects(level, victim, source);
-			}
+			EnchantmentHelper.doPostAttackEffects(serverLevel, victim, source);
 
 			entity.setLastHurtMob(entity);
 		}

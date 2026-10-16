@@ -112,7 +112,7 @@ public class LichMinionsGoal extends Goal {
 	}
 
 	private void checkAndSpawnMinions() {
-		if (!this.lich.level().isClientSide() && this.lich.getMinionsToSummon() > 0) {
+		if (this.lich.getMinionsToSummon() > 0) {
 			int minions = this.lich.countMyMinions();
 
 			// if not, spawn one!

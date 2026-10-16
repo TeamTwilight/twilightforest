@@ -27,8 +27,6 @@ public class NagaSmashGoal extends Goal {
 	@Override
 	public void start() {
 		// NAGA SMASH!
-		if (this.naga.level().isClientSide()) return;
-
 		AABB bb = this.naga.getBoundingBox();
 
 		int minx = Mth.floor(bb.minX - 0.75D);

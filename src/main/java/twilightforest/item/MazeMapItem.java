@@ -214,26 +214,24 @@ public class MazeMapItem extends MapItem {
 	// [VanillaCopy] super but shows a dot if player is too far in the vertical direction as well
 	@Override
 	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-		if (!level.isClientSide()) {
-			TFMazeMapData mapdata = this.getCustomMapData(stack, level);
+		TFMazeMapData mapdata = this.getCustomMapData(stack, level);
 
-			if (mapdata != null) {
-				if (owner instanceof Player entityplayer) {
-					mapdata.tickCarriedBy(entityplayer, stack, null);
+		if (mapdata != null) {
+			if (owner instanceof Player entityplayer) {
+				mapdata.tickCarriedBy(entityplayer, stack, null);
 
-					// TF - if player is far away vertically, show a dot
-					int yProximity = Mth.floor(entityplayer.getY() - mapdata.yCenter);
-					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
-						MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
-						if (decoration != null) {
-							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecorationTypes.PLAYER_OFF_MAP, decoration.x(), decoration.y(), decoration.rot(), Optional.empty()));
-						}
+				// TF - if player is far away vertically, show a dot
+				int yProximity = Mth.floor(entityplayer.getY() - mapdata.yCenter);
+				if (yProximity < -YSEARCH || yProximity > YSEARCH) {
+					MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
+					if (decoration != null) {
+						mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecorationTypes.PLAYER_OFF_MAP, decoration.x(), decoration.y(), decoration.rot(), Optional.empty()));
 					}
 				}
+			}
 
-				if (!mapdata.locked && slot != null && slot.getType() == EquipmentSlot.Type.HAND) {
-					this.update(level, owner, mapdata);
-				}
+			if (!mapdata.locked && slot != null && slot.getType() == EquipmentSlot.Type.HAND) {
+				this.update(level, owner, mapdata);
 			}
 		}
 	}
