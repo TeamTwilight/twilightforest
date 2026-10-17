@@ -89,11 +89,6 @@ public class LeafParticle extends SingleQuadParticle {
 		this.extractRotatedQuad(buffer, entity, quaternion, partialTicks);
 	}
 
-	@Override
-	public int getLightCoords(float partialTicks) {
-		return LightCoordsUtil.FULL_BRIGHT;
-	}
-
 	public record Factory(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
 
 		@Override
