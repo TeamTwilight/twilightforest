@@ -18,14 +18,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import tamaized.beanification.Autowired;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.selectors.KnightStonesRandomBlockSelectorFactory;
 import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 public abstract class KnightStrongholdComponent extends TFStructureComponentOld {
 	@Autowired
@@ -479,40 +479,59 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 		}
 	}
 
-	/**
-	 * Place stronghold walls on dirt/grass/stone
-	 */
-	protected void placeUpperStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, StructurePiece.BlockSelector randomBlocks) {
+	protected void placeUpperStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, StructurePiece.BlockSelector randomBlocks, List<SmallDoorway> doorways) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
-					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
-					BlockState state = this.getBlock(world, x, y, z, sbb);
-
-					BlockState stateBelow = this.getBlock(world, x, y - 1, z, sbb).getBlock().defaultBlockState();
-					boolean isKnightStone = knightStones.make().getStates().contains(stateBelow);
-					boolean isStrongholdStone = strongholdStones.make().getStates().contains(stateBelow);
-
-					boolean isValidSurface = !state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SUBSTRATE_OVERWORLD));
-					boolean isAirWithChance = state.isAir() && rand.nextInt(3) == 0;
-					boolean isStoneBelow = isKnightStone || isStrongholdStone;
-
-					if (isValidSurface || isAirWithChance && isStoneBelow) {
-						if (y == sy || y == dy) {
-							// do stronghold bricks for floor/ceiling
-							StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
-							strongBlocks.next(rand, x, y, z, wall);
-							this.placeBlock(world, strongBlocks.getNext(), x, y, z, sbb);
-
-						} else {
-							// and use decorator (with presumably underbricks) for walls
-							randomBlocks.next(rand, x, y, z, wall);
-							this.placeBlock(world, randomBlocks.getNext(), x, y, z, sbb);
-						}
-					}
+					boolean floorOrCeiling = y == sy || y == dy;
+					boolean wall = floorOrCeiling || x == sx || x == dx || z == sz || z == dz;
+					this.placeUpperStrongholdWallBlock(world, sbb, x, y, z, rand, randomBlocks, doorways, floorOrCeiling, wall);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Place stronghold walls on dirt / grass / stone
+	 */
+	private void placeUpperStrongholdWallBlock(WorldGenLevel world, BoundingBox sbb, int x, int y, int z, RandomSource rand, StructurePiece.BlockSelector randomBlocks, List<SmallDoorway> doorways, boolean floorOrCeiling, boolean wall) {
+		BlockState state = this.getBlock(world, x, y, z, sbb);
+		BlockState stateBelow = this.getBlock(world, x, y - 1, z, sbb).getBlock().defaultBlockState();
+		boolean isKnightStone = knightStones.make().getStates().contains(stateBelow);
+		boolean isStrongholdStone = strongholdStones.make().getStates().contains(stateBelow);
+
+		boolean isValidSurface = !state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SUBSTRATE_OVERWORLD));
+		boolean isAirWithChance = state.isAir() && rand.nextInt(3) == 0;
+		boolean isStoneBelow = isKnightStone || isStrongholdStone || stateBelow.is(Blocks.COBBLESTONE_WALL);
+		if (!isValidSurface && !(isAirWithChance && isStoneBelow))
+			return;
+
+		Optional<BlockState> doorwayState = this.getSmallDoorwayState(x, y, z, doorways);
+		if (doorwayState.isPresent()) {
+			this.placeBlock(world, doorwayState.get(), x, y, z, sbb);
+			return;
+		}
+
+		StructurePiece.BlockSelector blockSelector = floorOrCeiling ? TFStructureComponentOld.getStrongholdStones() : randomBlocks;
+		blockSelector.next(rand, x, y, z, wall);
+		this.placeBlock(world, blockSelector.getNext(), x, y, z, sbb);
+	}
+
+	protected Optional<BlockState> getSmallDoorwayState(int x, int y, int z, List<SmallDoorway> doorways) {
+		for (SmallDoorway doorway : doorways) {
+			if (y != doorway.y() && y != doorway.y() + 1)
+				continue;
+
+			if (x == doorway.x() && z == doorway.z())
+				return Optional.of(Blocks.AIR.defaultBlockState());
+
+			if ((doorway.axis() == Direction.Axis.Z && z == doorway.z() && Math.abs(x - doorway.x()) == 1)
+				|| (doorway.axis() == Direction.Axis.X && x == doorway.x() && Math.abs(z - doorway.z()) == 1)) {
+				return Optional.of(Blocks.COBBLESTONE_WALL.defaultBlockState());
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public interface Factory<T extends KnightStrongholdComponent> {
@@ -522,5 +541,8 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return this.isComponentProtected() ? TerrainAdjustment.BURY : TerrainAdjustment.NONE;
+	}
+
+	protected record SmallDoorway(Direction.Axis axis, int x, int y, int z) {
 	}
 }
