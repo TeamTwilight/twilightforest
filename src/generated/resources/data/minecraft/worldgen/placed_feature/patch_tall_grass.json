@@ -35,19 +35,27 @@
       }
     },
     {
-      "type": "minecraft:block_predicate_filter",
-      "predicate": {
-        "type": "minecraft:matching_block_tag",
-        "tag": "minecraft:air"
-      }
-    },
-    {
       "type": "twilightforest:no_structure",
       "additional_clearance": 0,
       "occupies_surface": false,
       "occupies_underground": false,
       "occupies_vegetation": true,
       "structures_allowed": []
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:not",
+        "predicate": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "minecraft:mycelium",
+          "offset": [
+            0,
+            -1,
+            0
+          ]
+        }
+      }
     }
   ]
 }
