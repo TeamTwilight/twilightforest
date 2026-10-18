@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-18T15:22:02.4168121	Registries
+// 26.1.2	2026-10-18T19:08:41.103244	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -10,7 +10,7 @@ b02ef5ca34cf18dab1ae63fe8266b87e4d612478 data/minecraft/twilight/wood_palettes/j
 5fbf8048f4f024ba7ebf85efbf3a169a2faa1139 data/minecraft/twilight/wood_palettes/warped.json
 bc2e1c06bd464979498dcbd19d37ac658b1b50bd data/minecraft/worldgen/placed_feature/flower_forest_flowers.json
 fc542b99ade8259c15a205a502f011f45d160dab data/minecraft/worldgen/placed_feature/patch_large_fern.json
-686f946faa6cc7a68597e0313430b8b2d56bac21 data/minecraft/worldgen/placed_feature/patch_tall_grass.json
+a931c2164c35e30cd3691699f1e7016be31b4c91 data/minecraft/worldgen/placed_feature/patch_tall_grass.json
 e0bd517d210bb520290899846b3a56e91d41af64 data/twilightforest/banner_pattern/alpha_yeti.json
 f88fbfc39628c5b52f30bc6139acc8ba341e29e6 data/twilightforest/banner_pattern/hydra.json
 b8180793de67252042c045ffc454289f38071f2b data/twilightforest/banner_pattern/knight_phantom.json
