@@ -26,8 +26,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
@@ -39,11 +39,11 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.block.GiantBlock;
 import twilightforest.components.entity.GiantPickaxeMiningAttachment;
-import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
+import twilightforest.tags.TFBlockTags;
 
 import java.util.List;
 
@@ -123,11 +123,11 @@ public class ToolEvents {
 							container.setNewDamage(container.getNewDamage() + KNIGHTMETAL_BONUS_DAMAGE);
 						}
 						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
+						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT));
 					} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
 						container.setNewDamage(container.getOriginalDamage() + KNIGHTMETAL_BONUS_DAMAGE);
 						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
+						((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT));
 					}
 				}
 			}
@@ -143,7 +143,7 @@ public class ToolEvents {
 				if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
 					container.setNewDamage(container.getNewDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
 					// enchantment attack sparkles
-					((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, 5));
+					((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT));
 				}
 			}
 		}
