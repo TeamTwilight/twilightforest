@@ -18,7 +18,7 @@ public class SmokeScaleParticle extends SmokeParticle {
 
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-			return new SmokeScaleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 4.0F, this.sprite);
+			return new SmokeScaleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 8.0F, this.sprite);
 		}
 	}
 }
