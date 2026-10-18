@@ -6,6 +6,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -103,7 +104,12 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private boolean canPlace(BlockPos pos, WorldGenLevel level) {
-		BlockState state = level.getBlockState(pos.below());
-		return !level.getBlockState(pos).is(this.state.getBlock()) && (level.isEmptyBlock(pos) || level.getBlockState(pos).is(TFBlocks.MAYAPPLE) || level.getBlockState(pos).canBeReplaced()) && (state.is(BlockTags.SUBSTRATE_OVERWORLD) || level.getFluidState(pos.below()).is(Fluids.WATER));
+		BlockState state = level.getBlockState(pos);
+		BlockState belowState = level.getBlockState(pos.below());
+		return !state.is(this.state.getBlock())
+			&& !(belowState.getBlock() instanceof DoublePlantBlock || state.getBlock() instanceof DoublePlantBlock)
+			&& (level.isEmptyBlock(pos) || state.is(TFBlocks.MAYAPPLE) || state.canBeReplaced())
+			&& (belowState.is(BlockTags.SUBSTRATE_OVERWORLD)
+			|| level.getFluidState(pos.below()).is(Fluids.WATER));
 	}
 }
