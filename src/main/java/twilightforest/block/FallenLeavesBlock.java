@@ -11,6 +11,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -142,19 +143,18 @@ public class FallenLeavesBlock extends TFPlantBlock {
 		if (state.getValue(LAYERS) > 2) {
 			entity.makeStuckInBlock(state, new Vec3(1.0D - (0.05D * (state.getValue(LAYERS) - 2)), 1.0D, 1.0D - (0.05D * (state.getValue(LAYERS) - 2))));
 		}
-		Vec3 movement = entity.getKnownMovement();
-		if (entity instanceof LivingEntity && (movement.x() != 0 || movement.z() != 0) && level.getRandom().nextBoolean()) {
+		if (entity instanceof LivingEntity && entity.getKnownSpeed().horizontalDistanceSqr() > 0 && entity.getKnownMovement().horizontalDistanceSqr() > 0 && level.getRandom().nextBoolean()) {
 			if (level.isClientSide()) {
 				level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF.get(), level.getClientLeafTintColor(pos)),
 					pos.getX() + level.getRandom().nextFloat(),
 					pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
 					pos.getZ() + level.getRandom().nextFloat(),
-					(level.getRandom().nextFloat() * -0.5F) * movement.x(),
+					(level.getRandom().nextFloat() * -0.5F) * entity.getKnownMovement().x(),
 					level.getRandom().nextFloat() * 0.5F + 0.25F,
-					(level.getRandom().nextFloat() * -0.5F) * movement.z()
+					(level.getRandom().nextFloat() * -0.5F) * entity.getKnownMovement().z()
 				);
 			} else if (level instanceof ServerLevel)
-				PacketDistributor.sendToPlayersTrackingEntity(entity, new SpawnFallenLeafFromPacket(pos.immutable(), movement));
+				PacketDistributor.sendToPlayersTrackingEntity(entity, new SpawnFallenLeafFromPacket(pos.immutable(), entity.getKnownMovement()));
 		}
 	}
 }
