@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-10T09:41:01.120622468	Registries
+// 26.1.2	2026-10-18T21:28:34.826596	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -150,11 +150,11 @@ c5e1e96fa69452349f77ba366f9b2d54315d6726 data/twilightforest/twilight/wood_palet
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f data/twilightforest/world_clock/twilight_forest.json
 0dc4aa649e44d3e889f84c68f0684efcf042171d data/twilightforest/worldgen/biome/clearing.json
 3d5992945c90a1ccd68b78f5b5b9451ec24245fd data/twilightforest/worldgen/biome/dark_forest.json
-003c893cfc57428e718a9c0780247b5508bd0ae9 data/twilightforest/worldgen/biome/dark_forest_center.json
+d32c6f6c60d5a15ead163c09e753ae5865fa273d data/twilightforest/worldgen/biome/dark_forest_center.json
 99b95890ce96505d3ff4cf28c66fdff38326c3b2 data/twilightforest/worldgen/biome/dense_forest.json
 0cd2f142cdc7acc2cb4ff068abbfdff742d34428 data/twilightforest/worldgen/biome/dense_mushroom_forest.json
 843dbd63bbb2741b462d511ce65c8368af1b024e data/twilightforest/worldgen/biome/enchanted_forest.json
-cfff12d3b6df3fcb0ae0375ac74d01bf037dd165 data/twilightforest/worldgen/biome/final_plateau.json
+ebf7fc4bad3a54fe4211a2b06c409ef61ff0b218 data/twilightforest/worldgen/biome/final_plateau.json
 3309c6400489b46ee288c5dc9e79860a5ec07d21 data/twilightforest/worldgen/biome/fire_swamp.json
 a1106b9e9a7c21c6db08c63e01b9a1efa3c07f9c data/twilightforest/worldgen/biome/firefly_forest.json
 f4eb1ecda08c0f16a51d7daa5ff993799b042f84 data/twilightforest/worldgen/biome/forest.json
