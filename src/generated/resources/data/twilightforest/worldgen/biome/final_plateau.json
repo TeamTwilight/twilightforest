@@ -1,5 +1,6 @@
 {
   "attributes": {
+    "minecraft:visual/cloud_color": "#00000000",
     "minecraft:visual/fog_color": "#c0ffd8",
     "minecraft:visual/sky_color": "#20224a",
     "minecraft:visual/water_fog_color": "#050533"
