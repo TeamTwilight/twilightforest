@@ -139,6 +139,15 @@ public class Yeti extends Monster implements IHostileMount {
 
 	@Override
 	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return super.getPassengerAttachmentPoint(entity, dimensions, yRot).add(getHorizontalLookOffset());
+	}
+
+	@Override
+	public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
+		return super.getDismountLocationForPassenger(passenger).add(getHorizontalLookOffset());
+	}
+
+	public Vec3 getHorizontalLookOffset(){
 		double distance = 0.4D;
 
 		double yawRot = Math.toRadians(this.getYRot());
@@ -146,7 +155,7 @@ public class Yeti extends Monster implements IHostileMount {
 		double xOffset = -Math.sin(yawRot) * distance;
 		double zOffset = Math.cos(yawRot) * distance;
 
-		return super.getPassengerAttachmentPoint(entity, dimensions, yRot).add(xOffset, 0, zOffset);
+		return new Vec3(xOffset, 0, zOffset);
 	}
 
 	@Override
