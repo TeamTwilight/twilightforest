@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -10,9 +11,11 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
 
@@ -120,17 +123,24 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	public UpdateTFMultipartPacket.PartDataHolder writeData() {
-		return new UpdateTFMultipartPacket.PartDataHolder(
-			this.getX(),
-			this.getY(),
-			this.getZ(),
-			this.getYRot(),
-			this.getXRot(),
-			this.dimensions.width(),
-			this.dimensions.height(),
-			this.dimensions.fixed(),
-			getEntityData().packDirty());
+		return packData(getEntityData().packDirty());
+	}
 
+	public UpdateTFMultipartPacket.PartDataHolder writePairingData() {
+		return packData(getEntityData().getNonDefaultValues());
+	}
+
+	private UpdateTFMultipartPacket.PartDataHolder packData(@Nullable List<SynchedEntityData.DataValue<?>> data) {
+		return new UpdateTFMultipartPacket.PartDataHolder(
+			getX(),
+			getY(),
+			getZ(),
+			getYRot(),
+			getXRot(),
+			dimensions.width(),
+			dimensions.height(),
+			dimensions.fixed(),
+			data);
 	}
 
 	public void readData(UpdateTFMultipartPacket.PartDataHolder data) {

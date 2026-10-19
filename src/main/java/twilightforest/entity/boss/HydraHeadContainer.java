@@ -192,8 +192,10 @@ public class HydraHeadContainer {
 			this.nextState = NEXT_AUTOMATIC;
 			this.ticksNeeded = 20;
 			this.ticksProgress = 20;
-			this.headEntity.deactivate();
-			this.performOnAllNecks(HydraPart::deactivate);
+			if (!hydra.level().isClientSide()) {
+				headEntity.deactivate();
+				performOnAllNecks(HydraPart::deactivate);
+			}
 		}
 		this.setHeadPosition();
 		this.setNeckPosition();
