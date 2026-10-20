@@ -6,7 +6,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -40,10 +39,8 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 	@Override
 	public void tick() {
-		if (!this.mob.getPassengers().isEmpty()) {
-			if (this.mob.getPassengers().getFirst() instanceof LivingEntity victim) {
-				damageRider(victim);
-			}
+		if (!this.mob.getPassengers().isEmpty() && this.mob.getPassengers().getFirst() instanceof LivingEntity victim) {
+			damageRider(victim);
 			this.throwTimer--;
 		} else
 			super.tick();
@@ -85,13 +82,10 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * xModifier, 0.9, this.mob.getLookAngle().z() * zModifier);
 
-			if (rider instanceof Player player) {
-				player.push(throwVec.x(), throwVec.y(), throwVec.z());
-
-				if (player instanceof ServerPlayer server) {
-					PacketDistributor.sendToPlayer(server, new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
-				}
-			} else rider.push(throwVec.x(), throwVec.y(), throwVec.z());
+			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
+			if (rider instanceof ServerPlayer server) {
+				PacketDistributor.sendToPlayer(server, new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
+			}
 		}
 		super.stop();
 	}
