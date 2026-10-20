@@ -102,6 +102,7 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> DEATH_TOME_BOOKS = register("gameplay/death_tome_books");
 	public static final ResourceKey<LootTable> LIFEDRAIN_SCEPTER_KILL_BONUS = register("gameplay/lifedrain_scepter_kill_bonus");
 	public static final ResourceKey<LootTable> KNIGHT_PHANTOM_DEFEATED = register("gameplay/knight_phantom_defeated");
+	public static final ResourceKey<LootTable> RAVEN_INTERACTION = register("gameplay/raven_interaction");
 
 	public static final ResourceKey<LootTable> OMINOUS_SPAWNER_DROPS = register("blocks/ominous_spawner_drops");
 

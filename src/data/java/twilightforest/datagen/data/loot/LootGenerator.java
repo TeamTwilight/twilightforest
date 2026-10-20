@@ -21,6 +21,7 @@ public class LootGenerator extends LootTableProvider {
 			new LootTableProvider.SubProviderEntry(BlockInteractLootTables::new, LootContextParamSets.BLOCK_INTERACT),
 			new LootTableProvider.SubProviderEntry(ChestLootTables::new, LootContextParamSets.CHEST),
 			new LootTableProvider.SubProviderEntry(EntityLootTables::new, LootContextParamSets.ENTITY),
+			new LootTableProvider.SubProviderEntry(EntityInteractLootTables::new, LootContextParamSets.ENTITY_INTERACT),
 			new LootTableProvider.SubProviderEntry(SpecialLootTables::new, LootContextParamSets.EMPTY)
 		), provider);
 	}

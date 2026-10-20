@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-13T19:13:11.957359	Loot Tables
+// 26.1.2	2026-10-20T17:31:48.371671	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
 752190be1f464cbcb3312adb8333f98a58360d40 data/twilightforest/loot_table/blocks/acacia_drying_rack.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_table/blocks/alpha_yeti_trophy.json
@@ -608,3 +608,4 @@ ea0a81b04e353fe540862821e2da11e8d2833aa0 data/twilightforest/loot_table/gameplay
 ca84c16a4c315172a7f29d1dab48f0216e6bf76c data/twilightforest/loot_table/gameplay/lifedrain_scepter_kill_bonus.json
 754005b86fce01430a259dc725baaf57df77c6b0 data/twilightforest/loot_table/gameplay/questing_ram_reward_blocks.json
 f20536aebc5892d310cc915641517efb8d2311bb data/twilightforest/loot_table/gameplay/questing_ram_rewards.json
+a9414c77847cf501ea7139df563bfeb047ac0146 data/twilightforest/loot_table/gameplay/raven_interaction.json
