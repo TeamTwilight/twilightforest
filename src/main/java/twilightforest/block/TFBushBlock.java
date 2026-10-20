@@ -11,15 +11,18 @@ import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -34,6 +37,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
+import twilightforest.inventory.InventoryUtil;
 
 public abstract class TFBushBlock extends Block implements SnowLoggable {
 
@@ -80,8 +84,9 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		if (state.getValue(SNOW_LAYERS) > 0) {
 			if (!Blocks.SNOW.defaultBlockState().canSurvive(level, pos)) {
-				//TODO cant do this anymore
-				//level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SNOW.defaultBlockState()));
+				if (level instanceof LevelAccessor accessor && !accessor.isClientSide()) {
+					accessor.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SNOW.defaultBlockState()));
+				}
 				return state.setValue(SNOW_LAYERS, 0);
 			}
 		}
@@ -131,7 +136,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (state.getValue(AGE) == MAX_AGE) {
 			if (level instanceof ServerLevel serverLevel) {
-				Block.dropFromBlockInteractLootTable(serverLevel, this.berryLoot, state, level.getBlockEntity(pos), null, player, (level1, stack) -> Block.popResource(level1, pos, stack));
+				Block.dropFromBlockInteractLootTable(serverLevel, this.berryLoot, state, level.getBlockEntity(pos), null, player, (_, stack) -> InventoryUtil.giveItemToPlayerAndPlaySound(player, stack));
 
 				level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.getRandom().nextFloat() * 0.4F);
 				BlockState newState = state.setValue(AGE, MAX_AGE - 1);
@@ -145,13 +150,16 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (stack.getItem() instanceof BlockItem block && block.getBlock() instanceof TFBushBlock bush && bush.defaultBlockState().canSurvive(level, pos.relative(hitResult.getDirection()))) {
+			return InteractionResult.PASS;
+		}
+
 		if (!stack.is(Items.SNOW) || state.getValue(SNOW_LAYERS) == MAX_SNOW_LAYERS || !Blocks.SNOW.defaultBlockState().canSurvive(level, pos))
 			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 		BlockState newState = state.setValue(SNOW_LAYERS, state.getValue(SNOW_LAYERS) + 1);
 		if (isColliding(player, pos, newState))
 			return InteractionResult.FAIL;
-		if (!player.hasInfiniteMaterials())
-			stack.shrink(1);
+		stack.consume(1, player);
 		level.setBlock(pos, newState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
 		level.playSound(player, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS);
 		updateSnowBeneath(level, pos);

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:beef_jerky"
+        "recipe": "twilightforest:drying/beef_jerky"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:beef_jerky"
+      "twilightforest:drying/beef_jerky"
     ]
   }
 }

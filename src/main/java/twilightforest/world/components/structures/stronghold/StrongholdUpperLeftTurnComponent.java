@@ -1,22 +1,23 @@
 package twilightforest.world.components.structures.stronghold;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFStructurePieceTypes;
 
+import java.util.List;
 
-public class StrongholdUpperLeftTurnComponent extends KnightStrongholdComponent {
+public class StrongholdUpperLeftTurnComponent extends StrongholdUpperComponent {
+
+	protected static final List<SmallDoorway> SMALL_DOORWAYS = List.of(
+		new SmallDoorway(Direction.Axis.Z, 2, 1, 0),
+		new SmallDoorway(Direction.Axis.X, 4, 1, 2)
+	);
 
 	public StrongholdUpperLeftTurnComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSULT.get(), nbt);
@@ -40,19 +41,8 @@ public class StrongholdUpperLeftTurnComponent extends KnightStrongholdComponent 
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		/*if (this.edgesLiquid(world, sbb)) {
-			return false;
-		} else */
-		{
-			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 4, 4, rand, deco.randomBlocks);
-
-			// entrance doorway
-			placeSmallDoorwayAt(world, 2, 2, 1, 0, sbb);
-
-			// left turn doorway
-			placeSmallDoorwayAt(world, 3, 4, 1, 2, sbb);
-		}
+	protected List<SmallDoorway> getSmallDoorways() {
+		return SMALL_DOORWAYS;
 	}
 
 	@Override

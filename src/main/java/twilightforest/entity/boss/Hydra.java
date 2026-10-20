@@ -4,11 +4,13 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -35,6 +37,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
+import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.WorldUtil;
 
@@ -42,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 
 @SuppressWarnings("this-escape")
 public class Hydra extends BaseTFBoss {
@@ -669,6 +673,12 @@ public class Hydra extends BaseTFBoss {
 		super.recreateFromPacket(packet);
 		TFPart.assignPartIDs(this);
 		this.repositionParts();
+	}
+
+	@Override
+	public void sendPairingData(ServerPlayer serverPlayer, Consumer<CustomPacketPayload> bundleBuilder) {
+		super.sendPairingData(serverPlayer, bundleBuilder);
+		bundleBuilder.accept(new UpdateTFMultipartPacket(this, TFPart::writePairingData));
 	}
 
 	private void repositionParts() {

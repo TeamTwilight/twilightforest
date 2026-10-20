@@ -49,11 +49,20 @@ public class EntityHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.entity.WaterSprintTransformer}<p/>
 	 * <p>
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.LocalPlayer#shouldStopSwimSprinting()}
-	 * Targets: {@link Entity#isInWater()}
+	 *     {@link twilightforest.asm.transformers.entity.WaterSprintTransformer}
+	 * </p>
+	 * <p>
+	 *     Injection Point:<br/>
+	 *     {@link net.minecraft.client.player.LocalPlayer#shouldStopSwimSprinting()}</br>
+	 *     {@link net.minecraft.client.player.LocalPlayer#isSprintingPossible(boolean)}
+	 * </p>
+	 * <p>
+	 *     Targets:</br>
+	 *     {@link Entity#isInWater()}</br>
+	 *     {@link net.minecraft.world.entity.EntityFluidInteraction#isInFluidMatching(Entity, InFluidPredicate)}</br>
+	 *     {@link Entity#isInShallowWater()}
+	 * </p>
 	 */
 	public static boolean unrestrainedSprintingInWater(boolean isInWater, LivingEntity livingEntity) {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))

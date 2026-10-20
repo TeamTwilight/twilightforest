@@ -1,16 +1,12 @@
 package twilightforest.world.components.structures.stronghold;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -18,8 +14,18 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFStructurePieceTypes;
 
+import java.util.List;
 
-public class StrongholdUpperAscenderComponent extends KnightStrongholdComponent {
+public class StrongholdUpperAscenderComponent extends StrongholdUpperComponent {
+
+	protected static final List<SmallDoorway> ASCENDING_SMALL_DOORWAYS = List.of(
+		new SmallDoorway(Direction.Axis.Z, 2, 1, 0),
+		new SmallDoorway(Direction.Axis.Z, 2, 6, 9)
+	);
+	protected static final List<SmallDoorway> DESCENDING_SMALL_DOORWAYS = List.of(
+		new SmallDoorway(Direction.Axis.Z, 2, 6, 0),
+		new SmallDoorway(Direction.Axis.Z, 2, 1, 9)
+	);
 
 	boolean exitTop;
 
@@ -58,15 +64,12 @@ public class StrongholdUpperAscenderComponent extends KnightStrongholdComponent 
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		this.placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, this.deco.randomBlocks);
+	protected List<SmallDoorway> getSmallDoorways() {
+		return this.exitTop ? ASCENDING_SMALL_DOORWAYS : DESCENDING_SMALL_DOORWAYS;
+	}
 
-		// entrance doorway
-		this.placeSmallDoorwayAt(world, 2, 2, this.exitTop ? 1 : 6, 0, sbb);
-
-		// exit doorway
-		this.placeSmallDoorwayAt(world, 0, 2, this.exitTop ? 6 : 1, 9, sbb);
-
+	@Override
+	protected void postProcessAfterWalls(WorldGenLevel world, BoundingBox sbb) {
 		// steps!
 		if (this.exitTop) {
 			this.makeStairsAt(world, 1, 3, Direction.NORTH, sbb);

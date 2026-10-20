@@ -49,41 +49,44 @@ public class OreMagnetItem extends Item {
 	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
-		if (!level.isClientSide() && useTime > 10) {
-			int moved = this.doMagnet(level, living, 0, 0);
-
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, WIGGLE, 0);
-			}
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, WIGGLE, WIGGLE);
-			}
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, 0, WIGGLE);
-			}
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, -WIGGLE, WIGGLE);
-			}
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, -WIGGLE, 0);
-			}
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, -WIGGLE, -WIGGLE);
-			}
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, 0, -WIGGLE);
-			}
-			if (moved == 0) {
-				moved = this.doMagnet(level, living, WIGGLE, -WIGGLE);
-			}
-
-			if (moved > 0) {
-				stack.hurtAndBreak(moved, living, living.getUsedItemHand());
-				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
-				return true;
-			}
+		if (level.isClientSide() || useTime <= 10) {
+			return false;
 		}
-		return false;
+
+		int moved = this.doMagnet(level, living, 0, 0);
+
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, WIGGLE, 0);
+		}
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, WIGGLE, WIGGLE);
+		}
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, 0, WIGGLE);
+		}
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, -WIGGLE, WIGGLE);
+		}
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, -WIGGLE, 0);
+		}
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, -WIGGLE, -WIGGLE);
+		}
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, 0, -WIGGLE);
+		}
+		if (moved == 0) {
+			moved = this.doMagnet(level, living, WIGGLE, -WIGGLE);
+		}
+
+		if (moved <= 0) {
+			return false;
+		}
+
+		stack.hurtAndBreak(moved, living, living.getUsedItemHand());
+		level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
+		return true;
 	}
 
 	@Override

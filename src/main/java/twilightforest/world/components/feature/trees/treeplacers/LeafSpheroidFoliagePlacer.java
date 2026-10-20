@@ -21,7 +21,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
 	public static final MapCodec<LeafSpheroidFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.floatRange(0, 16f).fieldOf("horizontal_radius").forGetter(o -> o.horizontalRadius),
 		Codec.floatRange(0, 16f).fieldOf("vertical_radius").forGetter(o -> o.verticalRadius),
-		IntProviders.codec(0, 8).fieldOf("offset").forGetter(obj -> obj.offset),
+		IntProviders.CODEC.fieldOf("offset").forGetter(obj -> obj.offset),
 		Codec.intRange(0, 16).fieldOf("random_add_horizontal").orElse(0).forGetter(o -> o.randomHorizontal),
 		Codec.intRange(0, 16).fieldOf("random_add_vertical").orElse(0).forGetter(o -> o.randomVertical),
 		Codec.floatRange(-0.5f, 0.5f).fieldOf("vertical_filler_bias").orElse(0f).forGetter(o -> o.verticalBias),

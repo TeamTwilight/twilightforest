@@ -6,8 +6,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -24,6 +22,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.List;
@@ -100,8 +99,7 @@ public class HedgeBlock extends Block {
 		}
 	}
 
-	//TODO tag
 	private boolean shouldDamage(Entity entity) {
-		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers() || entity.getVehicle() != null && !this.shouldDamage(entity.getVehicle()));
+		return !(entity.is(TFEntityTypeTags.HEDGE_DAMAGE_IMMUNE) || entity.isIgnoringBlockTriggers() || entity.getVehicle() != null && !this.shouldDamage(entity.getVehicle()));
 	}
 }

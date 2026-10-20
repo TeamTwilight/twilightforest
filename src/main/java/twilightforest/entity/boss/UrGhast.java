@@ -169,13 +169,11 @@ public class UrGhast extends BaseTFBoss {
 		boolean hurt = super.hurtServer(server, source, damage);
 		float lastDamage = oldHealth - this.getHealth();
 
-		if (!this.level().isClientSide()) {
-			if (this.hurtTime == this.hurtDuration && !this.isDeadOrDying() && this.inTrapCounter <= 0) {
-				this.damageUntilNextPhase -= lastDamage;
+		if (this.hurtTime == this.hurtDuration && !this.isDeadOrDying() && this.inTrapCounter <= 0) {
+			this.damageUntilNextPhase -= lastDamage;
 
-				if (this.damageUntilNextPhase <= 0) {
-					this.switchPhase();
-				}
+			if (this.damageUntilNextPhase <= 0) {
+				this.switchPhase();
 			}
 		}
 
@@ -469,7 +467,7 @@ public class UrGhast extends BaseTFBoss {
 	//[VanillaCopy] of FlyingMob.travel
 	@Override
 	public void travel(Vec3 vec3) {
-		if (this.isLocalClientAuthoritative()) {
+		if (canSimulateMovement()) {
 			if (this.isInWater()) {
 				this.moveRelative(0.02F, vec3);
 				this.move(MoverType.SELF, this.getDeltaMovement());

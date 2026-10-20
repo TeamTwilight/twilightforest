@@ -19,30 +19,30 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jspecify.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.inventory.InventoryUtil;
 import twilightforest.init.TFBlockEntities;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock {
+
+	public static final Identifier CANDLE_DYNAMIC_DROP_ID = TwilightForestMod.prefix("candles");
 	public static final IntegerProperty CANDLES = BlockStateProperties.CANDLES;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private final SkullBlock.Type type;
@@ -98,32 +98,17 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		return CandleColors.PLAIN;
 	}
 
-	//TODO look into better loot table stuff for this
-//	@Override
-//	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-//		List<ItemStack> drops = super.getDrops(state, builder);
-//		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(ItemTags.SKULLS) && !item.is(this.asItem())).findFirst();
-//		if (skullStack.isPresent()) {
-//			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-//			if (blockEntity instanceof SkullCandleBlockEntity sc) {
-//				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(sc.getLevel().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
-//					ItemStack newStack = new ItemStack(this);
-//
-//					newStack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(sc.getCandleColor(), state.getValue(CANDLES)));
-//
-//					if (this.type == SkullBlock.Types.PLAYER && sc.getOwnerProfile() != null)
-//						newStack.set(DataComponents.PROFILE, sc.getOwnerProfile());
-//
-//					drops.remove(skullStack.get());
-//					drops.add(newStack);
-//				} else {
-//					drops.add(new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())), state.getValue(CANDLES)));
-//				}
-//			}
-//		}
-//
-//		return drops;
-//	}
+	@Override
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+		BlockEntity maybeEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (maybeEntity instanceof SkullCandleBlockEntity entity) {
+			builder.withDynamicDrop(CANDLE_DYNAMIC_DROP_ID, output -> {
+				output.accept(new ItemStack(candleColorToCandle(CandleColors.colorFromInt(entity.getCandleInfo().color())), state.getValue(CANDLES)));
+			});
+		}
+
+		return super.getDrops(state, builder);
+	}
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {

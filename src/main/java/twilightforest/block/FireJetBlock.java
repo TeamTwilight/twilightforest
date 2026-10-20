@@ -51,7 +51,7 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (!level.isClientSide() && state.getValue(STATE) == FireJetVariant.IDLE) {
+		if (state.getValue(STATE) == FireJetVariant.IDLE) {
 			BlockPos lavaPos = findLavaAround(level, pos.below());
 
 			if (this.isLava(level, lavaPos)) {

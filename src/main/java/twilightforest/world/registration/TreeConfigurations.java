@@ -7,7 +7,6 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LanternBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
@@ -247,7 +246,7 @@ public class TreeConfigurations {
 		new TwoLayersFeatureSize(4, 1, canopyDistancing)
 	)
 		.ignoreVines()
-		.decorators(ImmutableList.of(new TreeCorePlacer(3, BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
+		.decorators(ImmutableList.of(new TreeCorePlacer(3, BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LOG_CORE.get().defaultBlockState()))))
 		.build();
 
 	public static final TFTreeFeatureConfig MINING_TREE = new TFTreeFeatureConfig.Builder(
@@ -260,14 +259,14 @@ public class TreeConfigurations {
 
 	public static final TreeConfiguration SORT_TREE = new TreeConfiguration.TreeConfigurationBuilder(
 		BlockStateProvider.simple(TFBlocks.SORTING_LOG.get()),
-		new StraightTrunkPlacer(3, 0, 0),
+		new StraightTrunkPlacer(5, 0, 0),
 		BlockStateProvider.simple(TFBlocks.SORTING_LEAVES.get()),
-		new LeafSpheroidFoliagePlacer(1.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.5f, 0),
+		new LeafSpheroidFoliagePlacer(1.5F, 2.5F, ConstantInt.of(-2), 0, 0, 0.5F, 0),
 		new TwoLayersFeatureSize(1, 1, 1)
 	)
 		.ignoreVines()
 		.belowTrunkProvider(TreeConfiguration.PLACE_BELOW_OVERWORLD_TRUNKS)
-		.decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
+		.decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState()))))
 		.build();
 
 	public static final TFTreeFeatureConfig LARGE_WINTER = new TFTreeFeatureConfig.Builder(

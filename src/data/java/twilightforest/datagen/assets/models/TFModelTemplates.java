@@ -93,6 +93,9 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate SMALL_BUSH = create("twilightforest:util/small_bush", TextureSlot.ALL);
 	public static final ModelTemplate MEDIUM_BUSH = create("twilightforest:util/medium_bush", TextureSlot.ALL);
 	public static final ModelTemplate LARGE_BUSH = create("twilightforest:util/large_bush", TextureSlot.ALL);
+	public static final ModelTemplate SMALL_BUSH_EMISSIVE = create("twilightforest:util/small_bush_emissive", TextureSlot.ALL);
+	public static final ModelTemplate MEDIUM_BUSH_EMISSIVE = create("twilightforest:util/medium_bush_emissive", TextureSlot.ALL);
+	public static final ModelTemplate LARGE_BUSH_EMISSIVE = create("twilightforest:util/large_bush_emissive", TextureSlot.ALL);
 
 	public static final ModelTemplate CASKET_SOLID = create("twilightforest:casket_solid", TextureSlot.SIDE, TextureSlot.TOP);
 }

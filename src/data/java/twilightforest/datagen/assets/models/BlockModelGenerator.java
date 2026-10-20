@@ -348,18 +348,18 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.FIERY_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelLocationUtils.getModelLocation(block)))));
 		this.wrapBlockItem(TFBlocks.CARMINITE_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelLocationUtils.getModelLocation(block)))));
 
-		this.generateBush(TFBlocks.RASPBERRY_BUSH.get());
-		this.generateBush(TFBlocks.BLACKBERRY_BUSH.get());
-		this.generateBush(TFBlocks.BLUEBERRY_BUSH.get());
-		this.generateBush(TFBlocks.MALOBERRY_BUSH.get());
-		this.generateBush(TFBlocks.BLIGHTBERRY_BUSH.get());
-		this.generateBush(TFBlocks.DUSKBERRY_BUSH.get());
-		this.generateBush(TFBlocks.SKYBERRY_BUSH.get());
-		this.generateBush(TFBlocks.STINGBERRY_BUSH.get());
-		this.generateBush(TFBlocks.COPPER_OREBERRY_BUSH.get());
-		this.generateBush(TFBlocks.IRON_OREBERRY_BUSH.get());
-		this.generateBush(TFBlocks.GOLD_OREBERRY_BUSH.get());
-		this.generateBush(TFBlocks.ESSENCE_OREBERRY_BUSH.get());
+		this.generateBush(TFBlocks.RASPBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.BLACKBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.BLUEBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.MALOBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.BLIGHTBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.DUSKBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.SKYBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.STINGBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.COPPER_OREBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.IRON_OREBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.GOLD_OREBERRY_BUSH.get(), false);
+		this.generateBush(TFBlocks.ESSENCE_OREBERRY_BUSH.get(), true);
 
 		this.createParticleOnlyBlock(TFBlocks.BRAZIER.get(), TFBlocks.CANOPY_PLANKS.get());
 		this.wrapBlockItem(TFBlocks.SLIDER.get(), block -> this.blockStateOutput.accept(createRotatedPillarWithHorizontalVariant(block, plainVariant(ModelLocationUtils.getModelLocation(block)), plainVariant(ModelLocationUtils.getModelLocation(block, "_horiz")))));

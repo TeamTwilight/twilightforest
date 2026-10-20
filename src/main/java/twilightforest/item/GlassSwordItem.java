@@ -41,7 +41,7 @@ public class GlassSwordItem extends Item {
 				target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
 				0, 0, 0);
 			}
-			PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(target, particlePacket);
 		}
 
 		this.hurtAndBreak(stack, attacker, (user) -> {

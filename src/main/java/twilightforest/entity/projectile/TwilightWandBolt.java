@@ -104,7 +104,7 @@ public class TwilightWandBolt extends TFThrowable {
 	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
 		super.hurtServer(server, source, amount);
 
-		if (!this.level().isClientSide() && source.getEntity() != null) {
+		if (source.getEntity() != null) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);

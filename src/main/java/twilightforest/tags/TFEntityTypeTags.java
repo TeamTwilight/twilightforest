@@ -16,6 +16,8 @@ public class TFEntityTypeTags {
 	public static final TagKey<EntityType<?>> SORTABLE_ENTITIES = create("sortable_entities");
 	public static final TagKey<EntityType<?>> MULTIPLAYER_INCLUSIVE_ENTITIES = create("multiplayer_inclusive_entities");
 	public static final TagKey<EntityType<?>> LICH_DEFLECTS_PHASE_2 = create("lich_deflects_phase_2");
+	public static final TagKey<EntityType<?>> HEDGE_DAMAGE_IMMUNE = create("hedge_damage_immune");
+	public static final TagKey<EntityType<?>> PROGRESSION_LOCK_VULNERABLE = create("progression_lock_vulnerable");
 
 	public static final TagKey<EntityType<?>> AC_RESISTS_ACID = create("alexscaves", "resists_acid");
 	public static final TagKey<EntityType<?>> AC_RESISTS_MAGNETS = create("alexscaves", "resists_magnets");

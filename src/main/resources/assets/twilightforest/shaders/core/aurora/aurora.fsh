@@ -4,102 +4,58 @@
 #moj_import <minecraft:fog.glsl>
 #moj_import <minecraft:globals.glsl>
 
-//////////////// K.jpg's Re-oriented 4-Point BCC Noise (OpenSimplex2) ////////////////
-////////////////////// Output: vec4(dF/dx, dF/dy, dF/dz, value) //////////////////////
+////////////////// K.jpg's Smooth Re-oriented 8-Point BCC Noise //////////////////
+////////////////////// a.k.a. OpenSimplex2, Smooth Version ///////////////////////
+///////////// Modified to produce a Gabor noise like output instead. /////////////
+//////////////////// Output: vec4(dF/dx, dF/dy, dF/dz, value) ////////////////////
 
-// Inspired by Stefan Gustavson's noise
+// Borrowed from Stefan Gustavson's noise code
 vec4 permute(vec4 t) {
     return t * (t * 34.0 + 133.0);
 }
 
-// Gradient set is a normalized expanded rhombic dodecahedron
-vec3 grad(float hash) {
-
-    // Random vertex of a cube, +/- 1 each
-    vec3 cube = mod(floor(hash / vec3(1.0, 2.0, 4.0)), 2.0) * 2.0 - 1.0;
-
-    // Random edge of the three edges connected to that vertex
-    // Also a cuboctahedral vertex
-    // And corresponds to the face of its dual, the rhombic dodecahedron
-    vec3 cuboct = cube;
-    // cuboct[int(hash / 16.0)] = 0.0;
-    // Copy the OpenSimplex2 HLSL version to avoid an Intel Driver crash
-    int idx = int(hash * (1.0 / 16.0));
-
-    if (idx == 0)
-        cuboct.x = 0.0;
-    else if (idx == 1)
-        cuboct.y = 0.0;
-    else
-        cuboct.z = 0.0;
-
-    // In a funky way, pick one of the four points on the rhombic face
-    float type = mod(floor(hash / 8.0), 2.0);
-    vec3 rhomb = (1.0 - type) * cube + type * (cuboct + cross(cube, cuboct));
-
-    // Expand it so that the new edges are the same length
-    // as the existing ones
-    vec3 grad = cuboct * 1.22474487139 + rhomb;
-
-    // To make all gradients the same length, we only need to shorten the
-    // second type of vector. We also put in the whole noise scale constant.
-    // The compiler should reduce it into the existing floats. I think.
-    grad *= (1.0 - 0.042942436724648037 * type) * 32.80201376986577;
-
-    return grad;
-}
-
 // BCC lattice split up into 2 cube lattices
-vec4 openSimplex2Base(vec3 X) {
+vec2 simplexGaborNoisePart(vec3 X, vec3 dir) {
+    vec3 b = floor(X);
+    vec4 i4 = vec4(X - b, 2.5);
 
-    // First half-lattice, closest edge
-    vec3 v1 = round(X);
-    vec3 d1 = X - v1;
-    vec3 score1 = abs(d1);
-    vec3 dir1 = step(max(score1.yzx, score1.zxy), score1);
-    vec3 v2 = v1 + dir1 * sign(d1);
-    vec3 d2 = X - v2;
+    // Pick between each pair of oppposite corners in the cube.
+    vec3 v1 = b + floor(dot(i4, vec4(.25)));
+    vec3 v2 = b + vec3(1, 0, 0) + vec3(-1, 1, 1) * floor(dot(i4, vec4(-.25, .25, .25, .35)));
+    vec3 v3 = b + vec3(0, 1, 0) + vec3(1, -1, 1) * floor(dot(i4, vec4(.25, -.25, .25, .35)));
+    vec3 v4 = b + vec3(0, 0, 1) + vec3(1, 1, -1) * floor(dot(i4, vec4(.25, .25, -.25, .35)));
 
-    // Second half-lattice, closest edge
-    vec3 X2 = X + 144.5;
-    vec3 v3 = round(X2);
-    vec3 d3 = X2 - v3;
-    vec3 score2 = abs(d3);
-    vec3 dir2 = step(max(score2.yzx, score2.zxy), score2);
-    vec3 v4 = v3 + dir2 * sign(d3);
-    vec3 d4 = X2 - v4;
-
-    // Gradient hashes for the four points, two from each half-lattice
+    // Gradient hashes for the four vertices in this half-lattice.
     vec4 hashes = permute(mod(vec4(v1.x, v2.x, v3.x, v4.x), 289.0));
     hashes = permute(mod(hashes + vec4(v1.y, v2.y, v3.y, v4.y), 289.0));
     hashes = mod(permute(mod(hashes + vec4(v1.z, v2.z, v3.z, v4.z), 289.0)), 48.0);
+    vec4 sineOffsets = hashes / 48.0 * 3.14159265 * 4.0;
 
-    // Gradient extrapolations & kernel function
-    vec4 a = max(0.5 - vec4(dot(d1, d1), dot(d2, d2), dot(d3, d3), dot(d4, d4)), 0.0);
-    vec4 aa = a * a; vec4 aaaa = aa * aa;
-    vec3 g1 = grad(hashes.x); vec3 g2 = grad(hashes.y);
-    vec3 g3 = grad(hashes.z); vec3 g4 = grad(hashes.w);
-    vec4 extrapolations = vec4(dot(d1, g1), dot(d2, g2), dot(d3, g3), dot(d4, g4));
+    // Gradient extrapolations are replaced with sin(dot(dX, inputVector) + pseudorandomOffset)
+    vec3 d1 = X - v1; vec3 d2 = X - v2; vec3 d3 = X - v3; vec3 d4 = X - v4;
+    vec4 a = max(0.75 - vec4(dot(d1, d1), dot(d2, d2), dot(d3, d3), dot(d4, d4)), 0.0);
+    vec4 aa = a * a; vec4 aaa = aa * a;
+    vec4 extrapolations = vec4(dot(d1, dir), dot(d2, dir), dot(d3, dir), dot(d4, dir)) + sineOffsets;
+    extrapolations = sin(extrapolations);
 
-    // Derivatives of the noise
-    vec3 derivative = -8.0 * mat4x3(d1, d2, d3, d4) * (aa * a * extrapolations)
-    + mat4x3(g1, g2, g3, g4) * aaaa;
-
-    // Return it all as a vec4
-    return vec4(derivative, dot(aaaa, extrapolations));
+    // Return (kernels^3) * sinusoids, and just (kernels^3), so we can average them later
+    return vec2(dot(aaa, extrapolations), dot(aaa, vec4(1.0)));
 }
 
-// Use this if you want to show X and Y in a plane, then use Z for time, vertical, etc.
-vec4 openSimplex2_ImproveXY(vec3 X) {
+// Gives X and Y a triangular alignment, and lets Z move up the main diagonal.
+// Might be good for terrain, or a time varying X/Y plane. Z repeats.
+float simplexGaborNoise_XYBeforeZ(vec3 X, vec3 dir) {
 
-    // Rotate so Z points down the main diagonal. Not a skew transform.
+    // Not a skew transform.
     mat3 orthonormalMap = mat3(
-    0.788675134594813, -0.211324865405187, -0.577350269189626,
-    -0.211324865405187, 0.788675134594813, -0.577350269189626,
-    0.577350269189626, 0.577350269189626, 0.577350269189626);
+        0.788675134594813, -0.211324865405187, -0.577350269189626,
+        -0.211324865405187, 0.788675134594813, -0.577350269189626,
+        0.577350269189626, 0.577350269189626, 0.577350269189626);
 
-    vec4 result = openSimplex2Base(orthonormalMap * X);
-    return vec4(result.xyz * orthonormalMap, result.w);
+    X = orthonormalMap * X;
+    dir = orthonormalMap * dir;
+    vec2 both = simplexGaborNoisePart(X, dir) + simplexGaborNoisePart(X + 144.5, dir);
+    return both.x / both.y;
 }
 
 //////////////////////////////// End noise code ////////////////////////////////
@@ -115,64 +71,51 @@ in vec4 pixelPos;
 in vec4 vertexColor;
 
 const int STEPS = 16;
-const float FSTEPS = 16.0;
-const float PRECISION = 0.000001;
+const float NOISE_SCALE = 512.0;
+const float AURORA_LENGTH = 0.85;
+const float HAZE = 0.035;
 
-float genNoise(float x, float z, float speed) {
-    float xx = x + PositionContext.x + (SeedContext / 360);
-    float zz = z + PositionContext.z + (SeedContext % 360);
-    return openSimplex2_ImproveXY(vec3(xx / 512.0, zz / 512.0, GameTime * speed)).a;
-}
-
-int floatToOneOrZero(float value) {
-    return int(step(PRECISION, value));
+float genNoise(vec2 pos, float speed) {
+    pos += PositionContext.xz * 0.75 + vec2(SeedContext / 360, SeedContext % 360);
+    return simplexGaborNoise_XYBeforeZ(vec3(pos / NOISE_SCALE, GameTime * speed), vec3(3.14159265 * NOISE_SCALE / 300.0, 0.0, 0.0));
 }
 
 float fixNoise(float noise) {
-    float absNoise = abs(noise);
-    // Avoids if (noise > -0.2 && noise < 0.2) else ...
-    int swap = floatToOneOrZero(absNoise - 0.2);
-    noise = (1 - swap) * (1.0 + absNoise * 5.0) + swap * -1.0;
+    return max(0.0, 0.5 - 2.5 * abs(noise));
+}
 
-    noise = clamp((noise + 1.0) / 2.0 - 0.5, 0.0, 1.0);
-    noise = (1.0 - noise) * floatToOneOrZero(noise); // Avoids if (noise > 0)
-    return noise;
+float fixNoiseIntegral(float noise) {
+    float c = clamp(noise, -0.2, 0.2);
+    return 0.05 + 0.5 * c - 1.25 * c * abs(c);
 }
 
 // https://michaelwalczyk.com/blog-ray-marching.html
-float rayMarch(vec3 origin, vec3 direction) {
-    float noise = 0.0;
-    for (int i = 0; i < STEPS; ++i) {
-        vec3 curPos = origin + ((i / FSTEPS) * 0.35) * direction;
-
-        // Avoids if (i > 0)
-        int swap = min(i, 1);
-        float fade = swap * (((STEPS - i) / FSTEPS) * 0.65) + (1 - swap);
-        noise += fixNoise(genNoise(curPos.x, curPos.z, 22.5)) * fade;
+float rayMarch(vec2 pos, float footprint) {
+    float tailBlur = smoothstep(0.15, 0.5, AURORA_LENGTH * length(pos) / (float(STEPS) * NOISE_SCALE));
+    float n0 = genNoise(pos, 22.5);
+    float noise = mix(fixNoise(n0), HAZE, smoothstep(0.05, 0.2, footprint));
+    for (int i = 1; i < STEPS; ++i) {
+        float average = HAZE;
+        if (tailBlur < 1.0) {
+            float n1 = genNoise(pos * (1.0 + float(i) / float(STEPS) * AURORA_LENGTH), 22.5);
+            float dn = n1 - n0;
+            float exact = abs(dn) > 0.0001 ? (fixNoiseIntegral(n1) - fixNoiseIntegral(n0)) / dn : fixNoise((n0 + n1) * 0.5);
+            average = mix(exact, HAZE, tailBlur);
+            n0 = n1;
+        }
+        noise += average * 0.65 * (1.0 - (float(i) - 0.5) / float(STEPS));
     }
-
     return noise;
 }
 
 void main() {
-    // Normalize pixelPos to [-1.0, 1.0]
-    vec2 uv = pixelPos.xz * 2.0 - 1.0;
+    float footprint = length(fwidth(pixelPos.xz)) / NOISE_SCALE;
+    float fogFade = 1.0 - smoothstep(FogRenderDistanceEnd * 2.5, FogRenderDistanceEnd * 5.0, length(pixelPos.xz));
+    if (fogFade <= 0.0)
+        discard;
 
-    float noise = rayMarch(vec3(uv.x, 0.0, uv.y), vec3(uv.x, 1.0, uv.y));
-    float colorNoise = genNoise(uv.x, uv.y, 720.0);
-
-    colorNoise = ((colorNoise + 1.0) / 2.0) * 0.5;
-    vec4 color = vec4(0.0, 0.5 + colorNoise, 1.0 - colorNoise, noise);
-    float fogFade = 1.0 - linear_fog_value(length(pixelPos.xz / 2.75), FogRenderDistanceStart, FogRenderDistanceEnd);
-    float fogDistance = length(pixelPos.xz / 2.5);
-    fragColor = apply_fog(
-        vec4(vertexColor.rgb * ColorModulator.rgb * color.rgb, vertexColor.a * ColorModulator.a * color.a * fogFade),
-        fogDistance,
-        fogDistance,
-        FogRenderDistanceStart,
-        FogRenderDistanceEnd,
-        FogRenderDistanceStart,
-        FogRenderDistanceEnd,
-        FogColor
-    );
+    float noise = rayMarch(pixelPos.xz, footprint);
+    float colorNoise = (genNoise(pixelPos.xz, 720.0) + 1.0) * 0.25;
+    vec3 color = vec3(0.0, 0.5 + colorNoise, 1.0 - colorNoise);
+    fragColor = vec4(vertexColor.rgb * ColorModulator.rgb * color, vertexColor.a * ColorModulator.a * noise * fogFade);
 }

@@ -41,7 +41,7 @@ public class OreMeterItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-		if (level.isClientSide() || !stack.has(TFDataComponents.ORE_SCANNING))
+		if (!stack.has(TFDataComponents.ORE_SCANNING))
 			return;
 
 		OreScannerComponent newScan = stack.get(TFDataComponents.ORE_SCANNING).tickScan(level);
@@ -105,34 +105,32 @@ public class OreMeterItem extends Item {
 	private static InteractionResult toggleRange(Level level, Player player, ItemStack stack) {
 		//if we're crouching and not targeting a block, change the ore meter range instead
 		HitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
-		if (result.getType() == HitResult.Type.MISS) {
-			if (!level.isClientSide()) {
-				int newRange = Mth.positiveModulo(getRange(stack) + 1, MAX_CHUNK_SEARCH_RANGE + 1);
-
-				stack.set(TFDataComponents.ORE_RANGE, newRange);
-				player.sendOverlayMessage(Component.translatable("misc.twilightforest.ore_meter_new_range", newRange));
-				level.playSound(null, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.25F, 0.75F + (newRange * 0.1F));
-			}
+		if (result.getType() != HitResult.Type.MISS)
+			return InteractionResult.PASS;
+		if (level.isClientSide())
 			return InteractionResult.SUCCESS;
-		}
 
-		return InteractionResult.PASS;
+		int newRange = Mth.positiveModulo(getRange(stack) + 1, MAX_CHUNK_SEARCH_RANGE + 1);
+
+		stack.set(TFDataComponents.ORE_RANGE, newRange);
+		player.sendOverlayMessage(Component.translatable("misc.twilightforest.ore_meter_new_range", newRange));
+		level.playSound(null, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.25F, 0.75F + (newRange * 0.1F));
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		ItemStack stack = context.getItemInHand();
 		//if we're crouching and targeting a block, attempt to save the block as the focused block
-		if (context.isSecondaryUseActive()) {
-			BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-			if (state.is(TFBlockTags.ORE_METER_TARGETABLE)) {
-				stack.set(TFDataComponents.ORE_FILTER, state.getBlock());
-				context.getPlayer().sendOverlayMessage(Component.translatable("misc.twilightforest.ore_meter_set_block", Component.translatable(state.getBlock().getDescriptionId())));
-				context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.get(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
-				return InteractionResult.SUCCESS;
-			}
-		}
-		return super.useOn(context);
+		if (!context.isSecondaryUseActive())
+			return super.useOn(context);
+		BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+		if (!state.is(TFBlockTags.ORE_METER_TARGETABLE))
+			return super.useOn(context);
+		stack.set(TFDataComponents.ORE_FILTER, state.getBlock());
+		context.getPlayer().sendOverlayMessage(Component.translatable("misc.twilightforest.ore_meter_set_block", Component.translatable(state.getBlock().getDescriptionId())));
+		context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.get(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
+		return InteractionResult.SUCCESS;
 	}
 
 	//don't make the player hand spazz out when the NBT changes

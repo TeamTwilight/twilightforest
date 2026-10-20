@@ -108,20 +108,18 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 	}
 
 	@Override
-	public void setupAnim(KnightPhantomRenderState entity) {
-		if (entity.isCharging) {
-			this.root().visible = false;
-		}
+	public void setupAnim(KnightPhantomRenderState state) {
+		this.root().visible = state.isCharging;
 
-		super.setupAnim(entity);
+		super.setupAnim(state);
 		this.leftLeg.yRot = 0;
 		this.leftLeg.zRot = 0;
 
 		this.rightLeg.yRot = 0;
 		this.rightLeg.zRot = 0;
 
-		this.rightLeg.xRot = 0.2F * Mth.sin(entity.ageInTicks * 0.3F) + 0.4F;
-		this.leftLeg.xRot = 0.2F * Mth.sin(entity.ageInTicks * 0.3F) + 0.4F;
+		this.rightLeg.xRot = 0.2F * Mth.sin(state.ageInTicks * 0.3F) + 0.4F;
+		this.leftLeg.xRot = 0.2F * Mth.sin(state.ageInTicks * 0.3F) + 0.4F;
 	}
 
 	@Override

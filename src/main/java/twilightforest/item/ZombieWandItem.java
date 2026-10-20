@@ -26,32 +26,35 @@ public class ZombieWandItem extends ScepterItem {
 
 	@Override
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
-		if (!level.isClientSide()) {
-			// what block is the player pointing at?
-			BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
-
-			if (result.getType() != HitResult.Type.MISS) {
-				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
-				zombie.snapTo(result.getLocation());
-				if (!level.noCollision(zombie, zombie.getBoundingBox())) {
-					return InteractionResult.PASS;
-				}
-				zombie.spawnAnim();
-				zombie.setTame(true, false);
-				zombie.setOwner(player);
-				zombie.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 1200, 1));
-				if (player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) && level.getRandom().nextFloat() <= 0.1f) {
-					zombie.setBaby(true);
-				}
-				level.addFreshEntity(zombie);
-				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
-
-				if (!player.isCreative()) {
-					stack.hurtWithoutBreaking(1, player);
-				}
-				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
-			}
+		if (level.isClientSide()) {
+			return InteractionResult.SUCCESS;
 		}
+
+		// what block is the player pointing at?
+		BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
+		if (result.getType() == HitResult.Type.MISS) {
+			return InteractionResult.SUCCESS;
+		}
+
+		LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+		zombie.snapTo(result.getLocation());
+		if (!level.noCollision(zombie, zombie.getBoundingBox())) {
+			return InteractionResult.PASS;
+		}
+		zombie.spawnAnim();
+		zombie.setTame(true, false);
+		zombie.setOwner(player);
+		zombie.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 1200, 1));
+		if (player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) && level.getRandom().nextFloat() <= 0.1f) {
+			zombie.setBaby(true);
+		}
+		level.addFreshEntity(zombie);
+		level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
+
+		if (!player.isCreative()) {
+			stack.hurtWithoutBreaking(1, player);
+		}
+		zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
 		return InteractionResult.SUCCESS;
 	}
 }

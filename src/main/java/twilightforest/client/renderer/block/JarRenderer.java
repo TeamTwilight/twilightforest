@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.dispatch.SingleVariant;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -164,20 +165,24 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		}
 
 		if (state.lid != null)
-			submitModel(state.lid, poseStack, collector, state.lightCoords);
-		submitModel(JAR_MODEL, poseStack, collector, state.lightCoords);
+			submitModel(state.lid, poseStack, collector, state.lightCoords, state.breakProgress);
+		submitModel(JAR_MODEL, poseStack, collector, state.lightCoords, state.breakProgress);
 		this.submitContents(state, poseStack, collector);
 
 		poseStack.popPose();
 	}
 
-	public static void submitModel(StandaloneModelKey<BlockStateModelPart> model, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords) {
+	public static void submitModel(StandaloneModelKey<BlockStateModelPart> model, PoseStack poseStack, SubmitNodeCollector collector, int lightCoords, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
 		BlockStateModelPart part = Minecraft.getInstance().getModelManager().getStandaloneModel(model);
 		if (part == null)
 			return;
 
 		boolean translucent = (part.materialFlags() & BakedQuad.FLAG_TRANSLUCENT) != 0;
 		collector.submitMultiLayerBlockModel(poseStack, List.of(part), translucent, BlockModelRenderState.EMPTY_TINTS, lightCoords, OverlayTexture.NO_OVERLAY, 0);
+
+		if (crumblingOverlay != null) {
+			collector.submitBreakingBlockModel(poseStack, new SingleVariant(part), 0L, crumblingOverlay.progress());
+		}
 	}
 
 	public void submitContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {

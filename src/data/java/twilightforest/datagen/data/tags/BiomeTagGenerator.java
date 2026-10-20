@@ -117,9 +117,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 
 		//even though we won't spawn vanilla frogs, we'll still add support for the variants
 		this.tag(BiomeTags.SPAWNS_COLD_VARIANT_FROGS).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));
-		this.tag(BiomeTags.SPAWNS_COLD_VARIANT_FARM_ANIMALS).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));
 		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).addAll(List.of(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP));
-		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS).addAll(List.of(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP));
 
 		this.tag(BiomeTags.SPAWNS_SNOW_FOXES).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));
 		this.tag(BiomeTags.SPAWNS_WHITE_RABBITS).addAll(List.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER));

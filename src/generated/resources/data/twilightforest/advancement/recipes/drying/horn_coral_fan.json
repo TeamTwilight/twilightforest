@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_coral": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:horn_coral_fan"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:drying/horn_coral_fan"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_coral"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:drying/horn_coral_fan"
+    ]
+  }
+}

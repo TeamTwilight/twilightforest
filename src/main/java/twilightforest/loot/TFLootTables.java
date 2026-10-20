@@ -124,6 +124,10 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> IRON_OREBERRY_BUSH_DROPS = register("blocks/iron_oreberry_bush_berries");
 	public static final ResourceKey<LootTable> GOLD_OREBERRY_BUSH_DROPS = register("blocks/gold_oreberry_bush_berries");
 	public static final ResourceKey<LootTable> ESSENCE_BERRY_BUSH_DROPS = register("blocks/essence_berry_bush_berries");
+	public static final ResourceKey<LootTable> TORCHBERRY_PLANT_DROPS = register("blocks/torchberry_plant_berries");
+	public static final ResourceKey<LootTable> TROLLBER_PLANT_DROPS = register("blocks/trollber_plant_berries");
+
+	public static final ResourceKey<LootTable> LIVEROOT_STRIP_DROPS = register("blocks/liveroot_strip");
 
 	//public static final Identifier ALL_BOSSES = register("entities/all_bosses");
 

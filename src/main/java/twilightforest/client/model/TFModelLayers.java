@@ -72,6 +72,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation LICH_MINION = register("lich_minion");
 	public static final ModelLayerLocation LOWER_GOBLIN_KNIGHT = register("lower_goblin_knight");
 	public static final ModelLayerLocation LOYAL_ZOMBIE = register("loyal_zombie");
+	public static final ModelLayerLocation LOYAL_ZOMBIE_BABY = register("loyal_zombie_baby");
 	public static final ModelLayerLocation MAZE_SLIME = register("maze_slime");
 	public static final ModelLayerLocation MAZE_SLIME_OUTER = register("maze_slime", "outer");
 	public static final ModelLayerLocation MINOSHROOM = register("minoshroom");

@@ -199,6 +199,18 @@ public class EntityTypeTagGenerator extends ModdedEntityTypeTagGenerator {
 
 		this.tag(Tags.EntityTypes.BOSSES).addTag(TFEntityTypeTags.BOSSES);
 		this.tag(TFEntityTypeTags.LICH_DEFLECTS_PHASE_2).add(TFEntities.WAND_BOLT.get(), TFEntities.LICH_BOLT.get(), TFEntities.LICH_BOMB.get());
+
+		this.tag(TFEntityTypeTags.HEDGE_DAMAGE_IMMUNE).add(
+			EntityType.SPIDER,
+			EntityType.CAVE_SPIDER,
+			TFEntities.HEDGE_SPIDER.get(),
+			TFEntities.SWARM_SPIDER.get(),
+			TFEntities.KING_SPIDER.get(),
+			TFEntities.CARMINITE_BROODLING.get(),
+			EntityType.ITEM
+		);
+
+		this.tag(TFEntityTypeTags.PROGRESSION_LOCK_VULNERABLE).add(TFEntities.KOBOLD.get());
 	}
 
 

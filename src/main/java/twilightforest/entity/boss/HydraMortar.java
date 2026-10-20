@@ -182,7 +182,7 @@ public class HydraMortar extends ThrowableProjectile {
 	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
 		super.hurtServer(server, source, amount);
 
-		if (source.getEntity() != null && !this.level().isClientSide()) {
+		if (source.getEntity() != null) {
 			Vec3 lookAngle = source.getEntity().getLookAngle();
 			// reflect faster and more accurately
 			this.shoot(lookAngle.x(), lookAngle.y(), lookAngle.z(), 1.5F, 0.1F);  // reflect faster and more accurately

@@ -17,7 +17,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -202,12 +201,11 @@ public class TFItems {
 	public static final DeferredItem<Item> FOUR_LEAF_CLOVER = register("four_leaf_clover", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> CROWN_SPLINTER = register("crown_splinter", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> MYSTIC_CROWN = register("mystic_crown", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).attributes(ItemAttributeModifiers.builder().add(Attributes.ARMOR, new AttributeModifier(Identifier.withDefaultNamespace("armor." + EquipmentSlot.HEAD.getName()), 2.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD).build()).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> STALE_BREAD = register("stale_bread", Item::new, () -> new Item.Properties().stacksTo(1).component(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.ATTRIBUTE_MODIFIERS, true)).sword(ToolMaterial.WOOD, 3, -2.4F));
 
 	public static final DeferredItem<Item> KEEPSAKE_CASKET = register("keepsake_casket", KeepsakeCasketItem::new, () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> HUGE_LILY_PAD = register("huge_lily_pad", properties -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final DeferredItem<Item> HUGE_WATER_LILY = register("huge_water_lily", properties -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
-	public static final DeferredItem<Item> FALLEN_LEAVES = register("fallen_leaves", properties -> new PlaceOnWaterBlockItem(TFBlocks.FALLEN_LEAVES.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
+	public static final DeferredItem<Item> FALLEN_LEAVES = register("fallen_leaves", properties -> new FallenLeavesItem(TFBlocks.FALLEN_LEAVES.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final DeferredItem<Item> WROUGHT_IRON_FENCE = register("wrought_iron_fence", properties -> new WroughtIronFenceItem(TFBlocks.WROUGHT_IRON_FENCE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 
 	public static final DeferredItem<Item> ZOMBIE_SKULL_CANDLE = register("zombie_skull_candle", properties -> new SkullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON).equippable(EquipmentSlot.HEAD));
@@ -302,10 +300,10 @@ public class TFItems {
 	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = register("snow_queen_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.SNOW_QUEEN_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
 	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = register("quest_ram_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.QUESTING_RAM_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
 
-	public static final DeferredItem<Item> RASPBERRY = register("raspberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
-	public static final DeferredItem<Item> BLUEBERRY = register("blueberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
-	public static final DeferredItem<Item> BLACKBERRY = register("blackberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
-	public static final DeferredItem<Item> MALOBERRY = register("maloberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
+	public static final DeferredItem<Item> RASPBERRY = register("raspberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
+	public static final DeferredItem<Item> BLUEBERRY = register("blueberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
+	public static final DeferredItem<Item> BLACKBERRY = register("blackberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
+	public static final DeferredItem<Item> MALOBERRY = register("maloberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.QUICK_CONSUME_BERRY));
 	public static final DeferredItem<Item> BLIGHTBERRY = register("blightberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.BLIGHTBERRY));
 	public static final DeferredItem<Item> DUSKBERRY = register("duskberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.DUSKBERRY));
 	public static final DeferredItem<Item> SKYBERRY = register("skyberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.SKYBERRY));

@@ -14,6 +14,8 @@ public class TFConsumables extends Consumables {
 	public static final Consumable SLIME_DROP = Consumable.builder().onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.SPEED, 600))).build();
 	public static final Consumable MAZE_SLIME_DROP = Consumable.builder().onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.REGENERATION, 600))).build();
 
+	public static final Consumable QUICK_CONSUME_BERRY = Consumable.builder().consumeSeconds(0.8F).build();
+
 	public static final Consumable BLIGHTBERRY = Consumable.builder().consumeSeconds(0.8F).onConsume(StackableEffectConsumeEffect.builder()
 		.addEffect(MobEffects.REGENERATION, 8)
 		.addEffect(MobEffects.POISON, 5, 0.75F)
@@ -29,6 +31,7 @@ public class TFConsumables extends Consumables {
 		.addEffect(MobEffects.JUMP_BOOST, 8)
 		.addEffect(MobEffects.SLOWNESS, 3, 0.75F)
 		.build()).build();
+
 	public static final Consumable STINGBERRY = Consumable.builder().consumeSeconds(0.8F).onConsume(StackableEffectConsumeEffect.builder()
 		.addEffect(MobEffects.STRENGTH, 10)
 		.addEffect(MobEffects.MINING_FATIGUE, 10, 0.75F)

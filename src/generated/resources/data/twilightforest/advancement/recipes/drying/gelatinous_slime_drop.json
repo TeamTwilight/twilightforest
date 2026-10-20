@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:gelatinous_slime_drop"
+        "recipe": "twilightforest:drying/gelatinous_slime_drop"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:gelatinous_slime_drop"
+      "twilightforest:drying/gelatinous_slime_drop"
     ]
   }
 }

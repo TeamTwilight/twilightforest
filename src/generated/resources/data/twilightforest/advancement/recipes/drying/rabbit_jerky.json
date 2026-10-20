@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:rabbit_jerky"
+        "recipe": "twilightforest:drying/rabbit_jerky"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:rabbit_jerky"
+      "twilightforest:drying/rabbit_jerky"
     ]
   }
 }

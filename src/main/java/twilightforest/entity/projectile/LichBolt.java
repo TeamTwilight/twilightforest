@@ -22,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 
 public class LichBolt extends TFThrowable {
 
@@ -44,7 +45,7 @@ public class LichBolt extends TFThrowable {
 		float s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;
 		float s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-		this.makeTrail(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, s1, s2, s3), 5);
+		this.makeTrail(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), s1, s2, s3), 5);
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class LichBolt extends TFThrowable {
 	public boolean hurtServer(ServerLevel server, DamageSource damagesource, float amount) {
 		super.hurtServer(server, damagesource, amount);
 
-		if (!this.level().isClientSide() && damagesource.getEntity() != null) {
+		if (damagesource.getEntity() != null) {
 			Vec3 vec3d = damagesource.getEntity().getLookAngle();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);  // reflect faster and more accurately

@@ -93,7 +93,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		//only tick while on the player's head
 		if (slot != EquipmentSlot.HEAD)
 			return;
-		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(owner, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(owner, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
 			return;
 
 		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);

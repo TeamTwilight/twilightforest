@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:block_interact",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:torchberries"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:blocks/trollber_plant_berries"
+}

@@ -56,18 +56,43 @@ public class WaterSprintTransformer extends SimpleMethodProcessor {
 		)));
 	}
 
+	private static void injectIsInShallowWater(MethodNode node) {
+		ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+			"net/minecraft/client/player/LocalPlayer",
+			"isInShallowWater",
+			"()Z"
+		).forEach(m -> node.instructions.insert(m, ASMUtil.listOf(
+			new VarInsnNode(Opcodes.ALOAD, 0),
+			new MethodInsnNode(
+				Opcodes.INVOKESTATIC,
+				"twilightforest/asmhooks/EntityHooks",
+				"unrestrainedSprintingInWater",
+				"(ZLnet/minecraft/world/entity/LivingEntity;)Z",
+				false
+			)
+		)));
+	}
+
 	@Override
 	public void transform(MethodNode node, SimpleTransformationContext context) {
 		injectIsInWater(node);
 		injectIsInFluidMatching(node);
+		injectIsInShallowWater(node);
 	}
 
 	@Override
 	public Set<SimpleMethodProcessor.Target> targets() {
-		return Set.of(new SimpleMethodProcessor.Target(
-			"net.minecraft.client.player.LocalPlayer",
-			"shouldStopSwimSprinting",
-			"()Z"
-		));
+		return Set.of(
+			new SimpleMethodProcessor.Target(
+				"net.minecraft.client.player.LocalPlayer",
+				"shouldStopSwimSprinting",
+				"()Z"
+			),
+			new SimpleMethodProcessor.Target(
+				"net.minecraft.client.player.LocalPlayer",
+				"isSprintingPossible",
+				"(Z)Z"
+			)
+		);
 	}
 }

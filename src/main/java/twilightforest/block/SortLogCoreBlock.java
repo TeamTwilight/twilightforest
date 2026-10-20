@@ -1,10 +1,12 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -29,9 +31,15 @@ import java.util.Map;
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
+	private static final MapCodec<SpecialMagicLogBlock> CODEC = simpleCodec(SortLogCoreBlock::new);
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	protected MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

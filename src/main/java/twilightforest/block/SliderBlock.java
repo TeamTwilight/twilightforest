@@ -86,7 +86,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (!level.isClientSide() && this.isConnectedInRange(level, pos)) {
+		if (this.isConnectedInRange(level, pos)) {
 			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
 			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);
 

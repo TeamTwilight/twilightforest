@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -22,7 +23,7 @@ public record MoonwormSpecialRenderer(MoonwormModel model) implements NoDataSpec
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
 		float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks();
 		MoonwormRenderState state = createItemState(partialTick);
-		MoonwormRenderer.submitMoonworm(this.model(), state, stack, collector, light, overlay, outlineColor, null);
+		MoonwormRenderer.submitMoonworm(model(), state, stack, collector, light, overlay, outlineColor, null);
 	}
 
 	private static MoonwormRenderState createItemState(float partialTick) {
@@ -41,7 +42,11 @@ public record MoonwormSpecialRenderer(MoonwormModel model) implements NoDataSpec
 	@Override
 	public void getExtents(Consumer<Vector3fc> output) {
 		PoseStack poseStack = new PoseStack();
-		this.model.root().getExtentsForGui(poseStack, output);
+		poseStack.translate(0.5F, 0.5F, 0.5F);
+		poseStack.mulPose(Direction.NORTH.getRotation());
+		poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+		model.root().getExtentsForGui(poseStack, output);
 	}
 
 	public record Unbaked() implements NoDataSpecialModelRenderer.Unbaked {

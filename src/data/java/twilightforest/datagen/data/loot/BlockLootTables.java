@@ -15,10 +15,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.entries.*;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -266,28 +263,18 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.QUEST_RAM_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
 		add(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
 
-		add(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
-		add(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
-		add(TFBlocks.SKELETON_SKULL_CANDLE.get(), createSingleItemTable(Blocks.SKELETON_SKULL));
-		add(TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.SKELETON_SKULL));
-		add(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.WITHER_SKELETON_SKULL));
-		add(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.WITHER_SKELETON_SKULL));
-		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
-		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
-		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
-				.include(DataComponents.PROFILE)
-				.include(DataComponents.NOTE_BLOCK_SOUND)
-				.include(DataComponents.CUSTOM_NAME)
-		));
-		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(
-			CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
-				.include(DataComponents.PROFILE)
-				.include(DataComponents.NOTE_BLOCK_SOUND)
-				.include(DataComponents.CUSTOM_NAME)
-		));
-		add(TFBlocks.PIGLIN_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
-		add(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
+		createSkullCandle(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), Blocks.ZOMBIE_HEAD);
+		createSkullCandle(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), Blocks.ZOMBIE_WALL_HEAD);
+		createSkullCandle(TFBlocks.SKELETON_SKULL_CANDLE.get(), Blocks.SKELETON_SKULL);
+		createSkullCandle(TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), Blocks.SKELETON_WALL_SKULL);
+		createSkullCandle(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), Blocks.WITHER_SKELETON_SKULL);
+		createSkullCandle(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), Blocks.WITHER_SKELETON_WALL_SKULL);
+		createSkullCandle(TFBlocks.CREEPER_SKULL_CANDLE.get(), Blocks.CREEPER_HEAD);
+		createSkullCandle(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), Blocks.CREEPER_WALL_HEAD);
+		createSkullCandle(TFBlocks.PLAYER_SKULL_CANDLE.get(), Blocks.PLAYER_HEAD);
+		createSkullCandle(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), Blocks.PLAYER_WALL_HEAD);
+		createSkullCandle(TFBlocks.PIGLIN_SKULL_CANDLE.get(), Blocks.PIGLIN_HEAD);
+		createSkullCandle(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), Blocks.PIGLIN_WALL_HEAD);
 
 		dropSelf(TFBlocks.IRON_LADDER.get());
 		add(TFBlocks.ROPE.get(), this.rope());
@@ -298,7 +285,17 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());
 		add(TFBlocks.SKULL_CHEST.get(), skullChestInfo(TFBlocks.SKULL_CHEST.get()));
 		add(TFBlocks.KEEPSAKE_CASKET.get(), skullChestInfo(TFBlocks.KEEPSAKE_CASKET.get()));
-		dropSelf(TFBlocks.CANDELABRA.get());
+		this.add(TFBlocks.CANDELABRA.get(), block -> LootTable.lootTable()
+			.withPool(LootPool.lootPool()
+				.add(DynamicLoot.dynamicEntry(AbstractSkullCandleBlock.CANDLE_DYNAMIC_DROP_ID)
+					.when(this.doesNotHaveSilkTouch())))
+			.withPool(LootPool.lootPool()
+				.add(AlternativesEntry.alternatives(
+					LootItem.lootTableItem(block)
+						.when(this.doesNotHaveSilkTouch())
+						.otherwise(LootItem.lootTableItem(block)
+							.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+								.include(TFDataComponents.CANDELABRA_DATA.get())))))));
 		dropSelf(TFBlocks.WROUGHT_IRON_FENCE.get());
 		dropSelf(TFBlocks.TERRORCOTTA_ARCS.value());
 		dropSelf(TFBlocks.TERRORCOTTA_CURVES.value());
@@ -691,6 +688,24 @@ public class BlockLootTables extends BlockLootSubProvider {
 						.add(LootItem.lootTableItem(bush.asItem()))
 				)
 		);
+	}
+
+	private void createSkullCandle(Block block, Block skull) {
+		this.add(block, LootTable.lootTable()
+			.withPool(LootPool.lootPool()
+				.add(DynamicLoot.dynamicEntry(AbstractSkullCandleBlock.CANDLE_DYNAMIC_DROP_ID).when(this.doesNotHaveSilkTouch())))
+			.withPool(LootPool.lootPool()
+				.add(AlternativesEntry.alternatives(
+					LootItem.lootTableItem(skull).when(this.doesNotHaveSilkTouch()).apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+						.include(DataComponents.PROFILE)
+						.include(DataComponents.NOTE_BLOCK_SOUND)
+						.include(DataComponents.CUSTOM_NAME)),
+					LootItem.lootTableItem(block).apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+						.include(TFDataComponents.SKULL_CANDLES.get())
+						.include(DataComponents.PROFILE)
+						.include(DataComponents.NOTE_BLOCK_SOUND)
+						.include(DataComponents.CUSTOM_NAME)))
+				)));
 	}
 
 	private static LootTable.Builder skullChestInfo(Block block) {

@@ -24,7 +24,6 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class PotionFlaskItem extends Item {
 
@@ -51,43 +50,12 @@ public class PotionFlaskItem extends Item {
 
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
-		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
-
-		if (action == ClickAction.SECONDARY && potionContents != null) {
-			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
-				if (!player.getAbilities().instabuild) {
-					other.shrink(1);
-					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
-				}
-
-				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
-				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
-				return true;
-			}
-		}
-		return false;
+		return this.tryFillFlask(stack, other, action, player);
 	}
 
 	@Override
 	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
-		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
-		ItemStack other = slot.getItem();
-		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
-
-		if (action == ClickAction.SECONDARY && potionContents != null) {
-			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
-				if (!player.getAbilities().instabuild) {
-					other.shrink(1);
-					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
-				}
-
-				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
-				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
-				return true;
-			}
-		}
-		return false;
+		return this.tryFillFlask(stack, slot.getItem(), action, player);
 	}
 
 	@Override
@@ -161,18 +129,34 @@ public class PotionFlaskItem extends Item {
 		return stack;
 	}
 
-	private void changeAndConsumeFlask(ItemStack stack, Player player, Consumer<ItemStack> onDrink) {
-		//if we have a stack of flasks, separate one when filling/emptying
-		if (stack.getCount() > 1) {
-			var copy = stack.copyWithCount(1);
-			stack.shrink(1);
+	private boolean tryFillFlask(ItemStack flask, ItemStack other, ClickAction action, Player player) {
+		PotionFlaskComponent flaskContents = flask.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
 
-			onDrink.accept(copy);
-			InventoryUtil.giveItemToPlayer(player, copy);
-		} else {
-			//otherwise just use the existing stack. Having it jump around the inventory is weird
-			onDrink.accept(stack);
+		if (action == ClickAction.SECONDARY && potionContents != null) {
+			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
+				// If we have a stack of flasks, separate one when filling/emptying.
+				if (flask.getCount() > 1) {
+					ItemStack flaskCopy = flask.copyWithCount(1);
+					flask.shrink(1);
+					flaskCopy.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents));
+					InventoryUtil.giveItemToPlayer(player, flaskCopy);
+				} else {
+					// Otherwise, just use the existing stack. Having it jump around the inventory is weird.
+					flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents));
+				}
+
+				if (!player.getAbilities().instabuild) {
+					other.shrink(1);
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
+				}
+
+				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	@Override

@@ -1,9 +1,11 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.DirectionalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.item.OreMagnetItem;
@@ -11,8 +13,15 @@ import twilightforest.util.WorldUtil;
 
 public class MineLogCoreBlock extends SpecialMagicLogBlock {
 
+	private static final MapCodec<SpecialMagicLogBlock> CODEC = simpleCodec(MineLogCoreBlock::new);
+
 	public MineLogCoreBlock(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	protected MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

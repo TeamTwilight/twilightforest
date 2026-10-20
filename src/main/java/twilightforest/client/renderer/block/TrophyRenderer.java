@@ -115,17 +115,20 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 		state.variant = blockEntity.getBlockState().getBlock() instanceof AbstractTrophyBlock trophy ? trophy.getVariant() : BossVariant.NAGA;
 
 		if (state.wall) {
-			state.transformation = state.variant == BossVariant.UR_GHAST ?
-				createUnmountedWallTransformation(blockEntity.getBlockState().getValue(TrophyWallBlock.FACING)) :
-				createWallTransformation(blockEntity.getBlockState().getValue(TrophyWallBlock.FACING));
+			Direction facing = blockEntity.getBlockState().getValue(TrophyWallBlock.FACING);
+			state.transformation = switch (state.variant) {
+				case UR_GHAST -> createUnmountedWallTransformation(facing);
+				case ALPHA_YETI -> createWallTransformation(facing, 0.275F);
+				default -> createWallTransformation(facing, 0.25F);
+			};
 		} else {
 			state.transformation = createGroundTransformation(blockEntity.getBlockState().getValue(TrophyBlock.ROTATION));
 		}
 	}
 
-	private static Transformation createWallTransformation(Direction wallDirection) {
+	private static Transformation createWallTransformation(Direction wallDirection, float wallOffset) {
 		return new Transformation(
-			new Vector3f(0.5F - wallDirection.getStepX() * 0.25F, 0.25F, 0.5F - wallDirection.getStepZ() * 0.25F),
+			new Vector3f(0.5F - wallDirection.getStepX() * wallOffset, 0.25F, 0.5F - wallDirection.getStepZ() * wallOffset),
 			Axis.YP.rotationDegrees(-wallDirection.getOpposite().toYRot()),
 			new Vector3f(-1.0F, -1.0F, 1.0F),
 			null
@@ -134,7 +137,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 
 	private static Transformation createUnmountedWallTransformation(Direction wallDirection) {
 		return new Transformation(
-			new Vector3f(0.5F, 0.25F, 0.5F),
+			new Vector3f(0.5F, 0.0F, 0.5F),
 			Axis.YP.rotationDegrees(-wallDirection.getOpposite().toYRot()),
 			new Vector3f(-1.0F, -1.0F, 1.0F),
 			null

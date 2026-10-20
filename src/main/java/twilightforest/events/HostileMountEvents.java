@@ -10,6 +10,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -28,6 +29,7 @@ public class HostileMountEvents {
 		NeoForge.EVENT_BUS.addListener(this::preventTeleportingOffHostileMounts);
 		NeoForge.EVENT_BUS.addListener(this::preventMountDismount);
 		NeoForge.EVENT_BUS.addListener(this::preventHostilMountCrouching);
+		NeoForge.EVENT_BUS.addListener(this::playerLogOut);
 	}
 
 	@SubscribeEvent
@@ -44,6 +46,11 @@ public class HostileMountEvents {
 			event.setCanceled(true);
 			living.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.YEETED, living.getData(TFDataAttachments.YETI_THROWING).getThrower()), amount);
 		}
+	}
+
+	@SubscribeEvent
+	private void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
+			hostileDismount(event.getEntity());
 	}
 
 	private void preventTeleportingOffHostileMounts(EntityTeleportEvent event) {

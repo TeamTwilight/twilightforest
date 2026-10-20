@@ -57,14 +57,12 @@ public class QuestRamEatWoolGoal extends Goal {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.ram.level().isClientSide()) {
-			if (this.targetItem != null && this.ram.isItemTempting(this.targetItem.getItem())) {
-				this.ram.getLookControl().setLookAt(this.targetItem, this.ram.getMaxHeadYRot() + 20, this.ram.getMaxHeadXRot());
-				if (this.ram.distanceToSqr(this.targetItem.position()) < 6.25D && this.ram.tryAccept(this.targetItem.getItem())) {
-					//consume the wool
-					this.targetItem.discard();
-					this.ram.gameEvent(GameEvent.EAT);
-				}
+		if (this.targetItem != null && this.ram.isItemTempting(this.targetItem.getItem())) {
+			this.ram.getLookControl().setLookAt(this.targetItem, this.ram.getMaxHeadYRot() + 20, this.ram.getMaxHeadXRot());
+			if (this.ram.distanceToSqr(this.targetItem.position()) < 6.25D && this.ram.tryAccept(this.targetItem.getItem())) {
+				//consume the wool
+				this.targetItem.discard();
+				this.ram.gameEvent(GameEvent.EAT);
 			}
 		}
 	}

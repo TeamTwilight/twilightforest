@@ -317,7 +317,8 @@ public abstract class BiomeHelper {
 		return new Biome.BiomeBuilder()
 			.temperature(1.0F)
 			.downfall(0.2F)
-			.putAttributes(defaultEnvironmentBuilderNoParticles())
+			.putAttributes(defaultEnvironmentBuilderNoParticles()
+				.set(EnvironmentAttributes.CLOUD_COLOR, 0))
 			.specialEffects(defaultAmbientBuilder().build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder()
 				.creatureGenerationProbability(0.3f)
@@ -541,6 +542,7 @@ public abstract class BiomeHelper {
 		return darkForest(featureGetter, carverGetter)
 			.setAttribute(EnvironmentAttributes.FOG_COLOR, 0x493000)
 			.setAttribute(EnvironmentAttributes.SKY_LIGHT_FACTOR, Timelines.NIGHT_SKY_LIGHT_FACTOR)
+			.setAttribute(EnvironmentAttributes.CLOUD_COLOR, 0)
 			.specialEffects(defaultAmbientBuilder()
 				.grassColorOverride(0x667540)
 				.foliageColorOverride(0xF9821E)
@@ -582,8 +584,7 @@ public abstract class BiomeHelper {
 				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 1, 1))
 				.addMobCharge(TFEntities.YETI.get(), 0.6D, 0.15D)
 				.build())
-			.generationSettings(biome.build())
-			.temperatureAdjustment(Biome.TemperatureModifier.FROZEN);
+			.generationSettings(biome.build());
 	}
 
 	public static Biome.BiomeBuilder glacier(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
@@ -605,8 +606,7 @@ public abstract class BiomeHelper {
 				.creatureGenerationProbability(0.15f)
 				.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.PENGUIN.get(), 2, 4))
 				.build())
-			.generationSettings(biome.build())
-			.temperatureAdjustment(Biome.TemperatureModifier.FROZEN);
+			.generationSettings(biome.build());
 	}
 
 	public static Biome.BiomeBuilder underground(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {

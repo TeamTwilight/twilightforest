@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:cod_jerky"
+        "recipe": "twilightforest:drying/cod_jerky"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:cod_jerky"
+      "twilightforest:drying/cod_jerky"
     ]
   }
 }

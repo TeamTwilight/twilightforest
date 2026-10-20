@@ -1,0 +1,63 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": {
+    "neoforge:ingredient_type": "neoforge:components",
+    "components": {
+      "minecraft:item_name": {
+        "translate": "item.minecraft.bread"
+      }
+    },
+    "items": "minecraft:bread"
+  },
+  "result": {
+    "components": {
+      "!minecraft:consumable": {},
+      "!minecraft:food": {},
+      "minecraft:attribute_modifiers": [
+        {
+          "type": "minecraft:attack_damage",
+          "amount": 3.0,
+          "id": "minecraft:base_attack_damage",
+          "operation": "add_value",
+          "slot": "mainhand"
+        },
+        {
+          "type": "minecraft:attack_speed",
+          "amount": -2.4000000953674316,
+          "id": "minecraft:base_attack_speed",
+          "operation": "add_value",
+          "slot": "mainhand"
+        }
+      ],
+      "minecraft:damage_type": "twilightforest:stale_sandwich",
+      "minecraft:item_model": "twilightforest:stale_bread",
+      "minecraft:item_name": {
+        "translate": "item.twilightforest.stale_bread"
+      },
+      "minecraft:max_stack_size": 1,
+      "minecraft:tool": {
+        "can_destroy_blocks_in_creative": false,
+        "damage_per_block": 2,
+        "rules": [
+          {
+            "blocks": "minecraft:cobweb",
+            "correct_for_drops": true,
+            "speed": 15.0
+          },
+          {
+            "blocks": "#minecraft:sword_instantly_mines",
+            "speed": 3.4028235E38
+          },
+          {
+            "blocks": "#minecraft:sword_efficient",
+            "speed": 1.5
+          }
+        ]
+      },
+      "minecraft:weapon": {}
+    },
+    "id": "minecraft:bread"
+  },
+  "show_notification": false
+}

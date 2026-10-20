@@ -79,6 +79,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.09,
-  "temperature_modifier": "frozen"
+  "temperature": 0.09
 }

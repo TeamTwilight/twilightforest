@@ -26,21 +26,23 @@ public class PocketWatchItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack itemStack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-		if (!level.isClientSide() && owner instanceof Player player) {
-			if (slot == null) {
-				for (int i = 0; i <= 8; i++) {
-					if (player.getInventory().getItem(i).is(this)) {
-						player.addEffect(new MobEffectInstance(MobEffects.SPEED, 5, 0, false, false, false));
-						player.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST, 5, 0, false, false, false));
-						break;
-					}
-				}
-			}
-			if (player.isHolding(this)) {
+		if (!(owner instanceof Player player))
+			return;
+
+		if (slot == null) {
+			for (int i = 0; i <= 8; i++) {
+				if (!player.getInventory().getItem(i).is(this))
+					continue;
 				player.addEffect(new MobEffectInstance(MobEffects.SPEED, 5, 0, false, false, false));
 				player.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST, 5, 0, false, false, false));
-				player.addEffect(new MobEffectInstance(MobEffects.HASTE, 5, 0, false, false, false));
+				break;
 			}
+		}
+
+		if (player.isHolding(this)) {
+			player.addEffect(new MobEffectInstance(MobEffects.SPEED, 5, 0, false, false, false));
+			player.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST, 5, 0, false, false, false));
+			player.addEffect(new MobEffectInstance(MobEffects.HASTE, 5, 0, false, false, false));
 		}
 	}
 

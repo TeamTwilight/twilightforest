@@ -31,9 +31,11 @@ public class TrophyBlock extends AbstractTrophyBlock {
 		.apply(instance, TrophyBlock::new));
 	public static final VoxelShape GHAST_SHAPE = Block.box(4.0D, 8.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 	protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
-	protected static final VoxelShape YETI_X_SHAPE = Block.box(3.25D, 0.0D, 4.5D, 12.75D, 10.0D, 11.5D);
-	protected static final VoxelShape YETI_Z_SHAPE = Block.box(4.5D, 0.0D, 3.25D, 11.5D, 10.0D, 12.75D);
-	protected static final VoxelShape YETI_CORNER_SHAPE = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 10.0D, 11.5D);
+	protected static final VoxelShape YETI_X_SHAPE = Block.box(3.0D, 0.0D, 4.0D, 13.0D, 11.0D, 12.0D);
+	protected static final VoxelShape YETI_Z_SHAPE = Block.box(4.0D, 0.0D, 3.0D, 12.0D, 11.0D, 13.0D);
+	protected static final VoxelShape YETI_ANGLED_X_SHAPE = Block.box(2.0D, 0.0D, 2.75D, 14.0D, 11.0D, 13.25D);
+	protected static final VoxelShape YETI_ANGLED_Z_SHAPE = Block.box(2.75D, 0.0D, 2.0D, 13.25D, 11.0D, 14.0D);
+	protected static final VoxelShape YETI_CORNER_SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 11.0D, 14.0D);
 
 	public TrophyBlock(BossVariant variant, int value, BlockBehaviour.Properties properties) {
 		super(variant, value, properties);
@@ -51,7 +53,9 @@ public class TrophyBlock extends AbstractTrophyBlock {
 			return GHAST_SHAPE;
 		} else if (this.getVariant() == BossVariant.ALPHA_YETI) {
 			return switch (state.getValue(ROTATION)) {
-				case 3, 4, 5, 11, 12, 13 -> YETI_Z_SHAPE;
+				case 4, 12 -> YETI_Z_SHAPE;
+				case 3, 5, 11, 13 -> YETI_ANGLED_Z_SHAPE;
+				case 1, 7, 9, 15 -> YETI_ANGLED_X_SHAPE;
 				case 2, 6, 10, 14 -> YETI_CORNER_SHAPE;
 				default -> YETI_X_SHAPE;
 			};

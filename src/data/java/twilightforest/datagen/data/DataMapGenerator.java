@@ -79,6 +79,22 @@ public class DataMapGenerator extends DataMapProvider {
 		compostables.add(TFBlocks.HUGE_MUSHGLOOM.asItem().builtInRegistryHolder(), new Compostable(0.85F), false);
 		compostables.add(TFItems.EXPERIMENT_115, new Compostable(0.85F), false);
 		compostables.add(TFItems.MAGIC_BEANS, new Compostable(0.85F), false);
+		compostables.add(TFBlocks.RASPBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFBlocks.BLUEBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFBlocks.BLACKBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFBlocks.MALOBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFBlocks.BLIGHTBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFBlocks.DUSKBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFBlocks.SKYBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFBlocks.STINGBERRY_BUSH.asItem().builtInRegistryHolder(), new Compostable(0.5F), false);
+		compostables.add(TFItems.RASPBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
+		compostables.add(TFItems.BLUEBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
+		compostables.add(TFItems.BLACKBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
+		compostables.add(TFItems.MALOBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
+		compostables.add(TFItems.BLIGHTBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
+		compostables.add(TFItems.DUSKBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
+		compostables.add(TFItems.SKYBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
+		compostables.add(TFItems.STINGBERRY.get().builtInRegistryHolder(), new Compostable(0.3F), false);
 
 		var fuels = this.builder(NeoForgeDataMaps.FURNACE_FUELS);
 		fuels.add(TFItemTags.BANISTERS, new FurnaceFuel(300), false);
