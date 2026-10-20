@@ -3,6 +3,7 @@ package twilightforest.item.travellers_gear;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
@@ -34,12 +35,17 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersWingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
-import twilightforest.init.*;
+import twilightforest.init.TFArmorMaterials;
+import twilightforest.init.TFAttributeModifiers;
+import twilightforest.init.TFDataComponents;
+import twilightforest.init.TFItems;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -189,9 +195,15 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	public static final class ArmorRender extends TFArmorRenderer {
+		private final Map<ChestVariant, ModelPart> CHEST_VARIANTS = new HashMap<>();
+		private final Map<WingsVariant, ModelPart> WINGS_VARIANTS = new HashMap<>();
 
 		public ArmorRender() {
 			super(TFModelLayers.TRAVELLERS_ARMOR_HELMET, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM, TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS, TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
+		}
+
+		private static ModelPart bakeLayer(ModelLayerLocation layerLocation) {
+			return Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation);
 		}
 
 		@Nullable
@@ -203,55 +215,72 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		}
 
 		@Override
-		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, @SuppressWarnings("rawtypes") Model model) {
-			if (stack.has(DataComponents.EQUIPPABLE)) {
-				EquipmentSlot slot = stack.get(DataComponents.EQUIPPABLE).slot();
-				ModelPart root = switch (slot) {
-					case HEAD -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
-					case CHEST -> {
-						ModelPart chestLayer = this.getModelPart(this.isModelSlim(model) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
-						chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
-						boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
-						boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
-						chestLayer.getChild("body").skipDraw = !hasChestplate;
-						chestLayer.getChild("left_arm").skipDraw = !hasGloves;
-						chestLayer.getChild("right_arm").skipDraw = !hasGloves;
-
-						yield chestLayer;
-					}
-					case LEGS -> {
-						ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
-						leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
-						boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
-						boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(Minecraft.getInstance().level.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
-
-						TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
-						TravellersWingsModel.skipWings(leggingsLayer, !hasWings);
-
-						yield leggingsLayer;
-					}
-					case FEET -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
-					default -> null;
-				};
-
-
-				if (slot == EquipmentSlot.LEGS) {
-					return new TravellersWingsModel(root);
-				} else if (root != null) {
-					TFArmorModel armorModel = new TFArmorModel(root);
-					armorModel.setSlot(slot);
-					return armorModel;
-				}
-			}
-			return super.getHumanoidArmorModel(stack, layerType, model);
+		public void resetModelCache() {
+			super.resetModelCache();
+			this.CHEST_VARIANTS.clear();
+			this.WINGS_VARIANTS.clear();
 		}
 
 		private boolean isModelSlim(Model<?> model) {
 			if (model instanceof PlayerModel player) return player.slim;
 			return false;
 		}
-	}
 
+		@Override
+		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, @SuppressWarnings("rawtypes") Model model) {
+			Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+			if (equippable == null)
+				return super.getHumanoidArmorModel(stack, layerType, model);
+
+			EquipmentSlot slot = equippable.slot();
+			ModelPart root = switch (slot) {
+				case HEAD -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
+				case CHEST -> {
+					boolean slim = this.isModelSlim(model);
+					boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
+					boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
+
+					yield this.CHEST_VARIANTS.computeIfAbsent(new ChestVariant(slim, hasChestplate, hasGloves), variant -> {
+						ModelPart chestLayer = bakeLayer(variant.slim() ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
+						chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
+						chestLayer.getChild("body").skipDraw = !variant.hasChestplate();
+						chestLayer.getChild("left_arm").skipDraw = !variant.hasGloves();
+						chestLayer.getChild("right_arm").skipDraw = !variant.hasGloves();
+						return chestLayer;
+					});
+				}
+				case LEGS -> {
+					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(Minecraft.getInstance().level.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
+
+					yield this.WINGS_VARIANTS.computeIfAbsent(new WingsVariant(hasWings, hasBelt), variant -> {
+						ModelPart leggingsLayer = bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
+						leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
+						TravellersWingsModel.skipBelt(leggingsLayer, !variant.hasBelt());
+						TravellersWingsModel.skipWings(leggingsLayer, !variant.hasWings());
+						return leggingsLayer;
+					});
+				}
+				case FEET -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
+				default -> null;
+			};
+
+			if (root == null)  // Should never happen
+				return super.getHumanoidArmorModel(stack, layerType, model);
+			if (slot == EquipmentSlot.LEGS)
+				return new TravellersWingsModel(root);
+
+			TFArmorModel armorModel = new TFArmorModel(root);
+			armorModel.setSlot(slot);
+			return armorModel;
+		}
+
+		private record ChestVariant(boolean slim, boolean hasChestplate, boolean hasGloves) {
+		}
+
+		private record WingsVariant(boolean hasWings, boolean hasBelt) {
+		}
+	}
 	public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
 		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
 	}
