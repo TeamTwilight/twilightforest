@@ -6,9 +6,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.components.entity.YetiThrowAttachment;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.network.MovePlayerPacket;
@@ -27,7 +29,6 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 		return this.mob.getPassengers().isEmpty() &&
 			this.mob.getTarget() != null &&
 			!this.mob.getTarget().is(Tags.EntityTypes.BOSSES) &&
-			this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
 			super.canUse();
 	}
 
@@ -83,6 +84,12 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * xModifier, 0.9, this.mob.getLookAngle().z() * zModifier);
 
 			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
+
+			if (rider instanceof Player player){
+				YetiThrowAttachment attachment = rider.getData(TFDataAttachments.YETI_THROWING);
+				attachment.setThrown(player, true, this.mob);
+			}
+
 			if (rider instanceof ServerPlayer server) {
 				PacketDistributor.sendToPlayer(server, new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
 			}

@@ -1,12 +1,10 @@
 package twilightforest.components.entity;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.network.MovePlayerPacket;
 import twilightforest.network.UpdateThrownPacket;
 
 public class YetiThrowAttachment {
@@ -24,17 +22,6 @@ public class YetiThrowAttachment {
 			if (player.onGround() || player.isSwimming() || player.isInWater()) {
 				this.setThrown(player, false, null);
 			}
-		}
-		if (this.throwCooldown > 0) {
-			if (!player.level().isClientSide() && this.throwCooldown == THROW_COOLDOWN - 1) { // Actually throw the victim
-				player.push(this.throwVector.x(), this.throwVector.y(), this.throwVector.z());
-
-				if (player instanceof ServerPlayer server) {
-					PacketDistributor.sendToPlayer(server, new MovePlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
-				}
-				this.throwVector = Vec3.ZERO;
-			}
-			this.throwCooldown--;
 		}
 	}
 
@@ -69,7 +56,7 @@ public class YetiThrowAttachment {
 		if (!player.level().isClientSide()) {
 			int throwerID = 0;
 			if (this.thrower != null) throwerID = this.thrower.getId();
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new UpdateThrownPacket(player.getId(), this.thrown, throwerID, this.throwCooldown));
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new UpdateThrownPacket(player.getId(), this.thrown, throwerID));
 		}
 	}
 }
