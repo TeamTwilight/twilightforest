@@ -238,7 +238,12 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 	@Override
 	public void tick() {
+		Vec3 previousPosition = this.position();
+
 		super.tick();
+
+		// Restore full movement truncated by super.tick() on impact.
+		this.setPos(previousPosition.add(this.getDeltaMovement()));
 
 		if (!this.level().isClientSide()) {
 			if (this.getOwner() == null) {
