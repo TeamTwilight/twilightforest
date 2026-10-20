@@ -238,12 +238,15 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 	@Override
 	public void tick() {
-		Vec3 previousPosition = this.position();
+		Vec3 previousPosition = position();
+		boolean wasReturning = isReturning(); // #isReturning result can change after the super invocation
 
 		super.tick();
 
 		// Restore full movement truncated by super.tick() on impact.
-		this.setPos(previousPosition.add(this.getDeltaMovement()));
+		if (wasReturning && isAlive()) {
+			setPos(previousPosition.add(getDeltaMovement()));
+		}
 
 		if (!this.level().isClientSide()) {
 			if (this.getOwner() == null) {
