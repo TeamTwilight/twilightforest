@@ -109,7 +109,7 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 		if (!stateToReplace.is(TFBlockTags.TF_BERRY_BUSHES_REPLACE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
 			return false;
 
-		if (!level.getBlockState(pos.below()).is(generatesOn) || age < 2)
+		if (!level.getBlockState(pos.below()).is(generatesOn))
 			return false;
 
 		BlockState stateToPlace = state.trySetValue(BlockStateProperties.AGE_3, age);
