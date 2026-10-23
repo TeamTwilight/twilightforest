@@ -4,7 +4,6 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,12 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class CharmEffect extends Entity implements ItemSupplier {
 	private static final double DISTANCE = 0.75D;
-	private double interpTargetX;
-	private double interpTargetY;
-	private double interpTargetZ;
-	private double interpTargetYaw;
-	private double interpTargetPitch;
-	private int newPosRotationIncrements;
 
 	public float offset;
 
@@ -58,23 +51,11 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		this.zOld = this.getZ();
 		super.tick();
 
-		//[VanillaCopy] Beginning of LivingEntity.livingTick
-		if (this.newPosRotationIncrements > 0) {
-			double d0 = this.getX() + (this.interpTargetX - this.getX()) / this.newPosRotationIncrements;
-			double d1 = this.getY() + (this.interpTargetY - this.getY()) / this.newPosRotationIncrements;
-			double d2 = this.getZ() + (this.interpTargetZ - this.getZ()) / this.newPosRotationIncrements;
-			double d3 = Mth.wrapDegrees(this.interpTargetYaw - this.getYRot());
-			this.setYRot((float) (this.getYRot() + d3 / this.newPosRotationIncrements));
-			this.setXRot((float) (this.getXRot() + (this.interpTargetPitch - this.getXRot()) / this.newPosRotationIncrements));
-			--this.newPosRotationIncrements;
-			this.setPos(d0, d1, d2);
-			this.setRot(this.getYRot(), this.getXRot());
-		}
-
 		if (this.orbiter != null) {
 			float rotation = this.tickCount / 10.0F + this.offset;
 			Vec3 look = new Vec3(DISTANCE, 0, 0).yRot(rotation);
-			this.snapTo(this.orbiter.getX() + look.x(), this.orbiter.getY() + this.orbiter.getEyeHeight(), this.orbiter.getZ() + look.z(), this.orbiter.getYRot(), this.orbiter.getXRot());
+			this.setPos(this.orbiter.getX() + look.x(), this.orbiter.getY() + this.orbiter.getEyeHeight(), this.orbiter.getZ() + look.z());
+			this.setRot(this.orbiter.getYRot(), this.orbiter.getXRot());
 		}
 
 		if (!this.displayItem.isEmpty()) {
@@ -88,16 +69,6 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		if (this.tickCount > 200 || (this.orbiter != null && (!this.orbiter.isAlive() || this.orbiter.isInvisible()))) {
 			this.discard();
 		}
-	}
-
-	@Override
-	public void lerpPositionAndRotationStep(int posRotationIncrements, double x, double y, double z, double yaw, double pitch) {
-		this.interpTargetX = x;
-		this.interpTargetY = y;
-		this.interpTargetZ = z;
-		this.interpTargetYaw = yaw;
-		this.interpTargetPitch = pitch;
-		this.newPosRotationIncrements = posRotationIncrements;
 	}
 
 	@Override
