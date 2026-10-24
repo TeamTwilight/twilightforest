@@ -68,7 +68,7 @@ public class SimpleRepairRecipe extends CustomRecipe {
 		}
 		if (toRepair != null && !repairIngredients.isEmpty()) {
 			int damage = toRepair.getDamageValue();
-			return (damage - this.getRepairDurabilityPerItem() * repairIngredients.size()) >= 0;
+			return (damage - this.getRepairDurabilityPerItem() * (repairIngredients.size() - 1)) > 0;
 		}
 		return false;
 	}
