@@ -50,6 +50,21 @@
     },
     {
       "type": "minecraft:biome"
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:not",
+        "predicate": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "minecraft:mycelium",
+          "offset": [
+            0,
+            -1,
+            0
+          ]
+        }
+      }
     }
   ]
 }
