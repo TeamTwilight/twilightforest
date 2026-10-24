@@ -37,6 +37,7 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.network.LifedrainParticlePacket;
 import twilightforest.network.ParticlePacket;
 import twilightforest.tags.TFEntityTypeTags;
+import twilightforest.util.TFItemStackUtils;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.List;
@@ -181,7 +182,7 @@ public class LifedrainScepterItem extends ScepterItem {
 					}
 
 					if (living instanceof Player player && !player.isCreative() && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
-						stack.hurtWithoutBreaking(1, player);
+						TFItemStackUtils.hurtButDontBreak(stack, 1, serverLevel, player);
 					}
 				}
 

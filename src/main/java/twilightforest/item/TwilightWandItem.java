@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
+import twilightforest.util.TFItemStackUtils;
 
 public class TwilightWandItem extends ScepterItem {
 
@@ -20,12 +22,12 @@ public class TwilightWandItem extends ScepterItem {
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
 		player.playSound(TFSounds.TWILIGHT_SCEPTER_USE.get(), 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
 
-		if (level.isClientSide())
+		if (!(level instanceof ServerLevel serverLevel))
 			return InteractionResult.SUCCESS;
 
 		level.addFreshEntity(new TwilightWandBolt(level, player));
 		if (!player.isCreative() && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
-			stack.hurtWithoutBreaking(1, player);
+			TFItemStackUtils.hurtButDontBreak(stack, 1, serverLevel, player);
 		}
 		return InteractionResult.SUCCESS;
 	}

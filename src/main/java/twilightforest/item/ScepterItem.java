@@ -32,7 +32,7 @@ public abstract class ScepterItem extends Item {
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.nextDamageWillBreak() && !player.isCreative()) {
+		if (stack.getDamageValue() == stack.getMaxDamage() && !player.isCreative()) {
 			return InteractionResult.FAIL;
 		}
 

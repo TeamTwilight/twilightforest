@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,6 +18,7 @@ import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
+import twilightforest.util.TFItemStackUtils;
 
 public class ZombieWandItem extends ScepterItem {
 
@@ -26,7 +28,7 @@ public class ZombieWandItem extends ScepterItem {
 
 	@Override
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
-		if (level.isClientSide()) {
+		if (!(level instanceof ServerLevel serverLevel)) {
 			return InteractionResult.SUCCESS;
 		}
 
@@ -52,7 +54,7 @@ public class ZombieWandItem extends ScepterItem {
 		level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
 		if (!player.isCreative()) {
-			stack.hurtWithoutBreaking(1, player);
+			TFItemStackUtils.hurtButDontBreak(stack,1, serverLevel, player);
 		}
 		zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
 		return InteractionResult.SUCCESS;
