@@ -3,17 +3,14 @@ package twilightforest.world.components.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 import twilightforest.init.TFBlocks;
-import twilightforest.tags.TFBlockTags;
 
 //[VanillaCopy] of BaseDiskFeature, but we add a check to make sure the block above is air
 public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
@@ -53,12 +50,18 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 			mutablePos.setY(i);
 			BlockState mutablePosAbove = level.getBlockState(mutablePos.above());
 
-			if (config.target().test(level, mutablePos) && (mutablePosAbove.canBeReplaced() || mutablePosAbove.is(BlockTags.FLOWERS) || mutablePosAbove.is(TFBlocks.MAYAPPLE))) {
+			boolean canAboveReplace = mutablePosAbove.canBeReplaced() || mutablePosAbove.is(BlockTags.FLOWERS) || mutablePosAbove.is(TFBlocks.MAYAPPLE) ;
+			boolean canAboveSurvive = mutablePosAbove.canSurvive(level, mutablePos);
+
+			if (config.target().test(level, mutablePos) && (canAboveReplace || canAboveSurvive)) {
+
 				BlockState blockstate1 = config.stateProvider().getState(level, random, mutablePos);
 				level.setBlock(mutablePos, blockstate1, Block.UPDATE_ALL);
-				level.destroyBlock(mutablePos.above(), false);
+				if (canAboveReplace) {
+					level.destroyBlock(mutablePos.above(), false);
+					this.markAboveForPostProcessing(level, mutablePos.above());
+				}
 				this.markAboveForPostProcessing(level, mutablePos);
-				this.markAboveForPostProcessing(level, mutablePos.above());
 				flag = true;
 			}
 		}
