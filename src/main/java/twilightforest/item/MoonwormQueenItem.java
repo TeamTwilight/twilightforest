@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -31,9 +32,9 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.tags.TFItemTags;
+import twilightforest.util.TFItemStackUtils;
 
 public class MoonwormQueenItem extends Item {
 
@@ -68,7 +69,7 @@ public class MoonwormQueenItem extends Item {
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.nextDamageWillBreak()) {
+		if (stack.nextDamageWillBreak() && !player.hasInfiniteMaterials()) {
 			return InteractionResult.FAIL;
 		} else {
 			player.startUsingItem(hand);
@@ -76,20 +77,26 @@ public class MoonwormQueenItem extends Item {
 		}
 	}
 
-	//	[VanillaCopy] BlockItem.useOn
+	// [VanillaCopy] of BlockItem.useOn with some additional conditions
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
+		ItemStack stack = context.getItemInHand();
+		Player player = context.getPlayer();
+
+		if (stack.getDamageValue() == stack.getMaxDamage() && !player.hasInfiniteMaterials())
+			return InteractionResult.FAIL;
+
 		InteractionResult placeResult = this.place(new BlockPlaceContext(context));
-		return !placeResult.consumesAction() ? super.use(context.getLevel(), context.getPlayer(), context.getHand()) : placeResult;
+		return !placeResult.consumesAction() ? super.use(context.getLevel(), player, context.getHand()) : placeResult;
 	}
 
 	@Override
 	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
-		if (!level.isClientSide() && useTime > FIRING_TIME && !stack.nextDamageWillBreak()) {
+		if (level instanceof ServerLevel serverLevel && useTime > FIRING_TIME && (!stack.nextDamageWillBreak() || living.hasInfiniteMaterials())) {
 			if (level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living))) {
-				if (living instanceof Player player) stack.hurtWithoutBreaking(2, player);
+				if (living instanceof Player player) TFItemStackUtils.hurtButDontBreak(stack,2, serverLevel, player);
 
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 				return true;
@@ -139,7 +146,8 @@ public class MoonwormQueenItem extends Item {
 				SoundType soundType = placedState.getSoundType(level, pos, player);
 				level.playSound(player, pos, this.getPlaceSound(placedState, level, pos, player), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 				level.gameEvent(GameEvent.BLOCK_PLACE, pos, GameEvent.Context.of(player, placedState));
-				itemStack.hurtWithoutBreaking(1, player);
+				if (level instanceof ServerLevel serverLevel)
+					TFItemStackUtils.hurtButDontBreak(itemStack, 1, serverLevel, player);
 				return InteractionResult.SUCCESS;
 			}
 		}
