@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -39,10 +42,12 @@ import twilightforest.init.TFSounds;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Yeti extends Monster implements IHostileMount {
+public class Yeti extends Monster implements IHostileMount, NeutralMob {
 
-	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("anger_follow_boost"), 9.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+	private static final EntityDataAccessor<Long> DATA_ANGER_END_TIME = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.LONG);
+	private @Nullable EntityReference<LivingEntity> persistentAngerTarget;
+	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(40, 60);
 
 	public Yeti(EntityType<? extends Yeti> type, Level world) {
 		super(type, world);
@@ -71,6 +76,7 @@ public class Yeti extends Monster implements IHostileMount {
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D, 0.8F));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, true));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -84,7 +90,7 @@ public class Yeti extends Monster implements IHostileMount {
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(ANGER_FLAG, false);
+		builder.define(DATA_ANGER_END_TIME, NeutralMob.NO_ANGER_END_TIME);
 	}
 
 	@Override
@@ -98,24 +104,54 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
-		if (source.getEntity() != null && !source.isCreativePlayer()) {
-			// become angry
-			this.setAngry(true);
+	protected void customServerAiStep(ServerLevel level) {
+		if (this.getPersistentAngerTarget() != null || this.isAngry()) {
+			this.updatePersistentAnger(level, true);
 		}
-
-		return super.hurtServer(server, source, amount);
+		this.updateFollowRange();
+		super.customServerAiStep(level);
 	}
 
-	public boolean isAngry() {
-		return this.getEntityData().get(ANGER_FLAG);
+	@Override
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+		boolean hurt = super.hurtServer(server, source, amount);
+
+		if (source.getEntity() != null && !source.isCreativePlayer() && source.getEntity() instanceof LivingEntity attacker) {
+			// become angry
+			this.setPersistentAngerTarget(EntityReference.of(attacker));
+			this.startPersistentAngerTimer();
+		}
+		return hurt;
 	}
 
-	public void setAngry(boolean anger) {
-		this.getEntityData().set(ANGER_FLAG, anger);
+	@Override
+	public long getPersistentAngerEndTime() {
+		return this.entityData.get(DATA_ANGER_END_TIME);
+	}
 
+	@Override
+	public void setPersistentAngerEndTime(long endTime) {
+		this.entityData.set(DATA_ANGER_END_TIME, endTime);
+	}
+
+	@Override
+	public @Nullable EntityReference<LivingEntity> getPersistentAngerTarget() {
+		return persistentAngerTarget;
+	}
+
+	@Override
+	public void setPersistentAngerTarget(@Nullable EntityReference<LivingEntity> persistentAngerTarget) {
+		this.persistentAngerTarget = persistentAngerTarget;
+	}
+
+	@Override
+	public void startPersistentAngerTimer() {
+		this.setTimeToRemainAngry(PERSISTENT_ANGER_TIME.sample(this.random));
+	}
+
+	private void updateFollowRange() {
 		if (!this.level().isClientSide()) {
-			if (anger) {
+			if (this.isAngry()) {
 				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ANGRY_MODIFIER.id())) {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ANGRY_MODIFIER);
 				}
@@ -128,13 +164,13 @@ public class Yeti extends Monster implements IHostileMount {
 	@Override
 	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putBoolean("Angry", this.isAngry());
+		this.addPersistentAngerSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setAngry(compound.getBooleanOr("Angry", false));
+		this.readPersistentAngerSaveData(this.level(), compound);
 	}
 
 	@Override
@@ -147,7 +183,7 @@ public class Yeti extends Monster implements IHostileMount {
 		return super.getDismountLocationForPassenger(passenger).add(getHorizontalLookOffset());
 	}
 
-	public Vec3 getHorizontalLookOffset(){
+	public Vec3 getHorizontalLookOffset() {
 		double distance = 0.4D;
 
 		double yawRot = Math.toRadians(this.getYRot());
