@@ -2,20 +2,15 @@ package twilightforest.components.entity;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.UpdateThrownPacket;
 
 public class YetiThrowAttachment {
 
-	public static final int THROW_COOLDOWN = 200;
-
 	private boolean thrown;
 	@Nullable
 	private LivingEntity thrower;
-	private int throwCooldown;
-	private Vec3 throwVector = Vec3.ZERO;
 
 	public void tick(Player player) {
 		if (this.getThrown()) {
@@ -37,19 +32,6 @@ public class YetiThrowAttachment {
 
 	public @Nullable LivingEntity getThrower() {
 		return this.thrower;
-	}
-
-	public int getThrowCooldown() {
-		return this.throwCooldown;
-	}
-
-	public void setThrowCooldown(Player player, int cooldown) {
-		this.throwCooldown = cooldown;
-		this.sendUpdatePacket(player);
-	}
-
-	public void setThrowVector(Vec3 vector) {
-		this.throwVector = vector;
 	}
 
 	private void sendUpdatePacket(Player player) {
