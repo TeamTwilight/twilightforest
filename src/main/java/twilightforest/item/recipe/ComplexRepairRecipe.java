@@ -6,12 +6,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ComplexRepairRecipe extends CustomRecipe {
 	public static final MapCodec<ComplexRepairRecipe> MAP_CODEC =
@@ -73,9 +73,11 @@ public class ComplexRepairRecipe extends CustomRecipe {
 					}
 				}
 			}
-			return toRepair != null && this.repairItems.size() == input.ingredientCount() - 1 && input.stackedContents().canCraft(this, null);
+			return toRepair != null
+				&& this.repairItems.size() == input.ingredientCount() - 1
+				&& input.stackedContents().canCraft(Stream.concat(Stream.of(this.input), this.repairItems.stream()).toList(), null)
+				&& this.repairItems.stream().allMatch(i -> input.items().stream().anyMatch(i));
 		}
-
 	}
 
 	@Override
