@@ -2,6 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
+import twilightforest.init.TFBlocks;
 
 //[VanillaCopy] of BaseDiskFeature, but we add a check to make sure the block above is air
 public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
@@ -46,9 +48,19 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 
 		for (int i = start; i > end; --i) {
 			mutablePos.setY(i);
-			if (config.target().test(level, mutablePos) && level.getBlockState(mutablePos.above()).canBeReplaced()) {
+			BlockState mutablePosAbove = level.getBlockState(mutablePos.above());
+
+			boolean canAboveReplace = mutablePosAbove.canBeReplaced() || mutablePosAbove.is(BlockTags.FLOWERS) || mutablePosAbove.is(TFBlocks.MAYAPPLE) ;
+			boolean canAboveSurvive = mutablePosAbove.canSurvive(level, mutablePos);
+
+			if (config.target().test(level, mutablePos) && (canAboveReplace || canAboveSurvive)) {
+
 				BlockState blockstate1 = config.stateProvider().getState(level, random, mutablePos);
-				level.setBlock(mutablePos, blockstate1, Block.UPDATE_CLIENTS);
+				level.setBlock(mutablePos, blockstate1, Block.UPDATE_ALL);
+				if (canAboveReplace) {
+					level.destroyBlock(mutablePos.above(), false);
+					this.markAboveForPostProcessing(level, mutablePos.above());
+				}
 				this.markAboveForPostProcessing(level, mutablePos);
 				flag = true;
 			}
