@@ -361,7 +361,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateBush(TFBlocks.GOLD_OREBERRY_BUSH.get(), false);
 		this.generateBush(TFBlocks.ESSENCE_OREBERRY_BUSH.get(), true);
 
-		this.createParticleOnlyBlock(TFBlocks.BRAZIER.get(), TFBlocks.CANOPY_PLANKS.get());
+		this.generateSpecialModel(TFBlocks.BRAZIER.get(), TFBlocks.CANOPY_PLANKS.get(), _ -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/brazier"), new BrazierSpecialRenderer.Unbaked()));
 		this.wrapBlockItem(TFBlocks.SLIDER.get(), block -> this.blockStateOutput.accept(createRotatedPillarWithHorizontalVariant(block, plainVariant(ModelLocationUtils.getModelLocation(block)), plainVariant(ModelLocationUtils.getModelLocation(block, "_horiz")))));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CINDER_FURNACE.get(), plainVariant(ModelLocationUtils.getModelLocation(Blocks.FURNACE))));
 		this.registerSimpleItemModel(TFBlocks.CINDER_FURNACE.get(), Identifier.withDefaultNamespace("block/furnace"));

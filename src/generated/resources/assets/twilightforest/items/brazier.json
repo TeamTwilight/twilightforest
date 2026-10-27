@@ -1,6 +1,9 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "twilightforest:block/brazier"
+    "type": "minecraft:special",
+    "base": "twilightforest:item/brazier",
+    "model": {
+      "type": "twilightforest:brazier"
+    }
   }
 }

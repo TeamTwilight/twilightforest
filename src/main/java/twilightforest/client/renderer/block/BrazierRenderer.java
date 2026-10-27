@@ -40,6 +40,10 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, 
 
 	@Override
 	public void submit(BrazierRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
+		submitBrazier(this.model, state, stack, collector, state.breakProgress);
+	}
+
+	public static void submitBrazier(BrazierModel model, BrazierRenderState state, PoseStack stack, SubmitNodeCollector collector, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
 		stack.pushPose();
 		float y = 0.35F * state.light.getFireSize();
 		stack.translate(0.26F, 1.6F, 0.5F);
@@ -50,14 +54,18 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, 
 		}
 		stack.popPose();
 		stack.pushPose();
-		stack.translate(0.5F, 1.5F, 0.5F);
-		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		applyBrazierPose(stack);
 		Identifier loc = state.light.isLit() ? TEXTURE_ON : TEXTURE_OFF;
-		collector.submitModel(this.model, Unit.INSTANCE, stack, this.model.renderType(loc), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+		collector.submitModel(model, Unit.INSTANCE, stack, model.renderType(loc), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, crumblingOverlay);
 		if (state.light.isLit()) {
-			collector.order(1).submitModel(this.model, Unit.INSTANCE, stack, this.model.renderType(TEXTURE_OVERLAY), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+			collector.order(1).submitModel(model, Unit.INSTANCE, stack, model.renderType(TEXTURE_OVERLAY), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0, crumblingOverlay);
 		}
 		stack.popPose();
+	}
+
+	public static void applyBrazierPose(PoseStack stack) {
+		stack.translate(0.5F, 1.5F, 0.5F);
+		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 	}
 
 	@Override

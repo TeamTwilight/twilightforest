@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-15T22:52:02.57171	Model Definitions - twilightforest
+// 26.1.2	2026-10-27T11:05:04.571644	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 a0fbbc14b1fcd6707dd2ffa827ab024c9f106422 assets/twilightforest/blockstates/acacia_drying_rack.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
@@ -573,7 +573,7 @@ ffb001a9ba75a20dcb289114d667eca1a3fd009a assets/twilightforest/items/bold_castle
 331a56341dafff69c9721952e7616aca780204e3 assets/twilightforest/items/bold_castle_brick_tile.json
 51be9131d247425687001d44e9448fdf65d940d3 assets/twilightforest/items/bold_stone_pillar.json
 495c0120e53763e8d45cc9f8b65957838629c2db assets/twilightforest/items/borer_essence.json
-457cf10f83c4d6d919b58bc761769fe70592af05 assets/twilightforest/items/brazier.json
+4c5c9a16ac21b1b1f4b1d9994aa7dc026ff01a60 assets/twilightforest/items/brazier.json
 940f58025fad338c52ba98f576679afb0394a983 assets/twilightforest/items/brittle_potion_flask.json
 c4f3d6d3660c2d601a9f531bd445d7001fbf2186 assets/twilightforest/items/brown_thorns.json
 7fcee9a21dc23e5a2947d6bc3a7dd8ab95377639 assets/twilightforest/items/burnt_thorns.json

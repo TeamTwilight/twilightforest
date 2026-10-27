@@ -198,6 +198,7 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("skull_candle"), SkullCandleSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("skull_chest"), SkullChestSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("brazier"), BrazierSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	private void registerStandalone(ModelEvent.RegisterStandalone event) {
