@@ -202,6 +202,7 @@ public class RegistrationEvents {
 		event.register(TFDataMaps.OMINOUS_FIRE);
 		event.register(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
 		event.register(TFDataMaps.ORE_MAP_ORE_COLOR);
+		event.register(TFDataMaps.INFESTED_CONVERSION);
 	}
 
 	public void sendIMCs(InterModEnqueueEvent event) {
