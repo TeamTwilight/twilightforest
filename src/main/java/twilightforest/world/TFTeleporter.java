@@ -36,11 +36,11 @@ import twilightforest.init.TFDimension;
 import twilightforest.init.TFPOITypes;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFStructureTags;
+import twilightforest.util.Restriction;
 import twilightforest.util.iterators.DiagonalSpiralIterator;
 import twilightforest.util.iterators.XZQuadrantIterator;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
-import twilightforest.util.Restriction;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -48,6 +48,7 @@ import java.util.function.Predicate;
 public class TFTeleporter {
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static final int GROUND_LEVEL = 4;
 
 	public static TeleportTransition createTransition(Entity entity, ServerLevel dest, BlockPos pos, boolean forcedEntry) {
 		TeleporterCache cache = TeleporterCache.get(dest);
@@ -195,6 +196,7 @@ public class TFTeleporter {
 	protected static Vec3 moveToSafeCoords(ServerLevel level, Entity entity, BlockPos pos) {
 		// if we're in enforced progression mode, check the biomes for safety
 		boolean checkProgression = LandmarkUtil.isProgressionEnforced(level);
+		pos = pos.atY(GROUND_LEVEL);
 
 		if (isSafeAround(level, pos, entity, checkProgression)) {
 			LOGGER.debug("Portal destination looks safe!");
@@ -225,7 +227,7 @@ public class TFTeleporter {
 			}
 
 			// Searches every chunk in a 17x17 grid around the center, inside the biome cell
-			Iterable<BlockPos> gridAroundLandmark = new XZQuadrantIterator<>(biomeCenter.getX(), biomeCenter.getZ(), true, 128, 16, (x, z) -> new BlockPos(x, 4, z));
+			Iterable<BlockPos> gridAroundLandmark = new XZQuadrantIterator<>(biomeCenter.getX(), biomeCenter.getZ(), true, 128, 16, (x, z) -> new BlockPos(x, GROUND_LEVEL, z));
 			for (BlockPos posInBiome : gridAroundLandmark) {
 				if (isSafeAround(level, posInBiome, entity, checkProgression)) {
 					LOGGER.debug("Found {} in biome-scanning for safe portal placement", posInBiome.toShortString());
