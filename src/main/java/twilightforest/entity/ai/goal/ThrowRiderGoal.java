@@ -78,14 +78,12 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			Entity rider = this.mob.getPassengers().getFirst();
 			HostileMountEvents.hostileDismount(rider);
 
-			double xModifier = 2.0D + this.mob.getRandom().nextDouble() * 4.0D;
-			double zModifier = 2.0D + this.mob.getRandom().nextDouble() * 4.0D;
-
-			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * xModifier, 0.9, this.mob.getLookAngle().z() * zModifier);
+			double throwVecModifier = 4.0D + this.mob.getRandom().nextGaussian() * (2.0 / 3.0);
+			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * throwVecModifier, 0.9, this.mob.getLookAngle().z() * throwVecModifier);
 
 			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 
-			if (rider instanceof Player player){
+			if (rider instanceof Player player) {
 				YetiThrowAttachment attachment = rider.getData(TFDataAttachments.YETI_THROWING);
 				attachment.setThrown(player, true, this.mob);
 			}
