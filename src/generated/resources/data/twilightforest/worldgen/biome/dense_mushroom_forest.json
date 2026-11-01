@@ -23,9 +23,7 @@
     [
       "twilightforest:water_lake"
     ],
-    [
-      "twilightforest:mycelium_blob"
-    ],
+    [],
     [],
     [
       "twilightforest:druid_hut",
@@ -47,7 +45,8 @@
       "twilightforest:legacy_copper_ore",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
-      "twilightforest:small_granite"
+      "twilightforest:small_granite",
+      "twilightforest:mycelium_blob"
     ],
     [
       "twilightforest:plant_roots",
