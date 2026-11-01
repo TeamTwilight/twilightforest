@@ -9,17 +9,13 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.util.PlayerHelper;
 
 import java.net.Proxy;
@@ -165,18 +161,6 @@ public class TFConfig {
 		shouldReturnPortalBeUsable = config.PORTAL.shouldReturnPortalBeUsable.get();
 		maxPortalSize = config.PORTAL.maxPortalSize.get();
 
-		//Uncrafting Table
-		uncraftingXpCostMultiplier = config.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get();
-		repairingXpCostMultiplier = config.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get();
-		allowShapelessUncrafting = config.UNCRAFTING_STUFFS.allowShapelessUncrafting.get();
-		disableIngredientSwitching = config.UNCRAFTING_STUFFS.disableIngredientSwitching.get();
-		disableUncraftingOnly = config.UNCRAFTING_STUFFS.disableUncraftingOnly.get();
-		disableEntireTable = config.UNCRAFTING_STUFFS.disableEntireTable.get();
-		disableUncraftingRecipes = config.UNCRAFTING_STUFFS.disableUncraftingRecipes.get();
-		reverseRecipeBlacklist = config.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get();
-		blacklistedUncraftingModIds = config.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get();
-		flipUncraftingModIdList = config.UNCRAFTING_STUFFS.flipUncraftingModIdList.get();
-
 		// Tree Cores
 		disableTimeCore = config.MAGIC_TREES.timeRange.get() <= 0;
 		timeCoreRange = config.MAGIC_TREES.timeRange.get();
@@ -191,18 +175,22 @@ public class TFConfig {
 		parryNonTwilightAttacks = config.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get();
 		shieldParryTicks = config.SHIELD_INTERACTIONS.shieldParryTicks.get();
 
-		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things don't desync.
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-		if (server != null && server.isDedicatedServer()) {
-			PacketDistributor.sendToAllPlayers(new SyncUncraftingTableConfigPacket(
-				uncraftingXpCostMultiplier, repairingXpCostMultiplier,
-				allowShapelessUncrafting, disableIngredientSwitching,
-				disableUncraftingOnly, disableEntireTable,
-				disableUncraftingRecipes, reverseRecipeBlacklist,
-				blacklistedUncraftingModIds, flipUncraftingModIdList));
-		}
 		//sets cached portal locking advancement to null just in case it changed
 		portalLockingAdvancement = null;
+	}
+
+	protected static void rebakeServerOptions(TFServerConfig config) {
+		//Uncrafting Table
+		uncraftingXpCostMultiplier = config.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get();
+		repairingXpCostMultiplier = config.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get();
+		allowShapelessUncrafting = config.UNCRAFTING_STUFFS.allowShapelessUncrafting.get();
+		disableIngredientSwitching = config.UNCRAFTING_STUFFS.disableIngredientSwitching.get();
+		disableUncraftingOnly = config.UNCRAFTING_STUFFS.disableUncraftingOnly.get();
+		disableEntireTable = config.UNCRAFTING_STUFFS.disableEntireTable.get();
+		disableUncraftingRecipes = config.UNCRAFTING_STUFFS.disableUncraftingRecipes.get();
+		reverseRecipeBlacklist = config.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get();
+		blacklistedUncraftingModIds = config.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get();
+		flipUncraftingModIdList = config.UNCRAFTING_STUFFS.flipUncraftingModIdList.get();
 	}
 
 	protected static void rebakeClientOptions(TFClientConfig config) {
