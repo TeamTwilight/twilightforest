@@ -45,7 +45,8 @@
       "twilightforest:legacy_copper_ore",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
-      "twilightforest:small_granite"
+      "twilightforest:small_granite",
+      "twilightforest:mycelium_blob"
     ],
     [
       "twilightforest:plant_roots",
@@ -70,7 +71,6 @@
       "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:mycelium_blob",
       "twilightforest:tree/selector/vanilla_trees",
       "twilightforest:tree/twilight_oak_tree",
       "twilightforest:tree/large_twilight_oak_tree",
