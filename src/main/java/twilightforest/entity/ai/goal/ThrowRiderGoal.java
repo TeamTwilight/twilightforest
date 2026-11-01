@@ -78,7 +78,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			Entity rider = this.mob.getPassengers().getFirst();
 			HostileMountEvents.hostileDismount(rider);
 
-			double throwVecModifier = 4.0D + this.mob.getRandom().nextGaussian() * (2.0 / 3.0);
+			double throwVecModifier = Math.clamp(4.0D + this.mob.getRandom().nextGaussian() * (2.0 / 3.0), 1D, 7D);
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * throwVecModifier, 0.9, this.mob.getLookAngle().z() * throwVecModifier);
 
 			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
