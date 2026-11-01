@@ -13,11 +13,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.neoforge.common.util.FakePlayer;
+import twilightforest.forge.TFFakePlayer;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.world.components.structures.util.StructureHints;
 
-@tamaized.beanification.Component
+@twilightforest.forge.beans.Component
 public class GenerateBookCommand {
 
 	private final SimpleCommandExceptionType ERROR_NOT_RUN_BY_PLAYER = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.not_player"));
@@ -31,7 +31,7 @@ public class GenerateBookCommand {
 	}
 
 	private int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {
-		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
+		if (!(source.getEntity() instanceof Player player) || player instanceof TFFakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
 		if (structureKey == null) {
 			for (Structure structure : source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
 				if (structure instanceof StructureHints hint) {

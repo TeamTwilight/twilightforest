@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import twilightforest.forge.TFModels;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -35,11 +36,11 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import tamaized.beanification.Autowired;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.client.model.data.ModelData;
+import twilightforest.forge.registries.DeferredHolder;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.block.entity.BrazierBlockEntity;
@@ -73,7 +74,7 @@ import java.util.function.Supplier;
 
 public class ISTER extends BlockEntityWithoutLevelRenderer {
 
-	@Autowired(dist = Dist.CLIENT)
+	@Autowired
 	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 	public static final Supplier<ISTER> INSTANCE = Suppliers.memoize(ISTER::new);
@@ -140,7 +141,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				TrophyBlockModel trophy = this.trophies.get(variant);
 
 				if (camera == ItemDisplayContext.GUI) {
-					ModelResourceLocation back = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/" + ((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()));
+					ModelResourceLocation back = TFModels.standalone(TwilightForestMod.prefix("item/" + ((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()));
 					BakedModel modelBack = minecraft.getItemRenderer().getItemModelShaper().getModelManager().getModel(back);
 
 					Lighting.setupForFlatItems();
@@ -168,7 +169,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {
-				int damage = stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0);
+				int damage = stack.getOrDefault(TFDataComponents.CASKET_DAMAGE.get(), 0);
 
 				if (minecraft.getBlockEntityRenderDispatcher().getRenderer(this.keepsakeCasket) instanceof SkullChestRenderer<?> renderer) {
 					renderer.renderCasket(0.0F, pose, buffers, light, overlay, renderer.getTextureLocation(damage), Direction.NORTH);
@@ -197,7 +198,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				//we put the candle
 				pose.translate(0.0F, 0.5F, 0.0F);
 
-				SkullCandles skullCandles = stack.getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT);
+				SkullCandles skullCandles = stack.getOrDefault(TFDataComponents.SKULL_CANDLES.get(), SkullCandles.DEFAULT);
 
 				minecraft.getBlockRenderer().renderSingleBlock(
 					AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(skullCandles.color()))
@@ -206,7 +207,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				//we need to render the candelabra block here since we have to use builtin/entity on the item.
 				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
 				minecraft.getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), pose, buffers, light, overlay);
-				CandelabraData candelabraData = stack.get(TFDataComponents.CANDELABRA_DATA);
+				CandelabraData candelabraData = stack.get(TFDataComponents.CANDELABRA_DATA.get());
 				if (candelabraData != null) {
 					CandelabraBlockEntity copy = this.candelabra;
 					copy.setData(candelabraData);

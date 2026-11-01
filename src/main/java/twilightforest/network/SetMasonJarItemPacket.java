@@ -6,7 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.MasonJarBlockEntity;
 
@@ -39,7 +39,7 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SetMasonJarItemPacket packet, IPayloadContext ctx) {
-		if (ctx.flow().isClientbound()) {
+		if (ctx.isClientbound()) {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {

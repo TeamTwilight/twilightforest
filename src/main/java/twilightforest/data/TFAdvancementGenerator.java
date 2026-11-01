@@ -19,13 +19,13 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.common.util.Lazy;
+import net.minecraftforge.common.data.AdvancementProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.advancements.predicate.ItemColorPredicate;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.block.Experiment115Block;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.data.helpers.AdvancementDataMultiRequirements;
@@ -582,13 +582,13 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 
 	private ItemStack e115Tag(String key) {
 		ItemStack itemstack = new ItemStack(TFItems.EXPERIMENT_115.get());
-		itemstack.set(TFDataComponents.EXPERIMENT_115_VARIANTS, key);
+		itemstack.set(TFDataComponents.EXPERIMENT_115_VARIANTS.get(), key);
 		return itemstack;
 	}
 
 	private ItemStack flaskWithHarming() {
 		ItemStack itemstack = new ItemStack(TFItems.BRITTLE_FLASK.get());
-		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, new PotionFlaskComponent(new PotionContents(Potions.STRONG_HARMING), 4, 0, false));
+		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS.get(), new PotionFlaskComponent(new PotionContents(Potions.STRONG_HARMING.get()), 4, 0, false));
 		return itemstack;
 	}
 

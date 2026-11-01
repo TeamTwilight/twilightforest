@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.selectors;
 
 import com.mojang.datafixers.util.Pair;
-import tamaized.beanification.Component;
+import twilightforest.forge.beans.Component;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.util.SimpleRandomBlockSelector;
 

@@ -198,7 +198,7 @@ public class MagicPainting extends HangingEntity {
 	@NotNull
 	public ItemStack getPickResult() {
 		ItemStack itemStack = new ItemStack(TFItems.MAGIC_PAINTING.get());
-		itemStack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, this.getVariant());
+		itemStack.set(TFDataComponents.MAGIC_PAINTING_VARIANT.get(), this.getVariant());
 		return itemStack;
 	}
 

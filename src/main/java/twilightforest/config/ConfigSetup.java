@@ -2,32 +2,32 @@ package twilightforest.config;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import twilightforest.forge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
 
 public final class ConfigSetup {
 
-	private static final ModConfigSpec CLIENT_SPEC;
-	private static final ModConfigSpec COMMON_SPEC;
+	private static final ForgeConfigSpec CLIENT_SPEC;
+	private static final ForgeConfigSpec COMMON_SPEC;
 	static final TFClientConfig CLIENT_CONFIG;
 	static final TFCommonConfig COMMON_CONFIG;
 
 	static {
 		{
-			final Pair<TFCommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
-			ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
+			final Pair<TFCommonConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFCommonConfig::new);
+			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
 			COMMON_CONFIG = specPair.getLeft();
 		}
 		{
-			final Pair<TFClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFClientConfig::new);
-			ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
+			final Pair<TFClientConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFClientConfig::new);
+			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
 			CLIENT_CONFIG = specPair.getLeft();
 		}
 	}

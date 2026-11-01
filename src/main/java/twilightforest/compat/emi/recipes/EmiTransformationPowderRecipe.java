@@ -10,7 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
@@ -54,8 +54,8 @@ public class EmiTransformationPowderRecipe implements EmiRecipe {
 	@Override
 	public List<EmiIngredient> getInputs() {
 		List<EmiIngredient> inputs = new ArrayList<>();
-		SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(this.input);
-		SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(this.output);
+		SpawnEggItem inputEgg = ForgeSpawnEggItem.byId(this.input);
+		SpawnEggItem outputEgg = ForgeSpawnEggItem.byId(this.output);
 		if (inputEgg != null) {
 			inputs.add(EmiStack.of(inputEgg));
 			if (this.isReversible && outputEgg != null) {
@@ -69,8 +69,8 @@ public class EmiTransformationPowderRecipe implements EmiRecipe {
 	public List<EmiStack> getOutputs() {
 		List<EmiStack> outputs = new ArrayList<>();
 
-		SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(this.input);
-		SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(this.output);
+		SpawnEggItem inputEgg = ForgeSpawnEggItem.byId(this.input);
+		SpawnEggItem outputEgg = ForgeSpawnEggItem.byId(this.output);
 		if (outputEgg != null) {
 			outputs.add(EmiStack.of(outputEgg));
 			if (this.isReversible && inputEgg != null) {

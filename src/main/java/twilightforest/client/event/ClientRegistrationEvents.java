@@ -1,5 +1,10 @@
 package twilightforest.client.event;
 
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import twilightforest.forge.TFModels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
@@ -38,17 +43,15 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import twilightforest.forge.beans.Component;
+import twilightforest.forge.beans.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
@@ -58,7 +61,6 @@ import twilightforest.client.model.block.ConditionalMippedModel;
 import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
 import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
-import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.patch.PatchModelLoader;
@@ -73,8 +75,6 @@ import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
-import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
-import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
@@ -91,14 +91,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-@Component(dist = Dist.CLIENT)
+@Component
 public class ClientRegistrationEvents {
 
 	private static boolean optifinePresent = false;
 
 	@PostConstruct
 	private void setup(IEventBus bus) {
-		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
+		bus.addListener((EntityRenderersEvent.AddLayers e) -> this.attachRenderLayers(e));
 		bus.addListener(this::bakeCustomModels);
 		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
@@ -108,21 +108,17 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerEntityRenderers);
 		bus.addListener(this::registerLayerDefinitions);
 		bus.addListener(this::registerModelLoaders);
-		bus.addListener(this::registerScreens);
-		bus.addListener(this::registerClientExtensions);
-		bus.addListener(this::registerMapDecorators);
 		bus.addListener(this::registerParticleFactories);
 
-		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
+		bus.addListener((RegisterKeyMappingsEvent event) -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
 
 		bus.addListener(TFShaders::registerShaders);
 
-		bus.addListener(OverlayHandler::registerOverlays);
 
-		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> {
+		bus.addListener((RegisterClientTooltipComponentFactoriesEvent event) -> {
 			event.register(BrittleFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new);
 			event.register(TravellersArmorBeltItem.Tooltip.class, TravellersBeltTooltipComponent::new);
 			event.register(TravellersGogglesItem.Tooltip.class, ItemDisplayTooltipComponent::new);
@@ -130,18 +126,18 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
-		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
+		event.register("patch", PatchModelLoader.INSTANCE);
+		event.register("giant_block", GiantBlockModelLoader.INSTANCE);
+		event.register("force_field", ForceFieldModelLoader.INSTANCE);
+		event.register("connected_texture_block", twilightforest.client.model.block.connected.ConnectedTextureModelLoader.INSTANCE);
+		event.register("noise_varying", NoiseVaryingModelLoader.INSTANCE);
+		event.register("royal_rags", RoyalRagsModelLoader.INSTANCE);
+		event.register("travellers_gear", TravellersGearItemModel.Loader.INSTANCE);
 	}
 
 	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
 		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
+			stack.get(TFDataComponents.THROWN_PROJECTILE.get()) != null ? 1 : 0);
 
 		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), ResourceLocation.parse("blocking"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
@@ -180,7 +176,7 @@ public class ClientRegistrationEvents {
 				int progress = OreMeterItem.getLoadProgress(stack);
 				return progress % 5 >= 2 + (int) (Math.random() * 2) && progress <= totalLoadTime - 15 ? 1 : 0;
 			}
-			return stack.has(TFDataComponents.ORE_DATA) ? 1 : 0;
+			return stack.has(TFDataComponents.ORE_DATA.get()) ? 1 : 0;
 		});
 
 		ItemProperties.register(TFItems.MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, level, entity, idk) -> {
@@ -252,22 +248,22 @@ public class ClientRegistrationEvents {
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
 		ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
+			stack.get(TFDataComponents.THROWN_PROJECTILE.get()) != null ? 1 : 0);
 
 		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);
+			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS.get()) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS.get()).equals("think") ? 1 : 0);
 
 		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("full") ? 1 : 0);
+			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS.get()) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS.get()).equals("full") ? 1 : 0);
 
 		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).breakage());
+			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).breakage());
 
 		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
+			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).doses());
 
 		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
+			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).doses());
 
 		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
@@ -291,16 +287,16 @@ public class ClientRegistrationEvents {
 
 	private void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
 		event.register(ShieldLayer.LOC);
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+		event.register(TFModels.standalone(TwilightForestMod.prefix("item/trophy")));
+		event.register(TFModels.standalone(TwilightForestMod.prefix("item/trophy_minor")));
+		event.register(TFModels.standalone(TwilightForestMod.prefix("item/trophy_quest")));
 		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			ResourceLocation location = lid.resourceLocation();
 			String name = location.getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
+			event.register(TFModels.standalone(TwilightForestMod.prefix("block/lid/" + name)));
 		}
 	}
 
@@ -308,7 +304,7 @@ public class ClientRegistrationEvents {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
 			String name = lid.resourceLocation().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
+			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(TFModels.standalone(TwilightForestMod.prefix("block/lid/" + name))));
 		});
 	}
 
@@ -334,7 +330,140 @@ public class ClientRegistrationEvents {
 			Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
 			Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
 			Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
+
+			// NeoForge : RegisterClientExtensionsEvent et RegisterMenuScreensEvent, absents de Forge.
+			registerClientExtensions();
+			MenuScreens.register(TFMenuTypes.UNCRAFTING.get(), UncraftingScreen::new);
 		});
+	}
+
+	/**
+	 * Les rendus particuliers d'objets et de blocs : objets dessines par le ISTER (coffres, trophees,
+	 * bocaux, bouclier...), modeles d'armure du mod, particules des nuages.
+	 *
+	 * <p>NeoForge les recoit par {@code RegisterClientExtensionsEvent}. Forge les lit dans le champ
+	 * {@code renderProperties} de l'objet ou du bloc, normalement rempli par
+	 * {@code initializeClient} a la construction ; les objets concernes etant pour la plupart des
+	 * classes generiques ({@code BlockItem}...), le champ est rempli ici (ouvert par le
+	 * transformateur d'acces).</p>
+	 */
+	private static void registerClientExtensions() {
+		registerBlock(new IClientBlockExtensions() {
+			@Override
+			public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
+				if (level.random.nextBoolean() && target instanceof BlockHitResult hitResult) { // No clue why the parameter isn't blockHitResult, this should be always true, but we check just in case
+					BlockPos pos = hitResult.getBlockPos();
+					BlockState blockstate = level.getBlockState(pos);
+					if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+						Direction side = hitResult.getDirection();
+
+						int posX = pos.getX();
+						int posY = pos.getY();
+						int posZ = pos.getZ();
+
+						AABB aabb = blockstate.getShape(level, pos).bounds();
+						double x = (double) posX + level.random.nextDouble() * (aabb.maxX - aabb.minX - (double) 0.2F) + (double) 0.1F + aabb.minX;
+						double y = (double) posY + level.random.nextDouble() * (aabb.maxY - aabb.minY - (double) 0.2F) + (double) 0.1F + aabb.minY;
+						double z = (double) posZ + level.random.nextDouble() * (aabb.maxZ - aabb.minZ - (double) 0.2F) + (double) 0.1F + aabb.minZ;
+
+						if (side == Direction.DOWN) y = (double) posY + aabb.minY - (double) 0.1F;
+						if (side == Direction.UP) y = (double) posY + aabb.maxY + (double) 0.1F;
+
+						if (side == Direction.NORTH) z = (double) posZ + aabb.minZ - (double) 0.1F;
+						if (side == Direction.SOUTH) z = (double) posZ + aabb.maxZ + (double) 0.1F;
+
+						if (side == Direction.WEST) x = (double) posX + aabb.minX - (double) 0.1F;
+						if (side == Direction.EAST) x = (double) posX + aabb.maxX + (double) 0.1F;
+
+						Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, (double) side.getStepX() * 0.01D, (double) side.getStepY() * 0.01D, (double) side.getStepZ() * 0.01D);
+						if (particle == null) return true;
+						manager.add(particle);
+					}
+				}
+				return true;
+			}
+
+			@Override
+			public boolean addDestroyEffects(BlockState state, Level level, BlockPos pos, ParticleEngine manager) {
+				state.getShape(level, pos).forAllBoxes((boxX, boxY, boxZ, boxX1, boxY1, boxZ1) -> {
+					double xSize = Math.min(1.0D, boxX1 - boxX);
+					double ySize = Math.min(1.0D, boxY1 - boxY);
+					double zSize = Math.min(1.0D, boxZ1 - boxZ);
+
+					int xMax = Math.max(2, Mth.ceil(xSize / 0.25D));
+					int yMax = Math.max(2, Mth.ceil(ySize / 0.25D));
+					int zMax = Math.max(2, Mth.ceil(zSize / 0.25D));
+
+					for (int xSlice = 0; xSlice < xMax; ++xSlice) {
+						if (level.random.nextInt(3) == 1) continue;
+						for (int ySlice = 0; ySlice < yMax; ++ySlice) {
+							if (level.random.nextInt(3) == 1) continue;
+							for (int zSlice = 0; zSlice < zMax; ++zSlice) {
+								if (level.random.nextInt(3) == 1) continue;
+
+								double speedX = ((double) xSlice + 0.5D) / (double) xMax;
+								double speedY = ((double) ySlice + 0.5D) / (double) yMax;
+								double speedZ = ((double) zSlice + 0.5D) / (double) zMax;
+
+								double x = speedX * xSize + boxX;
+								double y = speedY * ySize + boxY;
+								double z = speedZ * zSize + boxZ;
+
+								speedX = (speedX - 0.5D) * 0.05D;
+								speedY = (speedY - 0.5D) * 0.05D;
+								speedZ = (speedZ - 0.5D) * 0.05D;
+
+								Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, speedX, speedY, speedZ);
+								if (particle == null) return;
+								manager.add(particle);
+							}
+						}
+					}
+				});
+				return true;
+			}
+		}, TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get());
+
+		registerItem(ISTER.CLIENT_ITEM_EXTENSION,
+			TFBlocks.CICADA.asItem(), TFBlocks.FIREFLY.asItem(), TFBlocks.MOONWORM.asItem(), TFBlocks.SKULL_CHEST.asItem(), TFBlocks.KEEPSAKE_CASKET.asItem(), TFBlocks.CANDELABRA.asItem(), TFBlocks.BRAZIER.asItem(),
+			TFItems.CICADA_JAR.get(), TFItems.FIREFLY_JAR.get(), TFItems.MASON_JAR.get(), TFItems.KNIGHTMETAL_SHIELD.get(), TFItems.MYSTIC_CROWN.value(),
+			TFBlocks.TWILIGHT_OAK_CHEST.asItem(), TFBlocks.CANOPY_CHEST.asItem(), TFBlocks.MANGROVE_CHEST.asItem(), TFBlocks.DARK_CHEST.asItem(), TFBlocks.TIME_CHEST.asItem(), TFBlocks.TRANSFORMATION_CHEST.asItem(), TFBlocks.MINING_CHEST.asItem(), TFBlocks.SORTING_CHEST.asItem(),
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.asItem(), TFBlocks.CANOPY_TRAPPED_CHEST.asItem(), TFBlocks.MANGROVE_TRAPPED_CHEST.asItem(), TFBlocks.DARK_TRAPPED_CHEST.asItem(), TFBlocks.TIME_TRAPPED_CHEST.asItem(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.asItem(), TFBlocks.MINING_TRAPPED_CHEST.asItem(), TFBlocks.SORTING_TRAPPED_CHEST.asItem(),
+			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(), TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(), TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(), TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get(), TFItems.QUEST_RAM_TROPHY.get(),
+			TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.ZOMBIE_SKULL_CANDLE.get()
+		);
+
+		registerItem(
+			new ArcticArmorItem.ArmorRender(),
+			TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
+		registerItem(
+			new TFSimpleArmorRenderer(FieryArmorModel::new, TFModelLayers.FIERY_ARMOR_INNER, TFModelLayers.FIERY_ARMOR_OUTER),
+			TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get()
+		);
+		registerItem(
+			new TravellersArmorItem.ArmorRender(),
+			TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_WINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get()
+		);
+		registerItem(
+			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.KNIGHTMETAL_ARMOR_INNER, TFModelLayers.KNIGHTMETAL_ARMOR_OUTER),
+			TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get()
+		);
+		registerItem(
+			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.PHANTOM_ARMOR_INNER, TFModelLayers.PHANTOM_ARMOR_OUTER),
+			TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get()
+		);
+		registerItem(
+			new TFSimpleArmorRenderer(YetiArmorModel::new, TFModelLayers.YETI_ARMOR_INNER, TFModelLayers.YETI_ARMOR_OUTER),
+			TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get()
+		);
+	}
+
+	private static void registerBlock(IClientBlockExtensions extensions, Block... blocks) {
+		for (Block block : blocks) block.renderProperties = extensions;
+	}
+
+	private static void registerItem(IClientItemExtensions extensions, Item... items) {
+		for (Item item : items) item.renderProperties = extensions;
 	}
 
 	private void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
@@ -345,9 +474,9 @@ public class ClientRegistrationEvents {
 		event.registerReloadListener(new TFArmorRenderer.ResourceReloadListener());
 	}
 
-	private void registerScreens(RegisterMenuScreensEvent event) {
-		event.register(TFMenuTypes.UNCRAFTING.get(), UncraftingScreen::new);
-	}
+
+	// PORTAGE : gestionnaire supprime, l'evenement correspondant n'existe pas chez Forge
+	// (voir PORTAGE-twilightforest-crochets.txt).
 
 	private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(TFEntities.BOAR.get(), m -> new BoarRenderer<>(m, new BoarModel<>(m.bakeLayer(TFModelLayers.BOAR))));
@@ -596,142 +725,27 @@ public class ClientRegistrationEvents {
 		event.registerSpriteSet(TFParticleType.SHIELD_BREAK.get(), CustomTextureParticle.ShieldBreak::new);
 	}
 
-	private void registerClientExtensions(RegisterClientExtensionsEvent event) {
-		event.registerBlock(new IClientBlockExtensions() {
-			@Override
-			public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
-				if (level.random.nextBoolean() && target instanceof BlockHitResult hitResult) { // No clue why the parameter isn't blockHitResult, this should be always true, but we check just in case
-					BlockPos pos = hitResult.getBlockPos();
-					BlockState blockstate = level.getBlockState(pos);
-					if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
-						Direction side = hitResult.getDirection();
 
-						int posX = pos.getX();
-						int posY = pos.getY();
-						int posZ = pos.getZ();
+	// PORTAGE : gestionnaire supprime, l'evenement correspondant n'existe pas chez Forge
+	// (voir PORTAGE-twilightforest-crochets.txt).
 
-						AABB aabb = blockstate.getShape(level, pos).bounds();
-						double x = (double) posX + level.random.nextDouble() * (aabb.maxX - aabb.minX - (double) 0.2F) + (double) 0.1F + aabb.minX;
-						double y = (double) posY + level.random.nextDouble() * (aabb.maxY - aabb.minY - (double) 0.2F) + (double) 0.1F + aabb.minY;
-						double z = (double) posZ + level.random.nextDouble() * (aabb.maxZ - aabb.minZ - (double) 0.2F) + (double) 0.1F + aabb.minZ;
 
-						if (side == Direction.DOWN) y = (double) posY + aabb.minY - (double) 0.1F;
-						if (side == Direction.UP) y = (double) posY + aabb.maxY + (double) 0.1F;
-
-						if (side == Direction.NORTH) z = (double) posZ + aabb.minZ - (double) 0.1F;
-						if (side == Direction.SOUTH) z = (double) posZ + aabb.maxZ + (double) 0.1F;
-
-						if (side == Direction.WEST) x = (double) posX + aabb.minX - (double) 0.1F;
-						if (side == Direction.EAST) x = (double) posX + aabb.maxX + (double) 0.1F;
-
-						Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, (double) side.getStepX() * 0.01D, (double) side.getStepY() * 0.01D, (double) side.getStepZ() * 0.01D);
-						if (particle == null) return true;
-						manager.add(particle);
-					}
-				}
-				return true;
-			}
-
-			@Override
-			public boolean addDestroyEffects(BlockState state, Level level, BlockPos pos, ParticleEngine manager) {
-				state.getShape(level, pos).forAllBoxes((boxX, boxY, boxZ, boxX1, boxY1, boxZ1) -> {
-					double xSize = Math.min(1.0D, boxX1 - boxX);
-					double ySize = Math.min(1.0D, boxY1 - boxY);
-					double zSize = Math.min(1.0D, boxZ1 - boxZ);
-
-					int xMax = Math.max(2, Mth.ceil(xSize / 0.25D));
-					int yMax = Math.max(2, Mth.ceil(ySize / 0.25D));
-					int zMax = Math.max(2, Mth.ceil(zSize / 0.25D));
-
-					for (int xSlice = 0; xSlice < xMax; ++xSlice) {
-						if (level.random.nextInt(3) == 1) continue;
-						for (int ySlice = 0; ySlice < yMax; ++ySlice) {
-							if (level.random.nextInt(3) == 1) continue;
-							for (int zSlice = 0; zSlice < zMax; ++zSlice) {
-								if (level.random.nextInt(3) == 1) continue;
-
-								double speedX = ((double) xSlice + 0.5D) / (double) xMax;
-								double speedY = ((double) ySlice + 0.5D) / (double) yMax;
-								double speedZ = ((double) zSlice + 0.5D) / (double) zMax;
-
-								double x = speedX * xSize + boxX;
-								double y = speedY * ySize + boxY;
-								double z = speedZ * zSize + boxZ;
-
-								speedX = (speedX - 0.5D) * 0.05D;
-								speedY = (speedY - 0.5D) * 0.05D;
-								speedZ = (speedZ - 0.5D) * 0.05D;
-
-								Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, speedX, speedY, speedZ);
-								if (particle == null) return;
-								manager.add(particle);
-							}
-						}
-					}
-				});
-				return true;
-			}
-		}, TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get());
-
-		event.registerItem(ISTER.CLIENT_ITEM_EXTENSION,
-			TFBlocks.CICADA.asItem(), TFBlocks.FIREFLY.asItem(), TFBlocks.MOONWORM.asItem(), TFBlocks.SKULL_CHEST.asItem(), TFBlocks.KEEPSAKE_CASKET.asItem(), TFBlocks.CANDELABRA.asItem(), TFBlocks.BRAZIER.asItem(),
-			TFItems.CICADA_JAR.get(), TFItems.FIREFLY_JAR.get(), TFItems.MASON_JAR.get(), TFItems.KNIGHTMETAL_SHIELD.get(), TFItems.MYSTIC_CROWN.value(),
-			TFBlocks.TWILIGHT_OAK_CHEST.asItem(), TFBlocks.CANOPY_CHEST.asItem(), TFBlocks.MANGROVE_CHEST.asItem(), TFBlocks.DARK_CHEST.asItem(), TFBlocks.TIME_CHEST.asItem(), TFBlocks.TRANSFORMATION_CHEST.asItem(), TFBlocks.MINING_CHEST.asItem(), TFBlocks.SORTING_CHEST.asItem(),
-			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.asItem(), TFBlocks.CANOPY_TRAPPED_CHEST.asItem(), TFBlocks.MANGROVE_TRAPPED_CHEST.asItem(), TFBlocks.DARK_TRAPPED_CHEST.asItem(), TFBlocks.TIME_TRAPPED_CHEST.asItem(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.asItem(), TFBlocks.MINING_TRAPPED_CHEST.asItem(), TFBlocks.SORTING_TRAPPED_CHEST.asItem(),
-			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(), TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(), TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(), TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get(), TFItems.QUEST_RAM_TROPHY.get(),
-			TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.ZOMBIE_SKULL_CANDLE.get()
-		);
-
-		event.registerItem(
-			new ArcticArmorItem.ArmorRender(),
-			TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
-		event.registerItem(
-			new TFSimpleArmorRenderer(FieryArmorModel::new, TFModelLayers.FIERY_ARMOR_INNER, TFModelLayers.FIERY_ARMOR_OUTER),
-			TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get()
-		);
-		event.registerItem(
-			new TravellersArmorItem.ArmorRender(),
-			TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_WINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get()
-		);
-		event.registerItem(
-			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.KNIGHTMETAL_ARMOR_INNER, TFModelLayers.KNIGHTMETAL_ARMOR_OUTER),
-			TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get()
-		);
-		event.registerItem(
-			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.PHANTOM_ARMOR_INNER, TFModelLayers.PHANTOM_ARMOR_OUTER),
-			TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get()
-		);
-		event.registerItem(
-			new TFSimpleArmorRenderer(YetiArmorModel::new, TFModelLayers.YETI_ARMOR_INNER, TFModelLayers.YETI_ARMOR_OUTER),
-			TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get()
-		);
-	}
-
-	private void registerMapDecorators(RegisterMapDecorationRenderersEvent event) {
-		event.register(MapDecorationTypes.PLAYER.value(), new MagicMapPlayerIconRenderer());
-		event.register(TFMapDecorations.QUEST_GROVE.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.NAGA_COURTYARD.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.LICH_TOWER.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.LABYRINTH.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.HYDRA_LAIR.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.KNIGHT_STRONGHOLD.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.DARK_TOWER.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.YETI_LAIR.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.AURORA_PALACE.get(), new ConqueredMapIconRenderer());
-		event.register(TFMapDecorations.FINAL_CASTLE.get(), new ConqueredMapIconRenderer());
-	}
+	// PORTAGE : gestionnaire supprime, l'evenement correspondant n'existe pas chez Forge
+	// (voir PORTAGE-twilightforest-crochets.txt).
 
 	private void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
-		for (EntityType<?> type : event.getEntityTypes()) {
-			var renderer = event.getRenderer(type);
+		for (EntityType<?> type : net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE) {
+			// PORTAGE : Forge nomme cet accesseur « getEntityRenderer », NeoForge « getRenderer ».
+			var renderer = event.getEntityRenderer((net.minecraft.world.entity.EntityType) type);
 			if (renderer instanceof LivingEntityRenderer<?, ?> living) {
 				attachRenderLayers(living);
 			}
 		}
 
 		event.getSkins().forEach(renderer -> {
-			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
+			// PORTAGE : « getSkin » chez NeoForge, « getPlayerSkin » chez Forge.
+			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getPlayerSkin(renderer);
 			attachRenderLayers(Objects.requireNonNull(skin));
 		});
 	}

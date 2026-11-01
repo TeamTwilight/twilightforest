@@ -25,7 +25,7 @@ public class CasketRepairRecipe extends CustomRecipe {
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
-				if (stackInQuestion.is(TFItems.KEEPSAKE_CASKET) && stackInQuestion.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0) > 0) {
+				if (stackInQuestion.is(TFItems.KEEPSAKE_CASKET.get()) && stackInQuestion.getOrDefault(TFDataComponents.CASKET_DAMAGE.get(), 0) > 0) {
 					if (casket) return false;
 					casket = true;
 				} else if (stackInQuestion.is(TFItems.CHARM_OF_KEEPING_3.get())) {
@@ -56,9 +56,9 @@ public class CasketRepairRecipe extends CustomRecipe {
 			}
 		}
 
-		if (casket != null && casket.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0) > 0) {
+		if (casket != null && casket.getOrDefault(TFDataComponents.CASKET_DAMAGE.get(), 0) > 0) {
 			ItemStack repaired = casket.copy();
-			repaired.update(TFDataComponents.CASKET_DAMAGE, casket.get(TFDataComponents.CASKET_DAMAGE), integer -> integer - 1);
+			repaired.update(TFDataComponents.CASKET_DAMAGE.get(), casket.get(TFDataComponents.CASKET_DAMAGE.get()), integer -> integer - 1);
 			return repaired;
 		}
 

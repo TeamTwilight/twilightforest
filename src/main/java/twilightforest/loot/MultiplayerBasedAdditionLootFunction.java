@@ -1,5 +1,6 @@
 package twilightforest.loot;
 
+import twilightforest.forge.attachment.Attachments;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Mth;
@@ -44,8 +45,8 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
 		if (TFConfig.multiplayerFightAdjuster.adjustsLootRolls()) {
-			if (context.hasParam(LootContextParams.THIS_ENTITY) && context.getParam(LootContextParams.THIS_ENTITY).hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
-				int qualifiedPlayers = context.getParam(LootContextParams.THIS_ENTITY).getData(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
+			if (context.hasParam(LootContextParams.THIS_ENTITY) && Attachments.has(context.getParam(LootContextParams.THIS_ENTITY), TFDataAttachments.MULTIPLAYER_FIGHT)) {
+				int qualifiedPlayers = Attachments.get(context.getParam(LootContextParams.THIS_ENTITY), TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				if (qualifiedPlayers > 1) {
 					int participatingPlayers = qualifiedPlayers - 1;
 					int extraItems = this.value.getInt(context) * participatingPlayers;

@@ -1,4 +1,4 @@
-package twilightforest.data;
+package twilightforest.util;
 
 import net.minecraft.data.BlockFamily;
 import net.minecraft.world.level.block.Block;

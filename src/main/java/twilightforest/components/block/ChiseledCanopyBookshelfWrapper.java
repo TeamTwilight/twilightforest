@@ -1,7 +1,7 @@
 package twilightforest.components.block;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 

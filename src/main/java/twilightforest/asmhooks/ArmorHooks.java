@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.init.TFDataComponents;
 import twilightforest.util.ArmorUtil;
 
@@ -38,7 +38,7 @@ public class ArmorHooks {
 	 * {@link net.minecraft.client.renderer.entity.layers.ElytraLayer#shouldRender(ItemStack, LivingEntity)}
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
-		if (o && stack.has(TFDataComponents.EMPERORS_CLOTH)) {
+		if (o && stack.has(TFDataComponents.EMPERORS_CLOTH.get())) {
 			return false;
 		}
 		return o;
@@ -51,6 +51,6 @@ public class ArmorHooks {
 	 * {@link net.minecraft.client.renderer.entity.layers.CapeLayer#render(PoseStack, MultiBufferSource, int, AbstractClientPlayer, float, float, float, float, float, float)}
 	 */
 	public static boolean fixCapeRendering(boolean o, ItemStack stack) {
-		return o && !stack.has(TFDataComponents.EMPERORS_CLOTH);
+		return o && !stack.has(TFDataComponents.EMPERORS_CLOTH.get());
 	}
 }

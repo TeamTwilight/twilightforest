@@ -5,8 +5,8 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.util.Lazy;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,7 +28,11 @@ public abstract class TFArmorRenderer implements IClientItemExtensions {
 	}
 
 	public void resetModelCache() {
-		ARMOR_MODELS.values().forEach(Lazy::invalidate);
+		// Le Lazy de Forge ne sait pas s'invalider — NeoForge y ajoute « invalidate ». On remplace
+		// donc chaque entree par un Lazy neuf, bati sur le meme fournisseur : la couche sera
+		// recuite au prochain acces, ce qui est exactement l'effet recherche.
+		this.ARMOR_MODELS.replaceAll((layerLocation, previous) ->
+			Lazy.of(() -> Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation)));
 	}
 
 	public static void resetAllModelCache() {

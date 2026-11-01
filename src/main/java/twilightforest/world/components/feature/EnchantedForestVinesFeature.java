@@ -1,6 +1,6 @@
 package twilightforest.world.components.feature;
 
-import com.llamalad7.mixinextras.lib.apache.commons.tuple.Pair;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,10 +35,10 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 		Map<Pair<Integer, Integer>, Pair<Integer, Integer>> columnsY = getAllColumnsY(world, pos.getX(), pos.getZ());
 		for (Map.Entry<Pair<Integer, Integer>, Pair<Integer, Integer>> entry : columnsY.entrySet()) {
 			Pair<Integer, Integer> horizontalCoordinates = entry.getKey();
-			int x = horizontalCoordinates.getLeft();
-			int z = horizontalCoordinates.getRight();
-			int minY = entry.getValue().getLeft();
-			int maxY = entry.getValue().getRight();
+			int x = horizontalCoordinates.getFirst();
+			int z = horizontalCoordinates.getSecond();
+			int minY = entry.getValue().getFirst();
+			int maxY = entry.getValue().getSecond();
 
 			setColumn(world, random, x, minY, maxY, z);
 		}
@@ -71,7 +71,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 	}
 
 	private void setVine(WorldGenLevel world, RandomSource random, BlockPos pos) {
-		if (random.nextInt(rarity) > 0 || !world.getBlockState(pos).isEmpty() || !isSuitableBiome(world, pos))
+		if (random.nextInt(rarity) > 0 || !world.getBlockState(pos).isAir() || !isSuitableBiome(world, pos))
 			return;
 
 		BlockState state = Blocks.VINE.defaultBlockState();
@@ -97,7 +97,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 	}
 
 	private boolean isSuitableBiome(WorldGenLevel world, BlockPos pos) {
-		return Objects.requireNonNull(world.getBiome(pos).getKey()).location().getPath().equals("enchanted_forest");
+		return Objects.requireNonNull(world.getBiome(pos).unwrapKey().orElse(null)).location().getPath().equals("enchanted_forest");
 	}
 
 	private boolean isTree(BlockState state) {

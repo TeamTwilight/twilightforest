@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -37,8 +38,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.forge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
@@ -78,7 +79,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			List<Entity> list = level.getEntitiesOfClass(Entity.class, new AABB(pos).inflate(range));
 
 			for (Entity victim : list) {
-				if (!EventHooks.onEntityStruckByLightning(victim, bolt)) {
+				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
 					victim.thunderHit((ServerLevel) level, bolt);
 				}
 			}
@@ -232,7 +233,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			if (entity.canUsePortal(false)) {
 				entity.setAsInsidePortal(this, entity.blockPosition());
-				entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
+				Attachments.get(entity, TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 			}
 		}
 	}

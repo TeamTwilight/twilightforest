@@ -13,8 +13,8 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.common.data.JsonCodecProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.JsonCodecProvider;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -32,23 +32,35 @@ import java.util.concurrent.CompletableFuture;
 public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<StructureTemplateDefinition> {
 	private final Map<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> poolsForTemplateWeights = new HashMap<>();
 
+	/** Conservee : le fournisseur de Forge ne la retient pas, les generateurs du mod s'en servent. */
+	protected final CompletableFuture<HolderLookup.Provider> lookupProvider;
+
 	private final String name;
 
 	public StructureTemplateDefinitionProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, ExistingFileHelper existingFileHelper, String name) {
-		super(output, PackOutput.Target.DATA_PACK, StructureTemplateDefinitions.DIRECTORY, PackType.SERVER_DATA, StructureTemplateDefinition.CODEC, lookupProvider, modId, existingFileHelper);
+		// PORTAGE : Forge ordonne autrement les parametres et veut directement les operations de
+		// serialisation, la ou NeoForge accepte la promesse de tables de registres. On la resout
+		// ici : la generation de donnees est hors ligne, l'attente est sans consequence.
+		// La table d'entrees est vide au depart — celles du mod sont produites dans gather().
+		super(output, existingFileHelper, modId,
+			net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE, lookupProvider.join()),
+			PackType.SERVER_DATA, StructureTemplateDefinitions.DIRECTORY, StructureTemplateDefinition.CODEC,
+			java.util.Map.of());
+		this.lookupProvider = lookupProvider;
 		this.name = name;
 	}
 
 	protected abstract void generatePools();
 
+	// PORTAGE : Forge remet un consommateur a gather() plutot que d'exposer « unconditional ».
 	@Override
-	protected void gather() {
+	protected void gather(java.util.function.BiConsumer<ResourceLocation, StructureTemplateDefinition> consumer) {
 		this.generatePools();
 
 		for(Map.Entry<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
 			ResourceLocation templateId = poolWeightsForTemplate.getKey();
 
-			this.unconditional(templateId, new StructureTemplateDefinition(poolWeightsForTemplate.getValue()));
+			consumer.accept(templateId, new StructureTemplateDefinition(poolWeightsForTemplate.getValue()));
 		}
 	}
 

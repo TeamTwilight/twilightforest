@@ -13,7 +13,7 @@ public class SeekerBowItem extends BowItem {
 		super(properties);
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
 		return new SeekerArrow(arrow, projectileStack.copyWithCount(1), weaponStack);
 	}

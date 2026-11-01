@@ -10,7 +10,6 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.common.CommonHooks;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.inventory.UncraftingMenu;
 
@@ -76,9 +75,9 @@ public class UncraftingResultSlot extends ResultSlot {
 		CraftingInput input = positioned.input();
 		int i = positioned.left();
 		int j = positioned.top();
-		CommonHooks.setCraftingPlayer(player);
+		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
 		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, input, player.level());
-		CommonHooks.setCraftingPlayer(null);
+		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
 		for (int k = 0; k < input.height(); k++) {
 			for (int l = 0; l < input.width(); l++) {

@@ -18,7 +18,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.neoforged.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLLoader;
 import twilightforest.events.EntityEvents;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-@tamaized.beanification.Component
+@twilightforest.forge.beans.Component
 public class InfoCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
@@ -66,7 +66,7 @@ public class InfoCommand {
 		boxInfo.add("" + boundingBox.maxX());
 		boxInfo.add("" + boundingBox.maxY());
 		boxInfo.add("" + boundingBox.maxZ());
-		source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.boundaries", boxInfo), false);
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.boundaries", boxInfo.toString()), false);
 
 		if (boundingBox.isInside(pos)) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);

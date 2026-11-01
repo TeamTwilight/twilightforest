@@ -1,5 +1,6 @@
 package twilightforest.client.model.item;
 
+import net.minecraftforge.client.ForgeHooksClient;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
@@ -16,11 +17,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.ClientHooks;
-import net.neoforged.neoforge.client.model.CompositeModel;
-import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
-import net.neoforged.neoforge.client.model.SimpleModelState;
-import net.neoforged.neoforge.client.model.geometry.*;
+import net.minecraftforge.client.model.CompositeModel;
+import net.minecraftforge.client.model.DynamicFluidContainerModel;
+import net.minecraftforge.client.model.SimpleModelState;
+import net.minecraftforge.client.model.geometry.*;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -67,7 +67,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 
 		if (sprite != null) {
 			// Base texture
-			var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, sprite);
+			var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, sprite.contents());
 			var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> sprite, modelState);
 			modelBuilder.addQuads(normalRenderTypes, quads);
 		}
@@ -76,7 +76,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		for (Holder.Reference<TravellersModifier> modifier : this.modifiers) {
 			var modSprite = this.getModifierSprite(modifier.key(), spriteGetter);
 			if (!modSprite.contents().name().equals(MissingTextureAtlasSprite.getLocation())) {
-				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, modSprite);
+				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, modSprite.contents());
 				var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> modSprite, new SimpleModelState(modelState.getRotation().compose(TRANSFORM.apply(layers * 0.001F)), modelState.isUvLocked()));
 				modelBuilder.addQuads(normalRenderTypes, quads);
 				layers++;
@@ -84,9 +84,9 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		}
 
 		if (this.showGloves) {
-			var modSprite = spriteGetter.apply(ClientHooks.getBlockMaterial(TwilightForestMod.prefix("item/" + (this.broken ? this.brokenDirectory : this.directory) + "gloves")));
+			var modSprite = spriteGetter.apply(ForgeHooksClient.getBlockMaterial(TwilightForestMod.prefix("item/" + (this.broken ? this.brokenDirectory : this.directory) + "gloves")));
 			if (!modSprite.contents().name().equals(MissingTextureAtlasSprite.getLocation())) {
-				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, modSprite);
+				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, modSprite.contents());
 				var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> modSprite, new SimpleModelState(modelState.getRotation().compose(TRANSFORM.apply(layers * 0.001F)), modelState.isUvLocked()));
 				modelBuilder.addQuads(normalRenderTypes, quads);
 			}
@@ -109,7 +109,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 	}
 
 	private TextureAtlasSprite getModifierSprite(ResourceKey<TravellersModifier> modifier, Function<Material, TextureAtlasSprite> spriteGetter) {
-		return spriteGetter.apply(ClientHooks.getBlockMaterial(modifier.location().withPrefix("item/" + (this.broken ? this.brokenDirectory : this.directory))));
+		return spriteGetter.apply(ForgeHooksClient.getBlockMaterial(modifier.location().withPrefix("item/" + (this.broken ? this.brokenDirectory : this.directory))));
 	}
 
 	public static final class Loader implements IGeometryLoader<TravellersGearItemModel> {
@@ -150,7 +150,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 
 			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level, stack);
 			boolean broken = TravellersArmorItem.isTravellersArmorAndBroken(stack);
-			boolean gloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
+			boolean gloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES.get());
 			String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + this.getModifiersSuffix(modifiers, broken, gloves);
 
 			if (!this.possibleCombos.containsKey(key)) {

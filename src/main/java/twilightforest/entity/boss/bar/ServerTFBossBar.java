@@ -20,7 +20,7 @@ public class ServerTFBossBar extends ServerBossEvent {
 	@Override
 	public void addPlayer(ServerPlayer player) {
 		if (this.players.add(player) && this.visible) {
-			player.connection.send(new TFBossBarPacket.AddTFBossBarPacket(this));
+			twilightforest.forge.network.PacketDistributor.sendToPlayer(player, new TFBossBarPacket.AddTFBossBarPacket(this));
 		}
 	}
 
@@ -34,6 +34,6 @@ public class ServerTFBossBar extends ServerBossEvent {
 			this.overlay = overlay;
 			change = true;
 		}
-		if (change) this.players.forEach(serverPlayer -> serverPlayer.connection.send(new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp)));
+		if (change) this.players.forEach(serverPlayer -> twilightforest.forge.network.PacketDistributor.sendToPlayer(serverPlayer, new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp)));
 	}
 }

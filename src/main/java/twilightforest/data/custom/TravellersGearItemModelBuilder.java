@@ -1,9 +1,9 @@
 package twilightforest.data.custom;
 
 import com.google.gson.JsonObject;
-import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
+import net.minecraftforge.client.model.generators.ModelBuilder;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 
 public class TravellersGearItemModelBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {
@@ -16,7 +16,7 @@ public class TravellersGearItemModelBuilder<T extends ModelBuilder<T>> extends C
 	}
 
 	protected TravellersGearItemModelBuilder(T parent, String directory, String brokenDirectory, ExistingFileHelper existingFileHelper) {
-		super(TwilightForestMod.prefix("travellers_gear"), parent, existingFileHelper, false);
+		super(TwilightForestMod.prefix("travellers_gear"), parent, existingFileHelper);
 		this.directory = directory;
 		this.brokenDirectory = brokenDirectory;
 	}

@@ -6,7 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 
 public record UpdateDeathTimePacket(int entityID, int deathTime) implements CustomPacketPayload {

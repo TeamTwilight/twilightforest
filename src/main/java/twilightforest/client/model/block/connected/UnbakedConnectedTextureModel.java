@@ -11,13 +11,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.ExtraFaceData;
-import net.neoforged.neoforge.client.model.SimpleModelState;
-import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
-import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
-import org.apache.commons.lang3.mutable.MutableObject;
+import net.minecraftforge.client.RenderTypeGroup;
+import net.minecraftforge.client.model.ForgeFaceData;
+import net.minecraftforge.client.model.SimpleModelState;
+import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
+import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
+import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
 import org.joml.Vector3f;
 
 import java.lang.reflect.Array;
@@ -49,8 +48,8 @@ public class UnbakedConnectedTextureModel implements IUnbakedGeometry<UnbakedCon
 		//face elements - the connected bit of the model.
 		//the array is made of the directions, quads, and each logic value in the ConnectionLogic class
 		this.faceElements = new BlockElement[6][4][5];
-		ExtraFaceData baseFace = new ExtraFaceData(-1, baseEmissivity, baseEmissivity, false);
-		ExtraFaceData overlayFace = new ExtraFaceData(-1, emissivity, emissivity, true);
+		ForgeFaceData baseFace = new ForgeFaceData(-1, baseEmissivity, baseEmissivity, false);
+		ForgeFaceData overlayFace = new ForgeFaceData(-1, emissivity, emissivity, true);
 		Vec3i center = new Vec3i(8, 8, 8);
 
 		for (Direction face : Direction.values()) {
@@ -59,10 +58,10 @@ public class UnbakedConnectedTextureModel implements IUnbakedGeometry<UnbakedCon
 			for(int i = 0; i < 4; ++i) {
 				Vec3i corner = face.getNormal().offset(planeDirections[i].getNormal()).offset(planeDirections[(i + 1) % 4].getNormal()).offset(1, 1, 1).multiply(8);
 				BlockElement element = new BlockElement(new Vector3f((float)Math.min(center.getX(), corner.getX()), (float)Math.min(center.getY(), corner.getY()), (float)Math.min(center.getZ(), corner.getZ())), new Vector3f((float)Math.max(center.getX(), corner.getX()), (float)Math.max(center.getY(), corner.getY()), (float)Math.max(center.getZ(), corner.getZ())), Map.of(), null, true);
-				this.baseElements[face.get3DDataValue()][i] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0), baseFace, new MutableObject<>())), null, true);
+				this.baseElements[face.get3DDataValue()][i] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0), baseFace)), null, true);
 
 				for (ConnectionLogic logic : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(element.uvsByFace(face)), 0), overlayFace, new MutableObject<>())), null, true);
+					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(element.uvsByFace(face)), 0), overlayFace)), null, true);
 				}
 			}
 		}

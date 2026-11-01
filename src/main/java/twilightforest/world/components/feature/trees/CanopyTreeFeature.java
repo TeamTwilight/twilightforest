@@ -47,7 +47,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			return false;
 		}
 
-		if (world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, TFBlocks.CANOPY_SAPLING.get().defaultBlockState()).isFalse()) {
+		if (!world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, (net.minecraftforge.common.IPlantable) TFBlocks.CANOPY_SAPLING.get())) {
 			return false;
 		}
 

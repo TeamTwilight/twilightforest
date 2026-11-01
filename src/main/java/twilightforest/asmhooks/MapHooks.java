@@ -43,7 +43,7 @@ public class MapHooks {
 		if (o) return true;
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		if (!TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) return false;
-		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
+		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY.get());
 		if (contents == null || contents.isEmpty()) return false;
 		NonNullList<ItemStack> items = contents.items();
 		int activeMapSlot = contents.findActiveMapSlot();

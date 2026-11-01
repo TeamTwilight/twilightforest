@@ -1,5 +1,6 @@
 package twilightforest.item.mapdata;
 
+import twilightforest.forge.network.TFNetwork;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -121,7 +122,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new MagicMapPacket(mapItemDataPacket, this.conqueredStructures).toVanillaClientbound() : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFNetwork.toClient(new MagicMapPacket(mapItemDataPacket, this.conqueredStructures), player.registryAccess()) : packet;
 	}
 
 	public void addTFDecoration(Holder<MapDecorationType> decorationType, @Nullable LevelAccessor level, String id, double x, double z, double yRot, boolean conquered) {

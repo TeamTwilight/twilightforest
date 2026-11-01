@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import twilightforest.forge.PlayerPersistentData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -19,19 +20,19 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.registries.DeferredItem;
-import tamaized.beanification.PostConstruct;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.common.MinecraftForge;
+import twilightforest.forge.TFFakePlayer;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import twilightforest.forge.network.PacketDistributor;
+import twilightforest.forge.registries.DeferredItem;
+import twilightforest.forge.beans.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.forge.CuriosStub;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.enums.BlockLoggingEnum;
@@ -45,7 +46,7 @@ import twilightforest.util.TFItemStackUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-@tamaized.beanification.Component
+@twilightforest.forge.beans.Component
 public class CharmEvents {
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
@@ -54,9 +55,9 @@ public class CharmEvents {
 
 	@PostConstruct
 	private void setup() {
-		NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, this::applyCharmOfLife);
-		NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, this::applyKeepingAndCasket);
-		NeoForge.EVENT_BUS.addListener(this::returnItemsOnRespawn);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, this::applyCharmOfLife);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::applyKeepingAndCasket);
+		MinecraftForge.EVENT_BUS.addListener(this::returnItemsOnRespawn);
 	}
 
 	// Check for charm of life first to stop a player from dying
@@ -64,7 +65,7 @@ public class CharmEvents {
 		LivingEntity living = event.getEntity();
 
 		//ensure our player is real and in survival before attempting anything
-		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
+		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof TFFakePlayer ||
 				player.isCreative() || player.isSpectator()) return;
 
 		if (handleCharmOfLife(player)) event.setCanceled(true); // Executes if the player had charms
@@ -75,7 +76,7 @@ public class CharmEvents {
 		LivingEntity living = event.getEntity();
 
 		//ensure our player is real and in survival before attempting anything
-		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
+		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof TFFakePlayer ||
 				player.isCreative() || player.isSpectator()) return;
 
 		if (!living.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
@@ -312,10 +313,10 @@ public class CharmEvents {
 	}
 
 	public static CompoundTag getPlayerData(Player player) {
-		if (!player.getPersistentData().contains(Player.PERSISTED_NBT_TAG)) {
-			player.getPersistentData().put(Player.PERSISTED_NBT_TAG, new CompoundTag());
+		if (!player.getPersistentData().contains(PlayerPersistentData.PERSISTED_NBT_TAG)) {
+			player.getPersistentData().put(PlayerPersistentData.PERSISTED_NBT_TAG, new CompoundTag());
 		}
-		return player.getPersistentData().getCompound(Player.PERSISTED_NBT_TAG);
+		return player.getPersistentData().getCompound(PlayerPersistentData.PERSISTED_NBT_TAG);
 	}
 
 	//transfers a list of items to another
@@ -340,7 +341,7 @@ public class CharmEvents {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.findAndConsumeCurio(item, player);
+			return CuriosStub.findAndConsumeCurio(item, player);
 		}
 
 		return false;

@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import twilightforest.forge.datamap.DataMaps;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
@@ -63,7 +64,7 @@ public class MazeMapItem extends MapItem {
 	}
 
 	@Nullable
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMazeMapData mapdata = getData(stack, level);
 		if (mapdata == null && !level.isClientSide()) {
@@ -171,7 +172,7 @@ public class MazeMapItem extends MapItem {
 
 									if (this.mapOres) {
 										// recolor ores
-										OreMapOreColor color = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.ORE_MAP_ORE_COLOR);
+										OreMapOreColor color = DataMaps.get(state.getBlock().builtInRegistryHolder(), TFDataMaps.ORE_MAP_ORE_COLOR);
 										if (color != null) {
 											multiset.add(color.color(), 1000);
 										} else if (!state.isAir() && state.is(Tags.Blocks.ORES)) {

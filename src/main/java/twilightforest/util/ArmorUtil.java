@@ -3,7 +3,7 @@ package twilightforest.util;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
-import tamaized.beanification.Component;
+import twilightforest.forge.beans.Component;
 import twilightforest.init.TFDataComponents;
 import twilightforest.item.ArcticArmorItem;
 
@@ -17,7 +17,7 @@ public class ArmorUtil {
 		int nonShroudedArmor = 0;
 
 		for (ItemStack stack : entity.getArmorSlots()) {
-			if (!stack.isEmpty() && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
+			if (!stack.isEmpty() && stack.get(TFDataComponents.EMPERORS_CLOTH.get()) != null) {
 				shroudedArmor++;
 			}
 

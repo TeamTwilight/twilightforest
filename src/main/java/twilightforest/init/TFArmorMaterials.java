@@ -6,8 +6,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import twilightforest.forge.registries.DeferredHolder;
+import twilightforest.forge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 
 import java.util.EnumMap;
@@ -41,13 +41,23 @@ public class TFArmorMaterials {
 		map.put(ArmorItem.Type.BODY, 13);
 	}), 10, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(TFItems.FIERY_INGOT.get()), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("fiery"))), 1.5F, 0.0F));
 
-	public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TRAVELLERS = ARMOR_MATERIALS.register("travellers", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	/**
+	 * Le materiau des vetements de voyageur, construit une fois hors du registre.
+	 *
+	 * <p>TravellersArmorItem en lit la defense, la robustesse et la resistance au recul pour fixer
+	 * ses attributs, au moment ou l'objet est construit. NeoForge enregistre les materiaux
+	 * d'armure avant les objets ; Forge 1.21.1 fait l'inverse, et lire le registre a ce moment-la
+	 * echoue (« Registry Object not present »). Le registre recoit ce meme objet.</p>
+	 */
+	public static final ArmorMaterial TRAVELLERS_MATERIAL = new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 2);
 		map.put(ArmorItem.Type.LEGGINGS, 3);
 		map.put(ArmorItem.Type.CHESTPLATE, 4);
 		map.put(ArmorItem.Type.HELMET, 2);
 		map.put(ArmorItem.Type.BODY, 4);
-	}), 0, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(TFItems.TANNED_LEATHER), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("travellers"))), 0F, 0.0F));
+	}), 0, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(TFItems.TANNED_LEATHER), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("travellers"))), 0F, 0.0F);
+
+	public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TRAVELLERS = ARMOR_MATERIALS.register("travellers", () -> TRAVELLERS_MATERIAL);
 
 	public static final DeferredHolder<ArmorMaterial, ArmorMaterial> STEELEAF = ARMOR_MATERIALS.register("steeleaf", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 3);

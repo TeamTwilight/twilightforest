@@ -1,8 +1,8 @@
 package twilightforest.init.custom;
 
 import com.mojang.serialization.Codec;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import twilightforest.forge.registries.DeferredHolder;
+import twilightforest.forge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.layer.*;

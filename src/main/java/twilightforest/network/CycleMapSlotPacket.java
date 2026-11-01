@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
@@ -26,7 +26,7 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 				return;
 
 			ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
+			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY.get());
 			if (contents == null || contents.isEmpty() || !TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
 				return;
 
@@ -36,7 +36,7 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 
 			if (oldIndex != newIndex) {
 				ItemDisplayContents updatedContents = mutable.toImmutable();
-				headStack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
+				headStack.set(TFDataComponents.ITEM_DISPLAY.get(), updatedContents);
 				serverPlayer.getInventory().setChanged();
 				player.playNotifySound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), player.getSoundSource(), 1F, 1F);
 			}

@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentType;
@@ -27,25 +28,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AnvilUpdateEvent;
-import net.neoforged.neoforge.event.GrindstoneEvent;
-import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
-import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import twilightforest.forge.attachment.AttachmentType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.GrindstoneEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerSpawnPhantomsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.items.ItemHandlerHelper;
+import twilightforest.forge.network.PacketDistributor;
+import twilightforest.forge.registries.DeferredHolder;
+import net.minecraftforge.server.ServerLifecycleHooks;
+import twilightforest.forge.beans.Component;
+import twilightforest.forge.beans.PostConstruct;
 import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -62,29 +60,35 @@ import java.util.stream.Stream;
 
 @Component
 public class TravellersGearEvents {
-	private static final List<DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
+	// PORTAGE : chez NeoForge les attachements passent par un registre, donc par un DeferredHolder.
+	// Ici ce sont de simples objets declares au demarrage : on garde les types eux-memes.
+	private static final List<AttachmentType<?>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
 	@PostConstruct
 	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::magnetizeArrows);
-		NeoForge.EVENT_BUS.addListener(this::performPerfectDodge);
-		NeoForge.EVENT_BUS.addListener(this::reduceSlimySolesFallDamage);
-		NeoForge.EVENT_BUS.addListener(this::tickMovementModifiers);
-		NeoForge.EVENT_BUS.addListener(this::performStealth);
-		NeoForge.EVENT_BUS.addListener(this::disableHighStepWhileSneaking);
-		NeoForge.EVENT_BUS.addListener(this::updateOtherModifiers);
-		NeoForge.EVENT_BUS.addListener(this::cancelSlimySolesJump);
-		NeoForge.EVENT_BUS.addListener(this::activateAndDeactivateTravellersModifiers);
-		NeoForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
-		NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
-		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
-		NeoForge.EVENT_BUS.addListener(this::extractItemsFromSwapHotbarModifier);
-		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
-		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
-		NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
-		NeoForge.EVENT_BUS.addListener(this::keepAttachmentsOnDeath);
+		MinecraftForge.EVENT_BUS.addListener(this::magnetizeArrows);
+		MinecraftForge.EVENT_BUS.addListener(this::performPerfectDodge);
+		MinecraftForge.EVENT_BUS.addListener(this::reduceSlimySolesFallDamage);
+		MinecraftForge.EVENT_BUS.addListener(this::tickMovementModifiers);
+		MinecraftForge.EVENT_BUS.addListener(this::performStealth);
+		MinecraftForge.EVENT_BUS.addListener(this::disableHighStepWhileSneaking);
+		MinecraftForge.EVENT_BUS.addListener(this::updateOtherModifiers);
+		MinecraftForge.EVENT_BUS.addListener(this::cancelSlimySolesJump);
+		// PORTAGE : gestionnaire « activateAndDeactivateTravellersModifiers » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		MinecraftForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
+		MinecraftForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
+		MinecraftForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
+		// PORTAGE : gestionnaire « extractItemsFromSwapHotbarModifier » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		MinecraftForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
+		// PORTAGE : gestionnaire « stopDamagingTravellersGear » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		// PORTAGE : gestionnaire « setLastDamageArmorTime » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		MinecraftForge.EVENT_BUS.addListener(this::keepAttachmentsOnDeath);
 	}
 
 	private void magnetizeArrows(ProjectileImpactEvent event) {
@@ -115,7 +119,7 @@ public class TravellersGearEvents {
 		if (!(rayResult instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
 			return;
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
-		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
+		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY.get());
 		Level level = livingEntity.level();
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null)
 			return;
@@ -145,14 +149,14 @@ public class TravellersGearEvents {
 	private void reduceSlimySolesFallDamage(LivingFallEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
-		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT.get());
+		SlimySolesAttachment slimySolesAttachment = Attachments.get(livingEntity, TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 		if (!livingEntity.isShiftKeyDown() && TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null && (calculateFallDamage(event) > 0 || slimySolesAttachment.forceBounce)) {
 			event.setCanceled(true);
 			slimySolesAttachment.bounceVelocity = -livingEntity.getDeltaMovement().y() * Math.sqrt(coefficient);
 			slimySolesAttachment.doubleJumpBoostVelocity = slimySolesAttachment.bounceVelocity;
 			slimySolesAttachment.hasBounced = false;
-			livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
+			Attachments.set(livingEntity, TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
 		}
 	}
 
@@ -166,23 +170,27 @@ public class TravellersGearEvents {
 
 	private void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
 		LivingEntity livingEntity = event.getEntity();
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		SlimySolesAttachment slimySolesAttachment = Attachments.get(livingEntity, TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 		slimySolesAttachment.bounceVelocity = 0;
 		slimySolesAttachment.forceBounce = false;
-		livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
+		Attachments.set(livingEntity, TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
 	}
 
-	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
-		Player player = event.getEntity();
+	private void tickMovementModifiers(TickEvent.PlayerTickEvent event) {
+		if (event.phase != TickEvent.Phase.START) {
+			return;
+		}
+
+		Player player = event.player;
 		Boolean hasDoubleJump = null;
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
 			hasDoubleJump = false;
 		else if (player.onGround() || player.isInLiquid() || player.onClimbable())
 			hasDoubleJump = true;
 
-		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
-			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
-			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+		if (hasDoubleJump != null && hasDoubleJump != Attachments.get(player, TFDataAttachments.HAS_DOUBLE_JUMP)) {
+			Attachments.set(player, TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
+			Attachments.set(player, TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
 			if (instance != null)
 				instance.removeModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
@@ -190,30 +198,38 @@ public class TravellersGearEvents {
 
 		if (!player.level().isClientSide()) {
 			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER);
-			if (!modifierActive && player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING)) {
-				player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, false);
+			if (!modifierActive && Attachments.get(player, TFDataAttachments.IS_GRADUALLY_GLIDING)) {
+				Attachments.set(player, TFDataAttachments.IS_GRADUALLY_GLIDING, false);
 				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new GradualGlidePacket(false, player.getUUID()));
 			}
 		}
 
 		//reset double jump wing anim if on the ground
-		if (event.getEntity().level().isClientSide()) {
-			if (player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
-				player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
+		if (event.player.level().isClientSide()) {
+			if (Attachments.get(player, TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
+				Attachments.get(player, TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
 			}
 		}
 
 		TravellersGearLogic.travellersWingsSidestepCooldownSound(player);
 	}
 
-	private void performStealth(PlayerTickEvent.Post event) {
-		if (!event.getEntity().level().isClientSide()) {
-			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
+	private void performStealth(TickEvent.PlayerTickEvent event) {
+		if (event.phase != TickEvent.Phase.END) {
+			return;
+		}
+
+		if (!event.player.level().isClientSide()) {
+			TravellersGearLogic.travellersStealth(event.player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
 	}
 
-	private void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
-		Player player = event.getEntity();
+	private void disableHighStepWhileSneaking(TickEvent.PlayerTickEvent event) {
+		if (event.phase != TickEvent.Phase.START) {
+			return;
+		}
+
+		Player player = event.player;
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.STEP_UP_ABILITY))
 			return;
 		AttributeInstance attribute = player.getAttributes().getInstance(Attributes.STEP_HEIGHT);
@@ -228,7 +244,7 @@ public class TravellersGearEvents {
 			attribute.addPermanentModifier(TFAttributeModifiers.TRAVELLERS_HIGH_STEP);
 	}
 
-	private void updateOtherModifiers(EntityTickEvent.Post event) {
+	private void updateOtherModifiers(LivingEvent.LivingTickEvent event) {
 		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
 		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
@@ -242,56 +258,20 @@ public class TravellersGearEvents {
 		TravellersGearLogic.determineWingState(livingEntity);
 	}
 
-	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
-		if (ServerLifecycleHooks.getCurrentServer() == null)
-			return;
 
-		ItemStack armor = event.getItemStack();
-		if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR) || !armor.isDamageableItem())
-			return;
+	// PORTAGE : gestionnaire supprime, l'evenement correspondant n'existe pas chez Forge
+	// (voir PORTAGE-twilightforest-crochets.txt).
 
-		if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
-			if (armor.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
-				Set<ItemAttributeModifiers.Entry> entries = new LinkedHashSet<>(armor.get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers());
-				if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
-					entries.addAll(armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers());
-				}
-				armor.set(TFDataComponents.STORED_BROKEN_ATTRIBUTES, new ItemAttributeModifiers(entries.stream().toList(), armor.get(DataComponents.ATTRIBUTE_MODIFIERS).showInTooltip()));
-				event.clearModifiers();
-			}
-		} else {
-			if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
-				armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers().forEach(entry -> event.replaceModifier(entry.attribute(), entry.modifier(), entry.slot()));
-				armor.remove(TFDataComponents.STORED_BROKEN_ATTRIBUTES);
-				armor.set(DataComponents.ATTRIBUTE_MODIFIERS, event.build());
-			}
-		}
-	}
+	// PORTAGE : gestionnaire supprime, l'API NeoForge correspondante n'existe pas
+	// chez Forge (voir PORTAGE-twilightforest-crochets.txt).
 
-	private void stopDamagingTravellersGear(ArmorHurtEvent event) {
-		if (event.isCanceled())
-			return;
-		event.getArmorMap().forEach((slot, entry) -> {
-			ItemStack damagedStack = event.getArmorItemStack(slot);
-			if (!damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
-				return;
-			if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
-				event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
-			} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
-				player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
-			}
-		});
-	}
 
-	private void setLastDamageArmorTime(ArmorHurtEvent event) {
-		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
-		LivingEntity entity = event.getEntity();
-		entity.setData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
-	}
+	// PORTAGE : gestionnaire supprime, l'evenement correspondant n'existe pas chez Forge
+	// (voir PORTAGE-twilightforest-crochets.txt).
 
 
 	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
-		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
+		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR.get())) {
 			event.setCanceled(true);
 		}
 	}
@@ -301,7 +281,7 @@ public class TravellersGearEvents {
 			return;
 		RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
 		List<ItemStack> travellersItemStacks = Stream.of(event.getTopItem(), event.getBottomItem())
-				.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+				.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()))
 				.toList();
 
 		if (travellersItemStacks.isEmpty())
@@ -322,36 +302,15 @@ public class TravellersGearEvents {
 		event.setOutput(unmodifiedStack.copy());
 	}
 
-	private void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
-		returnModifierItems(event,
-			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
-			DataComponents.CONTAINER,
-			ItemContainerContents::nonEmptyStream
-		);
+	// PORTAGE : gestionnaire supprime, l'API NeoForge correspondante n'existe pas
+	// chez Forge (voir PORTAGE-twilightforest-crochets.txt).
 
-		returnModifierItems(event,
-			TravellersModifiersManager.ITEM_DISPLAY_MODIFIER,
-			TFDataComponents.ITEM_DISPLAY.get(),
-			contents -> contents.items().stream()
-		);
-	}
-
-	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
-		if (event.getPlayer() == null)
-			return;
-
-		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
-			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
-		).map(stack -> stack.get(componentType))
-			.ifPresent(component ->
-				itemStreamExtractor.apply(component)
-					.forEach(itemStack -> ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), itemStack))
-			);
-	}
+	// PORTAGE : gestionnaire supprime, l'API NeoForge correspondante n'existe pas
+	// chez Forge (voir PORTAGE-twilightforest-crochets.txt).
 
 	private Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
 		List<ItemStack> travellersItemStacks = Stream.of(top, bottom)
-			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()))
 			.filter(predicate)
 			.toList();
 		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
@@ -364,7 +323,7 @@ public class TravellersGearEvents {
 	}
 
 	private void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
-		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
+		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR.get())) {
 			ItemStack compareStack = ItemStack.EMPTY;
 			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {
 				if (event.getInventory().getItem(i).is(event.getCrafting().getItem())) compareStack = event.getInventory().getItem(i);
@@ -381,15 +340,15 @@ public class TravellersGearEvents {
 
 	public void keepAttachmentsOnDeath(PlayerEvent.Clone event) {
 		if (event.isWasDeath()) {
-			for (DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachmentHolder : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
-				copyAttachmentData(event.getOriginal(), event.getEntity(), attachmentHolder.get());
+			for (AttachmentType<?> attachmentType : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
+				copyAttachmentData(event.getOriginal(), event.getEntity(), attachmentType);
 			}
 		}
 	}
 
 	private <T> void copyAttachmentData(Player source, Player target, AttachmentType<T> type) {
-		if (source.hasData(type)) {
-			target.setData(type, source.getData(type));
+		if (Attachments.has(source, type)) {
+			Attachments.set(target, type, Attachments.get(source, type));
 		}
 	}
 }

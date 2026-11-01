@@ -5,11 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
+import twilightforest.forge.beans.Autowired;
+import twilightforest.forge.beans.Component;
+import twilightforest.forge.beans.PostConstruct;
 import twilightforest.init.TFBiomes;
 import twilightforest.world.components.BiomeColorAlgorithms;
 
@@ -34,7 +34,7 @@ public final class FoliageColorHandler {
 
 	@PostConstruct(PostConstruct.Bus.GAME)
 	private void setup(IEventBus bus) {
-		bus.addListener(EntityLeaveLevelEvent.class, event -> {
+		bus.addListener((EntityLeaveLevelEvent event) -> {
 			if (event.getLevel().isClientSide()) {
 				HANDLES.clear();
 			}

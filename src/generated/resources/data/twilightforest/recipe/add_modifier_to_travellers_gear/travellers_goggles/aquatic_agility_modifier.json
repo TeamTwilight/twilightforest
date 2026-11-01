@@ -13,26 +13,29 @@
       "s": {
         "tag": "c:slime_balls"
       },
-      "w": [
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:water_breathing"
-            }
+      "w": {
+        "type": "forge:compound",
+        "children": [
+          {
+            "type": "twilightforest:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:water_breathing"
+              }
+            },
+            "items": "minecraft:potion"
           },
-          "items": "minecraft:potion"
-        },
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:long_water_breathing"
-            }
-          },
-          "items": "minecraft:potion"
-        }
-      ]
+          {
+            "type": "twilightforest:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:long_water_breathing"
+              }
+            },
+            "items": "minecraft:potion"
+          }
+        ]
+      }
     },
     "pattern": [
       " b",

@@ -14,7 +14,7 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.forge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFDataComponents;
@@ -64,7 +64,7 @@ public class GlassSwordItem extends SwordItem {
 	}
 
 	private boolean hurt(ItemStack stack, @Nullable ServerPlayer player) {
-		if (stack.get(TFDataComponents.INFINITE_GLASS_SWORD) != null) {
+		if (stack.get(TFDataComponents.INFINITE_GLASS_SWORD.get()) != null) {
 			return false;
 		} else {
 			if (player != null) {

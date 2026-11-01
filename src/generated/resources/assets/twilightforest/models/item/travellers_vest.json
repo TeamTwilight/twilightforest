@@ -1,5 +1,5 @@
 {
-  "parent": "neoforge:item/default",
+  "parent": "forge:item/default",
   "broken_modifier_directory": "travellers_modifiers/vest/broken/",
   "loader": "twilightforest:travellers_gear",
   "modifier_directory": "travellers_modifiers/vest/",

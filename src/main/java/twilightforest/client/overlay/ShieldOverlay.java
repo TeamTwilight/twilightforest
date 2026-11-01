@@ -1,5 +1,6 @@
 package twilightforest.client.overlay;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,8 +16,8 @@ public class ShieldOverlay {
 	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Gui gui, @Nullable Player player) {
-		if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
-			int shieldCount = player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
+		if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && Attachments.has(player, TFDataAttachments.FORTIFICATION_SHIELDS) && Attachments.get(player, TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+			int shieldCount = Attachments.get(player, TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 			for (int i = 0; i < Math.min(shieldCount, 10); i++) {
 				graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, graphics.guiWidth() / 2 - 91 + (i * 8), graphics.guiHeight() - gui.leftHeight, 9, 9);
 			}

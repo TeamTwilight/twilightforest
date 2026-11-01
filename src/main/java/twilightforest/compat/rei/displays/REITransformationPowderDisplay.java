@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.TFREIClientPlugin;
@@ -41,7 +41,7 @@ public class REITransformationPowderDisplay extends BasicDisplay {
 
 		getEntity(recipe.input(), Minecraft.getInstance().level).ifPresent(entity -> {
 			inputs.add(EntryIngredients.of(TFREIClientPlugin.ENTITY_DEFINITION, List.of(entity)));
-			SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(entity.getType());
+			SpawnEggItem inputEgg = ForgeSpawnEggItem.byId(entity.getType());
 			if (inputEgg != null) {
 				inputs.add(EntryIngredients.of(inputEgg));
 			}
@@ -49,7 +49,7 @@ public class REITransformationPowderDisplay extends BasicDisplay {
 
 		getEntity(recipe.output(), Minecraft.getInstance().level).ifPresent(entity -> {
 			outputs.add(EntryIngredients.of(TFREIClientPlugin.ENTITY_DEFINITION, List.of(entity)));
-			SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(entity.getType());
+			SpawnEggItem outputEgg = ForgeSpawnEggItem.byId(entity.getType());
 			if (outputEgg != null) {
 				outputs.add(EntryIngredients.of(outputEgg));
 			}

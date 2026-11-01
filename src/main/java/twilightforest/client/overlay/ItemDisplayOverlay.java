@@ -29,7 +29,7 @@ public class ItemDisplayOverlay {
 		if (!TravellersModifiersManager.isModifierActive(player, goggles, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
 			return;
 
-		ItemDisplayContents contents = goggles.get(TFDataComponents.ITEM_DISPLAY);
+		ItemDisplayContents contents = goggles.get(TFDataComponents.ITEM_DISPLAY.get());
 		if (contents == null || contents.isEmpty())
 			return;
 

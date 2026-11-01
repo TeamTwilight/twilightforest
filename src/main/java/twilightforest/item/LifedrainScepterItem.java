@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import twilightforest.forge.Lookups;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponents;
@@ -27,8 +28,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.common.Tags;
+import twilightforest.forge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.RechargeScepterEffect;
@@ -68,7 +69,7 @@ public class LifedrainScepterItem extends Item {
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		if (entity.tickCount % 20 == 0 && level instanceof ServerLevel serverLevel && stack.has(DataComponents.ENCHANTMENTS) && !isSelected) {
-			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(level.holderOrThrow(TFEnchantments.RENEWAL));
+			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(Lookups.holder(level.registryAccess(), TFEnchantments.RENEWAL));
 			if (renewal > 0) {
 				RechargeScepterEffect.applyRecharge(serverLevel, stack, entity);
 			}
@@ -143,7 +144,7 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
-		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() == stack.getMaxDamage()) {
 			// do not use
 			living.stopUsingItem();
 			return;

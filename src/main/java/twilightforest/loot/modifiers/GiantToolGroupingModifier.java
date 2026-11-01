@@ -1,5 +1,6 @@
 package twilightforest.loot.modifiers;
 
+import twilightforest.forge.attachment.Attachments;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -12,8 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
-import net.neoforged.neoforge.common.loot.LootModifier;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
+import net.minecraftforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFDataAttachments;
 
@@ -34,7 +35,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 		if (context.getParam(LootContextParams.THIS_ENTITY) instanceof Player player) {
 			if (!generatedLoot.isEmpty() && generatedLoot.getFirst().getItem() instanceof BlockItem block) {
 				if (CONVERSIONS.containsKey(block.getBlock())) { // Should be true but let's double-check
-					var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+					var attachment = Attachments.get(player, TFDataAttachments.GIANT_PICKAXE_MINING);
 					int blockConversion = attachment.getGiantBlockConversion(); // Get how many conversions are left
 					attachment.setGiantBlockConversion(blockConversion - 1);
 					if (blockConversion == 64)

@@ -91,7 +91,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 				Direction var10 = dir.getOpposite();
 				state = state.setValue(FACING, var10);
 				if (!getter.getBlockState(pos.relative(dir)).canBeReplaced(ctx)) {
-					return state.setValue(LIGHTING, Lighting.NONE).setValue(CANDLES, ctx.getItemInHand().getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT).count());
+					return state.setValue(LIGHTING, Lighting.NONE).setValue(CANDLES, ctx.getItemInHand().getOrDefault(TFDataComponents.SKULL_CANDLES.get(), SkullCandles.DEFAULT).count());
 				}
 			}
 		}

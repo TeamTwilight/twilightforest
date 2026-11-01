@@ -25,7 +25,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFSounds;
 
@@ -120,15 +119,14 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 		return true;
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public boolean hasDynamicLightEmission(BlockState state) {
 		return true;
 	}
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-		AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
-		if (lightManager != null) return lightManager.getLightAt(pos);
+		// PORTAGE : lumiere dynamique retiree, Forge n'a pas de gestionnaire de lumiere auxiliaire.
 		return super.getLightEmission(state, level, pos);
 	}
 

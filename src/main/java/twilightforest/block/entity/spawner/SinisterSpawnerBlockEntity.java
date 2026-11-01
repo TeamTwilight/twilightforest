@@ -26,7 +26,7 @@ import java.util.List;
 
 public class SinisterSpawnerBlockEntity extends BlockEntity implements Spawner {
 	private final SinisterSpawnerLogic spawner = new SinisterSpawnerLogic() {
-		@Override
+		// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 		public Either<BlockEntity, Entity> getOwner() {
 			return Either.left(SinisterSpawnerBlockEntity.this);
 		}

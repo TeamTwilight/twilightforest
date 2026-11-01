@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.tooltip;
 
+import twilightforest.forge.ItemContainerContentsAccess;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -20,7 +21,7 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	public TravellersBeltTooltipComponent(TravellersArmorBeltItem.Tooltip tooltip) {
 		ItemContainerContents contents = tooltip.contents();
 		for (int i = 0; i < 9; i++) {
-			ItemStack stack = contents.getSlots() <= i ? ItemStack.EMPTY : contents.getStackInSlot(i);
+			ItemStack stack = ItemContainerContentsAccess.getStackInSlot(contents, i);
 			this.contents.add(stack);
 		}
 	}

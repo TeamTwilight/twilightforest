@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -37,28 +38,28 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public ItemStack getDefaultInstance() {
 		ItemStack itemstack = super.getDefaultInstance();
-		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY);
 		return itemstack;
 	}
 
-	@Override
-	public int getMaxStackSize(ItemStack stack) {
-		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent() ? 1 : super.getMaxStackSize(stack);
-	}
+	// PORTAGE : « getMaxStackSize(ItemStack) » est un crochet NeoForge. Forge ne l'a pas, pas
+	// meme via IForgeItem — verifie au javap. La fiole pleine ne se limitera donc pas a une
+	// seule par pile. Perte consignee dans PORTAGE-twilightforest-crochets.txt ; le
+	// rebranchement passera par le composant MAX_STACK_SIZE pose a la pile au remplissage.
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent();
+		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).potion().potion().isPresent();
 	}
 
 	@Override
 	public int getBarColor(ItemStack stack) {
-		return FastColor.ARGB32.opaque(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().getColor());
+		return FastColor.ARGB32.opaque(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).potion().getColor());
 	}
 
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY);
 		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
 
 		if (action == ClickAction.SECONDARY && potionContents != null) {
@@ -70,7 +71,7 @@ public class BrittleFlaskItem extends Item {
 					}
 				}
 
-				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
+				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS.get(), flaskContents, component -> component.tryAddDose(potionContents)));
 				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 				return true;
 			}
@@ -80,7 +81,7 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
-		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY);
 		ItemStack other = slot.getItem();
 		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
 
@@ -93,7 +94,7 @@ public class BrittleFlaskItem extends Item {
 					}
 				}
 
-				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
+				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS.get(), flaskContents, component -> component.tryAddDose(potionContents)));
 				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 				return true;
 			}
@@ -104,7 +105,7 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY);
 
 		if (flaskContents.potion() == PotionContents.EMPTY) {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));
@@ -129,14 +130,14 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY);
 		if (flaskContents.potion() != PotionContents.EMPTY) {
 			if (entity instanceof Player player) {
 				if (!level.isClientSide()) {
 					for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
 						if (mobeffectinstance.is(MobEffects.HARM) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
 							//custom harming death message for the advancement
-							entity.hurt(entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
+							entity.hurt(twilightforest.forge.TFDamage.source(entity, TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
 						} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
 							mobeffectinstance.getEffect().value().applyInstantenousEffect(player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
 						} else {
@@ -144,14 +145,14 @@ public class BrittleFlaskItem extends Item {
 						}
 					}
 					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
-						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
+						flaskContents.potion().potion().ifPresent(potion -> Attachments.get(player, TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
 					}
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
 				if (!player.getAbilities().instabuild) {
 
 					this.changeAndConsumeFlask(stack, player, flask -> {
-						flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> {
+						flask.update(TFDataComponents.POTION_FLASK_CONTENTS.get(), flaskContents, component -> {
 							component = component.removeDose();
 							if (component.breakable()) {
 								if (component.breakage() >= DOSES) {
@@ -188,13 +189,13 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return Optional.of(new Tooltip(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY), DOSES));
+		return Optional.of(new Tooltip(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY), DOSES));
 	}
 
 	//copied from Item.getBarWidth, but reversed the "durability" check so it increments up, not down
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		return Math.round(13.0F - Math.abs(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses() - DOSES) * 13.0F / DOSES);
+		return Math.round(13.0F - Math.abs(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).doses() - DOSES) * 13.0F / DOSES);
 	}
 
 	public record Tooltip(PotionFlaskComponent component, int maxDoses) implements TooltipComponent {

@@ -11,8 +11,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 
 // [VANILLA COPY] SpawnerRenderer (Type bound changed to CursedSpawnerEntity)
@@ -36,7 +36,7 @@ public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpaw
         }
     }
 
-    @Override
+    // PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
     public AABB getRenderBoundingBox(SinisterSpawnerBlockEntity blockEntity) {
         BlockPos pos = blockEntity.getBlockPos();
         return new AABB(pos.getX() - 1.0, pos.getY() - 1.0, pos.getZ() - 1.0, pos.getX() + 2.0, pos.getY() + 2.0, pos.getZ() + 2.0);

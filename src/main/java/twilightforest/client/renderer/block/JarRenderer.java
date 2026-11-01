@@ -21,13 +21,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.RenderTypeHelper;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Configurable;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.RenderTypeHelper;
+import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.common.util.Lazy;
+import twilightforest.forge.registries.DeferredBlock;
+import twilightforest.forge.beans.Autowired;
+import twilightforest.forge.beans.BeanContext;
+import twilightforest.forge.beans.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
@@ -178,7 +179,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	@Configurable
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
 
-		@Autowired(dist = Dist.CLIENT)
+		@Autowired
 		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 		protected final ItemRenderer itemRenderer;
@@ -187,6 +188,8 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 
 		public MasonJarRenderer(BlockEntityRendererProvider.Context context) {
 			super(context);
+			// Rempli ici plutot que par le tissage de Beanification, qui n'existe pas sous Forge.
+			BeanContext.inject(this);
 			this.entityRender = context.getEntityRenderer();
 			this.itemRenderer = context.getItemRenderer();
 			this.font = context.getFont();

@@ -11,7 +11,6 @@ import net.minecraft.client.resources.MapDecorationTextureManager;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.client.gui.map.IMapDecorationRenderer;
 import org.joml.Matrix4f;
 import twilightforest.item.MagicMapItem;
 import twilightforest.item.mapdata.TFMagicMapData;
@@ -25,7 +24,7 @@ public class ConqueredMapIconRenderer implements IMapDecorationRenderer {
 		return false;
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public boolean render(MapDecoration decoration, PoseStack stack, MultiBufferSource bufferSource, MapItemSavedData mapData, MapDecorationTextureManager decorationTextures, boolean inItemFrame, int light, int index) {
 		if (this.isConquered(mapData, decoration)) {
 			stack.pushPose();

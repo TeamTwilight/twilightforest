@@ -1,33 +1,33 @@
 package twilightforest.config;
 
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TFClientConfig {
 
-	final ModConfigSpec.BooleanValue silentCicadas;
-	final ModConfigSpec.BooleanValue silentCicadasOnHead;
-	final ModConfigSpec.BooleanValue firstPersonEffects;
-	final ModConfigSpec.BooleanValue rotateTrophyHeadsGui;
-	final ModConfigSpec.BooleanValue disableOptifineNagScreen;
-	final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
-	final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
-	final ModConfigSpec.BooleanValue showFortificationShieldIndicator;
-	final ModConfigSpec.BooleanValue showFortificationShieldIndicatorInCreative;
-	final ModConfigSpec.IntValue cloudBlockPrecipitationDistance;
-	final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
-	final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
-	final ModConfigSpec.BooleanValue prettifyOreMeterGui;
-	final ModConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
-	final ModConfigSpec.BooleanValue manualTravellersWingsGradualGlide;
-	final ModConfigSpec.BooleanValue firstPersonGloveOverlay;
+	final ForgeConfigSpec.BooleanValue silentCicadas;
+	final ForgeConfigSpec.BooleanValue silentCicadasOnHead;
+	final ForgeConfigSpec.BooleanValue firstPersonEffects;
+	final ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
+	final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
+	final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
+	final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+	final ForgeConfigSpec.BooleanValue showFortificationShieldIndicator;
+	final ForgeConfigSpec.BooleanValue showFortificationShieldIndicatorInCreative;
+	final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistance;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
+	final ForgeConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
+	final ForgeConfigSpec.BooleanValue prettifyOreMeterGui;
+	final ForgeConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
+	final ForgeConfigSpec.BooleanValue manualTravellersWingsGradualGlide;
+	final ForgeConfigSpec.BooleanValue firstPersonGloveOverlay;
 
 	final ItemDisplay ITEM_DISPLAY = new ItemDisplay();
 
-	public TFClientConfig(ModConfigSpec.Builder builder) {
+	public TFClientConfig(ForgeConfigSpec.Builder builder) {
 		silentCicadas = builder
 			.translation(TFConfig.CONFIG_ID + "silent_cicadas")
 			.comment(ConfigComments.SILENT_CICADAS)
@@ -81,12 +81,12 @@ public class TFClientConfig {
 		giantSkinUUIDs = builder
 			.translation(TFConfig.CONFIG_ID + "giant_skin_uuid_list")
 			.comment(ConfigComments.GIANT_SKINS)
-			.defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), () -> "", s -> s instanceof String string && string.split("-").length == 5);
+			.defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), s -> s instanceof String string && string.split("-").length == 5);
 
 		auroraBiomes = builder
 			.translation(TFConfig.CONFIG_ID + "aurora_biomes")
 			.comment(ConfigComments.AURORA_SHADER)
-			.defineListAllowEmpty("auroraBiomes", List.of("twilightforest:glacier"), () -> "", s -> s instanceof String string && ResourceLocation.tryParse(string) != null);
+			.defineListAllowEmpty("auroraBiomes", List.of("twilightforest:glacier"), s -> s instanceof String string && ResourceLocation.tryParse(string) != null);
 
 		prettifyOreMeterGui = builder
 			.translation(TFConfig.CONFIG_ID + "prettify_ore_meter_gui")
@@ -132,9 +132,9 @@ public class TFClientConfig {
 	}
 
 	static class ItemDisplay {
-		ModConfigSpec.IntValue screenOffsetX;
-		ModConfigSpec.IntValue screenOffsetY;
-		ModConfigSpec.DoubleValue screenScale;
-		ModConfigSpec.BooleanValue twentyFourHourFormat;
+		ForgeConfigSpec.IntValue screenOffsetX;
+		ForgeConfigSpec.IntValue screenOffsetY;
+		ForgeConfigSpec.DoubleValue screenScale;
+		ForgeConfigSpec.BooleanValue twentyFourHourFormat;
 	}
 }

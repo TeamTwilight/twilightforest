@@ -1,5 +1,6 @@
 package twilightforest.client.overlay;
 
+import twilightforest.forge.attachment.Attachments;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -15,7 +16,7 @@ public class PortalOverlay {
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Player player) {
 		Window window = minecraft.getWindow();
 		if (player != null) {
-			TFPortalAttachment portal = player.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
+			TFPortalAttachment portal = Attachments.get(player, TFDataAttachments.TF_PORTAL_COOLDOWN);
 			if (portal.getPortalTimer() > 0) {
 				RenderSystem.disableDepthTest();
 				RenderSystem.depthMask(false);

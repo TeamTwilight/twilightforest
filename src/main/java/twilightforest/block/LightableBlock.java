@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import twilightforest.forge.TFToolActions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbilities;
+import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 
@@ -38,7 +39,7 @@ public interface LightableBlock {
 			this.extinguish(player, state, level, pos);
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		} else if (this.canBeLit(state)) {
-			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
+			if (stack.canPerformAction(TFToolActions.FIRESTARTER_LIGHT)) {
 				return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 			}
 		}

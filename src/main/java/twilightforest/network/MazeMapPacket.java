@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MazeMapItem;
 import twilightforest.item.mapdata.TFMazeMapData;
@@ -33,7 +33,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MazeMapPacket message, IPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
-		if (ctx.flow().isClientbound()) {
+		if (ctx.isClientbound()) {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {

@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.jei.JEICompat;
@@ -91,7 +91,7 @@ public class OminousFireCategory implements IRecipeCategory<OminousFireRecipe> {
 			.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
 			.addIngredient(JEICompat.ENTITY_TYPE, recipe.input());
 
-		SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(recipe.input().type());
+		SpawnEggItem inputEgg = ForgeSpawnEggItem.byId(recipe.input().type());
 		if (inputEgg != null) {
 			//make it so hovering over the entity shows its name
 			builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStack(new ItemStack(inputEgg));
@@ -100,7 +100,7 @@ public class OminousFireCategory implements IRecipeCategory<OminousFireRecipe> {
 			.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
 			.addIngredient(JEICompat.ENTITY_TYPE, recipe.output());
 
-		SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(recipe.output().type());
+		SpawnEggItem outputEgg = ForgeSpawnEggItem.byId(recipe.output().type());
 		if (outputEgg != null) {
 			//make it so hovering over the entity shows its name
 			builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(new ItemStack(outputEgg));

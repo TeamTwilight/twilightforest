@@ -1,5 +1,6 @@
 package twilightforest.item.mapdata;
 
+import twilightforest.forge.network.TFNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -100,6 +101,6 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new MazeMapPacket(mapItemDataPacket, this.ore, this.yCenter).toVanillaClientbound() : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFNetwork.toClient(new MazeMapPacket(mapItemDataPacket, this.ore, this.yCenter), player.registryAccess()) : packet;
 	}
 }

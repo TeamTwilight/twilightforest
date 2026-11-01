@@ -14,7 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.CharmEffect;
@@ -41,7 +41,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SpawnCharmPacket packet, IPayloadContext ctx) {
-		if (ctx.flow().isClientbound()) {
+		if (ctx.isClientbound()) {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {

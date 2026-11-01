@@ -1,7 +1,7 @@
 package twilightforest.util;
 
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Component;
+import twilightforest.forge.beans.Component;
 
 @Component
 public class ModidPrefixUtil {

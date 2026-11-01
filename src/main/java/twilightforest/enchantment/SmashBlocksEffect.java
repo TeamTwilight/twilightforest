@@ -1,5 +1,6 @@
 package twilightforest.enchantment;
 
+import twilightforest.forge.attachment.Attachments;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -18,8 +19,8 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.BlockEvent;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataAttachments;
 
@@ -38,7 +39,7 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 	@Override
 	public void apply(ServerLevel level, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 position) {
 		if (item.owner() instanceof ServerPlayer player) {
-			int blocksSmashed = entity.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed();
+			int blocksSmashed = Attachments.get(entity, TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed();
 			int maxSmash = Math.round(this.maxSmash.calculate(enchantmentLevel));
 			if (blocksSmashed >= maxSmash) return;
 			BlockPos start = BlockPos.containing(position);
@@ -50,7 +51,7 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 				if (!state.isAir()) {
 					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.getBlockHolder())) continue;
 					if (ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && state.canEntityDestroy(level, pos, player)) {
-						if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
+						if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
 							level.destroyBlock(pos, false);
 							if (!player.isCreative()) state.getBlock().playerDestroy(level, player, pos, state, level.getBlockEntity(pos), item.itemStack());
 							if (this.smashSound().isPresent()) {
@@ -62,7 +63,7 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 				}
 			}
 
-			entity.getData(TFDataAttachments.SMASH_BLOCKS).setBlocksSmashed(blocksSmashed);
+			Attachments.get(entity, TFDataAttachments.SMASH_BLOCKS).setBlocksSmashed(blocksSmashed);
 		}
 	}
 

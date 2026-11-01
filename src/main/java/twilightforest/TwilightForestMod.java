@@ -1,21 +1,19 @@
 package twilightforest;
 
+import twilightforest.forge.attachment.Attachments;
 import com.google.common.reflect.Reflection;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tamaized.beanification.BeanContext;
-import tamaized.beanification.Configurable;
-import twilightforest.compat.CosmeticArmorCompat;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.forge.beans.BeanContext;
+import twilightforest.forge.beans.Configurable;
+import twilightforest.forge.CuriosStub;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
@@ -35,14 +33,20 @@ public final class TwilightForestMod {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	static {
-		BeanContext.init(ID);
-	}
 
 
-	public TwilightForestMod(IEventBus bus, Dist dist) {
+	// Forge 1.21.1 ne sait injecter que le contexte de chargement (ou rien) : il cherche un
+	// constructeur (FMLJavaModLoadingContext), puis un constructeur vide. La signature NeoForge
+	// (IEventBus, Dist) le faisait echouer sur NoSuchMethodException <init>().
+	public TwilightForestMod(FMLJavaModLoadingContext context) {
+		IEventBus bus = context.getModEventBus();
+		// En tete, comme l'initialiseur statique ou Beanification tournait sous NeoForge : les
+		// composants doivent exister avant le reste du constructeur.
+		// Les constantes d'enums d'abord : les composants les lisent par valueOf.
+		twilightforest.forge.TFForgeEnums.register();
+		twilightforest.forge.datamap.NeoForgeDataMaps.init();
+		BeanContext.init(ID, bus);
 		Reflection.initialize(ConfigSetup.class);
-		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
 		bus.addListener(TFGameRules::register);
 
 		TFItems.ITEMS.register(bus);
@@ -69,6 +73,7 @@ public final class TwilightForestMod {
 		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFDataComponents.COMPONENTS.register(bus);
 		TFRecipes.RECIPE_SERIALIZERS.register(bus);
+		twilightforest.forge.crafting.TFIngredients.INGREDIENT_SERIALIZERS.register(bus);
 		TFMapDecorations.DECORATIONS.register(bus);
 		TFParticleType.PARTICLE_TYPES.register(bus);
 		TravellersModifierTypes.TYPES.register(bus);
@@ -78,8 +83,19 @@ public final class TwilightForestMod {
 		TFStructureTypes.STRUCTURE_TYPES.register(bus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
 		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);
-		TFDataAttachments.ATTACHMENT_TYPES.register(bus);
 		TFDataSerializers.DATA_SERIALIZERS.register(bus);
+
+		// Les attachements passent par une capability : sa declaration est sur le bus du mod, son
+		// accrochage aux entites et la recopie a la mort sur le bus general.
+		twilightforest.events.RegistrationEvents.setupPackets();
+
+		// PORTAGE : les six registres personnalises sont crees par TFRegistries lui-meme, faute
+		// d'evenement Forge equivalent. Rien a ecouter ici.
+		bus.addListener(Attachments::registerCapability);
+		// AttachCapabilitiesEvent est generique sous Forge : addListener le refuse.
+		MinecraftForge.EVENT_BUS.addGenericListener(net.minecraft.world.entity.Entity.class, Attachments::attach);
+		MinecraftForge.EVENT_BUS.addListener(Attachments::copyOnClone);
+		Attachments.registerSyncEvents();
 		TFFeatureModifiers.FOLIAGE_PLACERS.register(bus);
 		TFFeatureModifiers.TREE_DECORATORS.register(bus);
 		TFEnchantmentEffects.ENTITY_EFFECTS.register(bus);
@@ -94,14 +110,9 @@ public final class TwilightForestMod {
 		TFRemapper.addRegistryAliases();
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
-		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {
-		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		bus.addListener(CuriosCompat::registerCurioRenderers);
-		bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
 	public static ResourceLocation prefix(String name) {

@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -52,7 +53,7 @@ public class GiantPickItem extends PickaxeItem {
 	public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
 		ItemStack stack = player.getMainHandItem();
 		if (stack.is(this)) {
-			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			var attachment = Attachments.get(player, TFDataAttachments.GIANT_PICKAXE_MINING);
 			if (attachment.getMining() != level.getGameTime()) {
 				attachment.setMining(level.getGameTime());
 				attachment.setBreaking(false);

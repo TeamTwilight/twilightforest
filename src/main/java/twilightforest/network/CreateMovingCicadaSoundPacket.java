@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MovingCicadaSoundInstance;
 
@@ -32,7 +32,7 @@ public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacke
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(CreateMovingCicadaSoundPacket message, IPayloadContext ctx) {
-		if (ctx.flow().isClientbound()) {
+		if (ctx.isClientbound()) {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {

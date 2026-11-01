@@ -14,7 +14,7 @@ public class GreaterFlaskItem extends BrittleFlaskItem {
 	@Override
 	public ItemStack getDefaultInstance() {
 		ItemStack itemstack = super.getDefaultInstance();
-		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY_UNBREAKABLE);
+		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY_UNBREAKABLE);
 		return itemstack;
 	}
 }

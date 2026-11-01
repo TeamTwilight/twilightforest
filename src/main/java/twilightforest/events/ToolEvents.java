@@ -1,5 +1,7 @@
 package twilightforest.events;
 
+import net.minecraftforge.eventbus.api.Event;
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -25,18 +27,17 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.TagsUpdatedEvent;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.TagsUpdatedEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import twilightforest.forge.beans.Component;
+import twilightforest.forge.beans.PostConstruct;
 import twilightforest.block.GiantBlock;
 import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -55,14 +56,17 @@ public class ToolEvents {
 
 	@PostConstruct
 	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::onEnderBowHit);
-		NeoForge.EVENT_BUS.addListener(this::fieryToolSetFire);
-		NeoForge.EVENT_BUS.addListener(this::doKnightmetalToolLogic);
-		NeoForge.EVENT_BUS.addListener(this::addExtraAxeChargingDamage);
-		NeoForge.EVENT_BUS.addListener(this::damageNonMazebreakerToolsMore);
-		NeoForge.EVENT_BUS.addListener(this::preventFatigueWithPocketWatch);
-		NeoForge.EVENT_BUS.addListener(this::handleGiantPickaxeMining);
-		NeoForge.EVENT_BUS.addListener(this::refreshOreMagnetCache);
+		MinecraftForge.EVENT_BUS.addListener(this::onEnderBowHit);
+		// PORTAGE : gestionnaire « fieryToolSetFire » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		// PORTAGE : gestionnaire « doKnightmetalToolLogic » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		// PORTAGE : gestionnaire « addExtraAxeChargingDamage » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		MinecraftForge.EVENT_BUS.addListener(this::damageNonMazebreakerToolsMore);
+		MinecraftForge.EVENT_BUS.addListener(this::preventFatigueWithPocketWatch);
+		MinecraftForge.EVENT_BUS.addListener(this::handleGiantPickaxeMining);
+		MinecraftForge.EVENT_BUS.addListener(this::refreshOreMagnetCache);
 	}
 
 	private void onEnderBowHit(ProjectileImpactEvent evt) {
@@ -100,54 +104,14 @@ public class ToolEvents {
 		}
 	}
 
-	private void fieryToolSetFire(LivingIncomingDamageEvent event) {
-		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntity().fireImmune()) {
-			event.getEntity().igniteForSeconds(1);
-		}
-	}
+	// PORTAGE : gestionnaire supprime. Il reposait sur le pipeline de degats de
+	// NeoForge (DamageContainer), que Forge n'a pas. Voir PORTAGE-twilightforest-crochets.txt.
 
-	private void doKnightmetalToolLogic(LivingIncomingDamageEvent event) {
-		if (!event.isCanceled()) {
-			LivingEntity target = event.getEntity();
+	// PORTAGE : gestionnaire supprime. Il reposait sur le pipeline de degats de
+	// NeoForge (DamageContainer), que Forge n'a pas. Voir PORTAGE-twilightforest-crochets.txt.
 
-			DamageContainer container = event.getContainer();
-			if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living) {
-				ItemStack weapon = living.getMainHandItem();
-
-				if (!weapon.isEmpty()) {
-					if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.get()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.get()))) {
-						if (target.getArmorCoverPercentage() > 0) {
-							int moreBonus = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
-							container.setNewDamage(container.getNewDamage() + moreBonus);
-						} else {
-							container.setNewDamage(container.getNewDamage() + KNIGHTMETAL_BONUS_DAMAGE);
-						}
-						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-					} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
-						container.setNewDamage(container.getOriginalDamage() + KNIGHTMETAL_BONUS_DAMAGE);
-						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-					}
-				}
-			}
-		}
-	}
-
-	private void addExtraAxeChargingDamage(LivingIncomingDamageEvent event) {
-		if (!event.isCanceled()) {
-			LivingEntity target = event.getEntity();
-			DamageContainer container = event.getContainer();
-			if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living && living.isSprinting()) {
-				ItemStack weapon = living.getMainHandItem();
-				if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
-					container.setNewDamage(container.getNewDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
-					// enchantment attack sparkles
-					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-				}
-			}
-		}
-	}
+	// PORTAGE : gestionnaire supprime. Il reposait sur le pipeline de degats de
+	// NeoForge (DamageContainer), que Forge n'a pas. Voir PORTAGE-twilightforest-crochets.txt.
 
 	private void damageNonMazebreakerToolsMore(BlockEvent.BreakEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
@@ -159,8 +123,11 @@ public class ToolEvents {
 	}
 
 	private void preventFatigueWithPocketWatch(MobEffectEvent.Applicable event) {
-		if (event.getApplicationResult() && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
-			event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+		// PORTAGE : NeoForge a une enumeration dediee (APPLY / DO_NOT_APPLY) et un
+		// « getApplicationResult ». Forge s'en remet au resultat generique de ses evenements :
+		// DENY empeche l'effet, DEFAULT laisse le jeu decider.
+		if (event.getResult() != Event.Result.DENY && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
+			event.setResult(Event.Result.DENY);
 		}
 	}
 
@@ -169,7 +136,7 @@ public class ToolEvents {
 		BlockState state = event.getState();
 
 		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state, pos)) {
-			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			var attachment = Attachments.get(player, TFDataAttachments.GIANT_PICKAXE_MINING);
 
 			if (shouldBreakGiantBlock(player, attachment)) {
 				attachment.setBreaking(true); // Tell the capability that a block breaking loop is happening, so it knows to fail the if check above. Otherwise, this would go on forever
@@ -211,8 +178,10 @@ public class ToolEvents {
 		}
 	}
 
+	// PORTAGE : NeoForge passe le niveau et la position ; Forge attend a la place le resultat
+	// par defaut du test, que le joueur sait donner lui-meme.
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state, BlockPos pos) {
-		return player.getMainHandItem().getItem() instanceof GiantPickItem && EventHooks.doPlayerHarvestCheck(player, state, player.level(), pos);
+		return player.getMainHandItem().getItem() instanceof GiantPickItem && ForgeEventFactory.doPlayerHarvestCheck(player, state, player.hasCorrectToolForDrops(state));
 	}
 
 	private static boolean shouldBreakGiantBlock(Player player, GiantPickaxeMiningAttachment attachment) {

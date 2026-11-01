@@ -12,7 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import net.minecraftforge.client.model.geometry.IGeometryLoader;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

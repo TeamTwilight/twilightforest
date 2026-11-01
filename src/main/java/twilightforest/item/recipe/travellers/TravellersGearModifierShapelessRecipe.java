@@ -1,5 +1,6 @@
 package twilightforest.item.recipe.travellers;
 
+import twilightforest.forge.NonNullLists;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceKey;
@@ -35,7 +36,7 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 			if (!item.isEmpty())
 				nonEmptyItems.add(item);
 		}
-		return net.neoforged.neoforge.common.util.RecipeMatcher.findMatches(nonEmptyItems, this.ingredients) != null;
+		return net.minecraftforge.common.util.RecipeMatcher.findMatches(nonEmptyItems, this.ingredients) != null;
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapelessRecipe> {
 		public Serializer() {
 			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				NonNullList.codecOf(Ingredient.CODEC_NONEMPTY)
+				NonNullLists.codecOf(Ingredient.CODEC_NONEMPTY)
 					.fieldOf("ingredients")
 					.forGetter(recipe -> recipe.ingredients),
 				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)

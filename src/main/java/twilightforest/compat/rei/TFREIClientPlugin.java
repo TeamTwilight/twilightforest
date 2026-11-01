@@ -29,7 +29,7 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
@@ -161,7 +161,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 			try {
 				Entity entity;
 
-				if (stack.getItem() instanceof DeferredSpawnEggItem spawnEggItem) {
+				if (stack.getItem() instanceof ForgeSpawnEggItem spawnEggItem) {
 					EntityType<?> type = spawnEggItem.getType(stack);
 
 					entity = EntityRenderingUtil.fetchEntity(type, Minecraft.getInstance().level);
@@ -188,7 +188,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 			if (entity instanceof ItemEntity itemEntity) {
 				stack = itemEntity.getItem();
 			} else if (entity != null) {
-				Item spawnEggItem = DeferredSpawnEggItem.byId(entity.getType());
+				Item spawnEggItem = ForgeSpawnEggItem.byId(entity.getType());
 
 				if (spawnEggItem != null) stack = spawnEggItem.getDefaultInstance();
 			}

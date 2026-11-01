@@ -7,8 +7,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -429,7 +429,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.addTags(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
 			.addTags(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
 			.addTags(Tags.Blocks.COBBLESTONES)
-			.addTags(Tags.Blocks.NETHERRACKS)
+			.addTags(Tags.Blocks.NETHERRACK)
 			.add(TFBlocks.GIANT_COBBLESTONE.get())
 			.add(Blocks.POLISHED_ANDESITE)
 			.add(Blocks.POLISHED_DIORITE)
@@ -450,7 +450,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(Blocks.SNOW_BLOCK);
 
 		this.tag(DARK_TOWER_BERRY_BUSHES_SURVIVE)
-			.addTag(Tags.Blocks.NETHERRACKS)
+			.addTag(Tags.Blocks.NETHERRACK)
 			.addTag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
 			.add(Blocks.BLACKSTONE)
 			.add(Blocks.SOUL_SAND)
@@ -544,8 +544,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
 			BlockTags.DIRT,
-			Tags.Blocks.GRAVELS,
-			Tags.Blocks.SANDS,
+			Tags.Blocks.GRAVEL,
+			Tags.Blocks.SAND,
 			BlockTags.NYLIUM,
 			BlockTags.BASE_STONE_OVERWORLD,
 			BlockTags.BASE_STONE_NETHER,
@@ -595,10 +595,10 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.addTag(BlockTags.BASE_STONE_OVERWORLD)
 			.addTag(BlockTags.BASE_STONE_NETHER)
 			.addTag(BlockTags.DIRT)
-			.addTag(Tags.Blocks.SANDS)
+			.addTag(Tags.Blocks.SAND)
 			.addTag(Tags.Blocks.SANDSTONE_BLOCKS)
 			.addTag(BlockTags.TERRACOTTA)
-			.addTag(Tags.Blocks.GRAVELS)
+			.addTag(Tags.Blocks.GRAVEL)
 			.addTag(BlockTags.NYLIUM)
 			.addTag(ROOT_ORES)
 			.add(Blocks.BUDDING_AMETHYST)

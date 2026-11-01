@@ -2,8 +2,8 @@ package twilightforest.init;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.world.level.GameRules;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import twilightforest.forge.network.PacketDistributor;
 import twilightforest.network.EnforceProgressionStatusPacket;
 
 import java.util.HashSet;

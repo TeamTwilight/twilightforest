@@ -9,8 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MissingAdvancementToast;
 
@@ -30,7 +29,7 @@ public record MissingAdvancementToastPacket(Component title, ItemStack icon) imp
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MissingAdvancementToastPacket packet, IPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
-		if (ctx.flow().isClientbound()) {
+		if (ctx.isClientbound()) {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {

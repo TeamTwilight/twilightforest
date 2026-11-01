@@ -40,7 +40,7 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 			}
 		}
 
-		@Override
+		// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 		public Either<BlockEntity, Entity> getOwner() {
 			return Either.left(ChiseledCanopyShelfBlockEntity.this);
 		}

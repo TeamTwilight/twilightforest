@@ -6,7 +6,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.LifedrainScepterItem;
 
@@ -33,7 +33,7 @@ public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements C
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(LifedrainParticlePacket packet, IPayloadContext ctx) {
-		if (ctx.flow().isClientbound()) {
+		if (ctx.isClientbound()) {
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {

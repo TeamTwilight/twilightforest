@@ -1,0 +1,51 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "twilightforest.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "twilightforest.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "block.MushroomBlockMixin",
+    "block.SlimeBlockMixin",
+    "block.SnowyDirtBlockMixin",
+    "damagesource.DamageSourcesMixin",
+    "entity.BoatMixin",
+    "entity.EntityMixin",
+    "entity.ExperienceOrbMixin",
+    "entity.FlyingMobMixin",
+    "entity.ItemEntityMixin",
+    "entity.LeashFenceKnotEntityMixin",
+    "entity.LivingEntityMixin",
+    "entity.ParrotAccessor",
+    "entity.PathfinderMobMixin",
+    "entity.PlayerMixin",
+    "entity.ServerEntityMixin",
+    "entity.ServerPlayerMixin",
+    "enums.DamageEffectsInvoker",
+    "enums.DamageEffectsMixin",
+    "enums.RarityInvoker",
+    "enums.RarityMixin",
+    "item.WrittenBookItemMixin",
+    "map.MapItemSavedDataMixin",
+    "world.LevelMixin",
+    "worldgen.BeardifierMixin",
+    "worldgen.ChunkGeneratorMixin",
+    "worldgen.ChunkStatusTasksMixin",
+    "worldgen.NoiseBasedChunkGeneratorMixin",
+    "worldgen.StructureStartMixin"
+  ],
+  "client": [
+    "client.AbstractClientPlayerMixin",
+    "client.BiomeColorsMixin",
+    "client.CapeLayerMixin",
+    "client.ElytraLayerMixin",
+    "client.EntityRenderDispatcherMixin",
+    "client.GuiMixin",
+    "client.HumanoidArmorLayerMixin",
+    "client.LevelRendererMixin",
+    "client.LocalPlayerMixin"
+  ]
+}

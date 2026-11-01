@@ -8,8 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import tamaized.beanification.Autowired;
-import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 
 import java.util.Iterator;

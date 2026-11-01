@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import net.minecraftforge.eventbus.api.Event;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
@@ -22,17 +23,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.BlockSnapshot;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.TriState;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.BlockSnapshot;
+import twilightforest.forge.TFFakePlayer;
+import twilightforest.forge.TriState;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.TickEvent;
+import twilightforest.forge.network.PacketDistributor;
+import twilightforest.forge.beans.Component;
+import twilightforest.forge.beans.PostConstruct;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -61,12 +62,12 @@ public class ProgressionEvents {
 
 	@PostConstruct
 	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockBreaking);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockPlacing);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockInteracting);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaMultiblocks);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaEntityDamage);
-		NeoForge.EVENT_BUS.addListener(this::performProtectionAndPortalChecks);
+		MinecraftForge.EVENT_BUS.addListener(this::preventLockedAreaBlockBreaking);
+		MinecraftForge.EVENT_BUS.addListener(this::preventLockedAreaBlockPlacing);
+		MinecraftForge.EVENT_BUS.addListener(this::preventLockedAreaBlockInteracting);
+		MinecraftForge.EVENT_BUS.addListener(this::preventLockedAreaMultiblocks);
+		MinecraftForge.EVENT_BUS.addListener(this::preventLockedAreaEntityDamage);
+		MinecraftForge.EVENT_BUS.addListener(this::performProtectionAndPortalChecks);
 	}
 
 	/**
@@ -121,7 +122,8 @@ public class ProgressionEvents {
 		Level level = player.level();
 
 		if (!level.isClientSide() && level instanceof ServerLevel serverLevel && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(serverLevel, player, event.getPos())) {
-			event.setUseBlock(TriState.FALSE);
+			// PORTAGE : NeoForge prend un TriState, Forge son Event.Result generique.
+			event.setUseBlock(Event.Result.DENY);
 		}
 	}
 
@@ -131,7 +133,7 @@ public class ProgressionEvents {
 	 */
 	private static boolean isAreaProtected(ServerLevel level, Player player, BlockPos pos) {
 		if (player.getAbilities().instabuild || player.isSpectator() ||
-			!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
+			!LandmarkUtil.isProgressionEnforced(level) || player instanceof TFFakePlayer) {
 			return false;
 		}
 
@@ -160,7 +162,7 @@ public class ProgressionEvents {
 	}
 
 	//TODO make ignored entities into a tag
-	private void preventLockedAreaEntityDamage(LivingIncomingDamageEvent event) {
+	private void preventLockedAreaEntityDamage(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas
 		if (living.level() instanceof ServerLevel serverLevel && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
@@ -170,8 +172,12 @@ public class ProgressionEvents {
 		}
 	}
 
-	private void performProtectionAndPortalChecks(PlayerTickEvent.Post event) {
-		Player eventPlayer = event.getEntity();
+	private void performProtectionAndPortalChecks(TickEvent.PlayerTickEvent event) {
+		if (event.phase != TickEvent.Phase.END) {
+			return;
+		}
+
+		Player eventPlayer = event.player;
 
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
 		if (!(player.level() instanceof ServerLevel world)) return;

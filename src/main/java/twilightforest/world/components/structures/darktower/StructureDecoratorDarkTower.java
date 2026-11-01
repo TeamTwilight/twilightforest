@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.world.level.block.Blocks;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.selectors.TowerwoodRandomBlockSelectorFactory;

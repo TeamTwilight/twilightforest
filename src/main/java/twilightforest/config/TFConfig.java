@@ -13,9 +13,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.neoforged.neoforge.common.TranslatableEnum;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import twilightforest.forge.TranslatableEnum;
+import twilightforest.forge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
@@ -275,7 +275,7 @@ public class TFConfig {
 			return this.moreHealth;
 		}
 
-		@Override
+		// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 		public Component getTranslatedName() {
 			return Component.translatable(CONFIG_ID + "multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
 		}

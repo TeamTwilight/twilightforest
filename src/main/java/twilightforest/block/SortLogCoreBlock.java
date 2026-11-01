@@ -9,21 +9,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.forge.ItemHandlers;
+import net.minecraftforge.items.IItemHandler;
+import twilightforest.forge.network.PacketDistributor;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
-import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
 import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
-	private final BlockCapabilityDirectionalCache<IItemHandler> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -47,7 +45,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
 						List<IItemHandler> handlers = new ArrayList<>();
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
+							IItemHandler handler = ItemHandlers.block(level, blockPos, side);
 							if (handler != null) handlers.add(handler);
 						}
 						if (!handlers.isEmpty()) {
@@ -55,7 +53,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						}
 					} else { // Output if its outside that range
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
+							IItemHandler handler = ItemHandlers.block(level, blockPos, side);
 							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					}
@@ -68,7 +66,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
 			List<IItemHandler> handlers = new ArrayList<>();
 			for (Direction side : Direction.values()) {
-				IItemHandler handler = entity.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, side);
+				IItemHandler handler = ItemHandlers.entity(entity, side);
 				if (handler != null) handlers.add(handler);
 			}
 			if (!handlers.isEmpty()) {
@@ -81,7 +79,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
 			for (Direction side : Direction.values()) {
-				IItemHandler handler = entity.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, side);
+				IItemHandler handler = ItemHandlers.entity(entity, side);
 				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 			}
 		});

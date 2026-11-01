@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import twilightforest.forge.datamap.DataMaps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,9 +19,9 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.level.BlockEvent;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -95,12 +96,12 @@ public class CrumbleHornItem extends Item {
 	private boolean crumbleBlock(ServerLevel serverLevel, LivingEntity living, BlockPos pos) {
 		BlockState state = serverLevel.getBlockState(pos);
 		Block block = state.getBlock();
-		var crumbleMap = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+		var crumbleMap = DataMaps.get(block.builtInRegistryHolder(), TFDataMaps.CRUMBLE_HORN);
 
 		if (state.isAir() || crumbleMap == null) return false;
 
 		if (living instanceof Player) {
-			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living)).isCanceled())
+			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living)))
 				return false;
 		}
 
@@ -116,7 +117,7 @@ public class CrumbleHornItem extends Item {
 						}
 						return true;
 					}
-				} else if (EventHooks.canEntityGrief(serverLevel, living)) {
+				} else if (ForgeEventFactory.getMobGriefingEvent(serverLevel, living)) {
 					serverLevel.destroyBlock(pos, true);
 					return true;
 				}

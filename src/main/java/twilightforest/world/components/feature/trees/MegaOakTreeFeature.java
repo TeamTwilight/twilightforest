@@ -45,7 +45,7 @@ public class MegaOakTreeFeature extends CanopyTreeFeature {
 		}
 
 		// check if we're on dirt or grass
-		if (world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, TFBlocks.CANOPY_SAPLING.get().defaultBlockState()).isFalse()) {
+		if (!world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, (net.minecraftforge.common.IPlantable) TFBlocks.CANOPY_SAPLING.get())) {
 			return false;
 		}
 

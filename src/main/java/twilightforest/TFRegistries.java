@@ -4,7 +4,9 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.registries.RegistryBuilder;
+import com.mojang.serialization.Lifecycle;
+import net.minecraft.core.MappedRegistry;
+import twilightforest.forge.registries.DeferredRegister;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
@@ -27,12 +29,41 @@ import java.util.Locale;
 
 public class TFRegistries {
 
-	public static final Registry<BiomeLayerType> BIOME_LAYER_TYPE = new RegistryBuilder<>(Keys.BIOME_LAYER_TYPE).create();
-	public static final Registry<Enforcement> ENFORCEMENT = new RegistryBuilder<>(Keys.ENFORCEMENT).sync(true).create();
-	public static final Registry<ChunkBlanketType> CHUNK_BLANKET_TYPES = new RegistryBuilder<>(Keys.CHUNK_BLANKET_TYPE).create();
-	public static final Registry<TemplateMarkerHandlerType> TEMPLATE_MARKER_HANDLER_TYPES = new RegistryBuilder<>(Keys.TEMPLATE_MARKER_HANDLER_TYPE).create();
-	public static final Registry<ItemDisplayType> ITEM_DISPLAY_TYPE = new RegistryBuilder<>(Keys.ITEM_DISPLAY_TYPE).sync(true).create();
-	public static final Registry<MapCodec<? extends TravellersModifier>> TRAVELLERS_MODIFIER_TYPE = new RegistryBuilder<>(Keys.TRAVELLERS_MODIFIER_TYPE).sync(true).create();
+	// Ces six registres sont tenus par le mod, et non par le chargeur.
+	//
+	// NeoForge accepte qu'un mod enregistre un registre de forme vanilla, par
+	// « NewRegistryEvent.register(Registry) ». Forge n'a pas cet appel : son evenement ne sait
+	// produire qu'un IForgeRegistry, et le pont vers une vue vanilla — RegistryBuilder.hasWrapper(),
+	// ForgeRegistry.getWrapperOrThrow() — est de portee paquet, donc hors d'atteinte d'un mod.
+	//
+	// Aucun des six n'a besoin de ce que Forge apporterait : ils servent de repartiteurs de codecs
+	// et de tables de correspondance, sans synchronisation reseau ni chargement par datapack — ce
+	// dernier concerne les cles listees plus bas sous « Datapack Registries », qui passent, elles,
+	// par un evenement que Forge possede. De simples MappedRegistry suffisent donc.
+	public static final Registry<BiomeLayerType> BIOME_LAYER_TYPE = standalone(Keys.BIOME_LAYER_TYPE);
+	public static final Registry<Enforcement> ENFORCEMENT = standalone(Keys.ENFORCEMENT);
+	public static final Registry<ChunkBlanketType> CHUNK_BLANKET_TYPES = standalone(Keys.CHUNK_BLANKET_TYPE);
+	public static final Registry<TemplateMarkerHandlerType> TEMPLATE_MARKER_HANDLER_TYPES = standalone(Keys.TEMPLATE_MARKER_HANDLER_TYPE);
+	public static final Registry<ItemDisplayType> ITEM_DISPLAY_TYPE = standalone(Keys.ITEM_DISPLAY_TYPE);
+	public static final Registry<MapCodec<? extends TravellersModifier>> TRAVELLERS_MODIFIER_TYPE = standalone(Keys.TRAVELLERS_MODIFIER_TYPE);
+
+	/**
+	 * Ne fait rien, mais force l'initialiseur statique ci-dessus, qui declare les six registres.
+	 *
+	 * <p>Utiliser {@link Keys} ne suffit pas : c'est une classe imbriquee, initialisee a part.</p>
+	 */
+	public static void bootstrap() {
+	}
+
+	/**
+	 * Cree un registre tenu par le mod et le fait connaitre au registre differe, pour que les
+	 * declarations d'entrees lui parviennent au lieu d'etre remises a Forge, qui l'ignore.
+	 */
+	private static <T> Registry<T> standalone(ResourceKey<Registry<T>> key) {
+		MappedRegistry<T> registry = new MappedRegistry<>(key, Lifecycle.stable());
+		DeferredRegister.declareStandalone(registry);
+		return registry;
+	}
 
 	public static final class Keys {
 		public static final String REGISTRY_NAMESPACE = "twilight";
@@ -63,4 +94,5 @@ public class TFRegistries {
 			return ResourceLocation.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 		}
 	}
+
 }

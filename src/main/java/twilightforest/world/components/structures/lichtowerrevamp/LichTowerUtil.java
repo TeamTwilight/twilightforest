@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplace
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
+import twilightforest.forge.beans.Autowired;
+import twilightforest.forge.beans.Component;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.world.components.processors.*;

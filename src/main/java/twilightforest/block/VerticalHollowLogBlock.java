@@ -29,8 +29,9 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Configurable;
+import twilightforest.forge.beans.Autowired;
+import twilightforest.forge.beans.BeanContext;
+import twilightforest.forge.beans.Configurable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.DirectionUtil;
 
@@ -48,6 +49,8 @@ public class VerticalHollowLogBlock extends Block implements SimpleWaterloggedBl
 
 	public VerticalHollowLogBlock(Properties properties, Holder<Block> climbable) {
 		super(properties);
+		// Rempli ici plutot que par le tissage de Beanification, qui n'existe pas sous Forge.
+		BeanContext.inject(this);
 		this.climbable = climbable;
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));

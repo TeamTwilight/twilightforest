@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -8,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDataAttachments;
 
@@ -38,7 +39,7 @@ public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int 
 			Level level = ctx.player().level();
 			Entity entity = level.getEntity(message.entityID());
 			if (entity instanceof Player player) {
-				var attachment = player.getData(TFDataAttachments.YETI_THROWING);
+				var attachment = Attachments.get(player, TFDataAttachments.YETI_THROWING);
 				LivingEntity thrower = message.thrower() != 0 ? (LivingEntity) level.getEntity(message.thrower()) : null;
 				attachment.setThrown(player, message.thrown(), thrower);
 				attachment.setThrowCooldown(player, message.throwCooldown());

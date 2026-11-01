@@ -100,13 +100,13 @@ public class CandelabraBlockEntity extends BlockEntity {
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.Builder components) {
 		super.collectImplicitComponents(components);
-		components.set(TFDataComponents.CANDELABRA_DATA, this.data);
+		components.set(TFDataComponents.CANDELABRA_DATA.get(), this.data);
 	}
 
 	@Override
 	protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
 		super.applyImplicitComponents(componentInput);
-		this.data = componentInput.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY);
+		this.data = componentInput.getOrDefault(TFDataComponents.CANDELABRA_DATA.get(), CandelabraData.EMPTY);
 	}
 
 	@Override

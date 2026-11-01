@@ -12,8 +12,8 @@ public class KeepsakeCasketItem extends BlockItem {
 
 	@Override
 	public String getDescriptionId(ItemStack stack) {
-		if (stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0) > 0) {
-			String damage = stack.get(TFDataComponents.CASKET_DAMAGE) == 1 ? "chipped_" : "damaged_";
+		if (stack.getOrDefault(TFDataComponents.CASKET_DAMAGE.get(), 0) > 0) {
+			String damage = stack.get(TFDataComponents.CASKET_DAMAGE.get()) == 1 ? "chipped_" : "damaged_";
 			return "block.twilightforest." + damage + "keepsake_casket";
 		}
 		return super.getDescriptionId(stack);

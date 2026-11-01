@@ -14,7 +14,7 @@ public class ItemHooks {
 	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}
 	 */
 	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
-		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
+		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK.get())) {
 			return Component.translatable(component.getString());
 		} else return component;
 	}

@@ -1,5 +1,7 @@
 package twilightforest.item;
 
+import twilightforest.forge.Lookups;
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -37,7 +39,7 @@ public class FortificationWandItem extends Item {
 		}
 
 		if (!level.isClientSide()) {
-			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
+			Attachments.get(player, TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
 			if(!player.getAbilities().instabuild) {
 				TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
 			}
@@ -54,7 +56,7 @@ public class FortificationWandItem extends Item {
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		if (entity.tickCount % 20 == 0 && level instanceof ServerLevel serverLevel && stack.has(DataComponents.ENCHANTMENTS) && !isSelected) {
-			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(level.holderOrThrow(TFEnchantments.RENEWAL));
+			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(Lookups.holder(level.registryAccess(), TFEnchantments.RENEWAL));
 			if (renewal > 0) {
 				RechargeScepterEffect.applyRecharge(serverLevel, stack, entity);
 			}

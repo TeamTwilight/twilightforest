@@ -1,7 +1,7 @@
 package twilightforest.util.multiparts;
 
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.entity.PartEntity;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 

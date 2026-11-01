@@ -1,5 +1,6 @@
 package twilightforest.item.travellers_gear;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
@@ -25,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.neoforged.neoforge.common.util.ConcatenatedListView;
+import net.minecraftforge.common.util.ConcatenatedListView;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -49,7 +50,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	private ItemAttributeModifiers attributeModifiers;
 
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
-		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.component(TFDataComponents.IS_TRAVELLERS_GEAR, Unit.INSTANCE));
+		// PORTAGE : ArmorItem attend un Holder<ArmorMaterial>, que TFArmorMaterials rend deja.
+		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.component(TFDataComponents.IS_TRAVELLERS_GEAR.get(), Unit.INSTANCE));
 		this.insertableModifierSlots = insertableModifierSlots;
 		this.attributeModifiers = this.components().get(DataComponents.ATTRIBUTE_MODIFIERS);
 		if (this.attributeModifiers == null)
@@ -79,7 +81,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	@Override
 	public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-		return !innerModel && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
+		return !innerModel && Attachments.get(entity, TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
 			TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
 			super.getArmorTexture(stack, entity, slot, layer, innerModel);
 	}
@@ -87,13 +89,13 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
 			.attributes(defaultArmorProperties(Type.HELMET).build())
-			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F);
+			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER.get(), 0.3F);
 	}
 
 	public static Properties chestProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, Unit.INSTANCE)
-			.component(TFDataComponents.SWIFT_SWIM, Unit.INSTANCE)
+			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE.get(), Unit.INSTANCE)
+			.component(TFDataComponents.SWIFT_SWIM.get(), Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)
 				.build());
@@ -101,20 +103,20 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static Properties glovesProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_GLOVES, Unit.INSTANCE);
+			.component(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), Unit.INSTANCE);
 	}
 
 	public static Properties wingsProperties(Properties properties) {
 		return properties
 			.attributes(defaultArmorProperties(Type.LEGGINGS).build())
-			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, Unit.INSTANCE)
-			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1);
+			.component(TFDataComponents.TRAVELLERS_HAS_WINGS.get(), Unit.INSTANCE)
+			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER.get(), 1);
 	}
 
 	public static Properties bootsProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, Unit.INSTANCE)
-			.component(TFDataComponents.HIGH_STEP, Unit.INSTANCE)
+			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS.get(), Unit.INSTANCE)
+			.component(TFDataComponents.HIGH_STEP.get(), Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)
 				.build());
@@ -135,7 +137,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(registries, stack);
 		for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
 			tooltip.add(Component.literal("- ").append(TravellersModifiersManager.getModifierTooltipComponent(modifier).withStyle(ChatFormatting.GRAY)));
-			if (flags.hasShiftDown()) {
+			if (net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
 				for (Component description : modifier.value().getDescription()) {
 					// FIXME There has to be a better way to bold only the indent and arrow and not the information component
 					tooltip.add(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
@@ -151,7 +153,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 			tooltip.add(GLOVES_TOOLTIP);
 		}
 
-		if (!flags.hasShiftDown()) {
+		if (!net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
 			ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
 			boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
 			if (hasHiddenDescriptions) {
@@ -170,17 +172,17 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		return true;
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public boolean isPrimaryItemFor(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
 		return false;
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public boolean supportsEnchantment(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
 		return false;
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public boolean isRepairable(@NotNull ItemStack stack) {
 		return false;
 	}
@@ -191,13 +193,13 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
-		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
+		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}
 
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
 	public static ItemAttributeModifiers.Builder defaultArmorProperties(Type type) {
-		int defense = TFArmorMaterials.TRAVELLERS.value().getDefense(type);
-		float toughness = TFArmorMaterials.TRAVELLERS.value().toughness();
+		int defense = TFArmorMaterials.TRAVELLERS_MATERIAL.getDefense(type);
+		float toughness = TFArmorMaterials.TRAVELLERS_MATERIAL.toughness();
 		ItemAttributeModifiers.Builder defaultArmorModifiers = ItemAttributeModifiers.builder();
 		EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(type.getSlot());
 		ResourceLocation resourcelocation = ResourceLocation.withDefaultNamespace("armor." + type.getName());
@@ -207,7 +209,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		defaultArmorModifiers.add(
 			Attributes.ARMOR_TOUGHNESS, new AttributeModifier(resourcelocation, toughness, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
 		);
-		float knockbackResistance = TFArmorMaterials.TRAVELLERS.value().knockbackResistance();
+		float knockbackResistance = TFArmorMaterials.TRAVELLERS_MATERIAL.knockbackResistance();
 		if (knockbackResistance > 0.0F) {
 			defaultArmorModifiers.add(
 				Attributes.KNOCKBACK_RESISTANCE,
@@ -235,8 +237,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 				case CHEST -> {
 					ModelPart chestLayer = this.getModelPart(this.isModelSlim(living) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 					chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
-					boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
+					boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE.get());
+					boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES.get());
 					chestLayer.getChild("body").skipDraw = !hasChestplate;
 					chestLayer.getChild("left_arm").skipDraw = !hasGloves;
 					chestLayer.getChild("right_arm").skipDraw = !hasGloves;
@@ -246,8 +248,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 				case LEGS -> {
 					ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
-					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(living.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
+					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS.get());
+					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT.get()) || TravellersModifiersManager.hasTravellersModifier(living.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
 
 					TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
 					TravellersWingsModel.skipWings(leggingsLayer, !hasWings);
@@ -263,7 +265,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 			return new TFArmorModel(root);
 		}
 
-		@Override
+		// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 		public void setupModelAnimations(@NotNull LivingEntity livingEntity, @NotNull ItemStack itemStack, @NotNull EquipmentSlot equipmentSlot, @NotNull Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (model instanceof TravellersWingsModel wingsModel)
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
@@ -276,6 +278,6 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	public boolean makesPiglinsNeutral(@NotNull ItemStack stack, @NotNull LivingEntity wearer) {
-		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS.get());
 	}
 }

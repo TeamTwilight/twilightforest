@@ -1,5 +1,6 @@
 package twilightforest.compat;
 
+import twilightforest.forge.datamap.DataMaps;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
@@ -69,13 +70,13 @@ public class RecipeViewerConstants {
 		List<EntityType<?>> inputs = new ArrayList<>();
 		List<TransformationPowderInfo> info = new ArrayList<>();
 		for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
-			if (type.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER) != null) {
+			if (DataMaps.get(type.builtInRegistryHolder(), TFDataMaps.TRANSFORMATION_POWDER) != null) {
 				inputs.add(type);
 			}
 		}
 
 		for (EntityType<?> input : new ArrayList<>(inputs)) {
-			var output = input.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+			var output = DataMaps.get(input.builtInRegistryHolder(), TFDataMaps.TRANSFORMATION_POWDER);
 			if (output != null) {
 				TransformationPowderInfo dummy = new TransformationPowderInfo(output.result(), input, true);
 				if (!info.contains(dummy)) {
@@ -96,13 +97,13 @@ public class RecipeViewerConstants {
 		List<EntityType<?>> inputs = new ArrayList<>();
 		List<OminousFireInfo> info = new ArrayList<>();
 		for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
-			if (type.builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE) != null) {
+			if (DataMaps.get(type.builtInRegistryHolder(), TFDataMaps.OMINOUS_FIRE) != null) {
 				inputs.add(type);
 			}
 		}
 
 		for (EntityType<?> input : new ArrayList<>(inputs)) {
-            EntityTransformation output = input.builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
+            EntityTransformation output = DataMaps.get(input.builtInRegistryHolder(), TFDataMaps.OMINOUS_FIRE);
 			if (output != null) {
 				OminousFireInfo dummy = new OminousFireInfo(output.result(), input);
 				if (!info.contains(dummy)) {
@@ -117,7 +118,7 @@ public class RecipeViewerConstants {
 	public static List<Pair<Block, Block>> getCrumbleHornRecipes() {
 		List<Pair<Block, Block>> info = new ArrayList<>();
 		for (Block input : BuiltInRegistries.BLOCK) {
-			var output = input.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+			var output = DataMaps.get(input.builtInRegistryHolder(), TFDataMaps.CRUMBLE_HORN);
 			if (output != null) {
 				info.add(Pair.of(input, output.result()));
 			}

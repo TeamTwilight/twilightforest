@@ -1,5 +1,7 @@
 package twilightforest.events;
 
+import twilightforest.forge.datamap.DataMaps;
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -43,28 +45,27 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.OnDatapackSyncEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
-import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.event.level.ExplosionEvent;
-import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
+import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.items.ItemHandlerHelper;
+import twilightforest.forge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.PostConstruct;
+import twilightforest.forge.beans.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
@@ -91,7 +92,7 @@ import twilightforest.world.components.structures.util.ControlledSpawns;
 import java.util.List;
 import java.util.Optional;
 
-@tamaized.beanification.Component
+@twilightforest.forge.beans.Component
 public class EntityEvents {
 
 	@Autowired
@@ -101,41 +102,44 @@ public class EntityEvents {
 
 	@PostConstruct
 	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::ominousFireConversion);
-		NeoForge.EVENT_BUS.addListener(this::zombifiedPlayerAttacks);
-		NeoForge.EVENT_BUS.addListener(this::alertPlayerCastleIsWIP);
-		NeoForge.EVENT_BUS.addListener(this::attachLeadToWroughtFence);
-		NeoForge.EVENT_BUS.addListener(this::wipeOreMeterOnLeftClick);
-		NeoForge.EVENT_BUS.addListener(this::entityHurts);
-		NeoForge.EVENT_BUS.addListener(this::onCasketBreak);
-		NeoForge.EVENT_BUS.addListener(this::reduceFrostedEffectIfOnFire);
-		NeoForge.EVENT_BUS.addListener(this::onParryProjectile);
-		NeoForge.EVENT_BUS.addListener(this::createSkullCandle);
-		NeoForge.EVENT_BUS.addListener(this::addCloudJumpParticles);
-		NeoForge.EVENT_BUS.addListener(this::structureSpecialSpawns);
-		NeoForge.EVENT_BUS.addListener(this::removeCastleTextIfAttacked);
-		NeoForge.EVENT_BUS.addListener(this::adjustEntityHealthInMultiplayerFights);
-		NeoForge.EVENT_BUS.addListener(this::addQualifiedGroupPlayerIfNeeded);
-		NeoForge.EVENT_BUS.addListener(this::grantGroupAdvancementIfNeeded);
-		NeoForge.EVENT_BUS.addListener(this::lichBombsDontBlowUpItems);
-		NeoForge.EVENT_BUS.addListener(this::handleQuestSyncing);
-		NeoForge.EVENT_BUS.addListener(this::resetFlaskLogic);
-		NeoForge.EVENT_BUS.addListener(this::handleLeashPathingOverrides);
-		NeoForge.EVENT_BUS.addListener(this::stopEndermenFromGrabbingBlocksInTF);
+		MinecraftForge.EVENT_BUS.addListener(this::ominousFireConversion);
+		// PORTAGE : gestionnaire « zombifiedPlayerAttacks » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		MinecraftForge.EVENT_BUS.addListener(this::alertPlayerCastleIsWIP);
+		MinecraftForge.EVENT_BUS.addListener(this::attachLeadToWroughtFence);
+		MinecraftForge.EVENT_BUS.addListener(this::wipeOreMeterOnLeftClick);
+		MinecraftForge.EVENT_BUS.addListener(this::entityHurts);
+		MinecraftForge.EVENT_BUS.addListener(this::onCasketBreak);
+		// PORTAGE : gestionnaire « reduceFrostedEffectIfOnFire » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		MinecraftForge.EVENT_BUS.addListener(this::onParryProjectile);
+		MinecraftForge.EVENT_BUS.addListener(this::createSkullCandle);
+		MinecraftForge.EVENT_BUS.addListener(this::addCloudJumpParticles);
+		MinecraftForge.EVENT_BUS.addListener(this::structureSpecialSpawns);
+		MinecraftForge.EVENT_BUS.addListener(this::removeCastleTextIfAttacked);
+		// PORTAGE : gestionnaire « adjustEntityHealthInMultiplayerFights » supprime — l'evenement NeoForge
+		// correspondant n'existe pas chez Forge (voir PORTAGE-twilightforest-crochets.txt).
+		MinecraftForge.EVENT_BUS.addListener(this::addQualifiedGroupPlayerIfNeeded);
+		MinecraftForge.EVENT_BUS.addListener(this::grantGroupAdvancementIfNeeded);
+		MinecraftForge.EVENT_BUS.addListener(this::lichBombsDontBlowUpItems);
+		MinecraftForge.EVENT_BUS.addListener(this::handleQuestSyncing);
+		MinecraftForge.EVENT_BUS.addListener(this::resetFlaskLogic);
+		MinecraftForge.EVENT_BUS.addListener(this::handleLeashPathingOverrides);
+		MinecraftForge.EVENT_BUS.addListener(this::stopEndermenFromGrabbingBlocksInTF);
 	}
 
 	private void ominousFireConversion(LivingDeathEvent event) {
 		if (!event.isCanceled() && event.getSource().is(TFDamageTypes.OMINOUS_FIRE)) {
-			EntityTransformation dataMap = event.getEntity().getType().builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
+			EntityTransformation dataMap = DataMaps.get(event.getEntity().getType().builtInRegistryHolder(), TFDataMaps.OMINOUS_FIRE);
 
 			if (event.getEntity() instanceof ServerPlayer player) {
 				var zombie = EntityType.ZOMBIE.create(player.level());
-				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
+				Attachments.set(zombie, TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 				zombie.setCustomName(player.getName());
 				zombie.copyPosition(player);
 				zombie.setCanPickUpLoot(true);
 				zombie.setBaby(false);
-				EventHooks.finalizeMobSpawn(zombie, player.serverLevel(), player.level().getCurrentDifficultyAt(player.blockPosition()), MobSpawnType.CONVERSION, null);
+				ForgeEventFactory.onFinalizeSpawn(zombie, player.serverLevel(), player.level().getCurrentDifficultyAt(player.blockPosition()), MobSpawnType.CONVERSION, null);
 				player.level().addFreshEntity(zombie);
 			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
 				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
@@ -143,13 +147,8 @@ public class EntityEvents {
 		}
 	}
 
-	private void zombifiedPlayerAttacks(LivingIncomingDamageEvent event) {
-		if (!(event.getSource() instanceof OminousFireDamageSource) && event.getSource().getEntity() instanceof Zombie zombie && zombie.hasData(TFDataAttachments.ZOMBIFIED_PLAYER)) {
-			float amount = event.getAmount();
-			event.setCanceled(true);
-			event.getEntity().hurt(new OminousFireDamageSource(event.getSource()), amount);
-		}
-	}
+	// PORTAGE : gestionnaire supprime. Il reposait sur le pipeline de degats de
+	// NeoForge (DamageContainer), que Forge n'a pas. Voir PORTAGE-twilightforest-crochets.txt.
 
 	private void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
 		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
@@ -175,21 +174,21 @@ public class EntityEvents {
 
 	private void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		ItemStack item = event.getItemStack();
-		if (item.is(TFItems.ORE_METER.get()) && (item.has(TFDataComponents.ORE_DATA) || item.has(TFDataComponents.ORE_FILTER))) {
+		if (item.is(TFItems.ORE_METER.get()) && (item.has(TFDataComponents.ORE_DATA.get()) || item.has(TFDataComponents.ORE_FILTER.get()))) {
 			PacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
-			item.remove(TFDataComponents.ORE_DATA);
-			item.remove(TFDataComponents.ORE_FILTER);
+			item.remove(TFDataComponents.ORE_DATA.get());
+			item.remove(TFDataComponents.ORE_FILTER.get());
 			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.get(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
 		}
 	}
 
-	private void entityHurts(LivingDamageEvent.Post event) {
+	private void entityHurts(LivingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		DamageSource source = event.getSource();
 		Entity trueSource = source.getEntity();
 
 		// fire react and chill aura
-		if (source.getEntity() != null && trueSource != null && event.getOriginalDamage() > 0) {
+		if (source.getEntity() != null && trueSource != null && event.getAmount() > 0) {
 			int fireLevel = getGearCoverage(living, false) * 5;
 			int chillLevel = getGearCoverage(living, true);
 
@@ -227,21 +226,8 @@ public class EntityEvents {
 		}
 	}
 
-	private void reduceFrostedEffectIfOnFire(LivingIncomingDamageEvent event) {
-		if (!event.isCanceled()) {
-			LivingEntity living = event.getEntity();
-			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY)).ifPresent(mobEffectInstance -> {
-				DamageContainer container = event.getContainer();
-				if (container.getSource().typeHolder().is(DamageTypes.FREEZE)) {
-					container.setNewDamage(container.getOriginalDamage() + (float) (mobEffectInstance.getAmplifier() / 2));
-				} else if (container.getSource().typeHolder().is(DamageTypeTags.IS_FIRE)) {
-					living.removeEffect(TFMobEffects.FROSTY);
-					mobEffectInstance.amplifier -= 1;
-					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
-				}
-			});
-		}
-	}
+	// PORTAGE : gestionnaire supprime. Il reposait sur le pipeline de degats de
+	// NeoForge (DamageContainer), que Forge n'a pas. Voir PORTAGE-twilightforest-crochets.txt.
 
 	// Parrying
 	private void onParryProjectile(ProjectileImpactEvent event) {
@@ -417,16 +403,9 @@ public class EntityEvents {
 		}
 	}
 
-	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
-				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
-				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
-					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TwilightForestMod.prefix("group_health_boost"), getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
-				}
-			}
-		}
-	}
+
+	// PORTAGE : gestionnaire supprime, l'evenement correspondant n'existe pas chez Forge
+	// (voir PORTAGE-twilightforest-crochets.txt).
 
 	private static double getHealthBasedOnDifficulty(Difficulty difficulty) {
 		return switch (difficulty) {
@@ -437,9 +416,9 @@ public class EntityEvents {
 		};
 	}
 
-	private void addQualifiedGroupPlayerIfNeeded(LivingDamageEvent.Post event) {
+	private void addQualifiedGroupPlayerIfNeeded(LivingDamageEvent event) {
 		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
+			var data = Attachments.get(event.getEntity(), TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (event.getSource().getEntity() != null) {
 				data.maybeAddQualifiedPlayer(event.getSource().getEntity());
 			}
@@ -447,8 +426,8 @@ public class EntityEvents {
 	}
 
 	private void grantGroupAdvancementIfNeeded(LivingDeathEvent event) {
-		if (!event.isCanceled() && event.getEntity().hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
-			event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
+		if (!event.isCanceled() && Attachments.has(event.getEntity(), TFDataAttachments.MULTIPLAYER_FIGHT)) {
+			Attachments.get(event.getEntity(), TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
 		}
 	}
 
@@ -469,19 +448,19 @@ public class EntityEvents {
 	private void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
 		for (var criteria : event.getAdvancement().value().criteria().entrySet()) {
 			if (criteria.getValue().trigger() instanceof DrinkFromFlaskTrigger) {
-				event.getEntity().getData(TFDataAttachments.FLASK_DOSES).resetDoses();
+				Attachments.get(event.getEntity(), TFDataAttachments.FLASK_DOSES).resetDoses();
 				break;
 			}
 		}
 	}
 
 	private void handleLeashPathingOverrides(EntityJoinLevelEvent event) {
-		if (!(event.getEntity() instanceof PathfinderMob mob && mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE))) {
+		if (!(event.getEntity() instanceof PathfinderMob mob && Attachments.has(mob, TFDataAttachments.LEASH_PATHFINDER_OVERRIDE))) {
 			return;
 		}
 
 		if (!mob.mayBeLeashed()) {
-			mob.removeData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
+			Attachments.remove(mob, TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 		}
 	}
 

@@ -11,7 +11,7 @@ public class EnderBowItem extends BowItem {
 		super(properties);
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
 		arrow.getPersistentData().putBoolean(KEY, true);
 		return arrow;

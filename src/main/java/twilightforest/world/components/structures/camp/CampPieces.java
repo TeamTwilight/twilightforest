@@ -2,7 +2,7 @@ package twilightforest.world.components.structures.camp;
 
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Component;
+import twilightforest.forge.beans.Component;
 
 @Component
 public final class CampPieces {

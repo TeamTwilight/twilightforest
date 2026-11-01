@@ -1,83 +1,32 @@
-import net.neoforged.moddevgradle.internal.RunGameTask
-
-buildscript {
-	repositories {
-		maven {
-			name 'Beanification'
-			url 'https://maven.tamaized.com/releases/'
-			content {
-				includeGroup("tamaized")
-			}
-		}
-	}
-	dependencies {
-		classpath "tamaized:beanification:${beanification_version}:gradle"
-	}
-}
+// Build MinecraftForge 1.21.1 du portage.
+//
+// L'original utilise ModDevGradle, qui ne connait que NeoForge. On repart donc de ForgeGradle 6,
+// et volontairement au plus simple : source principale seule, sans shadow, sans jarJar, sans les
+// integrations tierces (JEI, REI, EMI, Curios, The One Probe), qui n'existent qu'en artefacts
+// -neoforge. Elles seront rebranchees une fois que le mod compilera.
+//
+// Le sous-projet tf-asm a disparu : Forge n'a pas d'API coremod, ses 31 transformateurs deviennent
+// des mixins.
 
 plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'org.jetbrains.gradle.plugin.idea-ext' version "1.1.10"
 	id 'maven-publish'
-	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
-	id 'net.neoforged.moddev' version "${mdg_version}"
-	id "com.dorongold.task-tree" version "4.0.0"
-	id 'com.gradleup.shadow' version '8.3.3'
+	id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+	id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-apply plugin: 'tamaized.beanification'
-
-configurations {
-	shade
-}
-
-shadowJar {
-	dependsOn(tasks.named("jar"))
-	afterEvaluate {
-		from({ tasks.named("jar").get().outputs })
-	}
-	archiveClassifier.set('universal')
-	configurations = [project.configurations.shade]
-	relocate 'tamaized.beanification', "${project.mod_id}.beanification"
-}
-
-jar {
-	archiveClassifier = "slim"
-}
-
-def secrets = new Properties()
-def secretsFile = file('secrets.properties')
-if (secretsFile.exists()) {
-	secretsFile.withInputStream {
-		stream -> secrets.load(stream)
-	}
-
-	fileTree("secrets").matching {
-		include "**/*.properties"
-	}.each {
-		File file ->
-			file.withInputStream {
-				stream -> secrets.load(stream)
-			}
-	}
-}
-
-idea {
-	project.settings.compiler.javac {
-		// Disable “Report use of deprecated features” https://github.com/JetBrains/gradle-idea-ext-plugin/wiki#javac-settings-of-idea-compiler
-		generateDeprecationWarnings = false
-	}
-
-	module {
-		downloadJavadoc = true
-		downloadSources = true
-	}
-}
+// Beanification (injection de dependances de Tamaized) est ecrite pour NeoForge : ni son plugin
+// Gradle ni sa bibliotheque ne fonctionnent sous Forge. Twilight Forest n'en utilise que quatre
+// annotations, reimplementees de zero dans twilightforest.forge.beans.
 
 version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = group_name
+
+base {
+	archivesName = "${project.mod_id}-${project.minecraft_version}-forge"
+}
 
 java {
 	toolchain {
@@ -85,237 +34,148 @@ java {
 	}
 }
 
-base {
-	archivesName = "${project.mod_id}-${project.minecraft_version}"
-}
+minecraft {
+	mappings channel: 'official', version: project.minecraft_version
 
-subprojects {
-	version = project(":").version
-}
-
-neoForge {
-	// we need the subprojects to evaluate first so that the sourceSets are properly constructed
-	evaluationDependsOnChildren()
-
-	def mod_id = project.mod_id
-	version = project.neo_version
-
-	validateAccessTransformers = true
-
-	mods {
-		"${mod_id}" {
-			it.sourceSet this.sourceSets.main
-		}
-
-		'tf-asm' {
-			it.sourceSet project(":tf-asm").sourceSets.main
-		}
-	}
-
-	def mainMod = mods."${project.mod_id}"
-
-	unitTest {
-		enable()
-		testedMod = mainMod
-	}
+	// Forge lit le meme format de transformateur d'acces que NeoForge : le fichier passe tel quel.
+	accessTransformers.from(file('src/main/resources/META-INF/accesstransformer.cfg'))
 
 	runs {
-		configureEach {
-			gameDirectory = project.file('run')
-			systemProperty 'forge.logging.console.level', 'debug'
-			logLevel = org.slf4j.event.Level.DEBUG
-		}
-
 		client {
-			client()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
-			programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: '', '-Xss10m'
+			workingDirectory project.file('run')
+			property 'forge.logging.markers', 'REGISTRIES'
+			property 'forge.logging.console.level', 'debug'
+			mods {
+				"${project.mod_id}" {
+					source sourceSets.main
+				}
+			}
 		}
 
 		server {
-			server()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
-			programArgument '--nogui'
+			workingDirectory project.file('run')
+			property 'forge.logging.console.level', 'debug'
+			args '--nogui'
+			mods {
+				"${project.mod_id}" {
+					source sourceSets.main
+				}
+			}
 		}
 
 		data {
-			data()
-			gameDirectory = project.file('run-data')
-			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+			workingDirectory project.file('run-data')
+			property 'forge.logging.console.level', 'debug'
+			args '--mod', project.mod_id, '--all',
+					'--output', file('src/generated/resources/').getAbsolutePath(),
+					'--existing', file('src/main/resources/').getAbsolutePath()
+			mods {
+				"${project.mod_id}" {
+					source sourceSets.main
+				}
+			}
 		}
 	}
 }
 
-afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
-	tasks.withType(RunGameTask).configureEach {
-		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('tf-asm')).toList())
-	}
-}
-
-jar {
-	exclude 'data/twilightforest/function/**'
+mixin {
+	add sourceSets.main, "${project.mod_id}.refmap.json"
+	config "${project.mod_id}.mixins.json"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-repositories {
-	mavenLocal()
-	maven {
-		name 'Jared\'s Maven' // JEI
-		url 'https://maven.blamejared.com/'
-	}
-	maven {
-		name = "OctoStudios" //Curios
-		url = uri("https://maven.octo-studios.com/releases")
-	}
-	maven {
-		name 'Shedaniel\'s Maven' //REI
-		url "https://maven.shedaniel.me"
-	}
-	maven {
-		name = "TerraformersMC" //EMI
-		url = "https://maven.terraformersmc.com/"
-	}
-	maven { // TOP
-		url "https://maven.k-4u.nl"
-	}
-	maven { //CS
-		url "https://nexus.resourcefulbees.com/repository/maven-public/"
-	}
-    maven {
-        name 'Curseforge Maven' // Jade
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-	maven {
-		name 'Tama\'s Maven' // Beanification
-		url 'https://maven.tamaized.com/releases/'
-		content {
-			includeGroup("tamaized")
+sourceSets {
+	main {
+		java {
+			// Integrations tierces mises de cote : JEI, REI, EMI, Jade, Curios et The One Probe
+			// n'existent qu'en artefacts -neoforge. Elles se rebranchent une fois le mod compilant,
+			// et elles sont toutes regroupees ici, ce qui rend l'exclusion propre.
+			exclude 'twilightforest/compat/**'
+
+			// Generation de donnees mise de cote au meme titre : elle s'appuie sur les data maps de
+			// NeoForge, qui n'ont pas d'equivalent. Les sous-paquets data/tags et data/helpers
+			// restent compiles — ils portent des constantes lues a l'execution, pas du datagen.
+			exclude 'twilightforest/data/*.java'
+
+			// Aide de generation de recettes : elle s'appuie sur des constructeurs qui acceptent une
+			// pile d'objets, ce que NeoForge ajoute et pas Forge. Elle ne sert qu'au datagen, deja hors
+			// du build.
+			exclude 'twilightforest/data/helpers/CraftingDataHelper.java'
+
+			// Constructeurs de modeles pour la generation de donnees : le CustomLoaderBuilder de Forge
+			// n'a pas la meme signature. Ils ne servent qu'au datagen, deja hors du build.
+			exclude 'twilightforest/client/model/block/aurorablock/NoiseVaryingModelBuilder.java'
+			exclude 'twilightforest/client/model/block/forcefield/ForceFieldModelBuilder.java'
+			exclude 'twilightforest/client/model/block/carpet/RoyalRagsBuilder.java'
+
+
+			// Calques jamais utilises, meme dans l'original (OverlayHandler fait le travail) ; ils
+			// s'appuient sur les hauteurs d'interface de NeoForge, absentes chez Forge.
+			exclude 'twilightforest/client/overlay/PortalOverlay.java'
+			exclude 'twilightforest/client/overlay/QuestingRamIndicatorOverlay.java'
+			exclude 'twilightforest/client/overlay/ShieldOverlay.java'
+
+			// Rendus d'icones de carte : Forge n'a pas d'interface equivalente.
+			exclude 'twilightforest/client/renderer/map/**'
+			exclude 'twilightforest/client/model/block/connected/ConnectedTextureBuilder.java'
+			exclude 'twilightforest/client/model/block/giantblock/GiantBlockBuilder.java'
+			exclude 'twilightforest/data/helpers/TFSoundProvider.java'
 		}
 	}
+}
+
+// Classes et ressources dans un meme dossier de sortie, comme le MDK officiel de Forge 1.21.1.
+// Sans ca, en developpement, Forge decouvre le mod par le classpath entree par entree : il prend
+// build/resources/main (qui contient mods.toml) pour un mod a lui seul, n'y trouve aucune classe
+// @Mod, et s'arrete sur « has mods that were not found ».
+sourceSets.each {
+	def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+	it.output.resourcesDir = dir
+	it.java.destinationDirectory = dir
+}
+
+repositories {
+	mavenLocal()
 }
 
 dependencies {
-	jarJar implementation(project(":tf-asm"))
+	minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
-	def beanification = "tamaized:beanification:${project.beanification_version}"
-	implementation beanification
-	shade beanification
-	testImplementation "${beanification}:tests"
-	testCompileOnly "${beanification}:test-sources"
+	// Beanification remplacee par twilightforest.forge.beans : ecrite pour NeoForge, elle ne se
+	// charge pas sous Forge (net.neoforged.fml.ModList introuvable au premier appel).
 
-	//make sure to only pick one of these when testing (switch others to compileOnly)
-	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
-	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
-	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
-
-	// theillusivec4
-	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
-
-	//curse maven
-	implementation "curse.maven:jade-324717:5529595"
-	implementation "curse.maven:cosmetic-armor-reworked-237307:5427303"
-	runtimeOnly "curse.maven:worldedit-225608:5830452"
-	runtimeOnly "curse.maven:jeed-532286:6550600"
-//	runtimeOnly "curse.maven:museum-curator-859070:4629894"
-	if (project.enable_tips_mod == 'true') {
-		runtimeOnly "curse.maven:tips-306549:5844057"
-		runtimeOnly "curse.maven:bookshelf-228525:6098975"
-		runtimeOnly "curse.maven:prickle-1023259:5836410"
-	}
-	runtimeOnly "curse.maven:suggestion-provider-fix-469647:5598604"
-
-	compileOnly "mcjty.theoneprobe:theoneprobe:${project.top_version}"
-
-    //mods we dont have compat with but are nice to have
-	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.3.2+1.20.6"
-
-	testImplementation group: 'net.neoforged', name: 'testframework', version: project.neo_version
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.3'
-	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.3'
-	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
-}
-
-configurations.testImplementation {
-	exclude module: 'tf-asm'
-}
-
-test {
-	useJUnitPlatform()
-	testLogging {
-		events "failed"
-
-		showExceptions true
-		exceptionFormat "full"
-		showCauses true
-		showStackTraces true
-
-		showStandardStreams = false
-	}
-}
-
-processResources {
-	def ver = project.version
-	filesMatching("META-INF/neoforge.mods.toml") {
-		expand([
-			'file'           : [
-				'jarVersion': ver
-			]
-		])
-	}
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 jar {
+	exclude 'data/twilightforest/function/**'
+
 	manifest {
 		attributes([
-			'Specification-Title'     : mod_id,
-			'Specification-Vendor'    : "TeamTwilight",
-			'Specification-Version'   : "1",
-			'Implementation-Title'    : this.project.name,
-			'Implementation-Version'  : this.project.jar.archiveVersion,
-			'Implementation-Vendor'   : "TeamTwilight",
-			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+				'Specification-Title'     : project.mod_id,
+				'Specification-Vendor'    : 'TeamTwilight',
+				'Specification-Version'   : '1',
+				'Implementation-Title'    : project.name,
+				'Implementation-Version'  : project.version,
+				'Implementation-Vendor'   : 'TeamTwilight',
+				'MixinConfigs'            : "${project.mod_id}.mixins.json"
 		])
 	}
 }
 
-def mavenUser = System.getenv("MAVEN_USER")?: secrets.getProperty("maven_username")
-def mavenToken = System.getenv("MAVEN_PASS")?: secrets.getProperty("maven_password")
-
-publishing {
-	publications {
-		create('mavenJava', MavenPublication) {
-			afterEvaluate {
-				artifact this.project.shadowJar
-				artifact this.project.sourceJar
-			}
-			groupId mavenUser
-			artifactId this.project.mod_id
-		}
-	}
-	repositories {
-		maven {
-			url "https://maven.tamaized.com/releases"
-			credentials {
-				username mavenUser
-				password mavenToken
-			}
-		}
-	}
-}
-
-tasks.register('sourceJar', Jar) {
-	dependsOn 'classes'
-	from sourceSets.main.allSource
-	archiveClassifier = 'sources'
+// Le jeu publie porte des noms obfusques (m_20993_ et compagnie), pas les noms lisibles du
+// developpement. Sans ce bloc, ForgeGradle ne cree meme pas la tache de traduction : le jar
+// obtenu ne fonctionne qu'en developpement, et MixinGradle n'y depose pas la table de
+// correspondance dont les mixins ont besoin pour retrouver leurs cibles en jeu.
+reobf {
+	jar {}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
 	options.encoding = 'UTF-8'
+	// javac s'arrete a 100 erreurs par defaut ; pendant un portage on veut la liste entiere.
+	options.compilerArgs << '-Xmaxerrs' << '100000'
 }
 
-build.dependsOn shadowJar
+

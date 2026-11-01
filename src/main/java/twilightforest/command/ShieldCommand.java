@@ -1,5 +1,6 @@
 package twilightforest.command;
 
+import twilightforest.forge.attachment.Attachments;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -9,7 +10,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import tamaized.beanification.Component;
+import twilightforest.forge.beans.Component;
 import twilightforest.init.TFDataAttachments;
 
 @Component
@@ -33,14 +34,14 @@ public class ShieldCommand {
 
 	private int add(Entity e, int num, boolean temporary) {
 		if (e instanceof LivingEntity living) {
-			living.getData(TFDataAttachments.FORTIFICATION_SHIELDS).addShields(living, num, temporary);
+			Attachments.get(living, TFDataAttachments.FORTIFICATION_SHIELDS).addShields(living, num, temporary);
 		}
 		return Command.SINGLE_SUCCESS;
 	}
 
 	private int set(Entity e, int num, boolean temporary) {
 		if (e instanceof LivingEntity living) {
-			living.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(living, num, temporary);
+			Attachments.get(living, TFDataAttachments.FORTIFICATION_SHIELDS).setShields(living, num, temporary);
 		}
 		return Command.SINGLE_SUCCESS;
 	}

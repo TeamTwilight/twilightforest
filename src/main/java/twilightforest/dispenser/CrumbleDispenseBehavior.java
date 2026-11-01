@@ -1,5 +1,6 @@
 package twilightforest.dispenser;
 
+import twilightforest.forge.datamap.DataMaps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -25,7 +26,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		BlockState state = level.getBlockState(pos);
 		if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-			var resultBlock = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+			var resultBlock = DataMaps.get(state.getBlock().builtInRegistryHolder(), TFDataMaps.CRUMBLE_HORN);
 			if (resultBlock != null) {
 				if (resultBlock.result() == Blocks.AIR) {
 					level.destroyBlock(pos, true);

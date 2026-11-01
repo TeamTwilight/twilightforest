@@ -5,7 +5,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.forge.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.inventory.UncraftingMenu;
@@ -29,7 +29,7 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 	}
 
 	public static void handle(UncraftingGuiPacket message, IPayloadContext ctx) {
-		if (ctx.flow().isServerbound()) {
+		if (ctx.isServerbound()) {
 			ctx.enqueueWork(() -> {
 				AbstractContainerMenu container = ctx.player().containerMenu;
 

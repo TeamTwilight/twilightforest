@@ -10,9 +10,9 @@ import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.common.ForgeSpawnEggItem;
+import twilightforest.forge.registries.DeferredHolder;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.enums.HollowLogVariants;
@@ -234,12 +234,12 @@ public class ColorHandler {
 
 		event.register((stack, index) -> {
 			if (index > 0) return -1;
-			var contents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+			var contents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY);
 			if (contents.potion().potion().isEmpty()) return -1;
 			return contents.potion().getColor();
 		}, TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
 
-		for (DeferredSpawnEggItem egg : TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::get).map(DeferredSpawnEggItem.class::cast).toList()) {
+		for (ForgeSpawnEggItem egg : TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::get).map(ForgeSpawnEggItem.class::cast).toList()) {
 			event.register((stack, index) -> FastColor.ARGB32.opaque(egg.getColor(index)), egg);
 		}
 	}

@@ -15,7 +15,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.forge.network.PacketDistributor;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFParticleType;

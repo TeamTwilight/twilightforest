@@ -96,7 +96,7 @@
     "brick",
     "runes"
   ],
-  "loader": "neoforge:composite",
+  "loader": "forge:composite",
   "textures": {
     "particle": "twilightforest:block/castle_brick"
   }

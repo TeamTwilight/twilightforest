@@ -39,7 +39,8 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	private Set<ParticleOptions> particleOptions = new HashSet<>();
 
 	public void setChanged() {
-		Either<BlockEntity, Entity> owner = this.getOwner();
+		// PORTAGE : Forge n'a pas d'API de proprietaire de spawner.
+		Either<BlockEntity, Entity> owner = null;
 		if (owner != null) {
 			owner.ifLeft(blockEntity -> {
 				blockEntity.setChanged();
@@ -168,14 +169,18 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 
 						entity.moveTo(entity.getX(), entity.getY(), entity.getZ(), randomsource.nextFloat() * 360.0F, 0.0F);
 						if (entity instanceof Mob mob) {
-							if (!net.neoforged.neoforge.event.EventHooks.checkSpawnPositionSpawner(mob, serverLevel, MobSpawnType.SPAWNER, spawndata, this)) {
+							if (!net.minecraftforge.event.ForgeEventFactory.checkSpawnPositionSpawner(mob, serverLevel, MobSpawnType.SPAWNER, spawndata, this)) {
 								continue;
 							}
 
 							boolean flag1 = spawndata.getEntityToSpawn().size() == 1 && spawndata.getEntityToSpawn().contains("id", 8);
 							// Neo: Patch in FinalizeSpawn for spawners so it may be fired unconditionally, instead of only when vanilla would normally call it.
 							// The local flag1 is the conditions under which the spawner will normally call Mob#finalizeSpawn.
-							net.neoforged.neoforge.event.EventHooks.finalizeMobSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, flag1);
+							// PORTAGE : Forge attend (Mob, ServerLevelAccessor, DifficultyInstance, SpawnGroupData,
+				// CompoundTag, BaseSpawner). NeoForge y glissait un MobSpawnType et un drapeau final,
+				// tous deux sans equivalent ici — le type d'apparition est deja implicite (un
+				// generateur), et le drapeau ne servait qu'a NeoForge.
+				net.minecraftforge.event.ForgeEventFactory.onFinalizeSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), null, null, this);
 
 							spawndata.getEquipment().ifPresent(mob::equip);
 

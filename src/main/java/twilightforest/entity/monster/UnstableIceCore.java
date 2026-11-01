@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.util.ColorUtil;
@@ -69,7 +69,7 @@ public class UnstableIceCore extends BaseIceMob {
 
 		if (this.deathTime == 60) { // delay until 3 seconds
 			if (!this.level().isClientSide()) {
-				boolean mobGriefing = EventHooks.canEntityGrief(this.level(), this);
+				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(this.level(), this);
 				this.level().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {

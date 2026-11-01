@@ -18,12 +18,18 @@ public class CustomDamageSwordItem extends SwordItem implements CustomDamageProv
 	}
 
 	public CustomDamageSwordItem(ResourceKey<DamageType> damageType, Tier tier, Properties properties, Tool toolComponentData) {
-		super(tier, properties, toolComponentData);
+		// PORTAGE : NeoForge accepte le composant d'outil en quatrieme parametre. Chez Forge il se
+		// pose sur les proprietes, ce qui revient au meme puisque c'est la qu'il finit.
+		super(tier, properties.component(net.minecraft.core.component.DataComponents.TOOL, toolComponentData));
 		this.damageType = damageType;
 	}
 
 	@Override
 	public DamageSource getDamageSource(LivingEntity attacker) {
-		return attacker.damageSources().source(this.damageType, attacker);
+		// PORTAGE : « DamageSources.source » est privee chez Mojang, NeoForge l'ouvre. Le
+		// constructeur public de DamageSource fait la meme chose, a partir du meme registre.
+		return new DamageSource(attacker.registryAccess()
+			.registryOrThrow(net.minecraft.core.registries.Registries.DAMAGE_TYPE)
+			.getHolderOrThrow(this.damageType), attacker);
 	}
 }

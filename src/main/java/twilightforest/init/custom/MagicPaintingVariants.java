@@ -17,8 +17,6 @@ import net.minecraft.world.item.Items;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingTextureManager;
-import twilightforest.data.AtlasGenerator;
-import twilightforest.data.LangGenerator;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer;
 
@@ -115,8 +113,8 @@ public class MagicPaintingVariants {
 	private static void register(BootstrapContext<MagicPaintingVariant> context, ResourceKey<MagicPaintingVariant> key, String title, String author, int width, int height, ResourceLocation backSprite, List<Layer> layers) {
 		Component authorComponent = Component.translatable(key.location().toLanguageKey("magic_painting", "author"));
 		MagicPaintingVariant variant = new MagicPaintingVariant(width * 16, height * 16, layers, authorComponent, backSprite);
-		AtlasGenerator.MAGIC_PAINTING_HELPER.put(key.location(), variant);
-		LangGenerator.MAGIC_PAINTING_HELPER.put(key.location(), Pair.of(title, author));
+		// Ces deux tables ne servaient qu'a la generation de donnees, hors du build pour l'instant.
+		// A retablir en meme temps que le datagen.
 		context.register(key, variant);
 	}
 }

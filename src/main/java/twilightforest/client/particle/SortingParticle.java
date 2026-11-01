@@ -1,5 +1,6 @@
 package twilightforest.client.particle;
 
+import twilightforest.forge.Boxes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -89,8 +90,8 @@ public class SortingParticle extends TextureSheetParticle {
 		}
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public AABB getRenderBoundingBox(float partialTicks) {
-		return AABB.INFINITE;
+		return Boxes.INFINITE;
 	}
 }

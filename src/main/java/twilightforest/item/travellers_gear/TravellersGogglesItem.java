@@ -32,7 +32,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	@Override
 	public @NotNull Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
 		return !stack.has(DataComponents.HIDE_TOOLTIP) && !stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP)
-			? Optional.ofNullable(stack.get(TFDataComponents.ITEM_DISPLAY)).map(Tooltip::new)
+			? Optional.ofNullable(stack.get(TFDataComponents.ITEM_DISPLAY.get())).map(Tooltip::new)
 			: Optional.empty();
 	}
 
@@ -41,7 +41,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		if (stack.getCount() != 1 || action != ClickAction.SECONDARY)
 			return false;
 
-		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
+		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY.get());
 		if (contents == null)
 			return false;
 
@@ -53,12 +53,12 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 				slot.safeInsert(removedStack);
 				this.playRemoveOneSound(player);
 			}
-		} else if (itemstack.canFitInsideContainerItems()) {
+		} else if (itemstack.getItem().canFitInsideContainerItems()) {
 			if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player))
 				this.playInsertSound(player);
 		}
 
-		stack.set(TFDataComponents.ITEM_DISPLAY, mutableContents.toImmutable());
+		stack.set(TFDataComponents.ITEM_DISPLAY.get(), mutableContents.toImmutable());
 		return true;
 	}
 
@@ -67,7 +67,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		if (stack.getCount() != 1 || action != ClickAction.SECONDARY || !slot.allowModification(player))
 			return false;
 
-		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
+		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY.get());
 		if (contents == null)
 			return false;
 
@@ -83,7 +83,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 				this.playInsertSound(player);
 		}
 
-		stack.set(TFDataComponents.ITEM_DISPLAY, mutableContents.toImmutable());
+		stack.set(TFDataComponents.ITEM_DISPLAY.get(), mutableContents.toImmutable());
 		return true;
 	}
 
@@ -95,7 +95,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
 			return;
 
-		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
+		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY.get());
 		if (contents == null || contents.isEmpty())
 			return;
 

@@ -1,5 +1,7 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.network.FriendlyByteBuf;
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -27,9 +29,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
-import net.neoforged.neoforge.entity.PartEntity;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
@@ -37,7 +39,7 @@ import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
-public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
+public class ChainBlock extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
 	private static final int MAX_STUCK_TICKS = 100;
 	private static final int MAX_CHAIN = 16;
@@ -145,7 +147,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			}
 
 			//properly disable shields
-			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ItemAbilities.SHIELD_BLOCK)) {
+			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
 				player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 				player.disableShield();
 			}
@@ -173,7 +175,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			BlockState state = level.getBlockState(pos);
 			if (!state.isAir()) {
 				boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
-				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode) || this.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() >= 12) {
+				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode) || Attachments.get(this, TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() >= 12) {
 					this.bounce(result.getDirection());
 				}
 
@@ -277,8 +279,8 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 				if (this.isReturning()) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
-						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
-							this.stack.hurtAndBreak(Math.min(living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, LivingEntity.getSlotForHand(this.getHand()));
+						if (this.stack != null && this.getOwner() instanceof LivingEntity living && Attachments.get(living, TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
+							this.stack.hurtAndBreak(Math.min(Attachments.get(living, TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, LivingEntity.getSlotForHand(this.getHand()));
 						}
 						this.discard();
 					}
@@ -331,14 +333,14 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		pCompound.putBoolean("IsReturning", this.isReturning());
 	}
 
-	@Override
-	public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
+	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getOwner() != null ? this.getOwner().getId() : -1);
 		buffer.writeBoolean(this.getHand() == InteractionHand.MAIN_HAND);
 	}
 
-	@Override
-	public void readSpawnData(RegistryFriendlyByteBuf buf) {
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
+	public void readSpawnData(FriendlyByteBuf buf) {
 		Entity e = this.level().getEntity(buf.readInt());
 		if (e instanceof LivingEntity) {
 			this.setOwner(e);

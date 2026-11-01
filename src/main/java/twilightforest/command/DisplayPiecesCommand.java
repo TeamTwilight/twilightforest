@@ -22,13 +22,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.util.DisplayUtil;
 import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.List;
 
-@tamaized.beanification.Component
+@twilightforest.forge.beans.Component
 public class DisplayPiecesCommand {
 	@Autowired
 	private DisplayUtil displayUtil;

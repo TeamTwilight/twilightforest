@@ -10,9 +10,9 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 
-@tamaized.beanification.Component
+@twilightforest.forge.beans.Component
 public class TFCommand {
 
 	@Autowired

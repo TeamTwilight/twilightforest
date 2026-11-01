@@ -2,9 +2,9 @@ package twilightforest.util.multiparts;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.forge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
+import twilightforest.forge.beans.Component;
 import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.entity.TFPart;
 import twilightforest.network.UpdateTFMultipartPacket;

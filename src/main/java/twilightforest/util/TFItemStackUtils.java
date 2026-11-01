@@ -48,8 +48,8 @@ public class TFItemStackUtils {
 					String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
 
 					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, StringUtils.isNumeric(propertyValueString) ? Integer.parseInt(propertyValueString) : 0);
-				} else if (stack.has(TFDataComponents.CASKET_DAMAGE)) {
-					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
+				} else if (stack.has(TFDataComponents.CASKET_DAMAGE.get())) {
+					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE.get(), 0));
 				}
 				stack.shrink(1);
 				return true;
@@ -162,7 +162,11 @@ public class TFItemStackUtils {
 
 	public static void hurtButDontBreak(ItemStack stack, int amount, ServerLevel level, @Nullable LivingEntity entity) {
 		if (stack.isDamageableItem()) {
-			amount = stack.getItem().damageItem(stack, amount, entity, item -> {});
+			// PORTAGE : NeoForge prend l'entite vivante ; Forge veut le niveau et, s'il y en a un,
+			// le joueur — la methode ne concerne que le cote serveur des deux cotes.
+			amount = stack.getItem().damageItem(stack, amount, level,
+				entity instanceof net.minecraft.server.level.ServerPlayer serverPlayer ? serverPlayer : null,
+				item -> {});
 			if (entity == null || !entity.hasInfiniteMaterials()) {
 				if (amount > 0) {
 					amount = EnchantmentHelper.processDurabilityChange(level, stack, amount);

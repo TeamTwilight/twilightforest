@@ -1,5 +1,5 @@
 {
-  "loader": "neoforge:composite",
+  "loader": "forge:composite",
   "parent": "block/block",
   "children": {
     "main": {

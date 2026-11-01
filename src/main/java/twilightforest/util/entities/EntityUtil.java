@@ -34,8 +34,8 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
@@ -65,7 +65,7 @@ public class EntityUtil {
 			&& !(world.getBlockEntity(pos) instanceof Container)
 			&& state.getBlock().canEntityDestroy(state, world, pos, entity)
 			&& (/* rude type limit */!(entity instanceof LivingEntity)
-			|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+			|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state));
 	}
 
 	/**
@@ -292,7 +292,7 @@ public class EntityUtil {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
 		var newEntity = newType.create(level);
 		if (newEntity == null) return false;
-		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
+		if (!(newEntity instanceof LivingEntity living) || ForgeEventFactory.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
 				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
@@ -310,7 +310,7 @@ public class EntityUtil {
 						}
 					}
 
-					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
+					ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
 				}
 
 				oldEntity.level().addFreshEntity(newEntity);
@@ -347,7 +347,7 @@ public class EntityUtil {
 				}
 			}
 
-			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
+			if (newEntity instanceof LivingEntity living) ForgeEventFactory.onLivingConvert(oldEntity, living);
 			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
 			return true;
 		}

@@ -1,5 +1,6 @@
 package twilightforest.init;
 
+import twilightforest.forge.Lookups;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -11,7 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.enums.extensions.TFDamageEffectsEnumExtension;
 import twilightforest.util.entities.EntityExcludedDamageSource;
 
@@ -75,7 +76,7 @@ public class TFDamageTypes {
 	}
 
 	public static DamageSource getIndirectEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker, EntityType<?>... toIgnore) {
-		return toIgnore.length > 0 ? new EntityExcludedDamageSource(level.registryAccess().holderOrThrow(type), attacker, indirectAttacker, toIgnore) : new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
+		return toIgnore.length > 0 ? new EntityExcludedDamageSource(Lookups.holder(level.registryAccess(), type), attacker, indirectAttacker, toIgnore) : new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
 	}
 
 	public static void bootstrap(BootstrapContext<DamageType> context) {

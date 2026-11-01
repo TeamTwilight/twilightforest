@@ -13,35 +13,38 @@
       "M": {
         "item": "twilightforest:raw_meef"
       },
-      "P": [
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:swiftness"
-            }
+      "P": {
+        "type": "forge:compound",
+        "children": [
+          {
+            "type": "twilightforest:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:swiftness"
+              }
+            },
+            "items": "minecraft:potion"
           },
-          "items": "minecraft:potion"
-        },
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:long_swiftness"
-            }
+          {
+            "type": "twilightforest:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:long_swiftness"
+              }
+            },
+            "items": "minecraft:potion"
           },
-          "items": "minecraft:potion"
-        },
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:strong_swiftness"
-            }
-          },
-          "items": "minecraft:potion"
-        }
-      ]
+          {
+            "type": "twilightforest:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:strong_swiftness"
+              }
+            },
+            "items": "minecraft:potion"
+          }
+        ]
+      }
     },
     "pattern": [
       "MPM",

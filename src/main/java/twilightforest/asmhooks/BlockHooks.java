@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.util.TriState;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.TriState;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.SnowLoggable;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -111,7 +111,7 @@ public class BlockHooks {
 	 * {@link twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.neoforged.neoforge.common.extensions.IBlockExtension#getFriction(BlockState, LevelReader, BlockPos, Entity)}
+	 * {@link net.minecraftforge.common.extensions.IBlockExtension#getFriction(BlockState, LevelReader, BlockPos, Entity)}
 	 * Targets: FRETURN
 	 */
 	public static float resetBlockFrictionWithUnrestrained(float o, Entity entity) {

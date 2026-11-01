@@ -1,5 +1,6 @@
 package twilightforest.client.event;
 
+import twilightforest.forge.attachment.Attachments;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
@@ -19,12 +20,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
+import twilightforest.forge.beans.Autowired;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
@@ -48,76 +50,81 @@ public class OverlayHandler {
 	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
-	@Autowired(dist = Dist.CLIENT)
+	@Autowired
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
-	protected static void registerOverlays(RegisterGuiLayersEvent event) {
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			LocalPlayer player = minecraft.player;
-			Gui gui = minecraft.gui;
-			if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
-				RenderSystem.enableBlend();
-				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
-				RenderSystem.disableBlend();
-			}
-		});
-		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			LocalPlayer player = minecraft.player;
-			Gui gui = minecraft.gui;
-			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
-				int xPos = graphics.guiWidth() / 2 + 91;
-				int yPos = graphics.guiHeight() - gui.rightHeight;
-				gui.renderFood(graphics, player, yPos, xPos);
-				gui.rightHeight += 10;
-			}
-		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			LocalPlayer player = minecraft.player;
-			Gui gui = minecraft.gui;
-			if (player != null && !minecraft.options.hideGui && !gui.getDebugOverlay().showDebugScreen() && minecraft.screen == null) {
-				renderOreMeterStats(graphics, player);
-			}
-		});
+	/**
+	 * Les calques d'interface du mod, dessines apres l'interface du jeu.
+	 *
+	 * <p>NeoForge les place entre ceux du jeu ({@code RegisterGuiLayersEvent}) et tient la hauteur
+	 * deja occupee de chaque cote de la barre d'objets ({@code leftHeight}/{@code rightHeight}).
+	 * Forge 1.21.1 n'a ni l'un ni l'autre : {@code GuiMixin} appelle cette methode a la fin de
+	 * {@code Gui.render}, et les deux hauteurs sont recalculees comme le fait le jeu (coeurs et
+	 * armure a gauche, vie de la monture a droite).</p>
+	 */
+	public static void renderAll(Gui gui, GuiGraphics graphics) {
+		Minecraft minecraft = Minecraft.getInstance();
+		LocalPlayer player = minecraft.player;
+		if (player == null) return;
+		int width = graphics.guiWidth();
+		int height = graphics.guiHeight();
 
-		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			LocalPlayer player = minecraft.player;
-			Gui gui = minecraft.gui;
-			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
-				renderShieldCount(graphics, gui, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
-			}
-		});
-
-		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> {
-			Minecraft minecraft = Minecraft.getInstance();
+		// Portail : le voile violet, dessine meme interface cachee, comme chez NeoForge.
+		TFPortalAttachment portal = Attachments.get(player, TFDataAttachments.TF_PORTAL_COOLDOWN);
+		if (portal.getPortalTimer() > 0) {
 			Window window = minecraft.getWindow();
-			LocalPlayer player = minecraft.player;
+			RenderSystem.disableDepthTest();
+			RenderSystem.depthMask(false);
+			RenderSystem.enableBlend();
+			graphics.setColor(1.0F, 1.0F, 1.0F, (float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS);
+			TextureAtlasSprite textureatlassprite = minecraft.getBlockRenderer().getBlockModelShaper().getParticleIcon(TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState());
+			graphics.blit(0, 0, -90, window.getGuiScaledWidth(), window.getGuiScaledHeight(), textureatlassprite);
+			RenderSystem.disableBlend();
+			RenderSystem.depthMask(true);
+			RenderSystem.enableDepthTest();
+			graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+		}
 
-			if (player != null) {
-				TFPortalAttachment portal = player.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
-				if (portal.getPortalTimer() > 0) {
-					RenderSystem.disableDepthTest();
-					RenderSystem.depthMask(false);
-					RenderSystem.enableBlend();
-					graphics.setColor(1.0F, 1.0F, 1.0F, (float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS);
-					TextureAtlasSprite textureatlassprite = minecraft.getBlockRenderer().getBlockModelShaper().getParticleIcon(TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState());
-					graphics.blit(0, 0, -90, window.getGuiScaledWidth(), window.getGuiScaledHeight(), textureatlassprite);
-					RenderSystem.disableBlend();
-					RenderSystem.depthMask(true);
-					RenderSystem.enableDepthTest();
-					graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-				}
-			}
-		});
+		if (minecraft.options.hideGui) return;
 
-		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, partialTick) -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			Gui gui = minecraft.gui;
-			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());
-		});
+		if (TFConfig.showQuestRamCrosshairIndicator) {
+			RenderSystem.enableBlend();
+			renderIndicator(minecraft, graphics, gui, player, width, height);
+			RenderSystem.disableBlend();
+		}
+
+		// Le jeu cache la faim sur une monture qui a une barre de vie ; le mod la remet quand la
+		// monture est hostile, au-dessus des coeurs de la monture.
+		if (minecraft.gameMode.canHurtPlayer() && HostileMountEvents.isRidingUnfriendly(player) && player.getVehicle() instanceof LivingEntity mount) {
+			int hearts = Math.min((int) (mount.getMaxHealth() + 0.5F) / 2, 30);
+			int rightHeight = 39 + Mth.ceil(hearts / 10.0F) * 10;
+			gui.renderFood(graphics, player, height - rightHeight, width / 2 + 91);
+		}
+
+		if ((minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && Attachments.has(player, TFDataAttachments.FORTIFICATION_SHIELDS) && Attachments.get(player, TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+			renderShieldCount(graphics, width, height - leftHeight(minecraft, player), Attachments.get(player, TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
+		}
+
+		ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());
+
+		if (!gui.getDebugOverlay().showDebugScreen() && minecraft.screen == null) {
+			renderOreMeterStats(graphics, player);
+		}
+	}
+
+	/** Hauteur occupee a gauche au-dessus de la barre d'objets : lignes de coeurs puis armure. */
+	private static int leftHeight(Minecraft minecraft, Player player) {
+		int leftHeight = 39;
+		if (minecraft.gameMode.canHurtPlayer()) {
+			float maxHealth = Math.max((float) player.getAttributeValue(Attributes.MAX_HEALTH), player.getHealth());
+			int absorb = Mth.ceil(player.getAbsorptionAmount());
+			int healthRows = Mth.ceil((maxHealth + absorb) / 2.0F / 10.0F);
+			int rowHeight = Math.max(10 - (healthRows - 2), 3);
+			leftHeight += healthRows * rowHeight;
+			if (rowHeight != 10) leftHeight += 10 - rowHeight;
+			if (player.getArmorValue() > 0) leftHeight += 10;
+		}
+		return leftHeight;
 	}
 
 	private static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
@@ -142,11 +149,10 @@ public class OverlayHandler {
 		}
 	}
 
-	private static void renderShieldCount(GuiGraphics graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
+	private static void renderShieldCount(GuiGraphics graphics, int screenWidth, int y, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
+			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), y, 9, 9);
 		}
-		gui.leftHeight += 10;
 	}
 
 	private static void renderOreMeterStats(GuiGraphics graphics, Player player) {
@@ -162,13 +168,13 @@ public class OverlayHandler {
 				graphics.fill(0, 0, 56, 16, 0x9b000000);
 				graphics.drawString(Minecraft.getInstance().font, component, 4, 4, 16777215, false);
 			} else {
-				OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
+				OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA.get());
 
 				if (oreScannerData == null) return;
 
 				long identifier = oreScannerData.universalId();
 				if (identifier != 0L && !ORE_METER_STAT_CACHE.containsKey(identifier)) {
-					initTooltips(identifier, selectedMeter.getOrDefault(TFDataComponents.ORE_RANGE, 1), oreScannerData);
+					initTooltips(identifier, selectedMeter.getOrDefault(TFDataComponents.ORE_RANGE.get(), 1), oreScannerData);
 				}
 
 				if (ORE_METER_STAT_CACHE.containsKey(identifier)) {

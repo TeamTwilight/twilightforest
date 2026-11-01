@@ -1,5 +1,6 @@
 package twilightforest.client.model.item;
 
+import twilightforest.forge.TFModels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -8,14 +9,14 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.model.BakedModelWrapper;
+import net.minecraftforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TrollsteinnBlock;
 
 public class TrollsteinnModel extends BakedModelWrapper<BakedModel> {
-	public static final ModelResourceLocation LIT_TROLLSTEINN = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light"));
+	public static final ModelResourceLocation LIT_TROLLSTEINN = TFModels.standalone(TwilightForestMod.prefix("item/trollsteinn_light"));
 	@Nullable
 	private BakedModel litTrollsteinnModel;
 	private final ItemOverrides overrides = new ItemOverrides() {

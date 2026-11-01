@@ -2,7 +2,7 @@ package twilightforest.config;
 
 import net.minecraft.commands.Commands;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +15,14 @@ public class TFCommonConfig {
 	final UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 	final ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 
-	final ModConfigSpec.BooleanValue casketUUIDLocking;
-	final ModConfigSpec.BooleanValue disableSkullCandles;
-	final ModConfigSpec.BooleanValue defaultItemEnchants;
-	final ModConfigSpec.BooleanValue bossDropChests;
-	final ModConfigSpec.IntValue cloudBlockPrecipitationDistance;
-	final ModConfigSpec.EnumValue<TFConfig.MultiplayerFightAdjuster> multiplayerFightAdjuster;
+	final ForgeConfigSpec.BooleanValue casketUUIDLocking;
+	final ForgeConfigSpec.BooleanValue disableSkullCandles;
+	final ForgeConfigSpec.BooleanValue defaultItemEnchants;
+	final ForgeConfigSpec.BooleanValue bossDropChests;
+	final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistance;
+	final ForgeConfigSpec.EnumValue<TFConfig.MultiplayerFightAdjuster> multiplayerFightAdjuster;
 
-	public TFCommonConfig(ModConfigSpec.Builder builder) {
+	public TFCommonConfig(ForgeConfigSpec.Builder builder) {
 		builder.comment(ConfigComments.DIMENSION).translation(TFConfig.CONFIG_ID + "dim_settings").push("Dimension Settings");
 		{
 			DIMENSION.newPlayersSpawnInTF = builder
@@ -126,7 +126,7 @@ public class TFCommonConfig {
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_recipes")
 				.comment(ConfigComments.RECIPE_WHITELIST)
-				.defineListAllowEmpty("disableUncraftingRecipes", List.of("twilightforest:giant_log_to_oak_planks"), () -> "", s -> s instanceof String);
+				.defineListAllowEmpty("disableUncraftingRecipes", List.of("twilightforest:giant_log_to_oak_planks"), s -> s instanceof String);
 			UNCRAFTING_STUFFS.reverseRecipeBlacklist = builder
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_recipes_flip")
@@ -136,7 +136,7 @@ public class TFCommonConfig {
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_mod_ids")
 				.comment(ConfigComments.MOD_ID_WHITELIST)
-				.defineListAllowEmpty("blacklistedUncraftingModIds", new ArrayList<>(), () -> "", s -> s instanceof String string && ResourceLocation.isValidNamespace(string));
+				.defineListAllowEmpty("blacklistedUncraftingModIds", new ArrayList<>(), s -> s instanceof String string && ResourceLocation.isValidNamespace(string));
 			UNCRAFTING_STUFFS.flipUncraftingModIdList = builder
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_mod_id_flip")
@@ -208,44 +208,44 @@ public class TFCommonConfig {
 	}
 
 	static class Dimension {
-		ModConfigSpec.BooleanValue newPlayersSpawnInTF;
-		ModConfigSpec.BooleanValue portalForNewPlayerSpawn;
+		ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
+		ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
 	}
 
 	static class Portal {
-		ModConfigSpec.ConfigValue<String> originDimension;
-		ModConfigSpec.BooleanValue allowPortalsInOtherDimensions;
-		ModConfigSpec.IntValue portalCreationPermission;
-		ModConfigSpec.BooleanValue disablePortalCreation;
-		ModConfigSpec.BooleanValue checkPortalPlacement;
-		ModConfigSpec.BooleanValue destructivePortalLightning;
-		ModConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		ModConfigSpec.ConfigValue<String> portalAdvancementLock;
-		ModConfigSpec.IntValue maxPortalSize;
+		ForgeConfigSpec.ConfigValue<String> originDimension;
+		ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
+		ForgeConfigSpec.IntValue portalCreationPermission;
+		ForgeConfigSpec.BooleanValue disablePortalCreation;
+		ForgeConfigSpec.BooleanValue checkPortalPlacement;
+		ForgeConfigSpec.BooleanValue destructivePortalLightning;
+		ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
+		ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
+		ForgeConfigSpec.IntValue maxPortalSize;
 	}
 
 	static class UncraftingStuff {
-		ModConfigSpec.DoubleValue uncraftingXpCostMultiplier;
-		ModConfigSpec.DoubleValue repairingXpCostMultiplier;
-		ModConfigSpec.BooleanValue allowShapelessUncrafting;
-		ModConfigSpec.BooleanValue disableIngredientSwitching;
-		ModConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
-		ModConfigSpec.BooleanValue reverseRecipeBlacklist;
-		ModConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
-		ModConfigSpec.BooleanValue flipUncraftingModIdList;
-		ModConfigSpec.BooleanValue disableUncraftingOnly;
-		ModConfigSpec.BooleanValue disableEntireTable;
+		ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
+		ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
+		ForgeConfigSpec.BooleanValue allowShapelessUncrafting;
+		ForgeConfigSpec.BooleanValue disableIngredientSwitching;
+		ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
+		ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
+		ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
+		ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
+		ForgeConfigSpec.BooleanValue disableUncraftingOnly;
+		ForgeConfigSpec.BooleanValue disableEntireTable;
 	}
 
 	static class MagicTrees {
-		ModConfigSpec.IntValue timeRange;
-		ModConfigSpec.IntValue transformationRange;
-		ModConfigSpec.IntValue miningRange;
-		ModConfigSpec.IntValue sortingRange;
+		ForgeConfigSpec.IntValue timeRange;
+		ForgeConfigSpec.IntValue transformationRange;
+		ForgeConfigSpec.IntValue miningRange;
+		ForgeConfigSpec.IntValue sortingRange;
 	}
 
 	static class ShieldInteractions {
-		ModConfigSpec.BooleanValue parryNonTwilightAttacks;
-		ModConfigSpec.IntValue shieldParryTicks;
+		ForgeConfigSpec.BooleanValue parryNonTwilightAttacks;
+		ForgeConfigSpec.IntValue shieldParryTicks;
 	}
 }

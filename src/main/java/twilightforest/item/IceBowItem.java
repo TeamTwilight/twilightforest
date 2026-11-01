@@ -13,7 +13,7 @@ public class IceBowItem extends BowItem {
 		super(properties);
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
 		return new IceArrow(arrow, projectileStack.copyWithCount(1), weaponStack);
 	}

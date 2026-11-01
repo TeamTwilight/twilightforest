@@ -219,7 +219,7 @@ public class FallenTrunkPiece extends StructurePiece {
 		if (hasHole && z > ERODED_LENGTH && z < length - 1 - ERODED_LENGTH - 1 && getAllAbsoluteHoleBlockPos().contains(getWorldPos(x, y, z)))
 			return;
 		BlockState blockState = this.getBlock(level, x, y, z, boundingbox);
-		if (blockState.is(BlockTags.REPLACEABLE_BY_TREES) || blockState.is(BlockTags.FLOWERS) || blockState.isEmpty() || randomChild.nextBoolean()) {
+		if (blockState.is(BlockTags.REPLACEABLE_BY_TREES) || blockState.is(BlockTags.FLOWERS) || blockState.isAir() || randomChild.nextBoolean()) {
 			placeBlock(level, blockstate, x, y, z, boundingbox);
 			if (randomChild.nextFloat() <= MOSS_CHANCE && boundingbox.isInside(getWorldPos(x, y + 1, z)) && this.getBlock(level, x, y + 1, z, boundingbox).is(BlockTags.REPLACEABLE)) {
 				placeBlock(level, TFBlocks.MOSS_PATCH.get().defaultBlockState(), x, y + 1, z, boundingbox);

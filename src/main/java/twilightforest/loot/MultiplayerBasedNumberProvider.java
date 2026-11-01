@@ -1,5 +1,6 @@
 package twilightforest.loot;
 
+import twilightforest.forge.attachment.Attachments;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -34,8 +35,8 @@ public record MultiplayerBasedNumberProvider(NumberProvider rollsPerPlayer, Numb
 	@Override
 	public float getFloat(LootContext context) {
 		if (TFConfig.multiplayerFightAdjuster.adjustsLootRolls()) {
-			if (context.hasParam(LootContextParams.THIS_ENTITY) && context.getParam(LootContextParams.THIS_ENTITY).hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
-				int qualifiedPlayers = context.getParam(LootContextParams.THIS_ENTITY).getData(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
+			if (context.hasParam(LootContextParams.THIS_ENTITY) && Attachments.has(context.getParam(LootContextParams.THIS_ENTITY), TFDataAttachments.MULTIPLAYER_FIGHT)) {
+				int qualifiedPlayers = Attachments.get(context.getParam(LootContextParams.THIS_ENTITY), TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				float total = this.defaultRolls.getFloat(context);
 				for (int i = 0; i < qualifiedPlayers - 1; i++) {
 					total += Math.max(0, this.rollsPerPlayer.getFloat(context));

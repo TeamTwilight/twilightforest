@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "#forge:end_stones", "required": false }
+  ]
+}

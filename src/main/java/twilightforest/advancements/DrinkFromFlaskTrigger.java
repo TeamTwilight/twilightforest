@@ -11,9 +11,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
-import tamaized.beanification.Configurable;
+import twilightforest.forge.beans.Autowired;
+import twilightforest.forge.beans.BeanContext;
+import twilightforest.forge.beans.Component;
+import twilightforest.forge.beans.Configurable;
 import twilightforest.init.TFAdvancements;
 import twilightforest.util.HolderMatcher;
 
@@ -27,6 +28,11 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 
 	@Autowired
 	private HolderMatcher holderMatcher;
+
+	public DrinkFromFlaskTrigger() {
+		// Rempli ici plutot que par le tissage de Beanification, qui n'existe pas sous Forge.
+		BeanContext.inject(this);
+	}
 
 	public Codec<DrinkFromFlaskTrigger.TriggerInstance> codec() {
 		return factory.CODEC;

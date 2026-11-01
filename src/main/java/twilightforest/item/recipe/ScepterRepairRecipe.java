@@ -1,5 +1,6 @@
 package twilightforest.item.recipe;
 
+import twilightforest.forge.NonNullLists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -108,7 +109,7 @@ public class ScepterRepairRecipe extends CustomRecipe {
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return NonNullList.copyOf(this.repairItems);
+		return NonNullLists.copyOf(this.repairItems);
 	}
 
 	@Override

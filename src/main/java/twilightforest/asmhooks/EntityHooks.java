@@ -1,5 +1,6 @@
 package twilightforest.asmhooks;
 
+import twilightforest.forge.attachment.Attachments;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -7,8 +8,8 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -34,7 +35,7 @@ public class EntityHooks {
 			return o;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
-		if (livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
+		if (livingEntity.getFluidTypeHeight(ForgeMod.WATER_TYPE.get()) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
 			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
 		return isWaterWalking;
 	}
@@ -57,13 +58,13 @@ public class EntityHooks {
 	 * <p>
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.client.player.LocalPlayer#aiStep()}
-	 * Targets: {@link net.neoforged.neoforge.common.extensions.IEntityExtension#isInFluidType(java.util.function.BiPredicate<net.neoforged.neoforge.fluids.FluidType, Double>)}
+	 * Targets: {@link net.minecraftforge.common.extensions.IEntityExtension#isInFluidType(java.util.function.BiPredicate<net.minecraftforge.fluids.FluidType, Double>)}
 	 */
 	public static BiPredicate<FluidType, Double> unrestrainedSwimPredicate(BiPredicate<FluidType, Double> o, LivingEntity livingEntity) {
 		return (fluidType, height) -> {
 			FluidState fs = livingEntity.level().getFluidState(livingEntity.blockPosition());
 			boolean oResult = o.test(fluidType, height);
-			if (fluidType != NeoForgeMod.WATER_TYPE.value())
+			if (fluidType != ForgeMod.WATER_TYPE.get())
 				return oResult;
 			return unrestrainedSprintingInWater(oResult, livingEntity);
 		};
@@ -77,7 +78,7 @@ public class EntityHooks {
 	 * Targets: IRETURN
 	 */
 	public static boolean overrideStayCloseToHolder(boolean prior, PathfinderMob mob) {
-		return prior && !mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
+		return prior && !Attachments.has(mob, TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 	}
 
 	/**

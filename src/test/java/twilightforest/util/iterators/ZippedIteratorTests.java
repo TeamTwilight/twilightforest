@@ -1,6 +1,6 @@
 package twilightforest.util.iterators;
 
-import net.neoforged.neoforge.common.util.ConcatenatedListView;
+import net.minecraftforge.common.util.ConcatenatedListView;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

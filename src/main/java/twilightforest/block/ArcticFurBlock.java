@@ -13,7 +13,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.ItemAbilities;
+import net.minecraftforge.common.ToolActions;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class ArcticFurBlock extends Block {
 	@SuppressWarnings("deprecation")
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
 		//Shears dont allow extra additions to their override speed (what a dumb system) so this will do
-		return player.getMainHandItem().canPerformAction(ItemAbilities.SHEARS_DIG) ? 0.2F : super.getDestroyProgress(state, player, getter, pos);
+		return player.getMainHandItem().canPerformAction(ToolActions.SHEARS_DIG) ? 0.2F : super.getDestroyProgress(state, player, getter, pos);
 	}
 
 	@Override

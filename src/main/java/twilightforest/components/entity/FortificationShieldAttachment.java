@@ -1,5 +1,6 @@
 package twilightforest.components.entity;
 
+import twilightforest.forge.attachment.Attachments;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.forge.network.PacketDistributor;
 import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
 
@@ -86,7 +87,7 @@ public class FortificationShieldAttachment {
 			player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
 		}
 		entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.get() : TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
-		entity.setData(TFDataAttachments.FORTIFICATION_SHIELDS, this);
+		Attachments.set(entity, TFDataAttachments.FORTIFICATION_SHIELDS, this);
 	}
 
 	public static void addShieldBreakParticles(DamageSource src, LivingEntity entity) {
@@ -131,7 +132,7 @@ public class FortificationShieldAttachment {
 		} else {
 			this.permanentShields = Math.clamp(amount, 0, 115);
 		}
-		entity.setData(TFDataAttachments.FORTIFICATION_SHIELDS, this);
+		Attachments.set(entity, TFDataAttachments.FORTIFICATION_SHIELDS, this);
 	}
 
 	public void addShields(LivingEntity entity, int amount, boolean temp) {
@@ -144,7 +145,7 @@ public class FortificationShieldAttachment {
 		} else {
 			this.permanentShields = Math.clamp(this.permanentShields + amount, 0, 115);
 		}
-		entity.setData(TFDataAttachments.FORTIFICATION_SHIELDS, this);
+		Attachments.set(entity, TFDataAttachments.FORTIFICATION_SHIELDS, this);
 	}
 
 	private void resetTimer() {

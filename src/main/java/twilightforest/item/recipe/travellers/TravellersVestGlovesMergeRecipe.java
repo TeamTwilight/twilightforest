@@ -26,7 +26,7 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 		if (pair.isEmpty())
 			return false;
 		ItemStack vest = pair.get().vest();
-		return !vest.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
+		return !vest.has(TFDataComponents.TRAVELLERS_HAS_GLOVES.get());
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 			return ItemStack.EMPTY;
 
 		ItemStack vest = pair.get().vest().copy();
-		vest.set(TFDataComponents.TRAVELLERS_HAS_GLOVES, Unit.INSTANCE);
+		vest.set(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), Unit.INSTANCE);
 		return vest;
 	}
 

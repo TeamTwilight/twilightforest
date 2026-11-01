@@ -42,7 +42,7 @@ public class ArcticArmorItem extends ArmorItem {
 			super(TFArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER);
 		}
 
-		@Override
+		// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 		public int getDefaultDyeColor(ItemStack stack) {
 			return FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(stack, DEFAULT_COLOR));
 		}

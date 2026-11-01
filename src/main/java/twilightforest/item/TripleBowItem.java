@@ -13,7 +13,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -31,7 +31,7 @@ public class TripleBowItem extends BowItem {
 			ItemStack arrowStack = player.getProjectile(stack);
 
 			int i = this.getUseDuration(stack, player) - timeLeft;
-			i = EventHooks.onArrowLoose(stack, level, player, i, !arrowStack.isEmpty());
+			i = ForgeEventFactory.onArrowLoose(stack, level, player, i, !arrowStack.isEmpty());
 			if (i < 0) return;
 
 			if (!arrowStack.isEmpty()) {

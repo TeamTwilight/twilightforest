@@ -36,7 +36,7 @@
       ]
     }
   },
-  "loader": "neoforge:item_layers",
+  "loader": "forge:item_layers",
   "neoforge_data": {
     "layers": {
       "0": {

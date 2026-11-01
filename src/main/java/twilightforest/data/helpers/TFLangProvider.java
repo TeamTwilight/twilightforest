@@ -1,5 +1,6 @@
 package twilightforest.data.helpers;
 
+import twilightforest.forge.Lookups;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,9 +25,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.minecraftforge.common.data.LanguageProvider;
+import twilightforest.forge.registries.DeferredHolder;
+import twilightforest.forge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -218,11 +219,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void addTravellersModifier(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String name) {
-		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
+		this.add(modifier.location().toLanguageKey(Lookups.holder(registries, modifier).value().getPrefix()), name);
 	}
 
 	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
-		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
+		this.add(modifier.location().toLanguageKey(Lookups.holder(registries, modifier).value().getPrefix(), "description"), description);
 	}
 
 	public void createTip(String key, String translation) {

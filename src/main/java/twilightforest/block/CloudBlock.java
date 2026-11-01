@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.forge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;

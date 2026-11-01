@@ -20,8 +20,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -244,7 +244,9 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 						Objects.requireNonNull(result.get(DataComponents.ENCHANTMENTS)).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
 					}
 					//remove any incompatible enchants
-					enchants.removeIf(holder -> !result.supportsEnchantment(holder));
+					// PORTAGE : « supportsEnchantment » est une extension NeoForge d'ItemStack. Le plus proche
+		// chez Forge est canApplyAtEnchantingTable, porte par l'objet et prenant l'enchantement nu.
+		enchants.removeIf(holder -> !result.getItem().canApplyAtEnchantingTable(result, holder.value()));
 
 					//remove enchantments and replace with filtered list
 					result.remove(DataComponents.ENCHANTMENTS);

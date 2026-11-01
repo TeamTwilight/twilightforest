@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import twilightforest.forge.datamap.DataMaps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -65,7 +66,7 @@ public class MagicMapItem extends MapItem {
 	}
 
 	@Nullable
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	protected TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMagicMapData mapdata = getData(stack, level);
 		if (mapdata == null && !level.isClientSide()) {
@@ -182,7 +183,7 @@ public class MagicMapItem extends MapItem {
 	}
 
 	private MagicMapBiomeColor getMapColorPerBiome(Holder<Biome> biome) {
-		MagicMapBiomeColor color = biome.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		MagicMapBiomeColor color = DataMaps.get(biome, TFDataMaps.MAGIC_MAP_BIOME_COLOR);
 		return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
 	}
 

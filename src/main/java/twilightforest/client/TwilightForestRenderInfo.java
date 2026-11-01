@@ -56,7 +56,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 		//Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
 		return TFSkyRenderer.renderSky(level, partialTick, modelViewMatrix, camera, projectionMatrix, setupFog);
 	}

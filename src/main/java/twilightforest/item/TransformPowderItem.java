@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import twilightforest.forge.datamap.DataMaps;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -54,7 +55,7 @@ public class TransformPowderItem extends Item {
 		//dont transform tamed animals that have owners
 		if (target instanceof OwnableEntity ownable && ownable.getOwner() != null) return false;
 
-		var datamap = target.getType().builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+		var datamap = DataMaps.get(target.getType().builtInRegistryHolder(), TFDataMaps.TRANSFORMATION_POWDER);
 
 		if (datamap != null) {
 			boolean flag = EntityUtil.convertEntity(target, datamap.result());

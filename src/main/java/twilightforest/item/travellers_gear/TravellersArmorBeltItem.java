@@ -1,5 +1,6 @@
 package twilightforest.item.travellers_gear;
 
+import twilightforest.forge.ItemContainerContentsAccess;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundSource;
@@ -32,9 +33,9 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 
 	public static Properties beltProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.SWAP_HOTBAR_ABILITY, Unit.INSTANCE)
+			.component(TFDataComponents.SWAP_HOTBAR_ABILITY.get(), Unit.INSTANCE)
 			.component(DataComponents.CONTAINER, DEFAULT_EMPTY_BELT_CONTAINER)
-			.component(TFDataComponents.TRAVELLERS_HAS_BELT, Unit.INSTANCE);
+			.component(TFDataComponents.TRAVELLERS_HAS_BELT.get(), Unit.INSTANCE);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		return false;
 	}
 
-	@Override
+	// PORTAGE : crochet NeoForge sans equivalent Forge, a rebrancher par mixin.
 	public boolean canFitInsideContainerItems(ItemStack stack) {
 		return !stack.has(DataComponents.CONTAINER);
 	}
@@ -66,8 +67,8 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		boolean hasChanged = false;
 		for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
 			ItemStack inventoryStack = inventory.getItem(slotIndex);
-			ItemStack beltStack = containerContents.getSlots() <= slotIndex ? ItemStack.EMPTY : containerContents.getStackInSlot(slotIndex);
-			if (inventoryStack.canFitInsideContainerItems() && !inventoryStack.is(ItemTagGenerator.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
+			ItemStack beltStack = ItemContainerContentsAccess.getStackInSlot(containerContents, slotIndex);
+			if (inventoryStack.getItem().canFitInsideContainerItems() && !inventoryStack.is(ItemTagGenerator.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
 				hotbarStacks.set(slotIndex, inventoryStack);
 				inventory.setItem(slotIndex, beltStack);
 				if (!beltStack.equals(inventoryStack))

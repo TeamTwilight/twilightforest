@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraftforge.client.ForgeHooksClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -11,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
@@ -53,7 +53,7 @@ public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> exte
 	@Override
 	protected void renderNameTag(T entity, Component component, PoseStack stack, MultiBufferSource source, int light, float scale) {
 		double d0 = this.entityRenderDispatcher.distanceToSqr(entity);
-		if (ClientHooks.isNameplateInRenderDistance(entity, d0)) {
+		if (ForgeHooksClient.isNameplateInRenderDistance(entity, d0)) {
 			Vec3 vec3 = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getViewYRot(scale));
 			if (vec3 != null) {
 				boolean flag = !entity.isDiscrete();

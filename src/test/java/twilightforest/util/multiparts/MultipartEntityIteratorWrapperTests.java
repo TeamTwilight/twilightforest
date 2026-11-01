@@ -1,7 +1,7 @@
 package twilightforest.util.multiparts;
 
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.entity.PartEntity;
+import net.minecraftforge.entity.PartEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import tamaized.beanification.junit.MockitoFixer;

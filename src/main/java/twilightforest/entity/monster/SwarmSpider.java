@@ -22,7 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -122,7 +122,7 @@ public class SwarmSpider extends Spider {
 			if (druid != null) {
 				druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				druid.setBaby(true);
-				EventHooks.finalizeMobSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null);
+				ForgeEventFactory.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null);
 
 				if (this.hasPassenger(e -> true)) this.ejectPassengers();
 				druid.startRiding(this);

@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-@tamaized.beanification.Component
+@twilightforest.forge.beans.Component
 public class CountLootCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("count_loot").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -89,7 +89,9 @@ public class CountLootCommand {
 
 			Item lootItem = countedItem.getKey();
 
-			var rarityColor = new ItemStack(lootItem).getRarity().getStyleModifier();
+			// PORTAGE : NeoForge rend un modificateur de style ; Forge s'en tient a la couleur, que
+			// « withStyle » accepte tout aussi bien.
+			var rarityColor = new ItemStack(lootItem).getRarity().color();
 
 			context.getSource().sendSystemMessage(lootItem.getDescription().copy().withStyle(rarityColor).append(suffixCount));
 		}
