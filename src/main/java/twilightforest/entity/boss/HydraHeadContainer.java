@@ -707,7 +707,7 @@ public class HydraHeadContainer {
 		if (this.headEntity.getState() == State.FLAMING) {
 			Entity target = getHeadLookTarget();
 
-			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent()) && this.hydra.level() instanceof ServerLevel serverLevel) {
+			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent()) && this.hydra.level() instanceof ServerLevel serverLevel && this.ticksProgress >= target.distanceTo(this.headEntity) / 1.5) {
 				if (!target.fireImmune() && target.hurtServer(serverLevel, TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.igniteForSeconds(FLAME_BURN_FACTOR);
 				}
