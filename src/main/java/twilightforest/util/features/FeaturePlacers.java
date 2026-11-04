@@ -323,11 +323,11 @@ public final class FeaturePlacers {
 		// Trace block positions and stop tracing too far into open air
 		for (BlockPos rootPos : posTracer) {
 			if (FeatureUtil.anyBelowMatch(rootPos, worldPlacer.getRootPenetrability() - 1, (blockPos -> worldReader.isStateAtPosition(blockPos, FeatureLogic.ROOT_SHOULD_SKIP))))
-				return; // End root if this block cannot be penetrated
+				continue; // Ignore pos if this block should be checked (root, or one of the protected block IDs)
 
 			// If the block/position cannot be replaced or is detached from ground-mass, stop
 			if (!FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, rootPos, dirtRoot))
-				return;
+				return; // End root if this block cannot be penetrated
 		}
 	}
 
