@@ -18,10 +18,7 @@ import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.*;
-import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
+import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -61,7 +58,6 @@ public class EntityLootTables extends EntityLootSubProvider {
 		add(TFEntities.REDCAP_SAPPER.get(), fromEntityLootTable(TFEntities.REDCAP.get()));
 		add(TFEntities.SWARM_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.CARMINITE_BROODLING.get(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
 		add(TFEntities.BIGHORN_SHEEP.get(), fromEntityLootTable(EntityType.SHEEP));
 		add(TFEntities.RISING_ZOMBIE.get(), fromEntityLootTable(EntityType.ZOMBIE));
 		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
@@ -115,11 +111,24 @@ public class EntityLootTables extends EntityLootSubProvider {
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))));
 
+		add(TFEntities.CARMINITE_GHASTGUARD.get(),
+			LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(LootItem.lootTableItem(Items.GHAST_TEAR)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(LootItem.lootTableItem(Items.GUNPOWDER)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))));
+
 		add(TFEntities.CARMINITE_GHASTLING.get(),
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
-					.add(NestedLootTable.lootTableReference(EntityType.GHAST.getDefaultLootTable().orElseThrow()))
+					.add(NestedLootTable.lootTableReference(TFEntities.CARMINITE_GHASTGUARD.get().getDefaultLootTable().orElseThrow()))
 					.when(IsMinionCondition.builder(true))));
 
 		/*registerLootTable(TFEntities.BOGGARD.get(),

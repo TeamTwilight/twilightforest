@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-20T17:31:48.371671	Loot Tables
+// 26.1.2	2026-11-04T20:53:34.595813	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
 752190be1f464cbcb3312adb8333f98a58360d40 data/twilightforest/loot_table/blocks/acacia_drying_rack.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_table/blocks/alpha_yeti_trophy.json
@@ -552,8 +552,8 @@ ede4709517b8c9f9e51a0d1af2f0dd47995ca752 data/twilightforest/loot_table/entities
 ee0d3394aba8b86e13b70a12a9d701f5fe9bd93e data/twilightforest/loot_table/entities/block_and_chain_goblin.json
 22222a75f0d746c00e13f187e6442c3a4d25d5f3 data/twilightforest/loot_table/entities/boar.json
 53a00683bd0a4a64c9021236d7cb08a7326b9850 data/twilightforest/loot_table/entities/carminite_broodling.json
-d870ef32700caf2fb8047fd8cebb7a15ca741e94 data/twilightforest/loot_table/entities/carminite_ghastguard.json
-270901b14265c653add140682c3fc8b40f43ffd5 data/twilightforest/loot_table/entities/carminite_ghastling.json
+63ee8fae5b356cce7677a045115c5c4392b0872e data/twilightforest/loot_table/entities/carminite_ghastguard.json
+3dfcb7b062e2d3c627d8ba271ac1b74659778058 data/twilightforest/loot_table/entities/carminite_ghastling.json
 044337984dc35793d6d4d98a09ddf3a39f8db8bd data/twilightforest/loot_table/entities/carminite_golem.json
 586442e6f831388cc45e6a0579eab2781b92c03f data/twilightforest/loot_table/entities/death_tome.json
 04bb73a707746b3545507388fcdc73ae59b5739b data/twilightforest/loot_table/entities/deer.json
