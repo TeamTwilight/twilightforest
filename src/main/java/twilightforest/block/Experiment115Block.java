@@ -13,7 +13,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.Consumable;
@@ -106,10 +105,8 @@ public class Experiment115Block extends Block {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		ItemStack experStack = new ItemStack(TFItems.EXPERIMENT_115.get());
-		FoodProperties props = experStack.get(DataComponents.FOOD);
 		Consumable consumable = experStack.getOrDefault(DataComponents.CONSUMABLE, Consumables.DEFAULT_FOOD);
-		if (props != null && consumable.canConsume(player, experStack.copy())) {
-			props.onConsume(level, player, experStack.copy(), consumable);
+		if (experStack.has(DataComponents.FOOD) && consumable.canConsume(player, experStack.copy())) {
 			consumable.onConsume(level, player, experStack.copy());
 			int i = state.getValue(BITES_TAKEN);
 
@@ -120,10 +117,7 @@ public class Experiment115Block extends Block {
 			}
 
 			if (player instanceof ServerPlayer) {
-				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, experStack);
-				player.awardStat(Stats.ITEM_USED.get(experStack.getItem()));
 				player.awardStat(TFStats.E115_SLICES_EATEN.get());
-
 			}
 
 			return InteractionResult.SUCCESS;
