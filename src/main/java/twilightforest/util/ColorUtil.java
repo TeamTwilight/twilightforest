@@ -158,13 +158,16 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 	}
 
 	public static int blendColors(int a, int b, double ratio) {
-		int mask1 = 0x00FF00FF;
-		int mask2 = 0xFF00FF00;
+		long mask1 = 0x00FF00FFL;
+		long mask2 = 0xFF00FF00L;
 
-		int f2 = (int) (256 * ratio);
-		int f1 = 256 - f2;
+		long f2 = (long) (256 * ratio);
+		long f1 = 256 - f2;
 
-		return (((((a & mask1) * f1) + ((b & mask1) * f2)) >> 8) & mask1)
-			| (((((a & mask2) * f1) + ((b & mask2) * f2)) >> 8) & mask2);
+		long al = a & 0xFFFFFFFFL;
+		long bl = b & 0xFFFFFFFFL;
+
+		return (int) (((((al & mask1) * f1 + (bl & mask1) * f2) >> 8) & mask1)
+			| (((((al & mask2) * f1 + (bl & mask2) * f2) >> 8) & mask2)));
 	}
 }
