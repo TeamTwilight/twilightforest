@@ -156,7 +156,7 @@ public class VanishingBlock extends Block {
 				level.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.get() ? TFSounds.REAPPEAR_POOF.get() : TFSounds.VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
-					this.tryActivate(level, pos.relative(e), false);
+					this.tryActivate(level, pos.relative(e), true);
 				}
 			}
 		}
