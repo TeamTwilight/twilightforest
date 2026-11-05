@@ -44,6 +44,8 @@ public class HydraHeadContainer {
 	private static final int FLAME_DAMAGE = 19;
 	private static final int BITE_DAMAGE = 48;
 	private static double FLAME_BREATH_TRACKING_SPEED = 0.04D;
+	private static final double FLAME_PARTICLE_AVERAGE_SPEED = 1.5D;
+	private static final double FLAME_PARTICLE_SPEED_DEVIATION = 0.5D;
 
 	@Nullable
 	private static final State NEXT_AUTOMATIC = null;
@@ -545,7 +547,7 @@ public class HydraHeadContainer {
 				double dz = look.z();
 
 				double spread = 5.0D + this.headEntity.level().getRandom().nextDouble() * 2.5D;
-				double velocity = 1.0D + this.headEntity.level().getRandom().nextDouble();
+				double velocity = FLAME_PARTICLE_AVERAGE_SPEED + (this.headEntity.level().getRandom().nextDouble() * 2.0D - 1.0D) * FLAME_PARTICLE_SPEED_DEVIATION;
 
 				// spread flame
 				dx += this.headEntity.level().getRandom().nextGaussian() * 0.0075D * spread;
@@ -707,7 +709,7 @@ public class HydraHeadContainer {
 		if (this.headEntity.getState() == State.FLAMING) {
 			Entity target = getHeadLookTarget();
 
-			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent()) && this.hydra.level() instanceof ServerLevel serverLevel) {
+			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent()) && this.hydra.level() instanceof ServerLevel serverLevel && this.ticksProgress >= target.distanceTo(this.headEntity) / FLAME_PARTICLE_AVERAGE_SPEED) {
 				if (!target.fireImmune() && target.hurtServer(serverLevel, TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.igniteForSeconds(FLAME_BURN_FACTOR);
 				}
