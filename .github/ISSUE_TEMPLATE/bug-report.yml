@@ -54,9 +54,11 @@ body:
     attributes:
       label: Please Read and Confirm The Following
       options:
-        - label: I have confirmed this bug can be replicated without the use of Optifine.
+        - label: I have confirmed this bug can be replicated without the use of Optifine or Sodium.
           required: true
         - label: I have confirmed the details provided in this report are concise as possible and does not contained vague information (ie. Versions are properly recorded, answers to questions are clear).
           required: true
         - label: I have confirmed this issue is unique and has not been reported already.
+          required: true
+        - label: I have confirmed this issue occurs on either the [latest or LTS version](https://github.com/TeamTwilight/twilightforest/blob/latest/README.md#supported-versions).
           required: true

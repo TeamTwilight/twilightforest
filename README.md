@@ -10,6 +10,16 @@ Non-Code, [Non-Sound](src/main/resources/assets/twilightforest/sounds) and [Non-
 
 Sound based assets [(Located Here)](src/main/resources/assets/twilightforest/sounds) and Structure based assets [(Located Here)](src/main/resources/data/twilightforest/structure) are **All Rights Reserved**
 
+## Supported Versions
+### Latest Minecraft Version
+This would be the most recent Minecraft Version that we have releases for on CurseForge.
+
+Right now this is **26.1.2**.
+### LTS
+These will generally be the previous most recent Minecraft Version we have CurseForge releases for.
+
+Normally that would be 1.21.1, however we have currently dropped support for that version. The next upcoming LTS will be 26.1.2.
+
 ## Downloads
 Releases will be available on [CurseForge](https://minecraft.curseforge.com/projects/the-twilight-forest) when ready.
 
@@ -50,13 +60,3 @@ dependencies {
     implementation fg.deobf("teamtwilight:twilightforest:{version}:universal")
 }
 ```
-
-## YourKit
-![](https://www.yourkit.com/images/yklogo.png)
-
-We appreciate YourKit, LLC for providing the project developers licenses of its profiler to help us improve performance!
-
-YourKit supports open source projects with its full-featured Java Profiler.
-YourKit, LLC is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/)
-and [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/),
-innovative and intelligent tools for profiling Java and .NET applications.
