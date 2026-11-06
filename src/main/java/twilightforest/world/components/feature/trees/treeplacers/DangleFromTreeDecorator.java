@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
@@ -74,7 +75,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 				if (!clearedOfPossibleLeaves && isAir)
 					clearedOfPossibleLeaves = true;
 
-				if (clearedOfPossibleLeaves && !isAir) {
+				if (!isAir && (clearedOfPossibleLeaves || !context.level().isStateAtPosition(pos.below(ropeUnrolling), state -> state.is(BlockTags.LEAVES)))) {
 					cordLength = ropeUnrolling - 1;
 
 					break;
