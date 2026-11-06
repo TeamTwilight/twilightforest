@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.RegistryFileCodec;
+import net.minecraft.server.level.ColumnPos;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
@@ -104,6 +105,7 @@ public class NoiseDensityRouter implements DensityFunction.SimpleFunction {
 		private final BiomeDensitySource biomeDensitySource;
 
 		private final BiomeDensitySource.DensityData[] horizontalCache = new BiomeDensitySource.DensityData[16 * 16];
+		private final long[] horizontalCacheKeys = new long[16 * 16];
 
 		public ChunkCachedNoiseDensityRouter(Holder<BiomeDensitySource> biomeDensitySource, double lowerDensityBound, double upperDensityBound, double depthScalar) {
 			super(biomeDensitySource, lowerDensityBound, upperDensityBound, depthScalar);
@@ -117,12 +119,14 @@ public class NoiseDensityRouter implements DensityFunction.SimpleFunction {
 			int zInChunk = SectionPos.sectionRelative(context.blockZ());
 
 			int arrayCoord = zInChunk + (xInChunk << 4);
+			long columnKey = ColumnPos.asLong(context.blockX(), context.blockZ());
 
 			BiomeDensitySource.DensityData dataColumn = this.horizontalCache[arrayCoord];
 
-			if (dataColumn == null) {
+			if (dataColumn == null || horizontalCacheKeys[arrayCoord] != columnKey) {
 				dataColumn = this.biomeDensitySource.sampleTerrain(context.blockX(), context.blockZ(), context);
 				this.horizontalCache[arrayCoord] = dataColumn;
+				horizontalCacheKeys[arrayCoord] = columnKey;
 			}
 
 			return dataColumn;

@@ -1,4 +1,4 @@
-// 26.1.2	2026-11-05T20:21:20.1911013	Registries
+// 26.1.2	2026-11-06T11:33:19.2440776	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -305,7 +305,7 @@ c18cf9b3eefe00b6e9852dbeca7ca6118ced915b data/twilightforest/worldgen/density_fu
 db9be1c796cd832781920f7c933981b4941c4f51 data/twilightforest/worldgen/density_function/raw_biome_terrain.json
 a6e25e46b97621134da090a7be606bbf0516ff82 data/twilightforest/worldgen/density_function/skylight_terrain.json
 ec584b50d581a77a1081cc5f4bfa71cf341b3447 data/twilightforest/worldgen/noise_settings/skylight_noise_gen.json
-35603f6b3101430d6bf281651989b1ae7c042ddd data/twilightforest/worldgen/noise_settings/twilight_noise_gen.json
+be46cb035e624a60626b35293c522b171163b112 data/twilightforest/worldgen/noise_settings/twilight_noise_gen.json
 9d49e72d9f4c8a3bd11181d41036ad88dcc133fb data/twilightforest/worldgen/placed_feature/big_mushgloom.json
 976acfd9018dfc67e792afdc4e02f8f9ee969ec1 data/twilightforest/worldgen/placed_feature/blackberry_bushes.json
 ef5c7b2fe6f30fef73fd7d8d393caf423b8f1db2 data/twilightforest/worldgen/placed_feature/blueberry_bushes.json
