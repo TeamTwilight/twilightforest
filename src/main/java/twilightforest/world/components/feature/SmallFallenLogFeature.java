@@ -142,7 +142,7 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 		return  //If we're underwater, submerge in water
 			world.getBlockState(pos).is(Blocks.WATER) ? HollowLogVariants.Horizontal.WATERLOGGED :
 				//if we're in snow, add some snow
-				world.getBlockState(pos).is(BlockTags.SNOW) ? HollowLogVariants.Horizontal.SNOW :
+				world.getBlockState(pos.below()).is(BlockTags.SNOW) ? HollowLogVariants.Horizontal.SNOW :
 					//maybe add moss + grass
 					rand.nextInt(5) == 0 ? HollowLogVariants.Horizontal.MOSS_AND_GRASS :
 						//maybe some moss
