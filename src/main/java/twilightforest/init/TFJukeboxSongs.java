@@ -11,7 +11,7 @@ public class TFJukeboxSongs {
 	public static final ResourceKey<JukeboxSong> STEPS = registerKey("steps");
 	public static final ResourceKey<JukeboxSong> SUPERSTITIOUS = registerKey("superstitious");
 	public static final ResourceKey<JukeboxSong> HOME = registerKey("home");
-	public static final ResourceKey<JukeboxSong> WAYFARER = registerKey("warfarer");
+	public static final ResourceKey<JukeboxSong> WAYFARER = registerKey("wayfarer");
 	public static final ResourceKey<JukeboxSong> FINDINGS = registerKey("findings");
 	public static final ResourceKey<JukeboxSong> MAKER = registerKey("maker");
 	public static final ResourceKey<JukeboxSong> THREAD = registerKey("thread");
