@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.datamaps.CrumbledBlock;
@@ -27,4 +28,7 @@ public class TFDataMaps {
 
 	public static final DataMapType<Block, OreMapOreColor> ORE_MAP_ORE_COLOR = DataMapType.builder(
 		TwilightForestMod.prefix("ore_map_color"), Registries.BLOCK, OreMapOreColor.CODEC).synced(OreMapOreColor.CODEC, false).build();
+
+	public static final DataMapType<Block, BlockState> INFESTED_CONVERSION = DataMapType.builder(
+		TwilightForestMod.prefix("infested_conversion"), Registries.BLOCK, BlockState.CODEC).build();
 }

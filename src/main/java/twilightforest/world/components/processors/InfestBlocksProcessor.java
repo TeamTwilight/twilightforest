@@ -1,38 +1,21 @@
 package twilightforest.world.components.processors;
 
-import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Util;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFStructureProcessors;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
 public final class InfestBlocksProcessor extends StructureProcessor {
 	public static final InfestBlocksProcessor INSTANCE = new InfestBlocksProcessor();
 	public static final MapCodec<InfestBlocksProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
-
-	// TODO Convert to DataMap
-	private static final Supplier<Map<Block, BlockState>> CONVERSIONS = Suppliers.memoize(() -> Util.make(new HashMap<>(), map -> {
-		map.put(Blocks.STONE, Blocks.INFESTED_STONE.defaultBlockState());
-		map.put(Blocks.COBBLESTONE, Blocks.INFESTED_COBBLESTONE.defaultBlockState());
-		map.put(Blocks.STONE_BRICKS, Blocks.INFESTED_STONE_BRICKS.defaultBlockState());
-		map.put(Blocks.MOSSY_STONE_BRICKS, Blocks.INFESTED_MOSSY_STONE_BRICKS.defaultBlockState());
-		map.put(Blocks.CRACKED_STONE_BRICKS, Blocks.INFESTED_CRACKED_STONE_BRICKS.defaultBlockState());
-		map.put(Blocks.CHISELED_STONE_BRICKS, Blocks.INFESTED_CHISELED_STONE_BRICKS.defaultBlockState());
-	}));
 
 	private InfestBlocksProcessor() {
 	}
@@ -44,7 +27,9 @@ public final class InfestBlocksProcessor extends StructureProcessor {
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 2);
 
-		var replacement = CONVERSIONS.get().get(modifiedBlockInfo.state().getBlock());
+		BlockState replacement = modifiedBlockInfo.state()
+			.typeHolder()
+			.getData(TFDataMaps.INFESTED_CONVERSION);
 
 		if (replacement == null || random.nextFloat() > 1/12f)
 			return modifiedBlockInfo;
