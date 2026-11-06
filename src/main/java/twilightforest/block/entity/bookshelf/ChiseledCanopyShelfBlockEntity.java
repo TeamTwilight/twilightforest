@@ -20,6 +20,10 @@ import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.init.TFBlockEntities;
@@ -47,6 +51,8 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 			return Either.left(ChiseledCanopyShelfBlockEntity.this);
 		}
 	};
+
+	private final ShelfItemHandler itemHandler = new ShelfItemHandler();
 
 	public ChiseledCanopyShelfBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
@@ -110,6 +116,10 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 		return this.spawner;
 	}
 
+	public ResourceHandler<ItemResource> getItemHandler() {
+		return itemHandler;
+	}
+
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
 		if (this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER)) return ItemStack.EMPTY;
@@ -128,5 +138,46 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
 		return !this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) && super.canPlaceItem(slot, stack);
+	}
+
+	private class ShelfItemHandler extends ItemStacksResourceHandler {
+
+		private ShelfItemHandler() {
+			super(getContainerSize());
+			stacks = getItems();
+		}
+
+		@Override
+		public boolean isValid(int index, ItemResource resource) {
+			return canPlaceItem(index, resource.toStack());
+		}
+
+		@Override
+		protected int getCapacity(int index, ItemResource resource) {
+			return getMaxStackSize();
+		}
+
+		@Override
+		public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+			int inserted = super.insert(index, resource, amount, transaction);
+			if (inserted > 0)
+				onTransfer(index, inserted, transaction);
+			return inserted;
+		}
+
+		@Override
+		public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+			if (getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER))
+				return 0;
+			int extracted = super.extract(index, resource, amount, transaction);
+			if (extracted > 0)
+				onTransfer(index, -extracted, transaction);
+			return extracted;
+		}
+
+		@Override
+		protected void onContentsChanged(int index, ItemStack previousContents) {
+			setChanged();
+		}
 	}
 }
