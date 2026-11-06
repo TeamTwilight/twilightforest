@@ -97,7 +97,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 				this.broadcastMyFormation(nearbyKnights);
 
 				// if no one is charging
-				if (this.isNobodyCharging(nearbyKnights)) {
+				if (!nearbyKnights.isEmpty() && isNobodyCharging(nearbyKnights)) {
 					this.makeARandomKnightCharge(nearbyKnights);
 				}
 			}

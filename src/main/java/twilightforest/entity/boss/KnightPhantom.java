@@ -18,7 +18,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -348,13 +347,14 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	public void knockback(double damage, double xRatio, double zRatio) {
 		this.hurtMarked = true;
-		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
 		float distance = 0.2F;
+		Vec3 push = new Vec3(xRatio, 0.0D, zRatio).normalize().scale(distance);
 		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
-		this.setDeltaMovement(new Vec3(
-			this.getDeltaMovement().x() - xRatio / f * distance,
-			this.getDeltaMovement().y() + distance,
-			this.getDeltaMovement().z() - zRatio / f * distance));
+		setDeltaMovement(new Vec3(
+			getDeltaMovement().x() - push.x(),
+			getDeltaMovement().y() + distance,
+			getDeltaMovement().z() - push.z()
+		));
 
 		if (this.getDeltaMovement().y() > 0.4D) {
 			this.setDeltaMovement(this.getDeltaMovement().x(), 0.4D, this.getDeltaMovement().z());
