@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-13T10:34:14.734107	Twilight Forest Entity Tags
+// 26.1.2	2026-11-06T02:05:58.306034	Twilight Forest Entity Tags
 d208fff881b5ab7116f15e79ec1b5954653479cd data/aether/tags/entity_type/deflectable_projectiles.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/aether/tags/entity_type/fire_mob.json
 3ddb086fa7ad80a4f7018142796566c22407e7e4 data/aether/tags/entity_type/pigs.json
@@ -10,7 +10,7 @@ d208fff881b5ab7116f15e79ec1b5954653479cd data/aether/tags/entity_type/deflectabl
 0865b5410d11831c91b4a4164d890df4852489ff data/c/tags/entity_type/bosses.json
 0865b5410d11831c91b4a4164d890df4852489ff data/immersiveengineering/tags/entity_type/shaderbag/blacklist.json
 96a1f9f2c5c062278d532397563660cb0c4982a7 data/minecraft/tags/entity_type/arrows.json
-b245cf42cd9f43c4d13a1796cd914ba558e068bb data/minecraft/tags/entity_type/arthropod.json
+2943bcfe8f9776611775ebc36cfff8d8a3b8c800 data/minecraft/tags/entity_type/arthropod.json
 932bd2980da6d582ac5ba3cb6d86e51597a713b4 data/minecraft/tags/entity_type/boat.json
 f5d299a6ccce3d8fc7700b44c444b6733bd2506c data/minecraft/tags/entity_type/burn_in_daylight.json
 0865b5410d11831c91b4a4164d890df4852489ff data/minecraft/tags/entity_type/can_breathe_under_water.json

@@ -99,7 +99,9 @@ public class EntityTypeTagGenerator extends ModdedEntityTypeTagGenerator {
 			TFEntities.PINCH_BEETLE.get(),
 			TFEntities.SLIME_BEETLE.get(),
 			TFEntities.SWARM_SPIDER.get(),
-			TFEntities.TOWERWOOD_BORER.get());
+			TFEntities.TOWERWOOD_BORER.get(),
+			TFEntities.MOSQUITO_SWARM.get()
+		);
 
 		this.tag(EntityTypeTags.REDIRECTABLE_PROJECTILE).add(TFEntities.HYDRA_MORTAR.get(), TFEntities.LICH_BOLT.get());
 		this.tag(EntityTypeTags.IMMUNE_TO_INFESTED).add(TFEntities.TOWERWOOD_BORER.get());
