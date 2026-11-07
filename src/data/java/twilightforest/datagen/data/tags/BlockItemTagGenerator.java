@@ -31,6 +31,16 @@ public abstract class BlockItemTagGenerator {
 				TFBlocks.SORTING_PLANKS.get())
 			.addTag(TFBlockTags.TOWERWOOD);
 
+		this.tag(BlockTags.WOODEN_SHELVES, ItemTags.WOODEN_SHELVES).add(
+			TFBlocks.TWILIGHT_OAK_SHELF.get(),
+			TFBlocks.CANOPY_SHELF.get(),
+			TFBlocks.MANGROVE_SHELF.get(),
+			TFBlocks.DARK_SHELF.get(),
+			TFBlocks.TIME_SHELF.get(),
+			TFBlocks.TRANSFORMATION_SHELF.get(),
+			TFBlocks.MINING_SHELF.get(),
+			TFBlocks.SORTING_SHELF.get());
+
 		this.tag(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS).add(
 			TFBlocks.TWILIGHT_OAK_BUTTON.get(),
 			TFBlocks.CANOPY_BUTTON.get(),

@@ -138,6 +138,16 @@ public class RegistrationEvents {
 	}
 
 	public void addBlockEntityTypes(BlockEntityTypeAddBlocksEvent event) {
+		event.modify(BlockEntityType.SHELF,
+			TFBlocks.TWILIGHT_OAK_SHELF.get(),
+			TFBlocks.CANOPY_SHELF.get(),
+			TFBlocks.MANGROVE_SHELF.get(),
+			TFBlocks.DARK_SHELF.get(),
+			TFBlocks.TIME_SHELF.get(),
+			TFBlocks.TRANSFORMATION_SHELF.get(),
+			TFBlocks.MINING_SHELF.get(),
+			TFBlocks.SORTING_SHELF.get());
+
 		event.modify(BlockEntityType.HANGING_SIGN,
 			TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(),
 			TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(),
@@ -311,6 +321,14 @@ public class RegistrationEvents {
 			fireblock.setFlammable(TFBlocks.CANOPY_FENCE.get(), 5, 20);
 			fireblock.setFlammable(TFBlocks.CANOPY_GATE.get(), 5, 20);
 			fireblock.setFlammable(TFBlocks.CANOPY_BOOKSHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TWILIGHT_OAK_SHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.CANOPY_SHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MANGROVE_SHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.DARK_SHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TIME_SHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TRANSFORMATION_SHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MINING_SHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.SORTING_SHELF.get(), 5, 20);
 
 			fireblock.setFlammable(TFBlocks.MANGROVE_LOG.get(), 5, 5);
 			fireblock.setFlammable(TFBlocks.MANGROVE_WOOD.get(), 5, 5);

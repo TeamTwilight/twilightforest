@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_transformation_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_transformation_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:transformation_shelf"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_transformation_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:transformation_shelf"
+    ]
+  }
+}

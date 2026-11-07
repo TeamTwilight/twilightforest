@@ -401,6 +401,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
 		this.generateBanister(TFBlocks.TWILIGHT_OAK_BANISTER.get(), twilightOak);
 		this.generateDryingRack(TFBlocks.TWILIGHT_OAK_DRYING_RACK.get(), twilightOak);
+		this.generateShelf(TFBlocks.TWILIGHT_OAK_SHELF.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
 
 		this.woodProvider(TFBlocks.CANOPY_LOG.get()).logWithHorizontal(TFBlocks.CANOPY_LOG.get()).wood(TFBlocks.CANOPY_WOOD.get());
 		this.woodProvider(TFBlocks.STRIPPED_CANOPY_LOG.get()).logWithHorizontal(TFBlocks.STRIPPED_CANOPY_LOG.get()).wood(TFBlocks.STRIPPED_CANOPY_WOOD.get());
@@ -421,6 +422,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_CANOPY_LOG.get());
 		this.generateBanister(TFBlocks.CANOPY_BANISTER.get(), canopy);
 		this.generateDryingRack(TFBlocks.CANOPY_DRYING_RACK.get(), canopy);
+		this.generateShelf(TFBlocks.CANOPY_SHELF.get(), TFBlocks.STRIPPED_CANOPY_LOG.get());
 		this.wrapBlockItem(TFBlocks.CANOPY_BOOKSHELF.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(block), TextureMapping.getBlockTexture(TFBlocks.CANOPY_PLANKS.get())), this.modelOutput)))));
 		this.generateChiseledBookshelf(TFBlocks.CHISELED_CANOPY_BOOKSHELF.get());
 		this.wrapBlockItem(TFBlocks.CANOPY_WINDOW.get(), this::createTrivialCube);
@@ -446,6 +448,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get());
 		this.generateBanister(TFBlocks.MANGROVE_BANISTER.get(), mangrove);
 		this.generateDryingRack(TFBlocks.MANGROVE_DRYING_RACK.get(), mangrove);
+		this.generateShelf(TFBlocks.MANGROVE_SHELF.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get());
 
 		this.woodProvider(TFBlocks.DARK_LOG.get()).logWithHorizontal(TFBlocks.DARK_LOG.get()).wood(TFBlocks.DARK_WOOD.get());
 		this.woodProvider(TFBlocks.STRIPPED_DARK_LOG.get()).logWithHorizontal(TFBlocks.STRIPPED_DARK_LOG.get()).wood(TFBlocks.STRIPPED_DARK_WOOD.get());
@@ -467,6 +470,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_DARK_LOG.get());
 		this.generateBanister(TFBlocks.DARK_BANISTER.get(), dark);
 		this.generateDryingRack(TFBlocks.DARK_DRYING_RACK.get(), dark);
+		this.generateShelf(TFBlocks.DARK_SHELF.get(), TFBlocks.STRIPPED_DARK_LOG.get());
 
 		this.woodProvider(TFBlocks.TIME_LOG.get()).logWithHorizontal(TFBlocks.TIME_LOG.get()).wood(TFBlocks.TIME_WOOD.get());
 		this.woodProvider(TFBlocks.STRIPPED_TIME_LOG.get()).logWithHorizontal(TFBlocks.STRIPPED_TIME_LOG.get()).wood(TFBlocks.STRIPPED_TIME_WOOD.get());
@@ -488,6 +492,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TIME_LOG.get());
 		this.generateBanister(TFBlocks.TIME_BANISTER.get(), time);
 		this.generateDryingRack(TFBlocks.TIME_DRYING_RACK.get(), time);
+		this.generateShelf(TFBlocks.TIME_SHELF.get(), TFBlocks.STRIPPED_TIME_LOG.get());
 
 		this.woodProvider(TFBlocks.TRANSFORMATION_LOG.get()).logWithHorizontal(TFBlocks.TRANSFORMATION_LOG.get()).wood(TFBlocks.TRANSFORMATION_WOOD.get());
 		this.woodProvider(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get()).logWithHorizontal(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get()).wood(TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get());
@@ -509,6 +514,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
 		this.generateBanister(TFBlocks.TRANSFORMATION_BANISTER.get(), transformation);
 		this.generateDryingRack(TFBlocks.TRANSFORMATION_DRYING_RACK.get(), transformation);
+		this.generateShelf(TFBlocks.TRANSFORMATION_SHELF.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
 
 		this.woodProvider(TFBlocks.MINING_LOG.get()).logWithHorizontal(TFBlocks.MINING_LOG.get()).wood(TFBlocks.MINING_WOOD.get());
 		this.woodProvider(TFBlocks.STRIPPED_MINING_LOG.get()).logWithHorizontal(TFBlocks.STRIPPED_MINING_LOG.get()).wood(TFBlocks.STRIPPED_MINING_WOOD.get());
@@ -530,6 +536,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_MINING_LOG.get());
 		this.generateBanister(TFBlocks.MINING_BANISTER.get(), mining);
 		this.generateDryingRack(TFBlocks.MINING_DRYING_RACK.get(), mining);
+		this.generateShelf(TFBlocks.MINING_SHELF.get(), TFBlocks.STRIPPED_MINING_LOG.get());
 
 		this.woodProvider(TFBlocks.SORTING_LOG.get()).logWithHorizontal(TFBlocks.SORTING_LOG.get()).wood(TFBlocks.SORTING_WOOD.get());
 		this.woodProvider(TFBlocks.STRIPPED_SORTING_LOG.get()).logWithHorizontal(TFBlocks.STRIPPED_SORTING_LOG.get()).wood(TFBlocks.STRIPPED_SORTING_WOOD.get());
@@ -551,6 +558,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
 		this.generateBanister(TFBlocks.SORTING_BANISTER.get(), sorting);
 		this.generateDryingRack(TFBlocks.SORTING_DRYING_RACK.get(), sorting);
+		this.generateShelf(TFBlocks.SORTING_SHELF.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
 
 		this.generateSapling(TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.RAINBOW_OAK_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);

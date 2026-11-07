@@ -1,4 +1,4 @@
-// 26.1.2	2026-11-04T20:53:34.595813	Loot Tables
+// 26.1.2	2026-11-07T02:15:48.1510346	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
 752190be1f464cbcb3312adb8333f98a58360d40 data/twilightforest/loot_table/blocks/acacia_drying_rack.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_table/blocks/alpha_yeti_trophy.json
@@ -609,3 +609,11 @@ ca84c16a4c315172a7f29d1dab48f0216e6bf76c data/twilightforest/loot_table/gameplay
 754005b86fce01430a259dc725baaf57df77c6b0 data/twilightforest/loot_table/gameplay/questing_ram_reward_blocks.json
 f20536aebc5892d310cc915641517efb8d2311bb data/twilightforest/loot_table/gameplay/questing_ram_rewards.json
 a9414c77847cf501ea7139df563bfeb047ac0146 data/twilightforest/loot_table/gameplay/raven_interaction.json
+0dd6b990a9dd455054a4595dc4b5367f18b119a3 data/twilightforest/loot_table/blocks/twilight_oak_shelf.json
+18f7fb084a6d5834069842e0c3788c63a6d2a466 data/twilightforest/loot_table/blocks/canopy_shelf.json
+7ef5b960e9f4ccc42913b9b446b8096890f9bbfd data/twilightforest/loot_table/blocks/mining_shelf.json
+921a6592170e5655b1c3b654cf25f6eedec99025 data/twilightforest/loot_table/blocks/transformation_shelf.json
+95bee99d870efebdefd72ddc73822127ec67276e data/twilightforest/loot_table/blocks/sorting_shelf.json
+990688ad62f979ac0b67c3a1e6694fb34236e0c8 data/twilightforest/loot_table/blocks/mangrove_shelf.json
+a8748e621af260982012bfd567411ebefd35b0e8 data/twilightforest/loot_table/blocks/time_shelf.json
+d24b043f8702d62db89b6fb19935f8387c16c889 data/twilightforest/loot_table/blocks/dark_shelf.json

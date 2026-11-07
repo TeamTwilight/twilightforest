@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_unconnected",
+  "textures": {
+    "all": "twilightforest:block/sorting_shelf",
+    "particle": "twilightforest:block/stripped_sorting_log"
+  }
+}

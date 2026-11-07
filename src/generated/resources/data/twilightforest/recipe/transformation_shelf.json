@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "shelf",
+  "key": {
+    "#": "twilightforest:stripped_transformation_log"
+  },
+  "pattern": [
+    "###",
+    "   ",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "twilightforest:transformation_shelf"
+  }
+}

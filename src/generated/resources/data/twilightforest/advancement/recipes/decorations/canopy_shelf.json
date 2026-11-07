@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_canopy_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_canopy_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:canopy_shelf"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_canopy_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:canopy_shelf"
+    ]
+  }
+}

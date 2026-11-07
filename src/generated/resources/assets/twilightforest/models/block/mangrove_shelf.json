@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_body",
+  "textures": {
+    "all": "twilightforest:block/mangrove_shelf",
+    "particle": "twilightforest:block/stripped_mangrove_log"
+  }
+}

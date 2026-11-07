@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_body",
+  "textures": {
+    "all": "twilightforest:block/twilight_oak_shelf",
+    "particle": "twilightforest:block/stripped_twilight_oak_log"
+  }
+}

@@ -1,7 +1,11 @@
-// 26.1.2	2026-10-08T17:32:55.757812962	Twilight Forest Item Tags
+// 26.1.2	2026-11-07T02:26:05.9016471	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
+4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/item/plants.json
+932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/item/plant_foods.json
+3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/item/charm.json
+8c9bf988d87251fa01c2ebab384b3140345c0ef4 data/curios/tags/item/head.json
 58b5e0d0eea5536fb5d46cc844c5b8b71bc34f86 data/c/tags/item/bookshelves.json
 dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/item/chests/trapped.json
 44154bfab8aa5f48a23729d5e1312a8b8c0ae87c data/c/tags/item/chests/wooden.json
@@ -49,10 +53,6 @@ eb02dad5585025bae46b1a33a10ef57f1c33b78f data/c/tags/item/storage_blocks/slime/m
 2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/c/tags/item/tools/bow.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/c/tags/item/tools/ranged_weapon.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/c/tags/item/tools/shield.json
-932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/item/plant_foods.json
-4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/item/plants.json
-3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/item/charm.json
-8c9bf988d87251fa01c2ebab384b3140345c0ef4 data/curios/tags/item/head.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/farmersdelight/tags/item/cabbage_roll_ingredients.json
 b40c8354ed3ca1a2a7af96684c97bc7afdeb9f05 data/forbidden_arcanus/tags/item/modifier/eternal_incompatible.json
 a60dbce39527970b03af723b64656128b26f70e6 data/minecraft/tags/item/axes.json
@@ -96,13 +96,14 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/item/slabs.json
 4304b5a72638ce0626ae45be178a5669cea32d38 data/minecraft/tags/item/small_flowers.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/item/stairs.json
 931bc115353e6c267d36d480a5891285fde13487 data/minecraft/tags/item/swords.json
-33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/item/trim_materials.json
 b865b9d4dbc027c1b21a7fb67f6129acdb4d5605 data/minecraft/tags/item/trimmable_armor.json
+33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/item/trim_materials.json
 e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/item/walls.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/item/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/item/wooden_doors.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/minecraft/tags/item/wooden_fences.json
 1d347a5494b98a22c03317e180c51db859e4e309 data/minecraft/tags/item/wooden_pressure_plates.json
+44ac85c59fd920b8281292d62104ea906d8d39fa data/minecraft/tags/item/wooden_shelves.json
 e4144fc27ee121d3f7d17a5fdff02e93e1d7f7d8 data/minecraft/tags/item/wooden_slabs.json
 f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/item/wooden_stairs.json
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/item/wooden_trapdoors.json
@@ -139,8 +140,8 @@ ce0b1d11997aa9ce60beaa2ddb3d36a5fd917b0e data/twilightforest/tags/item/repairs_f
 06e495833668db6f9fc9023f604c95c54b2dc24c data/twilightforest/tags/item/repairs_ironwood_tools.json
 aa59d6912b5c452ce1afb82ed5bdcb891f3bd95e data/twilightforest/tags/item/repairs_knightmetal_tools.json
 71b2e2daefc54eb925dbfaee220d018ee9ad7a99 data/twilightforest/tags/item/repairs_steeleaf_tools.json
-5efc217b2e2af8bef7b5fa71d1f8194cfdf1f339 data/twilightforest/tags/item/scepter_max_repair_items.json
 b27431397fb46bfe7b5d2404ff6f36491fe202f4 data/twilightforest/tags/item/scepters.json
+5efc217b2e2af8bef7b5fa71d1f8194cfdf1f339 data/twilightforest/tags/item/scepter_max_repair_items.json
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/item/sorting_logs.json
 788e6e34a201c014ae3783bc128afbd75443273b data/twilightforest/tags/item/squirrel_tempt_items.json
 aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/item/time_logs.json

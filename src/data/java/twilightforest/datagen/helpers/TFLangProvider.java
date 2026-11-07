@@ -86,6 +86,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void createWoodSet(String woodPrefix, String woodName) {
+		this.add("block.twilightforest." + woodPrefix + "_shelf", woodName + " Shelf");
 		this.add("block.twilightforest." + woodPrefix + "_planks", woodName + " Planks");
 		this.add("block.twilightforest." + woodPrefix + "_slab", woodName + " Slab");
 		this.add("block.twilightforest." + woodPrefix + "_stairs", woodName + " Stairs");

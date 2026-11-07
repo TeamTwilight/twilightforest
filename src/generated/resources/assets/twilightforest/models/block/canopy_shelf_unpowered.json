@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_unpowered",
+  "textures": {
+    "all": "twilightforest:block/canopy_shelf",
+    "particle": "twilightforest:block/stripped_canopy_log"
+  }
+}

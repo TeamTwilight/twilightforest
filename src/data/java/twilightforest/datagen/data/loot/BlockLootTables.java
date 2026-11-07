@@ -432,6 +432,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_OAK_CHEST.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_DRYING_RACK.get());
+		dropSelf(TFBlocks.TWILIGHT_OAK_SHELF.get());
 
 		dropSelf(TFBlocks.CANOPY_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_CANOPY_LOG.get());
@@ -458,6 +459,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.CANOPY_CHEST.get());
 		dropSelf(TFBlocks.CANOPY_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.CANOPY_DRYING_RACK.get());
+		dropSelf(TFBlocks.CANOPY_SHELF.get());
 
 		dropSelf(TFBlocks.MANGROVE_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_MANGROVE_LOG.get());
@@ -482,6 +484,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MANGROVE_CHEST.get());
 		dropSelf(TFBlocks.MANGROVE_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.MANGROVE_DRYING_RACK.get());
+		dropSelf(TFBlocks.MANGROVE_SHELF.get());
 
 		dropSelf(TFBlocks.DARK_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_DARK_LOG.get());
@@ -507,6 +510,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.DARK_CHEST.get());
 		dropSelf(TFBlocks.DARK_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.DARK_DRYING_RACK.get());
+		dropSelf(TFBlocks.DARK_SHELF.get());
 
 		dropSelf(TFBlocks.TIME_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -532,6 +536,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TIME_CHEST.get());
 		dropSelf(TFBlocks.TIME_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.TIME_DRYING_RACK.get());
+		dropSelf(TFBlocks.TIME_SHELF.get());
 
 		dropSelf(TFBlocks.TRANSFORMATION_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
@@ -557,6 +562,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TRANSFORMATION_CHEST.get());
 		dropSelf(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.TRANSFORMATION_DRYING_RACK.get());
+		dropSelf(TFBlocks.TRANSFORMATION_SHELF.get());
 
 		dropSelf(TFBlocks.MINING_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_MINING_LOG.get());
@@ -582,6 +588,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MINING_CHEST.get());
 		dropSelf(TFBlocks.MINING_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.MINING_DRYING_RACK.get());
+		dropSelf(TFBlocks.MINING_SHELF.get());
 
 		dropSelf(TFBlocks.SORTING_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_SORTING_LOG.get());
@@ -607,6 +614,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.SORTING_CHEST.get());
 		dropSelf(TFBlocks.SORTING_TRAPPED_CHEST.get());
 		dropSelf(TFBlocks.SORTING_DRYING_RACK.get());
+		dropSelf(TFBlocks.SORTING_SHELF.get());
 
 		add(TFBlocks.OMINOUS_FIRE.get(), noDrop());
 		ominousCandle(TFBlocks.OMINOUS_CANDLE);

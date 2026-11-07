@@ -50,6 +50,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TWILIGHT_OAK_GATE);
 			output.accept(TFBlocks.TWILIGHT_OAK_BANISTER);
 			output.accept(TFBlocks.TWILIGHT_OAK_DRYING_RACK);
+			output.accept(TFBlocks.TWILIGHT_OAK_SHELF);
 			output.accept(TFBlocks.TWILIGHT_OAK_DOOR);
 			output.accept(TFBlocks.TWILIGHT_OAK_TRAPDOOR);
 			output.accept(TFBlocks.TWILIGHT_OAK_PLATE);
@@ -77,6 +78,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.CANOPY_GATE);
 			output.accept(TFBlocks.CANOPY_BANISTER);
 			output.accept(TFBlocks.CANOPY_DRYING_RACK);
+			output.accept(TFBlocks.CANOPY_SHELF);
 			output.accept(TFBlocks.CANOPY_DOOR);
 			output.accept(TFBlocks.CANOPY_TRAPDOOR);
 			output.accept(TFBlocks.CANOPY_PLATE);
@@ -101,6 +103,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.MANGROVE_GATE);
 			output.accept(TFBlocks.MANGROVE_BANISTER);
 			output.accept(TFBlocks.MANGROVE_DRYING_RACK);
+			output.accept(TFBlocks.MANGROVE_SHELF);
 			output.accept(TFBlocks.MANGROVE_DOOR);
 			output.accept(TFBlocks.MANGROVE_TRAPDOOR);
 			output.accept(TFBlocks.MANGROVE_PLATE);
@@ -124,6 +127,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.DARK_GATE);
 			output.accept(TFBlocks.DARK_BANISTER);
 			output.accept(TFBlocks.DARK_DRYING_RACK);
+			output.accept(TFBlocks.DARK_SHELF);
 			output.accept(TFBlocks.DARK_DOOR);
 			output.accept(TFBlocks.DARK_TRAPDOOR);
 			output.accept(TFBlocks.DARK_PLATE);
@@ -148,6 +152,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TIME_GATE);
 			output.accept(TFBlocks.TIME_BANISTER);
 			output.accept(TFBlocks.TIME_DRYING_RACK);
+			output.accept(TFBlocks.TIME_SHELF);
 			output.accept(TFBlocks.TIME_DOOR);
 			output.accept(TFBlocks.TIME_TRAPDOOR);
 			output.accept(TFBlocks.TIME_PLATE);
@@ -172,6 +177,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TRANSFORMATION_GATE);
 			output.accept(TFBlocks.TRANSFORMATION_BANISTER);
 			output.accept(TFBlocks.TRANSFORMATION_DRYING_RACK);
+			output.accept(TFBlocks.TRANSFORMATION_SHELF);
 			output.accept(TFBlocks.TRANSFORMATION_DOOR);
 			output.accept(TFBlocks.TRANSFORMATION_TRAPDOOR);
 			output.accept(TFBlocks.TRANSFORMATION_PLATE);
@@ -196,6 +202,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.MINING_GATE);
 			output.accept(TFBlocks.MINING_BANISTER);
 			output.accept(TFBlocks.MINING_DRYING_RACK);
+			output.accept(TFBlocks.MINING_SHELF);
 			output.accept(TFBlocks.MINING_DOOR);
 			output.accept(TFBlocks.MINING_TRAPDOOR);
 			output.accept(TFBlocks.MINING_PLATE);
@@ -220,6 +227,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.SORTING_GATE);
 			output.accept(TFBlocks.SORTING_BANISTER);
 			output.accept(TFBlocks.SORTING_DRYING_RACK);
+			output.accept(TFBlocks.SORTING_SHELF);
 			output.accept(TFBlocks.SORTING_DOOR);
 			output.accept(TFBlocks.SORTING_TRAPDOOR);
 			output.accept(TFBlocks.SORTING_PLATE);

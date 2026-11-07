@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "shelf",
+  "key": {
+    "#": "twilightforest:stripped_sorting_log"
+  },
+  "pattern": [
+    "###",
+    "   ",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "twilightforest:sorting_shelf"
+  }
+}

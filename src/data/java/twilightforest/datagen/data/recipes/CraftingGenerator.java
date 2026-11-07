@@ -1074,6 +1074,15 @@ public class CraftingGenerator extends CraftingDataHelper {
 		woodBlock(getter, "transformation", TFBlocks.TRANSFORMATION_WOOD, TFBlocks.TRANSFORMATION_LOG);
 		woodBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_WOOD, TFBlocks.TWILIGHT_OAK_LOG);
 
+		shelf(TFBlocks.TWILIGHT_OAK_SHELF.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
+		shelf(TFBlocks.CANOPY_SHELF.get(), TFBlocks.STRIPPED_CANOPY_LOG.get());
+		shelf(TFBlocks.MANGROVE_SHELF.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get());
+		shelf(TFBlocks.DARK_SHELF.get(), TFBlocks.STRIPPED_DARK_LOG.get());
+		shelf(TFBlocks.TIME_SHELF.get(), TFBlocks.STRIPPED_TIME_LOG.get());
+		shelf(TFBlocks.TRANSFORMATION_SHELF.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
+		shelf(TFBlocks.MINING_SHELF.get(), TFBlocks.STRIPPED_MINING_LOG.get());
+		shelf(TFBlocks.SORTING_SHELF.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
+
 		strippedWoodBlock(getter, "canopy", TFBlocks.STRIPPED_CANOPY_WOOD, TFBlocks.STRIPPED_CANOPY_LOG);
 		strippedWoodBlock(getter, "dark", TFBlocks.STRIPPED_DARK_WOOD, TFBlocks.STRIPPED_DARK_LOG);
 		strippedWoodBlock(getter, "mangrove", TFBlocks.STRIPPED_MANGROVE_WOOD, TFBlocks.STRIPPED_MANGROVE_LOG);

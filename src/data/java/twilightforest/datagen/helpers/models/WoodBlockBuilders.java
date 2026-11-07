@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.SideChainPart;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.ClimbableHollowLogBlock;
@@ -251,6 +252,21 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		Identifier on = ModelTemplates.CUBE_COLUMN.createWithSuffix(core, "_on", TextureMapping.column(TextureMapping.getBlockTexture(core, "_on"), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(core).with(PropertyDispatch.initial(SpecialMagicLogBlock.ACTIVE).generate(active -> plainVariant(active ? on : off))).with(ROTATIONS_COLUMN_WITH_FACING));
 		this.generateBlockItem(core);
+	}
+
+	public void generateShelf(Block shelf, Block strippedLog) {
+		TextureMapping textures = new TextureMapping()
+			.put(TextureSlot.ALL, TextureMapping.getBlockTexture(shelf))
+			.put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(strippedLog));
+		MultiPartGenerator multipart = MultiPartGenerator.multiPart(shelf);
+		this.addShelfPart(shelf, textures, multipart, ModelTemplates.SHELF_BODY, null, null);
+		this.addShelfPart(shelf, textures, multipart, ModelTemplates.SHELF_UNPOWERED, false, null);
+		this.addShelfPart(shelf, textures, multipart, ModelTemplates.SHELF_UNCONNECTED, true, SideChainPart.UNCONNECTED);
+		this.addShelfPart(shelf, textures, multipart, ModelTemplates.SHELF_LEFT, true, SideChainPart.LEFT);
+		this.addShelfPart(shelf, textures, multipart, ModelTemplates.SHELF_CENTER, true, SideChainPart.CENTER);
+		this.addShelfPart(shelf, textures, multipart, ModelTemplates.SHELF_RIGHT, true, SideChainPart.RIGHT);
+		this.blockStateOutput.accept(multipart);
+		this.registerSimpleItemModel(shelf, ModelTemplates.SHELF_INVENTORY.create(shelf, textures, this.modelOutput));
 	}
 
 	public void generateChiseledBookshelf(Block shelf) {

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_inventory",
+  "textures": {
+    "all": "twilightforest:block/transformation_shelf",
+    "particle": "twilightforest:block/stripped_transformation_log"
+  }
+}
