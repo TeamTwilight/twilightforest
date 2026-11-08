@@ -3,7 +3,6 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,6 +27,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
+import twilightforest.entity.ai.control.GhastguardMoveControl;
 import twilightforest.entity.ai.goal.GhastguardAttackGoal;
 import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
 import twilightforest.entity.ai.goal.GhastguardRandomFlyGoal;
@@ -48,6 +48,7 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	public CarminiteGhastguard(EntityType<? extends CarminiteGhastguard> type, Level level) {
 		super(type, level);
 		this.wanderFactor = 16.0F;
+		this.moveControl = new GhastguardMoveControl(this);
 	}
 
 	@Override
