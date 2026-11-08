@@ -48,7 +48,7 @@ public class TFPlacedFeatureGenerator {
     }
 
     private static List<PlacementModifier> darkForestTreeCheck(PlacementModifier count) {
-        return ImmutableList.of(count, InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new AvoidLandmarkModifier(true, false, 10, HolderSet.empty()), BiomeFilter.biome());
+        return ImmutableList.of(count, InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new AvoidLandmarkModifier(true, false, 16, HolderSet.empty()), BiomeFilter.biome());
     }
 
     private static PlacementModifier darkForestFloorScan() {

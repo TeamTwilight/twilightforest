@@ -50,7 +50,7 @@ public class DarkTowerStructureGenerator {
             ),
             new AdvancementLockedStructure.AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_knights"))),
             Optional.of(new StructureHints.HintConfig(StructureHints.HintConfig.book("darktower", 3), TFEntities.KOBOLD.get())),
-            Optional.of(new DecorationClearance.DecorationConfig(1, false, true, true)),
+            Optional.of(new DecorationClearance.DecorationConfig(0, false, true, true)),
             true, Optional.of(TFMapDecorations.DARK_TOWER),
             new Structure.StructureSettings(
                 context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_DARK_TOWER_BIOMES),
