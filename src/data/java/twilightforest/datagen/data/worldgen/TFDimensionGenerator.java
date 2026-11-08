@@ -29,6 +29,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.tags.TFTimelineTags;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.OpenWaterProximityFunction;
 import twilightforest.world.components.layer.BiomeDensitySource;
 
 import java.util.List;
@@ -99,7 +100,7 @@ public class TFDimensionGenerator {
             skylight ? Blocks.AIR.defaultBlockState() : Blocks.WATER.defaultBlockState(),
             new NoiseRouter(
                     DensityFunctions.zero(),
-                    DensityFunctions.zero(),
+                    skylight ? DensityFunctions.zero() : new OpenWaterProximityFunction(finalDensity, TFDimension.SEALEVEL, 4),
                     DensityFunctions.zero(),
                     DensityFunctions.zero(),
                     DensityFunctions.zero(),
@@ -118,7 +119,7 @@ public class TFDimensionGenerator {
             List.of(),
             TFDimension.SEALEVEL,
             false,
-            false,
+            !skylight,
             false,
             false
         );
