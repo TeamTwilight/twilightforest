@@ -7,7 +7,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.CarminiteGhastguard;
 
 /**
@@ -27,7 +26,6 @@ public class GhastguardMoveControl extends MoveControl {
 	public void tick() {
 		// TF: Dampen motion while engaged with a target
 		if (this.mob.getTarget() != null) {
-			TwilightForestMod.LOGGER.warn("Dampening movement!");
 			this.mob.setDeltaMovement(this.mob.getDeltaMovement().scale(0.75D));
 			return;
 		}

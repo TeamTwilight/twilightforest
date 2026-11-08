@@ -2,18 +2,15 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
@@ -78,8 +75,7 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	// Loosely based on EnderMan.isLookingAtMe
 	@Override
 	public boolean shouldAttack(LivingEntity living) {
-		ItemStack helmet = living.getItemBySlot(EquipmentSlot.HEAD);
-		if (!helmet.isEmpty() && helmet.is(ItemTags.GAZE_DISGUISE_EQUIPMENT)) {
+		if (!LivingEntity.PLAYER_NOT_WEARING_DISGUISE_ITEM_FOR_TARGET.test(living, this)) {
 			return false;
 		} else if (living.distanceTo(this) <= 3.5F) {
 			return living.hasLineOfSight(this);
