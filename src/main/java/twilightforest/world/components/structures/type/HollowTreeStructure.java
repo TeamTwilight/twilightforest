@@ -145,7 +145,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	@Override
 	public boolean checkSaplingClearance(ServerLevel level, BlockPos pos) {
 		int rangeClearance = 3;
-		Iterable<BlockPos> blockPos = BlockPos.betweenClosed(pos.getX() - rangeClearance, pos.getY() - rangeClearance, pos.getZ() - rangeClearance, pos.getX() + rangeClearance, pos.getY() + 128, pos.getZ() + rangeClearance);
+		Iterable<BlockPos> blockPos = BlockPos.betweenClosed(pos.getX() - rangeClearance, pos.getY(), pos.getZ() - rangeClearance, pos.getX() + rangeClearance, pos.getY() + 128, pos.getZ() + rangeClearance);
 
 		for (BlockPos posCheck : blockPos) {
 			if (posCheck.equals(pos))
