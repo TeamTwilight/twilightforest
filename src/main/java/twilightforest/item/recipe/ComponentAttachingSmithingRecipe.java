@@ -35,7 +35,7 @@ public class ComponentAttachingSmithingRecipe extends SimpleSmithingRecipe {
 
 	public static final MapCodec<ComponentAttachingSmithingRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
 		Recipe.CommonInfo.MAP_CODEC.forGetter(o -> o.commonInfo),
-		Ingredient.CODEC.optionalFieldOf("base").forGetter(o -> o.template),
+		Ingredient.CODEC.optionalFieldOf("template").forGetter(o -> o.template),
 		Ingredient.CODEC.fieldOf("base").forGetter(o -> o.base),
 		Ingredient.CODEC.optionalFieldOf("addition").forGetter(o -> o.addition),
 		DATA_COMPONENT_CODEC.optionalFieldOf("additional_data", List.of()).forGetter(o -> o.additionalData)
