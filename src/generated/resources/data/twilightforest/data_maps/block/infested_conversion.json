@@ -1,0 +1,22 @@
+{
+  "values": {
+    "minecraft:chiseled_stone_bricks": {
+      "Name": "minecraft:infested_chiseled_stone_bricks"
+    },
+    "minecraft:cobblestone": {
+      "Name": "minecraft:infested_cobblestone"
+    },
+    "minecraft:cracked_stone_bricks": {
+      "Name": "minecraft:infested_cracked_stone_bricks"
+    },
+    "minecraft:mossy_stone_bricks": {
+      "Name": "minecraft:infested_mossy_stone_bricks"
+    },
+    "minecraft:stone": {
+      "Name": "minecraft:infested_stone"
+    },
+    "minecraft:stone_bricks": {
+      "Name": "minecraft:infested_stone_bricks"
+    }
+  }
+}

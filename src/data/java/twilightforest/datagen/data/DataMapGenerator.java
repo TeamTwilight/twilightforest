@@ -258,6 +258,14 @@ public class DataMapGenerator extends DataMapProvider {
 		oreMap.add(BlockTags.DIAMOND_ORES, new OreMapOreColor(MapColor.DIAMOND), false);
 		oreMap.add(BlockTags.EMERALD_ORES, new OreMapOreColor(MapColor.EMERALD), false);
 		oreMap.add(Blocks.ANCIENT_DEBRIS.builtInRegistryHolder(), new OreMapOreColor(MapColor.TERRACOTTA_BROWN), false);
+
+		var infested = this.builder(TFDataMaps.INFESTED_CONVERSION);
+		infested.add(Blocks.STONE.builtInRegistryHolder(), Blocks.INFESTED_STONE.defaultBlockState(), false);
+		infested.add(Blocks.COBBLESTONE.builtInRegistryHolder(), Blocks.INFESTED_COBBLESTONE.defaultBlockState(), false);
+		infested.add(Blocks.STONE_BRICKS.builtInRegistryHolder(), Blocks.INFESTED_STONE_BRICKS.defaultBlockState(), false);
+		infested.add(Blocks.MOSSY_STONE_BRICKS.builtInRegistryHolder(), Blocks.INFESTED_MOSSY_STONE_BRICKS.defaultBlockState(), false);
+		infested.add(Blocks.CRACKED_STONE_BRICKS.builtInRegistryHolder(), Blocks.INFESTED_CRACKED_STONE_BRICKS.defaultBlockState(), false);
+		infested.add(Blocks.CHISELED_STONE_BRICKS.builtInRegistryHolder(), Blocks.INFESTED_CHISELED_STONE_BRICKS.defaultBlockState(), false);
 	}
 
 	private void add1WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, EntityType<?> from, EntityType<?> to) {
