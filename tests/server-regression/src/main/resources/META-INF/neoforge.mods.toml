@@ -1,0 +1,6 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+[[mods]]
+modId="server_regression"
+version="1.0.0"

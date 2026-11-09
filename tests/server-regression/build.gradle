@@ -1,0 +1,8 @@
+plugins { id 'java-library'; id 'net.neoforged.moddev' version '2.0.148' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(25) }
+neoForge { version = '26.1.2.126' }
+// Supply the tested release plus its dependencies locally; never commit those JARs.
+dependencies { compileOnly fileTree('mods') { include '*.jar' } }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+base { archivesName = 'server-regression' }
+version = '1.0.0'

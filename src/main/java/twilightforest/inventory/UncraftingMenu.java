@@ -622,14 +622,19 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 		for (int i = 0; i < slots.size(); i++) {
 			int index = slots.getInt(i);
-
 			if (index == PlacementInfo.EMPTY_SLOT) {
 				stacks[i] = ItemStack.EMPTY;
 				continue;
 			}
 
-			ItemStack[] matchingStacks = ingredients.get(index).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
-			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
+			Ingredient ingredient = ingredients.get(index);
+			List<ItemStack> matchingStacks = new ArrayList<>();
+			for (ItemStack stack : ingredient.display().resolveForStacks(net.minecraft.world.item.crafting.display.SlotDisplayContext.fromLevel(this.level))) {
+				if (!stack.isEmpty() && ingredient.test(stack) && !stack.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)) {
+					matchingStacks.add(stack.copy());
+				}
+			}
+			stacks[i] = matchingStacks.isEmpty() ? ItemStack.EMPTY : matchingStacks.get(Math.floorMod(this.ingredientsInCycle, matchingStacks.size()));
 		}
 
 		return stacks;
