@@ -7,11 +7,15 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.Unit;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.entity.*;
+import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.Codecs;
 
 public class TFDataAttachments {
@@ -46,4 +50,5 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_GRADUALLY_GLIDING = ATTACHMENT_TYPES.register("is_gradually_gliding", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL.fieldOf("gliding")).sync(ByteBufCodecs.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SlimySolesAttachment>> SLIMY_SOLES_BOUNCE_INFO = ATTACHMENT_TYPES.register("slimy_soles_bounce_info", () -> AttachmentType.builder(SlimySolesAttachment::new).serialize(SlimySolesAttachment.CODEC).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<CharmAttachment>> CHARM_INVENTORY = ATTACHMENT_TYPES.register("charm_inventory", () -> AttachmentType.builder(() -> new CharmAttachment()).serialize(CharmAttachment.CODEC).copyOnDeath().build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>>>> SORTING_CORE_CAPABILITY_CACHE = ATTACHMENT_TYPES.register("sorting_core_capability_cache", () -> AttachmentType.builder(() -> new BlockCapabilityDirectionalCache<>(Capabilities.Item.BLOCK)).build());
 }

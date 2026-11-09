@@ -6,26 +6,40 @@ import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 
-import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-// Voidscape copy
 public class BlockCapabilityDirectionalCache<R> {
 
-	private final Map<BlockPosAndDirection, BlockCapabilityCache<R, Direction>> data = new HashMap<>();
+	private final BlockCapability<R, Direction> capability;
 
-	@Nullable
-	public R get(BlockCapability<R, Direction> capability, ServerLevel level, BlockPos pos, Direction direction) {
-		BlockCapabilityCache<R, Direction> cache = this.data.get(new BlockPosAndDirection(pos, direction));
-		if (cache == null) {
-			cache = BlockCapabilityCache.create(capability, level, pos, direction);
-			this.data.put(new BlockPosAndDirection(pos, direction), cache);
-		}
-		return cache.getCapability();
+	private final Map<BlockPos, Map<Direction, BlockCapabilityCache<R, Direction>>> data = new HashMap<>();
+
+	public BlockCapabilityDirectionalCache(BlockCapability<R, Direction> capability) {
+		this.capability = capability;
 	}
 
-	private record BlockPosAndDirection(BlockPos pos, Direction direction) {
+	public List<R> getAllSides(ServerLevel level, BlockPos pos) {
+		Map<Direction, BlockCapabilityCache<R, Direction>> caches = data.get(pos);
+		if (caches == null) {
+			BlockPos key = pos.immutable();
+			caches = new EnumMap<>(Direction.class);
+			for (Direction side : Direction.values()) {
+				caches.put(side, BlockCapabilityCache.create(capability, level, key, side, () -> true, () -> data.remove(key)));
+			}
+			data.put(key, caches);
+		}
 
+		List<R> handlers = new ArrayList<>();
+		for (BlockCapabilityCache<R, Direction> cache : caches.values()) {
+			R handler = cache.getCapability();
+			if (handler != null) {
+				handlers.add(handler);
+			}
+		}
+		return handlers;
 	}
 }

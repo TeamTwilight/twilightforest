@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -20,7 +21,9 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
@@ -32,13 +35,16 @@ import twilightforest.init.TFDimension;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+// TODO: Component
 public final class WorldUtil {
+
 	private WorldUtil() {
 	}
 
@@ -59,6 +65,33 @@ public final class WorldUtil {
 	 */
 	public static Iterable<BlockPos> getAllAround(BlockPos center, int range) {
 		return BlockPos.betweenClosed(center.offset(-range, -range, -range), center.offset(range, range, range));
+	}
+
+	public static List<BlockEntity> getLoadedBlockEntitiesInRange(ServerLevel level, BlockPos center, int range) {
+		List<BlockEntity> blockEntities = new ArrayList<>();
+		ServerChunkCache chunkSource = level.getChunkSource();
+		int minChunkX = SectionPos.blockToSectionCoord(center.getX() - range);
+		int maxChunkX = SectionPos.blockToSectionCoord(center.getX() + range);
+		int minChunkZ = SectionPos.blockToSectionCoord(center.getZ() - range);
+		int maxChunkZ = SectionPos.blockToSectionCoord(center.getZ() + range);
+
+		for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+			for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+				LevelChunk chunk = chunkSource.getChunkNow(chunkX, chunkZ);
+				if (chunk != null) {
+					for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
+						BlockPos pos = blockEntity.getBlockPos();
+						if (!blockEntity.isRemoved()
+							&& Math.abs(pos.getX() - center.getX()) <= range
+							&& Math.abs(pos.getY() - center.getY()) <= range
+							&& Math.abs(pos.getZ() - center.getZ()) <= range) {
+							blockEntities.add(blockEntity);
+						}
+					}
+				}
+			}
+		}
+		return blockEntities;
 	}
 
 	/**

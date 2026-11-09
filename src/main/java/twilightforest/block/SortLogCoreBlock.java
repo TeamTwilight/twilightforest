@@ -17,6 +17,7 @@ import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import twilightforest.config.TFConfig;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.tags.TFEntityTypeTags;
@@ -30,7 +31,6 @@ import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
-	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
 	private static final MapCodec<SpecialMagicLogBlock> CODEC = simpleCodec(SortLogCoreBlock::new);
 
 	public SortLogCoreBlock(Properties properties) {
@@ -52,25 +52,20 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		Map<List<ResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();
 		Map<ResourceHandler<ItemResource>, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
+		BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = level.getData(TFDataAttachments.SORTING_CORE_CAPABILITY_CACHE);
+
+		for (BlockEntity blockEntity : WorldUtil.getLoadedBlockEntitiesInRange(level, pos, TFConfig.sortingCoreRange)) {
+			BlockPos blockPos = blockEntity.getBlockPos();
 			if (!blockPos.equals(pos)) {
-				BlockEntity blockEntity = level.getBlockEntity(blockPos);
-				if (blockEntity != null) {
-					// Put it in the input if its within 2 blocks
-					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-						List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
-						for (Direction side : Direction.values()) {
-							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
-							if (handler != null) handlers.add(handler);
-						}
-						if (!handlers.isEmpty()) {
-							inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
-					} else { // Output if its outside that range
-						for (Direction side : Direction.values()) {
-							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
-							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
+				List<ResourceHandler<ItemResource>> handlers = capabilityCache.getAllSides(level, blockPos);
+				// Put it in the input if its within 2 blocks
+				if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+					if (!handlers.isEmpty()) {
+						inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+					}
+				} else { // Output if its outside that range
+					for (ResourceHandler<ItemResource> handler : handlers) {
+						outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 					}
 				}
 			}
