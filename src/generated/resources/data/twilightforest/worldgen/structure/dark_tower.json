@@ -80,7 +80,7 @@
     "allow_biome_surface_decorations": false,
     "allow_biome_underground_decorations": true,
     "allow_biome_vegetation": true,
-    "chunk_clearance_radius": 1.0
+    "chunk_clearance_radius": 0.0
   },
   "hint_creature": {
     "hint_item": {
