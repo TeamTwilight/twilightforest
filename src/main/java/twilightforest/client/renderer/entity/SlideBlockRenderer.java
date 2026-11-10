@@ -42,7 +42,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock, FallingBlockR
 				}
 			}
 			stack.translate(-0.5D, -0.5D, -0.5D);
-			collector.submitMovingBlock(stack, state.movingBlockRenderState);
+			collector.submitMovingBlock(stack, state.movingBlockRenderState, state.outlineColor);
 			stack.popPose();
 			super.submit(state, stack, collector, camera);
 		}
