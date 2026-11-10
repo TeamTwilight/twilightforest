@@ -226,7 +226,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		for (StructureTemplate.StructureBlockInfo blockInfo : this.template.filterBlocks(this.templatePosition, this.placeSettings, Blocks.JIGSAW)) {
 			BlockPos infoPos = blockInfo.pos();
 			if (chunkBounds.isInside(infoPos)) {
-				chunkAt.markPosForPostprocessing(infoPos);
+				chunkAt.markPosForPostProcessing(infoPos);
 			}
 		}
 	}

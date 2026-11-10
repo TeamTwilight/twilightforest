@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Display;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
@@ -118,7 +118,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 			final BlockPos pos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 
 			if (sbb.isInside(pos)) {
-				final Display.TextDisplay display = new Display.TextDisplay(EntityType.TEXT_DISPLAY, world.getLevel());
+				final Display.TextDisplay display = new Display.TextDisplay(EntityTypes.TEXT_DISPLAY, world.getLevel());
 				display.setText(Component.literal(s));
 				display.setBillboardConstraints(billboardConstraint);
 				display.snapTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
@@ -152,7 +152,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 			}
 
 			if (BLOCKS_NEEDING_POSTPROCESSING.get().contains(blockstateIn.getBlock())) {
-				worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
+				worldIn.getChunk(blockpos).markPosForPostProcessing(blockpos);
 			}
 
 		}
@@ -161,7 +161,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugEntity(Level world, BlockPos blockpos, String s) {
 		if (shouldDebug()) {
-			final Sheep sheep = new Sheep(EntityType.SHEEP, world);
+			final Sheep sheep = new Sheep(EntityTypes.SHEEP, world);
 			sheep.setCustomName(Component.literal(s));
 			sheep.setNoAi(true);
 			sheep.snapTo(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);

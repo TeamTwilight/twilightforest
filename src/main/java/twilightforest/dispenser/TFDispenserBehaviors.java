@@ -84,21 +84,21 @@ public class TFDispenserBehaviors {
 
 		//handling tags should be a thing smh
 		DispenserBlock.registerBehavior(Items.CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BLACK_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.GRAY_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIGHT_GRAY_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.WHITE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.RED_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.ORANGE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.YELLOW_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.GREEN_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIME_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BLUE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.CYAN_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIGHT_BLUE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.PURPLE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.MAGENTA_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.PINK_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BROWN_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.black(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.gray(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.lightGray(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.white(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.red(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.orange(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.yellow(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.green(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.lime(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.blue(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.cyan(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.lightBlue(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.purple(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.magenta(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.pink(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.brown(), new CandleDispenseBehavior());
 	}
 }

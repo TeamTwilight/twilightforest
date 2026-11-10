@@ -14,6 +14,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -41,7 +42,7 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	public static final int ERODED_LENGTH = 2;
 	protected static final float MOSS_CHANCE = 0.44F;
-	protected static final List<EntityType<?>> SPAWNER_MONSTERS = List.of(TFEntities.SWARM_SPIDER.get(), TFEntities.HOSTILE_WOLF.get(), EntityType.CAVE_SPIDER);
+	protected static final List<EntityType<?>> SPAWNER_MONSTERS = List.of(TFEntities.SWARM_SPIDER.get(), TFEntities.HOSTILE_WOLF.get(), EntityTypes.CAVE_SPIDER);
 	public static final int TERRAFORM_PIECE_SIZE = 10;
 	public static final int FEATURE_PIECE_SIZE = 3;
 	protected final BlockStateProvider log;
@@ -223,7 +224,7 @@ public class FallenTrunkPiece extends StructurePiece {
 			if (randomChild.nextFloat() <= MOSS_CHANCE && boundingbox.isInside(getWorldPos(x, y + 1, z)) && this.getBlock(level, x, y + 1, z, boundingbox).is(BlockTags.REPLACEABLE)) {
 				placeBlock(level, TFBlocks.MOSS_PATCH.get().defaultBlockState(), x, y + 1, z, boundingbox);
 				level.updateNeighborsAt(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH.get());  // to connect moss patches
-				level.getChunk(getWorldPos(x, y + 1, z)).markPosForPostprocessing(getWorldPos(x, y + 1, z));
+				level.getChunk(getWorldPos(x, y + 1, z)).markPosForPostProcessing(getWorldPos(x, y + 1, z));
 			}
 		}
 	}

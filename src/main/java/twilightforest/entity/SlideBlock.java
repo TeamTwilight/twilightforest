@@ -2,9 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -164,12 +161,14 @@ public class SlideBlock extends Entity {
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity living) {
-				living.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.SLIDER), 5.0F);
+				DamageSource source = TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.SLIDER);
+				float amount = 5.0F;
+				living.hurt(source, amount);
 
 				double kx = (this.getX() - entity.getX()) * 2.0D;
 				double kz = (this.getZ() - entity.getZ()) * 2.0D;
 
-				living.knockback(2.0F, kx, kz);
+				living.knockback(2.0F, kx, kz, source, amount);
 			}
 		}
 	}

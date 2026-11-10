@@ -149,6 +149,6 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 
 		world.setBlock(placeAt, state, Block.UPDATE_ALL);
 
-		world.getChunk(placeAt).markPosForPostprocessing(placeAt);
+		world.getChunk(placeAt).markPosForPostProcessing(placeAt);
 	}
 }

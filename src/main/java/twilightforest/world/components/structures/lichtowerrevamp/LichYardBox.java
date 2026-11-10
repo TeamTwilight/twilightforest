@@ -134,7 +134,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 					if (this.direction.getAxis() == Direction.Axis.Z ? x == this.boundingBox.minX() + noiseRounded || x == this.boundingBox.maxX() - noiseRounded : z == this.boundingBox.minZ() + noiseRounded || z == this.boundingBox.maxZ() - noiseRounded) {
 						BlockPos fenceAt = placeAt.above();
 						level.setBlock(fenceAt, Blocks.SPRUCE_FENCE.defaultBlockState(), Block.UPDATE_ALL);
-						chunk.markPosForPostprocessing(fenceAt);
+						chunk.markPosForPostProcessing(fenceAt);
 					}
 				}
 			}

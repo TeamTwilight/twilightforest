@@ -133,7 +133,7 @@ public class EntityEvents {
 			EntityTransformation dataMap = event.getEntity().getType().builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
 
 			if (event.getEntity() instanceof ServerPlayer player) {
-				var zombie = EntityType.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
+				var zombie = EntityTypes.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
 				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 				zombie.setCustomName(player.getName());
 				zombie.copyPosition(player);

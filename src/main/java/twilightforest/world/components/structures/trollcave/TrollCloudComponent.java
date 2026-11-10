@@ -38,7 +38,7 @@ public class TrollCloudComponent extends TFStructureComponentOld {
 	}
 
 	protected void placeCloud(WorldGenLevel world, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		this.generateBox(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.WHITE_STAINED_GLASS.defaultBlockState(), Blocks.WHITE_STAINED_GLASS.defaultBlockState(), false);
+		this.generateBox(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, Blocks.STAINED_GLASS.white().defaultBlockState(), Blocks.STAINED_GLASS.white().defaultBlockState(), false);
 		this.generateBox(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.QUARTZ_BLOCK.defaultBlockState(), Blocks.QUARTZ_BLOCK.defaultBlockState(), false);
 
 	}

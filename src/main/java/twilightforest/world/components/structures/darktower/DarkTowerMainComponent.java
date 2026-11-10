@@ -11,7 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -1008,7 +1008,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		this.setBlockStateRotated(world, netherDeco.blockState, 6, y + 1, 13, rotation, sbb);
 		this.setBlockStateRotated(world, netherDeco.blockState, 6, y + (isTop ? 4 : 9), 13, rotation, sbb);
 
-		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, EntityType.BLAZE, sbb);
+		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, EntityTypes.BLAZE, sbb);
 
 		// destruction blob
 		destroyTower(world, decoRNG, 12, y, 3, 2, sbb);

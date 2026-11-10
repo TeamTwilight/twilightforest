@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -250,9 +251,9 @@ public class TowerMainComponent extends TowerWingComponent {
 
 		// place spawner in the middle
 		EntityType<?> mobID = switch (rand.nextInt(4)) {
-			case 2 -> EntityType.ZOMBIE;
+			case 2 -> EntityTypes.ZOMBIE;
 			case 3 -> TFEntities.SWARM_SPIDER.get();
-			default -> EntityType.SKELETON;
+			default -> EntityTypes.SKELETON;
 		};
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
 

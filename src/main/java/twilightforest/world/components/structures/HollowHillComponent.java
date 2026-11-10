@@ -10,6 +10,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.StructureManager;
@@ -261,7 +262,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			return this.getLevel3Mob(rand);
 		}
 
-		return EntityType.SPIDER;
+		return EntityTypes.SPIDER;
 	}
 
 	/**
@@ -269,9 +270,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	public EntityType<?> getLevel1Mob(RandomSource rand) {
 		return switch (rand.nextInt(10)) {
-			case 3, 4, 5 -> EntityType.SPIDER;
-			case 6, 7 -> EntityType.ZOMBIE;
-			case 8 -> EntityType.SILVERFISH;
+			case 3, 4, 5 -> EntityTypes.SPIDER;
+			case 6, 7 -> EntityTypes.ZOMBIE;
+			case 8 -> EntityTypes.SILVERFISH;
 			case 9 -> TFEntities.REDCAP.get();
 			default -> TFEntities.SWARM_SPIDER.get();
 		};
@@ -282,10 +283,10 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	public EntityType<?> getLevel2Mob(RandomSource rand) {
 		return switch (rand.nextInt(10)) {
-			case 3, 4, 5 -> EntityType.ZOMBIE;
-			case 6, 7 -> EntityType.SKELETON;
+			case 3, 4, 5 -> EntityTypes.ZOMBIE;
+			case 6, 7 -> EntityTypes.SKELETON;
 			case 8 -> TFEntities.SWARM_SPIDER.get();
-			case 9 -> EntityType.CAVE_SPIDER;
+			case 9 -> EntityTypes.CAVE_SPIDER;
 			default -> TFEntities.REDCAP.get();
 		};
 	}
@@ -298,9 +299,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 0 -> TFEntities.SLIME_BEETLE.get();
 			case 1 -> TFEntities.FIRE_BEETLE.get();
 			case 2 -> TFEntities.PINCH_BEETLE.get();
-			case 3, 4, 5 -> EntityType.SKELETON;
-			case 6, 7, 8 -> EntityType.CAVE_SPIDER;
-			case 9 -> EntityType.CREEPER;
+			case 3, 4, 5 -> EntityTypes.SKELETON;
+			case 6, 7, 8 -> EntityTypes.CAVE_SPIDER;
+			case 9 -> EntityTypes.CREEPER;
 			default -> TFEntities.WRAITH.get();
 		};
 	}

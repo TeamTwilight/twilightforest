@@ -91,8 +91,8 @@ public class PotionFlaskItem extends Item {
 				if (mobeffectinstance.is(MobEffects.INSTANT_DAMAGE) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
 					//custom harming death message for the advancement
 					entity.hurtServer(player.level(), entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
-				} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
-					mobeffectinstance.getEffect().value().applyInstantenousEffect(player.level(), player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
+				} else if (mobeffectinstance.getEffect().value().isInstantaneous()) {
+					mobeffectinstance.getEffect().value().applyInstantaneousEffect(player.level(), player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
 				} else {
 					player.addEffect(new MobEffectInstance(mobeffectinstance));
 				}
