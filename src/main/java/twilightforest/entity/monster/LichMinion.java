@@ -8,9 +8,9 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
@@ -99,7 +99,7 @@ public class LichMinion extends Zombie {
 			this.findNewMaster();
 		}
 		// if we still don't have a master, or ours is dead, die.
-		if (this.master == null || !this.master.isAlive()) {
+		if (!this.level().isClientSide() && (this.master == null || !this.master.isAlive())) {
 			this.discard();
 		}
 		super.aiStep();
