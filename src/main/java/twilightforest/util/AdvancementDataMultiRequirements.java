@@ -2,7 +2,7 @@ package twilightforest.util;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.triggers.Criterion;
 import tamaized.beanification.Component;
 
 import java.util.ArrayList;
