@@ -302,27 +302,27 @@ public class ClientGameEvents {
 		}
 
 		event.addCustomRenderer((blockOutlineRenderState, submitNodeCollector, poseStack, _) -> {
-				LocalPlayer player = Minecraft.getInstance().player;
-				if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
-					if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
-						BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-						Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().position());
-						int outlineColor = blockOutlineRenderState.highContrast() ? 0xff_57_ff_e1 : 0x66_00_00_00;
-						poseStack.pushPose();
-						poseStack.translate(xyz.x(), xyz.y(), xyz.z());
-						submitNodeCollector.submitShapeOutline(
-							poseStack,
-							GIANT_BLOCK,
-							RenderTypes.lines(),
-							outlineColor,
-							Minecraft.getInstance().gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth,
-							blockOutlineRenderState.isTranslucent()
-						);
-						poseStack.popPose();
-					}
-					return true;
+			LocalPlayer player = Minecraft.getInstance().player;
+			if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
+				if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
+					BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
+					Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().position());
+					int outlineColor = blockOutlineRenderState.highContrast() ? 0xff_57_ff_e1 : 0x66_00_00_00;
+					poseStack.pushPose();
+					poseStack.translate(xyz.x(), xyz.y(), xyz.z());
+					submitNodeCollector.submitShapeOutline(
+						poseStack,
+						GIANT_BLOCK,
+						RenderTypes.lines(),
+						outlineColor,
+						Minecraft.getInstance().gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth,
+						blockOutlineRenderState.isTranslucent()
+					);
+					poseStack.popPose();
 				}
-				return false;
+				return true;
+			}
+			return false;
 		});
 	}
 
