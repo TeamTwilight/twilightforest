@@ -82,17 +82,17 @@ public class EntityRenderingUtil {
 
 	//certain entities are a pain. This exists to fix vanilla cases.
 	private static int applyAdditionalTransforms(EntityType<?> entity, Vector3f translation, Quaternionf rotation, float scale) {
-		if (entity == EntityType.GHAST || entity == EntityType.HAPPY_GHAST) {
+		if (entity == EntityTypes.GHAST || entity == EntityTypes.HAPPY_GHAST) {
 			translation.add(0.0F, -1.25F, 0.0F);
 			scale *= 0.5F;
 		}
-		if (entity == EntityType.ENDER_DRAGON) {
+		if (entity == EntityTypes.ENDER_DRAGON) {
 			translation.add(0.0F, -2.0F, 0.0F);
 			rotation.mul(Axis.YP.rotationDegrees(180.0F));
 			scale *= 0.5F;
 		}
-		if (entity == EntityType.WITHER) translation.add(0.0F, 0.25F, 0.0F);
-		if (entity == EntityType.SQUID || entity == EntityType.GLOW_SQUID) translation.add(0.0F, -0.75F, 0.0F);
+		if (entity == EntityTypes.WITHER) translation.add(0.0F, 0.25F, 0.0F);
+		if (entity == EntityTypes.SQUID || entity == EntityTypes.GLOW_SQUID) translation.add(0.0F, -0.75F, 0.0F);
 		return Math.round(scale);
 	}
 

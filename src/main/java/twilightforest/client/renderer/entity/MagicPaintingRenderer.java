@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -18,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -368,7 +368,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 						lightZ = Mth.floor(lightZ + (double) widthOffset);
 				}
 
-				state.lightCoords[w + h * widthAsBlock] = LevelRenderer.getLightCoords(level, new BlockPos(lightX, lightY, lightZ));
+				state.lightCoords[w + h * widthAsBlock] = LightCoordsUtil.getLightCoords(level, new BlockPos(lightX, lightY, lightZ));
 			}
 		}
 	}

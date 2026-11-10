@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
-import net.minecraft.client.renderer.block.dispatch.SingleVariant;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -181,7 +180,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		collector.submitMultiLayerBlockModel(poseStack, List.of(part), translucent, BlockModelRenderState.EMPTY_TINTS, lightCoords, OverlayTexture.NO_OVERLAY, 0);
 
 		if (crumblingOverlay != null) {
-			collector.submitBreakingBlockModel(poseStack, new SingleVariant(part), 0L, crumblingOverlay.progress());
+			collector.submitBreakingBlockModel(poseStack, List.of(part), crumblingOverlay.progress());
 		}
 	}
 

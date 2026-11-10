@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ItemDisplayOverlay {
 	public static void render(GuiGraphicsExtractor graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
-		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui)
+		if (player == null || gui.hud.getDebugOverlay().showDebugScreen() || minecraft.gui.hud.isHidden())
 			return;
 
 		ItemStack goggles = player.getItemBySlot(EquipmentSlot.HEAD);

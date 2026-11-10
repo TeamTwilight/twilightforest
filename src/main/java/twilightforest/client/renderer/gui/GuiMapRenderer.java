@@ -4,15 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
 import net.minecraft.client.renderer.MapRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.util.LightCoordsUtil;
 
 public class GuiMapRenderer extends PictureInPictureRenderer<GuiMapRenderState> {
-
-	public GuiMapRenderer(MultiBufferSource.BufferSource bufferSource) {
-		super(bufferSource);
-	}
 
 	@Override
 	public Class<GuiMapRenderState> getRenderStateClass() {
@@ -20,12 +15,10 @@ public class GuiMapRenderer extends PictureInPictureRenderer<GuiMapRenderState> 
 	}
 
 	@Override
-	protected void renderToTexture(GuiMapRenderState renderState, PoseStack poseStack) {
+	protected void renderToTexture(GuiMapRenderState guiMapRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
 		Minecraft minecraft = Minecraft.getInstance();
 		poseStack.translate(-MapRenderer.WIDTH / 2.0F, -MapRenderer.HEIGHT / 2.0F, 0.0F);
-		FeatureRenderDispatcher dispatcher = minecraft.gameRenderer.getFeatureRenderDispatcher();
-		minecraft.getMapRenderer().render(renderState.mapRenderState(), poseStack, dispatcher.getSubmitNodeStorage(), false, LightCoordsUtil.FULL_BRIGHT);
-		dispatcher.renderAllFeatures();
+		minecraft.getMapRenderer().render(guiMapRenderState.mapRenderState(), poseStack, submitNodeCollector, false, LightCoordsUtil.FULL_BRIGHT);
 	}
 
 	@Override

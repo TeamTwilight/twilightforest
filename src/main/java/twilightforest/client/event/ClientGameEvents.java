@@ -170,11 +170,11 @@ public class ClientGameEvents {
 		Minecraft minecraft = Minecraft.getInstance();
 		// only fire if we're in the twilight forest
 		if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
-			minecraft.gui.vignetteBrightness = 0.0F;
+			minecraft.gui.hud.vignetteBrightness = 0.0F;
 		}
 
 		if (minecraft.player != null && HostileMountEvents.isRidingUnfriendly(minecraft.player)) {
-			minecraft.gui.setOverlayMessage(Component.empty(), false);
+			minecraft.gui.hud.setOverlayMessage(Component.empty(), false);
 		}
 	}
 

@@ -3,10 +3,7 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.creaking.Creaking;
 import net.minecraft.world.item.ItemStack;
@@ -34,8 +31,8 @@ public class EntityCache {
             return null;
         }
 
-        if (type == EntityType.PLAYER) {
-            type = EntityType.MANNEQUIN;
+        if (type == EntityTypes.PLAYER) {
+            type = EntityTypes.MANNEQUIN;
         }
 
         try {
@@ -43,7 +40,7 @@ public class EntityCache {
                 long start = System.currentTimeMillis();
                 CompoundTag tag = new CompoundTag();
                 tag.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(t).toString());
-                Entity created = EntityType.loadEntityRecursive(tag, level, EntitySpawnReason.COMMAND, input -> {
+                Entity created = EntityType.loadEntityRecursive(tag, level, new EntitySpawnRequest(EntitySpawnReason.COMMAND, false), input -> {
                     input.setId(-1);
                     input.setYRot(0.0F);
                     input.setYHeadRot(0.0F);
@@ -74,7 +71,7 @@ public class EntityCache {
 
     @Nullable
     public static ItemEntity fetchItemEntity(ItemStack itemStack) {
-        if (itemStack.isEmpty() || !(fetchEntity(EntityType.ITEM) instanceof ItemEntity itemEntity))
+        if (itemStack.isEmpty() || !(fetchEntity(EntityTypes.ITEM) instanceof ItemEntity itemEntity))
             return null;
 
         itemEntity.setItem(itemStack);

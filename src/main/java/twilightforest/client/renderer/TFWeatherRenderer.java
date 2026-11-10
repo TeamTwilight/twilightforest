@@ -20,6 +20,7 @@ import net.minecraft.server.level.ParticleStatus;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -189,7 +190,7 @@ public class TFWeatherRenderer {
 									float uFactor = random.nextFloat();
 									float vFactor = random.nextFloat();
 									int terrainHeight = level.getHeight(Heightmap.Types.MOTION_BLOCKING, dx, dz);
-									int worldBrightness = LevelRenderer.getLightCoords(level, pos.set(dx, Math.max(py, terrainHeight), dz));
+									int worldBrightness = LightCoordsUtil.getLightCoords(level, pos.set(dx, Math.max(py, terrainHeight), dz));
 									renderEffect(currentType.getTextureLocation(), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, worldBrightness, buffer);
 								}
 							}
@@ -438,8 +439,8 @@ public class TFWeatherRenderer {
 				}
 			}
 
-			if (blockpos1 != null && randomsource.nextInt(4) < Minecraft.getInstance().levelRenderer.weatherEffectRenderer.rainSoundTime++) {
-				Minecraft.getInstance().levelRenderer.weatherEffectRenderer.rainSoundTime = 0;
+			if (blockpos1 != null && randomsource.nextInt(4) < Minecraft.getInstance().level.rainSoundTime++) {
+				Minecraft.getInstance().level.rainSoundTime = 0;
 				if (blockpos1.getY() > blockpos.getY() + 1 && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos).getY() > Mth.floor((float) blockpos.getY())) {
 					level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
 				} else {
@@ -480,7 +481,7 @@ public class TFWeatherRenderer {
 				int y1 = Math.max(cameraBlockY + renderState.radius, terrainHeight);
 				if (y1 - y0 != 0 && getPrecipitationAt(level, mutablePos.set(x, cameraBlockY, z)) == Biome.Precipitation.RAIN) {
 					columnRandom.setSeed(x * x * 3121L + x * 45238971L ^ z * z * 418711L + z * 13761L);
-					int lightCoords = LevelRenderer.getLightCoords(level, mutablePos.set(x, Math.max(cameraBlockY, terrainHeight), z));
+					int lightCoords = LightCoordsUtil.getLightCoords(level, mutablePos.set(x, Math.max(cameraBlockY, terrainHeight), z));
 					int wrappedTicks = ticks & 131071;
 					int tickOffset = x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 0xFF;
 					float blockPosRainSpeed = 3.0F + columnRandom.nextFloat();

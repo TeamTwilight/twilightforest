@@ -17,8 +17,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import java.nio.ByteBuffer;
+import java.util.Optional;
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.function.Supplier;
 
 public class AuroraRenderer {
@@ -33,15 +33,15 @@ public class AuroraRenderer {
 
 	public void draw(MeshData mesh, float alpha, int seed, float x, float y, float z) {
 		GpuDevice device = RenderSystem.getDevice();
-		GpuTextureView colorTexture = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
-		GpuTextureView depthTexture = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
+		GpuTextureView colorTexture = Minecraft.getInstance().gameRenderer.mainRenderTarget().getColorTextureView();
+		GpuTextureView depthTexture = Minecraft.getInstance().gameRenderer.mainRenderTarget().getDepthTextureView();
 
 		try (mesh) {
 			if (colorTexture == null)
 				return;
 
 			MeshData.DrawState drawState = mesh.drawState();
-			RenderSystem.AutoStorageIndexBuffer sequential = RenderSystem.getSequentialBuffer(drawState.mode());
+			RenderSystem.AutoStorageIndexBuffer sequential = RenderSystem.getSequentialBuffer(drawState.primitiveTopology());
 			GpuBuffer indexBuffer = sequential.getBuffer(drawState.indexCount());
 			GpuBufferSlice transforms = RenderSystem.getDynamicUniforms()
 				.writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(1.0F, 1.0F, 1.0F, alpha), new Vector3f(), new Matrix4f());
@@ -56,7 +56,7 @@ public class AuroraRenderer {
 				RenderPass pass = device.createCommandEncoder().createRenderPass(
 					() -> "Aurora",
 					colorTexture,
-					OptionalInt.empty(),
+					Optional.empty(),
 					depthTexture,
 					OptionalDouble.empty()
 				)
@@ -65,9 +65,9 @@ public class AuroraRenderer {
 				RenderSystem.bindDefaultUniforms(pass);
 				pass.setUniform("DynamicTransforms", transforms);
 				pass.setUniform(TFRenderPipelines.AURORA_UNIFORM, aurora);
-				pass.setVertexBuffer(0, vertexBuffer);
+				pass.setVertexBuffer(0, vertexBuffer.slice());
 				pass.setIndexBuffer(indexBuffer, sequential.type());
-				pass.drawIndexed(0, 0, drawState.indexCount(), 1);
+				pass.drawIndexed(0, 0, drawState.indexCount(), 1, 0);
 			}
 		}
 	}

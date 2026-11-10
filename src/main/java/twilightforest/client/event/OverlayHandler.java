@@ -48,48 +48,48 @@ public class OverlayHandler {
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	protected static void registerOverlays(RegisterGuiLayersEvent event) {
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
+		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
-			if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
+			if (player != null && !minecraft.gui.hud.isHidden() && TFConfig.showQuestRamCrosshairIndicator) {
 				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
 			}
 		});
-		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
+		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
-			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
+			if (!minecraft.gui.hud.isHidden() && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
 				int xPos = graphics.guiWidth() / 2 + 91;
-				int yPos = graphics.guiHeight() - gui.rightHeight;
-				gui.extractFood(graphics, player, yPos, xPos);
-				gui.rightHeight += 10;
+				int yPos = graphics.guiHeight() - gui.hud.rightHeight;
+				gui.hud.extractFood(graphics, player, yPos, xPos);
+				gui.hud.rightHeight += 10;
 			}
 		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
+		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
-			if (player != null && !minecraft.options.hideGui && !minecraft.debugEntries.isOverlayVisible()) {
+			if (player != null && !minecraft.gui.hud.isHidden() && !minecraft.debugEntries.isOverlayVisible()) {
 				renderOreMeterStats(graphics, player);
 			}
 		});
 
-		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> {
+		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
-			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+			if (player != null && !minecraft.gui.hud.isHidden() && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
 				renderShieldCount(graphics, gui, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
 			}
 		});
 
-		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> {
+		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			PortalOverlay.render(graphics, minecraft, minecraft.player);
 		});
 
-		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, partialTick) -> {
+		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			Gui gui = minecraft.gui;
 			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());
@@ -97,7 +97,7 @@ public class OverlayHandler {
 	}
 
 	private static void renderIndicator(Minecraft minecraft, GuiGraphicsExtractor graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
-		if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+		if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.hud.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
 			ItemStack stack = player.getInventory().getItem(player.getInventory().getSelectedSlot());
 			if (!stack.isEmpty()) {
 				for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
@@ -118,9 +118,9 @@ public class OverlayHandler {
 
 	private static void renderShieldCount(GuiGraphicsExtractor graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.hud.leftHeight, 9, 9);
 		}
-		gui.leftHeight += 10;
+		gui.hud.leftHeight += 10;
 	}
 
 	private static void renderOreMeterStats(GuiGraphicsExtractor graphics, Player player) {
