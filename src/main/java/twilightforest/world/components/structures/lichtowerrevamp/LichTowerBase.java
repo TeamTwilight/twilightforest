@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -141,7 +142,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 		return 1;
 	}
 
-	private static class TrimProcessor extends StructureProcessor {
+	private static class TrimProcessor implements StructureProcessor {
 		private static final TrimProcessor INSTANCE = new TrimProcessor();
 
 		@Nullable
@@ -152,11 +153,11 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 				return null;
 			}
 
-			return super.process(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings, template);
+			return StructureProcessor.super.process(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings, template);
 		}
 
 		@Override
-		protected StructureProcessorType<?> getType() {
+		public MapCodec<? extends StructureProcessor> codec() {
 			return null; // not serialized
 		}
 	}

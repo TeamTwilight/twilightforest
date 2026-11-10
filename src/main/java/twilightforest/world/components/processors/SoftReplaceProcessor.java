@@ -7,13 +7,12 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.tags.TFBlockTags;
 
-public final class SoftReplaceProcessor extends StructureProcessor {
+public final class SoftReplaceProcessor implements StructureProcessor {
 	public static final SoftReplaceProcessor INSTANCE = new SoftReplaceProcessor();
 	public static final MapCodec<SoftReplaceProcessor> CODEC = MapCodec.unit(INSTANCE);
 
@@ -46,7 +45,7 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.SOFT_REPLACE.value();
+	public MapCodec<? extends StructureProcessor> codec() {
+		return TFStructureProcessors.SOFT_REPLACE.get();
 	}
 }

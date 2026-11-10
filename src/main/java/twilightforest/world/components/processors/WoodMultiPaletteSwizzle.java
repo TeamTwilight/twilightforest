@@ -9,7 +9,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
@@ -18,7 +17,7 @@ import twilightforest.util.woods.WoodPalette;
 
 import java.util.List;
 
-public final class WoodMultiPaletteSwizzle extends StructureProcessor {
+public final class WoodMultiPaletteSwizzle implements StructureProcessor {
 	private final List<Pair<Holder<WoodPalette>, Holder<WoodPalette>>> palettes;
 
 	public static final MapCodec<WoodMultiPaletteSwizzle> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
@@ -43,7 +42,7 @@ public final class WoodMultiPaletteSwizzle extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.PLANK_MULTISWIZZLE.get();
 	}
 }

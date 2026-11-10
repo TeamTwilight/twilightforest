@@ -8,13 +8,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
-public final class StoneBricksVariants extends StructureProcessor {
+public final class StoneBricksVariants implements StructureProcessor {
 	public static final StoneBricksVariants INSTANCE = new StoneBricksVariants();
 	public static final MapCodec<StoneBricksVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -46,7 +45,7 @@ public final class StoneBricksVariants extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.STONE_BRICK_VARIANTS.get();
 	}
 }

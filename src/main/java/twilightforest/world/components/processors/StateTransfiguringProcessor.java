@@ -16,7 +16,7 @@ import java.util.List;
 
 // Similar to RuleProcessor except it uses the ProcessorRule's output state as a template for transferring BlockStates onto, with FeaturePlacers.transferAllStateKeys(...)
 // Despite definitions for BlockStates being supported by the schema, they merely are defaults to be overwritten from the input block's states
-public class StateTransfiguringProcessor extends StructureProcessor {
+public class StateTransfiguringProcessor implements StructureProcessor {
 	public static final MapCodec<StateTransfiguringProcessor> CODEC = ProcessorRule.CODEC.listOf().fieldOf("rules").xmap(StateTransfiguringProcessor::new, p -> p.rules);
 	private final List<ProcessorRule> rules;
 
@@ -45,7 +45,7 @@ public class StateTransfiguringProcessor extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.STATE_TRANSFIGURING.get();
 	}
 }

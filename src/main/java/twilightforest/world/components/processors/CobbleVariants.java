@@ -9,13 +9,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
-public final class CobbleVariants extends StructureProcessor {
+public final class CobbleVariants implements StructureProcessor {
 	public static final CobbleVariants INSTANCE = new CobbleVariants();
 	public static final MapCodec<CobbleVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -48,7 +47,7 @@ public final class CobbleVariants extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.COBBLE_VARIANTS.get();
 	}
 }

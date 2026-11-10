@@ -9,14 +9,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.RotationUtil;
 
-public class SmartGrassProcessor extends StructureProcessor {
+public class SmartGrassProcessor implements StructureProcessor {
 	public static final SmartGrassProcessor INSTANCE = new SmartGrassProcessor();
 	public static final MapCodec<SmartGrassProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -47,7 +46,7 @@ public class SmartGrassProcessor extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.SMART_GRASS.get();
 	}
 }
