@@ -58,14 +58,14 @@ public class StructureDistanceCommand {
 			BoundingBox boundingBox = new BoundingBox(minX, sectionY, minZ, maxX, sectionY + 15, maxZ);
 
 			BlockState displayState = switch (squareRadiusDist) {
-				case 1 -> Blocks.RED_STAINED_GLASS.defaultBlockState();
-				case 2 -> Blocks.ORANGE_STAINED_GLASS.defaultBlockState();
-				case 3 -> Blocks.YELLOW_STAINED_GLASS.defaultBlockState();
-				case 4 -> Blocks.LIME_STAINED_GLASS.defaultBlockState();
-				case 5 -> Blocks.BLUE_STAINED_GLASS.defaultBlockState();
-				case 6 -> Blocks.PURPLE_STAINED_GLASS.defaultBlockState();
-				case 7 -> Blocks.MAGENTA_STAINED_GLASS.defaultBlockState();
-				case 8 -> Blocks.PINK_STAINED_GLASS.defaultBlockState();
+				case 1 -> Blocks.STAINED_GLASS.red().defaultBlockState();
+				case 2 -> Blocks.STAINED_GLASS.orange().defaultBlockState();
+				case 3 -> Blocks.STAINED_GLASS.yellow().defaultBlockState();
+				case 4 -> Blocks.STAINED_GLASS.lime().defaultBlockState();
+				case 5 -> Blocks.STAINED_GLASS.blue().defaultBlockState();
+				case 6 -> Blocks.STAINED_GLASS.purple().defaultBlockState();
+				case 7 -> Blocks.STAINED_GLASS.magenta().defaultBlockState();
+				case 8 -> Blocks.STAINED_GLASS.pink().defaultBlockState();
 				default -> Blocks.GLASS.defaultBlockState();
 			};
 
