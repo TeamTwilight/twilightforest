@@ -89,7 +89,7 @@ public class RisingZombie extends Monster {
 		}
 
 		if (!this.level().isClientSide() && this.getRisingTicks() >= 130) {
-			this.convertTo(EntityType.ZOMBIE, ConversionParams.single(this, true, true), zombie -> {
+			this.convertTo(EntityTypes.ZOMBIE, ConversionParams.single(this, true, true), zombie -> {
 				zombie.setHealth(this.getHealth());
 				zombie.setYRot(this.yRotO = this.getYRot());
 			});
@@ -131,8 +131,7 @@ public class RisingZombie extends Monster {
 	}
 
 	@Override
-	public void knockback(double strength, double xRatio, double zRatio) {
-
+	public void knockback(double power, double xd, double zd, DamageSource source, float damage) {
 	}
 
 	@Override

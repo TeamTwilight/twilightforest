@@ -93,7 +93,7 @@ public class KnightPhantom extends BaseTFBoss {
 		this.noPhysics = true;
 		this.currentFormation = Formation.HOVER;
 		this.xpReward = 93;
-		this.moveControl = new NoClipMoveControl(this);
+		this.moveControl = new NoClipMoveControl<>(this);
 	}
 
 	@Override
@@ -345,10 +345,10 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	public void knockback(double damage, double xRatio, double zRatio) {
+	public void knockback(double power, double xd, double zd, DamageSource source, float damage) {
 		this.hurtMarked = true;
 		float distance = 0.2F;
-		Vec3 push = new Vec3(xRatio, 0.0D, zRatio).normalize().scale(distance);
+		Vec3 push = new Vec3(xd, 0.0D, zd).normalize().scale(distance);
 		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
 		setDeltaMovement(new Vec3(
 			getDeltaMovement().x() - push.x(),

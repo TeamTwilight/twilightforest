@@ -21,7 +21,7 @@ public class GhastguardHomedFlightGoal extends Goal {
 	// From RandomFloatAroundGoal, but with extra condition from MoveTowardsRestrictionGoal
 	@Override
 	public boolean canUse() {
-		MoveControl control = this.ghast.getMoveControl();
+		MoveControl<?> control = this.ghast.getMoveControl();
 
 		if (!control.hasWanted()) {
 			return !this.ghast.isMobWithinHomeArea(this.ghast);

@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import twilightforest.entity.ai.goal.NagaMovementPattern;
 import twilightforest.entity.boss.Naga;
 
-public class NagaMoveControl extends MoveControl {
+public class NagaMoveControl extends MoveControl<Naga> {
 
 	public NagaMoveControl(Naga naga) {
 		super(naga);
@@ -14,7 +14,7 @@ public class NagaMoveControl extends MoveControl {
 	@Override
 	public void tick() {
 		// TF - slither!
-		NagaMovementPattern.MovementState currentState = ((Naga) this.mob).getMovementPattern().getState();
+		NagaMovementPattern.MovementState currentState = this.mob.getMovementPattern().getState();
 		if (currentState == NagaMovementPattern.MovementState.DAZE) {
 			this.mob.xxa = 0F;
 		} else if (currentState != NagaMovementPattern.MovementState.CHARGE && currentState != NagaMovementPattern.MovementState.INTIMIDATE) {

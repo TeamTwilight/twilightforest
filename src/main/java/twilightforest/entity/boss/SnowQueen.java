@@ -76,7 +76,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 		this.setCurrentPhase(Phase.SUMMON);
 
 		this.xpReward = 317;
-		this.moveControl = new FlyingMoveControl(this, 10, true);
+		this.moveControl = new FlyingMoveControl<>(this, 10, true);
 		this.setNoGravity(true);
 	}
 

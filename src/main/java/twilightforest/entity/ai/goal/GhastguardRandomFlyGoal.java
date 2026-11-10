@@ -19,7 +19,7 @@ public class GhastguardRandomFlyGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		MoveControl entitymovehelper = this.parentEntity.getMoveControl();
+		MoveControl<?> entitymovehelper = this.parentEntity.getMoveControl();
 		if (!entitymovehelper.hasWanted()) {
 			return parentEntity.getTarget() == null;
 		} else {

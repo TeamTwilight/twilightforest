@@ -12,7 +12,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 /**
  * [VanillaCopy] of {@link net.minecraft.world.entity.monster.Ghast.GhastMoveControl} with adjustments noted.
  */
-public class GhastguardMoveControl extends MoveControl {
+public class GhastguardMoveControl extends MoveControl<CarminiteGhastguard> {
 	// TF: Removed redundant ghast field
 	private int floatDuration;
 	// TF: Removed the careful field

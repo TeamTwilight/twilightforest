@@ -82,7 +82,7 @@ public interface IBossLootBuffer {
 			for (int i = 0; i < CONTAINER_SIZE; i++) {
 				Block.popResource(serverLevel, pos, boss.getItem(i));
 			}
-			celebrateAt(boss, pos.getCenter(), serverLevel);
+			celebrateAt(boss, Vec3.atCenterOf(pos), serverLevel);
 		}
 	}
 
@@ -94,7 +94,7 @@ public interface IBossLootBuffer {
 			for (int i = 0; i < CONTAINER_SIZE && i < container.getContainerSize(); i++) {
 				container.setItem(i, boss.getItem(i));
 			}
-			celebrateAt(boss, pos.getCenter(), serverLevel);
+			celebrateAt(boss, Vec3.atCenterOf(pos), serverLevel);
 			return true;
 		}
 		return false;

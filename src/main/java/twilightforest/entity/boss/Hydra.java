@@ -712,7 +712,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	public void knockback(double strength, double xRatio, double zRatio) {
+	public void knockback(double power, double xd, double zd, DamageSource source, float damage, boolean comesFromEffect) {
 	}
 
 	@Override

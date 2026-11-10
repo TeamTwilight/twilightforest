@@ -337,7 +337,7 @@ public class UpperGoblinKnight extends Monster {
 				d0 = (Math.random() - Math.random()) * 0.01D;
 			}
 
-			toKnockback.knockback(0, d0 / 4D, d1 / 4D);
+			toKnockback.knockback(0, d0 / 4D, d1 / 4D, source, amount);
 
 			// also set revenge target
 			if (source.getEntity() instanceof LivingEntity living) {
