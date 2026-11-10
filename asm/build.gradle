@@ -20,7 +20,15 @@ java {
 	}
 }
 
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+tasks.withType(JavaCompile).configureEach {
+	options.compilerArgs.addAll([
+		"-Xlint:all,-classfile,-processing,-deprecation,-this-escape",
+		"-Werror",
+		"-Xmaxerrs", "1000000",
+		"-Xmaxwarns", "1000000"
+	])
+	options.encoding = 'UTF-8'
+}
 
 sourceSets {
 	main {
