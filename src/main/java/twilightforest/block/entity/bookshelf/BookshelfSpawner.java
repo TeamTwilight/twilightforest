@@ -207,7 +207,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 					return false;
 				}
 
-				Entity entity = EntityType.loadEntityRecursive(tag, level, EntitySpawnReason.SPAWNER, processed -> {
+				Entity entity = EntityType.loadEntityRecursive(tag, level, new EntitySpawnRequest(EntitySpawnReason.SPAWNER, true), processed -> {
 					processed.snapTo(x, y, z, processed.getYRot(), processed.getXRot());
 					//set entity on fire if told to do so
 					if (fire) {

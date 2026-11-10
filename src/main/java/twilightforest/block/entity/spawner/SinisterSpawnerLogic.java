@@ -144,7 +144,7 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 								continue;
 							}
 
-							Entity entity = EntityType.loadEntityRecursive(entityData, serverLevel, EntitySpawnReason.SPAWNER, spawnedEntity -> {
+							Entity entity = EntityType.loadEntityRecursive(entityData, serverLevel, new EntitySpawnRequest(EntitySpawnReason.SPAWNER, true), spawnedEntity -> {
 								spawnedEntity.snapTo(spawnX, spawnY, spawnZ, spawnedEntity.getYRot(), spawnedEntity.getXRot());
 								return spawnedEntity;
 							});

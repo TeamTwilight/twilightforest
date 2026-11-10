@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
@@ -138,11 +139,12 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	@Override
 	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
 		if (level instanceof ServerLevel sl) {
-			entity.hurtServer(sl, TFDamageTypes.getDamageSource(level, TFDamageTypes.SLIDER), BLOCK_DAMAGE);
+			DamageSource source = TFDamageTypes.getDamageSource(level, TFDamageTypes.SLIDER);
+			entity.hurtServer(sl, source, BLOCK_DAMAGE);
 			if (entity instanceof LivingEntity living) {
 				double kx = (pos.getX() + 0.5D - entity.getX()) * 2.0D;
 				double kz = (pos.getZ() + 0.5D - entity.getZ()) * 2.0D;
-				living.knockback(2.0D, kx, kz);
+				living.knockback(2.0D, kx, kz, source, BLOCK_DAMAGE);
 			}
 		}
 	}

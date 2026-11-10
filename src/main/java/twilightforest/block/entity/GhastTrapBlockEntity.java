@@ -142,7 +142,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 			}
 		} else {
 			// trap nearby ghasts
-			AABB aabb = new AABB(pos.above(16).getCenter(), pos.above(16).offset(1, 1, 1).getCenter()).inflate(6D, 16D, 6D);
+			AABB aabb = new AABB(Vec3.atCenterOf(pos.above(16)), Vec3.atCenterOf(pos.above(16).offset(1, 1, 1))).inflate(6D, 16D, 6D);
 			List<Mob> nearbyGhasts = level.getEntitiesOfClass(Mob.class, aabb, mob -> mob instanceof Ghast || mob instanceof UrGhast);
 
 			for (Mob ghast : nearbyGhasts) {
