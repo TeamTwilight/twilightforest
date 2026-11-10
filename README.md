@@ -15,13 +15,12 @@ Java Code specifically under these listed directories follow this [LICENSE file 
 
 ## Supported Versions
 ### Latest Minecraft Version
-This would be the most recent Minecraft Version that we have releases for on CurseForge.
-
-Right now this is **26.1.2**.
+New features and bugfixes will happen on this version.
+Right now this is **26.2.0**.
 ### LTS
-These will generally be the previous most recent Minecraft Version we have CurseForge releases for.
-
-Normally that would be 1.21.1, however we have currently dropped support for that version. The next upcoming LTS will be 26.1.2.
+Only bugfixes will happen on this version.
+LTS Minecraft Versions:
+- 26.1.2
 
 ## Downloads
 Releases will be available on [CurseForge](https://minecraft.curseforge.com/projects/the-twilight-forest) when ready.
