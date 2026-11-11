@@ -25,7 +25,6 @@ import top.theillusivec4.curios.api.client.ICurioRenderer;
 import top.theillusivec4.curios.api.common.DropRule;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-import twilightforest.asmhooks.RenderHooks;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.compat.curios.model.CharmOfLifeNecklaceModel;

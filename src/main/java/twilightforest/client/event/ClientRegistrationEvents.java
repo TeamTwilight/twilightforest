@@ -8,6 +8,7 @@ import net.minecraft.client.model.animal.pig.PigModel;
 import net.minecraft.client.model.animal.sheep.SheepFurModel;
 import net.minecraft.client.model.animal.wolf.AdultWolfModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
+import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.monster.silverfish.SilverfishModel;
@@ -60,7 +61,6 @@ import net.neoforged.neoforge.event.RegisterTooltipAppendersEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
-import twilightforest.asmhooks.RenderHooks;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
@@ -671,7 +671,7 @@ public class ClientRegistrationEvents {
 
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity living, LivingEntityRenderState state) -> {
 			if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)
-				state.setRenderData(RenderHooks.HIDE_HEAD_KEY, true);
+				state.overrideModelPartVisibility(PartNames.HEAD, false);
 
 			state.setRenderData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(living));
 
