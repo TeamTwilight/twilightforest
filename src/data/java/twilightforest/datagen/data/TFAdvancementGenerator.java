@@ -1,11 +1,14 @@
 package twilightforest.datagen.data;
 
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.criterion.*;
+import net.minecraft.advancements.predicates.*;
+import net.minecraft.advancements.predicates.entity.EntityEquipmentPredicate;
+import net.minecraft.advancements.predicates.entity.EntityFlagsPredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.predicates.entity.PlayerPredicate;
+import net.minecraft.advancements.triggers.*;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentExactPredicate;
 import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.advancements.AdvancementSubProvider;
@@ -15,8 +18,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -457,9 +460,9 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 				null, AdvancementType.CHALLENGE, true, true, true)
 			.addCriterion("jerky", KilledTrigger.TriggerInstance.playerKilledEntity(
 				EntityPredicate.Builder.entity()
-					.of(entities, EntityType.ZOMBIE)
+					.of(entities, EntityTypes.ZOMBIE)
 					.flags(EntityFlagsPredicate.Builder.flags().setIsBaby(true))
-					.vehicle(EntityPredicate.Builder.entity().of(entities, EntityType.CHICKEN)),
+					.vehicle(EntityPredicate.Builder.entity().of(entities, EntityTypes.CHICKEN)),
 				DamageSourcePredicate.Builder.damageType().direct(EntityPredicate.Builder.entity()
 					.equipment(EntityEquipmentPredicate.Builder.equipment()
 						.mainhand(ItemPredicate.Builder.item().of(items, TFItems.CHICKEN_JERKY))))))
