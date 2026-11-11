@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
@@ -27,8 +26,6 @@ public class StateTransfiguringProcessor implements StructureProcessor {
 	@Nullable
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-		BlockState state = level.getBlockState(modifiedBlockInfo.pos());
-
 		RandomSource random = RandomSource.create(Mth.getSeed(modifiedBlockInfo.pos()));
 		long i = random.nextLong();
 		// Re-seed the random source for each loop iteration, the positional seed defines the initial random value
@@ -37,7 +34,7 @@ public class StateTransfiguringProcessor implements StructureProcessor {
 			random.setSeed(i * 3);
 			i += 115;
 
-			if (processorRule.test(modifiedBlockInfo.state(), state, originalBlockInfo.pos(), modifiedBlockInfo.pos(), centerBottom, random))
+			if (processorRule.test(level, modifiedBlockInfo.state(), originalBlockInfo.pos(), modifiedBlockInfo.pos(), centerBottom, random))
 				return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(modifiedBlockInfo.state(), processorRule.getOutputState()), processorRule.getOutputTag(random, modifiedBlockInfo.nbt()));
 		}
 
