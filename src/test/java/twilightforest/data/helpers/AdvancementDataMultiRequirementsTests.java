@@ -2,7 +2,7 @@ package twilightforest.data.helpers;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.triggers.Criterion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
