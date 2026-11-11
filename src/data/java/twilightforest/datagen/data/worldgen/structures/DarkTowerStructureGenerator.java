@@ -3,7 +3,7 @@ package twilightforest.datagen.data.worldgen.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -31,10 +31,10 @@ public class DarkTowerStructureGenerator {
         return new DarkTowerStructure(
             ControlledSpawns.ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GOLEM.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 5)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2), 2)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 1, 2), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 1), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 2), 2)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, 1, 1), 1)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTLING.get(), 1, 2), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_BROODLING.get(), 4, 4), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 1, 1), 10)
@@ -45,7 +45,7 @@ public class DarkTowerStructureGenerator {
                 .build()
             ), WeightedList.of(), WeightedList.<MobSpawnSettings.SpawnerData>builder()
                 // aquarium squids (only in aquariums between y = 35 and y = 64. :/)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.SQUID, 4, 4), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SQUID, 4, 4), 10)
                 .build()
             ),
             new AdvancementLockedStructure.AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_knights"))),

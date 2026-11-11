@@ -3,7 +3,7 @@ package twilightforest.datagen.data.worldgen.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -33,12 +33,12 @@ public class LichTowerStructureGenerator {
             .add(new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), 1, 2), 2)
             .build();
         WeightedList<MobSpawnSettings.SpawnerData> interiorSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-            .add(new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 1, 2), 10)
-            .add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
-            .add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 1)
-            .add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2), 1)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE, 1, 2), 10)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 1, 2), 10)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 1), 1)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 2), 1)
             .add(new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 2, 3), 10)
-            .add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, 1, 1), 1)
             .build();
         ControlledSpawns.ControlledSpawningConfig monsters = ControlledSpawns.ControlledSpawningConfig.justMonsters(
             yardSpawns,
@@ -52,7 +52,7 @@ public class LichTowerStructureGenerator {
             true, Optional.of(TFMapDecorations.LICH_TOWER),
             new Structure.StructureSettings(
                 context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_LICH_TOWER_BIOMES),
-                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
+                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
                 GenerationStep.Decoration.SURFACE_STRUCTURES,
                 TerrainAdjustment.BEARD_THIN
             )

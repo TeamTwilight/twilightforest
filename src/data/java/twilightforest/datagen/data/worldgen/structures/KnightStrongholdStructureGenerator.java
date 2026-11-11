@@ -3,7 +3,7 @@ package twilightforest.datagen.data.worldgen.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -36,8 +36,8 @@ public class KnightStrongholdStructureGenerator {
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 2, 3), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 5)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.SLIME, 4, 4), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 2), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SLIME, 4, 4), 5)
                 .build()
             ),
             new AdvancementLockedStructure.AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_trophy_pedestal"))),
@@ -46,7 +46,7 @@ public class KnightStrongholdStructureGenerator {
             true, Optional.of(TFMapDecorations.KNIGHT_STRONGHOLD),
             new Structure.StructureSettings(
                 context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_KNIGHT_STRONGHOLD_BIOMES),
-                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
+                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
                 GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
                 TerrainAdjustment.BURY
             )
