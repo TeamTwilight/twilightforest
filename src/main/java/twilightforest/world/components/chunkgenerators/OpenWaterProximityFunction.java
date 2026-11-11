@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 public record OpenWaterProximityFunction(DensityFunction terrain, int fluidLevel, int radius) implements DensityFunction.SimpleFunction {
 
 	public static final MapCodec<OpenWaterProximityFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		DensityFunction.HOLDER_HELPER_CODEC.fieldOf("terrain").forGetter(OpenWaterProximityFunction::terrain),
+		DensityFunction.CODEC.fieldOf("terrain").forGetter(OpenWaterProximityFunction::terrain),
 		Codec.INT.fieldOf("fluid_level").forGetter(OpenWaterProximityFunction::fluidLevel),
 		Codec.intRange(0, 32).fieldOf("radius").forGetter(OpenWaterProximityFunction::radius)
 	).apply(instance, OpenWaterProximityFunction::new));
@@ -45,7 +45,7 @@ public record OpenWaterProximityFunction(DensityFunction terrain, int fluidLevel
 	}
 
 	@Override
-	public DensityFunction mapAll(Visitor visitor) {
-		return visitor.apply(new OpenWaterProximityFunction(terrain.mapAll(visitor), fluidLevel, radius));
+	public DensityFunction mapChildren(Visitor visitor) {
+		return new OpenWaterProximityFunction(visitor.apply(terrain), fluidLevel, radius);
 	}
 }
