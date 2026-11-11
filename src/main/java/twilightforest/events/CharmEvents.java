@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.EventPriority;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -34,7 +33,6 @@ import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.components.entity.CharmAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.init.*;
@@ -48,6 +46,7 @@ import java.util.List;
 
 @tamaized.beanification.Component
 public class CharmEvents {
+
 	public static final String CASKET_DAMAGE_TAG = "CasketDamage";
 	public static final String CONSUMED_CHARM_TAG = "CharmStack";
 
@@ -358,10 +357,11 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player, boolean saveItemToTag) {
-		if (ModList.get().isLoaded("curios")) {
+		/*if (ModList.get().isLoaded("curios")) { FIXME - should move this method to a component as a dep that this class can reference instead
 			return CuriosCompat.findAndConsumeCurio(item, player, saveItemToTag);
-		}
+		}*/
 
 		return false;
 	}
+
 }
