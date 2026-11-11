@@ -11,6 +11,7 @@ variables:
   GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
   SKIP_BUILD: $[contains(variables['Build.SourceBranch'], 'refs/heads/no-build/')]
   SKIP_DISCORD: 'true'
+  SKIP_MAVEN: 'true'
   ${{ if not(contains(variables['Build.SourceBranch'], 'refs/heads/no-build/')) }}:
     revision: $[counter('release-number', 0)]
 
@@ -180,7 +181,7 @@ steps:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'publish'
-    condition: and(and(succeeded(), eq(variables['RunMavenPublishTask'], 'True')), eq(variables.SKIP_BUILD, 'false'))
+    condition: and(and(and(succeeded(), eq(variables['RunMavenPublishTask'], 'True')), eq(variables.SKIP_BUILD, 'false')), eq(variables.SKIP_MAVEN, 'false'))
     env:
       MAVEN_USER: $(Artifactory.User)
       MAVEN_PASS: $(Artifactory.Password)
