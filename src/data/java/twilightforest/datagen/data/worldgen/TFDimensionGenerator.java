@@ -6,14 +6,14 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TimelineTags;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.TriState;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.*;
 import net.minecraft.world.clock.WorldClock;
-import net.minecraft.world.clock.WorldClocks;
 import net.minecraft.world.level.CardinalLighting;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -42,6 +42,7 @@ public class TFDimensionGenerator {
     public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM = ResourceKey.create(Registries.LEVEL_STEM, TFDimension.DIMENSION);
 
     public static void bootstrapType(BootstrapContext<DimensionType> context) {
+		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
 		HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
         context.register(TFDimension.TWILIGHT_DIM_TYPE, new DimensionType(
@@ -53,7 +54,7 @@ public class TFDimensionGenerator {
                 -32, // Minimum Y Level
                 32 + 256, // Height + Min Y = Max Y
                 32 + 256, // Logical Height
-                BlockTags.INFINIBURN_OVERWORLD, //infiburn tag
+                blocks.getOrThrow(BlockTags.INFINIBURN_OVERWORLD), //infiburn tag
                 0.01F, //ambient light
                 new DimensionType.MonsterSettings(UniformInt.of(0, 7), 7), //monster settings
                 DimensionType.Skybox.OVERWORLD, //skybox
@@ -84,7 +85,8 @@ public class TFDimensionGenerator {
     }
 
     public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
-        HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
         DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctionGenerator.SKYLIGHT_TERRAIN : TFDensityFunctionGenerator.FORESTED_TERRAIN));
 
         NoiseSettings tfNoise = NoiseSettings.create(
@@ -115,7 +117,7 @@ public class TFDimensionGenerator {
                     DensityFunctions.zero(),
                     DensityFunctions.zero()
             ),
-            TFSurfaceRules.tfSurface(),
+            TFSurfaceRules.tfSurface(biomes),
             List.of(),
             TFDimension.SEALEVEL,
             false,
