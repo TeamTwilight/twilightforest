@@ -23,7 +23,6 @@ public class RenderTypeUtil {
 			texture -> RenderType.create(
 				"weather",
 				RenderSetup.builder(depthWrite ? RenderPipelines.WEATHER_DEPTH_WRITE : RenderPipelines.WEATHER_NO_DEPTH_WRITE)
-					.bufferSize(RenderType.TRANSIENT_BUFFER_SIZE)
 					.setOutputTarget(OutputTarget.WEATHER_TARGET)
 					.withTexture("Sampler0", texture)
 					.useLightmap()
