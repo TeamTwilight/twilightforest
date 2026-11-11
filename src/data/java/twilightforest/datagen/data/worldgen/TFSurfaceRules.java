@@ -161,7 +161,7 @@ public class TFSurfaceRules {
 		return SurfaceRules.sequence(onFloor, underFloor);
 	}
 
-	private static SurfaceRules.ConditionSource surfaceNoiseAbove(double p_194809_) {
-		return SurfaceRules.noiseCondition(Noises.SURFACE, p_194809_ / 8.25D, Double.MAX_VALUE);
+	private static SurfaceRules.ConditionSource surfaceNoiseAbove(double minRange) {
+		return SurfaceRules.noiseCondition2d(Noises.SURFACE, minRange / 8.25D);
 	}
 }

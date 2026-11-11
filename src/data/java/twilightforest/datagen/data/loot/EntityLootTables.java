@@ -1,7 +1,7 @@
 package twilightforest.datagen.data.loot;
 
 import net.minecraft.advancements.predicates.MinMaxBounds;
-import net.minecraft.advancements.criterion.SlimePredicate;
+import net.minecraft.advancements.predicates.entity.CubeMobPredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -343,7 +343,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 						.when(this.killedByFrog(this.registries.lookupOrThrow(Registries.ENTITY_TYPE))))
 					.when(LootItemEntityPropertyCondition.hasProperties(
 						LootContext.EntityTarget.THIS,
-						EntityPredicate.Builder.entity().subPredicate(SlimePredicate.sized(MinMaxBounds.Ints.exactly(1)))
+						EntityPredicate.Builder.entity().cubeMob(CubeMobPredicate.sized(MinMaxBounds.Ints.exactly(1)))
 					)))
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))

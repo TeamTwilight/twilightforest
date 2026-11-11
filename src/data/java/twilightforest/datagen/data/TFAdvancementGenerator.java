@@ -548,7 +548,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 				Component.translatable("advancement.twilightforest.experiment_115_3"),
 				Component.translatable("advancement.twilightforest.experiment_115_3.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
-			.addCriterion("eat_115_e115", PlayerTrigger.TriggerInstance.located(Optional.of(EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM, registries.lookupOrThrow(Registries.CUSTOM_STAT).getOrThrow(TFStats.E115_SLICES_EATEN.getKey()), MinMaxBounds.Ints.atLeast(115)).build()).build())))
+			.addCriterion("eat_115_e115", PlayerTrigger.TriggerInstance.located(Optional.of(EntityPredicate.Builder.entity().player(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM, registries.lookupOrThrow(Registries.CUSTOM_STAT).getOrThrow(TFStats.E115_SLICES_EATEN.getKey()), MinMaxBounds.Ints.atLeast(115)).build()).build())))
 			.save(consumer, "twilightforest:experiment_115_115");
 
 		Advancement.Builder.advancement().parent(e115).display(
@@ -628,6 +628,6 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 	}
 
 	private Criterion<PlayerTrigger.TriggerInstance> advancementTrigger(String name) {
-		return CriteriaTriggers.TICK.createCriterion(new PlayerTrigger.TriggerInstance(Optional.of(ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()))));
+		return CriteriaTriggers.TICK.createCriterion(new PlayerTrigger.TriggerInstance(Optional.of(ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().player(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()))));
 	}
 }
