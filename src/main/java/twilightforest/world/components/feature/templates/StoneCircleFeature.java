@@ -28,4 +28,9 @@ public class StoneCircleFeature extends TemplateFeature<NoneFeatureConfiguration
 	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, NoneFeatureConfiguration config) {
 		settings.addProcessor(CobbleVariants.INSTANCE);
 	}
+
+	@Override
+	protected int yLevelOffset() {
+		return -1;
+	}
 }
