@@ -92,9 +92,6 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
 
-		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
-		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
-
 		NeoForge.EVENT_BUS.addListener(FogHandler::colorFog);
 
 		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);

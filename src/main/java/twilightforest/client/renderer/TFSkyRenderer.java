@@ -97,7 +97,7 @@ public class TFSkyRenderer implements AutoCloseable {
 			renderPass.setUniform("DynamicTransforms", dynamicTransforms);
 			renderPass.setVertexBuffer(0, this.starBuffer.slice());
 			renderPass.setIndexBuffer(indices, this.starIndices.type());
-			renderPass.drawIndexed(0, 0, this.starIndexCount, 1, 0);
+			renderPass.drawIndexed(starIndexCount, 1, 0, 0, 0);
 		}
 
 		matrix.popMatrix();
