@@ -24,7 +24,7 @@ public class TFRenderPipelines {
 		.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
 		.withVertexBinding(0, DefaultVertexFormat.POSITION_COLOR)
 		.withPrimitiveTopology(PrimitiveTopology.QUADS)
-		.withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, false))
+		.withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, false))
 		.withBindGroupLayout(BindGroupLayout.builder().withUniform(AURORA_UNIFORM, UniformType.UNIFORM_BUFFER).build())
 		.build();
 
