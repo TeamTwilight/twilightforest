@@ -5,7 +5,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -16,6 +15,7 @@ import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -267,16 +267,16 @@ public class TravellersClientEvents {
 		return !key.matches(event.getKeyEvent()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().gui.screen() != null;
 	}
 
-	private void renderGlovesInFirstPerson(RenderArmEvent event) {
+	private void renderGlovesInFirstPerson(RenderArmEvent<?> event) {
 		if (!TFConfig.firstPersonGloveOverlay)
 			return;
 
-		AbstractClientPlayer player = event.getPlayer();
-		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+		Avatar avatar = event.getAvatar();
+		ItemStack chestStack = avatar.getItemBySlot(EquipmentSlot.CHEST);
 		if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
 			return;
 
-		EntityRenderer<?, ?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+		EntityRenderer<?, ?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(avatar);
 		if (!(renderer instanceof AvatarRenderer<?> avatarRenderer))
 			return;
 
@@ -290,6 +290,6 @@ public class TravellersClientEvents {
 		armPart.zRot = rightArm ? 0.1F : -0.1F;
 
 		Identifier gloveLocation = TwilightForestMod.prefix("textures/entity/equipment/humanoid/travellers.png");
-		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
+		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getLightCoords(),OverlayTexture.NO_OVERLAY, null);
 	}
 }
