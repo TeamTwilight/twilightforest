@@ -97,7 +97,7 @@ public class ForceFieldModelBuilder {
 
 		public FaceBuilder face(Direction dir) {
 			Preconditions.checkNotNull(dir, "Direction must not be null");
-			return this.faces.computeIfAbsent(dir, direction -> new FaceBuilder(this.tint));
+			return this.faces.computeIfAbsent(dir, _ -> new FaceBuilder(this.tint));
 		}
 
 		public ForceFieldElementBuilder allFaces(BiConsumer<Direction, FaceBuilder> action) {

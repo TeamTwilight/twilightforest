@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.blockstate.CompositeBlockStateModelBuilder;
 import net.neoforged.neoforge.client.model.generators.blockstate.CustomBlockStateModelBuilder;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplate;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
@@ -298,7 +297,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		Identifier basalt = TFModelTemplates.CASKET_SOLID.create(TwilightForestMod.prefix("block/casket_basalt"), new TextureMapping().put(TextureSlot.TOP, new Material(Identifier.withDefaultNamespace("block/basalt_top"))).put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/basalt_side"))), this.modelOutput);
 
 		this.casketBlockAndItemModels(TFBlocks.KEEPSAKE_CASKET.get(), _ -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.KEEPSAKE_CASKET.get(), Blocks.NETHERITE_BLOCK), obsidian, stone, basalt);
-		this.casketBlockAndItemModels(TFBlocks.SKULL_CHEST.get(), _ -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.SKULL_CHEST.get(), Blocks.LIGHT_GRAY_CONCRETE_POWDER), obsidian, stone, basalt);
+		this.casketBlockAndItemModels(TFBlocks.SKULL_CHEST.get(), _ -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.SKULL_CHEST.get(), Blocks.CONCRETE_POWDER.lightGray()), obsidian, stone, basalt);
 	}
 
 	private <B extends Block> void casketBlockAndItemModels(B block, Function<B, ItemModel.Unbaked> itemModel, MultiVariant particleOnlyBlockModel, Identifier obsidian, Identifier stone, Identifier basalt) {
@@ -488,7 +487,6 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotation * 90)), mapping, this.modelOutput);
 	}
 
-	@NotNull
 	private static String curvesSuffixForFacing(int blockRotation, Direction blockFace) {
 		int rotationForFace = switch (blockFace) {
 			case UP -> 2 - blockRotation;
@@ -589,7 +587,6 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		}
 	}
 
-	@NotNull
 	private static String linesSuffixForFacing(boolean blockRotation, Direction blockFace) {
 		Vec3i normal = blockFace.getUnitVec3i();
 		int axisDirection = normal.getX() + normal.getY() + normal.getZ();
@@ -1049,7 +1046,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.registerSimpleTintedItemModel(base, auroras[0], ItemModelUtils.constantTint(-16711758));
 
 		Block pillar = TFBlocks.AURORA_PILLAR.get();
-		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, plainVariant(TexturedModel.createDefault(block1 -> new TextureMapping()
+		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, plainVariant(TexturedModel.createDefault(_ -> new TextureMapping()
 				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
 				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
 				.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")), TFModelTemplates.TINTED_CUBE_BOTTOM_TOP)
