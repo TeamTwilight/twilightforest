@@ -17,7 +17,7 @@ public class TFRenderPipelines {
 
 	private static final BlendFunction SHADOW = new BlendFunction(BlendFactor.SRC_ALPHA, BlendFactor.ONE_MINUS_SRC_ALPHA);
 
-	public static final RenderPipeline AURORA = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET, RenderPipelines.GLOBALS_SNIPPET)
+	public static final RenderPipeline AURORA = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
 		.withLocation(TwilightForestMod.prefix("pipeline/aurora"))
 		.withVertexShader(TwilightForestMod.prefix("core/aurora/aurora"))
 		.withFragmentShader(TwilightForestMod.prefix("core/aurora/aurora"))
