@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -136,25 +137,27 @@ public class ClientGameEvents {
 			return;
 
 		if (aurora > 0 || lastAurora > 0) {
-			BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+			try (ByteBufferBuilder builder = ByteBufferBuilder.exactlySized(DefaultVertexFormat.POSITION_COLOR.getVertexSize() * 4)) {
+				BufferBuilder buffer = new BufferBuilder(builder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			final float scale = 2048F * (mc.options.getEffectiveRenderDistance() * 16F / 32F);
-			Vec3 pos = event.getLevelRenderState().cameraRenderState.pos;
-			float y = (float) (256F - pos.y());
-			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
+				final float scale = 2048F * (mc.options.getEffectiveRenderDistance() * 16F / 32F);
+				Vec3 pos = event.getLevelRenderState().cameraRenderState.pos;
+				float y = (float) (256F - pos.y());
+				buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
-			float alpha = Mth.lerp(mc.getDeltaTracker().getGameTimeDeltaTicks(), lastAurora, aurora) / 60F * 0.5F;
-			auroraRenderer.draw(
-				buffer.buildOrThrow(),
-				alpha,
-				Mth.abs((int) mc.level.getBiomeManager().biomeZoomSeed),
-				(float) pos.x(),
-				(float) pos.y(),
-				(float) pos.z()
-			);
+				float alpha = Mth.lerp(mc.getDeltaTracker().getGameTimeDeltaTicks(), lastAurora, aurora) / 60F * 0.5F;
+				auroraRenderer.draw(
+					buffer.buildOrThrow(),
+					alpha,
+					Mth.abs((int) mc.level.getBiomeManager().biomeZoomSeed),
+					(float) pos.x(),
+					(float) pos.y(),
+					(float) pos.z()
+				);
+			}
 		}
 	}
 
