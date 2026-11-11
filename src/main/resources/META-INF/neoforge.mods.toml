@@ -9,7 +9,7 @@ version = "${file.jarVersion}"
 displayName = "The Twilight Forest"
 itemIcon = "twilightforest:twilight_portal_miniature_structure"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest"
-logoFile = "twilightforest_logo.png"
+bannerFile = "twilightforest_logo.png"
 credits = "By Benimatic (Ben Mazur)"
 authors = "Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, jodlodi, SleepyHorse"
 description = '''
@@ -20,14 +20,14 @@ enumExtensions="META-INF/enumextensions.json"
 [[dependencies.twilightforest]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.1.2.112,)"
+versionRange = "[26.2.0.61,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.twilightforest]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.1.2]"
+versionRange = "[26.2]"
 ordering = "NONE"
 side = "BOTH"
 
