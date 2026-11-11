@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "group": "fiery_ingot",
   "ingredients": [
     "#twilightforest:fiery_vial",

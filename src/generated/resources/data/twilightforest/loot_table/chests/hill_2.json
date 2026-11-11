@@ -2,7 +2,6 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -13,7 +12,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4.0,
@@ -29,7 +27,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4.0,
@@ -45,7 +42,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 6.0,
@@ -66,13 +62,11 @@
       "rolls": 4.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2.0,
@@ -87,7 +81,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -102,7 +95,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -121,7 +113,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4.0,
@@ -136,7 +127,6 @@
       "rolls": 2.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -147,7 +137,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -178,7 +167,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 6.0,

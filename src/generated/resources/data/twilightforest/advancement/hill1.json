@@ -8,8 +8,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:redcap",
-              "location": {
+              "minecraft:entity_type": "twilightforest:redcap",
+              "minecraft:location": {
                 "structures": "twilightforest:small_hollow_hill"
               }
             }

@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.data.tags.TagsProvider;
-import net.minecraft.data.tags.VanillaItemTagsProvider;
 import net.minecraft.references.BlockItemIds;
 import net.minecraft.references.ItemIds;
 import net.minecraft.tags.ItemTags;
@@ -13,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import twilightforest.datagen.data.tags.compat.ModdedItemTagGenerator;
+import twilightforest.datagen.helpers.BlockToItemConverter;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.tags.TFItemTags;
@@ -30,13 +30,36 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	protected void addTags(HolderLookup.Provider provider) {
 		super.addTags(provider);
 
-		// FIXME
 		new BlockItemTagGenerator() {
 			@Override
-			protected TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
-				return new VanillaItemTagsProvider.BlockToItemConverter(ItemTagGenerator.this.tag(itemTag));
+			protected TagAppender<Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
+				return new BlockToItemConverter(ItemTagGenerator.this.tag(itemTag));
 			}
 		}.run();
+
+		this.tag(ItemTags.SAPLINGS).add(
+			TFBlocks.TWILIGHT_OAK_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.CANOPY_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.MANGROVE_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.DARKWOOD_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.TIME_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.TRANSFORMATION_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.MINING_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.SORTING_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.HOLLOW_OAK_SAPLING.asItem().builtInRegistryHolder().key(),
+			TFBlocks.RAINBOW_OAK_SAPLING.asItem().builtInRegistryHolder().key()
+		);
+
+		this.tag(ItemTags.LOGS_THAT_BURN).addTags(
+			TFItemTags.TWILIGHT_OAK_LOGS,
+			TFItemTags.CANOPY_LOGS,
+			TFItemTags.MANGROVE_LOGS,
+			TFItemTags.DARKWOOD_LOGS,
+			TFItemTags.TIME_LOGS,
+			TFItemTags.TRANSFORMATION_LOGS,
+			TFItemTags.MINING_LOGS,
+			TFItemTags.SORTING_LOGS
+		);
 
 		this.tag(ItemTags.BOATS).add(
 			TFItems.TWILIGHT_OAK_BOAT.getKey(), TFItems.CANOPY_BOAT.getKey(),

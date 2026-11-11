@@ -1,4 +1,4 @@
-// 26.1.2	2026-09-13T01:16:41.225797	Tags for minecraft:damage_type mod id twilightforest
+// 26.2	2026-11-11T16:08:30.86513	Tags for minecraft:damage_type mod id twilightforest
 e871224cfaf3f71ec4cef5455688114b0d13ee16 data/minecraft/tags/damage_type/always_most_significant_fall.json
 addc08f14bbae216b52a4e7f153141d2a3ba1788 data/minecraft/tags/damage_type/avoids_guardian_thorns.json
 95a58f3ed1b4a2272574f48d6e6901ca31e234c2 data/minecraft/tags/damage_type/bypasses_armor.json

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "twilightforest:raven_feather",
     "twilightforest:torchberries",

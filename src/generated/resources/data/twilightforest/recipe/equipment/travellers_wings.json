@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "c": "#c:gems/carminite",
     "g": "#c:ingots/gold",

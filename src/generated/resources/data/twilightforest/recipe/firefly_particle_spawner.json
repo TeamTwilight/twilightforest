@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "twilightforest:firefly_jar",
     "twilightforest:firefly",

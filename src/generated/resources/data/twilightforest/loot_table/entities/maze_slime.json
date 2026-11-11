@@ -2,14 +2,12 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:entity_properties",
           "entity": "this",
           "predicate": {
-            "type_specific": {
-              "type": "minecraft:slime",
+            "minecraft:type_specific/cube_mob": {
               "size": 1
             }
           }
@@ -25,7 +23,7 @@
                 "condition": "minecraft:damage_source_properties",
                 "predicate": {
                   "source_entity": {
-                    "type": "minecraft:frog"
+                    "minecraft:entity_type": "minecraft:frog"
                   }
                 }
               }
@@ -33,7 +31,6 @@
           ],
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2.0,
@@ -60,14 +57,13 @@
               "condition": "minecraft:damage_source_properties",
               "predicate": {
                 "source_entity": {
-                  "type": "minecraft:frog"
+                  "minecraft:entity_type": "minecraft:frog"
                 }
               }
             }
           ],
           "functions": [
             {
-              "add": false,
               "count": 1.0,
               "function": "minecraft:set_count"
             }
@@ -78,7 +74,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:killed_by_player"

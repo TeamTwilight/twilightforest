@@ -2,7 +2,6 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -13,7 +12,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -29,7 +27,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -45,7 +42,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -61,7 +57,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4.0,
@@ -77,7 +72,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4.0,
@@ -93,7 +87,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2.0,
@@ -109,7 +102,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 9.0,
@@ -125,7 +117,6 @@
       "rolls": 4.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -135,7 +126,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 6.0,
@@ -150,7 +140,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 5.0,
@@ -165,7 +154,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -180,7 +168,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 3.0,
@@ -195,13 +182,11 @@
       "rolls": 2.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 8.0,
@@ -232,7 +217,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:sharpness": 4.0
               },
@@ -246,7 +230,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:power": 4.0
               },
@@ -260,7 +243,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:punch": 2.0
               },
@@ -274,7 +256,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:unbreaking": 2.0
               },
@@ -299,7 +280,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:infinity": 1.0
               },

@@ -8,8 +8,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:redcap_sapper",
-              "location": {
+              "minecraft:entity_type": "twilightforest:redcap_sapper",
+              "minecraft:location": {
                 "structures": "twilightforest:medium_hollow_hill"
               }
             }

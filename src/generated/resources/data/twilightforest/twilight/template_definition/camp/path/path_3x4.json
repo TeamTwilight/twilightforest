@@ -8,7 +8,6 @@
     "processors": {
       "processors": [
         {
-          "heightmap": "WORLD_SURFACE_WG",
           "offset": -2,
           "processor_type": "minecraft:gravity"
         }
@@ -25,7 +24,6 @@
     "processors": {
       "processors": [
         {
-          "heightmap": "WORLD_SURFACE_WG",
           "offset": -2,
           "processor_type": "minecraft:gravity"
         }
@@ -45,7 +43,6 @@
     "processors": {
       "processors": [
         {
-          "heightmap": "WORLD_SURFACE_WG",
           "offset": -2,
           "processor_type": "minecraft:gravity"
         }

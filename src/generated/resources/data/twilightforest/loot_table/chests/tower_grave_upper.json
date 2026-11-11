@@ -2,7 +2,6 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -12,7 +11,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -22,13 +20,11 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.2,
@@ -43,7 +39,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",

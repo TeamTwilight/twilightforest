@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "l": "twilightforest:tanned_leather",
     "w": "#minecraft:wool"

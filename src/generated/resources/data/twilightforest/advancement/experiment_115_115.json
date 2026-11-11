@@ -8,8 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "stats": [
                   {
                     "type": "minecraft:custom",

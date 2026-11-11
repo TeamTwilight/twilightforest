@@ -60,9 +60,7 @@
         "type": "minecraft:condition",
         "if_true": {
           "type": "minecraft:biome",
-          "biome_is": [
-            "twilightforest:highlands"
-          ]
+          "biome_is": "twilightforest:highlands"
         },
         "then_run": {
           "type": "minecraft:condition",
@@ -199,9 +197,7 @@
         "type": "minecraft:condition",
         "if_true": {
           "type": "minecraft:biome",
-          "biome_is": [
-            "twilightforest:snowy_forest"
-          ]
+          "biome_is": "twilightforest:snowy_forest"
         },
         "then_run": {
           "type": "minecraft:sequence",
@@ -274,9 +270,7 @@
         "type": "minecraft:condition",
         "if_true": {
           "type": "minecraft:biome",
-          "biome_is": [
-            "twilightforest:glacier"
-          ]
+          "biome_is": "twilightforest:glacier"
         },
         "then_run": {
           "type": "minecraft:sequence",

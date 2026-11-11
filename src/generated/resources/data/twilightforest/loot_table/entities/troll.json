@@ -2,7 +2,6 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:random_chance_with_enchanted_bonus",

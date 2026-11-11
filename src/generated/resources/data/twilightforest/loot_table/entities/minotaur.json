@@ -2,13 +2,11 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": 1.0,
               "function": "minecraft:set_count"
             },
@@ -30,7 +28,7 @@
                       "condition": "minecraft:entity_properties",
                       "entity": "this",
                       "predicate": {
-                        "flags": {
+                        "minecraft:flags": {
                           "is_on_fire": true
                         }
                       }
@@ -39,7 +37,7 @@
                       "condition": "minecraft:entity_properties",
                       "entity": "direct_attacker",
                       "predicate": {
-                        "equipment": {
+                        "minecraft:equipment": {
                           "mainhand": {
                             "predicates": {
                               "minecraft:enchantments": [
@@ -64,7 +62,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "condition": "minecraft:random_chance_with_enchanted_bonus",

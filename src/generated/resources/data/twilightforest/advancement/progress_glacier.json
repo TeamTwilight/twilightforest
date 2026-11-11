@@ -8,8 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "advancements": {
                   "twilightforest:progress_yeti": true
                 }
@@ -27,7 +26,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:snow_queen"
+              "minecraft:entity_type": "twilightforest:snow_queen"
             }
           }
         ]
@@ -51,7 +50,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:snow_queen"
+              "minecraft:entity_type": "twilightforest:snow_queen"
             }
           }
         ]

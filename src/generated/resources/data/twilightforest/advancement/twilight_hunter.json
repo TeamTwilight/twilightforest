@@ -8,8 +8,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:adherent",
-              "location": {
+              "minecraft:entity_type": "twilightforest:adherent",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -25,8 +25,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:alpha_yeti",
-              "location": {
+              "minecraft:entity_type": "twilightforest:alpha_yeti",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -42,8 +42,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:armored_giant",
-              "location": {
+              "minecraft:entity_type": "twilightforest:armored_giant",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -59,8 +59,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:bighorn_sheep",
-              "location": {
+              "minecraft:entity_type": "twilightforest:bighorn_sheep",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -76,8 +76,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:block_and_chain_goblin",
-              "location": {
+              "minecraft:entity_type": "twilightforest:block_and_chain_goblin",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -93,8 +93,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:boar",
-              "location": {
+              "minecraft:entity_type": "twilightforest:boar",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -110,8 +110,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:carminite_broodling",
-              "location": {
+              "minecraft:entity_type": "twilightforest:carminite_broodling",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -127,8 +127,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:carminite_ghastguard",
-              "location": {
+              "minecraft:entity_type": "twilightforest:carminite_ghastguard",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -144,8 +144,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:carminite_ghastling",
-              "location": {
+              "minecraft:entity_type": "twilightforest:carminite_ghastling",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -161,8 +161,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:carminite_golem",
-              "location": {
+              "minecraft:entity_type": "twilightforest:carminite_golem",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -178,8 +178,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:death_tome",
-              "location": {
+              "minecraft:entity_type": "twilightforest:death_tome",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -195,8 +195,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:deer",
-              "location": {
+              "minecraft:entity_type": "twilightforest:deer",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -212,8 +212,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:dwarf_rabbit",
-              "location": {
+              "minecraft:entity_type": "twilightforest:dwarf_rabbit",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -229,8 +229,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:fire_beetle",
-              "location": {
+              "minecraft:entity_type": "twilightforest:fire_beetle",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -246,8 +246,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:giant_miner",
-              "location": {
+              "minecraft:entity_type": "twilightforest:giant_miner",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -263,8 +263,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:harbinger_cube",
-              "location": {
+              "minecraft:entity_type": "twilightforest:harbinger_cube",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -280,8 +280,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:hedge_spider",
-              "location": {
+              "minecraft:entity_type": "twilightforest:hedge_spider",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -297,8 +297,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:helmet_crab",
-              "location": {
+              "minecraft:entity_type": "twilightforest:helmet_crab",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -314,8 +314,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:hostile_wolf",
-              "location": {
+              "minecraft:entity_type": "twilightforest:hostile_wolf",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -331,8 +331,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:hydra",
-              "location": {
+              "minecraft:entity_type": "twilightforest:hydra",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -348,8 +348,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:king_spider",
-              "location": {
+              "minecraft:entity_type": "twilightforest:king_spider",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -365,8 +365,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:knight_phantom",
-              "location": {
+              "minecraft:entity_type": "twilightforest:knight_phantom",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -382,8 +382,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:kobold",
-              "location": {
+              "minecraft:entity_type": "twilightforest:kobold",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -399,8 +399,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:lich",
-              "location": {
+              "minecraft:entity_type": "twilightforest:lich",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -416,8 +416,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:lich_minion",
-              "location": {
+              "minecraft:entity_type": "twilightforest:lich_minion",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -433,8 +433,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:lower_goblin_knight",
-              "location": {
+              "minecraft:entity_type": "twilightforest:lower_goblin_knight",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -450,8 +450,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:maze_slime",
-              "location": {
+              "minecraft:entity_type": "twilightforest:maze_slime",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -467,8 +467,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:minoshroom",
-              "location": {
+              "minecraft:entity_type": "twilightforest:minoshroom",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -484,8 +484,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:minotaur",
-              "location": {
+              "minecraft:entity_type": "twilightforest:minotaur",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -501,8 +501,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:mist_wolf",
-              "location": {
+              "minecraft:entity_type": "twilightforest:mist_wolf",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -518,8 +518,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:mosquito_swarm",
-              "location": {
+              "minecraft:entity_type": "twilightforest:mosquito_swarm",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -535,8 +535,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:naga",
-              "location": {
+              "minecraft:entity_type": "twilightforest:naga",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -552,8 +552,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:penguin",
-              "location": {
+              "minecraft:entity_type": "twilightforest:penguin",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -569,8 +569,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:pinch_beetle",
-              "location": {
+              "minecraft:entity_type": "twilightforest:pinch_beetle",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -586,8 +586,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:plateau_boss",
-              "location": {
+              "minecraft:entity_type": "twilightforest:plateau_boss",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -603,8 +603,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:quest_ram",
-              "location": {
+              "minecraft:entity_type": "twilightforest:quest_ram",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -620,8 +620,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:raven",
-              "location": {
+              "minecraft:entity_type": "twilightforest:raven",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -637,8 +637,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:redcap",
-              "location": {
+              "minecraft:entity_type": "twilightforest:redcap",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -654,8 +654,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:redcap_sapper",
-              "location": {
+              "minecraft:entity_type": "twilightforest:redcap_sapper",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -671,8 +671,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:skeleton_druid",
-              "location": {
+              "minecraft:entity_type": "twilightforest:skeleton_druid",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -688,8 +688,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:slime_beetle",
-              "location": {
+              "minecraft:entity_type": "twilightforest:slime_beetle",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -705,8 +705,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:snow_guardian",
-              "location": {
+              "minecraft:entity_type": "twilightforest:snow_guardian",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -722,8 +722,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:snow_queen",
-              "location": {
+              "minecraft:entity_type": "twilightforest:snow_queen",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -739,8 +739,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:squirrel",
-              "location": {
+              "minecraft:entity_type": "twilightforest:squirrel",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -756,8 +756,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:stable_ice_core",
-              "location": {
+              "minecraft:entity_type": "twilightforest:stable_ice_core",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -773,8 +773,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:swarm_spider",
-              "location": {
+              "minecraft:entity_type": "twilightforest:swarm_spider",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -790,8 +790,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:tiny_bird",
-              "location": {
+              "minecraft:entity_type": "twilightforest:tiny_bird",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -807,8 +807,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:towerwood_borer",
-              "location": {
+              "minecraft:entity_type": "twilightforest:towerwood_borer",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -824,8 +824,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:troll",
-              "location": {
+              "minecraft:entity_type": "twilightforest:troll",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -841,8 +841,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:unstable_ice_core",
-              "location": {
+              "minecraft:entity_type": "twilightforest:unstable_ice_core",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -858,8 +858,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:upper_goblin_knight",
-              "location": {
+              "minecraft:entity_type": "twilightforest:upper_goblin_knight",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -875,8 +875,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:ur_ghast",
-              "location": {
+              "minecraft:entity_type": "twilightforest:ur_ghast",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -892,8 +892,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:winter_wolf",
-              "location": {
+              "minecraft:entity_type": "twilightforest:winter_wolf",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -909,8 +909,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:wraith",
-              "location": {
+              "minecraft:entity_type": "twilightforest:wraith",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }
@@ -926,8 +926,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:yeti",
-              "location": {
+              "minecraft:entity_type": "twilightforest:yeti",
+              "minecraft:location": {
                 "dimension": "twilightforest:twilight_forest"
               }
             }

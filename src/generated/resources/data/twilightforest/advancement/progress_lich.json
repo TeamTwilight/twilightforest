@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:lich"
+              "minecraft:entity_type": "twilightforest:lich"
             }
           }
         ]
@@ -22,8 +22,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "advancements": {
                   "twilightforest:progress_naga": true
                 }
@@ -81,7 +80,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:lich"
+              "minecraft:entity_type": "twilightforest:lich"
             }
           }
         ]

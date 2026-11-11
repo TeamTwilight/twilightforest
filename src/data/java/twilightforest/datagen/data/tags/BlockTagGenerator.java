@@ -17,7 +17,6 @@ import twilightforest.tags.TFBlockTags;
 
 import java.util.concurrent.CompletableFuture;
 
-// FIXME: Address removed tags
 public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
@@ -29,13 +28,30 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	protected void addTags(HolderLookup.Provider provider) {
 		super.addTags(provider);
 
-		// FIXME
 		new BlockItemTagGenerator() {
 			@Override
-			protected TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
+			protected TagAppender<Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
 				return BlockTagGenerator.this.tag(blockTag);
 			}
 		}.run();
+
+		this.tag(BlockTags.SLABS).add(TFBlocks.AURORA_SLAB.getKey());
+
+		this.tag(BlockTags.STAIRS).add(
+			TFBlocks.CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.WORN_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.BOLD_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.NAGASTONE_STAIRS_LEFT.getKey(),
+			TFBlocks.NAGASTONE_STAIRS_RIGHT.getKey(),
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.getKey(),
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.getKey(),
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.getKey(),
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.getKey());
+
+		this.tag(BlockTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.getKey());
 
 		this.tag(BlockTags.FLOWER_POTS).add(
 			TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.getKey(),
@@ -285,8 +301,26 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.COPPER_OREBERRY_BUSH.getKey(),
 				TFBlocks.IRON_OREBERRY_BUSH.getKey(),
 				TFBlocks.GOLD_OREBERRY_BUSH.getKey(),
-				TFBlocks.ESSENCE_OREBERRY_BUSH.getKey())
-			.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS);
+				TFBlocks.ESSENCE_OREBERRY_BUSH.getKey(),
+				BlockItemIds.ACACIA_SAPLING.block(),
+				BlockItemIds.BIRCH_SAPLING.block(),
+				BlockItemIds.CHERRY_SAPLING.block(),
+				BlockItemIds.DARK_OAK_SAPLING.block(),
+				BlockItemIds.JUNGLE_SAPLING.block(),
+				BlockItemIds.OAK_SAPLING.block(),
+				BlockItemIds.PALE_OAK_SAPLING.block(),
+				BlockItemIds.SPRUCE_SAPLING.block(),
+				TFBlocks.TWILIGHT_OAK_SAPLING.getKey(),
+				TFBlocks.CANOPY_SAPLING.getKey(),
+				TFBlocks.MANGROVE_SAPLING.getKey(),
+				TFBlocks.DARKWOOD_SAPLING.getKey(),
+				TFBlocks.TIME_SAPLING.getKey(),
+				TFBlocks.TRANSFORMATION_SAPLING.getKey(),
+				TFBlocks.MINING_SAPLING.getKey(),
+				TFBlocks.SORTING_SAPLING.getKey(),
+				TFBlocks.HOLLOW_OAK_SAPLING.getKey(),
+				TFBlocks.RAINBOW_OAK_SAPLING.getKey()
+			).addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.CROPS);
 
 		this.tag(TFBlockTags.GENERATED_PORTAL_DECO)
 			.add(BlockItemIds.BROWN_MUSHROOM.block(), BlockItemIds.RED_MUSHROOM.block(),

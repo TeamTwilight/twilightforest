@@ -18,8 +18,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "advancements": {
                   "twilightforest:progress_lich": true
                 }
@@ -47,7 +46,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:alpha_yeti"
+              "minecraft:entity_type": "twilightforest:alpha_yeti"
             }
           }
         ]
@@ -61,7 +60,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:alpha_yeti"
+              "minecraft:entity_type": "twilightforest:alpha_yeti"
             }
           }
         ]

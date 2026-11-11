@@ -8,8 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "advancements": {
                   "twilightforest:progress_hydra": true
                 }
@@ -27,8 +26,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "advancements": {
                   "twilightforest:progress_glacier": true
                 }
@@ -46,8 +44,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "advancements": {
                   "twilightforest:progress_ur_ghast": true
                 }

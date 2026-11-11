@@ -11,7 +11,6 @@ import twilightforest.init.TFBlocks;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFItemTags;
 
-// FIXME: Address removed tags
 public abstract class BlockItemTagGenerator {
 
 	@SuppressWarnings("unchecked")
@@ -103,44 +102,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_PLATE.getKey(),
 			TFBlocks.SORTING_PLATE.getKey());
 
-		this.tag(BlockTags.SAPLINGS, ItemTags.SAPLINGS).add(
-			TFBlocks.TWILIGHT_OAK_SAPLING.getKey(),
-			TFBlocks.CANOPY_SAPLING.getKey(),
-			TFBlocks.MANGROVE_SAPLING.getKey(),
-			TFBlocks.DARKWOOD_SAPLING.getKey(),
-			TFBlocks.TIME_SAPLING.getKey(),
-			TFBlocks.TRANSFORMATION_SAPLING.getKey(),
-			TFBlocks.MINING_SAPLING.getKey(),
-			TFBlocks.SORTING_SAPLING.getKey(),
-			TFBlocks.HOLLOW_OAK_SAPLING.getKey(),
-			TFBlocks.RAINBOW_OAK_SAPLING.getKey());
-
-
-		this.tag(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN).addTags(
-			TFBlockTags.TWILIGHT_OAK_LOGS,
-			TFBlockTags.CANOPY_LOGS,
-			TFBlockTags.MANGROVE_LOGS,
-			TFBlockTags.DARKWOOD_LOGS,
-			TFBlockTags.TIME_LOGS,
-			TFBlockTags.TRANSFORMATION_LOGS,
-			TFBlockTags.MINING_LOGS,
-			TFBlockTags.SORTING_LOGS);
-
-		this.tag(BlockTags.SLABS, ItemTags.SLABS).add(TFBlocks.AURORA_SLAB.getKey());
 		this.tag(BlockTags.WALLS, ItemTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE.getKey());
-		this.tag(BlockTags.STAIRS, ItemTags.STAIRS).add(
-			TFBlocks.CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.WORN_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.BOLD_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.NAGASTONE_STAIRS_RIGHT.getKey(),
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.getKey(),
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.getKey());
 
 		this.tag(BlockTags.LEAVES, ItemTags.LEAVES).add(
 			TFBlocks.RAINBOW_OAK_LEAVES.getKey(),
@@ -165,7 +127,6 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_TRAPDOOR.getKey(),
 			TFBlocks.SORTING_TRAPDOOR.getKey());
 
-		this.tag(BlockTags.SMALL_FLOWERS, ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.getKey());
 		this.tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.getKey());
 		this.tag(BlockTags.DIRT, ItemTags.DIRT).add(TFBlocks.UBEROUS_SOIL.getKey());
 		this.tag(BlockTags.STANDING_SIGNS, ItemTags.SIGNS).add(
@@ -357,6 +318,5 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.SNOWY_CLOUD.getKey());
 	}
 
-	// FIXME
-	protected abstract TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag);
+	protected abstract TagAppender<Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag);
 }

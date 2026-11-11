@@ -43,7 +43,6 @@
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
       "limit": 0,
-      "lower_size": 0,
       "upper_size": 0
     },
     "trunk_placer": {

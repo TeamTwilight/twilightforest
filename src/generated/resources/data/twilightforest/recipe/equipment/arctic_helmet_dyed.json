@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_dye",
-  "category": "misc",
   "dye": "#minecraft:dyes",
   "group": "dyed_armor",
   "result": {

@@ -8,8 +8,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:troll",
-              "location": {
+              "minecraft:entity_type": "twilightforest:troll",
+              "minecraft:location": {
                 "structures": "twilightforest:troll_cave"
               }
             }

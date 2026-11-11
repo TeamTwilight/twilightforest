@@ -2,13 +2,11 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 56.0,
@@ -23,7 +21,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -38,7 +35,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 6.0,
@@ -68,7 +64,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -83,7 +78,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 12.0,
@@ -98,7 +92,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2.0,
@@ -113,7 +106,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 10.0,
@@ -128,7 +120,6 @@
       "rolls": 3.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:empty",
@@ -138,7 +129,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2.0,
@@ -154,7 +144,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 6.0,
@@ -199,7 +188,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "twilightforest:renewal": 1.0
               },

@@ -8,19 +8,19 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "minecraft:zombie",
-              "flags": {
+              "minecraft:entity_type": "minecraft:zombie",
+              "minecraft:flags": {
                 "is_baby": true
               },
-              "vehicle": {
-                "type": "minecraft:chicken"
+              "minecraft:vehicle": {
+                "minecraft:entity_type": "minecraft:chicken"
               }
             }
           }
         ],
         "killing_blow": {
           "direct_entity": {
-            "equipment": {
+            "minecraft:equipment": {
               "mainhand": {
                 "items": "twilightforest:chicken_jerky"
               }

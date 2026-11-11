@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "hanging_sign",
   "key": {
     "#": "twilightforest:stripped_canopy_log",

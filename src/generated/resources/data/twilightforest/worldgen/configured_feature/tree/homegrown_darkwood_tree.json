@@ -73,8 +73,7 @@
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
       "limit": 4,
-      "lower_size": 1,
-      "upper_size": 1
+      "lower_size": 1
     },
     "trunk_placer": {
       "type": "twilightforest:branching_trunk_placer",

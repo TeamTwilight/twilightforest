@@ -2,7 +2,6 @@
   "type": "minecraft:block_interact",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "ability": "axe_strip",

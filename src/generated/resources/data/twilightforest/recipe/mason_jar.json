@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "G": "minecraft:glass",
     "L": "twilightforest:twilight_oak_log"

@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:naga"
+              "minecraft:entity_type": "twilightforest:naga"
             }
           }
         ]
@@ -42,7 +42,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:naga"
+              "minecraft:entity_type": "twilightforest:naga"
             }
           }
         ]

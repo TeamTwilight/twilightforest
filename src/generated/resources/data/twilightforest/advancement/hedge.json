@@ -8,8 +8,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:hedge_spider",
-              "location": {
+              "minecraft:entity_type": "twilightforest:hedge_spider",
+              "minecraft:location": {
                 "structures": "twilightforest:hedge_maze"
               }
             }
@@ -25,8 +25,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:swarm_spider",
-              "location": {
+              "minecraft:entity_type": "twilightforest:swarm_spider",
+              "minecraft:location": {
                 "structures": "twilightforest:hedge_maze"
               }
             }

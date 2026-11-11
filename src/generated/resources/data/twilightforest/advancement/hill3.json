@@ -8,8 +8,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:wraith",
-              "location": {
+              "minecraft:entity_type": "twilightforest:wraith",
+              "minecraft:location": {
                 "structures": "twilightforest:large_hollow_hill"
               }
             }

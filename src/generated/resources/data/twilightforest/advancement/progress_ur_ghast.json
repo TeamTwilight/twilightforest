@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:ur_ghast"
+              "minecraft:entity_type": "twilightforest:ur_ghast"
             }
           }
         ]
@@ -22,8 +22,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type_specific": {
-                "type": "minecraft:player",
+              "minecraft:type_specific/player": {
                 "advancements": {
                   "twilightforest:progress_knights": true
                 }
@@ -51,7 +50,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:ur_ghast"
+              "minecraft:entity_type": "twilightforest:ur_ghast"
             }
           }
         ]

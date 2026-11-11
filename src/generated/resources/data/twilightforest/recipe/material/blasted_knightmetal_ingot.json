@@ -1,7 +1,5 @@
 {
   "type": "minecraft:blasting",
-  "category": "misc",
-  "cookingtime": 100,
   "experience": 1.0,
   "group": "knightmetal_ingot",
   "ingredient": "twilightforest:armor_shard_cluster",

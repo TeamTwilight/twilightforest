@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "wooden_banister",
   "key": {
     "-": "twilightforest:sorting_slab",
