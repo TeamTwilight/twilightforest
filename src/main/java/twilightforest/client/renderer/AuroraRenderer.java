@@ -43,8 +43,12 @@ public class AuroraRenderer {
 			MeshData.DrawState drawState = mesh.drawState();
 			RenderSystem.AutoStorageIndexBuffer sequential = RenderSystem.getSequentialBuffer(drawState.primitiveTopology());
 			GpuBuffer indexBuffer = sequential.getBuffer(drawState.indexCount());
-			GpuBufferSlice transforms = RenderSystem.getDynamicUniforms()
-				.writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(1.0F, 1.0F, 1.0F, alpha), new Vector3f(), new Matrix4f());
+			GpuBufferSlice transforms = RenderSystem.getDynamicUniforms().writeTransform(
+				RenderSystem.getModelViewMatrixCopy(),
+				new Vector4f(1.0F, 1.0F, 1.0F, alpha),
+				new Vector3f(),
+				new Matrix4f()
+			);
 			GpuBufferSlice aurora = uniformStorage.get().writeUniform(new AuroraUniform(seed, x, y, z));
 
 			try (
