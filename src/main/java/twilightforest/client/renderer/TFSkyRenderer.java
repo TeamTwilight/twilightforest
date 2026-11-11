@@ -87,8 +87,7 @@ public class TFSkyRenderer implements AutoCloseable {
 		GpuTextureView colorTexture = Minecraft.getInstance().gameRenderer.mainRenderTarget().getColorTextureView();
 		GpuTextureView depthTexture = Minecraft.getInstance().gameRenderer.mainRenderTarget().getDepthTextureView();
 		GpuBuffer indices = this.starIndices.getBuffer(this.starIndexCount);
-		GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms()
-			.writeTransform(matrix, new Vector4f(1.0F, 1.0F, 1.0F, 1.0F), new Vector3f(), new Matrix4f());
+		GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(new Matrix4f(matrix));
 		try (RenderPass renderPass = RenderSystem.getDevice()
 				.createCommandEncoder()
 				.createRenderPass(() -> "Stars", colorTexture, Optional.empty(), depthTexture, OptionalDouble.empty())) {
