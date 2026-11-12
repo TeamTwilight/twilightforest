@@ -37,30 +37,6 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			}
 		}.run();
 
-		this.tag(ItemTags.SAPLINGS).add(
-			TFBlocks.TWILIGHT_OAK_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.CANOPY_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.MANGROVE_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.DARKWOOD_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.TIME_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.TRANSFORMATION_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.MINING_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.SORTING_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.HOLLOW_OAK_SAPLING.asItem().builtInRegistryHolder().key(),
-			TFBlocks.RAINBOW_OAK_SAPLING.asItem().builtInRegistryHolder().key()
-		);
-
-		this.tag(ItemTags.LOGS_THAT_BURN).addTags(
-			TFItemTags.TWILIGHT_OAK_LOGS,
-			TFItemTags.CANOPY_LOGS,
-			TFItemTags.MANGROVE_LOGS,
-			TFItemTags.DARKWOOD_LOGS,
-			TFItemTags.TIME_LOGS,
-			TFItemTags.TRANSFORMATION_LOGS,
-			TFItemTags.MINING_LOGS,
-			TFItemTags.SORTING_LOGS
-		);
-
 		this.tag(ItemTags.BOATS).add(
 			TFItems.TWILIGHT_OAK_BOAT.getKey(), TFItems.CANOPY_BOAT.getKey(),
 			TFItems.MANGROVE_BOAT.getKey(), TFItems.DARK_BOAT.getKey(),

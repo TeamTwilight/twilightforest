@@ -1,6 +1,7 @@
 package twilightforest.datagen.data.tags;
 
 import net.minecraft.data.tags.TagAppender;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -102,7 +103,44 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_PLATE.getKey(),
 			TFBlocks.SORTING_PLATE.getKey());
 
+		this.tag(BlockItemTags.SAPLINGS.block(), BlockItemTags.SAPLINGS.item()).add(
+			TFBlocks.TWILIGHT_OAK_SAPLING.getKey(),
+			TFBlocks.CANOPY_SAPLING.getKey(),
+			TFBlocks.MANGROVE_SAPLING.getKey(),
+			TFBlocks.DARKWOOD_SAPLING.getKey(),
+			TFBlocks.TIME_SAPLING.getKey(),
+			TFBlocks.TRANSFORMATION_SAPLING.getKey(),
+			TFBlocks.MINING_SAPLING.getKey(),
+			TFBlocks.SORTING_SAPLING.getKey(),
+			TFBlocks.HOLLOW_OAK_SAPLING.getKey(),
+			TFBlocks.RAINBOW_OAK_SAPLING.getKey());
+
+
+		this.tag(BlockItemTags.LOGS_THAT_BURN.block(), BlockItemTags.LOGS_THAT_BURN.item()).addTags(
+			TFBlockTags.TWILIGHT_OAK_LOGS,
+			TFBlockTags.CANOPY_LOGS,
+			TFBlockTags.MANGROVE_LOGS,
+			TFBlockTags.DARKWOOD_LOGS,
+			TFBlockTags.TIME_LOGS,
+			TFBlockTags.TRANSFORMATION_LOGS,
+			TFBlockTags.MINING_LOGS,
+			TFBlockTags.SORTING_LOGS);
+
+		this.tag(BlockItemTags.SLABS.block(), BlockItemTags.SLABS.item()).add(TFBlocks.AURORA_SLAB.getKey());
 		this.tag(BlockTags.WALLS, ItemTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE.getKey());
+		this.tag(BlockItemTags.STAIRS.block(), BlockItemTags.STAIRS.item()).add(
+			TFBlocks.CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.WORN_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.BOLD_CASTLE_BRICK_STAIRS.getKey(),
+			TFBlocks.NAGASTONE_STAIRS_LEFT.getKey(),
+			TFBlocks.NAGASTONE_STAIRS_RIGHT.getKey(),
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.getKey(),
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.getKey(),
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.getKey(),
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.getKey());
 
 		this.tag(BlockTags.LEAVES, ItemTags.LEAVES).add(
 			TFBlocks.RAINBOW_OAK_LEAVES.getKey(),
@@ -127,6 +165,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_TRAPDOOR.getKey(),
 			TFBlocks.SORTING_TRAPDOOR.getKey());
 
+		this.tag(BlockItemTags.SMALL_FLOWERS.block(), BlockItemTags.SMALL_FLOWERS.item()).add(TFBlocks.THORN_ROSE.getKey());
 		this.tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.getKey());
 		this.tag(BlockTags.DIRT, ItemTags.DIRT).add(TFBlocks.UBEROUS_SOIL.getKey());
 		this.tag(BlockTags.STANDING_SIGNS, ItemTags.SIGNS).add(

@@ -6,6 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.references.BlockIds;
 import net.minecraft.references.BlockItemIds;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -34,24 +35,6 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				return BlockTagGenerator.this.tag(blockTag);
 			}
 		}.run();
-
-		this.tag(BlockTags.SLABS).add(TFBlocks.AURORA_SLAB.getKey());
-
-		this.tag(BlockTags.STAIRS).add(
-			TFBlocks.CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.WORN_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.BOLD_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.NAGASTONE_STAIRS_RIGHT.getKey(),
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.getKey(),
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.getKey());
-
-		this.tag(BlockTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.getKey());
 
 		this.tag(BlockTags.FLOWER_POTS).add(
 			TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.getKey(),
@@ -301,26 +284,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.COPPER_OREBERRY_BUSH.getKey(),
 				TFBlocks.IRON_OREBERRY_BUSH.getKey(),
 				TFBlocks.GOLD_OREBERRY_BUSH.getKey(),
-				TFBlocks.ESSENCE_OREBERRY_BUSH.getKey(),
-				BlockItemIds.ACACIA_SAPLING.block(),
-				BlockItemIds.BIRCH_SAPLING.block(),
-				BlockItemIds.CHERRY_SAPLING.block(),
-				BlockItemIds.DARK_OAK_SAPLING.block(),
-				BlockItemIds.JUNGLE_SAPLING.block(),
-				BlockItemIds.OAK_SAPLING.block(),
-				BlockItemIds.PALE_OAK_SAPLING.block(),
-				BlockItemIds.SPRUCE_SAPLING.block(),
-				TFBlocks.TWILIGHT_OAK_SAPLING.getKey(),
-				TFBlocks.CANOPY_SAPLING.getKey(),
-				TFBlocks.MANGROVE_SAPLING.getKey(),
-				TFBlocks.DARKWOOD_SAPLING.getKey(),
-				TFBlocks.TIME_SAPLING.getKey(),
-				TFBlocks.TRANSFORMATION_SAPLING.getKey(),
-				TFBlocks.MINING_SAPLING.getKey(),
-				TFBlocks.SORTING_SAPLING.getKey(),
-				TFBlocks.HOLLOW_OAK_SAPLING.getKey(),
-				TFBlocks.RAINBOW_OAK_SAPLING.getKey()
-			).addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.CROPS);
+				TFBlocks.ESSENCE_OREBERRY_BUSH.getKey()
+			).addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockItemTags.SAPLINGS.block(), BlockTags.CROPS);
 
 		this.tag(TFBlockTags.GENERATED_PORTAL_DECO)
 			.add(BlockItemIds.BROWN_MUSHROOM.block(), BlockItemIds.RED_MUSHROOM.block(),
@@ -494,8 +459,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlockTags.ROOT_GROUND
 		);
 
-		this.tag(TFBlockTags.ORE_MAGNET_IGNORE).addTag(Tags.Blocks.ORES_COAL);
-		this.tag(TFBlockTags.MINING_CORE_EXCLUDED).addTag(Tags.Blocks.ORES_COAL);
+		this.tag(TFBlockTags.ORE_MAGNET_IGNORE).addTag(BlockItemTags.COAL_ORES.block());
+		this.tag(TFBlockTags.MINING_CORE_EXCLUDED).addTag(BlockItemTags.COAL_ORES.block());
 		this.tag(TFBlockTags.ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.getKey());
 		this.tag(TFBlockTags.ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.getKey());
 		this.tag(TFBlockTags.TF_CHESTS).add(

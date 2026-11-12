@@ -5,12 +5,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
@@ -252,13 +252,13 @@ public class DataMapGenerator extends DataMapProvider {
 
 		var oreMap = this.builder(TFDataMaps.ORE_MAP_ORE_COLOR);
 		oreMap.add(BlockTags.COPPER_ORES, new OreMapOreColor(MapColor.COLOR_ORANGE), false);
-		oreMap.add(Tags.Blocks.ORES_COAL, new OreMapOreColor(MapColor.COLOR_BLACK), false);
+		oreMap.add(BlockItemTags.COAL_ORES.block(), new OreMapOreColor(MapColor.COLOR_BLACK), false);
 		oreMap.add(BlockTags.IRON_ORES, new OreMapOreColor(MapColor.RAW_IRON), false);
-		oreMap.add(Tags.Blocks.ORES_LAPIS, new OreMapOreColor(MapColor.LAPIS), false);
+		oreMap.add(BlockItemTags.LAPIS_ORES.block(), new OreMapOreColor(MapColor.LAPIS), false);
 		oreMap.add(BlockTags.GOLD_ORES, new OreMapOreColor(MapColor.GOLD), false);
-		oreMap.add(Tags.Blocks.ORES_REDSTONE, new OreMapOreColor(MapColor.COLOR_RED), false);
-		oreMap.add(Tags.Blocks.ORES_DIAMOND, new OreMapOreColor(MapColor.DIAMOND), false);
-		oreMap.add(Tags.Blocks.ORES_EMERALD, new OreMapOreColor(MapColor.EMERALD), false);
+		oreMap.add(BlockItemTags.REDSTONE_ORES.block(), new OreMapOreColor(MapColor.COLOR_RED), false);
+		oreMap.add(BlockItemTags.DIAMOND_ORES.block(), new OreMapOreColor(MapColor.DIAMOND), false);
+		oreMap.add(BlockItemTags.EMERALD_ORES.block(), new OreMapOreColor(MapColor.EMERALD), false);
 		oreMap.add(Blocks.ANCIENT_DEBRIS.builtInRegistryHolder(), new OreMapOreColor(MapColor.TERRACOTTA_BROWN), false);
 
 		var infested = this.builder(TFDataMaps.INFESTED_CONVERSION);
