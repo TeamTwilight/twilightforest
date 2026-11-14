@@ -4,14 +4,17 @@ import com.google.common.reflect.Reflection;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tamaized.beanification.BeanContext;
 import tamaized.beanification.Configurable;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
@@ -89,18 +92,20 @@ public final class TwilightForestMod {
 
 		TFRemapper.addRegistryAliases();
 
-//		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus); // FIXME
+		if (ModList.get().isLoaded("curios"))
+			loadCuriosCompat(bus);
+
 		// Uncomment this when Cosmetic Armor Reworked is ready
 //		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
 	}
 
-	/*private static void loadCuriosCompat(IEventBus bus) {
+	private static void loadCuriosCompat(IEventBus bus) {
 		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
 		bus.addListener(CuriosCompat::registerCuriosCapabilities);
 		bus.addListener(CuriosCompat::registerCurioRenderers);
 		bus.addListener(CuriosCompat::registerCurioLayers);
 		bus.addListener(CuriosCompat::registerCustomRenderData);
-	}*/
+	}
 
 	public static Identifier prefix(String name) {
 		return Identifier.fromNamespaceAndPath(ID, name.toLowerCase(Locale.ROOT));

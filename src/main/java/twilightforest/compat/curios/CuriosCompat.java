@@ -1,6 +1,7 @@
 package twilightforest.compat.curios;
 
 import com.google.common.reflect.TypeToken;
+import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.nbt.CompoundTag;
@@ -38,20 +39,18 @@ import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.util.TFItemStackUtils;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public class CuriosCompat {
 
 	public static void registerCuriosCapabilities(RegisterCapabilitiesEvent event) {
-		event.registerItem(CuriosCapability.ITEM, (stack, context) -> new ICurio() {
+		event.registerItem(CuriosCapability.ITEM, (stack, _) -> new ICurio() {
 				@Override
 				public ItemStack getStack() {
 					return stack;
 				}
 
-				@Nonnull
 				@Override
 				public SoundInfo getEquipSound(SlotContext slotContext) {
 					return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC.value(), 1.0F, 1.0F);
@@ -138,10 +137,12 @@ public class CuriosCompat {
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {
 		}, (LivingEntity living, LivingEntityRenderState state) -> {
 			if (isCurioEquippedAndVisible(living, itemStack -> itemStack.getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)) {
-				state.setRenderData(RenderHooks.HIDE_HEAD_KEY, true);
+				state.overrideModelPartVisibility(PartNames.HEAD, false);
 			}
 		});
 	}
+
+	// TODO: This method should be moved into a component
 	public static boolean isCurioEquipped(LivingEntity entity, Predicate<ItemStack> stackPredicate) {
 		return CuriosApi.getCuriosInventory(entity).flatMap(handler -> handler.findFirstCurio(stackPredicate)).isPresent();
 	}
