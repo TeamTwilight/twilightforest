@@ -21,18 +21,19 @@ import twilightforest.config.TFConfig;
 import twilightforest.entity.CharmEffect;
 import twilightforest.init.TFEntities;
 
-public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) implements CustomPacketPayload {
+public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event, int entityId) implements CustomPacketPayload {
 
 	public static final Type<SpawnCharmPacket> TYPE = new Type<>(TwilightForestMod.prefix("spawn_charm"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SpawnCharmPacket> STREAM_CODEC = CustomPacketPayload.codec(SpawnCharmPacket::write, SpawnCharmPacket::new);
 
 	public SpawnCharmPacket(RegistryFriendlyByteBuf buf) {
-		this(ItemStack.STREAM_CODEC.decode(buf), buf.readResourceKey(Registries.SOUND_EVENT));
+		this(ItemStack.STREAM_CODEC.decode(buf), buf.readResourceKey(Registries.SOUND_EVENT), buf.readVarInt());
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {
 		ItemStack.STREAM_CODEC.encode(buf, this.charm());
 		buf.writeResourceKey(this.event());
+		buf.writeVarInt(this.entityId());
 	}
 
 	@Override
@@ -55,6 +56,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
 					} else {
 						CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, packet.charm());
+						effect.setId(packet.entityId());
 						effect.offset = (float) Math.PI;
 						level.addEntity(effect);
 					}

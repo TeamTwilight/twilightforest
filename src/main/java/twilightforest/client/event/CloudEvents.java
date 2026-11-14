@@ -36,6 +36,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -53,7 +54,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
-@Component
+@Component(dist = Dist.CLIENT)
 public class CloudEvents {
 
 	private final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
