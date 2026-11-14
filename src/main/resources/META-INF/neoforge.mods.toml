@@ -10,6 +10,7 @@ displayName = "The Twilight Forest"
 itemIcon = "twilightforest:twilight_portal_miniature_structure"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest"
 bannerFile = "twilightforest_logo.png"
+iconFile = "twilightforest_icon.png"
 credits = "By Benimatic (Ben Mazur)"
 authors = "Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, jodlodi, SleepyHorse"
 description = '''
