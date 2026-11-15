@@ -86,73 +86,70 @@ public class MapBiomesCommand {
 		}
 
 		//setup image
-		Map<Holder<Biome>, Integer> biomeCount = new HashMap<>();
-		NativeImage img = new NativeImage(width, height, false);
+		try (NativeImage img = new NativeImage(width, height, false)) {
+			Map<Holder<Biome>, Integer> biomeCount = new HashMap<>();
+			int progressUpdate = img.getHeight() / 8;
 
-		int progressUpdate = img.getHeight() / 8;
+			for (int x = 0; x < img.getHeight(); x++) {
+				for (int z = 0; z < img.getWidth(); z++) {
+					ServerLevel level = source.getLevel();
+					Holder<Biome> b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2));
+					Identifier key = level.registryAccess().lookupOrThrow(Registries.BIOME).getKey(b.value());
+					BiomeMapColor color = BIOME2COLOR.get(key);
 
-		for (int x = 0; x < img.getHeight(); x++) {
-			for (int z = 0; z < img.getWidth(); z++) {
-				ServerLevel level = source.getLevel();
-				Holder<Biome> b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2));
-				Identifier key = level.registryAccess().lookupOrThrow(Registries.BIOME).getKey(b.value());
-				BiomeMapColor color = BIOME2COLOR.get(key);
+					if (color == null) {
+						int colorInt = getBiomeColor(b);
 
-				if (color == null) {
-					int colorInt = getBiomeColor(b);
+						if (colorInt == 0)
+							colorInt = b.value().getGrassColor(0, 0);
 
-					if (colorInt == 0)
-						colorInt = b.value().getGrassColor(0, 0);
+						BIOME2COLOR.put(key, color = new BiomeMapColor(colorInt | 0xFF000000));
+					}
 
-					BIOME2COLOR.put(key, color = new BiomeMapColor(colorInt | 0xFF000000));
+					if (!biomeCount.containsKey(b)) {
+						biomeCount.put(b, 0);
+					} else {
+						biomeCount.put(b, biomeCount.get(b) + 1);
+					}
+
+					//set the color
+					img.setPixelABGR(x, z, ColorUtil.argbToABGR(color.getARGB()));
 				}
 
-				if (!biomeCount.containsKey(b)) {
-					biomeCount.put(b, 0);
-				} else {
-					biomeCount.put(b, biomeCount.get(b) + 1);
+				//send a progress update to let people know the server isn't dying
+				if (x % progressUpdate == 0) {
+					int finalX = x;
+					double percentComplete = (double) finalX / img.getHeight() * 100;
+					String percentDisplay = this.numberFormat.format(percentComplete);
+					source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.progress", percentDisplay), false);
 				}
-
-				//set the color
-				img.setPixelABGR(x, z, ColorUtil.argbToABGR(color.getARGB()));
 			}
 
-			//send a progress update to let people know the server isn't dying
-			if (x % progressUpdate == 0) {
-				int finalX = x;
-				double percentComplete = (double) finalX / img.getHeight() * 100;
-				String percentDisplay = this.numberFormat.format(percentComplete);
-				source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.progress", percentDisplay), false);
+			if (showBiomePercents) {
+				source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.counts_header", width, height), false);
+				int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
+				biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
+						source.getLevel().registryAccess().lookupOrThrow(Registries.BIOME).getKey(biome.value()).toString())
+					.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 			}
-		}
 
-		if (showBiomePercents) {
-			source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.counts_header", width, height), false);
-			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
-			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
-					source.getLevel().registryAccess().lookupOrThrow(Registries.BIOME).getKey(biome.value()).toString())
-				.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
-		}
-
-		int startX = Mth.floor(source.getPosition().x()) - (img.getWidth() / 2);
-		int startZ = Mth.floor(source.getPosition().z()) - (img.getHeight() / 2);
-		//file name is formatted as: biomemap-seed-(startX.startZ)-(endX.endZ)
-		Path path = source.getLevel().getServer().getWorldPath(LevelResource.GENERATED_DIR).resolve("biomemaps").resolve(String.valueOf(source.getLevel().getSeed())).resolve("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png").normalize();
-		//save the biome map
-		try {
+			int startX = Mth.floor(source.getPosition().x()) - (img.getWidth() / 2);
+			int startZ = Mth.floor(source.getPosition().z()) - (img.getHeight() / 2);
+			//file name is formatted as: biomemap-seed-(startX.startZ)-(endX.endZ)
+			Path path = source.getLevel().getServer().getWorldPath(LevelResource.GENERATED_DIR).resolve("biomemaps").resolve(String.valueOf(source.getLevel().getSeed())).resolve("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png").normalize();
+			//save the biome map
 			if (!Files.exists(path)) {
 				Files.createDirectories(path.getParent());
 				img.writeToFile(path);
 			}
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.save_success"), false);
+
+			return Command.SINGLE_SUCCESS;
 		} catch (IOException e) {
 			e.printStackTrace();
 			source.sendFailure(Component.translatable("commands.tffeature.biomepng.save_failed"));
 			return 0;
 		}
-
-		source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.save_success"), false);
-
-		return Command.SINGLE_SUCCESS;
 	}
 
 	public static int getBiomeColor(Holder<Biome> biome) {
