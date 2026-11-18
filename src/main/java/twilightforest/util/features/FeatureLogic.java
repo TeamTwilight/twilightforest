@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
@@ -122,7 +121,6 @@ public final class FeatureLogic {
 	}
 
 	// North is treated for default rotation, plan your code accordingly
-	@NotNull
 	public static Rotation getRotation(RandomSource rand, boolean north, boolean east, boolean south, boolean west) {
 		// North -> NONE
 		// East -> CLOCKWISE_90

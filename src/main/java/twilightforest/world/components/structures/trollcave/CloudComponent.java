@@ -13,7 +13,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -26,7 +25,6 @@ public class CloudComponent extends StructurePiece {
 		super(TFStructurePieceTypes.TFCloud.value(), genDepth, makeBoundingBox((centerChunkX + OFFSET) & ~0b1111, yHeight, (centerChunkZ + OFFSET) & ~0b1111));
 	}
 
-	@NotNull
 	private static BoundingBox makeBoundingBox(int minX, int maxY, int minZ) {
 		return new BoundingBox(minX & ~0b1111, maxY - DEPTH, minZ & ~0b1111, (minX + WIDTH) | 0b1111, maxY, (minZ + WIDTH) | 0b1111);
 	}

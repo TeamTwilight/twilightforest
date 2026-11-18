@@ -9,7 +9,6 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.world.components.layer.BiomeDensitySource;
 
@@ -49,7 +48,6 @@ public class NoiseDensityRouter implements DensityFunction.SimpleFunction {
 
 	// Our default method for obtaining column samples of the biome source.
 	// This method is overridden by ChunkCachedNoiseDensityRouter, operating that subclass's cache.
-	@NotNull
 	public BiomeDensitySource.DensityData computeTerrain(FunctionContext context) {
 		return this.biomeDensitySourceHolder.value().sampleTerrain(context.blockX(), context.blockZ(), context);
 	}
@@ -112,7 +110,6 @@ public class NoiseDensityRouter implements DensityFunction.SimpleFunction {
 			this.biomeDensitySource = biomeDensitySource.value();
 		}
 
-		@NotNull
 		@Override
 		public BiomeDensitySource.DensityData computeTerrain(FunctionContext context) {
 			int xInChunk = SectionPos.sectionRelative(context.blockX());

@@ -13,7 +13,6 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.tags.TFWoodPaletteTags;
 import twilightforest.util.woods.WoodPalette;
@@ -30,7 +29,6 @@ public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedList<Weighte
 		ProcessorRule.CODEC.listOf().fieldOf("preprocessing_rules").orElseGet(Collections::emptyList).forGetter(SwizzleConfig::preprocessingRules)
 	).apply(instance, SwizzleConfig::new));
 
-	@NotNull
 	public static WeightedList<Weighted<HolderSet<WoodPalette>>> buildRarityPalette(HolderGetter<WoodPalette> paletteHolders) {
 		// Old code with chances:
 		//  getRandomWeighted(RandomSource random) {

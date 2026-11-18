@@ -11,7 +11,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
@@ -55,7 +54,6 @@ public class BiomeDensitySource {
 		return this.genBiomeConfig;
 	}
 
-	@NotNull
 	public Holder<Biome> getBiomeColumnKey(int biomeX, int biomeZ) {
 		return this.biomeList.get(this.genBiomes.get().getBiome(biomeX, biomeZ)).getMainBiome();
 	}
