@@ -125,7 +125,7 @@ public class SwarmSpider extends Spider {
 					druid.setBaby(true);
 					EventHooks.finalizeMobSpawn(druid, accessor, difficulty, EntitySpawnReason.JOCKEY, null);
 
-					if (this.hasPassenger(e -> true)) this.ejectPassengers();
+					if (this.hasPassenger(_ -> true)) this.ejectPassengers();
 					druid.startRiding(this);
 				}
 			}

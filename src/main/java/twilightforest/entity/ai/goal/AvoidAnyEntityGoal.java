@@ -33,7 +33,7 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 	protected final Predicate<Entity> avoidTargetSelector;
 
 	public AvoidAnyEntityGoal(PathfinderMob entityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn) {
-		this(entityIn, classToAvoidIn, (entity) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn);
+		this(entityIn, classToAvoidIn, (_) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn);
 	}
 
 	@SuppressWarnings("this-escape")

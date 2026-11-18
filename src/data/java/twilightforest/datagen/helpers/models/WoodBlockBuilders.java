@@ -293,7 +293,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		String suffix = occupied ? "_occupied" : "_empty";
 		TextureMapping texturemapping = new TextureMapping().put(TextureSlot.TEXTURE, TextureMapping.getBlockTexture(shelf, suffix));
 		BlockModelGenerators.BookSlotModelCacheKey cache = new BlockModelGenerators.BookSlotModelCacheKey(template, suffix);
-		MultiVariant variant = plainVariant(CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, key -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput)));
+		MultiVariant variant = plainVariant(CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, _ -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput)));
 		generator.with(
 			new CombinedCondition(CombinedCondition.Operation.AND, List.of(condition, condition().term(property, occupied).build())),
 			variant.with(rotation)

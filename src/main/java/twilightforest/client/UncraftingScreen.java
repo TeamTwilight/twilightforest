@@ -46,26 +46,26 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 	protected void init() {
 		super.init();
 
-		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 22, true, button ->
+		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 22, true, _ ->
 			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(0)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_next_uncraft")));
-		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 55, false, button ->
+		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 55, false, _ ->
 			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(1)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_back_uncraft")));
 
 		if (!TFConfig.disableIngredientSwitching) {
-			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button ->
+			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, _ ->
 				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(2)),
 				Component.translatable("container.twilightforest.uncrafting_table.cycle_next_ingredient")));
-			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, button ->
+			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, _ ->
 				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(3)),
 				Component.translatable("container.twilightforest.uncrafting_table.cycle_back_ingredient")));
 		}
 
-		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, button ->
+		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, _ ->
 			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(4)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_next_recipe")));
-		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 55, false, button ->
+		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 55, false, _ ->
 			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(5)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_back_recipe")));
 	}
@@ -216,7 +216,7 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 		private final boolean up;
 
 		CycleButton(int x, int y, boolean up, OnPress onClick, MutableComponent tooltip) {
-			super(x, y, 14, 9, Component.empty(), onClick, message -> Component.empty());
+			super(x, y, 14, 9, Component.empty(), onClick, _ -> Component.empty());
 			this.up = up;
 			this.setTooltip(Tooltip.create(tooltip));
 		}
@@ -243,7 +243,7 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 		private final boolean up;
 
 		CycleButtonMini(int x, int y, boolean up, OnPress onClick, MutableComponent tooltip) {
-			super(x, y, 8, 6, Component.empty(), onClick, message -> Component.empty());
+			super(x, y, 8, 6, Component.empty(), onClick, _ -> Component.empty());
 			this.up = up;
 			this.setTooltip(Tooltip.create(tooltip));
 		}

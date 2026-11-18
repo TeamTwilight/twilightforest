@@ -141,7 +141,7 @@ public final class WorldUtil {
 		for (Holder<Structure> holder : targetStructures) {
 			for (StructurePlacement structureplacement : state.getPlacementsForStructure(holder)) {
 				if (structureplacement instanceof LandmarkGridPlacement landmarkPlacement) {
-					seekStructures.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
+					seekStructures.computeIfAbsent(landmarkPlacement, _ -> new ObjectArraySet<>()).add(holder);
 				}
 			}
 		}

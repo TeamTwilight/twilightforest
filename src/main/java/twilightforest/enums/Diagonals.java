@@ -8,10 +8,10 @@ import net.minecraft.world.level.block.Rotation;
 import java.util.Locale;
 
 public enum Diagonals implements StringRepresentable {
-	TOP_RIGHT((x, rX) -> rX - x, (y, rY) -> y, true, false),
+	TOP_RIGHT((x, rX) -> rX - x, (y, _) -> y, true, false),
 	BOTTOM_RIGHT((x, rX) -> rX - x, (y, rY) -> rY - y, false, false),
-	BOTTOM_LEFT((x, rX) -> x, (y, rY) -> rY - y, false, true),
-	TOP_LEFT((x, rX) -> x, (y, rY) -> y, true, true);
+	BOTTOM_LEFT((x, _) -> x, (y, rY) -> rY - y, false, true),
+	TOP_LEFT((x, _) -> x, (y, _) -> y, true, true);
 
 	public final Inversion operationX;
 	public final Inversion operationY;

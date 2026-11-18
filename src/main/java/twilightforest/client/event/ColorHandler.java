@@ -41,7 +41,7 @@ public class ColorHandler {
 				return auroraTint(level, pos);
 			}
 		}), TFBlocks.AURORA_BLOCK.get());
-		event.register(List.of(state -> {
+		event.register(List.of(_ -> {
 			//TODO: Verify this. It's kind of how you get the color
 			int normalColor = blockColors.getTintSource(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), 0).color(TFBlocks.AURORA_BLOCK.get().defaultBlockState());
 

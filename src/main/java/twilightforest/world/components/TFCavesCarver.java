@@ -68,7 +68,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			double horiz = config.horizontalRadiusMultiplier.sample(random);
 			double vert = config.verticalRadiusMultiplier.sample(random);
 			double floor = config.floorLevel.sample(random);
-			CarveSkipChecker checker = (context, dX, dY, dZ, yPos) -> shouldSkip(dX, dY, dZ, floor);
+			CarveSkipChecker checker = (_, dX, dY, dZ, _) -> shouldSkip(dX, dY, dZ, floor);
 			int tunnelCount = 1;
 			if (this.isHighlands || random.nextInt(4) == 0) {
 				double horizToVertRatio = config.yScale.sample(random);

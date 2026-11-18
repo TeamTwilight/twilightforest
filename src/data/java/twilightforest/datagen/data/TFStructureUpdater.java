@@ -43,7 +43,7 @@ public class TFStructureUpdater implements DataProvider {
 	@Override
 	public CompletableFuture<?> run(@Nonnull CachedOutput cache) {
 		try {
-			for (var entry : this.resources.listResources(this.basePath, $ -> true).entrySet())
+			for (var entry : this.resources.listResources(this.basePath, _ -> true).entrySet())
 				if (entry.getKey().getNamespace().equals(TwilightForestMod.ID))
 					process(entry.getKey(), entry.getValue(), cache);
 			return CompletableFuture.completedFuture(null);

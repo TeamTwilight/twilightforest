@@ -36,7 +36,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 			Identifier templatePoolId = poolToRegisterWeight.getKey();
 			TemplatePoolInstance templatePoolInstance = poolToRegisterWeight.getValue();
 
-			Map<Identifier, TemplatePoolInstance> pool = this.rawTemplatePools.computeIfAbsent(templatePoolId, k -> new HashMap<>());
+			Map<Identifier, TemplatePoolInstance> pool = this.rawTemplatePools.computeIfAbsent(templatePoolId, _ -> new HashMap<>());
 
 			pool.put(templateName, templatePoolInstance);
 		}

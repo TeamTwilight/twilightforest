@@ -178,7 +178,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			pos.set(x, floorY, z);
 
 			if (floatChance < SPAWNER_SPAWN_CHANCE) {
-				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {
+				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), _ -> {
 				}, pos.above());
 			} else {
 				this.placeTreasureAtWorldPosition(world, this.getTreasureType(), false, writeableBounds, pos.above());

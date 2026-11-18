@@ -176,7 +176,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					null,
 					vec3,
 					level.getBlockState(result.getBlockPos()),
-					item -> this.kill(level)
+					_ -> this.kill(level)
 				);
 			}
 		}

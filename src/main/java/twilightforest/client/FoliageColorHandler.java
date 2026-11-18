@@ -24,11 +24,11 @@ public final class FoliageColorHandler {
 	private BiomeColorAlgorithms biomeColorAlgorithms;
 
 	private final Map<ResourceKey<Biome>, Handler> REGISTRY = new HashMap<>() {{
-		put(TFBiomes.SPOOKY_FOREST, (o, x, z) -> biomeColorAlgorithms.spookyFoliage(x, z));
+		put(TFBiomes.SPOOKY_FOREST, (_, x, z) -> biomeColorAlgorithms.spookyFoliage(x, z));
 		put(TFBiomes.ENCHANTED_FOREST, (o, x, z) -> biomeColorAlgorithms.enchanted(o, (int) x, (int) z));
-		put(TFBiomes.DARK_FOREST_CENTER, (o, x, z) -> biomeColorAlgorithms.darkForestCenterFoliage(x, z));
-		put(TFBiomes.DARK_FOREST, (o, x, z) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Foliage));
-		put(TFBiomes.SWAMP, (o, x, z) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Foliage));
+		put(TFBiomes.DARK_FOREST_CENTER, (_, x, z) -> biomeColorAlgorithms.darkForestCenterFoliage(x, z));
+		put(TFBiomes.DARK_FOREST, (_, _, _) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Foliage));
+		put(TFBiomes.SWAMP, (_, _, _) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Foliage));
 	}};
 
 	private final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
@@ -60,7 +60,7 @@ public final class FoliageColorHandler {
 
 	@FunctionalInterface
 	private interface Handler {
-		Handler DEFAULT = (o, x, z) -> o;
+		Handler DEFAULT = (o, _, _) -> o;
 
 		int apply(int o, double x, double z);
 	}

@@ -66,7 +66,7 @@ public class TFEnumExtensions {
 	public static Object GrassColorModifier_SWAMP(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> modidPrefixUtil.stringPrefix("swamp");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Grass);
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (_, _, _) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Grass);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
@@ -79,7 +79,7 @@ public class TFEnumExtensions {
 	public static Object GrassColorModifier_DARK_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> modidPrefixUtil.stringPrefix("dark_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Grass);
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (_, _, _) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Grass);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
@@ -92,7 +92,7 @@ public class TFEnumExtensions {
 	public static Object GrassColorModifier_DARK_FOREST_CENTER(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> modidPrefixUtil.stringPrefix("dark_forest_center");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.darkForestCenterGrass(x, z);
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, _) -> biomeColorAlgorithms.darkForestCenterGrass(x, z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
@@ -105,7 +105,7 @@ public class TFEnumExtensions {
 	public static Object GrassColorModifier_SPOOKY_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> modidPrefixUtil.stringPrefix("spooky_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.spookyGrass(x, z);
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, _) -> biomeColorAlgorithms.spookyGrass(x, z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}

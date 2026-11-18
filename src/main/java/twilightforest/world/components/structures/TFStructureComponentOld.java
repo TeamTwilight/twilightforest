@@ -96,12 +96,12 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	}
 
 	protected void setSpawner(WorldGenLevel world, Vec3i pos, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, v -> {
+		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, _ -> {
 		});
 	}
 
 	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, x, y, z, sbb, monsterID, v -> {
+		setSpawner(world, x, y, z, sbb, monsterID, _ -> {
 		});
 	}
 
