@@ -1,12 +1,9 @@
 package twilightforest.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -19,7 +16,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.TFDataComponents;
-import twilightforest.init.custom.MagicPaintingVariants;
 
 import java.util.Optional;
 import java.util.function.Consumer;

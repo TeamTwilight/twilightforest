@@ -2,7 +2,6 @@ package twilightforest.client;
 
 import com.google.common.collect.MapMaker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;

@@ -14,7 +14,6 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.util.LandmarkStructure;
-import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Map;
 import java.util.Optional;
