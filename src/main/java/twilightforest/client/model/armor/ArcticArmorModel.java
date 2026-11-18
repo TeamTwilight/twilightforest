@@ -13,7 +13,7 @@ public class ArcticArmorModel {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(deformation, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deformation),
 			PartPose.offset(0.0F, 0.0F, 0.0F));

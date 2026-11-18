@@ -43,7 +43,7 @@ public class MosquitoSwarmModel extends EntityModel<LivingEntityRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var core = partdefinition.addOrReplaceChild("core", CubeListBuilder.create()
+		PartDefinition core = partdefinition.addOrReplaceChild("core", CubeListBuilder.create()
 				.texOffs(rand.nextInt(28), rand.nextInt(28))
 				.addBox(-0.5F, 2.0F, -0.5F, 1.0F, 1.0F, 1.0F),
 			PartPose.offset(0.0F, -4.0F, 0.0F));

@@ -25,6 +25,7 @@ import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
+import twilightforest.util.datamaps.CrumbledBlock;
 
 public class CrumbleHornItem extends Item {
 
@@ -95,7 +96,7 @@ public class CrumbleHornItem extends Item {
 	private boolean crumbleBlock(ServerLevel serverLevel, LivingEntity living, BlockPos pos) {
 		BlockState state = serverLevel.getBlockState(pos);
 		Block block = state.getBlock();
-		var crumbleMap = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+		CrumbledBlock crumbleMap = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
 
 		if (state.isAir() || crumbleMap == null) return false;
 

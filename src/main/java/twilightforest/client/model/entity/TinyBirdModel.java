@@ -38,7 +38,7 @@ public class TinyBirdModel extends EntityModel<BirdRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
 			PartPose.offset(0.0F, 20.5F, -0.5F));
@@ -48,7 +48,7 @@ public class TinyBirdModel extends EntityModel<BirdRenderState> {
 				.addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F),
 			PartPose.offset(0.0F, 0.5F, -2.0F));
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 6)
 				.addBox(-1.5F, 0.0F, -1.0F, 3.0F, 3.0F, 3.0F),
 			PartPose.offset(0.0F, 20.0F, 0.0F));

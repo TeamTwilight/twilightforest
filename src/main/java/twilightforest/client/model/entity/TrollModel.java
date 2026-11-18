@@ -18,7 +18,7 @@ public class TrollModel extends HumanoidModel<TrollRenderState> {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 10.0F),
 			PartPose.offset(0.0F, -9.0F, -6.0F));

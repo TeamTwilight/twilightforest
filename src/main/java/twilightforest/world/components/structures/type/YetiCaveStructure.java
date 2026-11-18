@@ -119,7 +119,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 			AbsoluteDifferenceFunction.max(64, centerPos)
 		);
 
-		var interiorWithSmoothedEntrances = DensityFunctions.max(
+		DensityFunction interiorWithSmoothedEntrances = DensityFunctions.max(
 			interior,
 			DensityFunctions.mul(
 				DensityFunctions.constant(1 / 64f),

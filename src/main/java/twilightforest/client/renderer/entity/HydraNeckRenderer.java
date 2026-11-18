@@ -9,6 +9,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraNeckModel;
 import twilightforest.client.state.entity.HydraNeckRenderState;
+import twilightforest.entity.boss.HydraHeadContainer;
 import twilightforest.entity.boss.HydraNeck;
 
 public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRenderState, HydraNeckModel> {
@@ -44,7 +45,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRender
 	@Override
 	public void extractRenderState(HydraNeck entity, HydraNeckRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
-		var container = HydraHeadRenderer.getHeadObject(entity.head);
+		HydraHeadContainer container = HydraHeadRenderer.getHeadObject(entity.head);
 		state.active = container == null || entity.isActive();
 	}
 

@@ -31,7 +31,7 @@ public class IceCrystalModel extends EntityModel<LivingEntityRenderState> {
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			var spike = partdefinition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+			PartDefinition spike = partdefinition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
 					.texOffs(0, 16)
 					.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
 				PartPose.ZERO);

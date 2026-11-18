@@ -29,7 +29,7 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 
 	public TFArrow(EntityType<? extends TFArrow> type, AbstractArrow parentArrow, ItemStack stack, ItemStack weapon) {
 		super(type, (LivingEntity) parentArrow.getOwner(), parentArrow.level(), stack, weapon);
-		var shooter = (LivingEntity) parentArrow.getOwner();
+		LivingEntity shooter = (LivingEntity) parentArrow.getOwner();
 		this.setOwner(shooter);
 		if (shooter != null) {
 			this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());

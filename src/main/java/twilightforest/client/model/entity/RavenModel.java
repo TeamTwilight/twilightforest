@@ -28,7 +28,7 @@ public class RavenModel extends EntityModel<BirdRenderState> {
 		super(root);
 
 		this.head = root.getChild("head");
-		var body = root.getChild("body");
+		ModelPart body = root.getChild("body");
 		this.rightWing = body.getChild("right_wing");
 		this.leftWing = body.getChild("left_wing");
 		this.rightLeg = root.getChild("right_leg");
@@ -54,7 +54,7 @@ public class RavenModel extends EntityModel<BirdRenderState> {
 				.addBox(-0.5F, 0.0F, -2.0F, 1.0F, 1.0F, 2.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, -2.5F, -0.2617994F, 0.0F, 0.0F));
 
-		var body = base.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = base.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 6)
 				.addBox(-1.5F, 0.0F, -1.0F, 3.0F, 4.0F, 6.0F),
 			PartPose.offsetAndRotation(0.0F, 17.0F, 1.0F, -0.5235988F, 0.0F, 0.0F));

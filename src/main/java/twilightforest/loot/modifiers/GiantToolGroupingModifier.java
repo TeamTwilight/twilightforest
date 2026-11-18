@@ -13,6 +13,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
+import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 		if (context.getParameter(LootContextParams.THIS_ENTITY) instanceof Player player) {
 			if (!generatedLoot.isEmpty() && generatedLoot.getFirst().getItem() instanceof BlockItem block) {
 				if (CONVERSIONS.containsKey(block.getBlock())) { // Should be true but let's double-check
-					var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+					GiantPickaxeMiningAttachment attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 					int blockConversion = attachment.getGiantBlockConversion(); // Get how many conversions are left
 					attachment.setGiantBlockConversion(blockConversion - 1);
 					if (blockConversion == 64)

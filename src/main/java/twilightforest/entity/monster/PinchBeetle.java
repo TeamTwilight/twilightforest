@@ -118,7 +118,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		if (this.getPassengers().isEmpty()) {
-			var v = entity.getVehicle();
+			Entity v = entity.getVehicle();
 
 			if (v == null || !v.is(TFEntityTypeTags.RIDES_OBSTRUCT_SNATCHING)) {
 				// Pluck them from the boat, minecart, donkey, or whatever

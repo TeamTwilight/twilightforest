@@ -37,7 +37,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 					var ingredientCopy = new ArrayList<>(recipe.getRepairItems());
 					scepterItemsCheck:
 					for (int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
-						var stack = player.getInventory().getItem(i);
+						ItemStack stack = player.getInventory().getItem(i);
 						if (stack.isEmpty()) continue;
 						if (stack.is(TFItemTags.SCEPTER_MAX_REPAIR_ITEMS)) {
 							stack.shrink(1);

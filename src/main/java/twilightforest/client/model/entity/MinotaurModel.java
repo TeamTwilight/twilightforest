@@ -17,7 +17,7 @@ public class MinotaurModel extends HumanoidModel<HumanoidRenderState> {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -29,7 +29,7 @@ public class MinotaurModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(-2.0F, -1.0F, -1.0F, 4.0F, 3.0F, 1.0F),
 			PartPose.offset(0.0F, -2.0F, -4.0F));
 
-		var rightHorn = head.addOrReplaceChild("right_horn_1", CubeListBuilder.create().mirror()
+		PartDefinition rightHorn = head.addOrReplaceChild("right_horn_1", CubeListBuilder.create().mirror()
 				.texOffs(24, 0)
 				.addBox(-5.5F, -1.5F, -1.5F, 5.0F, 3.0F, 3.0F),
 			PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, -25.0F * Mth.DEG_TO_RAD, 10.0F * Mth.DEG_TO_RAD));
@@ -39,7 +39,7 @@ public class MinotaurModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(-3.5F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F, 0.0F, -15.0F * Mth.DEG_TO_RAD, 45.0F * Mth.DEG_TO_RAD));
 
-		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create()
+		PartDefinition leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create()
 				.texOffs(24, 0)
 				.addBox(0.5F, -1.5F, -1.5F, 5.0F, 3.0F, 3.0F),
 			PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25.0F * Mth.DEG_TO_RAD, -10.0F * Mth.DEG_TO_RAD));

@@ -39,7 +39,7 @@ public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 				.addBox(1.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F),
 			PartPose.offset(0.0F, 22.0F, -2.0F));
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().mirror()
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().mirror()
 				.texOffs(0, 8)
 				.addBox(-2.0F, -1.0F, -2.0F, 4.0F, 3.0F, 5.0F),
 			PartPose.offset(0.0F, 21.0F, 0.0F));
@@ -64,14 +64,14 @@ public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
 			PartPose.offset(1.0F, 23.0F, -2.0F));
 
-		var tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
+		PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
 				.texOffs(0, 18)
 				.addBox(-0.5F, -1.5F, 0.5F, 1.0F, 1.0F, 1.0F)
 				.texOffs(0, 20)
 				.addBox(-1.5F, -4.0F, 1.0F, 3.0F, 3.0F, 3.0F),
 			PartPose.offset(0.0F, 0.0F, 2.0F));
 
-		var tail1 = tail.addOrReplaceChild("tail_1", CubeListBuilder.create()
+		PartDefinition tail1 = tail.addOrReplaceChild("tail_1", CubeListBuilder.create()
 				.texOffs(0, 20)
 				.addBox(0.0F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F),
 			PartPose.offset(-1.5F, -4.0F, 2.5F));

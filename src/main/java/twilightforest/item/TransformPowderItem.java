@@ -13,6 +13,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDataMaps;
+import twilightforest.util.datamaps.EntityTransformation;
 import twilightforest.util.entities.EntityUtil;
 
 public class TransformPowderItem extends Item {
@@ -52,7 +53,7 @@ public class TransformPowderItem extends Item {
 		//dont transform tamed animals that have other owners
 		if (target instanceof OwnableEntity ownable && ownable.getOwner() != user) return false;
 
-		var datamap = target.getType().builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+		EntityTransformation datamap = target.getType().builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
 
 		if (datamap != null) {
 			boolean flag = EntityUtil.convertEntity(target, datamap.result());

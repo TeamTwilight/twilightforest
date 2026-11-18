@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
+import twilightforest.components.entity.YetiThrowAttachment;
 import twilightforest.init.TFDataAttachments;
 
 public record UpdateThrownPacket(int entityID, boolean thrown, int thrower) implements CustomPacketPayload {
@@ -37,7 +38,7 @@ public record UpdateThrownPacket(int entityID, boolean thrown, int thrower) impl
 			Level level = ctx.player().level();
 			Entity entity = level.getEntity(message.entityID());
 			if (entity instanceof Player player) {
-				var attachment = player.getData(TFDataAttachments.YETI_THROWING);
+				YetiThrowAttachment attachment = player.getData(TFDataAttachments.YETI_THROWING);
 				LivingEntity thrower = message.thrower() != 0 ? (LivingEntity) level.getEntity(message.thrower()) : null;
 				attachment.setThrown(player, message.thrown(), thrower);
 			}

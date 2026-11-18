@@ -8,6 +8,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
@@ -24,7 +25,7 @@ public class CenterCommand {
 		int dx = Mth.floor(source.getPosition().x());
 		int dz = Mth.floor(source.getPosition().z());
 		BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(dx >> 4, dz >> 4);
-		var closestFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(cc.getX(), cc.getZ(), source.getLevel()).identifier();
+		Identifier closestFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(cc.getX(), cc.getZ(), source.getLevel()).identifier();
 		boolean fc = LegacyLandmarkPlacements.blockIsInLandmarkCenter(dx, dz);
 
 		String structurename = Component.translatable(closestFeature.toLanguageKey("structure")).withStyle(ChatFormatting.DARK_GREEN).getString();

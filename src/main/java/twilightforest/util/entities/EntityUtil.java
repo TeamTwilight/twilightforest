@@ -293,7 +293,7 @@ public class EntityUtil {
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
-		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
+		Entity newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
 		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), _ -> {})) {
 			var passengerSave = oldEntity.getPassengers();

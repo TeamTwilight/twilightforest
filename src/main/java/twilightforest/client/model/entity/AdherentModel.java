@@ -29,7 +29,7 @@ public class AdherentModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
 			PartPose.ZERO);
 
-		var leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
+		PartDefinition leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
 				.texOffs(0, 16)
 				.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
 			PartPose.offset(5.0F, 2.0F, 0.0F));
@@ -39,7 +39,7 @@ public class AdherentModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
 			PartPose.ZERO);
 
-		var rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		PartDefinition rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 				.texOffs(0, 16)
 				.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
 			PartPose.offset(-5.0F, 2.0F, 0.0F));

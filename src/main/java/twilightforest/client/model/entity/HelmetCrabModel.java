@@ -53,11 +53,11 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var crab = partdefinition.addOrReplaceChild("crab", CubeListBuilder.create()
+		PartDefinition crab = partdefinition.addOrReplaceChild("crab", CubeListBuilder.create()
 				.addBox(-2.5F, -0.5F, -5.0F, 0.0F, 1.0F, 0.0F),
 			PartPose.offset(0.0F, 19.0F, 0.0F));
 
-		var body = crab.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = crab.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(32, 4)
 				.addBox(-2.5F, -2.5F, -5.0F, 5.0F, 5.0F, 5.0F),
 			PartPose.ZERO);
@@ -72,7 +72,7 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 				.addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F),
 			PartPose.offsetAndRotation(1.0F, -1.0F, -4.0F, (Mth.PI / 4.0F), 0.0F, (Mth.PI / 4.0F)));
 
-		var helmetBase = partdefinition.addOrReplaceChild("helmet_base", CubeListBuilder.create(),
+		PartDefinition helmetBase = partdefinition.addOrReplaceChild("helmet_base", CubeListBuilder.create(),
 			PartPose.offsetAndRotation(0.0F, 18.0F, 0.0F, -100F * Mth.DEG_TO_RAD, -30.0F * Mth.DEG_TO_RAD, 0.0F));
 
 		helmetBase.addOrReplaceChild("helmet", CubeListBuilder.create()
@@ -80,7 +80,7 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 				.addBox(-3.5F, -11.0F, -3.5F, 7.0F, 11.0F, 7.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45.0F * Mth.DEG_TO_RAD, 0.0F));
 
-		var rightHorn = helmetBase.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
+		PartDefinition rightHorn = helmetBase.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
 				.texOffs(28, 14)
 				.addBox(-6F, -1.5F, -1.5F, 7.0F, 3.0F, 3.0F),
 			PartPose.offsetAndRotation(-3.5F, -9.0F, 0.0F, 0.0F, -15.0F * Mth.DEG_TO_RAD, 10.0F * Mth.DEG_TO_RAD));
@@ -90,7 +90,7 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 				.addBox(-3.0F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(-5.5F, 0.0F, 0.0F, 0.0F, -15.0F * Mth.DEG_TO_RAD, 10.0F * Mth.DEG_TO_RAD));
 
-		var leftHorn = helmetBase.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
+		PartDefinition leftHorn = helmetBase.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
 				.texOffs(28, 14)
 				.addBox(-1.0F, -1.5F, -1.5F, 7.0F, 3.0F, 3.0F),
 			PartPose.offsetAndRotation(3.5F, -9.0F, 0.0F, 0.0F, 15.0F * Mth.DEG_TO_RAD, -10.0F * Mth.DEG_TO_RAD));
@@ -100,12 +100,12 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 				.addBox(0.0F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 15.0F * Mth.DEG_TO_RAD, -10.0F * Mth.DEG_TO_RAD));
 
-		var rightArm = crab.addOrReplaceChild("right_claw", CubeListBuilder.create()
+		PartDefinition rightArm = crab.addOrReplaceChild("right_claw", CubeListBuilder.create()
 				.texOffs(38, 0)
 				.addBox(-7.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(-3.0F, 1.0F, -3.0F, 0.0F, -1.319531F, -0.1919862F));
 
-		var clawBase = rightArm.addOrReplaceChild("claw_base", CubeListBuilder.create()
+		PartDefinition clawBase = rightArm.addOrReplaceChild("claw_base", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(0.0F, -1.5F, -1.0F, 3.0F, 3.0F, 2.0F),
 			PartPose.offsetAndRotation(-6.0F, 0.0F, -0.5F, 0.0F, Mth.HALF_PI, 0.0F));

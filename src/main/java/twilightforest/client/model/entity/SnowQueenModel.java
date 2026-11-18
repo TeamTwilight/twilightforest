@@ -26,7 +26,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var crown = partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		PartDefinition crown = partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		makeFrontCrown(crown, -1.0F, -4.0F, 10.0F, 0);
 		makeFrontCrown(crown, 0.0F, 4.0F, -10.0F, 1);
@@ -63,7 +63,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 
 	private static void makeSideCrown(PartDefinition parent, float spikeDepth, float crownX, float angle, int iteration) {
 
-		var crownSide = parent.addOrReplaceChild("crown_side_" + iteration, CubeListBuilder.create()
+		PartDefinition crownSide = parent.addOrReplaceChild("crown_side_" + iteration, CubeListBuilder.create()
 				.texOffs(28, 28)
 				.addBox(-3.5F, -0.5F, -0.5F, 7.0F, 1.0F, 1.0F),
 			PartPose.offsetAndRotation(crownX, -6.0F, 0.0F, 0.0F, Mth.HALF_PI, 0.0F));
@@ -87,7 +87,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 
 	private static void makeFrontCrown(PartDefinition parent, float spikeDepth, float crownZ, float angle, int iteration) {
 
-		var crownFront = parent.addOrReplaceChild("crown_front_" + iteration, CubeListBuilder.create()
+		PartDefinition crownFront = parent.addOrReplaceChild("crown_front_" + iteration, CubeListBuilder.create()
 				.texOffs(28, 30)
 				.addBox(-4.5F, -0.5F, -0.5F, 9.0F, 1.0F, 1.0F),
 			PartPose.offset(0.0F, -6.0F, crownZ));

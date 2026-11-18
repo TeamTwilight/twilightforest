@@ -17,6 +17,8 @@ import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -710,8 +712,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 		BlockPos zombiePos = pos.relative(randomDirection, 1);
 
-		var knot = EntityUtil.createEntityIgnoreException(level, EntityTypes.LEASH_KNOT);
-		var trapEntity = EntityUtil.createEntityIgnoreException(level, EntityTypes.ZOMBIE);
+		LeashFenceKnotEntity knot = EntityUtil.createEntityIgnoreException(level, EntityTypes.LEASH_KNOT);
+		Zombie trapEntity = EntityUtil.createEntityIgnoreException(level, EntityTypes.ZOMBIE);
 		if (knot == null || trapEntity == null)
 			return;
 

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -1230,7 +1231,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 */
 	private void makeMiniGhastSpawner(WorldGenLevel world, int y, int sx, int sz, BoundingBox sbb) {
 		setSpawner(world, sx, y + 2, sz, sbb, TFEntities.CARMINITE_GHASTLING.get(), spawner -> {
-			var base = spawner.getSpawner();
+			BaseSpawner base = spawner.getSpawner();
 
 			base.spawnRange = 16;
 			base.maxNearbyEntities = 2;

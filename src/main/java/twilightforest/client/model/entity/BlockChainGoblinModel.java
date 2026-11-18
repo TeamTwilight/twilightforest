@@ -17,7 +17,7 @@ public class BlockChainGoblinModel extends HumanoidModel<BlockChainGoblinRenderS
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(0.0F, -10.0F, 0.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.offset(0.0F, 10.0F, 0.0F));

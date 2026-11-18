@@ -19,6 +19,7 @@ import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.inventory.UncraftingMenu;
+import twilightforest.util.datamaps.CrumbledBlock;
 import twilightforest.util.datamaps.EntityTransformation;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class RecipeViewerConstants {
 		}
 
 		for (EntityType<?> input : new ArrayList<>(inputs)) {
-			var output = input.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+			EntityTransformation output = input.builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
 			if (output != null) {
 				TransformationPowderInfo dummy = new TransformationPowderInfo(output.result(), input, true);
 				if (!info.contains(dummy)) {
@@ -144,7 +145,7 @@ public class RecipeViewerConstants {
 	public static List<Pair<Block, Block>> getCrumbleHornRecipes() {
 		List<Pair<Block, Block>> info = new ArrayList<>();
 		for (Block input : BuiltInRegistries.BLOCK) {
-			var output = input.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+			CrumbledBlock output = input.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
 			if (output != null) {
 				info.add(Pair.of(input, output.result()));
 			}

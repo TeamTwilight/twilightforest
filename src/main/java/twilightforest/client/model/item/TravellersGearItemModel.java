@@ -52,7 +52,7 @@ public class TravellersGearItemModel implements ItemModel {
 		this.modifierDirectory = modifierDirectory;
 		this.bakingContext = bakingContext;
 		this.transformation = transformation;
-		var baseItemModel = bakingContext.blockModelBaker().getModel(Identifier.withDefaultNamespace("item/generated"));
+		ResolvedModel baseItemModel = bakingContext.blockModelBaker().getModel(Identifier.withDefaultNamespace("item/generated"));
 		this.itemTransforms = baseItemModel.getTopTransforms();
 	}
 

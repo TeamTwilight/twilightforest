@@ -67,7 +67,7 @@ public class GhastTearParticle extends SingleQuadParticle {
 
 		// [VanillaCopy] BreakingItemParticle$ItemParticleProvider#getSprite(ItemStackTemplate, ClientLevel, RandomSource);
 		protected TextureAtlasSprite getSprite(ItemStackTemplate item, ClientLevel level, RandomSource random) {
-			var state = new ItemStackRenderState();
+			ItemStackRenderState state = new ItemStackRenderState();
 			Minecraft.getInstance().getItemModelResolver().updateForTopItem(state, item.create(), ItemDisplayContext.GROUND, level, null, 0);
 			Material.Baked material = state.pickParticleMaterial(random);
 			return material != null ? material.sprite() : Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.ITEMS).missingSprite();

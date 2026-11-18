@@ -96,7 +96,7 @@ public class ComplexRepairRecipe extends CustomRecipe {
 		}
 
 		if (toRepair != null) {
-			var copy = toRepair.copy();
+			ItemStack copy = toRepair.copy();
 			if (ingredients > 0) {
 				copy.setDamageValue(toRepair.getDamageValue() - (this.getRepairDurability() * ingredients));
 			} else {

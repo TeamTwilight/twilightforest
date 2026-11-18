@@ -34,7 +34,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 				.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.ZERO);
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(80, 0)
 				.addBox(-24.0F, -60.0F, -18.0F, 48.0F, 72.0F, 36.0F),
 			PartPose.offset(0.0F, -6.0F, 0.0F));
@@ -85,7 +85,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(80, 0)
 				.addBox(-24.0F, -24.0F, -18.0F, 48.0F, 54.0F, 36.0F)
 				.texOffs(64, 0)
@@ -108,7 +108,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 	 */
 	private static void addPairHorns(PartDefinition partdefinition, float height, float zangle, int set) {
 
-		var leftHorn = partdefinition.addOrReplaceChild("left_horn_" + set,
+		PartDefinition leftHorn = partdefinition.addOrReplaceChild("left_horn_" + set,
 			CubeListBuilder.create()
 				.texOffs(0, 108)
 				.addBox(-9.0F, -5.0F, -5.0F, 10.0F, 10.0F, 10.0F),
@@ -122,7 +122,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 			PartPose.offsetAndRotation(-8.0F, 0.0F, 0.0F,
 				0.0F, -20F * Mth.DEG_TO_RAD, zangle * Mth.DEG_TO_RAD));
 
-		var rightHorn = partdefinition.addOrReplaceChild("right_horn_" + set,
+		PartDefinition rightHorn = partdefinition.addOrReplaceChild("right_horn_" + set,
 			CubeListBuilder.create()
 				.texOffs(0, 108)
 				.addBox(-1.0F, -5.0F, -5.0F, 10.0F, 10.0F, 10.0F),

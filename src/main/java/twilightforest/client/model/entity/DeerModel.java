@@ -20,7 +20,7 @@ public class DeerModel extends QuadrupedModel<LivingEntityRenderState> {
 		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, true, false, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 5)
 				.addBox(-2.0F, -4.0F, -4.0F, 4.0F, 6.0F, 6.0F)
 				.texOffs(52, 0)
@@ -58,7 +58,7 @@ public class DeerModel extends QuadrupedModel<LivingEntityRenderState> {
 				.addBox(5.0F, -15.0F, -5.0F, 1.0F, 5.0F, 1.0F),
 			PartPose.ZERO);
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(36, 6)
 				.addBox(-4.0F, -10.0F, -7.0F, 6.0F, 18.0F, 8.0F),
 			PartPose.offsetAndRotation(1.0F, 5.0F, 2.0F, 1.570796F, 0.0F, 0.0F));

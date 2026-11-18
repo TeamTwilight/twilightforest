@@ -20,7 +20,7 @@ public class BighornModel extends SheepModel {
 		MeshDefinition meshdefinition = SheepModel.createBodyMesh(0, false, true, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F),
 			PartPose.offset(0.0F, 6.0F, -8.0F));
