@@ -58,6 +58,7 @@ import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.common.tooltip.TooltipAppender;
 import net.neoforged.neoforge.event.RegisterTooltipAppendersEvent;
+import org.jspecify.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import tamaized.beanification.connector.fml.RequiresDist;
@@ -522,7 +523,7 @@ public class ClientRegistrationEvents {
 	private void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerBlock(new IClientBlockExtensions() {
 			@Override
-			public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
+			public boolean addHitEffects(BlockState state, Level level, @Nullable HitResult target, ParticleEngine manager) {
 				if (level.getRandom().nextBoolean() && target instanceof BlockHitResult hitResult) { // No clue why the parameter isn't blockHitResult, this should be always true, but we check just in case
 					BlockPos pos = hitResult.getBlockPos();
 					BlockState blockstate = level.getBlockState(pos);
