@@ -6,7 +6,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -32,7 +31,6 @@ public class HostileMountEvents {
 		bus.addListener(this::playerLogOut);
 	}
 
-	@SubscribeEvent
 	private void handleMountDamage(LivingIncomingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		DamageSource damageSource = event.getSource();
@@ -48,7 +46,6 @@ public class HostileMountEvents {
 		}
 	}
 
-	@SubscribeEvent
 	private void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
 			hostileDismount(event.getEntity());
 	}
