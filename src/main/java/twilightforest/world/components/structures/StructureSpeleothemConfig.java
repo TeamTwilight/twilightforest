@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.iterators.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
@@ -16,7 +17,6 @@ import twilightforest.world.components.speleothem.SpeleothemVarietyConfig;
 import twilightforest.world.components.speleothem.Stalactite;
 import twilightforest.world.components.speleothem.StalactiteReloadListener;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;

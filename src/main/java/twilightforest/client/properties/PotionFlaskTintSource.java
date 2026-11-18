@@ -8,10 +8,9 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.TFDataComponents;
-
-import javax.annotation.Nullable;
 
 public record PotionFlaskTintSource(int defaultColor) implements ItemTintSource {
 	public static final MapCodec<PotionFlaskTintSource> TYPE = RecordCodecBuilder.mapCodec(instance -> instance.group(

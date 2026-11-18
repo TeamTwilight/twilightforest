@@ -18,10 +18,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.MagicPaintingVariants;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -37,15 +37,15 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 		Identifier.CODEC.fieldOf("back_texture").forGetter(MagicPaintingVariant::backTexture)
 	).apply(recordCodecBuilder, MagicPaintingVariant::new));
 
-	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, String id) {
+	public static Optional<MagicPaintingVariant> getVariant(HolderLookup.@Nullable Provider regAccess, String id) {
 		return getVariant(regAccess, Identifier.withDefaultNamespace(id));
 	}
 
-	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, Identifier id) {
+	public static Optional<MagicPaintingVariant> getVariant(HolderLookup.@Nullable Provider regAccess, Identifier id) {
 		return getVariant(regAccess, ResourceKey.create(TFRegistries.Keys.MAGIC_PAINTINGS, id));
 	}
 
-	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, ResourceKey<MagicPaintingVariant> id) {
+	public static Optional<MagicPaintingVariant> getVariant(HolderLookup.@Nullable Provider regAccess, ResourceKey<MagicPaintingVariant> id) {
 		return regAccess == null ? Optional.empty() : regAccess.lookup(TFRegistries.Keys.MAGIC_PAINTINGS).flatMap(reg -> reg.get(id)).map(Holder.Reference::value);
 	}
 

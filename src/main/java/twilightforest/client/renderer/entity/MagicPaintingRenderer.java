@@ -25,14 +25,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.client.state.entity.MagicPaintingRenderState;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer.OpacityModifier;
 import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
-
-import javax.annotation.Nullable;
 
 public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPaintingRenderState> {
 

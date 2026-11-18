@@ -25,6 +25,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDataSerializers;
@@ -32,7 +33,6 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.MagicPaintingVariants;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
