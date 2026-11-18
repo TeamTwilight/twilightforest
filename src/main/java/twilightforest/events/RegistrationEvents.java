@@ -24,7 +24,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -38,7 +37,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ChiseledCanopyShelfBlock;
@@ -82,8 +81,8 @@ public class RegistrationEvents {
 	@Autowired
 	private StructureTemplateDefinitions structureTemplateDefinitions;
 
-	@PostConstruct
-	private void setup(IEventBus bus) {
+	@EventBusPostConstruct
+	private void setup(IEventBus bus, IEventBus gameBus) {
 		bus.addListener(this::init);
 		bus.addListener(this::sendIMCs);
 		bus.addListener(this::setupPackets);
@@ -100,11 +99,11 @@ public class RegistrationEvents {
 		bus.addListener(ConfigSetup::loadConfigs);
 		bus.addListener(ConfigSetup::reloadConfigs);
 
-		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("quest"), new QuestReloadListener()));
-//		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("travellers_cache"), TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
-		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
-		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
+		gameBus.addListener(this::registerCommands);
+		gameBus.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("quest"), new QuestReloadListener()));
+//		gameBus.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("travellers_cache"), TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
+		gameBus.addListener(StalactiteReloadListener.INSTANCE::registerListener);
+		gameBus.addListener(this.structureTemplateDefinitions::registerListener);
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {

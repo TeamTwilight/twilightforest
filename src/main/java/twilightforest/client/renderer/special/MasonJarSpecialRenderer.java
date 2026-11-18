@@ -20,6 +20,7 @@ import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3fc;
 import tamaized.beanification.Autowired;
+import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.components.item.JarLid;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
@@ -30,7 +31,8 @@ import java.util.function.Consumer;
 
 public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolver resolver) implements SpecialModelRenderer<DataComponentMap> {
 
-	@Autowired(dist = Dist.CLIENT)
+	@Autowired
+	@RequiresDist(Dist.CLIENT)
 	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 	@Override

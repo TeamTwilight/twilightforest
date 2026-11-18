@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -28,7 +28,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
@@ -48,13 +48,13 @@ public class MiscEvents {
 	@Autowired
 	private ArmorUtil armorUtil;
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::addPrey);
-		NeoForge.EVENT_BUS.addListener(this::updateCicadaSoundsOnHead);
-		NeoForge.EVENT_BUS.addListener(this::addTomesToLecterns);
-		NeoForge.EVENT_BUS.addListener(this::washOffCloth);
-		NeoForge.EVENT_BUS.addListener(this::playQueenRefillSound);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::addPrey);
+		bus.addListener(this::updateCicadaSoundsOnHead);
+		bus.addListener(this::addTomesToLecterns);
+		bus.addListener(this::washOffCloth);
+		bus.addListener(this::playQueenRefillSound);
 	}
 
 	private void addPrey(EntityJoinLevelEvent event) {

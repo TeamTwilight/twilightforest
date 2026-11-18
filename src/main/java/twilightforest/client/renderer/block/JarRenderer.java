@@ -27,6 +27,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jspecify.annotations.Nullable;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Configurable;
+import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
@@ -191,7 +192,8 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	@Configurable
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
 
-		@Autowired(dist = Dist.CLIENT)
+		@Autowired
+		@RequiresDist(Dist.CLIENT)
 		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 		private final ItemModelResolver resolver;

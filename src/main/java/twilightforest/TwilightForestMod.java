@@ -12,8 +12,8 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tamaized.beanification.BeanContext;
 import tamaized.beanification.Configurable;
+import tamaized.beanification.connector.fml.FMLBeanContextConnector;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
@@ -35,7 +35,7 @@ public final class TwilightForestMod {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
 	static {
-		BeanContext.init(ID);
+		FMLBeanContextConnector.init(ID);
 	}
 
 

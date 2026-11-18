@@ -29,13 +29,14 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.UseEffects;
 import net.minecraft.world.phys.Vec2;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
+import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.init.*;
@@ -46,29 +47,30 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
 import twilightforest.tags.TFItemTags;
 
-@Component(dist = Dist.CLIENT)
+@Component
+@RequiresDist(Dist.CLIENT)
 public class TravellersClientEvents {
 
 	private static boolean isZoomKeyHeld(Player player) {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
 	}
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::handleDoubleJump);
-		NeoForge.EVENT_BUS.addListener(this::handleAgileRanger);
-		NeoForge.EVENT_BUS.addListener(this::handleStraightAhead);
-		NeoForge.EVENT_BUS.addListener(this::excludeStraightAheadFromFov);
-		NeoForge.EVENT_BUS.addListener(this::speedUpControlledWhileSneaking);
-		NeoForge.EVENT_BUS.addListener(this::handleSidestep);
-		NeoForge.EVENT_BUS.addListener(this::handleStealth);
-		NeoForge.EVENT_BUS.addListener(this::updateZoomState);
-		NeoForge.EVENT_BUS.addListener(this::updateGradualGlideState);
-		NeoForge.EVENT_BUS.addListener(this::cycleItemDisplayMap);
-		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
-		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
-		NeoForge.EVENT_BUS.addListener(this::toggleRedThreadVision);
-		NeoForge.EVENT_BUS.addListener(this::renderGlovesInFirstPerson);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::handleDoubleJump);
+		bus.addListener(this::handleAgileRanger);
+		bus.addListener(this::handleStraightAhead);
+		bus.addListener(this::excludeStraightAheadFromFov);
+		bus.addListener(this::speedUpControlledWhileSneaking);
+		bus.addListener(this::handleSidestep);
+		bus.addListener(this::handleStealth);
+		bus.addListener(this::updateZoomState);
+		bus.addListener(this::updateGradualGlideState);
+		bus.addListener(this::cycleItemDisplayMap);
+		bus.addListener(this::slowZoomSensitivity);
+		bus.addListener(this::swapHotbar);
+		bus.addListener(this::toggleRedThreadVision);
+		bus.addListener(this::renderGlovesInFirstPerson);
 	}
 
 	private void handleAgileRanger(MovementInputUpdateEvent event) {

@@ -16,6 +16,8 @@ import net.minecraft.world.item.crafting.RecipeMap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import tamaized.beanification.Autowired;
+import tamaized.beanification.connector.fml.RequiresDist;
+import tamaized.beanification.connector.fml.RequiresMods;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
@@ -52,7 +54,9 @@ public class JEICompat implements IModPlugin {
 	public static final IIngredientType<FakeEntityType> ENTITY_TYPE = () -> FakeEntityType.class;
 	public static final IIngredientType<FakeItemEntity> FAKE_ITEM_ENTITY = () -> FakeItemEntity.class;
 
-	@Autowired(dist = Dist.CLIENT, requiresModIdsLoaded = "jei")
+	@Autowired
+	@RequiresDist(Dist.CLIENT)
+	@RequiresMods("jei")
 	private static RecipeViewerRecipes recipeCache;
 
 	public static boolean isEmiInstalled() {
