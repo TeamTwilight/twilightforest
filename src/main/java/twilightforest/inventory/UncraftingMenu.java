@@ -319,7 +319,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				matches(inputStack, shapelessRecipe.result);
 		}
 
-		return TFConfig.allowShapelessUncrafting ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
+		return false;
 	}
 
 	protected static boolean isComplete(List<Ingredient> list) { //TODO: check if properly ported
