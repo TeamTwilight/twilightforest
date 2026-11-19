@@ -123,9 +123,11 @@ public class MiscEvents {
 	}
 
 	private void washOffCloth(PlayerInteractEvent.RightClickBlock event) {
-		if (event.isCanceled()) return;
+		if (event.isCanceled())
+			return;
 		BlockState state = event.getLevel().getBlockState(event.getPos());
-		if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0) return;
+		if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0)
+			return;
 		if (event.getItemStack().has(TFDataComponents.EMPERORS_CLOTH)) {
 			LayeredCauldronBlock.lowerFillLevel(state, event.getLevel(), event.getPos());
 			event.getItemStack().remove(TFDataComponents.EMPERORS_CLOTH);

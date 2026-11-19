@@ -130,12 +130,17 @@ public final class FeatureLogic {
 
 		List<Rotation> availableForRandom = new ArrayList<>();
 
-		if (north) availableForRandom.add(Rotation.NONE);
-		if (east) availableForRandom.add(Rotation.CLOCKWISE_90);
-		if (south) availableForRandom.add(Rotation.CLOCKWISE_180);
-		if (west) availableForRandom.add(Rotation.COUNTERCLOCKWISE_90);
+		if (north)
+			availableForRandom.add(Rotation.NONE);
+		if (east)
+			availableForRandom.add(Rotation.CLOCKWISE_90);
+		if (south)
+			availableForRandom.add(Rotation.CLOCKWISE_180);
+		if (west)
+			availableForRandom.add(Rotation.COUNTERCLOCKWISE_90);
 
-		if (availableForRandom.isEmpty()) return Rotation.NONE;
+		if (availableForRandom.isEmpty())
+			return Rotation.NONE;
 
 		Util.shuffle(availableForRandom, rand);
 

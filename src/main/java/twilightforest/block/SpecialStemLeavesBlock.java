@@ -33,7 +33,8 @@ public class SpecialStemLeavesBlock extends TintedParticleLeavesBlock {
 		for (Direction direction : Direction.values()) {
 			mutableBlockPos.setWithOffset(pos, direction);
 			i = Math.min(i, getDistanceAt(levelAccessor.getBlockState(mutableBlockPos)) + 1);
-			if (i == 1) break;
+			if (i == 1)
+				break;
 		}
 
 		return state.setValue(DISTANCE, i);

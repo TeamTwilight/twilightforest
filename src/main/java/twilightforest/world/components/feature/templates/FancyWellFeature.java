@@ -41,7 +41,8 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
 		StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
 
-		if (template == null) return;
+		if (template == null)
+			return;
 
 		placementPos = placementPos.below(template.getSize().getY());//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 		placementSettings.addProcessor(SmartGrassProcessor.INSTANCE);
@@ -59,7 +60,8 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
 		String s = info.nbt().getStringOr("metadata", "");
 
-		if (!s.startsWith("loot")) return;
+		if (!s.startsWith("loot"))
+			return;
 
 		world.removeBlock(info.pos(), false);
 

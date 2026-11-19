@@ -143,7 +143,8 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 
 			@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
 			private static OpacityModifier create(Type type, float multiplier, boolean invert, float min, float max, Optional<Float> from, Optional<Float> to, HolderSet<Item> itemTriggers, Optional<MobEffectCategory> effectCategory) {
-				if (type.usesRange() && (from.isEmpty() || to.isEmpty())) throw new NoSuchElementException("Range for opacity modifier is not defined!");
+				if (type.usesRange() && (from.isEmpty() || to.isEmpty()))
+					throw new NoSuchElementException("Range for opacity modifier is not defined!");
 				return new OpacityModifier(type, multiplier, invert, min, max, from.orElse(Float.NaN), to.orElse(Float.NaN), itemTriggers, effectCategory);
 			}
 

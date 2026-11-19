@@ -140,7 +140,8 @@ public class OverlayHandler {
 			} else {
 				OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
 
-				if (oreScannerData == null) return;
+				if (oreScannerData == null)
+					return;
 
 				long identifier = oreScannerData.universalId();
 				if (identifier != 0L && !ORE_METER_STAT_CACHE.containsKey(identifier)) {

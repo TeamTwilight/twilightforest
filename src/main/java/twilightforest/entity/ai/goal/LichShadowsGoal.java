@@ -52,13 +52,15 @@ public class LichShadowsGoal extends Goal {
 			});
 		}
 
-		if (this.lich.getTeleportInvisibility() > 0) return;
+		if (this.lich.getTeleportInvisibility() > 0)
+			return;
 
 		if (!this.lich.isShadowClone()) {
 			LivingEntity targetedEntity = this.lich.getTarget();
 
 			if (this.lich.getAttackCooldown() == 60) {
-				if (!this.lich.teleportToNewTarget(targetedEntity, this.attackRange, this)) this.lich.teleportHome();
+				if (!this.lich.teleportToNewTarget(targetedEntity, this.attackRange, this))
+					this.lich.teleportHome();
 			} else if (targetedEntity != null && this.lich.getAttackCooldown() == 0) {
 				if (this.lich.distanceTo(targetedEntity) < this.attackRange) {
 					this.attack(this.lich);
@@ -68,7 +70,9 @@ public class LichShadowsGoal extends Goal {
                     }
                 }
 			}
-		} else this.checkForMaster();
+		} else {
+			this.checkForMaster();
+		}
 	}
 
 	protected void attack(Lich lich) {
@@ -80,8 +84,10 @@ public class LichShadowsGoal extends Goal {
 
 		lich.swing(InteractionHand.MAIN_HAND);
 
-		if (lich.getRandom().nextInt(3) > 0) lich.setNextAttackType(0);
-		else lich.setNextAttackType(1);
+		if (lich.getRandom().nextInt(3) > 0)
+			lich.setNextAttackType(0);
+		else
+			lich.setNextAttackType(1);
 		lich.setAttackCooldown(100);
 	}
 
@@ -96,7 +102,8 @@ public class LichShadowsGoal extends Goal {
 
 	public void checkAndSpawnClones(LivingEntity targetedEntity) {
 		// if not, spawn one!
-		if (this.lich.countMyClones() < this.lich.getAttributeValue(TFAttributes.CLONE_COUNT)) this.spawnShadowClone(targetedEntity);
+		if (this.lich.countMyClones() < this.lich.getAttributeValue(TFAttributes.CLONE_COUNT))
+			this.spawnShadowClone(targetedEntity);
 	}
 
 	private void spawnShadowClone(LivingEntity targetedEntity) {

@@ -91,30 +91,44 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 
 		if (down) {
 			shape = Shapes.or(shape, DOWN_SHAPE);
-			if (north && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.NORTH)) shape = Shapes.or(shape, DOWN_NORTH_SHAPE);
-			if (south && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.SOUTH)) shape = Shapes.or(shape, DOWN_SOUTH_SHAPE);
-			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.WEST)) shape = Shapes.or(shape, DOWN_WEST_SHAPE);
-			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.EAST)) shape = Shapes.or(shape, DOWN_EAST_SHAPE);
+			if (north && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.NORTH))
+				shape = Shapes.or(shape, DOWN_NORTH_SHAPE);
+			if (south && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.SOUTH))
+				shape = Shapes.or(shape, DOWN_SOUTH_SHAPE);
+			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.WEST))
+				shape = Shapes.or(shape, DOWN_WEST_SHAPE);
+			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.DOWN, Direction.EAST))
+				shape = Shapes.or(shape, DOWN_EAST_SHAPE);
 		}
 		if (up) {
 			shape = Shapes.or(shape, UP_SHAPE);
-			if (north && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.NORTH)) shape = Shapes.or(shape, UP_NORTH_SHAPE);
-			if (south && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.SOUTH)) shape = Shapes.or(shape, UP_SOUTH_SHAPE);
-			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.WEST)) shape = Shapes.or(shape, UP_WEST_SHAPE);
-			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.EAST)) shape = Shapes.or(shape, UP_EAST_SHAPE);
+			if (north && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.NORTH))
+				shape = Shapes.or(shape, UP_NORTH_SHAPE);
+			if (south && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.SOUTH))
+				shape = Shapes.or(shape, UP_SOUTH_SHAPE);
+			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.WEST))
+				shape = Shapes.or(shape, UP_WEST_SHAPE);
+			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.UP, Direction.EAST))
+				shape = Shapes.or(shape, UP_EAST_SHAPE);
 		}
 		if (north) {
 			shape = Shapes.or(shape, NORTH_SHAPE);
-			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.NORTH, Direction.WEST)) shape = Shapes.or(shape, NORTH_WEST_SHAPE);
-			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.NORTH, Direction.EAST)) shape = Shapes.or(shape, NORTH_EAST_SHAPE);
+			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.NORTH, Direction.WEST))
+				shape = Shapes.or(shape, NORTH_WEST_SHAPE);
+			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.NORTH, Direction.EAST))
+				shape = Shapes.or(shape, NORTH_EAST_SHAPE);
 		}
 		if (south) {
 			shape = Shapes.or(shape, SOUTH_SHAPE);
-			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.SOUTH, Direction.WEST)) shape = Shapes.or(shape, SOUTH_WEST_SHAPE);
-			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.SOUTH, Direction.EAST)) shape = Shapes.or(shape, SOUTH_EAST_SHAPE);
+			if (west && ForceFieldBlock.cornerConnects(getter, pos, Direction.SOUTH, Direction.WEST))
+				shape = Shapes.or(shape, SOUTH_WEST_SHAPE);
+			if (east && ForceFieldBlock.cornerConnects(getter, pos, Direction.SOUTH, Direction.EAST))
+				shape = Shapes.or(shape, SOUTH_EAST_SHAPE);
 		}
-		if (west) shape = Shapes.or(shape, WEST_SHAPE);
-		if (east) shape = Shapes.or(shape, EAST_SHAPE);
+		if (west)
+			shape = Shapes.or(shape, WEST_SHAPE);
+		if (east)
+			shape = Shapes.or(shape, EAST_SHAPE);
 
 		return shape;
 	}
@@ -131,19 +145,23 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 
 	public boolean canConnectTo(@Nullable BlockState state, BlockGetter getter, BlockPos pos, Direction direction) {
 		BlockState relative = getter.getBlockState(pos.relative(direction));
-		if (relative.is(this)) return true;
+		if (relative.is(this))
+			return true;
 
 		int betterConnections = 0;
 		if (state == null) {
 			for (Direction face : Direction.values()) {
-				if (getter.getBlockState(pos.relative(face)).is(this)) betterConnections++;
+				if (getter.getBlockState(pos.relative(face)).is(this))
+					betterConnections++;
 			}
 		} else {
 			for (Direction face : Direction.values()) {
-				if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face))) betterConnections++;
+				if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face)))
+					betterConnections++;
 			}
 		}
-		if (betterConnections >= 3) return false;
+		if (betterConnections >= 3)
+			return false;
 
 		return !isExceptionForConnection(relative) && relative.isFaceSturdy(getter, pos.relative(direction), direction.getOpposite());
 	}

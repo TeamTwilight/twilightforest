@@ -121,7 +121,8 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.projection = templatePoolInstance.projection();
 		this.markerHandlers = templatePoolInstance.markerHandlers();
 		this.beardifierGroundDelta = templatePoolInstance.beardifierGroundDelta().map(TemplatePoolInstance.HeightAdjustment::beardifierGroundDelta).orElse(0);
-		if (templatePoolInstance.ignoreWorldWaterlog()) this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
+		if (templatePoolInstance.ignoreWorldWaterlog())
+			this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
 		this.serializedProcessors = serializedProcessors;
 		this.serializedProcessors.list().forEach(this.placeSettings::addProcessor);

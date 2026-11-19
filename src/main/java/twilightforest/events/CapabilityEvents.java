@@ -72,7 +72,8 @@ public class CapabilityEvents {
 	}
 
 	private void spawnInTFIfNecessary(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+			return;
 
 		if (serverPlayer.getRespawnConfig() == null) {
 			newSpawnInTwilightForest(serverPlayer);

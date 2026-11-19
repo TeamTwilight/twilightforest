@@ -59,7 +59,8 @@ public abstract class SpecialMagicLogBlock extends DirectionalBlock {
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
-		if (!state.getValue(ACTIVE) || !this.doesCoreFunction()) return;
+		if (!state.getValue(ACTIVE) || !this.doesCoreFunction())
+			return;
 
 		this.playSound(level, pos, rand);
 		this.performTreeEffect(level, pos, rand);

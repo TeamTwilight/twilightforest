@@ -45,7 +45,8 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 		if (random.nextBoolean()) {
 			StructureTemplate template = templateManager.getOrCreate(DruidHutFeature.BasementType.values()[random.nextInt(DruidHutFeature.BasementType.size)].getBasement(random.nextBoolean()));
 
-			if (template == null) return;
+			if (template == null)
+				return;
 
 			placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 

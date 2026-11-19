@@ -36,7 +36,8 @@ public abstract class ConquerableStructure extends LandmarkStructure implements 
 		Optional<GenerationStub> optional = this.findValidGenerationPoint(structure$generationcontext);
 		if (optional.isPresent()) {
 			StructureStart structurestart = this.createStart(chunkPos, references, optional.get());
-			if (structurestart.isValid()) return structurestart;
+			if (structurestart.isValid())
+				return structurestart;
 		}
 
 		return StructureStart.INVALID_START;

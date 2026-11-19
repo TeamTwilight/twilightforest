@@ -233,12 +233,14 @@ public class TravellersGearEvents {
 	}
 
 	private void updateOtherModifiers(EntityTickEvent.Post event) {
-		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
+		if (!(event.getEntity() instanceof LivingEntity livingEntity))
+			return;
 		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 		TravellersGearLogic.travellersBootsSlimySolesBounce(livingEntity);
 
-		if (livingEntity.level().isClientSide()) return;
+		if (livingEntity.level().isClientSide())
+			return;
 		TravellersGearLogic.travellersVestHaste(livingEntity);
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
@@ -299,7 +301,8 @@ public class TravellersGearEvents {
 	}
 
 	private void setLastDamageArmorTime(ArmorHurtEvent event) {
-		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
+		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0))
+			return;
 		LivingEntity entity = event.getEntity();
 		entity.setData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
 	}
@@ -379,7 +382,8 @@ public class TravellersGearEvents {
 		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 			ItemStack compareStack = ItemStack.EMPTY;
 			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {
-				if (event.getInventory().getItem(i).is(event.getCrafting().getItem())) compareStack = event.getInventory().getItem(i);
+				if (event.getInventory().getItem(i).is(event.getCrafting().getItem()))
+					compareStack = event.getInventory().getItem(i);
 			}
 
 			if (!compareStack.isEmpty()) {

@@ -65,7 +65,8 @@ public class XZQuadrantIterator<T> implements Iterator<T>, Iterable<T> {
 
 	// Primes this iterator for next, or deadlocks its completion
 	private void tickXZ() {
-		if (!this.hasNext()) return;
+		if (!this.hasNext())
+			return;
 
 		if (this.dZ < this.radius) {
 			this.dZ++;

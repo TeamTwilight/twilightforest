@@ -57,7 +57,8 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 
 	private Optional<InputPair> resolve(CraftingInput input) {
 		List<ItemStack> items = input.items().stream().filter(stack -> !stack.isEmpty()).toList();
-		if (items.size() != 2) return Optional.empty();
+		if (items.size() != 2)
+			return Optional.empty();
 
 		Optional<ItemStack> vest = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_VEST.get())).findFirst();
 		Optional<ItemStack> gloves = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_GLOVES.get())).findFirst();

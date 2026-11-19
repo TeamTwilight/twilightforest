@@ -222,7 +222,8 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		}
 
 		private boolean isModelSlim(Model<?> model) {
-			if (model instanceof PlayerModel player) return player.slim;
+			if (model instanceof PlayerModel player)
+				return player.slim;
 			return false;
 		}
 

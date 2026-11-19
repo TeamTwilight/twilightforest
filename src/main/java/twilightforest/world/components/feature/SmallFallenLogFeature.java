@@ -56,7 +56,8 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 		BlockState hollowLogState = config.hollow();
 		BlockState branchState;
 
-		if (config.hollow().isAir()) hollowLogState = null;
+		if (config.hollow().isAir())
+			hollowLogState = null;
 
 		//sometimes make floating logs
 		if (rand.nextInt(5) == 0 && world.getBlockState(pos).liquid()) {

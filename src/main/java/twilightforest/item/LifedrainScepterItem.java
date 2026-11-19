@@ -217,7 +217,8 @@ public class LifedrainScepterItem extends ScepterItem {
 	private static Vec3 getPlayerHandPos(LivingEntity living, float partialTicks) {
 		float armSwing = Mth.sin(Mth.sqrt(living.getAttackAnim(partialTicks)) * (float) Math.PI);
 		int invert = living.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
-		if (!(living.getMainHandItem().getItem() instanceof LifedrainScepterItem)) invert = -invert;
+		if (!(living.getMainHandItem().getItem() instanceof LifedrainScepterItem))
+			invert = -invert;
 
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.options.getCameraType().isFirstPerson() && living == minecraft.player) {

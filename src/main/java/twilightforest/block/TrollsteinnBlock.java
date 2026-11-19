@@ -50,7 +50,8 @@ public class TrollsteinnBlock extends Block {
 		BlockState newState = state;
 		for (Direction direction : Direction.values())
 			newState = newState.setValue(PROPERTY_MAP.get(direction), level.getMaxLocalRawBrightness(pos.relative(direction)) > LIGHT_THRESHOLD);
-		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
+		if (!newState.equals(state))
+			level.setBlockAndUpdate(pos, newState);
 	}
 
 	@Override
@@ -80,7 +81,8 @@ public class TrollsteinnBlock extends Block {
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-		if (rand.nextBoolean()) this.sparkle(level, pos);
+		if (rand.nextBoolean())
+			this.sparkle(level, pos);
 	}
 
 	DustParticleOptions PURPL = new DustParticleOptions(-12582784, 1.0F);

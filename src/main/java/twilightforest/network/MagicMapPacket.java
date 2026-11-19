@@ -38,7 +38,8 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					if (!(ctx.player().level() instanceof ClientLevel clientLevel)) return;
+					if (!(ctx.player().level() instanceof ClientLevel clientLevel))
+						return;
 
 					MapId mapId = message.inner.mapId();
 					TFMagicMapData mapdata = MapDataManager.getClientMagicMapData(mapId);

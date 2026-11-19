@@ -91,8 +91,10 @@ public class EntityRenderingUtil {
 			rotation.mul(Axis.YP.rotationDegrees(180.0F));
 			scale *= 0.5F;
 		}
-		if (entity == EntityTypes.WITHER) translation.add(0.0F, 0.25F, 0.0F);
-		if (entity == EntityTypes.SQUID || entity == EntityTypes.GLOW_SQUID) translation.add(0.0F, -0.75F, 0.0F);
+		if (entity == EntityTypes.WITHER)
+			translation.add(0.0F, 0.25F, 0.0F);
+		if (entity == EntityTypes.SQUID || entity == EntityTypes.GLOW_SQUID)
+			translation.add(0.0F, -0.75F, 0.0F);
 		return Math.round(scale);
 	}
 

@@ -40,7 +40,8 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 			Tag mazeY = mazeX.get(x);
 
 			if (mazeY instanceof ListTag)
-				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListTag) mazeY).getIntOr(y, 0);
+				for (int y = 0; y < heightInCellCount - 1; y++)
+					maze[x][y] = ((ListTag) mazeY).getIntOr(y, 0);
 		}
 
 		this.sizeConstraints = BoundingBoxUtils.NBTToBoundingBox(nbt.getCompoundOrEmpty("constraints"));
@@ -100,9 +101,9 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 				// Did we pick west and will we not get an AIOOBException accessing array
 				if (rotations[x][y] == WallFacing.WEST && x > 0) {
 					// If neighbor does not connect to west, connect it to east
-					if (!rotations[x][y].unpackAndTest(maze[x - 1][y]))
+					if (!rotations[x][y].unpackAndTest(maze[x - 1][y])) {
 						maze[x - 1][y] |= rotations[x][y].OPPOSITE;
-					else { // else we cut the connection
+					} else { // else we cut the connection
 						// remove connection for the maze part we're looking at
 						maze[x][y] &= rotations[x][y].INVERTED;
 						// remove connection for the adjacent maze part
@@ -110,25 +111,25 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 					}
 				}
 				if (rotations[x][y] == WallFacing.NORTH && y > 0) {
-					if (!rotations[x][y].unpackAndTest(maze[x][y - 1]))
+					if (!rotations[x][y].unpackAndTest(maze[x][y - 1])) {
 						maze[x][y - 1] |= rotations[x][y].OPPOSITE;
-					else {
+					} else {
 						maze[x][y] &= rotations[x][y].INVERTED;
 						maze[x][y - 1] &= rotations[x][y - 1].INVERTED_OPPOSITE;
 					}
 				}
 				if (rotations[x][y] == WallFacing.EAST && x < widthInCellCount - 2) {
-					if (!rotations[x][y].unpackAndTest(maze[x + 1][y]))
+					if (!rotations[x][y].unpackAndTest(maze[x + 1][y])) {
 						maze[x + 1][y] |= rotations[x][y].OPPOSITE;
-					else {
+					} else {
 						maze[x][y] &= rotations[x][y].INVERTED;
 						maze[x + 1][y] &= rotations[x + 1][y].INVERTED_OPPOSITE;
 					}
 				}
 				if (rotations[x][y] == WallFacing.SOUTH && y < heightInCellCount - 2) {
-					if (!rotations[x][y].unpackAndTest(maze[x][y + 1]))
+					if (!rotations[x][y].unpackAndTest(maze[x][y + 1])) {
 						maze[x][y + 1] |= rotations[x][y].OPPOSITE;
-					else {
+					} else {
 						maze[x][y] &= rotations[x][y].INVERTED;
 						maze[x][y + 1] &= rotations[x][y + 1].INVERTED_OPPOSITE;
 					}
@@ -174,7 +175,8 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 				final boolean xCenter = x == (widthInCellCount / 2) - 1;
 				final boolean yCenter = y == (heightInCellCount / 2) - 1;
 				// -------- HEDGE
-				if ((!(xCenter || yCenter)) && (maze[x][y] & 0b10000) == 0b10000) continue;
+				if ((!(xCenter || yCenter)) && (maze[x][y] & 0b10000) == 0b10000)
+					continue;
 
 				int rotation = 0;
 

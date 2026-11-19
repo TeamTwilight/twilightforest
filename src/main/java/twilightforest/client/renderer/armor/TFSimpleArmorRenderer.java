@@ -27,7 +27,8 @@ public class TFSimpleArmorRenderer extends TFArmorRenderer {
 	@Override
 	public Model<?> getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, @SuppressWarnings("rawtypes") Model original) {
 		Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
-		if (equippable == null) return super.getHumanoidArmorModel(itemStack, layerType, original);
+		if (equippable == null)
+			return super.getHumanoidArmorModel(itemStack, layerType, original);
 
 		EquipmentSlot slot = equippable.slot();
 		TFArmorModel model = this.CREATE_MODEL_INSTANCE.apply(this.getModelPart(slot == EquipmentSlot.LEGS ? this.INNER_ARMOR_MODEL : this.OUTER_ARMOR_MODEL));

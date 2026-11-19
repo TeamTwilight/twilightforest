@@ -44,7 +44,8 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 
 	@Override
 	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
-		if (level.isClientSide()) return;
+		if (level.isClientSide())
+			return;
 
 		if (!state.getValue(ACTIVE) && this.isReactorReady(level, pos)) {
 			// check if we should fire up the reactor

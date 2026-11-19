@@ -64,8 +64,10 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			return InteractionResult.SUCCESS;
 
 		MasonJarBlockEntity.MasonJarItemStackHandler handler = jar.getItemHandler();
-		if (stack.isEmpty()) handleEmptyHand(server, pos, player, hand, jar, handler);
-		else handleInsert(server, pos, player, hand, jar, handler, stack);
+		if (stack.isEmpty())
+			handleEmptyHand(server, pos, player, hand, jar, handler);
+		else
+			handleInsert(server, pos, player, hand, jar, handler, stack);
 		return InteractionResult.SUCCESS;
 	}
 
@@ -157,7 +159,8 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
 		AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
-		if (lightManager != null) return lightManager.getLightAt(pos);
+		if (lightManager != null)
+			return lightManager.getLightAt(pos);
 		return super.getLightEmission(state, level, pos);
 	}
 

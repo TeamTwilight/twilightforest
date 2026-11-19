@@ -91,7 +91,8 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 			level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.get(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
 			return InteractionResult.PASS;
 		}
-		if (state.getValue(SPAWNER)) return InteractionResult.FAIL;
+		if (state.getValue(SPAWNER))
+			return InteractionResult.FAIL;
 		return super.useItemOn(stack, state, level, pos, player, hand, result);
 	}
 
@@ -109,7 +110,8 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
-		if (state.getValue(SPAWNER)) return InteractionResult.FAIL;
+		if (state.getValue(SPAWNER))
+			return InteractionResult.FAIL;
 		return super.useWithoutItem(state, level, pos, player, result);
 	}
 

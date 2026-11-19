@@ -44,7 +44,8 @@ public class TrunkSideDecorator extends TreeDecorator {
 		}
 
 		for (int attempt = 0; attempt < this.count; attempt++) {
-			if (context.random().nextFloat() >= this.probability) continue;
+			if (context.random().nextFloat() >= this.probability)
+				continue;
 
 			//initial position on the tree trunk
 			BlockPos logPos = context.logs().get(context.random().nextInt(blockCount));

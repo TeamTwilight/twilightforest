@@ -80,7 +80,8 @@ public class ConnectedTextureModel implements DynamicBlockStateModel {
 	private List<BakedQuad> getQuads(@Nullable Direction side, ConnectedTextureData data) {
 		if (side == null) {
 			List<BakedQuad> quadList = new ArrayList<>();
-			for (Direction direction : this.unculledFaces) quadList.addAll(this.getQuadsForFace(direction, data));
+			for (Direction direction : this.unculledFaces)
+				quadList.addAll(this.getQuadsForFace(direction, data));
 			return quadList;
 		} else if (this.unculledFaces.contains(side)) {
 			return List.of();
@@ -92,7 +93,8 @@ public class ConnectedTextureModel implements DynamicBlockStateModel {
 	private List<BakedQuad> getQuadsForFace(Direction side, ConnectedTextureData data) {
 		BakedQuad[] baseQuads = this.baseQuads.get(side);
 		ArrayList<BakedQuad> quads = new ArrayList<>(4 + (baseQuads != null ? 4 : 0));
-		if (baseQuads != null) quads.addAll(List.of(baseQuads));
+		if (baseQuads != null)
+			quads.addAll(List.of(baseQuads));
 
 		if (this.connectedFaces.contains(side) || this.renderOverlayOnAllFaces) {
 			for (int quad = 0; quad < 4; ++quad) {
@@ -139,8 +141,10 @@ public class ConnectedTextureModel implements DynamicBlockStateModel {
 	}
 
 	private boolean connectsTo(BlockAndTintGetter getter, BlockPos pos, Direction face, BlockState neighborState) {
-		if (!this.validConnectors.test(neighborState)) return false;
-		if (this.unculledFaces.contains(face)) return true;
+		if (!this.validConnectors.test(neighborState))
+			return false;
+		if (this.unculledFaces.contains(face))
+			return true;
 		return Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 

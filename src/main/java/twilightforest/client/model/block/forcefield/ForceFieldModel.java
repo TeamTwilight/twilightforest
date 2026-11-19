@@ -130,30 +130,44 @@ public class ForceFieldModel implements DynamicBlockStateModel {
 
 		if (down) {
 			directions.add(ExtraDirection.DOWN);
-			if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.NORTH)) directions.add(ExtraDirection.DOWN_NORTH);
-			if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.SOUTH)) directions.add(ExtraDirection.DOWN_SOUTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.WEST)) directions.add(ExtraDirection.DOWN_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.EAST)) directions.add(ExtraDirection.DOWN_EAST);
+			if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.NORTH))
+				directions.add(ExtraDirection.DOWN_NORTH);
+			if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.SOUTH))
+				directions.add(ExtraDirection.DOWN_SOUTH);
+			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.WEST))
+				directions.add(ExtraDirection.DOWN_WEST);
+			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.DOWN, Direction.EAST))
+				directions.add(ExtraDirection.DOWN_EAST);
 		}
 		if (up) {
 			directions.add(ExtraDirection.UP);
-			if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.NORTH)) directions.add(ExtraDirection.UP_NORTH);
-			if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.SOUTH)) directions.add(ExtraDirection.UP_SOUTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.WEST)) directions.add(ExtraDirection.UP_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.EAST)) directions.add(ExtraDirection.UP_EAST);
+			if (north && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.NORTH))
+				directions.add(ExtraDirection.UP_NORTH);
+			if (south && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.SOUTH))
+				directions.add(ExtraDirection.UP_SOUTH);
+			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.WEST))
+				directions.add(ExtraDirection.UP_WEST);
+			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.UP, Direction.EAST))
+				directions.add(ExtraDirection.UP_EAST);
 		}
 		if (north) {
 			directions.add(ExtraDirection.NORTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.WEST)) directions.add(ExtraDirection.NORTH_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.EAST)) directions.add(ExtraDirection.NORTH_EAST);
+			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.WEST))
+				directions.add(ExtraDirection.NORTH_WEST);
+			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.NORTH, Direction.EAST))
+				directions.add(ExtraDirection.NORTH_EAST);
 		}
 		if (south) {
 			directions.add(ExtraDirection.SOUTH);
-			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.WEST)) directions.add(ExtraDirection.SOUTH_WEST);
-			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.EAST)) directions.add(ExtraDirection.SOUTH_EAST);
+			if (west && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.WEST))
+				directions.add(ExtraDirection.SOUTH_WEST);
+			if (east && ForceFieldBlock.cornerConnects(level, pos, Direction.SOUTH, Direction.EAST))
+				directions.add(ExtraDirection.SOUTH_EAST);
 		}
-		if (west) directions.add(ExtraDirection.WEST);
-		if (east) directions.add(ExtraDirection.EAST);
+		if (west)
+			directions.add(ExtraDirection.WEST);
+		if (east)
+			directions.add(ExtraDirection.EAST);
 
 		return directions;
 	}

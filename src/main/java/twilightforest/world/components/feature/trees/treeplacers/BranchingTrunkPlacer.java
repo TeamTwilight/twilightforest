@@ -108,7 +108,8 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 	 * This takes all variables for setting Branch
 	 */
 	private void drawBresenhamBranch(WorldGenLevel worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos from, BlockPos to) {
-		for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) placeWood(worldReader, worldPlacer, random, pixel);
+		for (BlockPos pixel : new VoxelBresenhamIterator(from, to))
+			placeWood(worldReader, worldPlacer, random, pixel);
 	}
 
 	@SuppressWarnings("UnusedReturnValue")

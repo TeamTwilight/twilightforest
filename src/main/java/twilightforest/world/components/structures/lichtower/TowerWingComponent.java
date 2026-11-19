@@ -140,7 +140,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (size > 4) {
 			// sub towers
 			for (final Rotation towerRotation : RotationUtil.ROTATIONS) {
-				if (towerRotation == Rotation.CLOCKWISE_180) continue;
+				if (towerRotation == Rotation.CLOCKWISE_180)
+					continue;
 				int[] dest = getValidOpening(rand, towerRotation);
 				if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 2, height - 4, towerRotation) && this.size > 8) {
 					if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 4, height - 6, towerRotation)) {
@@ -1776,7 +1777,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
-			if (pCoords == null) continue;
+			if (pCoords == null)
+				continue;
 			// initialize a painting object
 			EntityUtil.tryHangPainting(world, pCoords, direction, EntityUtil.getPaintingOfSize(world, rand, minSize));
 		}

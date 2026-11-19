@@ -110,7 +110,8 @@ public class MagicPainting extends HangingEntity {
 	@Override
 	protected void addAdditionalSaveData(ValueOutput output) {
 		Identifier location = this.getReg().getKey(this.getVariant().value());
-		if (location != null) output.putString("variant", location.toString());
+		if (location != null)
+			output.putString("variant", location.toString());
 		output.putByte("facing", (byte) this.getDirection().get2DDataValue());
 		super.addAdditionalSaveData(output);
 	}

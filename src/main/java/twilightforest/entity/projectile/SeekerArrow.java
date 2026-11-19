@@ -127,7 +127,8 @@ public class SeekerArrow extends TFArrow {
 					}
 				}
 				for (LivingEntity monster : monsters) {
-					if (monster instanceof NeutralMob) continue;
+					if (monster instanceof NeutralMob)
+						continue;
 
 					if (monster.hasLineOfSight(this)) {
 						setTarget(monster);
@@ -138,9 +139,11 @@ public class SeekerArrow extends TFArrow {
 
 			for (LivingEntity living : entityList) {
 
-				if (!living.hasLineOfSight(this)) continue;
+				if (!living.hasLineOfSight(this))
+					continue;
 
-				if (living == this.getOwner()) continue;
+				if (living == this.getOwner())
+					continue;
 
 				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner())
 					continue;

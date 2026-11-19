@@ -117,7 +117,8 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 
 		public static TriangularLatticeConfig fromNBT(CompoundTag tag) {
 			float spacing = tag.getFloatOr("spacing", 0f);
-			if (spacing <= 0.0000001) spacing = 3.5f;
+			if (spacing <= 0.0000001)
+				spacing = 3.5f;
 
 			float xOffset = tag.getFloatOr("x_offset", Mth.cos(Mth.PI / 6f) * spacing);
 			float zOffset = tag.getFloatOr("z_offset", Mth.sin(Mth.PI / 6f) * spacing);

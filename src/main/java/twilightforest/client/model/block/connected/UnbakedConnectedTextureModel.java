@@ -75,7 +75,8 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 
 		for (Direction face : Direction.values()) {
 			Direction cull = getCullface(face, from, to);
-			if (cull == null) unculledFaces.add(face);
+			if (cull == null)
+				unculledFaces.add(face);
 
 			Direction[] planeDirections = ConnectionLogic.AXIS_PLANE_DIRECTIONS[face.getAxis().ordinal()];
 			BakedQuad[] faceBaseQuads = new BakedQuad[4];
@@ -107,7 +108,8 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 				}
 			}
 
-			if (baseSprite != null) baseQuads.put(face, faceBaseQuads);
+			if (baseSprite != null)
+				baseQuads.put(face, faceBaseQuads);
 			connectedQuads.put(face, faceConnectedQuads);
 		}
 
@@ -147,8 +149,12 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 		}
 
 		return state -> {
-			for (Block block : blocks) if (state.is(block)) return true;
-			for (TagKey<Block> tag : tags) if (state.is(tag)) return true;
+			for (Block block : blocks)
+				if (state.is(block))
+					return true;
+			for (TagKey<Block> tag : tags)
+				if (state.is(tag))
+					return true;
 			return false;
 		};
 	}
@@ -253,13 +259,15 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 		}
 
 		public Builder connectsTo(Block... blocks) {
-			for (Block block : blocks) this.connectables.add(Either.right(block));
+			for (Block block : blocks)
+				this.connectables.add(Either.right(block));
 			return this;
 		}
 
 		@SafeVarargs
 		public final Builder connectsTo(TagKey<Block>... tags) {
-			for (TagKey<Block> tag : tags) this.connectables.add(Either.left(tag));
+			for (TagKey<Block> tag : tags)
+				this.connectables.add(Either.left(tag));
 			return this;
 		}
 

@@ -70,7 +70,9 @@ public class LichMinion extends Zombie {
 				this.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 200, 1));
 			}
 			return true;
-		} else return false;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -135,7 +137,8 @@ public class LichMinion extends Zombie {
 			if (babiesSummoned < this.master.getAttributeValue(TFAttributes.MINION_COUNT) / 4) { // One quarter can be babies on hard, by default: 9 / 4 = 2
 				baby = this.getRandom().nextInt(100) <= 20; // 20%
 			}
-			if (baby) this.master.setBabyMinionsSummoned(babiesSummoned + 1);
+			if (baby)
+				this.master.setBabyMinionsSummoned(babiesSummoned + 1);
 		}
 
 		spawnGroupData = new ZombieGroupData(baby, true);

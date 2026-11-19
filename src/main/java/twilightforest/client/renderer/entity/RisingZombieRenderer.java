@@ -45,7 +45,8 @@ public class RisingZombieRenderer extends HumanoidMobRenderer<RisingZombie, Risi
 	@Override
 	protected RenderType getRenderType(RisingZombieRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
 		// Render normally for spectators instead of very translucent
-		if (translucent) return this.model.renderType(this.getTextureLocation(state));
+		if (translucent)
+			return this.model.renderType(this.getTextureLocation(state));
 		return super.getRenderType(state, bodyVisible, translucent, glowing);
 	}
 

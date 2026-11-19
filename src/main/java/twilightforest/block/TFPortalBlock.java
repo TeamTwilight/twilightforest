@@ -85,7 +85,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public static boolean recursivelyValidatePortal(Level level, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
-		if (portalSize.incrementAndGet() > TFConfig.maxPortalSize) return false;
+		if (portalSize.incrementAndGet() > TFConfig.maxPortalSize)
+			return false;
 
 		boolean isPoolProbablyEnclosed = true;
 
@@ -104,7 +105,9 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				} else if (isGrassOrDirt(state) && isNatureBlock(level.getBlockState(positionCheck.above()))) {
 					blocksChecked.put(positionCheck, false);
 
-				} else return false;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -194,7 +197,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		boolean good = level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
 
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
-			if (!good) break;
+			if (!good)
+				break;
 
 			BlockState neighboringState = level.getBlockState(pos.relative(facing));
 
@@ -238,7 +242,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		int random = rand.nextInt(100);
-		if (state.getValue(DISALLOW_RETURN) && random < 80) return;
+		if (state.getValue(DISALLOW_RETURN) && random < 80)
+			return;
 
 		if (random == 0) {
 			level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WHOOSH.get(), SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
@@ -278,7 +283,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	@Nullable
 	@Override
 	public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
-		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, Identifier.parse(TFConfig.originDimension));
+		if (cachedOriginDimension == null)
+			cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, Identifier.parse(TFConfig.originDimension));
 		ResourceKey<Level> newDimension = !level.dimension().identifier().equals(TFDimension.DIMENSION) ? TFDimension.DIMENSION_KEY : cachedOriginDimension;
 		ServerLevel serverlevel = level.getServer().getLevel(newDimension);
 		if (serverlevel == null) {

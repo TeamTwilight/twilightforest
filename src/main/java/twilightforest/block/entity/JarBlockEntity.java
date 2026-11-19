@@ -53,7 +53,8 @@ public class JarBlockEntity extends BlockEntity {
 
 	public JarBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
-		if (blockState.getBlock() instanceof JarBlock jarBlock) this.lid = jarBlock.getDefaultLid();
+		if (blockState.getBlock() instanceof JarBlock jarBlock)
+			this.lid = jarBlock.getDefaultLid();
 	}
 
 	public JarBlockEntity(BlockPos pos, BlockState state) {

@@ -53,7 +53,8 @@ public class CountLootCommand {
 	private int countLoot(CommandContext<CommandSourceStack> context, boolean showCommon) throws CommandSyntaxException {
 		Holder.Reference<Structure> structure = ResourceKeyArgument.getStructure(context, "filter_structure");
 
-		if (!structure.isBound()) return 0;
+		if (!structure.isBound())
+			return 0;
 
 		CommandSourceStack source = context.getSource();
 		ServerLevel level = source.getLevel();

@@ -539,17 +539,24 @@ public class ClientRegistrationEvents {
 						double y = (double) posY + level.getRandom().nextDouble() * (aabb.maxY - aabb.minY - (double) 0.2F) + (double) 0.1F + aabb.minY;
 						double z = (double) posZ + level.getRandom().nextDouble() * (aabb.maxZ - aabb.minZ - (double) 0.2F) + (double) 0.1F + aabb.minZ;
 
-						if (side == Direction.DOWN) y = (double) posY + aabb.minY - (double) 0.1F;
-						if (side == Direction.UP) y = (double) posY + aabb.maxY + (double) 0.1F;
+						if (side == Direction.DOWN)
+							y = (double) posY + aabb.minY - (double) 0.1F;
+						if (side == Direction.UP)
+							y = (double) posY + aabb.maxY + (double) 0.1F;
 
-						if (side == Direction.NORTH) z = (double) posZ + aabb.minZ - (double) 0.1F;
-						if (side == Direction.SOUTH) z = (double) posZ + aabb.maxZ + (double) 0.1F;
+						if (side == Direction.NORTH)
+							z = (double) posZ + aabb.minZ - (double) 0.1F;
+						if (side == Direction.SOUTH)
+							z = (double) posZ + aabb.maxZ + (double) 0.1F;
 
-						if (side == Direction.WEST) x = (double) posX + aabb.minX - (double) 0.1F;
-						if (side == Direction.EAST) x = (double) posX + aabb.maxX + (double) 0.1F;
+						if (side == Direction.WEST)
+							x = (double) posX + aabb.minX - (double) 0.1F;
+						if (side == Direction.EAST)
+							x = (double) posX + aabb.maxX + (double) 0.1F;
 
 						Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, (double) side.getStepX() * 0.01D, (double) side.getStepY() * 0.01D, (double) side.getStepZ() * 0.01D);
-						if (particle == null) return true;
+						if (particle == null)
+							return true;
 						manager.add(particle);
 					}
 				}
@@ -568,11 +575,14 @@ public class ClientRegistrationEvents {
 					int zMax = Math.max(2, Mth.ceil(zSize / 0.25D));
 
 					for (int xSlice = 0; xSlice < xMax; ++xSlice) {
-						if (level.getRandom().nextInt(3) == 1) continue;
+						if (level.getRandom().nextInt(3) == 1)
+							continue;
 						for (int ySlice = 0; ySlice < yMax; ++ySlice) {
-							if (level.getRandom().nextInt(3) == 1) continue;
+							if (level.getRandom().nextInt(3) == 1)
+								continue;
 							for (int zSlice = 0; zSlice < zMax; ++zSlice) {
-								if (level.getRandom().nextInt(3) == 1) continue;
+								if (level.getRandom().nextInt(3) == 1)
+									continue;
 
 								double speedX = ((double) xSlice + 0.5D) / (double) xMax;
 								double speedY = ((double) ySlice + 0.5D) / (double) yMax;
@@ -587,7 +597,8 @@ public class ClientRegistrationEvents {
 								speedZ = (speedZ - 0.5D) * 0.05D;
 
 								Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, speedX, speedY, speedZ);
-								if (particle == null) return;
+								if (particle == null)
+									return;
 								manager.add(particle);
 							}
 						}

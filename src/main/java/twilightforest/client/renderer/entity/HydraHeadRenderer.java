@@ -34,7 +34,8 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 	@Override
 	protected @Nullable RenderType getRenderType(HydraHeadRenderState state, boolean visible, boolean ghostly, boolean glowing) {
 		// see whether we want to render these
-		if (!state.active) return null;
+		if (!state.active)
+			return null;
 		return super.getRenderType(state, visible, ghostly, glowing);
 	}
 

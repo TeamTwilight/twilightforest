@@ -68,7 +68,8 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		for (int i = 0; i < 4; i++) {
 			//We check against the TreeFeature's validTreePos method, to see if the tree can grow here, cuz the trunk placer uses this as well
 			//If we don't, some trees end up growing only one or two blocks tall
-			if (!FeaturePlacers.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
+			if (!FeaturePlacers.validTreePos(reader, pos.relative(Direction.UP, i)))
+				return false;
 		}
 
 		// do not grow next to another tree

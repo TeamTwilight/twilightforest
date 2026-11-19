@@ -31,7 +31,8 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 
 			@Override
 			public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, LichRenderState state, float yRot, float xRot) {
-				if (state.isShadowClone && !state.isInvisible) super.submit(poseStack, submitNodeCollector, lightCoords, state, yRot, xRot);
+				if (state.isShadowClone && !state.isInvisible)
+					super.submit(poseStack, submitNodeCollector, lightCoords, state, yRot, xRot);
 			}
 
             @Override
@@ -43,15 +44,18 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 
 	@Override
 	protected int getModelTint(LichRenderState state) {
-		if (state.isShadowClone) return ARGB.colorFromFloat(0.5F, 0.333F, 0.333F, 0.333F);
+		if (state.isShadowClone)
+			return ARGB.colorFromFloat(0.5F, 0.333F, 0.333F, 0.333F);
 		return super.getModelTint(state);
 	}
 
 	@Nullable
 	@Override
 	protected RenderType getRenderType(LichRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
-		if (state.isShadowClone && !state.isInvisible) return TFRenderTypes.SHADOW_CLONE;
-		else return super.getRenderType(state, bodyVisible, translucent, glowing);
+		if (state.isShadowClone && !state.isInvisible)
+			return TFRenderTypes.SHADOW_CLONE;
+		else
+			return super.getRenderType(state, bodyVisible, translucent, glowing);
 	}
 
 	@Override

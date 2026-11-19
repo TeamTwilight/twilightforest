@@ -43,8 +43,9 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 		if (!this.mob.getPassengers().isEmpty() && this.mob.getPassengers().getFirst() instanceof LivingEntity victim) {
 			damageRider(victim);
 			this.throwTimer--;
-		} else
+		} else {
 			super.tick();
+		}
 	}
 
 	private void damageRider(LivingEntity victim) {

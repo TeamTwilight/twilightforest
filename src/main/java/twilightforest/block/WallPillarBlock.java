@@ -47,18 +47,30 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 		VoxelShape shape = BASE_SHAPE;
 		Direction.Axis axis = state.getValue(WallPillarBlock.AXIS);
 
-		if (state.getValue(DOWN)) shape = Shapes.or(shape, DOWN_SHAPE);
-		else if (axis.equals(Direction.Axis.Y)) shape = Shapes.or(shape, DOWN_FLAT);
-		if (state.getValue(UP)) shape = Shapes.or(shape, UP_SHAPE);
-		else if (axis.equals(Direction.Axis.Y)) shape = Shapes.or(shape, UP_FLAT);
-		if (state.getValue(NORTH)) shape = Shapes.or(shape, NORTH_SHAPE);
-		else if (axis.equals(Direction.Axis.Z)) shape = Shapes.or(shape, NORTH_FLAT);
-		if (state.getValue(SOUTH)) shape = Shapes.or(shape, SOUTH_SHAPE);
-		else if (axis.equals(Direction.Axis.Z)) shape = Shapes.or(shape, SOUTH_FLAT);
-		if (state.getValue(WEST)) shape = Shapes.or(shape, WEST_SHAPE);
-		else if (axis.equals(Direction.Axis.X)) shape = Shapes.or(shape, WEST_FLAT);
-		if (state.getValue(EAST)) shape = Shapes.or(shape, EAST_SHAPE);
-		else if (axis.equals(Direction.Axis.X)) shape = Shapes.or(shape, EAST_FLAT);
+		if (state.getValue(DOWN))
+			shape = Shapes.or(shape, DOWN_SHAPE);
+		else if (axis.equals(Direction.Axis.Y))
+			shape = Shapes.or(shape, DOWN_FLAT);
+		if (state.getValue(UP))
+			shape = Shapes.or(shape, UP_SHAPE);
+		else if (axis.equals(Direction.Axis.Y))
+			shape = Shapes.or(shape, UP_FLAT);
+		if (state.getValue(NORTH))
+			shape = Shapes.or(shape, NORTH_SHAPE);
+		else if (axis.equals(Direction.Axis.Z))
+			shape = Shapes.or(shape, NORTH_FLAT);
+		if (state.getValue(SOUTH))
+			shape = Shapes.or(shape, SOUTH_SHAPE);
+		else if (axis.equals(Direction.Axis.Z))
+			shape = Shapes.or(shape, SOUTH_FLAT);
+		if (state.getValue(WEST))
+			shape = Shapes.or(shape, WEST_SHAPE);
+		else if (axis.equals(Direction.Axis.X))
+			shape = Shapes.or(shape, WEST_FLAT);
+		if (state.getValue(EAST))
+			shape = Shapes.or(shape, EAST_SHAPE);
+		else if (axis.equals(Direction.Axis.X))
+			shape = Shapes.or(shape, EAST_FLAT);
 
 		return shape;
 	}

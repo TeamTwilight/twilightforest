@@ -31,7 +31,8 @@ public class DisplayUtil {
 		// See Display.addAdditionalSaveData()
 		DataResult<Tag> serializedTransform = Transformation.EXTENDED_CODEC.encodeStart(NbtOps.INSTANCE, transform);
 
-		if (serializedTransform.isError()) return false;
+		if (serializedTransform.isError())
+			return false;
 
 		CompoundTag entityNBT = new CompoundTag();
 		entityNBT.put("transformation", serializedTransform.resultOrPartial().orElseGet(CompoundTag::new));
@@ -51,7 +52,8 @@ public class DisplayUtil {
 		ValueInput valueInput = TagValueInput.create(entitySpawnReporter, level.registryAccess(), entityNBT);
 		Optional<Entity> spawned = EntityType.create(valueInput, level, new EntitySpawnRequest(EntitySpawnReason.LOAD, false));
 
-		if (spawned.isEmpty()) return false;
+		if (spawned.isEmpty())
+			return false;
 		Entity entity = spawned.get();
 
 		return level.addFreshEntity(entity);
@@ -95,7 +97,8 @@ public class DisplayUtil {
 		ValueInput valueInput = TagValueInput.create(entitySpawnReporter, level.registryAccess(), entityNBT);
 		Optional<Entity> spawned = EntityType.create(valueInput, level, new EntitySpawnRequest(EntitySpawnReason.LOAD, false));
 
-		if (spawned.isEmpty()) return;
+		if (spawned.isEmpty())
+			return;
 		Entity entity = spawned.get();
 
 		level.addFreshEntity(entity);

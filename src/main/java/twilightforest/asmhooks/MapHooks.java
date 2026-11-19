@@ -41,14 +41,18 @@ public class MapHooks {
 	 * Targets: {@link net.minecraft.world.entity.player.Inventory.contains( Predicate )}
 	 */
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
-		if (o) return true;
+		if (o)
+			return true;
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (!TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) return false;
+		if (!TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
+			return false;
 		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
-		if (contents == null || contents.isEmpty()) return false;
+		if (contents == null || contents.isEmpty())
+			return false;
 		NonNullList<ItemStack> items = contents.items();
 		int activeMapSlot = contents.findActiveMapSlot();
-		if (activeMapSlot < 0) return false;
+		if (activeMapSlot < 0)
+			return false;
 
 		ItemStack map = items.get(activeMapSlot);
 		return !map.isEmpty() && ItemStack.isSameItemSameComponents(stack, map);

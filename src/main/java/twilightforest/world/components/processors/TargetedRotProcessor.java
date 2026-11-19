@@ -37,7 +37,8 @@ public final class TargetedRotProcessor implements StructureProcessor {
 	@Nullable
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-		if (!this.blocksToRot.contains(modifiedBlockInfo.state())) return modifiedBlockInfo;
+		if (!this.blocksToRot.contains(modifiedBlockInfo.state()))
+			return modifiedBlockInfo;
 		return rotProcessor.process(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings, template);
 	}
 

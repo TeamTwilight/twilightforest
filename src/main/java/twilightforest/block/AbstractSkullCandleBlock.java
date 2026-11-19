@@ -153,7 +153,8 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
                     }
                     level.setBlockAndUpdate(pos, newState);
                     level.setBlockEntity(new SkullBlockEntity(pos, newState));
-                    if (level.getBlockEntity(pos) instanceof SkullBlockEntity sc1) sc1.setComponents(components);
+                    if (level.getBlockEntity(pos) instanceof SkullBlockEntity sc1)
+						sc1.setComponents(components);
 				}
 			}
 			level.playSound(null, pos, SoundEvents.CANDLE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -176,28 +177,46 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		Block newBlock;
 		switch ((SkullBlock.Types) this.getType()) {
 			case SKELETON -> {
-				if (wall) newBlock = Blocks.SKELETON_WALL_SKULL;
-				else newBlock = Blocks.SKELETON_SKULL;
+				if (wall) {
+					newBlock = Blocks.SKELETON_WALL_SKULL;
+				} else {
+					newBlock = Blocks.SKELETON_SKULL;
+				}
 			}
 			case WITHER_SKELETON -> {
-				if (wall) newBlock = Blocks.WITHER_SKELETON_WALL_SKULL;
-				else newBlock = Blocks.WITHER_SKELETON_SKULL;
+				if (wall) {
+					newBlock = Blocks.WITHER_SKELETON_WALL_SKULL;
+				} else {
+					newBlock = Blocks.WITHER_SKELETON_SKULL;
+				}
 			}
 			case PLAYER -> {
-				if (wall) newBlock = Blocks.PLAYER_WALL_HEAD;
-				else newBlock = Blocks.PLAYER_HEAD;
+				if (wall) {
+					newBlock = Blocks.PLAYER_WALL_HEAD;
+				} else {
+					newBlock = Blocks.PLAYER_HEAD;
+				}
 			}
 			case ZOMBIE -> {
-				if (wall) newBlock = Blocks.ZOMBIE_WALL_HEAD;
-				else newBlock = Blocks.ZOMBIE_HEAD;
+				if (wall) {
+					newBlock = Blocks.ZOMBIE_WALL_HEAD;
+				} else {
+					newBlock = Blocks.ZOMBIE_HEAD;
+				}
 			}
 			case CREEPER -> {
-				if (wall) newBlock = Blocks.CREEPER_WALL_HEAD;
-				else newBlock = Blocks.CREEPER_HEAD;
+				if (wall) {
+					newBlock = Blocks.CREEPER_WALL_HEAD;
+				} else {
+					newBlock = Blocks.CREEPER_HEAD;
+				}
 			}
 			case PIGLIN -> {
-				if (wall) newBlock = Blocks.PIGLIN_WALL_HEAD;
-				else newBlock = Blocks.PIGLIN_HEAD;
+				if (wall) {
+					newBlock = Blocks.PIGLIN_WALL_HEAD;
+				} else {
+					newBlock = Blocks.PIGLIN_HEAD;
+				}
 			}
 			default -> newBlock = null;
 		}

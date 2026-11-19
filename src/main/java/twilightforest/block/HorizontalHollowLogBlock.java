@@ -64,7 +64,8 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 	private static boolean isInside(HitResult result, Direction.Axis axis, BlockPos pos) {
 		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
 
-		if (0.124 > vec.y || vec.y > 0.876) return false;
+		if (0.124 > vec.y || vec.y > 0.876)
+			return false;
 		// 2vox/16vox < y < 14vox/16vox
 
 		return switch (axis) {
@@ -137,7 +138,8 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		Direction.Axis stateAxis = state.getValue(HORIZONTAL_AXIS);
-		if (!isInside(hit, stateAxis, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
+		if (!isInside(hit, stateAxis, pos))
+			return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
 		HollowLogVariants.Horizontal variant = state.getValue(VARIANT);
 
@@ -208,7 +210,8 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		Direction.Axis stateAxis = state.getValue(HORIZONTAL_AXIS);
-		if (!isInside(hit, stateAxis, pos)) return super.useWithoutItem(state, level, pos, player, hit);
+		if (!isInside(hit, stateAxis, pos))
+			return super.useWithoutItem(state, level, pos, player, hit);
 		if (player.isSecondaryUseActive() && player.getDirection().getAxis().equals(stateAxis) &&
 			player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
 			player.setPose(Pose.SWIMMING);

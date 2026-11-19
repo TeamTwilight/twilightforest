@@ -53,7 +53,8 @@ public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 	}
 
 	private void applyPartVisibility() {
-		if (this.slot == null) return;
+		if (this.slot == null)
+			return;
 
 		this.allParts().forEach(part -> part.visible = false);
 		this.root().visible = true;

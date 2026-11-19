@@ -57,7 +57,8 @@ public class PlayerHelper {
 		if (player.level().isClientSide()) {
 			if (player instanceof LocalPlayer) {
 				ClientAdvancements manager = ((LocalPlayer) player).connection.getAdvancements();
-				if (holder == null) return false;
+				if (holder == null)
+					return false;
 
 				AdvancementProgress progress = manager.progress.get(holder);
 				return progress != null && progress.isDone();

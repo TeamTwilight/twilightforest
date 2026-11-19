@@ -81,7 +81,8 @@ public class CastleDoorBlock extends Block {
 	}
 
 	private InteractionResult onActivation(Level level, BlockPos pos, BlockState state) {
-		if (state.getValue(VANISHED) || state.getValue(ACTIVE)) return InteractionResult.FAIL;
+		if (state.getValue(VANISHED) || state.getValue(ACTIVE))
+			return InteractionResult.FAIL;
 
 		if (isBlockLocked(level, pos)) {
 			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED.get(), SoundSource.BLOCKS, 1.0F, 0.3F);

@@ -92,11 +92,13 @@ public class ChainBlockItem extends Item {
 	@Override
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
-		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null || !state.is(TFBlockTags.MINEABLE_WITH_BLOCK_AND_CHAIN)) return false;
+		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null || !state.is(TFBlockTags.MINEABLE_WITH_BLOCK_AND_CHAIN))
+			return false;
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null) {
 			int destruction = stack.getEnchantmentLevel(server.registryAccess().holderOrThrow(TFEnchantments.DESTRUCTION));
-			if (destruction > 0) return this.canHarvest(server.registryAccess(), state, destruction);
+			if (destruction > 0)
+				return this.canHarvest(server.registryAccess(), state, destruction);
 		}
 		return false;
 	}

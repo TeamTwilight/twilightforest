@@ -77,7 +77,8 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 			List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
 			for (Direction side : Direction.values()) {
 				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
-				if (handler != null) handlers.add(handler);
+				if (handler != null)
+					handlers.add(handler);
 			}
 			if (!handlers.isEmpty()) {
 				inputMap.put(handlers, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
@@ -85,33 +86,40 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 			}
 		});
 
-		if (inputMap.isEmpty()) return; // No input
+		if (inputMap.isEmpty())
+			return; // No input
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
 			for (Direction side : Direction.values()) {
 				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
-				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+				if (handler != null)
+					outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 			}
 		});
 
-		if (outputMap.isEmpty()) return; // No output
+		if (outputMap.isEmpty())
+			return; // No output
 
 		for (Map.Entry<List<ResourceHandler<ItemResource>>, Vec3> inputHandlers : inputMap.entrySet()) {
 			boolean transferred = false;
 			for (ResourceHandler<ItemResource> inputIItemHandler : inputHandlers.getKey()) {
 				for (int i = 0; i < inputIItemHandler.size(); i++) {
 					ItemResource itemResource = inputIItemHandler.getResource(i);
-					if (itemResource.isEmpty()) continue;
+					if (itemResource.isEmpty())
+						continue;
 					try (Transaction tx = Transaction.openRoot()) {
-						if (inputIItemHandler.extract(i, itemResource, 1, tx) == 0) continue;
+						if (inputIItemHandler.extract(i, itemResource, 1, tx) == 0)
+							continue;
 						Map<ResourceHandler<ItemResource>, Integer> outputCounts = new HashMap<>();
 
 						for (ResourceHandler<ItemResource> outputHandler : outputMap.keySet()) {
 							int count = 0;
 							for (int j = 0; j < outputHandler.size(); j++) {
-								if (itemResource.equals(outputHandler.getResource(j))) count += outputHandler.getAmountAsInt(j);
+								if (itemResource.equals(outputHandler.getResource(j)))
+									count += outputHandler.getAmountAsInt(j);
 							}
-							if (count > 0) outputCounts.put(outputHandler, count);
+							if (count > 0)
+								outputCounts.put(outputHandler, count);
 						}
 
 						List<ResourceHandler<ItemResource>> sortedOutputs = outputCounts.entrySet().stream()
@@ -137,9 +145,11 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 							}
 						}
 					}
-					if (transferred) break;// If we transferred the item from this Entry already, we break, since all IItemHandlers in one entry come from the same source
+					if (transferred)
+						break;// If we transferred the item from this Entry already, we break, since all IItemHandlers in one entry come from the same source
 				}
-				if (transferred) break; // Again, since we only transfer once per source, break
+				if (transferred)
+					break; // Again, since we only transfer once per source, break
 			}
 		}
 	}

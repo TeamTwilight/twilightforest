@@ -8,7 +8,8 @@ import java.util.List;
 
 public abstract class IntervalUtils {
 	public static List<Pair<Integer, Integer>> mergeAndSortIntervals(List<Pair<Integer, Integer>> intervals) {
-		if (intervals.isEmpty()) return intervals;
+		if (intervals.isEmpty())
+			return intervals;
 
 		intervals.sort(Comparator.comparingInt(Pair::getFirst));
 

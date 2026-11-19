@@ -44,7 +44,8 @@ public class UncraftingContainer implements Container, ContainerData {
 	@Override
 	public ItemStack removeItem(int index, int amount) {
 		ItemStack stack = this.contents.get(index);
-		if (stack.isEmpty()) return ItemStack.EMPTY;
+		if (stack.isEmpty())
+			return ItemStack.EMPTY;
 		if (stack.getCount() <= amount) {
 			this.contents.set(index, ItemStack.EMPTY);
 			return stack;
@@ -56,7 +57,8 @@ public class UncraftingContainer implements Container, ContainerData {
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = this.contents.get(index);
-		if (stack.isEmpty()) return ItemStack.EMPTY;
+		if (stack.isEmpty())
+			return ItemStack.EMPTY;
 		this.contents.set(index, ItemStack.EMPTY);
 		return stack;
 	}

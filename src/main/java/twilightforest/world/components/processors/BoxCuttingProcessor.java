@@ -50,7 +50,8 @@ public final class BoxCuttingProcessor implements StructureProcessor {
 		List<BoundingBox> boxes = new ArrayList<>();
 
 		for (Tag tagElement : tag) {
-			if (!(tagElement instanceof CompoundTag boxCompound)) continue;
+			if (!(tagElement instanceof CompoundTag boxCompound))
+				continue;
 
 			try {
 				boxes.add(BoundingBoxUtils.NBTToBoundingBox(boxCompound));

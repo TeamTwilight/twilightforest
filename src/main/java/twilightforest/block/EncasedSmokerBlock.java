@@ -27,7 +27,8 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 
 	@Override
 	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
-		if (level.isClientSide()) return;
+		if (level.isClientSide())
+			return;
 
 		boolean powered = level.hasNeighborSignal(pos);
 

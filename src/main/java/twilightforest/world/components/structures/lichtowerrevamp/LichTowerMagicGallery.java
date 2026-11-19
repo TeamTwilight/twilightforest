@@ -147,7 +147,8 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 			default -> null;
 		};
 
-		if (variantId == null) return Optional.empty();
+		if (variantId == null)
+			return Optional.empty();
 
 		return level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).get(variantId);
 	}

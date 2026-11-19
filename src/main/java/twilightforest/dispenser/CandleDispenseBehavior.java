@@ -55,11 +55,13 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 				}
 			}
 		} else if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
-			if (!(candle instanceof BlockItem block)) return false;
+			if (!(candle instanceof BlockItem block))
+				return false;
 			BlockState state = level.getBlockState(pos);
 			for (int i = 0; i < 3; i++) {
 				Block storedCandle = candelabra.getCandle(i);
-				if (storedCandle != Blocks.AIR) continue;
+				if (storedCandle != Blocks.AIR)
+					continue;
 				level.setBlockAndUpdate(pos, state.setValue(CandelabraBlock.CANDLES.get(i), true));
 				candelabra.setCandle(i, block.getBlock());
 
@@ -79,28 +81,46 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			boolean wall = blockstate.getBlock() instanceof WallSkullBlock;
 			switch (type) {
 				case SKELETON -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.SKELETON_SKULL_CANDLE.get(), candle);
+					if (wall) {
+						makeWallSkull(level, pos, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), candle);
+					} else {
+						makeFloorSkull(level, pos, TFBlocks.SKELETON_SKULL_CANDLE.get(), candle);
+					}
 				}
 				case WITHER_SKELETON -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), candle);
+					if (wall) {
+						makeWallSkull(level, pos, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), candle);
+					} else {
+						makeFloorSkull(level, pos, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), candle);
+					}
 				}
 				case PLAYER -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.PLAYER_SKULL_CANDLE.get(), candle);
+					if (wall) {
+						makeWallSkull(level, pos, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), candle);
+					} else {
+						makeFloorSkull(level, pos, TFBlocks.PLAYER_SKULL_CANDLE.get(), candle);
+					}
 				}
 				case ZOMBIE -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.ZOMBIE_SKULL_CANDLE.get(), candle);
+					if (wall) {
+						makeWallSkull(level, pos, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), candle);
+					} else {
+						makeFloorSkull(level, pos, TFBlocks.ZOMBIE_SKULL_CANDLE.get(), candle);
+					}
 				}
 				case CREEPER -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.CREEPER_SKULL_CANDLE.get(), candle);
+					if (wall) {
+						makeWallSkull(level, pos, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), candle);
+					} else {
+						makeFloorSkull(level, pos, TFBlocks.CREEPER_SKULL_CANDLE.get(), candle);
+					}
 				}
 				case PIGLIN -> {
-					if (wall) makeWallSkull(level, pos, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), candle);
-					else makeFloorSkull(level, pos, TFBlocks.PIGLIN_SKULL_CANDLE.get(), candle);
+					if (wall) {
+						makeWallSkull(level, pos, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), candle);
+					} else {
+						makeFloorSkull(level, pos, TFBlocks.PIGLIN_SKULL_CANDLE.get(), candle);
+					}
 				}
 				default -> {
 					return false;
@@ -131,7 +151,8 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
 	private static void makeWallSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
 		ResolvableProfile profile = null;
-		if (level.getBlockEntity(pos) instanceof SkullBlockEntity skull) profile = skull.getOwnerProfile();
+		if (level.getBlockEntity(pos) instanceof SkullBlockEntity skull)
+			profile = skull.getOwnerProfile();
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 			.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)));

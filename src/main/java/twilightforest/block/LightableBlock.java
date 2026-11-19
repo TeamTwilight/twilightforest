@@ -63,7 +63,8 @@ public interface LightableBlock {
 	default void addParticlesAndSound(Level level, double x, double y, double z, RandomSource rand, Lighting lighting) {
 		float var3 = rand.nextFloat();
 		if (var3 < 0.3F) {
-			if (lighting == Lighting.NORMAL) level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
+			if (lighting == Lighting.NORMAL)
+				level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
 			if (var3 < 0.17F) {
 				level.playLocalSound(x + 0.5D, y + 0.5D, z + 0.5D, SoundEvents.CANDLE_AMBIENT, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
 			}

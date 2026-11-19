@@ -844,7 +844,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		int worldY = this.getWorldY(y);
 		int worldZ = this.getZWithOffsetRotated(x, z, rotation);
 		final BlockPos vec = new BlockPos(worldX, worldY, worldZ);
-		if (!sbb.isInside(vec)) return false;
+		if (!sbb.isInside(vec))
+			return false;
 		BlockState blockState = world.getBlockState(vec);
 		return blockState.getBlock() != Blocks.AIR && blockState != deco.accentState;
 	}

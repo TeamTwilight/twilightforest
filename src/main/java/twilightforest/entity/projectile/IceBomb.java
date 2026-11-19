@@ -73,7 +73,8 @@ public class IceBomb extends TFThrowable {
 
 		for (int x = -range; x <= range; x++) {
 			for (int z = -range; z <= range; z++) {
-				if (Math.abs(x) == range && Math.abs(z) == range) continue;
+				if (Math.abs(x) == range && Math.abs(z) == range)
+					continue;
 				for (int y = -range; y <= range; y++) {
 					BlockPos pos = new BlockPos(ix + x, iy + y, iz + z);
 					this.doTerrainEffect(pos);
@@ -145,8 +146,10 @@ public class IceBomb extends TFThrowable {
 				this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
-			if (this.zoneTimer == 99) this.doTerrainEffects(3);
-			if (this.zoneTimer % 20 == 0) this.hitNearbyEntities((ServerLevel) this.level());
+			if (this.zoneTimer == 99)
+				this.doTerrainEffects(3);
+			if (this.zoneTimer % 20 == 0)
+				this.hitNearbyEntities((ServerLevel) this.level());
 		}
 	}
 
@@ -162,7 +165,9 @@ public class IceBomb extends TFThrowable {
 					level.setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
 					entity.discard();
-				} else this.inflictDamage(level, entity, 1);
+				} else {
+					this.inflictDamage(level, entity, 1);
+				}
 			}
 		}
 	}

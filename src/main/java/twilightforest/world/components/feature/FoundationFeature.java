@@ -90,7 +90,8 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 	}
 
 	private static void generateBasement(int xWidth, int zWidth, int depth, WorldGenLevel world, BlockPos ceilingPos, RandomSource rand, FloatProvider placeFloorTest, BlockStateProvider floor, BlockStateProvider basementPost, BlockStateProvider lootContainer, ResourceKey<LootTable> lootTable) {
-		if (xWidth < 1 || zWidth < 1 || depth < 1) return;
+		if (xWidth < 1 || zWidth < 1 || depth < 1)
+			return;
 
 		int chestX = rollChestCoord(xWidth, rand);
 		int chestZ = rollChestCoord(zWidth, rand);
@@ -99,17 +100,22 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 		for (int dX = 0; dX <= xWidth; dX++) {
 			for (int dZ = 0; dZ <= zWidth; dZ++) {
 				int cornerOverlap = 0;
-				if (dX == 0) cornerOverlap++;
-				if (dZ == 0) cornerOverlap++;
-				if (dX == xWidth) cornerOverlap++;
-				if (dZ == zWidth) cornerOverlap++;
+				if (dX == 0)
+					cornerOverlap++;
+				if (dZ == 0)
+					cornerOverlap++;
+				if (dX == xWidth)
+					cornerOverlap++;
+				if (dZ == zWidth)
+					cornerOverlap++;
 
 				boolean isInCorner = cornerOverlap > 1;
 
 				for (int dY = 1 - depth; dY <= 0; dY++) {
 					BlockPos placeAt = ceilingPos.offset(dX, dY, dZ);
 					world.setBlock(placeAt, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-					if (isInCorner) setAndUpdate(world, rand, basementPost, placeAt);
+					if (isInCorner)
+						setAndUpdate(world, rand, basementPost, placeAt);
 				}
 
 				if ((dX == chestX && dZ == chestZ) || (cornerOverlap == 0 && placeFloorTest.sample(rand) <= 0)) {

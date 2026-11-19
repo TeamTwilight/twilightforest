@@ -92,7 +92,8 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	public static int getCandleCount(BlockState state) {
 		int candleCount = 0;
 		for (BooleanProperty property : CANDLES) {
-			if (state.getValue(property)) candleCount++;
+			if (state.getValue(property))
+				candleCount++;
 		}
 		return candleCount;
 	}
@@ -299,7 +300,8 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	public boolean placeLiquid(LevelAccessor accessor, BlockPos pos, BlockState state, FluidState fluid) {
 		if (!state.getValue(BlockStateProperties.WATERLOGGED) && fluid.is(Fluids.WATER)) {
 			boolean flag = state.getValue(LIGHTING) != Lighting.NONE;
-			if (flag) this.extinguish(null, state, accessor, pos);
+			if (flag)
+				this.extinguish(null, state, accessor, pos);
 
 			accessor.setBlock(pos, state.setValue(WATERLOGGED, true).setValue(LIGHTING, Lighting.NONE), Block.UPDATE_ALL);
 			accessor.scheduleTick(pos, fluid.getType(), fluid.getType().getTickDelay(accessor));

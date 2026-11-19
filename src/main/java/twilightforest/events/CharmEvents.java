@@ -72,10 +72,11 @@ public class CharmEvents {
 		LivingEntity living = event.getEntity();
 
 		// Ensure our player is real and in survival before attempting anything
-		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
-				player.isCreative() || player.isSpectator()) return;
+		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer || player.isCreative() || player.isSpectator())
+			return;
 
-		if (handleCharmOfLife(player)) event.setCanceled(true); // Executes if the player had charms
+		if (handleCharmOfLife(player))
+			event.setCanceled(true); // Executes if the player had charms
 	}
 
 	// Then check if the player should keep any items through death
@@ -83,8 +84,8 @@ public class CharmEvents {
 		LivingEntity living = event.getEntity();
 
 		// Ensure our player is real and in survival before attempting anything
-		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
-				player.isCreative() || player.isSpectator()) return;
+		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer || player.isCreative() || player.isSpectator())
+			return;
 
 		if (living.level() instanceof ServerLevel server && !server.getGameRules().get(GameRules.KEEP_INVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
@@ -96,7 +97,8 @@ public class CharmEvents {
 	}
 
 	private void returnItemsOnRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+			return;
 		if (!event.isEndConquered()) {
 			returnStoredItems(serverPlayer);
 		}

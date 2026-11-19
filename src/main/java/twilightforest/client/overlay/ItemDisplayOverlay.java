@@ -66,7 +66,8 @@ public class ItemDisplayOverlay {
 
 		for (int i = 0; i < slots; i++) {
 			ItemStack stack = items.get(i);
-			if (stack.isEmpty()) continue;
+			if (stack.isEmpty())
+				continue;
 
 			ItemDisplayType type = ItemDisplayContents.LAYOUT.get(i).get();
 			if (type == ItemDisplays.MAP.get() && i != activeMapSlot)

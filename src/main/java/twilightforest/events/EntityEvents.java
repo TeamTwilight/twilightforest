@@ -242,7 +242,8 @@ public class EntityEvents {
 				} else if (container.getSource().typeHolder().is(DamageTypeTags.IS_FIRE)) {
 					living.removeEffect(TFMobEffects.FROSTY);
 					mobEffectInstance.amplifier -= 1;
-					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
+					if (mobEffectInstance.amplifier >= 0)
+						living.addEffect(mobEffectInstance);
 				}
 			});
 		}
@@ -283,28 +284,46 @@ public class EntityEvents {
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
 					switch (type) {
 						case SKELETON -> {
-							if (wall) makeSkullCandle(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.SKELETON_SKULL_CANDLE.get());
+							if (wall) {
+								makeSkullCandle(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get());
+							} else {
+								makeSkullCandle(event, TFBlocks.SKELETON_SKULL_CANDLE.get());
+							}
 						}
 						case WITHER_SKELETON -> {
-							if (wall) makeSkullCandle(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get());
+							if (wall) {
+								makeSkullCandle(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get());
+							} else {
+								makeSkullCandle(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get());
+							}
 						}
 						case PLAYER -> {
-							if (wall) makeSkullCandle(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.PLAYER_SKULL_CANDLE.get());
+							if (wall) {
+								makeSkullCandle(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get());
+							} else {
+								makeSkullCandle(event, TFBlocks.PLAYER_SKULL_CANDLE.get());
+							}
 						}
 						case ZOMBIE -> {
-							if (wall) makeSkullCandle(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.ZOMBIE_SKULL_CANDLE.get());
+							if (wall) {
+								makeSkullCandle(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get());
+							} else {
+								makeSkullCandle(event, TFBlocks.ZOMBIE_SKULL_CANDLE.get());
+							}
 						}
 						case CREEPER -> {
-							if (wall) makeSkullCandle(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
+							if (wall) {
+								makeSkullCandle(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
+							} else {
+								makeSkullCandle(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
+							}
 						}
 						case PIGLIN -> {
-							if (wall) makeSkullCandle(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
+							if (wall) {
+								makeSkullCandle(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
+							} else {
+								makeSkullCandle(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
+							}
 						}
 						default -> {
 							return;

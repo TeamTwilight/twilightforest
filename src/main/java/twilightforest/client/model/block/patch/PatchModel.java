@@ -70,7 +70,8 @@ public class PatchModel implements DynamicBlockStateModel {
 
 		this.addFromAABB(parts, west ? 0 : bb.minX(), bb.minY(), north ? 0 : bb.minZ(), east ? 16 : bb.maxX(), bb.maxY(), south ? 16 : bb.maxZ(), interner);
 
-		if (!this.shaggify) return;
+		if (!this.shaggify)
+			return;
 
 		// Poll these seeds before entering branching code, otherwise placing neighbors will cause odd changes
 		long westSeed = posRandom.nextLong();

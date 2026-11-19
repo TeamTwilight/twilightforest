@@ -147,10 +147,12 @@ public class BiomeDensitySource {
 			}
 
 			cz++;
-			if (cz < zCount) continue;
+			if (cz < zCount)
+				continue;
 			cz = 0;
 			cx++;
-			if (cx >= xCount) break;
+			if (cx >= xCount)
+				break;
 		}
 
 		return new DensityData(totalMappedDepth / totalContribution, totalScale / totalScaleContribution);

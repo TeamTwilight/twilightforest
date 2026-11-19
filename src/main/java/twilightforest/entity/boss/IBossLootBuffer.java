@@ -75,9 +75,12 @@ public interface IBossLootBuffer {
 				BlockPos.MutableBlockPos chestPos = pos.mutable();
 				for (int y = pos.getY(); y < serverLevel.getMaxY(); y++) {
 					chestPos.setY(y);
-					if (tryDeposit(boss, chest, chestPos, serverLevel)) return;
+					if (tryDeposit(boss, chest, chestPos, serverLevel))
+						return;
 				}
-			} else return;
+			} else {
+				return;
+			}
 
 			for (int i = 0; i < CONTAINER_SIZE; i++) {
 				Block.popResource(serverLevel, pos, boss.getItem(i));
@@ -128,7 +131,8 @@ public interface IBossLootBuffer {
 
 	default List<Integer> getAvailableSlots(RandomSource random) {
 		ObjectArrayList<Integer> arrayList = new ObjectArrayList<>();
-		for (int i = 0; i < CONTAINER_SIZE; ++i) arrayList.add(i);
+		for (int i = 0; i < CONTAINER_SIZE; ++i)
+			arrayList.add(i);
 		Util.shuffle(arrayList, random);
 		return arrayList;
 	}

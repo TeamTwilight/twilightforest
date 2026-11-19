@@ -213,7 +213,9 @@ public class MagicMapItem extends MapItem {
 				} else {
 					builder.accept(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
 				}
-			} else builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+			} else {
+				builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+			}
 		}
 	}
 }

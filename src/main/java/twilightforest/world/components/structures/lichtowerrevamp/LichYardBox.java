@@ -180,7 +180,8 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		int ySurface = foyerPiece.getBoundingBox().minY() + foyerPiece.getGroundLevelDelta();
 
 		JigsawRecord path = foyerPiece.matchSpareJigsaws(r -> "twilightforest:lich_tower/path".equals(r.target())).getFirst();
-		if (path == null) return;
+		if (path == null)
+			return;
 
 		int pathLength = random.nextInt(24, 32);
 		Direction direction = foyerPiece.getRotation().rotate(Direction.SOUTH);
@@ -196,7 +197,8 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		Stream<BlockPos> foyerRootPos = Stream.of(foyerPiece.getBoundingBox().getCenter().above(10), BoundingBoxUtils.bottomCenterOf(foyerPiece.getBoundingBox()).below(10));
 		Stream<BlockPos> fencePostPos = pieces.pieces.stream().filter(p -> p instanceof LichPerimeterFence).flatMap(f -> ((LichPerimeterFence) f).fencePostPositions());
 		Optional<BoundingBox> fullYard = BoundingBox.encapsulatingPositions(Streams.concat(foyerRootPos, fencePostPos).collect(Collectors.toUnmodifiableSet()));
-		if (fullYard.isEmpty()) return;
+		if (fullYard.isEmpty())
+			return;
 
 		BoundingBox yardBox = BoundingBoxUtils.safeRetract(BoundingBoxUtils.setY(fullYard.get().inflatedBy(3), ySurface, ySurface + 10), foyerPiece.getSourceJigsaw().orientation().top().getOpposite(), 5);
 
@@ -262,7 +264,8 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		this.addChildren(parent, pieces, random);
 
 		Direction.Axis axis = this.direction.getAxis();
-		if (axis == Direction.Axis.Y || this.scale != 0) return;
+		if (axis == Direction.Axis.Y || this.scale != 0)
+			return;
 
 		int baseY = this.boundingBox.minY();
 
@@ -277,7 +280,8 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 			Identifier templateId = lichTowerUtil.rollGrave(random);
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(randomPos.atY(baseY - 1), BlockPos.ZERO, orientation, context.structureTemplateManager(), templateId, "twilightforest:lich_tower/grave", random);
 
-			if (placeableJunction == null) continue;
+			if (placeableJunction == null)
+				continue;
 
 			LichYardGrave grave = new LichYardGrave(context.structureTemplateManager(), placeableJunction, templateId);
 			if (pieces.findCollisionPiece(grave.getBoundingBox()) == null) {

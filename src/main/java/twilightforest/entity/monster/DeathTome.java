@@ -73,7 +73,9 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				if (this.mob instanceof DeathTome tome && tome.isOnLectern()) {
 					this.target = tome.level().getNearestPlayer(tome.getX(), tome.getY(), tome.getZ(), 3.0D, entity ->
 						entity instanceof Player player && !player.isShiftKeyDown() && tome.isLookingAtMe(player, 0.25D, false, true, tome.getEyeY(), tome.getY() + 0.5D * tome.getScale(), (tome.getEyeY() + tome.getY()) / 2.0D) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player));
-				} else super.findTarget();
+				} else {
+					super.findTarget();
+				}
 			}
 		});
 	}
@@ -132,7 +134,8 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				this.yHeadRot = this.yRotO;
 				this.yHeadRotO = this.yRotO;
 
-				if (!this.level().isClientSide()) this.targetSelector.tick(); // Tick target selector, so that our Tome can find an enemy to ambush
+				if (!this.level().isClientSide())
+					this.targetSelector.tick(); // Tick target selector, so that our Tome can find an enemy to ambush
 
 				if (this.getTarget() != null) {
 					this.setOnLectern(false);
@@ -171,12 +174,14 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 	@Override
 	public void tick() {
-		if (this.isOnLectern()) this.ambientSoundTime = -1; // Don't play ambient sounds if we're trying to be stealthy
+		if (this.isOnLectern())
+			this.ambientSoundTime = -1; // Don't play ambient sounds if we're trying to be stealthy
 		if (this.level().isClientSide()) {
 			float f1 = this.flipT;
 
 			if (this.random.nextInt(this.isOnLectern() ? 120 : 30) == 0) {
-				do this.flipT += (float) (this.random.nextInt(4) - this.random.nextInt(4));
+				do
+					this.flipT += (float) (this.random.nextInt(4) - this.random.nextInt(4));
 				while (f1 == this.flipT);
 			}
 

@@ -534,7 +534,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 				if (!predicate.test(world.getUncachedNoiseBiome(  // getUncachedNoiseBiome() requires quart pos instead of blockPos, unlike getBiome()
 					QuartPos.fromBlock(x),
 					QuartPos.fromBlock(structurePos.getY()),
-					QuartPos.fromBlock(z)).value())) return true;
+					QuartPos.fromBlock(z)).value()))
+					return true;
 			}
 		}
 

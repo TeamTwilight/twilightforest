@@ -207,8 +207,10 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		BlockPos pos = new BlockPos(getWorldX(rx, rz), getWorldY(FLOOR_LEVEL), getWorldZ(rx, rz));
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (Blocks.CHEST)) {
 			Direction facing;
-			if (Math.abs(xDiff) > Math.abs(zDiff)) facing = xDiff < 0 ? Direction.WEST : Direction.EAST;
-			else facing = zDiff < 0 ? Direction.NORTH : Direction.SOUTH;
+			if (Math.abs(xDiff) > Math.abs(zDiff))
+				facing = xDiff < 0 ? Direction.WEST : Direction.EAST;
+			else
+				facing = zDiff < 0 ? Direction.NORTH : Direction.SOUTH;
 			TFLootTables.generateChest(world, pos, facing, false, table);
 		}
 	}

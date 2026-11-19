@@ -159,7 +159,8 @@ public class TravellersClientEvents {
 		if (Minecraft.getInstance().level == null)
 			return;
 		for (Entity entity : Minecraft.getInstance().level.entitiesForRendering()) {
-			if (!(entity instanceof Player player)) continue;
+			if (!(entity instanceof Player player))
+				continue;
 			TravellersGearLogic.travellersStealth(player, player1 -> player1.setInvisible(true));  // call it on client to make player invisible instantly
 		}
 	}

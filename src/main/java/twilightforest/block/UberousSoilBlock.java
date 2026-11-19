@@ -55,14 +55,17 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	@Override
 	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
-		if (facing.getAxis() != Direction.Axis.Y) return TriState.FALSE;
-		if (plant.is(BlockTags.CROPS)) return TriState.TRUE;
+		if (facing.getAxis() != Direction.Axis.Y)
+			return TriState.FALSE;
+		if (plant.is(BlockTags.CROPS))
+			return TriState.TRUE;
 		return super.canSustainPlant(state, level, soilPosition, facing, plant);
 	}
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
-		if (!newState.is(state.getBlock()) && !level.getBlockState(pos.above()).isAir()) level.scheduleTick(pos, this, 1);
+		if (!newState.is(state.getBlock()) && !level.getBlockState(pos.above()).isAir())
+			level.scheduleTick(pos, this, 1);
 	}
 
 	@Override
@@ -222,6 +225,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	public void spreadTo(ServerLevel level, BlockPos pos) {
 		level.setBlockAndUpdate(pos, this.defaultBlockState());
-		if (!level.getBlockState(pos.above()).isAir()) level.scheduleTick(pos, this, 1);
+		if (!level.getBlockState(pos.above()).isAir())
+			level.scheduleTick(pos, this, 1);
 	}
 }

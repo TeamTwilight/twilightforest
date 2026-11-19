@@ -38,7 +38,8 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 				level.setBlock(position, this.state.setValue(FallenLeavesBlock.LAYERS, startHeight), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 				for (int i = 0; i < startHeight; i++) {
 					this.generateCircleOfLeaves(level, position, rand, i, startHeight - i - 1);
-					if (rand.nextInt(3) == 0) i++;
+					if (rand.nextInt(3) == 0)
+						i++;
 				}
 			}
 			return true;

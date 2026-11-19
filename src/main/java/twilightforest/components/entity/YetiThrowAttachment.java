@@ -37,7 +37,8 @@ public class YetiThrowAttachment {
 	private void sendUpdatePacket(Player player) {
 		if (!player.level().isClientSide()) {
 			int throwerID = 0;
-			if (this.thrower != null) throwerID = this.thrower.getId();
+			if (this.thrower != null)
+				throwerID = this.thrower.getId();
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new UpdateThrownPacket(player.getId(), this.thrown, throwerID));
 		}
 	}

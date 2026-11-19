@@ -92,7 +92,8 @@ public class ProgressionEvents {
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
 	 */
 	private void preventLockedAreaBlockBreaking(BreakBlockEvent event) {
-		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled())
+			return;
 
 		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, event.getPlayer(), pos)) {
@@ -105,7 +106,8 @@ public class ProgressionEvents {
 	 * Check if the player is trying to place a block in a structure that's considered inaccessible for progression reasons
 	 */
 	private void preventLockedAreaBlockPlacing(PlayerInteractEvent.RightClickBlock event) {
-		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled())
+			return;
 
 		BlockPos pos = event.getPos();
 		if (isAreaProtected(level, event.getEntity(), pos)) {
@@ -120,7 +122,8 @@ public class ProgressionEvents {
 	private void preventLockedAreaMultiblocks(BlockEvent.EntityMultiPlaceEvent event) {
 		Entity entity = event.getEntity();
 
-		if (!(event.getLevel() instanceof ServerLevel level) || !(entity instanceof Player player) || event.isCanceled()) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || !(entity instanceof Player player) || event.isCanceled())
+			return;
 
 		for (BlockSnapshot snapshot : event.getReplacedBlockSnapshots()) {
 			BlockPos pos = snapshot.getPos();
@@ -192,7 +195,8 @@ public class ProgressionEvents {
 	private void performProtectionAndPortalChecks(PlayerTickEvent.Post event) {
 		Player eventPlayer = event.getEntity();
 
-		if (!(eventPlayer instanceof ServerPlayer player)) return;
+		if (!(eventPlayer instanceof ServerPlayer player))
+			return;
 		ServerLevel level = player.level();
 
 		// check for portal creation, at least if it's not disabled
@@ -256,7 +260,8 @@ public class ProgressionEvents {
 				}
 			}
 
-			if (qualified == null) return;
+			if (qualified == null)
+				return;
 
 			if (!player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
 				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));

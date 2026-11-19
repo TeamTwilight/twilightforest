@@ -122,7 +122,8 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
-		if (this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER)) return ItemStack.EMPTY;
+		if (this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER))
+			return ItemStack.EMPTY;
 		return super.removeItem(slot, amount);
 	}
 

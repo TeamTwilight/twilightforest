@@ -90,7 +90,8 @@ public class BoundingBoxUtils {
 
 	@Nullable
 	public static AABB vectorsMinMax(List<Vec3> vec3List, double expand) {
-		if (vec3List.isEmpty()) return null;
+		if (vec3List.isEmpty())
+			return null;
 
 		Vec3 first = vec3List.getFirst();
 
@@ -138,7 +139,8 @@ public class BoundingBoxUtils {
 	public static BoundingBox safeRetract(BoundingBox box, Direction direction, int length) {
 		int span = getSpan(box, direction.getAxis());
 
-		if (span <= length) return box;
+		if (span <= length)
+			return box;
 
 		return switch (direction) {
 			case WEST -> cloneWithAdjustments(box, length, 0, 0, 0, 0, 0);

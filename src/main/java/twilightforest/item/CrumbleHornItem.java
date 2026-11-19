@@ -88,7 +88,8 @@ public class CrumbleHornItem extends Item {
 					player.awardStat(TFStats.BLOCKS_CRUMBLED.get());
 				}
 				stack.hurtAndBreak(1, living,living.getUsedItemHand());
-				if (stack.getDamageValue() >= stack.getMaxDamage()) break;
+				if (stack.getDamageValue() >= stack.getMaxDamage())
+					break;
 			}
 		}
 	}
@@ -98,7 +99,8 @@ public class CrumbleHornItem extends Item {
 		Block block = state.getBlock();
 		CrumbledBlock crumbleMap = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
 
-		if (state.isAir() || crumbleMap == null) return false;
+		if (state.isAir() || crumbleMap == null)
+			return false;
 
 		if (living instanceof Player) {
 			if (NeoForge.EVENT_BUS.post(new BreakBlockEvent(serverLevel, pos, state, (Player) living)).isCanceled())

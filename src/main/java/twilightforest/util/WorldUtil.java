@@ -146,7 +146,8 @@ public final class WorldUtil {
 			}
 		}
 
-		if (seekStructures.isEmpty()) return Optional.empty();
+		if (seekStructures.isEmpty())
+			return Optional.empty();
 
 		double distance = Double.MAX_VALUE;
 

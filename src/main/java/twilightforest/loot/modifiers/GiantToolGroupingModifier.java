@@ -38,7 +38,8 @@ public class GiantToolGroupingModifier extends LootModifier {
 					attachment.setGiantBlockConversion(blockConversion - 1);
 					if (blockConversion == 64)
 						return ObjectArrayList.of(new ItemStack(CONVERSIONS.get(block.getBlock()))); // If it's the first conversion, drop our giant block
-					else return new ObjectArrayList<>(); // Drop nothing, all gets converted into giant block
+					else
+						return new ObjectArrayList<>(); // Drop nothing, all gets converted into giant block
 				}
 			}
 		}

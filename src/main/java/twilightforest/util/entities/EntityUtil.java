@@ -182,7 +182,8 @@ public class EntityUtil {
 	}
 
 	public static boolean tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
-		if (chosenPainting == null) return false;
+		if (chosenPainting == null)
+			return false;
 
 		Painting painting = createEntityIgnoreException(EntityTypes.PAINTING, world);
 
@@ -292,9 +293,11 @@ public class EntityUtil {
 
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
-		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
+		if (!(oldEntity.level() instanceof ServerLevel level))
+			return false;
 		Entity newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
-		if (newEntity == null) return false;
+		if (newEntity == null)
+			return false;
 		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), _ -> {})) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
@@ -365,7 +368,8 @@ public class EntityUtil {
 				}
 			}
 
-			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
+			if (newEntity instanceof LivingEntity living)
+				EventHooks.onLivingConvert(oldEntity, living);
 			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
 			return true;
 		}

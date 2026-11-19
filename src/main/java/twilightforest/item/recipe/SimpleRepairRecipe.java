@@ -57,7 +57,8 @@ public class SimpleRepairRecipe extends CustomRecipe {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (this.input.test(stackInQuestion) && stackInQuestion.isDamaged()) {
-					if (toRepair != null) return false;
+					if (toRepair != null)
+						return false;
 					toRepair = stackInQuestion;
 				} else if (this.repairItem.test(stackInQuestion)) {
 					repairIngredients.add(stackInQuestion);

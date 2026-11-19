@@ -34,12 +34,18 @@ public class SmartGrassProcessor implements StructureProcessor {
 		for (Direction direction : RotationUtil.CARDINALS) {
 			BlockState stateAt = level.getBlockState(modifiedBlockInfo.pos().relative(direction));
 
-			if (stateAt.getBlock() == Blocks.PODZOL) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.PODZOL.defaultBlockState(), null);
-			if (stateAt.getBlock() == Blocks.GRASS_BLOCK) return modifiedBlockInfo;
-			if (stateAt.getBlock() == Blocks.MYCELIUM) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.MYCELIUM.defaultBlockState(), null);
-			if (stateAt.getBlock() == Blocks.DIRT_PATH) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.DIRT_PATH.defaultBlockState(), null);
-			if (stateAt.getBlock() == Blocks.COARSE_DIRT) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.COARSE_DIRT.defaultBlockState(), null);
-			if (stateAt.getBlock() == TFBlocks.UBEROUS_SOIL.get()) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), TFBlocks.UBEROUS_SOIL.get().defaultBlockState(), null);
+			if (stateAt.getBlock() == Blocks.PODZOL)
+				return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.PODZOL.defaultBlockState(), null);
+			if (stateAt.getBlock() == Blocks.GRASS_BLOCK)
+				return modifiedBlockInfo;
+			if (stateAt.getBlock() == Blocks.MYCELIUM)
+				return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.MYCELIUM.defaultBlockState(), null);
+			if (stateAt.getBlock() == Blocks.DIRT_PATH)
+				return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.DIRT_PATH.defaultBlockState(), null);
+			if (stateAt.getBlock() == Blocks.COARSE_DIRT)
+				return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.COARSE_DIRT.defaultBlockState(), null);
+			if (stateAt.getBlock() == TFBlocks.UBEROUS_SOIL.get())
+				return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), TFBlocks.UBEROUS_SOIL.get().defaultBlockState(), null);
 		}
 
 		return modifiedBlockInfo;

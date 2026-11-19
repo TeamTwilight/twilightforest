@@ -36,10 +36,12 @@ public class CasketRepairRecipe extends CustomRecipe {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(TFItems.KEEPSAKE_CASKET) && stackInQuestion.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0) > 0) {
-					if (casket) return false;
+					if (casket)
+						return false;
 					casket = true;
 				} else if (stackInQuestion.is(TFItemTags.KEEPSAKE_CASKET_REPAIR_ITEMS)) {
-					if (charm) return false;
+					if (charm)
+						return false;
 					charm = true;
 				} else {
 					return false;

@@ -32,7 +32,8 @@ public class BoxDensityFunction implements DensityFunction.SimpleFunction {
 	private final TerrainAdjustment terrainAdjustment;
 
 	public static DensityFunction combine(List<BoundingBox> boxes, int dYMin, int dYMax, TerrainAdjustment terrainAdjustment) {
-		if (boxes.isEmpty()) return DensityFunctions.constant(0);
+		if (boxes.isEmpty())
+			return DensityFunctions.constant(0);
 
 		DensityFunction densityFunction = make(boxes.getFirst(), dYMin, dYMax, terrainAdjustment);
 

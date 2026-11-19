@@ -246,7 +246,8 @@ public class TFWeatherRenderer {
 					int rainMin = segment.getFirst();
 					int rainMax = segment.getSecond();
 
-					if (rainMin >= rainMax) continue;
+					if (rainMin >= rainMax)
+						continue;
 
 					random.setSeed((long) x * x * 3121 + x * 45238971L ^ (long) z * z * 418711 + z * 13761L);
 					if (drawFlag != 0) {
@@ -312,7 +313,8 @@ public class TFWeatherRenderer {
 	private static List<Pair<Integer, Integer>> getRainIntervals(int x, int z, BoundingBox pBox, List<BoundingBox> boxes) {
 		List<Pair<Integer, Integer>> intervals = new ArrayList<>();
 		for (BoundingBox box : boxes) {
-			if (!box.intersects(x, z, x, z)) continue;
+			if (!box.intersects(x, z, x, z))
+				continue;
 			int rainMin = Math.max(pBox.minY(), box.minY());
 			int rainMax = Math.min(pBox.maxY(), box.maxY() + 1);  // + 1 because renderEffect() renders from rainMin to rainMax as floats
 			if (rainMin < rainMax) {

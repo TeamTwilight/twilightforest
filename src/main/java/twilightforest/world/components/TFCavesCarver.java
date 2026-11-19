@@ -99,7 +99,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		}
 
 		//We dont want caves to go so far down you can see bedrock, so lets stop them right before
-		if (pos.getY() < access.getMinY() + 6) return false;
+		if (pos.getY() < access.getMinY() + 6)
+			return false;
 
 		if (!this.canReplaceBlock(config, stateBeforeReplacement) && !isDebugEnabled(config)) {
 			return false;
@@ -138,7 +139,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				}
 
 
-				if (blockPlaced) this.postCarveBlock(access, pos, config, randomFromPos, chunkOrigin);
+				if (blockPlaced)
+					this.postCarveBlock(access, pos, config, randomFromPos, chunkOrigin);
 
 				return blockPlaced;
 			} else {
@@ -156,7 +158,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	private void postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand, BlockPos chunkOrigin) {
 		for (Direction facing : Direction.values()) {
 			BlockPos directionalRelative = pos.relative(facing);
-			if (!isInsideChunk(directionalRelative, chunkOrigin)) continue;
+			if (!isInsideChunk(directionalRelative, chunkOrigin))
+				continue;
 
 			// FIXME Half-way configurable, would prefer to eliminate the isHighlands check entirely
 			//  The rand.nextInt rolls should have some way of being set into a custom config as well

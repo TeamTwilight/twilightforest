@@ -167,7 +167,8 @@ public class Hydra extends BaseTFBoss {
 
 	@Override
 	public void aiStep() {
-		if (this.renderFakeHeads) this.renderFakeHeads = false;
+		if (this.renderFakeHeads)
+			this.renderFakeHeads = false;
 		this.clearFire();
 		this.body.tick();
 		this.leftLeg.tick();
@@ -520,7 +521,8 @@ public class Hydra extends BaseTFBoss {
 		double d1 = (part.getBoundingBox().minZ + part.getBoundingBox().maxZ) / 2.0D;
 
 		for (Entity entity : entities) {
-			if (entity instanceof Player player && player.isCreative()) continue;
+			if (entity instanceof Player player && player.isCreative())
+				continue;
 			if (entity instanceof LivingEntity) {
 				double d2 = entity.getX() - d0;
 				double d3 = entity.getZ() - d1;
@@ -682,7 +684,8 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	private void repositionParts() {
-		if (this.partArray == null) return;
+		if (this.partArray == null)
+			return;
 
 		for (HydraHeadContainer container : this.hc) {
 			container.setHeadPosition();
@@ -801,7 +804,8 @@ public class Hydra extends BaseTFBoss {
 			this.remove(RemovalReason.KILLED);
 		}
 
-		if (this.level().isClientSide()) this.tickDeathAnimation();
+		if (this.level().isClientSide())
+			this.tickDeathAnimation();
 	}
 
 	@Override

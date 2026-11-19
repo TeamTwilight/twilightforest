@@ -69,7 +69,8 @@ public class ComponentAttachingSmithingRecipe extends SimpleSmithingRecipe {
 	 */
 	@Override
 	public boolean matches(SmithingRecipeInput input, Level level) {
-		if (!Ingredient.testOptionalIngredient(this.templateIngredient(), input.template()) || !this.base.test(input.base()) || !Ingredient.testOptionalIngredient(this.additionIngredient(), input.addition())) return false;
+		if (!Ingredient.testOptionalIngredient(this.templateIngredient(), input.template()) || !this.base.test(input.base()) || !Ingredient.testOptionalIngredient(this.additionIngredient(), input.addition()))
+			return false;
 
 		for (TypedDataComponent<?> data : this.additionalData)
 			if (input.base().has(data.type()))

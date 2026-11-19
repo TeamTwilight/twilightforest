@@ -139,7 +139,8 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 						if (minecraft.gui.hud.getBossOverlay().events.get(packet.id) instanceof ClientTFBossBar bossEvent) {
 							bossEvent.setBarColor(packet.color);
 							bossEvent.setOverlay(packet.overlay);
-							if (!packet.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
+							if (!packet.allowLerp)
+								bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
 						}
 					}
 				});

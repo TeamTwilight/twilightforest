@@ -44,7 +44,8 @@ public class CloudBlock extends Block {
 	}
 
 	public static void addEntityMovementParticles(Level level, BlockPos pos, Entity entity, boolean jumping) {
-		if (level.getRandom().nextBoolean()) return;
+		if (level.getRandom().nextBoolean())
+			return;
 		Vec3 deltaMovement = entity.getDeltaMovement();
 		BlockPos blockpos1 = entity.blockPosition();
 		double jumpMultiplier = jumping ? 2.0D : 1.0D;
@@ -53,8 +54,10 @@ public class CloudBlock extends Block {
 		double y = entity.getY() + 0.1D;
 		double z = entity.getZ() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
 
-		if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
-		if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
+		if (blockpos1.getX() != pos.getX())
+			x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
+		if (blockpos1.getZ() != pos.getZ())
+			z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
 
 		level.addParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
 	}
@@ -82,9 +85,13 @@ public class CloudBlock extends Block {
 	 */
 	public Pair<Biome.Precipitation, Float> getCurrentPrecipitation(BlockPos pos, Level level, float rainLevel) {
 		if (this.getPrecipitation() == null) {
-			if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel()), rainLevel);
-			else return Pair.of(Biome.Precipitation.NONE, 0.0F);
-		} else return Pair.of(this.getPrecipitation(), 1.0F);
+			if (rainLevel > 0.0F)
+				return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel()), rainLevel);
+			else
+				return Pair.of(Biome.Precipitation.NONE, 0.0F);
+		} else {
+			return Pair.of(this.getPrecipitation(), 1.0F);
+		}
 	}
 
 	/**
@@ -92,7 +99,8 @@ public class CloudBlock extends Block {
 	 */
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (!level.isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0) return;
+		if (!level.isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0)
+			return;
 
 		Pair<Biome.Precipitation, Float> pair = this.getCurrentPrecipitation(pos, level, level.getRainLevel(1.0F));
 		if (pair.getRight() > 0.0F) {
@@ -100,8 +108,10 @@ public class CloudBlock extends Block {
 			if (precipitation == Biome.Precipitation.RAIN || precipitation == Biome.Precipitation.SNOW) {
 				int highestRainyBlock = pos.getY() - 1;
 				for (int y = pos.getY() - 1; y > pos.getY() - TFConfig.commonCloudBlockPrecipitationDistance; y--) {
-					if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos.atY(y)))) highestRainyBlock = y - 1;
-					else break;
+					if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos.atY(y))))
+						highestRainyBlock = y - 1;
+					else
+						break;
 				}
 				if (highestRainyBlock > level.getMinY()) {
 					if (precipitation == Biome.Precipitation.SNOW) {
@@ -116,7 +126,9 @@ public class CloudBlock extends Block {
 									Block.pushEntitiesUp(snowOnState, snowLayerState, level, snowOnPos);
 									level.setBlockAndUpdate(snowOnPos, snowLayerState);
 								}
-							} else level.setBlockAndUpdate(snowOnPos, Blocks.SNOW.defaultBlockState());
+							} else {
+								level.setBlockAndUpdate(snowOnPos, Blocks.SNOW.defaultBlockState());
+							}
 						}
 					}
 

@@ -42,7 +42,8 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 
 	@Override
 	protected void handleDataMarker(String name, BlockPos pos, WorldGenLevel levelAccessor, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
-		if (!chunkBounds.isInside(pos)) return;
+		if (!chunkBounds.isInside(pos))
+			return;
 
 		if ("quest_ram".equals(name)) {
 			FeaturePlacers.placeEntity(TFEntities.QUEST_RAM.get(), pos, levelAccessor);

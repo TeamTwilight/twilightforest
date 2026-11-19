@@ -70,14 +70,20 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 			this.setRot(this.getYRot(), this.getXRot());
 		}
 
-		while (getYRot() - this.yRotO < -180F) this.yRotO -= 360F;
-		while (getYRot() - this.yRotO >= 180F) this.yRotO += 360F;
+		while (getYRot() - this.yRotO < -180F)
+			this.yRotO -= 360F;
+		while (getYRot() - this.yRotO >= 180F)
+			this.yRotO += 360F;
 
-		while (this.renderYawOffset - this.prevRenderYawOffset < -180F) this.prevRenderYawOffset -= 360F;
-		while (this.renderYawOffset - this.prevRenderYawOffset >= 180F) this.prevRenderYawOffset += 360F;
+		while (this.renderYawOffset - this.prevRenderYawOffset < -180F)
+			this.prevRenderYawOffset -= 360F;
+		while (this.renderYawOffset - this.prevRenderYawOffset >= 180F)
+			this.prevRenderYawOffset += 360F;
 
-		while (getXRot() - this.xRotO < -180F) this.xRotO -= 360F;
-		while (getXRot() - this.xRotO >= 180F) this.xRotO += 360F;
+		while (getXRot() - this.xRotO < -180F)
+			this.xRotO -= 360F;
+		while (getXRot() - this.xRotO >= 180F)
+			this.xRotO += 360F;
 	}
 
 	public final void updateLastPos() {

@@ -293,7 +293,8 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		int oy = this.getWorldY(bugSpot.getY());
 		int oz = this.getWorldZ(bugSpot.getX(), bugSpot.getZ());
 
-		if (!sbb.isInside(ox, oy, oz)) return;
+		if (!sbb.isInside(ox, oy, oz))
+			return;
 
 		BlockPos src = new BlockPos(ox, oy, oz);
 

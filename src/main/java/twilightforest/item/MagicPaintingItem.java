@@ -36,7 +36,8 @@ public class MagicPaintingItem extends Item {
 		} else {
 			Level level = context.getLevel();
 			Optional<MagicPainting> optional = MagicPainting.create(level, relative, face);
-			if (optional.isEmpty()) return InteractionResult.CONSUME;
+			if (optional.isEmpty())
+				return InteractionResult.CONSUME;
 			MagicPainting painting = optional.get();
 
 			Holder<MagicPaintingVariant> magicPaintingVariantHolder = stack.get(TFDataComponents.MAGIC_PAINTING_VARIANT);
