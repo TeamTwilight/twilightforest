@@ -7,6 +7,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -36,7 +37,7 @@ public class MapHooks {
 	 * {@link twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer}
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.saveddata.maps.MapItemSavedData#tickCarriedBy(Player, ItemStack)}<br/>
+	 * {@link net.minecraft.world.level.saveddata.maps.MapItemSavedData#tickCarriedBy(Player, ItemStack, ItemFrame)}<br/>
 	 * Targets: {@link net.minecraft.world.entity.player.Inventory.contains( Predicate )}
 	 */
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
