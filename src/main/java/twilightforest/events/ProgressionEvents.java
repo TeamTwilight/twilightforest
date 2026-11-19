@@ -296,7 +296,10 @@ public class ProgressionEvents {
 	}
 
 	private static void sendAreaProtectionPacket(ServerLevel level, BlockPos pos, List<BoundingBox> sbb) {
-		PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), 64, new AreaProtectionPacket(sbb, pos));
+		int[] entityIds = new int[sbb.size()];
+		for (int i = 0; i < entityIds.length; i++)
+			entityIds[i] = level.getNextEntityId();
+		PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), 64, new AreaProtectionPacket(sbb, pos, entityIds));
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
