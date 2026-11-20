@@ -3,14 +3,13 @@ package twilightforest.components.entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.network.UpdateThrownPacket;
 
 public class YetiThrowAttachment {
 
 	private boolean thrown;
-	@Nullable
-	private LivingEntity thrower;
+	private @Nullable LivingEntity thrower;
 
 	public void tick(Player player) {
 		if (this.getThrown()) {

@@ -8,15 +8,14 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.alchemy.Potion;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFAdvancements;
 
 import java.util.Objects;
 
 public class PotionFlaskTrackingAttachment {
 
-	@Nullable
-	private Holder<Potion> lastUsedPotion;
+	private @Nullable Holder<Potion> lastUsedPotion;
 	private int dosesDrank;
 	private long lastTimeStarted;
 

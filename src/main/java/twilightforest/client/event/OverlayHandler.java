@@ -19,7 +19,7 @@ import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
@@ -315,8 +315,7 @@ public class OverlayHandler {
 		}
 	}
 
-	@Nullable
-	private static Player getCameraPlayer() {
+	private static @Nullable Player getCameraPlayer() {
 		return Minecraft.getInstance().getCameraEntity() instanceof Player player ? player : null;
 	}
 }

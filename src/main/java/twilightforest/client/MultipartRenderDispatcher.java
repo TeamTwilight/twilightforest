@@ -25,7 +25,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import net.neoforged.neoforge.client.event.RegisterDebugRenderersEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
-import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import tamaized.beanification.connector.fml.RequiresDist;
@@ -77,7 +76,7 @@ public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRende
 
 	private void submitPartRenderStates(SubmitCustomGeometryEvent event) {
 		LevelRenderState renderState = event.getLevelRenderState();
-		@Nullable List<PartRender> renders = renderState.getRenderData(this.partRenders);
+		List<PartRender> renders = renderState.getRenderData(this.partRenders);
 		if (renders == null || renders.isEmpty())
 			return;
 

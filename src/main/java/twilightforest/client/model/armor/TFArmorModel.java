@@ -6,12 +6,11 @@ import net.minecraft.client.renderer.entity.state.ArmorStandRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 
-	@Nullable
-	private EquipmentSlot slot;
+	private @Nullable EquipmentSlot slot;
 
 	public TFArmorModel(ModelPart root) {
 		super(root);

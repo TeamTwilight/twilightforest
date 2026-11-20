@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
 import twilightforest.init.TFDimension;
 
@@ -53,8 +53,7 @@ public interface EnforcedHomePoint {
 		return this.getRestrictionPoint() != null && this.getRestrictionPoint().dimension().equals(currentMobLevel);
 	}
 
-	@Nullable
-	GlobalPos getRestrictionPoint();
+	@Nullable GlobalPos getRestrictionPoint();
 
 	void setRestrictionPoint(@Nullable GlobalPos pos);
 

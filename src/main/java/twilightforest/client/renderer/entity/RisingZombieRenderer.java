@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RisingZombieModel;
 import twilightforest.client.state.entity.RisingZombieRenderState;
@@ -41,9 +41,8 @@ public class RisingZombieRenderer extends HumanoidMobRenderer<RisingZombie, Risi
 		state.risingTicks = entity.getRisingTicks();
 	}
 
-	@Nullable
 	@Override
-	protected RenderType getRenderType(RisingZombieRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
+	protected @Nullable RenderType getRenderType(RisingZombieRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
 		// Render normally for spectators instead of very translucent
 		if (translucent)
 			return this.model.renderType(this.getTextureLocation(state));

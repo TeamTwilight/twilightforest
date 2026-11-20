@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.LichModel;
@@ -49,9 +49,8 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 		return super.getModelTint(state);
 	}
 
-	@Nullable
 	@Override
-	protected RenderType getRenderType(LichRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
+	protected @Nullable RenderType getRenderType(LichRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
 		if (state.isShadowClone && !state.isInvisible)
 			return TFRenderTypes.SHADOW_CLONE;
 		else

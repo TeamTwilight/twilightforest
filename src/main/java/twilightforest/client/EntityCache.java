@@ -8,7 +8,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.creaking.Creaking;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twilightforest.TwilightForestMod;
@@ -24,8 +24,7 @@ public class EntityCache {
     private static final Map<EntityType<?>, Entity> ENTITY_MAP = new WeakHashMap<>();
     private static final Set<EntityType<?>> IGNORED_ENTITIES = new HashSet<>();
 
-    @Nullable
-    public static Entity fetchEntity(EntityType<?> type) {
+    public static @Nullable Entity fetchEntity(EntityType<?> type) {
         Level level = Minecraft.getInstance().level;
         if (level == null || IGNORED_ENTITIES.contains(type)) {
             return null;
@@ -69,8 +68,7 @@ public class EntityCache {
         }
     }
 
-    @Nullable
-    public static ItemEntity fetchItemEntity(ItemStack itemStack) {
+    public static @Nullable ItemEntity fetchItemEntity(ItemStack itemStack) {
         if (itemStack.isEmpty() || !(fetchEntity(EntityTypes.ITEM) instanceof ItemEntity itemEntity))
             return null;
 

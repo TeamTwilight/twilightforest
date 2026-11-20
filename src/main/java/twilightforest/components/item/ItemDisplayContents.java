@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.custom.ItemDisplays;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 import twilightforest.util.TFItemStackUtils;
@@ -201,8 +201,7 @@ public class ItemDisplayContents implements TooltipComponent {
 			}
 		}
 
-		@Nullable
-		public ItemStack removeFirstFree(@Nullable Slot slot) {
+		public @Nullable ItemStack removeFirstFree(@Nullable Slot slot) {
 			for (int i = 0; i < this.items.size(); i++) {
 				ItemStack itemstack = this.items.get(i);
 				if (!itemstack.isEmpty() && (slot == null || slot.mayPlace(itemstack))) {

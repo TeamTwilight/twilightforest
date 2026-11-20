@@ -10,8 +10,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.CustomSkyboxRenderer;
 import net.neoforged.neoforge.client.CustomWeatherEffectRenderer;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4fc;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -21,8 +21,7 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 	public static final Identifier SKY_RENDERER = TwilightForestMod.prefix("renderer");
 	public static final Identifier WEATHER_RENDERER = TwilightForestMod.prefix("weather");
 
-	@Nullable
-	private TFSkyRenderer skyRenderer;
+	private @Nullable TFSkyRenderer skyRenderer;
 
 	@Override
 	public boolean renderSky(LevelRenderState levelRenderState, SkyRenderState skyRenderState, Matrix4fc modelViewMatrix, Runnable setupFog) {
