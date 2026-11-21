@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,16 +24,10 @@ import java.util.Arrays;
 public class CarminiteReactorBlock extends BaseEntityBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-	public static final MapCodec<CarminiteReactorBlock> CODEC = simpleCodec(CarminiteReactorBlock::new);
 
 	public CarminiteReactorBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -9,15 +8,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 
 public class TFHorizontalBlock extends HorizontalDirectionalBlock {
 
-	public static final MapCodec<TFHorizontalBlock> CODEC = simpleCodec(TFHorizontalBlock::new);
-
 	public TFHorizontalBlock(Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

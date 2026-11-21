@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ParticleUtils;
@@ -14,15 +13,8 @@ import twilightforest.init.TFParticleType;
 
 public class TransformationLeavesBlock extends LeavesBlock {
 
-	public static final MapCodec<TransformationLeavesBlock> CODEC = simpleCodec(TransformationLeavesBlock::new);
-
 	public TransformationLeavesBlock(BlockBehaviour.Properties properties) {
 		super(1.0F, properties);
-	}
-
-	@Override
-	public MapCodec<? extends LeavesBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

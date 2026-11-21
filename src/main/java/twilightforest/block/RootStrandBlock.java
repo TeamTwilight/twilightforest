@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -9,23 +8,16 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RootStrandBlock extends TFPlantBlock implements BonemealableBlock {
 
-	public static final MapCodec<RootStrandBlock> CODEC = simpleCodec(RootStrandBlock::new);
 	private static final VoxelShape ROOT_SHAPE = box(2, 0, 2, 14, 16, 14);
 
 	public RootStrandBlock(Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	protected MapCodec<? extends VegetationBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

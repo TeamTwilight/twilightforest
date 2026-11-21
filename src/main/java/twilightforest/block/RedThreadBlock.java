@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.EntityBlock;
@@ -12,15 +11,8 @@ import twilightforest.init.TFBlocks;
 
 public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
 
-	public static final MapCodec<RedThreadBlock> CODEC = simpleCodec(RedThreadBlock::new);
-
 	public RedThreadBlock(Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	protected MapCodec<? extends MultifaceBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

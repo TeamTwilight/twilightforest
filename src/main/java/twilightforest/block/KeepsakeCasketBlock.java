@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
@@ -37,16 +36,10 @@ import java.util.List;
 
 public class KeepsakeCasketBlock extends SkullChestBlock {
 	public static final IntegerProperty BREAKAGE = IntegerProperty.create("damage", 0, 2);
-	public static final MapCodec<KeepsakeCasketBlock> CODEC = simpleCodec(KeepsakeCasketBlock::new);
 
 	public KeepsakeCasketBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
-	}
-
-	@Override
-	protected MapCodec<? extends KeepsakeCasketBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

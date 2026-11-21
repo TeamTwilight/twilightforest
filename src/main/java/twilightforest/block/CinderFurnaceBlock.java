@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,15 +20,8 @@ import twilightforest.init.TFBlockEntities;
 
 public class CinderFurnaceBlock extends AbstractFurnaceBlock {
 
-	public static final MapCodec<CinderFurnaceBlock> CODEC = simpleCodec(CinderFurnaceBlock::new);
-
 	public CinderFurnaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	protected MapCodec<? extends AbstractFurnaceBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

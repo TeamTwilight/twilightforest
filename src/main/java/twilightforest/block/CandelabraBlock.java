@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import com.google.common.collect.Iterables;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -76,7 +75,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	public static final List<Vec3> X_OFFSETS = List.of(new Vec3(0.5D, 0.9D, 0.1875D), new Vec3(0.5D, 0.9D, 0.5D), new Vec3(0.5D, 0.9D, 0.8125D));
 	public static final List<Vec3> Z_OFFSETS = List.of(new Vec3(0.1875D, 0.9D, 0.5D), new Vec3(0.5D, 0.9D, 0.5D), new Vec3(0.8125D, 0.9D, 0.5D));
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public static final MapCodec<CandelabraBlock> CODEC = simpleCodec(CandelabraBlock::new);
 
 	public CandelabraBlock(Properties properties) {
 		super(properties);
@@ -100,11 +98,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 
 	public static boolean canSurvive(LevelReader reader, BlockPos pos, boolean onWall, Direction facing) {
 		return canSupportCenter(reader, onWall ? pos.relative(facing) : pos.below(), Direction.UP);
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

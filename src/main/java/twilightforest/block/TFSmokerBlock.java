@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -14,15 +13,8 @@ import twilightforest.init.TFBlockEntities;
 
 public class TFSmokerBlock extends BaseEntityBlock {
 
-	public static final MapCodec<TFSmokerBlock> CODEC = simpleCodec(TFSmokerBlock::new);
-
 	public TFSmokerBlock(Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

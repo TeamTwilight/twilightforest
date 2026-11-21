@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -29,7 +28,6 @@ import java.util.Objects;
 public class BuilderBlock extends BaseEntityBlock {
 
 	public static final EnumProperty<TowerDeviceVariant> STATE = EnumProperty.create("state", TowerDeviceVariant.class);
-	public static final MapCodec<BuilderBlock> CODEC = simpleCodec(BuilderBlock::new);
 
 	public BuilderBlock(Properties properties) {
 		super(properties);
@@ -47,11 +45,6 @@ public class BuilderBlock extends BaseEntityBlock {
 			level.playSound(null, pos, TFSounds.BUILDER_REPLACE.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			level.scheduleTick(pos, state.getBlock(), 10);
 		}
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

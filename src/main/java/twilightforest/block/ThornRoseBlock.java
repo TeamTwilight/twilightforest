@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -17,18 +16,12 @@ import twilightforest.init.TFBlocks;
 
 public class ThornRoseBlock extends VegetationBlock {
 
-	public static final MapCodec<ThornRoseBlock> CODEC = simpleCodec(ThornRoseBlock::new);
 	private static final float RADIUS = 0.4F;
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.5F - RADIUS, 0.5F - RADIUS, 0.5F - RADIUS, 0.5F + RADIUS, .5F + RADIUS, 0.5F + RADIUS));
 
 	public ThornRoseBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(DirectionalBlock.FACING, Direction.UP));
-	}
-
-	@Override
-	protected MapCodec<? extends VegetationBlock> codec() {
-		return CODEC;
 	}
 
 	@Override
