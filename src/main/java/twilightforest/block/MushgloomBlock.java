@@ -9,14 +9,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFConfiguredFeatures;
+import twilightforest.init.TFFeatures;
 
 public class MushgloomBlock extends MushroomBlock {
 
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
 
 	public MushgloomBlock(Properties properties) {
-		super(TFConfiguredFeatures.BIG_MUSHGLOOM, properties);
+		super(TFFeatures.BIG_MUSHGLOOM, properties);
 	}
 
 	@Override

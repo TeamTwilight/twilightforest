@@ -52,7 +52,7 @@ public final class TwilightForestMod {
 		TFLoot.FUNCTIONS.register(bus);
 		TFLoot.CONDITIONS.register(bus);
 		TFGameRules.RULES.register(bus);
-		TFFeatures.FEATURES.register(bus);
+		TFFeatureTypes.FEATURES.register(bus);
 		TFCreativeTabs.TABS.register(bus);
 		TFLoot.CONDITIONALS.register(bus);
 		TFEntities.SPAWN_EGGS.register(bus);

@@ -1,45 +1,52 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.RootPlacer;
 import twilightforest.util.iterators.VoxelBresenhamIterator;
-import twilightforest.world.components.feature.config.RootConfig;
 
-public class WoodRootFeature extends Feature<RootConfig> {
-	public WoodRootFeature(Codec<RootConfig> configIn) {
-		super(configIn);
+public record WoodRootFeature(BlockStateProvider blockRoot, BlockStateProvider oreRoot) implements Feature {
+	public static final MapCodec<WoodRootFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		BlockStateProvider.DIRECT_CODEC
+			.fieldOf("root_block")
+			.forGetter(WoodRootFeature::blockRoot),
+		BlockStateProvider.DIRECT_CODEC
+			.fieldOf("root_ore")
+			.forGetter(WoodRootFeature::oreRoot)
+	).apply(instance, WoodRootFeature::new));
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<RootConfig> ctx) {
-		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
-		RandomSource rand = ctx.random();
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
 
 		// start must be in stone
-		if (world.getBlockState(pos).getBlock() != Blocks.STONE) {
+		if (worldGenLevel.getBlockState(blockPos).getBlock() != Blocks.STONE) {
 			return false;
 		}
 
-		float length = rand.nextFloat() * 6.0F + rand.nextFloat() * 6.0F + 4.0F;
-		if (length > pos.getY()) {
-			length = pos.getY();
+		float length = randomSource.nextFloat() * 6.0F + randomSource.nextFloat() * 6.0F + 4.0F;
+		if (length > blockPos.getY()) {
+			length = blockPos.getY();
 		}
 
 		// tilt between 0.6 and 0.9
-		float tilt = 0.6F + rand.nextFloat() * 0.3F;
+		float tilt = 0.6F + randomSource.nextFloat() * 0.3F;
 
-		return drawRoot(world, rand, pos, pos, length, rand.nextFloat(), tilt, ctx.config().blockRoot(), ctx.config().oreRoot());
+		return drawRoot(worldGenLevel, randomSource, blockPos, blockPos, length, randomSource.nextFloat(), tilt, blockRoot(), oreRoot());
 	}
 
 	private boolean drawRoot(WorldGenLevel world, RandomSource rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt, BlockStateProvider rootBlock, BlockStateProvider oreBlock) {

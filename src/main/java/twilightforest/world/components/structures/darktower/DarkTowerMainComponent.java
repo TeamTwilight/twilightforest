@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -1079,16 +1079,16 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		int dy = getWorldY(y + 1);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		if (sbb.isInside(new BlockPos(dx, dy, dz))) {
-			ResourceKey<ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
+			ResourceKey<Feature> treeGen = switch (treeNum) {
 				case 1 ->
 					// jungle tree
 					// made a custom one so it doesnt cut through the floor
-					TFConfiguredFeatures.SMALLER_JUNGLE_TREE;
+					TFFeatures.SMALLER_JUNGLE_TREE;
 				case 2 ->
 					// birch
 					TreeFeatures.BIRCH;
-				case 3 -> TFConfiguredFeatures.TWILIGHT_OAK_TREE;
-				case 4 -> TFConfiguredFeatures.RAINBOW_OAK_TREE;
+				case 3 -> TFFeatures.TWILIGHT_OAK_TREE;
+				case 4 -> TFFeatures.RAINBOW_OAK_TREE;
 				default ->
 					// oak tree
 					TreeFeatures.OAK;
@@ -1096,7 +1096,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				var configuredFeatureHolder = world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen);
+				var configuredFeatureHolder = world.registryAccess().lookupOrThrow(Registries.FEATURE).get(treeGen);
 
 				if (configuredFeatureHolder.isPresent()) {
 					if (configuredFeatureHolder.get().value().place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {

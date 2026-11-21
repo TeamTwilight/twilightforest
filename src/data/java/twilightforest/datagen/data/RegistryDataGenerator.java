@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 
 	public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-		.add(Registries.CONFIGURED_FEATURE, TFConfiguredFeatureGenerator::bootstrap)
+		.add(Registries.FEATURE, TFFeatureGenerator::bootstrap)
 		.add(Registries.PLACED_FEATURE, TFPlacedFeatureGenerator::bootstrap)
 		.add(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfigGenerator::bootstrap)
 		.add(Registries.STRUCTURE, TFStructureGenerator::bootstrap)

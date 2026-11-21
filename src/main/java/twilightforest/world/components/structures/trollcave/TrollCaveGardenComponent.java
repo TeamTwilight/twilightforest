@@ -14,13 +14,13 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBiomes;
-import twilightforest.init.TFConfiguredFeatures;
+import twilightforest.init.TFFeatures;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
@@ -66,41 +66,41 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		// dirt!
 		for (int i = 0; i < 24; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, generator, TFConfiguredFeatures.TROLL_CAVE_DIRT, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
+			generate(world, generator, TFFeatures.TROLL_CAVE_DIRT, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
 		}
 
 		// mycelium!
 		for (int i = 0; i < 16; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, generator, TFConfiguredFeatures.TROLL_CAVE_MYCELIUM, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
+			generate(world, generator, TFFeatures.TROLL_CAVE_MYCELIUM, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
 		}
 
 		// uberous!
 		for (int i = 0; i < 16; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, generator, TFConfiguredFeatures.UBEROUS_SOIL_PATCH_SMALL, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
+			generate(world, generator, TFFeatures.UBEROUS_SOIL_PATCH_SMALL, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
 
-			generateAtSurface(world, generator, TFConfiguredFeatures.UBEROUS_SOIL_PATCH_SMALL, decoRNG, dest.getX(), dest.getZ(), sbb);
+			generateAtSurface(world, generator, TFFeatures.UBEROUS_SOIL_PATCH_SMALL, decoRNG, dest.getX(), dest.getZ(), sbb);
 		}
 
 		// mushglooms first
 		for (int i = 0; i < 8; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, TFConfiguredFeatures.TROLL_BIG_MUSHGLOOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, TFFeatures.TROLL_BIG_MUSHGLOOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
 		// mushrooms!
 		for (int i = 0; i < 16; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, rand.nextBoolean() ? TFConfiguredFeatures.TROLL_HUGE_BROWN_MUSHROOMS : TFConfiguredFeatures.TROLL_HUGE_RED_MUSHROOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, rand.nextBoolean() ? TFFeatures.TROLL_HUGE_BROWN_MUSHROOMS : TFFeatures.TROLL_HUGE_RED_MUSHROOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
 		this.placeSpeleothems(world, rand, sbb, decoRNG);
 	}
 
-	protected void generate(WorldGenLevel world, ChunkGenerator generator, ResourceKey<ConfiguredFeature<?, ?>> feature, RandomSource rand, int x, int y, int z, BoundingBox sbb) {
+	protected void generate(WorldGenLevel world, ChunkGenerator generator, ResourceKey<Feature> feature, RandomSource rand, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
@@ -108,7 +108,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos)) {
-			world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature).get().value().place(world, generator, rand, pos);
+			world.registryAccess().lookupOrThrow(Registries.FEATURE).get(feature).get().value().place(world, generator, rand, pos);
 		}
 	}
 }
