@@ -21,35 +21,34 @@ import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.custom.TravellersModifiersManager;
 
-@SuppressWarnings({"JavadocReference", "unused"})
 public class BlockHooks {
 
 	@Autowired
 	private static FoliageColorHandler foliageColorHandler;
 
 	/**
-	 * {@link twilightforest.asm.transformers.cloud.IsRainingAtTransformer}<p/>
+	 * {@link twilightforest.asm.transformers.cloud.PrecipitationAtTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}
+	 * {@link net.minecraft.world.level.Level#precipitationAt(BlockPos)}
 	 */
-	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
-		if (!isRaining && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
+	public static Biome.Precipitation precipitationAt(Biome.Precipitation o, Level level, BlockPos pos) {
+		if (o != Biome.Precipitation.RAIN && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
 			if (!level.hasChunkAt(pos))
-				return false; //do NOT try to load new chunks when checking for rain. This can cause deadlocks if mobs ry to spawn in unloaded areas and check for rain
+				return o; //do NOT try to load new chunks when checking for rain. This can cause deadlocks if mobs ry to spawn in unloaded areas and check for rain
 			LevelChunk chunk = level.getChunkAt(pos);
 			for (int y = pos.getY(); y < pos.getY() + TFConfig.commonCloudBlockPrecipitationDistance; y++) {
 				BlockPos newPos = pos.atY(y);
 				BlockState state = chunk.getBlockState(newPos);
-				if (state.getBlock() instanceof CloudBlock cloudBlock && cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft() == Biome.Precipitation.RAIN) {
-					return true;
+				if (state.getBlock() instanceof CloudBlock cloudBlock) {
+					return cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft();
 				}
 				if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(state)) {
-					return false;
+					return o;
 				}
 			}
 		}
-		return isRaining;
+		return o;
 	}
 
 	/**

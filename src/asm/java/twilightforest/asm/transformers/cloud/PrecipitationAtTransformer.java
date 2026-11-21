@@ -12,20 +12,20 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.asmhooks.BlockHooks#isRainingAt}
+ * {@link twilightforest.asmhooks.BlockHooks#precipitationAt}
  */
-public class IsRainingAtTransformer extends SimpleMethodProcessor {
+public class PrecipitationAtTransformer extends SimpleMethodProcessor {
 
 	@Override
 	public ProcessorName name() {
-		return ASMUtil.named("is_raining_at");
+		return ASMUtil.named("is_precipitation_at");
 	}
 
 	@Override
 	public void transform(MethodNode node, SimpleTransformationContext context) {
 		ASMUtil.findInstructions(
 			node,
-			Opcodes.IRETURN
+			Opcodes.ARETURN
 		).forEach(target -> node.instructions.insertBefore(
 			target,
 			ASMUtil.listOf(
@@ -34,8 +34,8 @@ public class IsRainingAtTransformer extends SimpleMethodProcessor {
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/BlockHooks",
-					"isRainingAt",
-					"(ZLnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z"
+					"precipitationAt",
+					"(Lnet/minecraft/world/level/biome/Biome$Precipitation;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;"
 				)
 			)
 		));
@@ -45,8 +45,8 @@ public class IsRainingAtTransformer extends SimpleMethodProcessor {
 	public Set<Target> targets() {
 		return Set.of(new Target(
 			"net.minecraft.world.level.Level",
-			"isRainingAt",
-			"(Lnet/minecraft/core/BlockPos;)Z"
+			"precipitationAt",
+			"(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;"
 		));
 	}
 
