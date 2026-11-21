@@ -138,17 +138,20 @@ public class MapBiomesCommand {
 			//file name is formatted as: biomemap-seed-(startX.startZ)-(endX.endZ)
 			Path path = source.getLevel().getServer().getWorldPath(LevelResource.GENERATED_DIR).resolve("biomemaps").resolve(String.valueOf(source.getLevel().getSeed())).resolve("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png").normalize();
 			//save the biome map
-			if (!Files.exists(path)) {
-				Files.createDirectories(path.getParent());
-				img.writeToFile(path);
+			try {
+				if (!Files.exists(path)) {
+					Files.createDirectories(path.getParent());
+					img.writeToFile(path);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				source.sendFailure(Component.translatable("commands.tffeature.biomepng.save_failed"));
+				return 0;
 			}
+
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.save_success"), false);
 
 			return Command.SINGLE_SUCCESS;
-		} catch (IOException e) {
-			e.printStackTrace();
-			source.sendFailure(Component.translatable("commands.tffeature.biomepng.save_failed"));
-			return 0;
 		}
 	}
 
