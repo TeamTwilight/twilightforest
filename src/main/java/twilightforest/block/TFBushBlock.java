@@ -192,7 +192,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	@Nullable
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
-		return state.getValue(AGE) < 2 ? PushReaction.DESTROY : null;
+		return state.getValue(AGE) < 2 ? PushReaction.POPPED : null;
 	}
 
 	@Override
