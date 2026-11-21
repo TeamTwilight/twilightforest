@@ -270,7 +270,7 @@ public class TravellersClientEvents {
 		return !key.matches(event.getKeyEvent()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().gui.screen() != null;
 	}
 
-	private void renderGlovesInFirstPerson(RenderArmEvent<?> event) {
+	private void renderGlovesInFirstPerson(RenderArmEvent event) {
 		if (!TFConfig.firstPersonGloveOverlay)
 			return;
 

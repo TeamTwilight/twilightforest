@@ -66,7 +66,7 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 						side,
 						BlockModelRotation.IDENTITY,
 						new CuboidRotation(new Vector3f(), Matrix4f::new, false),
-						quad.materialInfo().shade(),
+						quad.materialInfo().shadeDirectionOverride(),
 						quad.materialInfo().lightEmission()
 					);
 

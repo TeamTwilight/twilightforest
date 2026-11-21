@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
@@ -170,6 +171,9 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		stack.translate(0.0F, 0.375F, 0.56F);
-		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+		RenderType renderType = RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE);
+		collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
+		if (breakProgress != null)
+			collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 	}
 }

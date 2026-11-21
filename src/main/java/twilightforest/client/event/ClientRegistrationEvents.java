@@ -45,8 +45,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.*;
@@ -58,7 +56,6 @@ import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.common.tooltip.TooltipAppender;
 import net.neoforged.neoforge.event.RegisterTooltipAppendersEvent;
-import org.jspecify.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import tamaized.beanification.connector.fml.RequiresDist;
@@ -523,13 +520,10 @@ public class ClientRegistrationEvents {
 	private void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerBlock(new IClientBlockExtensions() {
 			@Override
-			public boolean addHitEffects(BlockState state, Level level, @Nullable HitResult target, ParticleEngine manager) {
-				if (level.getRandom().nextBoolean() && target instanceof BlockHitResult hitResult) { // No clue why the parameter isn't blockHitResult, this should be always true, but we check just in case
-					BlockPos pos = hitResult.getBlockPos();
+			public boolean addHitEffects(BlockState state, Level level, BlockPos pos, Direction face, ParticleEngine manager) {
+				if (level.getRandom().nextBoolean()) {
 					BlockState blockstate = level.getBlockState(pos);
 					if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
-						Direction side = hitResult.getDirection();
-
 						int posX = pos.getX();
 						int posY = pos.getY();
 						int posZ = pos.getZ();
@@ -539,22 +533,22 @@ public class ClientRegistrationEvents {
 						double y = (double) posY + level.getRandom().nextDouble() * (aabb.maxY - aabb.minY - (double) 0.2F) + (double) 0.1F + aabb.minY;
 						double z = (double) posZ + level.getRandom().nextDouble() * (aabb.maxZ - aabb.minZ - (double) 0.2F) + (double) 0.1F + aabb.minZ;
 
-						if (side == Direction.DOWN)
+						if (face == Direction.DOWN)
 							y = (double) posY + aabb.minY - (double) 0.1F;
-						if (side == Direction.UP)
+						if (face == Direction.UP)
 							y = (double) posY + aabb.maxY + (double) 0.1F;
 
-						if (side == Direction.NORTH)
+						if (face == Direction.NORTH)
 							z = (double) posZ + aabb.minZ - (double) 0.1F;
-						if (side == Direction.SOUTH)
+						if (face == Direction.SOUTH)
 							z = (double) posZ + aabb.maxZ + (double) 0.1F;
 
-						if (side == Direction.WEST)
+						if (face == Direction.WEST)
 							x = (double) posX + aabb.minX - (double) 0.1F;
-						if (side == Direction.EAST)
+						if (face == Direction.EAST)
 							x = (double) posX + aabb.maxX + (double) 0.1F;
 
-						Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, (double) side.getStepX() * 0.01D, (double) side.getStepY() * 0.01D, (double) side.getStepZ() * 0.01D);
+						Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, (double) face.getStepX() * 0.01D, (double) face.getStepY() * 0.01D, (double) face.getStepZ() * 0.01D);
 						if (particle == null)
 							return true;
 						manager.add(particle);
@@ -672,16 +666,16 @@ public class ClientRegistrationEvents {
 	private void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
 		event.registerMapModifier(new MagicMapPlayerIconRenderer());
 		ConqueredMapIconRenderer conquered = new ConqueredMapIconRenderer();
-		event.registerMapDecorationModifier(TFMapDecorations.QUEST_GROVE.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.NAGA_COURTYARD.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.LICH_TOWER.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.LABYRINTH.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.HYDRA_LAIR.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.KNIGHT_STRONGHOLD.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.DARK_TOWER.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.YETI_LAIR.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.AURORA_PALACE.getKey(), conquered);
-		event.registerMapDecorationModifier(TFMapDecorations.FINAL_CASTLE.getKey(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.QUEST_GROVE.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.NAGA_COURTYARD.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.LICH_TOWER.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.LABYRINTH.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.HYDRA_LAIR.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.KNIGHT_STRONGHOLD.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.DARK_TOWER.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.YETI_LAIR.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.AURORA_PALACE.key(), conquered);
+		event.registerMapDecorationModifier(TFMapDecorations.FINAL_CASTLE.key(), conquered);
 
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity living, LivingEntityRenderState state) -> {
 			if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)

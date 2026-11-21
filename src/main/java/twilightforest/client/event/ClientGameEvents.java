@@ -1,8 +1,8 @@
 package twilightforest.client.event;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
-import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.SplashRenderer;

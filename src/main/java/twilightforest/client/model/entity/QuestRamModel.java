@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
@@ -222,7 +223,10 @@ public class QuestRamModel extends EntityModel<QuestingRamRenderState> implement
 		stack.scale(0.67F, 0.67F, 0.67F);
 		stack.translate(0.0F, 0.5F, context != ItemDisplayContext.NONE ? 0.5F : 0.67F);
 
-		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(QuestRamRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+		RenderType renderType = RenderTypes.entityCutout(QuestRamRenderer.TEXTURE);
+		collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
+		if (breakProgress != null)
+			collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
 		collector.order(1).submitModelPart(this.head, stack, RenderTypes.entityTranslucent(QuestRamRenderer.LINE_TEXTURE), LightCoordsUtil.FULL_BRIGHT, overlay, null);

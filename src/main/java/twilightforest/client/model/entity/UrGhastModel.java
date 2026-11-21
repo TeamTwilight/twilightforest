@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -132,6 +133,9 @@ public class UrGhastModel extends TFGhastModel<TFGhastRenderState> implements Tr
 			stack.translate(0.0F, -1.0F, 0.0F);
 		}
 		stack.scale(0.5F, 0.5F, 0.5F);
-		collector.submitModelPart(this.body, stack, RenderTypes.entityCutout(UrGhastRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+		RenderType renderType = RenderTypes.entityCutout(UrGhastRenderer.TEXTURE);
+		collector.submitModelPart(this.body, stack, renderType, light, overlay, null, -1);
+		if (breakProgress != null)
+			collector.submitCrumblingOverlay(this.body, stack, renderType, light, overlay, -1, breakProgress);
 	}
 }

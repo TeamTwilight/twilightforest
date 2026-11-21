@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -141,6 +142,9 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 
 	@Override
 	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
-		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(SnowQueenRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
+		RenderType renderType = RenderTypes.entityCutout(SnowQueenRenderer.TEXTURE);
+		collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
+		if (breakProgress != null)
+			collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 	}
 }
