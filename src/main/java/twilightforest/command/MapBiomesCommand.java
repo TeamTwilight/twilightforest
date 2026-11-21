@@ -17,6 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.storage.LevelResource;
 import net.neoforged.fml.loading.FMLEnvironment;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDataMaps;
 import twilightforest.util.ColorUtil;
@@ -118,8 +119,7 @@ public class MapBiomesCommand {
 
 				//send a progress update to let people know the server isn't dying
 				if (x % progressUpdate == 0) {
-					int finalX = x;
-					double percentComplete = (double) finalX / img.getHeight() * 100;
+					double percentComplete = (double) x / img.getHeight() * 100;
 					String percentDisplay = this.numberFormat.format(percentComplete);
 					source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.progress", percentDisplay), false);
 				}
@@ -144,7 +144,7 @@ public class MapBiomesCommand {
 					img.writeToFile(path);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				TwilightForestMod.LOGGER.error("Exception", e);
 				source.sendFailure(Component.translatable("commands.tffeature.biomepng.save_failed"));
 				return 0;
 			}
