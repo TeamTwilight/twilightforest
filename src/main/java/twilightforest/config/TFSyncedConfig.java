@@ -6,11 +6,11 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TFServerConfig {
+public class TFSyncedConfig {
 
 	final UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
-	public TFServerConfig(ModConfigSpec.Builder builder) {
+	public TFSyncedConfig(ModConfigSpec.Builder builder) {
 		builder.comment(ConfigComments.UNCRAFTING_TABLE).translation(TFConfig.CONFIG_ID + "uncrafting").push("Uncrafting Table");
 		{
 			UNCRAFTING_STUFFS.uncraftingXpCostMultiplier = builder

@@ -3,7 +3,7 @@ package twilightforest.config;
 import net.minecraft.server.permissions.PermissionLevel;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-public class TFCommonConfig {
+public class TFLocalConfig {
 
 	final Dimension DIMENSION = new Dimension();
 	final Portal PORTAL = new Portal();
@@ -17,7 +17,7 @@ public class TFCommonConfig {
 	final ModConfigSpec.IntValue cloudBlockPrecipitationDistance;
 	final ModConfigSpec.EnumValue<TFConfig.MultiplayerFightAdjuster> multiplayerFightAdjuster;
 
-	public TFCommonConfig(ModConfigSpec.Builder builder) {
+	public TFLocalConfig(ModConfigSpec.Builder builder) {
 		builder.comment(ConfigComments.DIMENSION).translation(TFConfig.CONFIG_ID + "dim_settings").push("Dimension Settings");
 		{
 			DIMENSION.newPlayersSpawnInTF = builder
