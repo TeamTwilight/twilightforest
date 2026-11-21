@@ -22,7 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFAttributes;
 import twilightforest.init.TFEntities;
@@ -32,8 +32,7 @@ import java.util.List;
 
 public class LichMinion extends Zombie {
 
-	@Nullable
-	public Lich master;
+	public @Nullable Lich master;
 
 	public LichMinion(EntityType<? extends LichMinion> type, Level world) {
 		super(type, world);
@@ -70,7 +69,9 @@ public class LichMinion extends Zombie {
 				this.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 200, 1));
 			}
 			return true;
-		} else return false;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -135,7 +136,8 @@ public class LichMinion extends Zombie {
 			if (babiesSummoned < this.master.getAttributeValue(TFAttributes.MINION_COUNT) / 4) { // One quarter can be babies on hard, by default: 9 / 4 = 2
 				baby = this.getRandom().nextInt(100) <= 20; // 20%
 			}
-			if (baby) this.master.setBabyMinionsSummoned(babiesSummoned + 1);
+			if (baby)
+				this.master.setBabyMinionsSummoned(babiesSummoned + 1);
 		}
 
 		spawnGroupData = new ZombieGroupData(baby, true);

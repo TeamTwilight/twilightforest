@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
@@ -177,8 +177,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
-	@Nullable
-	public BlockPos getValidOpening(RandomSource rand, Rotation direction) {
+	public @Nullable BlockPos getValidOpening(RandomSource rand, Rotation direction) {
 		// variables!
 		int offset = this.size / 4; // wall thickness
 		int wLength = size - (offset * 2); // wall length

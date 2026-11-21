@@ -55,13 +55,16 @@ public class TFGiantRenderer<T extends GiantMiner> extends HumanoidMobRenderer<T
 		if (profile != null) {
 			PlayerSkin skin = mc.getSkinManager().createLookup(profile, false).get();
 			texture = skin.body().texturePath();
-			if (skin.model().equals(PlayerModelType.SLIM)) this.model = this.slimModel;
+			if (skin.model().equals(PlayerModelType.SLIM))
+				this.model = this.slimModel;
 		} else if (mc.getCameraEntity() instanceof AbstractClientPlayer client) {
 			texture = client.getSkin().body().texturePath();
-			if (client.getSkin().model().equals(PlayerModelType.SLIM)) this.model = this.slimModel;
+			if (client.getSkin().model().equals(PlayerModelType.SLIM))
+				this.model = this.slimModel;
 		}
 
-		if (this.model == this.slimModel) this.slimModel.setupAnim(state);
+		if (this.model == this.slimModel)
+			this.slimModel.setupAnim(state);
 
 		return texture;
 	}

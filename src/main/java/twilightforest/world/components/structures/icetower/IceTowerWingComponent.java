@@ -743,7 +743,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		for (Rotation r : RotationUtil.ROTATIONS) {
 			Rotation rotation = ladderUpDir.getRotated(r);
 			this.fillBlocksRotated(world, sbb, 1, bottom, 1, 6, bottom, 3, deco.floorState, rotation);
-			if (r == Rotation.COUNTERCLOCKWISE_90) continue;  // to make space for floor entrance
+			if (r == Rotation.COUNTERCLOCKWISE_90)
+				continue;  // to make space for floor entrance
 			this.fillBlocksRotated(world, sbb, 1, bottom + 1, 1, 3, bottom + 1	, 3, deco.platformState, rotation);
 		}
 

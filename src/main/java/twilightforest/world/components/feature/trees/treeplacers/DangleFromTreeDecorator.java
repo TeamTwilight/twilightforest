@@ -64,7 +64,8 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 			pos = context.leaves().get(context.random().nextInt(leafTotal));
 
 			//dont place a rope where the trunk is
-			if (pos.getX() == context.logs().get(0).getY() && pos.getZ() == context.logs().get(0).getZ()) return;
+			if (pos.getX() == context.logs().get(0).getY() && pos.getZ() == context.logs().get(0).getZ())
+				return;
 
 			cordLength = this.baseLength + context.random().nextInt(this.randomAddLength + 1);
 

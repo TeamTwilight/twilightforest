@@ -15,7 +15,7 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFGameRules;
@@ -37,9 +37,11 @@ public final class LandmarkUtil {
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, TagKey<Structure> matching, int chunkX, int chunkZ) {
 		var structureRegistry = level.registryAccess().lookup(Registries.STRUCTURE);
-		if (structureRegistry.isEmpty()) return Optional.empty();
+		if (structureRegistry.isEmpty())
+			return Optional.empty();
 		Optional<HolderSet.Named<Structure>> holders = structureRegistry.get().get(matching);
-		if (holders.isEmpty()) return Optional.empty();
+		if (holders.isEmpty())
+			return Optional.empty();
 
 		return locateNearestMatchingLandmark(level, holders.get(), chunkX, chunkZ);
 	}
@@ -54,7 +56,8 @@ public final class LandmarkUtil {
 		int centerX = SectionPos.blockToSectionCoord(nearestFeature.getX());
 		int centerZ = SectionPos.blockToSectionCoord(nearestFeature.getZ());
 
-		if (checkReady && !level.hasChunk(centerX, centerZ)) return Optional.empty();
+		if (checkReady && !level.hasChunk(centerX, centerZ))
+			return Optional.empty();
 
 		ChunkAccess chunkAccess = level.getChunk(centerX, centerZ, ChunkStatus.STRUCTURE_STARTS);
 
@@ -77,7 +80,8 @@ public final class LandmarkUtil {
 	public static void markStructureConquered(Level level, @Nullable GlobalPos pos, ResourceKey<Structure> structureKey, boolean conquered) {
 		if (pos != null && level.dimension() == pos.dimension()) {
 			Optional<StructureStart> nearStart = locateNearestLandmarkStart(level, structureKey, pos.pos());
-			if (nearStart.isEmpty() || !(nearStart.get() instanceof TFStructureStart twilightStart)) return;
+			if (nearStart.isEmpty() || !(nearStart.get() instanceof TFStructureStart twilightStart))
+				return;
 
 			twilightStart.setConquered(conquered, level);
 
@@ -87,8 +91,7 @@ public final class LandmarkUtil {
 		}
 	}
 
-	@Nullable
-	public static Structure structureForKey(LevelReader level, ResourceKey<Structure> structureKey) {
+	public static @Nullable Structure structureForKey(LevelReader level, ResourceKey<Structure> structureKey) {
 		Optional<Registry<Structure>> registry = level.registryAccess().lookup(Registries.STRUCTURE);
 
 		return registry.isPresent() ? registry.get().get(structureKey).get().value() : null;
@@ -101,7 +104,8 @@ public final class LandmarkUtil {
 	public static Optional<StructureStart> locateNearestLandmarkStart(LevelAccessor level, ResourceKey<Structure> structureKey, int chunkX, int chunkZ) {
 		Structure structure = structureForKey(level, structureKey);
 
-		if (structure == null) return Optional.empty();
+		if (structure == null)
+			return Optional.empty();
 
 		return locateNearestLandmarkStart(level, structure, chunkX, chunkZ);
 	}
@@ -117,7 +121,8 @@ public final class LandmarkUtil {
 			if (level.hasChunk(packedX, packedZ)) {
 				StructureStart structureStart = level.getChunk(packedX, packedZ, ChunkStatus.STRUCTURE_STARTS).getStartForStructure(structure);
 
-				if (structureStart != null && structureStart.isValid()) return Optional.of(structureStart);
+				if (structureStart != null && structureStart.isValid())
+					return Optional.of(structureStart);
 			}
 		}
 

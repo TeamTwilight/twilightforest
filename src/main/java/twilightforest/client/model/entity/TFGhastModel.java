@@ -30,7 +30,7 @@ public class TFGhastModel<T extends TFGhastRenderState> extends EntityModel<T> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 			PartPose.offset(0.0F, 8.0F, 0.0F));

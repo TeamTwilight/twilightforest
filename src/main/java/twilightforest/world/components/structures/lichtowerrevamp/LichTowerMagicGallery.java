@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 import tamaized.beanification.Autowired;
 import twilightforest.entity.MagicPainting;
@@ -147,7 +147,8 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 			default -> null;
 		};
 
-		if (variantId == null) return Optional.empty();
+		if (variantId == null)
+			return Optional.empty();
 
 		return level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).get(variantId);
 	}

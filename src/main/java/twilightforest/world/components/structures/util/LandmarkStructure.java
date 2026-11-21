@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 
@@ -86,8 +86,7 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		return this.structureIcon;
 	}
 
-	@Nullable
-	protected abstract StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z);
+	protected abstract @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z);
 
 	@Override
 	public boolean isSurfaceDecorationsAllowed() {

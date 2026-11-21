@@ -24,10 +24,12 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 
 	private final List<BoundingBox> sbb;
 	private final BlockPos pos;
+	private final int[] entityIds;
 
-	public AreaProtectionPacket(List<BoundingBox> sbb, BlockPos pos) {
+	public AreaProtectionPacket(List<BoundingBox> sbb, BlockPos pos, int[] entityIds) {
 		this.sbb = sbb;
 		this.pos = pos;
+		this.entityIds = entityIds;
 	}
 
 	public AreaProtectionPacket(FriendlyByteBuf buf) {
@@ -37,6 +39,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 			this.sbb.add(new BoundingBox(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt()));
 		}
 		this.pos = buf.readBlockPos();
+		this.entityIds = buf.readVarIntArray();
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {
@@ -50,6 +53,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 			buf.writeInt(box.maxZ());
 		});
 		buf.writeBlockPos(this.pos);
+		buf.writeVarIntArray(this.entityIds);
 	}
 
 	@Override
@@ -65,18 +69,23 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 				@Override
 				public void run() {
 					ClientLevel level = ctx.player().level() instanceof ClientLevel clientLevel ? clientLevel : Minecraft.getInstance().level;
-					message.sbb.forEach(box -> {
+					int idIndex = 0;
+					for (BoundingBox box : message.sbb) {
+						boolean found = false;
 						for (Entity entity : level.entitiesForRendering()) {
-							if (entity instanceof ProtectionBox prot) {
-								if (prot.lifeTime > 0 && prot.matches(box)) {
-									prot.resetLifetime();
-									return;
-								}
+							if (entity instanceof ProtectionBox prot && prot.lifeTime > 0 && prot.matches(box)) {
+								prot.resetLifetime();
+								found = true;
+								break;
 							}
 						}
 
-						level.addEntity(new ProtectionBox(level, box));
-					});
+						if (!found) {
+							ProtectionBox protectionBox = new ProtectionBox(level, box);
+							protectionBox.setId(message.entityIds[idIndex++]);
+							level.addEntity(protectionBox);
+						}
+					}
 
 					for (int i = 0; i < 20; i++) {
 						double vx = level.getRandom().nextGaussian() * 0.02D;

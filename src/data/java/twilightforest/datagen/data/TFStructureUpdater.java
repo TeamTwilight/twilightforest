@@ -19,7 +19,6 @@ import net.minecraft.util.datafix.DataFixers;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -41,9 +40,9 @@ public class TFStructureUpdater implements DataProvider {
 	}
 
 	@Override
-	public CompletableFuture<?> run(@Nonnull CachedOutput cache) {
+	public CompletableFuture<?> run(CachedOutput cache) {
 		try {
-			for (var entry : this.resources.listResources(this.basePath, $ -> true).entrySet())
+			for (var entry : this.resources.listResources(this.basePath, _ -> true).entrySet())
 				if (entry.getKey().getNamespace().equals(TwilightForestMod.ID))
 					process(entry.getKey(), entry.getValue(), cache);
 			return CompletableFuture.completedFuture(null);
@@ -80,7 +79,6 @@ public class TFStructureUpdater implements DataProvider {
 		return template.save(new CompoundTag());
 	}
 
-	@Nonnull
 	@Override
 	public String getName() {
 		return "Update structure files in " + this.basePath;

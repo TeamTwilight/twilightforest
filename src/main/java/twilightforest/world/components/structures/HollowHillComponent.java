@@ -24,7 +24,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
@@ -106,7 +105,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		for (BlockPos.MutableBlockPos latticePos : this.speleothemConfig.latticeIterator(writeableBounds, 0)) {
 			float distSq = getDistSqFromCenter(center, latticePos);
 
-			if (distSq > shortenedRadiusSq) continue;
+			if (distSq > shortenedRadiusSq)
+				continue;
 
 			this.setFeatures(world, rand, writeableBounds, latticePos, distSq);
 		}
@@ -118,7 +118,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	public static void drainWater(ChunkGenerator generator, BoundingBox chunkBox, BoundingBox structureBox, CommonLevelAccessor level, int maxDepth, BlockState airState, int xCenter, int zCenter, double radiusSq, BlockState undergroundBlock) {
 		BoundingBox bounds = BoundingBoxUtils.getIntersectionOfSBBs(chunkBox, structureBox);
 
-		if (bounds == null) return;
+		if (bounds == null)
+			return;
 
 		int seaLevel = generator.getSeaLevel();
 		int minY = seaLevel - maxDepth;
@@ -178,7 +179,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			pos.set(x, floorY, z);
 
 			if (floatChance < SPAWNER_SPAWN_CHANCE) {
-				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {
+				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), _ -> {
 				}, pos.above());
 			} else {
 				this.placeTreasureAtWorldPosition(world, this.getTreasureType(), false, writeableBounds, pos.above());
@@ -198,7 +199,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, float distSq) {
-		if (!this.speleothemConfig.shouldDoAStalactite(rand)) return;
+		if (!this.speleothemConfig.shouldDoAStalactite(rand))
+			return;
 
 		BlockPos ceiling = pos.atY(this.getCeilingY(distSq));
 		// There's no generational defect from over-generating Stalactites, such as poking through the ground with Stalagmites.
@@ -214,7 +216,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		return this.getWorldY(Mth.floor(this.getFloorHeight(Mth.sqrt(distSq)) + 0.25f));
 	}
 
-	@NotNull
 	private ResourceKey<LootTable> getTreasureType() {
 		return this.hillSize == 3 ? TFLootTables.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFLootTables.MEDIUM_HOLLOW_HILL : TFLootTables.SMALL_HOLLOW_HILL);
 	}

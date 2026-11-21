@@ -69,12 +69,18 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		VoxelShape shape = BASE_SHAPE;
 
-		if (state.getValue(DOWN)) shape = Shapes.or(shape, DOWN_SHAPE);
-		if (state.getValue(UP)) shape = Shapes.or(shape, UP_SHAPE);
-		if (state.getValue(NORTH)) shape = Shapes.or(shape, NORTH_SHAPE);
-		if (state.getValue(SOUTH)) shape = Shapes.or(shape, SOUTH_SHAPE);
-		if (state.getValue(WEST)) shape = Shapes.or(shape, WEST_SHAPE);
-		if (state.getValue(EAST)) shape = Shapes.or(shape, EAST_SHAPE);
+		if (state.getValue(DOWN))
+			shape = Shapes.or(shape, DOWN_SHAPE);
+		if (state.getValue(UP))
+			shape = Shapes.or(shape, UP_SHAPE);
+		if (state.getValue(NORTH))
+			shape = Shapes.or(shape, NORTH_SHAPE);
+		if (state.getValue(SOUTH))
+			shape = Shapes.or(shape, SOUTH_SHAPE);
+		if (state.getValue(WEST))
+			shape = Shapes.or(shape, WEST_SHAPE);
+		if (state.getValue(EAST))
+			shape = Shapes.or(shape, EAST_SHAPE);
 
 		return shape;
 	}
@@ -178,8 +184,10 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Override
 	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
-		if (state.getValue(WATERLOGGED)) ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-		if (neighborState.is(Blocks.AIR)) return state;
+		if (state.getValue(WATERLOGGED))
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		if (neighborState.is(Blocks.AIR))
+			return state;
 
 		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}

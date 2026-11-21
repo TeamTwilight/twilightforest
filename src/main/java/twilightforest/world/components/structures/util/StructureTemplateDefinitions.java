@@ -10,7 +10,7 @@ import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import tamaized.beanification.Component;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
@@ -36,7 +36,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 			Identifier templatePoolId = poolToRegisterWeight.getKey();
 			TemplatePoolInstance templatePoolInstance = poolToRegisterWeight.getValue();
 
-			Map<Identifier, TemplatePoolInstance> pool = this.rawTemplatePools.computeIfAbsent(templatePoolId, k -> new HashMap<>());
+			Map<Identifier, TemplatePoolInstance> pool = this.rawTemplatePools.computeIfAbsent(templatePoolId, _ -> new HashMap<>());
 
 			pool.put(templateName, templatePoolInstance);
 		}
@@ -66,8 +66,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		return templatePool == null ? Optional.empty() : templatePool.getRandom(random);
 	}
 
-	@Nullable
-	public Identifier getRandomTemplate(RandomSource random, Identifier templatePoolId) {
+	public @Nullable Identifier getRandomTemplate(RandomSource random, Identifier templatePoolId) {
 		return this.getRandomEntry(random, templatePoolId).map(TemplatePoolEntry::templateId).orElse(null);
 	}
 
@@ -90,8 +89,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 	// TODO initializeStubFromPool to return GenerationStub
 
 	@Deprecated // Prefer below initializeTemplateFromPool
-	@Nullable
-	public TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
+	public @Nullable TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
 		Optional<TemplatePoolEntry> entryOptional = this.getRandomEntry(rand, templatePool);
 
 		if (entryOptional.isEmpty())
@@ -106,8 +104,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateEntry.templateId, placeContext, templateEntry.instance, templateEntry.instance.chooseRandomProcessors(rand));
 	}
 
-	@Nullable
-	public TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, Structure.GenerationContext generationContext, int genDepth, boolean parentProjectsTerrain) {
+	public @Nullable TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, Structure.GenerationContext generationContext, int genDepth, boolean parentProjectsTerrain) {
 		RandomSource random = generationContext.random();
 		Optional<TemplatePoolEntry> entryOptional = this.getRandomEntry(random, templatePool);
 		if (entryOptional.isEmpty())

@@ -69,10 +69,12 @@ public class OreMeterItem extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 
 		// FakePlayers should never be allowed to use the Ore Meter
-		if (player.getClass() != ServerPlayer.class) return InteractionResult.FAIL;
+		if (player.getClass() != ServerPlayer.class)
+			return InteractionResult.FAIL;
 
 		//if we're in the "loading" state don't try to run any logic
-		if (isLoading(stack)) return InteractionResult.PASS;
+		if (isLoading(stack))
+			return InteractionResult.PASS;
 
 		//if we're not crouching, put the ore meter into its "loading" state
 		if (!player.isSecondaryUseActive()) {

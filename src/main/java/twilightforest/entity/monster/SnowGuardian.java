@@ -19,7 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -110,9 +110,8 @@ public class SnowGuardian extends BaseIceMob {
 		};
 	}
 
-	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);

@@ -54,33 +54,45 @@ public class LichMinionsGoal extends Goal {
 
 	@Override
 	public void tick() {
-		if (this.lich.getTeleportInvisibility() > 0) return;
+		if (this.lich.getTeleportInvisibility() > 0)
+			return;
 		LivingEntity targetedEntity = this.lich.getTarget();
-		if (targetedEntity == null) return;
+		if (targetedEntity == null)
+			return;
 		float dist = this.lich.distanceTo(targetedEntity);
 		// spawn minions every so often
-		if (this.lich.getAttackCooldown() % 15 == 0) this.checkAndSpawnMinions();
+		if (this.lich.getAttackCooldown() % 15 == 0)
+			this.checkAndSpawnMinions();
 
 		boolean hasLineOfSight = this.lich.getSensing().hasLineOfSight(targetedEntity);
-		if (hasLineOfSight != this.seeTime > 0) this.seeTime = 0;
+		if (hasLineOfSight != this.seeTime > 0)
+			this.seeTime = 0;
 
-		if (hasLineOfSight) ++this.seeTime;
-        else --this.seeTime;
+		if (hasLineOfSight)
+			++this.seeTime;
+        else
+			--this.seeTime;
 
 		if (dist < ATTACK_RANGE && this.seeTime >= 20) {
 			this.lich.getNavigation().stop();
 			++this.strafingTime;
-		} else this.strafingTime = -1;
+		} else {
+			this.strafingTime = -1;
+		}
 
 		if (this.strafingTime >= 20) {
-			if ((double)this.lich.getRandom().nextFloat() < 0.3) this.strafingClockwise = !this.strafingClockwise;
-			if ((double)this.lich.getRandom().nextFloat() < 0.3) this.strafingBackwards = !this.strafingBackwards;
+			if ((double)this.lich.getRandom().nextFloat() < 0.3)
+				this.strafingClockwise = !this.strafingClockwise;
+			if ((double)this.lich.getRandom().nextFloat() < 0.3)
+				this.strafingBackwards = !this.strafingBackwards;
 			this.strafingTime = 0;
 		}
 
 		if (this.strafingTime > -1) {
-			if (dist > (double)(ATTACK_RANGE * 0.75F)) this.strafingBackwards = false;
-            else if (dist < (double)(ATTACK_RANGE * 0.25F)) this.strafingBackwards = true;
+			if (dist > (double)(ATTACK_RANGE * 0.75F))
+				this.strafingBackwards = false;
+            else if (dist < (double)(ATTACK_RANGE * 0.25F))
+				this.strafingBackwards = true;
 
 			this.lich.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
 			this.lich.lookAt(targetedEntity, 30.0F, 30.0F);
@@ -97,8 +109,10 @@ public class LichMinionsGoal extends Goal {
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < ATTACK_RANGE && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
-				if (this.lich.getNextAttackType() == 0) this.lich.launchProjectileAt(new LichBolt(serverLevel, this.lich));
-				else this.lich.launchProjectileAt(new LichBomb(serverLevel, this.lich));
+				if (this.lich.getNextAttackType() == 0)
+					this.lich.launchProjectileAt(new LichBolt(serverLevel, this.lich));
+				else
+					this.lich.launchProjectileAt(new LichBomb(serverLevel, this.lich));
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
 				this.lich.setNextAttackType(this.lich.getRandom().nextBoolean() ? 0 : 1);

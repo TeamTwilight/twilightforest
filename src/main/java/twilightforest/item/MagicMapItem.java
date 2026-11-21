@@ -129,7 +129,7 @@ public class MagicMapItem extends MapItem {
 
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			Holder<Biome>[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
+			Holder<Biome>[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), _ -> {
 				@SuppressWarnings({"unchecked", "rawtypes"})
 				Holder<Biome>[] array = new Holder[128 * biomesPerPixel * 128 * biomesPerPixel];
 				for (int l = 0; l < 128 * biomesPerPixel; ++l) {
@@ -213,7 +213,9 @@ public class MagicMapItem extends MapItem {
 				} else {
 					builder.accept(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
 				}
-			} else builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+			} else {
+				builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+			}
 		}
 	}
 }

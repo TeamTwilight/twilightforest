@@ -20,7 +20,7 @@ public class YetiModel extends HumanoidModel<YetiRenderState> {
 	public YetiModel(ModelPart root) {
 		super(root);
 
-		var body = root.getChild("body");
+		ModelPart body = root.getChild("body");
 		this.rightEye = body.getChild("right_eye");
 		this.leftEye = body.getChild("left_eye");
 		this.angryRightEye = body.getChild("angry_right_eye");
@@ -31,7 +31,7 @@ public class YetiModel extends HumanoidModel<YetiRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.ZERO);
@@ -41,7 +41,7 @@ public class YetiModel extends HumanoidModel<YetiRenderState> {
 				.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.ZERO);
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-10.0F, 0.0F, -6.0F, 20.0F, 26.0F, 12.0F),
 			PartPose.offset(0.0F, -14.0F, 0.0F));

@@ -75,8 +75,10 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeRenderState, 
 			boolean flag = state.appearsGlowing() && state.isInvisible;
 			if (!state.isInvisible || flag) {
 				RenderType renderType;
-				if (flag) renderType = RenderTypes.outline(TEXTURE);
-				else renderType = RenderTypes.entityTranslucent(TEXTURE);
+				if (flag)
+					renderType = RenderTypes.outline(TEXTURE);
+				else
+					renderType = RenderTypes.entityTranslucent(TEXTURE);
 
 				submitNodeCollector.order(1)
 					.submitModel(this.model, state, poseStack, renderType, lightCoords, LivingEntityRenderer.getOverlayCoords(state, 0.0F), state.outlineColor, null);

@@ -26,10 +26,10 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(),
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(),
 			PartPose.offset(0.0F, 12.0F, 0.0F));
 
-		var hat = head.addOrReplaceChild("hat", CubeListBuilder.create(),
+		PartDefinition hat = head.addOrReplaceChild("hat", CubeListBuilder.create(),
 			PartPose.ZERO);
 
 		hat.addOrReplaceChild("helmet", CubeListBuilder.create()
@@ -37,7 +37,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 				.addBox(-3.5F, -11.0F, -3.5F, 7.0F, 11.0F, 7.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45.0F * Mth.DEG_TO_RAD, 0.0F));
 
-		var rightHorn = hat.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
+		PartDefinition rightHorn = hat.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
 				.texOffs(28, 0)
 				.addBox(-6.0F, -1.5F, -1.5F, 7.0F, 3.0F, 3.0F),
 			PartPose.offsetAndRotation(-3.5F, -9.0F, 0.0F, 0.0F, 15.0F * Mth.DEG_TO_RAD, 10.0F * Mth.DEG_TO_RAD));
@@ -47,7 +47,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 				.addBox(-3.0F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(-5.5F, 0.0F, 0.0F, 0.0F, 0.0F, 10.0F * Mth.DEG_TO_RAD));
 
-		var leftHorn = hat.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
+		PartDefinition leftHorn = hat.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
 				.texOffs(28, 0)
 				.addBox(-1.0F, -1.5F, -1.5F, 7.0F, 3.0F, 3.0F),
 			PartPose.offsetAndRotation(3.5F, -9.0F, 0.0F, 0.0F, -15.0F * Mth.DEG_TO_RAD, -10.0F * Mth.DEG_TO_RAD));
@@ -57,7 +57,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 				.addBox(0.0F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 0.0F, -10.0F * Mth.DEG_TO_RAD));
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 18)
 				.addBox(-5.5F, 0.0F, -2.0F, 11.0F, 8.0F, 4.0F)
 				.texOffs(30, 24)
@@ -71,7 +71,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 				.addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F),
 			PartPose.offset(0.0F, -0.5F, 0.0F));
 
-		var rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		PartDefinition rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 				.texOffs(44, 16)
 				.addBox(-4.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
 			PartPose.offset(-6.5F, 14.0F, 0.0F));
@@ -81,7 +81,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 				.addBox(-1.0F, -19.0F, -1.0F, 2.0F, 40.0F, 2.0F),
 			PartPose.offsetAndRotation(-2.0F, 8.5F, 0.0F, 90.0F * Mth.DEG_TO_RAD, 0.0F, 0.0F));
 
-		var leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
+		PartDefinition leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
 				.texOffs(44, 16)
 				.addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
 			PartPose.offset(6.5F, 14.0F, 0.0F));

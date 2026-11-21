@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.projectile.SlimeProjectile;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -47,9 +47,8 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 			.add(Attributes.ATTACK_DAMAGE, 4);
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.SLIME_BEETLE_AMBIENT.get();
 	}
 

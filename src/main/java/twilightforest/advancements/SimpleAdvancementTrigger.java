@@ -19,7 +19,7 @@ public class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvan
 	}
 
 	public void trigger(ServerPlayer player) {
-		this.trigger(player, (instance) -> true);
+		this.trigger(player, (_) -> true);
 	}
 
 	public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {

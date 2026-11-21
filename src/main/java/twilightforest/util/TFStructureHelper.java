@@ -42,8 +42,10 @@ public class TFStructureHelper {
 	}
 
 	public static BlockState randomPlant(int i) {
-		if (i < 4) return randomSapling(i);
-		else return randomMushroom(i - 4);
+		if (i < 4)
+			return randomSapling(i);
+		else
+			return randomMushroom(i - 4);
 	}
 
 	public static BlockState randomSapling(int i) {
@@ -65,7 +67,9 @@ public class TFStructureHelper {
 	}
 
 	public static BlockState randomMushroom(int i) {
-		if (i == 0) return Blocks.POTTED_RED_MUSHROOM.defaultBlockState();
-		else return Blocks.POTTED_BROWN_MUSHROOM.defaultBlockState();
+		if (i == 0)
+			return Blocks.POTTED_RED_MUSHROOM.defaultBlockState();
+		else
+			return Blocks.POTTED_BROWN_MUSHROOM.defaultBlockState();
 	}
 }

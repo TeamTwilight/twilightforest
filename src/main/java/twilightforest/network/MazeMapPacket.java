@@ -40,7 +40,8 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					if (!(ctx.player().level() instanceof ClientLevel clientLevel)) return;
+					if (!(ctx.player().level() instanceof ClientLevel clientLevel))
+						return;
 
 					MapId mapId = message.inner.mapId();
 					TFMazeMapData mapdata = MapDataManager.getClientMazeMapData(mapId);

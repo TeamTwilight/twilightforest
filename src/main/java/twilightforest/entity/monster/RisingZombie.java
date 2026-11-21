@@ -82,7 +82,7 @@ public class RisingZombie extends Monster {
 				}
 			}
 		} else if (this.tickCount % 10 == 0) {
-			var player = this.level().getNearestPlayer(this, this.getAttributeValue(Attributes.FOLLOW_RANGE) / 2);
+			Player player = this.level().getNearestPlayer(this, this.getAttributeValue(Attributes.FOLLOW_RANGE) / 2);
 			if (player != null && this.isLookingAtMe(player, 0.5D, false, true, this.getEyeY(), this.getY() + 0.5D * (double)this.getScale(), (this.getEyeY() + this.getY()) / 2.0D)) {
 				this.getEntityData().set(RISING_TICKS, 1);
 			}

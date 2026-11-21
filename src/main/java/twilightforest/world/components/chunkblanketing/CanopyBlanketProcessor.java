@@ -67,7 +67,8 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
 			}
 		}
 
-		if (!biomeFound) return false;
+		if (!biomeFound)
+			return false;
 
 		Set<Structure> structuresThroughChunk = chunk.getAllReferences().keySet();
 		boolean clearingForStructureNearby = !(structuresThroughChunk.isEmpty() || Collections.disjoint(structuresThroughChunk, avoidStructures));
@@ -87,7 +88,8 @@ public record CanopyBlanketProcessor(HolderSet<Biome> biomesForApplication, Bloc
 				// We can use the Deltas here as they are offsets from chunk origin
 				BlockPos surfacePos = chunkOrigin.offset(dX, topOccupiedBlock, dZ);
 
-				if (chunk.getFluidState(surfacePos).is(FluidTags.WATER)) continue;
+				if (chunk.getFluidState(surfacePos).is(FluidTags.WATER))
+					continue;
 
 				float xweight = (dX % 4) * 0.25F + 0.125F;
 				float zweight = (dZ % 4) * 0.25F + 0.125F;

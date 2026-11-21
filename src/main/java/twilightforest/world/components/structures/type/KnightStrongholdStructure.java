@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;

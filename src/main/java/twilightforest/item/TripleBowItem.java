@@ -32,7 +32,8 @@ public class TripleBowItem extends BowItem {
 
 			int i = this.getUseDuration(stack, player) - timeLeft;
 			i = EventHooks.onArrowLoose(stack, level, player, i, !arrowStack.isEmpty());
-			if (i < 0) return false;
+			if (i < 0)
+				return false;
 
 			if (!arrowStack.isEmpty()) {
 				float f = getPowerForTime(i);
@@ -67,7 +68,8 @@ public class TripleBowItem extends BowItem {
 
 			for (int j = -1; j <= 1; j++) {
 				ItemStack copy = itemstack.copy();
-				if (j != 0) copy.set(DataComponents.INTANGIBLE_PROJECTILE, Unit.INSTANCE);
+				if (j != 0)
+					copy.set(DataComponents.INTANGIBLE_PROJECTILE, Unit.INSTANCE);
 				Projectile projectile = this.createProjectile(level, living, stack, copy, crit);
 				this.shootProjectile(living, projectile, i, speed, accuracy, f4, target);
 				projectile.setDeltaMovement(projectile.getDeltaMovement().add(0.0D, 0.0075D * 20D * j, 0.0D));

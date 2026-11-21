@@ -29,7 +29,7 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(272, 0)
 				.addBox(-16.0F, -14.0F, -16.0F, 32.0F, 24.0F, 32.0F, new CubeDeformation(0.01F))
 				.texOffs(272, 56)

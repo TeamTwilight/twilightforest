@@ -20,7 +20,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallSkullBlock;

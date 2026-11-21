@@ -3,7 +3,6 @@ package twilightforest.asm;
 import net.neoforged.neoforgespi.transformation.ClassProcessorProvider;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.beardifier.InjectCustomTerrainBeardifierDuringCreateNoiseChunkTransformer;
-import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
 import twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
@@ -36,7 +35,6 @@ public class TFCoreMod implements ClassProcessorProvider {
 
 		//block
 		collector.add(new SlimeBlockMomentumTransformer());
-		collector.add(new SlimeBlockBounceUpTransformer());
 		collector.add(new UnrestrainedFrictionTransformer());
 
 		// chunk

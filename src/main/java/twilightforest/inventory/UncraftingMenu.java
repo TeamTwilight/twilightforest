@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
@@ -63,8 +63,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 	// Store the currently selected recipe for use later down the line.
 	// Currently used for determining if the recipe is an uncrafting one and for determining custom costs
-	@Nullable
-	public Recipe<?> storedGhostRecipe = null;
+	public @Nullable Recipe<?> storedGhostRecipe = null;
 
 	public static UncraftingMenu fromNetwork(int id, Inventory inventory) {
 		return new UncraftingMenu(id, inventory, inventory.player.level(), ContainerLevelAccess.NULL);
@@ -155,7 +154,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 						for (int invX = 0; invX < recipeWidth; invX++) {
 
 							int index = invX + invY * recipeWidth;
-							if (index >= recipeItems.length) continue;
+							if (index >= recipeItems.length)
+								continue;
 
 							ItemStack ingredient = normalizeIngredient(recipeItems[index]);
 							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
@@ -300,7 +300,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 							recipes.add(recipe);
 						}
 					}
-					if (recipe instanceof UncraftingRecipe uncraftingRecipe && uncraftingRecipe.isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe);
+					if (recipe instanceof UncraftingRecipe uncraftingRecipe && uncraftingRecipe.isItemStackAnIngredient(inputStack))
+						recipes.add(uncraftingRecipe);
 				}
 			}
 		}
@@ -319,7 +320,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				matches(inputStack, shapelessRecipe.result);
 		}
 
-		return TFConfig.allowShapelessUncrafting ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
+		return false;
 	}
 
 	protected static boolean isComplete(List<Ingredient> list) { //TODO: check if properly ported

@@ -35,8 +35,10 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		if (!level.isDebug()) {
-			if (state.getValue(GhastTrapBlock.ACTIVE)) te.tickActive(level, pos, state, te);
-			else te.tickInactive(level, pos, state, te);
+			if (state.getValue(GhastTrapBlock.ACTIVE))
+				te.tickActive(level, pos, state, te);
+			else
+				te.tickInactive(level, pos, state, te);
 		}
 	}
 
@@ -48,7 +50,8 @@ public class GhastTrapBlockEntity extends BlockEntity {
 		for (CarminiteGhastling ghast : nearbyGhasts) {
 			if (ghast.deathTime > 0) {
 				te.makeParticlesTo(level, ghast.getEyePosition());
-				if (!te.dyingGhasts.contains(ghast)) te.dyingGhasts.add(ghast);
+				if (!te.dyingGhasts.contains(ghast))
+					te.dyingGhasts.add(ghast);
 			}
 		}
 

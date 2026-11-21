@@ -134,7 +134,7 @@ public class BrazierBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 
@@ -165,7 +165,7 @@ public class BrazierBlock extends BaseEntityBlock {
 				if (FluidUtil.getFirstStackContained(stack).is(Fluids.WATER)) {
 					ItemAccess access = ItemAccess.forPlayerInteraction(player, hand);
 					ResourceHandler<FluidResource> handler = access.oneByOne().getCapability(Capabilities.Fluid.ITEM);
-					try (var tx = Transaction.openRoot()) {
+					try (Transaction tx = Transaction.openRoot()) {
 						if (handler != null && handler.extract(handler.getResource(0), FluidType.BUCKET_VOLUME, tx) == FluidType.BUCKET_VOLUME) {
 							level.setBlock(pos, state.setValue(LIGHT, BrazierLight.OFF), 11);
 							level.setBlock(pos.below(), level.getBlockState(pos.below()).setValue(LIGHT, BrazierLight.OFF), 11);

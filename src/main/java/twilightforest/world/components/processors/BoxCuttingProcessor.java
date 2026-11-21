@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.BoundingBoxUtils;
@@ -31,9 +31,8 @@ public final class BoxCuttingProcessor implements StructureProcessor {
 		this.cutouts = cutouts;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+	public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
 		for (BoundingBox cutout : this.cutouts)
 			if (cutout.isInside(modifiedBlockInfo.pos()))
 				return null;
@@ -50,7 +49,8 @@ public final class BoxCuttingProcessor implements StructureProcessor {
 		List<BoundingBox> boxes = new ArrayList<>();
 
 		for (Tag tagElement : tag) {
-			if (!(tagElement instanceof CompoundTag boxCompound)) continue;
+			if (!(tagElement instanceof CompoundTag boxCompound))
+				continue;
 
 			try {
 				boxes.add(BoundingBoxUtils.NBTToBoundingBox(boxCompound));

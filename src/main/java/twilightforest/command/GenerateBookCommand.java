@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.world.components.structures.util.StructureHints;
 
 @tamaized.beanification.Component
@@ -30,8 +30,9 @@ public class GenerateBookCommand {
 				.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
 	}
 
-	private int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {
-		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
+	private int generateBook(CommandSourceStack source, Holder.@Nullable Reference<Structure> structureKey) throws CommandSyntaxException {
+		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer)
+			throw ERROR_NOT_RUN_BY_PLAYER.create();
 		if (structureKey == null) {
 			for (Structure structure : source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE).stream().toList()) {
 				if (structure instanceof StructureHints hint) {

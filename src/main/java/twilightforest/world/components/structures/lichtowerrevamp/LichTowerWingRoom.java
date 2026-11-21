@@ -17,6 +17,8 @@ import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -41,7 +43,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.block.ChiseledCanopyShelfBlock;
@@ -115,17 +117,20 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	private static int[] generateCeilingPlacements(RandomSource random, StructureTemplate template, BoundingBox box, StructurePlaceSettings placeSettings) {
 		int width = Math.max(box.getXSpan(), box.getZSpan());
 
-		if (width <= 0) return new int[0];
+		if (width <= 0)
+			return new int[0];
 
 		ObjectArrayList<StructureTemplate.StructureBlockInfo> blockInfos = template.filterBlocks(BlockPos.ZERO, placeSettings, Blocks.STRUCTURE_BLOCK, false);
 		blockInfos.removeIf(info -> {
 			CompoundTag nbt = info.nbt();
-			if (nbt == null || nbt.isEmpty()) return false;
+			if (nbt == null || nbt.isEmpty())
+				return false;
 			String metadata = nbt.getStringOr("metadata", "");
 			return !(metadata.startsWith("rope") || metadata.startsWith("chain"));
 		});
 
-		if (blockInfos.isEmpty()) return new int[0];
+		if (blockInfos.isEmpty())
+			return new int[0];
 
 		filterAlignedPieces(random, blockInfos);
 
@@ -148,7 +153,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 		for (int i = 0; i < blockInfos.size(); i++) {
 			StructureTemplate.StructureBlockInfo blockInfo = blockInfos.get(i);
-			if (blockInfo.nbt() == null || filterMetadata(random, blockInfo.nbt())) continue;
+			if (blockInfo.nbt() == null || filterMetadata(random, blockInfo.nbt()))
+				continue;
 
 			BlockPos pos = blockInfo.pos();
 			if (xDistinct.contains(pos.getX()) || zDistinct.contains(pos.getZ())) {
@@ -420,10 +426,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (modifiedLabel.length == 2) {
 			if (modifiedLabel[0].startsWith("rope")) {
 				pos = this.danglingBlock(pos, level, random, TFBlocks.ROPE.value().defaultBlockState(), modifiedLabel[0].substring("rope".length()));
-				if (pos == null) return;
+				if (pos == null)
+					return;
 			} if (modifiedLabel[0].startsWith("chain")) {
 				pos = this.danglingBlock(pos, level, random, Blocks.IRON_CHAIN.defaultBlockState(), modifiedLabel[0].substring("chain".length()));
-				if (pos == null) return;
+				if (pos == null)
+					return;
 			} else if (modifiedLabel[0].equals("pedestal")) {
 
 				level.setBlock(pos, TFBlocks.TWISTED_STONE_PILLAR.value().defaultBlockState(), Block.UPDATE_CLIENTS);
@@ -437,7 +445,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 		String[] directionSplit = variety.split("@");
 
-		if (directionSplit.length == 0) return;
+		if (directionSplit.length == 0)
+			return;
 
 		Rotation dataRotation = directionSplit.length == 1
 			? Rotation.CLOCKWISE_180
@@ -445,12 +454,14 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 		String[] permutationSplit = directionSplit[0].split("\\|");
 
-		if (permutationSplit.length == 0) return;
+		if (permutationSplit.length == 0)
+			return;
 
 		String chosenLabel = Util.getRandom(permutationSplit, random);
 		String[] parameters = chosenLabel.split(":");
 
-		if (parameters.length == 0) return;
+		if (parameters.length == 0)
+			return;
 
 		level.removeBlock(pos, false); // Clears block entity data left by Data Marker
 
@@ -686,7 +697,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	private void putCandles(String[] parameters, RandomSource random, WorldGenLevel level, BlockPos pos, BlockState candle) {
 		int amount = Math.min(4, parameters.length == 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
-		if (amount <= 0) return;
+		if (amount <= 0)
+			return;
 		BlockState candles = candle.setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, amount);
 		level.setBlock(pos, candles, Block.UPDATE_CLIENTS);
 	}
@@ -706,12 +718,13 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 		Direction randomDirection = this.getRandomDirectionInsideChunk(level, random, pos);
 
-		if (randomDirection.getAxis() == Direction.Axis.Y) return;
+		if (randomDirection.getAxis() == Direction.Axis.Y)
+			return;
 
 		BlockPos zombiePos = pos.relative(randomDirection, 1);
 
-		var knot = EntityUtil.createEntityIgnoreException(level, EntityTypes.LEASH_KNOT);
-		var trapEntity = EntityUtil.createEntityIgnoreException(level, EntityTypes.ZOMBIE);
+		LeashFenceKnotEntity knot = EntityUtil.createEntityIgnoreException(level, EntityTypes.LEASH_KNOT);
+		Zombie trapEntity = EntityUtil.createEntityIgnoreException(level, EntityTypes.ZOMBIE);
 		if (knot == null || trapEntity == null)
 			return;
 
@@ -730,10 +743,14 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 		List<Direction> directions = Direction.Plane.HORIZONTAL.shuffledCopy(random);
 
-		if (xInChunk == 0) directions.remove(Direction.WEST);
-		if (zInChunk == 0) directions.remove(Direction.NORTH);
-		if (xInChunk == 15) directions.remove(Direction.EAST);
-		if (zInChunk == 15) directions.remove(Direction.SOUTH);
+		if (xInChunk == 0)
+			directions.remove(Direction.WEST);
+		if (zInChunk == 0)
+			directions.remove(Direction.NORTH);
+		if (xInChunk == 15)
+			directions.remove(Direction.EAST);
+		if (zInChunk == 15)
+			directions.remove(Direction.SOUTH);
 
 
 
@@ -809,7 +826,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	private void putHeadCandles(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters, Block candledHeadBlock, Rotation dataRotation) {
 		int amount = Math.min(4, parameters.length >= 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
-		if (amount <= 0) return;
+		if (amount <= 0)
+			return;
 		int rotation = parameters.length >= 3 ? this.getHeadRotation(parameters[2], random) : random.nextIntBetweenInclusive(0, 15);
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation.getRotated(Rotation.CLOCKWISE_180));
 

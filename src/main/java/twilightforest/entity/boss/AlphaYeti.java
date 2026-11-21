@@ -29,12 +29,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.entity.ai.goal.YetiRampageGoal;
@@ -178,9 +177,8 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 		return flag;
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.ALPHA_YETI_GROWL.get();
 	}
 

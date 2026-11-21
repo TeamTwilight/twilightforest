@@ -42,7 +42,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
@@ -114,8 +114,7 @@ public class EntityUtil {
 		handle_HangingEntity_setDirection = tmp_handle_HangingEntity_setDirection;
 	}
 
-	@Nullable
-	public static SoundEvent getDeathSound(LivingEntity living) {
+	public static @Nullable SoundEvent getDeathSound(LivingEntity living) {
 		SoundEvent sound = null;
 		if (handle_LivingEntity_getDeathSound != null) {
 			try {
@@ -172,8 +171,7 @@ public class EntityUtil {
 	}
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException
-	@Nullable
-	private static <T extends Entity> T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
+	private static <T extends Entity> @Nullable T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
 		try {
 			return type.create(levelAccessor.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {
@@ -182,7 +180,8 @@ public class EntityUtil {
 	}
 
 	public static boolean tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
-		if (chosenPainting == null) return false;
+		if (chosenPainting == null)
+			return false;
 
 		Painting painting = createEntityIgnoreException(EntityTypes.PAINTING, world);
 
@@ -204,13 +203,11 @@ public class EntityUtil {
 		return false;
 	}
 
-	@Nullable
-	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
+	public static @Nullable Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
 		return getPaintingOfSize(level, rand, minSize, minSize, false);
 	}
 
-	@Nullable
-	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
+	public static @Nullable Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
 		for (Holder.Reference<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).listElements().toList()) {
@@ -292,10 +289,12 @@ public class EntityUtil {
 
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
-		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
-		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
-		if (newEntity == null) return false;
-		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
+		if (!(oldEntity.level() instanceof ServerLevel level))
+			return false;
+		Entity newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
+		if (newEntity == null)
+			return false;
+		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), _ -> {})) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
 				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
@@ -365,15 +364,15 @@ public class EntityUtil {
 				}
 			}
 
-			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
+			if (newEntity instanceof LivingEntity living)
+				EventHooks.onLivingConvert(oldEntity, living);
 			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
 			return true;
 		}
 		return false;
 	}
 
-	@Nullable
-	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
+	public static <T extends Entity> @Nullable T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
 		try {
 			return type.create(level.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {

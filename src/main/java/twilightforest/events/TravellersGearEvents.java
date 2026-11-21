@@ -28,8 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.GrindstoneEvent;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
@@ -45,7 +45,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -68,25 +68,25 @@ public class TravellersGearEvents {
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::magnetizeArrows);
-		NeoForge.EVENT_BUS.addListener(this::performPerfectDodge);
-		NeoForge.EVENT_BUS.addListener(this::reduceSlimySolesFallDamage);
-		NeoForge.EVENT_BUS.addListener(this::tickMovementModifiers);
-		NeoForge.EVENT_BUS.addListener(this::performStealth);
-		NeoForge.EVENT_BUS.addListener(this::disableHighStepWhileSneaking);
-		NeoForge.EVENT_BUS.addListener(this::updateOtherModifiers);
-		NeoForge.EVENT_BUS.addListener(this::cancelSlimySolesJump);
-		NeoForge.EVENT_BUS.addListener(this::activateAndDeactivateTravellersModifiers);
-		NeoForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
-		NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
-		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
-		NeoForge.EVENT_BUS.addListener(this::extractItemsFromSwapHotbarModifier);
-		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
-		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
-		NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
-		NeoForge.EVENT_BUS.addListener(this::keepAttachmentsOnDeath);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::magnetizeArrows);
+		bus.addListener(this::performPerfectDodge);
+		bus.addListener(this::reduceSlimySolesFallDamage);
+		bus.addListener(this::tickMovementModifiers);
+		bus.addListener(this::performStealth);
+		bus.addListener(this::disableHighStepWhileSneaking);
+		bus.addListener(this::updateOtherModifiers);
+		bus.addListener(this::cancelSlimySolesJump);
+		bus.addListener(this::activateAndDeactivateTravellersModifiers);
+		bus.addListener(this::cancelCombiningTravellersGear);
+		bus.addListener(this::cancelPhantomSpawns);
+		bus.addListener(this::fireCraftingModifierTrigger);
+		bus.addListener(this::extractItemsFromSwapHotbarModifier);
+		bus.addListener(this::removeModifiersFromTravellersGear);
+		bus.addListener(this::stopDamagingTravellersGear);
+		bus.addListener(this::setLastDamageArmorTime);
+		bus.addListener(this::keepAttachmentsOnDeath);
 	}
 
 	private void magnetizeArrows(ProjectileImpactEvent event) {
@@ -233,12 +233,14 @@ public class TravellersGearEvents {
 	}
 
 	private void updateOtherModifiers(EntityTickEvent.Post event) {
-		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
+		if (!(event.getEntity() instanceof LivingEntity livingEntity))
+			return;
 		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 		TravellersGearLogic.travellersBootsSlimySolesBounce(livingEntity);
 
-		if (livingEntity.level().isClientSide()) return;
+		if (livingEntity.level().isClientSide())
+			return;
 		TravellersGearLogic.travellersVestHaste(livingEntity);
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
@@ -299,7 +301,8 @@ public class TravellersGearEvents {
 	}
 
 	private void setLastDamageArmorTime(ArmorHurtEvent event) {
-		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
+		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0))
+			return;
 		LivingEntity entity = event.getEntity();
 		entity.setData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
 	}
@@ -379,7 +382,8 @@ public class TravellersGearEvents {
 		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 			ItemStack compareStack = ItemStack.EMPTY;
 			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {
-				if (event.getInventory().getItem(i).is(event.getCrafting().getItem())) compareStack = event.getInventory().getItem(i);
+				if (event.getInventory().getItem(i).is(event.getCrafting().getItem()))
+					compareStack = event.getInventory().getItem(i);
 			}
 
 			if (!compareStack.isEmpty()) {

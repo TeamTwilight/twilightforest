@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataAttachments;
@@ -41,19 +40,23 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 		if (item.owner() instanceof ServerPlayer player) {
 			int blocksSmashed = entity.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed();
 			int maxSmash = Math.round(this.maxSmash.calculate(enchantmentLevel));
-			if (blocksSmashed >= maxSmash) return;
+			if (blocksSmashed >= maxSmash)
+				return;
 			BlockPos start = BlockPos.containing(position);
 			int radius = Math.round(this.radius.calculate(enchantmentLevel));
 
 			for (BlockPos pos : BlockPos.betweenClosed(start.offset(-radius, 0, -radius), start.offset(radius, 0, radius))) {
-				if (blocksSmashed >= maxSmash) break;
+				if (blocksSmashed >= maxSmash)
+					break;
 				BlockState state = level.getBlockState(pos);
 				if (!state.isAir()) {
-					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.typeHolder())) continue;
+					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.typeHolder()))
+						continue;
 					if (ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && state.canEntityDestroy(level, pos, player)) {
 						if (!NeoForge.EVENT_BUS.post(new BreakBlockEvent(level, pos, state, player)).isCanceled()) {
 							level.destroyBlock(pos, false);
-							if (!player.isCreative()) state.getBlock().playerDestroy(level, player, pos, state, level.getBlockEntity(pos), item.itemStack());
+							if (!player.isCreative())
+								state.getBlock().playerDestroy(level, player, pos, state, level.getBlockEntity(pos), item.itemStack());
 							if (this.smashSound().isPresent()) {
 								level.playSound(null, pos, this.smashSound().get().value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 							}

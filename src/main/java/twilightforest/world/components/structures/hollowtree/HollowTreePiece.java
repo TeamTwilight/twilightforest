@@ -60,7 +60,8 @@ public abstract class HollowTreePiece extends StructurePiece {
 	protected void placeProvidedBlock(WorldGenLevel world, BlockStateProvider possibleBlocks, RandomSource random, int sx, int sy, int sz, BoundingBox sbb, BlockPos origin, boolean forcedPlace, boolean leafHack) {
 		BlockPos worldPos = this.getWorldPos(sx, sy, sz).immutable();
 
-		if (!sbb.isInside(worldPos) || (!forcedPlace && !FeatureLogic.treesReplaceable(world.getBlockState(worldPos)))) return;
+		if (!sbb.isInside(worldPos) || (!forcedPlace && !FeatureLogic.treesReplaceable(world.getBlockState(worldPos))))
+			return;
 
 		BlockState state = possibleBlocks.getState(world, random, worldPos);
 
@@ -76,7 +77,8 @@ public abstract class HollowTreePiece extends StructurePiece {
 	protected void fillColumnDown(WorldGenLevel pLevel, BlockStateProvider possibleBlocks, RandomSource random, int sx, int sy, int sz, BoundingBox pBox) {
 		BlockPos.MutableBlockPos worldPos = this.getWorldPos(sx, sy, sz);
 
-		if (!pBox.isInside(worldPos)) return;
+		if (!pBox.isInside(worldPos))
+			return;
 
 		while (this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinY() + 1) {
 			pLevel.setBlock(worldPos, possibleBlocks.getState(pLevel, random, worldPos), PLACE_FLAG);
@@ -88,7 +90,8 @@ public abstract class HollowTreePiece extends StructurePiece {
 	protected void fillVineColumnDown(WorldGenLevel pLevel, BlockStateProvider possibleBlocks, RandomSource random, int sx, int sy, int sz, BoundingBox pBox, Direction direction) {
 		BlockPos.MutableBlockPos worldPos = this.getWorldPos(sx, sy, sz);
 
-		if (!pBox.isInside(worldPos)) return;
+		if (!pBox.isInside(worldPos))
+			return;
 
 		while (this.nonFluidAndReplaceableByStructures(pLevel, worldPos) && worldPos.getY() > pLevel.getMinY() + 1) {
 			pLevel.setBlock(worldPos, possibleBlocks.getState(pLevel, random, worldPos).setValue(VineBlock.getPropertyForFace(direction), true), PLACE_FLAG);
@@ -137,17 +140,26 @@ public abstract class HollowTreePiece extends StructurePiece {
 					if (dist <= blobRadius) {
 						if (imperfect && dist == blobRadius) {
 							// no cubes allowed!
-							if (dx == dy && dy == dz) continue;
+							if (dx == dy && dy == dz)
+								continue;
 							// randomly don't generate some blocks on the very edges of the circles that comprise the leaf blob
 							if (dx == dy && dz > dx && dx > 0 || dy == dz && dx > dy && dy > 0 || dz == dx && dy > dz && dz > 0) {
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
-								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0)
+									this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
 								continue;
 							}
 						}

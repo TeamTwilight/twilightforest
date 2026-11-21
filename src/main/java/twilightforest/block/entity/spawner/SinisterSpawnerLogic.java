@@ -56,13 +56,15 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	public boolean setParticles(Collection<ParticleOptions> particleOptions, boolean sendUpdate) {
 		this.particleOptions.clear();
 		boolean changed = this.particleOptions.addAll(particleOptions);
-		if (sendUpdate && changed) this.setChanged();
+		if (sendUpdate && changed)
+			this.setChanged();
 		return changed;
 	}
 
 	public boolean addParticle(ParticleOptions particle, boolean sendUpdate) {
 		boolean changed = this.particleOptions.add(particle);
-		if (sendUpdate && changed) this.setChanged();
+		if (sendUpdate && changed)
+			this.setChanged();
 		return changed;
 	}
 
@@ -215,7 +217,8 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	}
 
 	private void scanSpawnPositions(ServerLevel serverLevel, BlockPos blockEntityPos, RandomSource random) {
-		if (this.spawnBuffer.size() >= this.countNextToSpawn) return; // Spawn limit reached
+		if (this.spawnBuffer.size() >= this.countNextToSpawn)
+			return; // Spawn limit reached
 
 		if (this.checkPos == null || !BoundingBoxUtils.isPosWithinBox(blockEntityPos, this.checkPos, this.spawnRange)) {
 			// Restart from beginning, under the spawning block

@@ -10,13 +10,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.LevelData;
-import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
@@ -27,13 +27,13 @@ import twilightforest.world.TFTeleporter;
 @Component
 public class CapabilityEvents {
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::updateShields);
-		NeoForge.EVENT_BUS.addListener(this::updatePlayerCaps);
-		NeoForge.EVENT_BUS.addListener(this::absorbShieldHits);
-		NeoForge.EVENT_BUS.addListener(this::spawnInTFIfNecessary);
-		NeoForge.EVENT_BUS.addListener(this::playerLogsIn);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::updateShields);
+		bus.addListener(this::updatePlayerCaps);
+		bus.addListener(this::absorbShieldHits);
+		bus.addListener(this::spawnInTFIfNecessary);
+		bus.addListener(this::playerLogsIn);
 	}
 
 	private void updateShields(EntityTickEvent.Post event) {
@@ -72,7 +72,8 @@ public class CapabilityEvents {
 	}
 
 	private void spawnInTFIfNecessary(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+			return;
 
 		if (serverPlayer.getRespawnConfig() == null) {
 			newSpawnInTwilightForest(serverPlayer);

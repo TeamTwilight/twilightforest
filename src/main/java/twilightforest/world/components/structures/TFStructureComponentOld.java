@@ -29,7 +29,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.loot.TFLootTables;
@@ -96,12 +96,12 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	}
 
 	protected void setSpawner(WorldGenLevel world, Vec3i pos, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, v -> {
+		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, _ -> {
 		});
 	}
 
 	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, x, y, z, sbb, monsterID, v -> {
+		setSpawner(world, x, y, z, sbb, monsterID, _ -> {
 		});
 	}
 
@@ -534,7 +534,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 				if (!predicate.test(world.getUncachedNoiseBiome(  // getUncachedNoiseBiome() requires quart pos instead of blockPos, unlike getBiome()
 					QuartPos.fromBlock(x),
 					QuartPos.fromBlock(structurePos.getY()),
-					QuartPos.fromBlock(z)).value())) return true;
+					QuartPos.fromBlock(z)).value()))
+					return true;
 			}
 		}
 
@@ -544,8 +545,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	/**
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
-	@Nullable
-	public static StructurePiece findIntersectingExcluding(List<StructurePiece> list, BoundingBox toCheck, StructurePiece exclude) {
+	public static @Nullable StructurePiece findIntersectingExcluding(List<StructurePiece> list, BoundingBox toCheck, StructurePiece exclude) {
 		Iterator<StructurePiece> iterator = list.iterator();
 		StructurePiece structurecomponent;
 

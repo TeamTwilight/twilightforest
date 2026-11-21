@@ -25,22 +25,23 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import net.neoforged.neoforge.client.event.RegisterDebugRenderersEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
-import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
+import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component(dist = Dist.CLIENT)
+@Component
+@RequiresDist(Dist.CLIENT)
 public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRenderer {
 
 	private final ContextKey<List<PartRender>> partRenders = new ContextKey<>(TwilightForestMod.prefix("multipart_renders"));
 	private final int hitboxColor = ARGB.colorFromFloat(1.0F, 0.25F, 1.0F, 0.0F);
 
-	@PostConstruct
+	@EventBusPostConstruct
 	private void setup(IEventBus modBus, IEventBus gameBus) {
 		modBus.addListener(this::registerDebugRenderers);
 
@@ -75,7 +76,7 @@ public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRende
 
 	private void submitPartRenderStates(SubmitCustomGeometryEvent event) {
 		LevelRenderState renderState = event.getLevelRenderState();
-		@Nullable List<PartRender> renders = renderState.getRenderData(this.partRenders);
+		List<PartRender> renders = renderState.getRenderData(this.partRenders);
 		if (renders == null || renders.isEmpty())
 			return;
 

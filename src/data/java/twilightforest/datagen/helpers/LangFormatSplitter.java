@@ -1,7 +1,7 @@
 package twilightforest.datagen.helpers;
 
 import com.google.common.collect.ImmutableList;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.text.ChoiceFormat;
 import java.text.DecimalFormat;
@@ -171,10 +171,8 @@ public class LangFormatSplitter {
 	public static class MessageFormatComponent extends FormatComponent {
 
 		private final int argumentIndex;
-		@Nullable
-		private final String formatType;
-		@Nullable
-		private final String formatStyle;
+		private final @Nullable String formatType;
+		private final @Nullable String formatStyle;
 		private final boolean isChoice;
 
 		private MessageFormatComponent(String contents, int argumentIndex, @Nullable String formatType, @Nullable String formatStyle, boolean isChoice) {
@@ -192,13 +190,11 @@ public class LangFormatSplitter {
 		/**
 		 * @apiNote This will not be null if {@link #getFormatStyle()} is not null
 		 */
-		@Nullable
-		public String getFormatType() {
+		public @Nullable String getFormatType() {
 			return formatType;
 		}
 
-		@Nullable
-		public String getFormatStyle() {
+		public @Nullable String getFormatStyle() {
 			return formatStyle;
 		}
 
@@ -211,8 +207,7 @@ public class LangFormatSplitter {
 		 * @return A {@link MessageFormatComponent} representing the given contents, or {@code null} if the contents do not represent a valid
 		 * {@link MessageFormatComponent}
 		 */
-		@Nullable
-		private static MessageFormatComponent fromContents(String contents) {
+		private static @Nullable MessageFormatComponent fromContents(String contents) {
 			int length = contents.length();
 			if (length < 3 || contents.charAt(0) != '{' || contents.charAt(length - 1) != '}') {
 				//If we don't have at least one digit between the two brackets, or we don't start and end with a bracket

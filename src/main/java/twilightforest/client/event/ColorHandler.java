@@ -11,6 +11,7 @@ import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.client.properties.PotionFlaskTintSource;
@@ -19,7 +20,6 @@ import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +41,7 @@ public class ColorHandler {
 				return auroraTint(level, pos);
 			}
 		}), TFBlocks.AURORA_BLOCK.get());
-		event.register(List.of(state -> {
+		event.register(List.of(_ -> {
 			//TODO: Verify this. It's kind of how you get the color
 			int normalColor = blockColors.getTintSource(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), 0).color(TFBlocks.AURORA_BLOCK.get().defaultBlockState());
 

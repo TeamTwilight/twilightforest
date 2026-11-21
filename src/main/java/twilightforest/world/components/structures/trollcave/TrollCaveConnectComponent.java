@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -249,8 +249,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return false;
 	}
 
-	@Nullable
-	private StructurePiece findNearbyGarden(StructurePieceAccessor list, BoundingBox boundingBox) {
+	private @Nullable StructurePiece findNearbyGarden(StructurePieceAccessor list, BoundingBox boundingBox) {
 		BoundingBox largeBox = new BoundingBox(boundingBox.minX() - 30, boundingBox.minY() - 30, boundingBox.minZ() - 30, boundingBox.maxX() - 30, boundingBox.maxY() - 30, boundingBox.maxZ() - 30);
 
 		if (list instanceof StructurePiecesBuilder start) {

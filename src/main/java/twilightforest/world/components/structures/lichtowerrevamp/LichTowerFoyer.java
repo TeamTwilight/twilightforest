@@ -65,7 +65,8 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 		if ("twilightforest:lich_tower/tower_base".equals(connection.target())) {
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), "twilightforest:lich_tower/tower_base", context.random());
 
-			if (placeableJunction == null) return;
+			if (placeableJunction == null)
+				return;
 
 			LichTowerBase towerBase = new LichTowerBase(this.structureManager, placeableJunction);
 			pieceAccessor.addPiece(towerBase);
@@ -74,7 +75,8 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/foyer_decor"), "twilightforest:shelf", context.random());
 
 			// Don't want to place next to an existing shelf
-			if (placeableJunction == null || this.hasShelfNeighbor(connection.pos())) return;
+			if (placeableJunction == null || this.hasShelfNeighbor(connection.pos()))
+				return;
 
 			LichTowerFoyerDecor towerBase = new LichTowerFoyerDecor(this.genDepth + 1, this.structureManager, placeableJunction);
 			pieceAccessor.addPiece(towerBase);
@@ -96,7 +98,8 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 		String[] directionSplit = label.split("@");
 
-		if (directionSplit.length == 0) return;
+		if (directionSplit.length == 0)
+			return;
 
 		Rotation dataRotation = directionSplit.length == 1
 			? Rotation.CLOCKWISE_180

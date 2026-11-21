@@ -13,12 +13,12 @@ public class PhantomArmorModel {
 		MeshDefinition meshdefinition = KnightmetalArmorModel.addPieces(deformation);
 		PartDefinition part = meshdefinition.getRoot();
 
-		var head = part.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = part.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deformation),
 			PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		var rightHorn = head.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
+		PartDefinition rightHorn = head.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
 				.texOffs(24, 0)
 				.addBox(-5.5F, -1.5F, -1.5F, 5.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)),
 			PartPose.offsetAndRotation(-4.0F, -6.5F, 0.0F,
@@ -30,7 +30,7 @@ public class PhantomArmorModel {
 			PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F,
 				0.0F, -15.0F * Mth.DEG_TO_RAD, 45.0F * Mth.DEG_TO_RAD));
 
-		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
+		PartDefinition leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
 				.texOffs(24, 0)
 				.addBox(0.5F, -1.5F, -1.5F, 5.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)),
 			PartPose.offsetAndRotation(4.0F, -6.5F, 0.0F,

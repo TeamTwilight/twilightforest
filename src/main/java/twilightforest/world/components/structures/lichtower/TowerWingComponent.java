@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
@@ -140,7 +140,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (size > 4) {
 			// sub towers
 			for (final Rotation towerRotation : RotationUtil.ROTATIONS) {
-				if (towerRotation == Rotation.CLOCKWISE_180) continue;
+				if (towerRotation == Rotation.CLOCKWISE_180)
+					continue;
 				int[] dest = getValidOpening(rand, towerRotation);
 				if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 2, height - 4, towerRotation) && this.size > 8) {
 					if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], size - 4, height - 6, towerRotation)) {
@@ -555,7 +556,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add a skeleton spawner on this floor and decorate it in an appropriately scary manner.
 	 */
-	protected void decorateSkeletonRoom(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateSkeletonRoom(WorldGenLevel world, RandomSource rand, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		// skeleton spawner
 		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityTypes.SKELETON);
 
@@ -592,7 +593,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add a zombie spawner on this floor and decorate it in an appropriately scary manner.
 	 */
-	protected void decorateZombieRoom(WorldGenLevel world, RandomSource rand, int bottom, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateZombieRoom(WorldGenLevel world, RandomSource rand, int bottom, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		// zombie spawner
 		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityTypes.ZOMBIE);
 		final BlockState ironBars = Blocks.IRON_BARS.defaultBlockState();
@@ -630,7 +631,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Fill this room with sand and floor-to-ceiling cacti
 	 */
-	protected void decorateCactusRoom(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateCactusRoom(WorldGenLevel world, RandomSource rand, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		// sand & random dead bush
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -696,7 +697,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with a mass of messy spider webs.
 	 */
-	protected void decorateSpiderWebs(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateSpiderWebs(WorldGenLevel world, RandomSource rand, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		for (int dy = bottom; dy < top; dy++) {
 			int chance = (top - dy + 2);
 			for (int dx = 1; dx <= size - 2; dx++) {
@@ -753,7 +754,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with solid rock
 	 */
-	protected void decorateSolidRock(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateSolidRock(WorldGenLevel world, RandomSource rand, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		for (int dy = bottom; dy < top; dy++) {
 			for (int dx = 1; dx <= size - 2; dx++) {
 				for (int dz = 1; dz <= size - 2; dz++) {
@@ -770,7 +771,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with an orderly library
 	 */
-	protected void decorateLibrary(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateLibrary(WorldGenLevel world, RandomSource rand, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		// put some bookshelves around the room
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -799,7 +800,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Place a library treasure chest somewhere in the library
 	 */
 	@SuppressWarnings("fallthrough")
-	protected void decorateLibraryTreasure(WorldGenLevel world, RandomSource rand, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateLibraryTreasure(WorldGenLevel world, RandomSource rand, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		// FIXME: case 3 gets slightly higher chance than others
 		switch (rand.nextInt(4)) {
 			case 0:
@@ -829,7 +830,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with an overflowing library
 	 */
-	protected void decorateFullLibrary(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateFullLibrary(WorldGenLevel world, RandomSource rand, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 		// put some bookshelves around the room
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -942,7 +943,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		return false;
 	}
 
-	protected boolean isLadderPos(int x, int z, Rotation ladderUpDir, Rotation ladderDownDir) {
+	protected boolean isLadderPos(int x, int z, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir) {
 		if (ladderUpDir != null && x == getLadderX(ladderUpDir) && z == getLadderZ(ladderUpDir)) {
 			return true;
 		}
@@ -1776,7 +1777,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
-			if (pCoords == null) continue;
+			if (pCoords == null)
+				continue;
 			// initialize a painting object
 			EntityUtil.tryHangPainting(world, pCoords, direction, EntityUtil.getPaintingOfSize(world, rand, minSize));
 		}

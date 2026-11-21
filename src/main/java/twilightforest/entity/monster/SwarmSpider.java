@@ -23,7 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
@@ -108,9 +108,8 @@ public class SwarmSpider extends Spider {
 		return 6;
 	}
 
-	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.summonJockey(accessor, difficulty);
 		return data;
@@ -125,7 +124,8 @@ public class SwarmSpider extends Spider {
 					druid.setBaby(true);
 					EventHooks.finalizeMobSpawn(druid, accessor, difficulty, EntitySpawnReason.JOCKEY, null);
 
-					if (this.hasPassenger(e -> true)) this.ejectPassengers();
+					if (this.hasPassenger(_ -> true))
+						this.ejectPassengers();
 					druid.startRiding(this);
 				}
 			}

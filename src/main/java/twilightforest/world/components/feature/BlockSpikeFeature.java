@@ -53,7 +53,8 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		// Uncomment for easy spectator-xray debugging in position generation
 		//if (true) return level.setBlock(startPos, Blocks.BEACON.defaultBlockState(), 3);
 
-		if (lengthMaximum < Math.max(lengthMinimum, 1)) return false;
+		if (lengthMaximum < Math.max(lengthMinimum, 1))
+			return false;
 
 		BlockPos.MutableBlockPos movingPos = startPos.mutable();
 		int clearedLength = 0;
@@ -63,7 +64,8 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		for (int i = 0; i < length; i++) {
 			clearedLength = i;
 
-			if (FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos))) break;
+			if (FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos)))
+				break;
 
 			movingPos.move(0, dY, 0);
 		}
@@ -77,14 +79,16 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		for (int i = 0; i < remainingScanLength; i++) {
 			finalLength = clearedLength + i;
 
-			if (!FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos))) break;
+			if (!FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos)))
+				break;
 
 			movingPos.move(0, dY, 0);
 		}
 
 		finalLength = Math.min(length, finalLength);
 
-		if (finalLength < lengthMinimum || finalLength > lengthMaximum) return false;
+		if (finalLength < lengthMinimum || finalLength > lengthMaximum)
+			return false;
 
 		return makeSpike(level, startPos, ore, finalLength, dY, random, hang);
 	}
@@ -96,8 +100,8 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		if (!hang) {
 			BlockPos below = startPos.below(2);
 			BlockState belowState = level.getBlockState(below);
-			if (!belowState.is(TFBlockTags.SUPPORTS_STALAGMITES) &&
-				(!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState))) return false;
+			if (!belowState.is(TFBlockTags.SUPPORTS_STALAGMITES) && (!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState)))
+				return false;
 		}
 
 		// let's see...
@@ -109,8 +113,10 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 				int dist = (int) (Math.max(absx, absz) + Math.min(absx, absz) * 0.5F);
 				int spikeLength;
 
-				if (dist <= 0) spikeLength = length;
-				else spikeLength = random.nextInt((int) (length / (dist + 0.25F)));
+				if (dist <= 0)
+					spikeLength = length;
+				else
+					spikeLength = random.nextInt((int) (length / (dist + 0.25F)));
 
 				for (int i = -1; i < spikeLength; i++) {
 					BlockPos placement = startPos.offset(dx, i * dY, dz);

@@ -64,9 +64,10 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 	}
 
 	private void populateList(ResourceManager manager, SpeleothemVarietyConfig config, List<Identifier> rawEntries, Map<String, List<Stalactite>> stalactiteDict) {
-		List<Stalactite> stalactitesForType = stalactiteDict.computeIfAbsent(config.type(), k -> new ArrayList<>());
+		List<Stalactite> stalactitesForType = stalactiteDict.computeIfAbsent(config.type(), _ -> new ArrayList<>());
 
-		if (config.replace()) stalactitesForType.clear();
+		if (config.replace())
+			stalactitesForType.clear();
 
 		for (Identifier rl : rawEntries) {
 			rl = Identifier.fromNamespaceAndPath(rl.getNamespace(), String.format("%s/%s.json", STALACTITE_DIRECTORY, rl.getPath()));

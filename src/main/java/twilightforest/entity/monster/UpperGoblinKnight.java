@@ -312,7 +312,8 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	public boolean takeHitOnShield(DamageSource source, float amount) {
-		if (this.isShieldDisabled()) return false;
+		if (this.isShieldDisabled())
+			return false;
 
 		if (source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof AxeItem && !this.level().isClientSide()) {
 			this.getEntityData().set(SHIELD_DISABLED, true);

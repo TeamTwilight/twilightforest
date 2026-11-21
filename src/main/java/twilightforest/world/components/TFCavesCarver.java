@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.function.Function;
@@ -68,7 +68,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			double horiz = config.horizontalRadiusMultiplier.sample(random);
 			double vert = config.verticalRadiusMultiplier.sample(random);
 			double floor = config.floorLevel.sample(random);
-			CarveSkipChecker checker = (context, dX, dY, dZ, yPos) -> shouldSkip(dX, dY, dZ, floor);
+			CarveSkipChecker checker = (_, dX, dY, dZ, _) -> shouldSkip(dX, dY, dZ, floor);
 			int tunnelCount = 1;
 			if (this.isHighlands || random.nextInt(4) == 0) {
 				double horizToVertRatio = config.yScale.sample(random);
@@ -99,7 +99,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		}
 
 		//We dont want caves to go so far down you can see bedrock, so lets stop them right before
-		if (pos.getY() < access.getMinY() + 6) return false;
+		if (pos.getY() < access.getMinY() + 6)
+			return false;
 
 		if (!this.canReplaceBlock(config, stateBeforeReplacement) && !isDebugEnabled(config)) {
 			return false;
@@ -138,7 +139,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				}
 
 
-				if (blockPlaced) this.postCarveBlock(access, pos, config, randomFromPos, chunkOrigin);
+				if (blockPlaced)
+					this.postCarveBlock(access, pos, config, randomFromPos, chunkOrigin);
 
 				return blockPlaced;
 			} else {
@@ -156,7 +158,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	private void postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand, BlockPos chunkOrigin) {
 		for (Direction facing : Direction.values()) {
 			BlockPos directionalRelative = pos.relative(facing);
-			if (!isInsideChunk(directionalRelative, chunkOrigin)) continue;
+			if (!isInsideChunk(directionalRelative, chunkOrigin))
+				continue;
 
 			// FIXME Half-way configurable, would prefer to eliminate the isHighlands check entirely
 			//  The rand.nextInt rolls should have some way of being set into a custom config as well
@@ -274,9 +277,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		}
 	}
 
-	@Nullable
 	@Override
-	public BlockState getCarveState(CarvingContext context, CaveCarverConfiguration config, BlockPos pos, Aquifer aquifer) {
+	public @Nullable BlockState getCarveState(CarvingContext context, CaveCarverConfiguration config, BlockPos pos, Aquifer aquifer) {
 		return Blocks.CAVE_AIR.defaultBlockState();
 	}
 }

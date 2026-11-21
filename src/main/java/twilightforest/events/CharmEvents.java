@@ -23,14 +23,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredItem;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
@@ -60,11 +60,11 @@ public class CharmEvents {
 		Inventory.SLOT_OFFHAND
 	};
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, this::applyCharmOfLife);
-		NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, this::applyKeepingAndCasket);
-		NeoForge.EVENT_BUS.addListener(this::returnItemsOnRespawn);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(EventPriority.HIGHEST, this::applyCharmOfLife);
+		bus.addListener(EventPriority.HIGH, this::applyKeepingAndCasket);
+		bus.addListener(this::returnItemsOnRespawn);
 	}
 
 	// Check for charm of life first to stop a player from dying
@@ -72,10 +72,11 @@ public class CharmEvents {
 		LivingEntity living = event.getEntity();
 
 		// Ensure our player is real and in survival before attempting anything
-		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
-				player.isCreative() || player.isSpectator()) return;
+		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer || player.isCreative() || player.isSpectator())
+			return;
 
-		if (handleCharmOfLife(player)) event.setCanceled(true); // Executes if the player had charms
+		if (handleCharmOfLife(player))
+			event.setCanceled(true); // Executes if the player had charms
 	}
 
 	// Then check if the player should keep any items through death
@@ -83,8 +84,8 @@ public class CharmEvents {
 		LivingEntity living = event.getEntity();
 
 		// Ensure our player is real and in survival before attempting anything
-		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
-				player.isCreative() || player.isSpectator()) return;
+		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer || player.isCreative() || player.isSpectator())
+			return;
 
 		if (living.level() instanceof ServerLevel server && !server.getGameRules().get(GameRules.KEEP_INVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
@@ -96,7 +97,8 @@ public class CharmEvents {
 	}
 
 	private void returnItemsOnRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+			return;
 		if (!event.isEndConquered()) {
 			returnStoredItems(serverPlayer);
 		}

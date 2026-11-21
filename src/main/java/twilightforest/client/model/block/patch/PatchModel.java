@@ -4,12 +4,10 @@ import com.mojang.math.Quadrant;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
 import net.minecraft.client.resources.model.cuboid.CuboidFace;
 import net.minecraft.client.resources.model.cuboid.FaceBakery;
-import net.minecraft.client.resources.model.cuboid.ItemTransforms;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -72,7 +70,8 @@ public class PatchModel implements DynamicBlockStateModel {
 
 		this.addFromAABB(parts, west ? 0 : bb.minX(), bb.minY(), north ? 0 : bb.minZ(), east ? 16 : bb.maxX(), bb.maxY(), south ? 16 : bb.maxZ(), interner);
 
-		if (!this.shaggify) return;
+		if (!this.shaggify)
+			return;
 
 		// Poll these seeds before entering branching code, otherwise placing neighbors will cause odd changes
 		long westSeed = posRandom.nextLong();

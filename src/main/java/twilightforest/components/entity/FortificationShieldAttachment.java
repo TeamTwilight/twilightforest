@@ -94,8 +94,10 @@ public class FortificationShieldAttachment {
 		ParticlePacket particlePacket = new ParticlePacket();
 
 		Vec3 pos = src.getSourcePosition();
-		if (src.getDirectEntity() instanceof LivingEntity living) pos = living.getEyePosition(); // If entity is not null, transfer the position to the eye level
-		if (src.getEntity() instanceof TraceableEntity traceable && traceable.getOwner() instanceof LivingEntity living) pos = living.getEyePosition(); // If entity is not null, transfer the position to the eye level
+		if (src.getDirectEntity() instanceof LivingEntity living)
+			pos = living.getEyePosition(); // If entity is not null, transfer the position to the eye level
+		if (src.getEntity() instanceof TraceableEntity traceable && traceable.getOwner() instanceof LivingEntity living)
+			pos = living.getEyePosition(); // If entity is not null, transfer the position to the eye level
 
 		if (pos != null) {
 			Vec3 lichPos = entity.position().add(0.0D, entity.getBbHeight() * 0.65D, 0.0D);
@@ -122,7 +124,8 @@ public class FortificationShieldAttachment {
 		}
 
 		PacketDistributor.sendToPlayersTrackingEntity(entity, particlePacket);
-		if (entity instanceof ServerPlayer player) PacketDistributor.sendToPlayer(player, particlePacket);
+		if (entity instanceof ServerPlayer player)
+			PacketDistributor.sendToPlayer(player, particlePacket);
 	}
 
 	public void setShields(LivingEntity entity, int amount, boolean temp) {

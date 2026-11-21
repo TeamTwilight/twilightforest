@@ -30,7 +30,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
@@ -47,8 +47,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	private static final EntityDataAccessor<Boolean> IS_RETURNING = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private boolean hitEntity = false;
 	private int stuckTime;
-	@Nullable
-	private ItemStack stack;
+	private @Nullable ItemStack stack;
 	private double velX;
 	private double velY;
 	private double velZ;
@@ -176,7 +175,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					null,
 					vec3,
 					level.getBlockState(result.getBlockPos()),
-					item -> this.kill(level)
+					_ -> this.kill(level)
 				);
 			}
 		}

@@ -5,15 +5,14 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
@@ -23,16 +22,15 @@ public class HostileMountEvents {
 
 	public static volatile boolean allowDismount = false;
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::handleMountDamage);
-		NeoForge.EVENT_BUS.addListener(this::preventTeleportingOffHostileMounts);
-		NeoForge.EVENT_BUS.addListener(this::preventMountDismount);
-		NeoForge.EVENT_BUS.addListener(this::preventHostilMountCrouching);
-		NeoForge.EVENT_BUS.addListener(this::playerLogOut);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::handleMountDamage);
+		bus.addListener(this::preventTeleportingOffHostileMounts);
+		bus.addListener(this::preventMountDismount);
+		bus.addListener(this::preventHostilMountCrouching);
+		bus.addListener(this::playerLogOut);
 	}
 
-	@SubscribeEvent
 	private void handleMountDamage(LivingIncomingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		DamageSource damageSource = event.getSource();
@@ -48,7 +46,6 @@ public class HostileMountEvents {
 		}
 	}
 
-	@SubscribeEvent
 	private void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
 			hostileDismount(event.getEntity());
 	}

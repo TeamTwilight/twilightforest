@@ -10,11 +10,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
-import net.minecraft.world.item.crafting.display.SmithingRecipeDisplay;
 import net.minecraft.world.level.Level;
 import tamaized.beanification.Autowired;
 import twilightforest.util.ArmorUtil;
@@ -73,7 +69,8 @@ public class ComponentAttachingSmithingRecipe extends SimpleSmithingRecipe {
 	 */
 	@Override
 	public boolean matches(SmithingRecipeInput input, Level level) {
-		if (!Ingredient.testOptionalIngredient(this.templateIngredient(), input.template()) || !this.base.test(input.base()) || !Ingredient.testOptionalIngredient(this.additionIngredient(), input.addition())) return false;
+		if (!Ingredient.testOptionalIngredient(this.templateIngredient(), input.template()) || !this.base.test(input.base()) || !Ingredient.testOptionalIngredient(this.additionIngredient(), input.addition()))
+			return false;
 
 		for (TypedDataComponent<?> data : this.additionalData)
 			if (input.base().has(data.type()))

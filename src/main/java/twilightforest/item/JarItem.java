@@ -46,7 +46,8 @@ public class JarItem extends BlockItem {
 			ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
 			if (contents != null) {
 				ItemStack storedStack = contents.copyOne();
-				if (!storedStack.isEmpty()) builder.accept(storedStack.getDisplayName().copy().append(" x" + storedStack.getCount()).withStyle(ChatFormatting.GRAY));
+				if (!storedStack.isEmpty())
+					builder.accept(storedStack.getDisplayName().copy().append(" x" + storedStack.getCount()).withStyle(ChatFormatting.GRAY));
 			}
 		}
 

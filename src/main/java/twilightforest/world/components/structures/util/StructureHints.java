@@ -19,13 +19,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDataComponents;
 
@@ -130,8 +129,7 @@ public interface StructureHints {
 		return false;
 	}
 
-	@Nullable
-	Mob createHintMonster(Level world);
+	@Nullable Mob createHintMonster(Level world);
 
 	record HintConfig(ItemStackTemplate hintItem, EntityType<? extends Mob> hintMob) {
 		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(

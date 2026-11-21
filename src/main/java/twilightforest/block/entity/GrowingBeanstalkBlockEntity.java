@@ -124,7 +124,8 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 						te.placeLeaves(level, new BlockPos(lx, layerYPos, lz));
 
 						te.nextLeafY = layerYPos + 5 + level.getRandom().nextInt(10);
-						if ((te.nextLeafY % 2 == 0) == wasAnEvenNumber) te.nextLeafY++;
+						if ((te.nextLeafY % 2 == 0) == wasAnEvenNumber)
+							te.nextLeafY++;
 					}
 					te.layer++;
 				} else {

@@ -40,7 +40,7 @@ public class UnstableIceCoreModel extends EntityModel<LivingEntityRenderState> {
 		for (int i = 0; i < 16; i++) {
 			float spikeLength = i % 2 == 0 ? 6.0F : 8.0F;
 
-			var spike = partdefinition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+			PartDefinition spike = partdefinition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
 					.texOffs(0, 16)
 					.addBox(-1.0F, 4.0F, -1.0F, 2.0F, spikeLength, 2.0F),
 				PartPose.offset(0.0F, 4.0F, 0.0F));

@@ -50,7 +50,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
@@ -121,20 +121,22 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
-		if (this.isDeadOrDying()) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
-		else if (this.getNumber() == 0) this.getBossBar().addPlayer(player);
+		if (this.isDeadOrDying())
+			PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+		else if (this.getNumber() == 0)
+			this.getBossBar().addPlayer(player);
 	}
 
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (!this.getNearbyKnights().isEmpty()) this.getBossBar().removeAllPlayers(); // Remove boss bar if there is another knight alive
+		if (!this.getNearbyKnights().isEmpty())
+			this.getBossBar().removeAllPlayers(); // Remove boss bar if there is another knight alive
 	}
 
-	@Nullable
 	@Override
 	@SuppressWarnings({"deprecation"})
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
@@ -216,7 +218,8 @@ public class KnightPhantom extends BaseTFBoss {
 				knights.forEach(KnightPhantom::updateMyNumber);
 
 				ObjectArrayList<ItemStack> items = table.getRandomItems(params);
-				if (!this.getItemStacks().isEmpty()) items.addAll(this.getItemStacks());
+				if (!this.getItemStacks().isEmpty())
+					items.addAll(this.getItemStacks());
 				List<Integer> list = this.getAvailableSlots(this.random);
 				table.shuffleAndSplitItems(items, list.size(), this.random);
 
@@ -555,7 +558,8 @@ public class KnightPhantom extends BaseTFBoss {
 
 	public void setNumber(int number) {
 		this.number = number;
-		if (number == 0 && !this.isDeadOrDying()) this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(64.0D)).forEach(player -> this.getBossBar().addPlayer(player));
+		if (number == 0 && !this.isDeadOrDying())
+			this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(64.0D)).forEach(player -> this.getBossBar().addPlayer(player));
 
 		// set weapon per number
 		switch (number % 3) {

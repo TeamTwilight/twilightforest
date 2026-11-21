@@ -151,7 +151,8 @@ public class TFLootTables {
 	}
 
 	public static void generateChestContents(LevelAccessor level, BlockPos pos, long seed, ResourceKey<LootTable> lootTable) {
-		if (level.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity lootContainer) lootContainer.setLootTable(lootTable, seed);
+		if (level.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity lootContainer)
+			lootContainer.setLootTable(lootTable, seed);
 	}
 
 	private static ResourceKey<LootTable> register(String id) {

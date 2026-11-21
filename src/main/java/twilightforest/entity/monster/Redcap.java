@@ -23,7 +23,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.RedcapLightTNTGoal;
 import twilightforest.entity.ai.goal.RedcapShyGoal;
@@ -78,9 +78,8 @@ public class Redcap extends Monster {
 		return this.lastHurtByPlayerMemoryTime <= 0;
 	}
 
-	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);

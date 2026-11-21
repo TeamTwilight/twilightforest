@@ -96,7 +96,8 @@ public class MoonwormQueenItem extends Item {
 
 		if (level instanceof ServerLevel serverLevel && useTime > FIRING_TIME && (!stack.nextDamageWillBreak() || living.hasInfiniteMaterials())) {
 			if (level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living))) {
-				if (living instanceof Player player) TFItemStackUtils.hurtButDontBreak(stack,2, serverLevel, player);
+				if (living instanceof Player player)
+					TFItemStackUtils.hurtButDontBreak(stack,2, serverLevel, player);
 
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 				return true;

@@ -24,7 +24,8 @@ public class FireJetFeature extends Feature<BlockStateConfiguration> {
 		RandomSource rand = ctx.random();
 		BlockStateConfiguration config = ctx.config();
 
-		if (!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5)) return false;
+		if (!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5))
+			return false;
 
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.offset(

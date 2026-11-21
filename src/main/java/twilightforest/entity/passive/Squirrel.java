@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFSounds;
 import twilightforest.tags.TFItemTags;
 
@@ -74,15 +74,13 @@ public class Squirrel extends Animal {
 		return false;
 	}
 
-	@Nullable
 	@Override
-	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
+	public @Nullable AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		return null;
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.SQUIRREL_AMBIENT.get();
 	}
 

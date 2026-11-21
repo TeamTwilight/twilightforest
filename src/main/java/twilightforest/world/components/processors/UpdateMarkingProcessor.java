@@ -8,7 +8,7 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 
 import java.util.Arrays;
@@ -27,9 +27,8 @@ public class UpdateMarkingProcessor implements StructureProcessor {
 		this.blocksToMarkUpdate = blocksToMarkUpdate;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
+	public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
 		if (this.blocksToMarkUpdate.contains(modifiedInfo.state().getBlock())) {
 			if (level.getChunk(modifiedInfo.pos()) instanceof ProtoChunk protoChunk) {
 				protoChunk.markPosForPostProcessing(modifiedInfo.pos());

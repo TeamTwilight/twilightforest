@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProce
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 
 import java.util.ArrayList;
@@ -34,10 +34,10 @@ public final class TargetedRotProcessor implements StructureProcessor {
 		rotProcessor = new BlockRotProcessor(integrity);
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-		if (!this.blocksToRot.contains(modifiedBlockInfo.state())) return modifiedBlockInfo;
+	public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+		if (!this.blocksToRot.contains(modifiedBlockInfo.state()))
+			return modifiedBlockInfo;
 		return rotProcessor.process(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings, template);
 	}
 

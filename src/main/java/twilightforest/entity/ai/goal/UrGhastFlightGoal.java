@@ -31,7 +31,8 @@ public class UrGhastFlightGoal extends Goal {
 	public boolean canUse() {
 		MoveControl<?> entitymovehelper = this.ghast.getMoveControl();
 		this.pointsToVisit = this.createPath();
-		if (this.pointsToVisit.isEmpty()) return false;
+		if (this.pointsToVisit.isEmpty())
+			return false;
 
 		if (!entitymovehelper.hasWanted()) {
 			return true;

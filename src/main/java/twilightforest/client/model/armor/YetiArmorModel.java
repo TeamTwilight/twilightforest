@@ -20,7 +20,7 @@ public class YetiArmorModel extends TFArmorModel {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		//bigger head
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.5F, -8.0F, -4.0F, 9.0F, 8.0F, 8.0F, deformation),
 			PartPose.ZERO);
@@ -76,7 +76,7 @@ public class YetiArmorModel extends TFArmorModel {
 
 	private static void addPairHorns(PartDefinition partdefinition, int iter, float height, float zangle) {
 
-		var leftBottom = partdefinition.addOrReplaceChild("horn_" + iter + "_left_bottom",
+		PartDefinition leftBottom = partdefinition.addOrReplaceChild("horn_" + iter + "_left_bottom",
 			CubeListBuilder.create()
 				.texOffs(52, 8)
 				.addBox(-3.0F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
@@ -88,7 +88,7 @@ public class YetiArmorModel extends TFArmorModel {
 				.addBox(-4.0F, -1.0F, -1.0F, 5.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(-3.0F, 0.0F, 0.0F, 0.0F, -20.0F * Mth.DEG_TO_RAD, zangle * Mth.DEG_TO_RAD));
 
-		var rightBottom = partdefinition.addOrReplaceChild("horn_" + iter + "_right_bottom",
+		PartDefinition rightBottom = partdefinition.addOrReplaceChild("horn_" + iter + "_right_bottom",
 			CubeListBuilder.create()
 				.texOffs(52, 8)
 				.addBox(0.0F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),

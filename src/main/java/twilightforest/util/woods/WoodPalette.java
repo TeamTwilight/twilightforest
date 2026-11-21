@@ -79,14 +79,22 @@ public class WoodPalette {
 	}
 
 	public WoodShapes getWoodShapeFromBlock(Block b) {
-		if (b == this.planks) return WoodShapes.BLOCK;
-		if (b == this.stairs) return WoodShapes.STAIRS;
-		if (b == this.slab) return WoodShapes.SLAB;
-		if (b == this.button) return WoodShapes.BUTTON;
-		if (b == this.fence) return WoodShapes.FENCE;
-		if (b == this.gate) return WoodShapes.GATE;
-		if (b == this.plate) return WoodShapes.PLATE;
-		if (b == this.banister) return WoodShapes.BANISTER;
+		if (b == this.planks)
+			return WoodShapes.BLOCK;
+		if (b == this.stairs)
+			return WoodShapes.STAIRS;
+		if (b == this.slab)
+			return WoodShapes.SLAB;
+		if (b == this.button)
+			return WoodShapes.BUTTON;
+		if (b == this.fence)
+			return WoodShapes.FENCE;
+		if (b == this.gate)
+			return WoodShapes.GATE;
+		if (b == this.plate)
+			return WoodShapes.PLATE;
+		if (b == this.banister)
+			return WoodShapes.BANISTER;
 
 		return WoodShapes.INVALID;
 	}

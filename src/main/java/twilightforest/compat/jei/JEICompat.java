@@ -16,6 +16,8 @@ import net.minecraft.world.item.crafting.RecipeMap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import tamaized.beanification.Autowired;
+import tamaized.beanification.connector.fml.RequiresDist;
+import tamaized.beanification.connector.fml.RequiresMods;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
@@ -52,7 +54,9 @@ public class JEICompat implements IModPlugin {
 	public static final IIngredientType<FakeEntityType> ENTITY_TYPE = () -> FakeEntityType.class;
 	public static final IIngredientType<FakeItemEntity> FAKE_ITEM_ENTITY = () -> FakeItemEntity.class;
 
-	@Autowired(dist = Dist.CLIENT, requiresModIdsLoaded = "jei")
+	@Autowired
+	@RequiresDist(Dist.CLIENT)
+	@RequiresMods("jei")
 	private static RecipeViewerRecipes recipeCache;
 
 	public static boolean isEmiInstalled() {
@@ -67,7 +71,8 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		if (!TFConfig.disableEntireTable) {
 			registration.addCraftingStation(RecipeTypes.CRAFTING, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
 			registration.addCraftingStation(JEIUncraftingCategory.UNCRAFTING, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
@@ -83,26 +88,30 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		registration.registerSubtypeInterpreter(TFItems.KEEPSAKE_CASKET.asItem(), CasketSubtypeInterpreter.INSTANCE);
 	}
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		registration.addRecipeTransferHandler(UncraftingMenu.class, TFMenuTypes.UNCRAFTING.get(), RecipeTypes.CRAFTING, 11, 9, 20, 36);
 	}
 
 	@Override
 	public void registerIngredients(IModIngredientRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		registration.register(ENTITY_TYPE, Collections.emptyList(), new EntityHelper(), new EntityRenderer(16), FakeEntityType.CODEC);
 		registration.register(FAKE_ITEM_ENTITY, Collections.emptyList(), new FakeItemEntityHelper(), new FakeItemEntityRenderer(16), FakeItemEntity.CODEC);
 	}
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		registration.addRecipeCategories(new JEIUncraftingCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new TransformationPowderCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new OminousFireCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -116,7 +125,8 @@ public class JEICompat implements IModPlugin {
 	// -Gizmo
 	@Override
 	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		registration.getSmithingCategory().addExtension(ComponentAttachingSmithingRecipe.class, new ComponentSmithingExtension());
 		registration.getCraftingCategory().addExtension(TravellersGearModifierRecipe.class, new TravellersGearModifierExtension());
 		registration.getCraftingCategory().addExtension(CasketRepairRecipe.class, new CasketRepairExtension());
@@ -125,7 +135,8 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		RecipeMap recipes = recipeCache.getRecipeMap();
 		ContextMap context = registration.getContextMap();
 		if (!TFConfig.disableEntireTable) {
@@ -140,7 +151,8 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-		if (isEmiInstalled()) return;
+		if (isEmiInstalled())
+			return;
 		registration.addRecipeClickArea(UncraftingScreen.class, 34, 33, 27, 20, JEIUncraftingCategory.UNCRAFTING);
 		registration.addRecipeClickArea(UncraftingScreen.class, 115, 33, 27, 20, RecipeTypes.CRAFTING);
 	}

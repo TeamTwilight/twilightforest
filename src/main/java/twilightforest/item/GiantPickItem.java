@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
+import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 
@@ -69,7 +70,7 @@ public class GiantPickItem extends Item {
 	public boolean canDestroyBlock(ItemStack stack, BlockState state, Level level, BlockPos pos, LivingEntity user) {
 		boolean ret = super.canDestroyBlock(stack, state, level, pos, user);
 		if (ret && user instanceof Player player) {
-			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			GiantPickaxeMiningAttachment attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 			if (attachment.getMining() != level.getGameTime()) {
 				attachment.setMining(level.getGameTime());
 				attachment.setBreaking(false);

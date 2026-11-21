@@ -47,7 +47,7 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -4.0F, -6.0F, 8.0F, 6.0F, 6.0F),
 			PartPose.offset(0.0F, 19.0F, -5.0F));
@@ -72,12 +72,12 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 				.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
 			PartPose.offset(3.0F, -2.0F, -5.0F));
 
-		var rightJaw = head.addOrReplaceChild("right_pincher", CubeListBuilder.create()
+		PartDefinition rightJaw = head.addOrReplaceChild("right_pincher", CubeListBuilder.create()
 				.texOffs(40, 6)
 				.addBox(-1.0F, -1.0F, -1.5F, 8.0F, 2.0F, 3.0F),
 			PartPose.offsetAndRotation(-3.0F, 1.0F, -6.0F, 0.0F, 2.6354471F, 0.0F));
 
-		var rightJawTooth = rightJaw.addOrReplaceChild("right_pincher_top", CubeListBuilder.create()
+		PartDefinition rightJawTooth = rightJaw.addOrReplaceChild("right_pincher_top", CubeListBuilder.create()
 				.texOffs(40, 10)
 				.addBox(-1.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(7.0F, 0.0F, 0.0F, 0.0F, -1.047197F, 0.0F));
@@ -97,12 +97,12 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 				.addBox(0F, -0.5F, -0F, 2, 1, 1),
 			PartPose.offsetAndRotation(3F, 0.0F, 0.0F, 0.0F, 1.5707963F, 0));
 
-		var leftJaw = head.addOrReplaceChild("left_pincher", CubeListBuilder.create()
+		PartDefinition leftJaw = head.addOrReplaceChild("left_pincher", CubeListBuilder.create()
 				.texOffs(40, 6)
 				.addBox(-1.0F, -1.0F, -1.5F, 8.0F, 2.0F, 3.0F),
 			PartPose.offsetAndRotation(3.0F, 1.0F, -6.0F, 0.0F, 0.5410520F, 0.0F));
 
-		var leftJawTooth = leftJaw.addOrReplaceChild("left_pincher_top", CubeListBuilder.create()
+		PartDefinition leftJawTooth = leftJaw.addOrReplaceChild("left_pincher_top", CubeListBuilder.create()
 				.texOffs(40, 10)
 				.addBox(-1.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(7.0F, 0.0F, 0.0F, 0.0F, 1.047197F, 0.0F));

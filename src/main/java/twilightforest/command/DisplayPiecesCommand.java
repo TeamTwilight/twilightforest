@@ -41,7 +41,8 @@ public class DisplayPiecesCommand {
 	private int debugDisplayPieces(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 		Holder.Reference<Structure> structure = ResourceKeyArgument.getStructure(context, "filter_structure");
 
-		if (!structure.isBound()) return 0;
+		if (!structure.isBound())
+			return 0;
 
 		CommandSourceStack source = context.getSource();
 		ServerLevel level = source.getLevel();

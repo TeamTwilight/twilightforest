@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
@@ -119,7 +119,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 			AbsoluteDifferenceFunction.max(64, centerPos)
 		);
 
-		var interiorWithSmoothedEntrances = DensityFunctions.max(
+		DensityFunction interiorWithSmoothedEntrances = DensityFunctions.max(
 			interior,
 			DensityFunctions.mul(
 				DensityFunctions.constant(1 / 64f),

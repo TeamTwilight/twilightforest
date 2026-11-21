@@ -101,7 +101,8 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugCorners(Level world) {
-		if (rotation == null) rotation = Rotation.NONE;
+		if (rotation == null)
+			rotation = Rotation.NONE;
 
 		if (shouldDebug()) { // && rotation!= Rotation.NONE) {
 			int i = rotation.ordinal() * 4;

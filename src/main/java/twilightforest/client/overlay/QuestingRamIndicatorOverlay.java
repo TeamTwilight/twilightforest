@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import tamaized.beanification.Autowired;
+import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
@@ -19,7 +20,8 @@ public class QuestingRamIndicatorOverlay {
 	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final Identifier QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 
-	@Autowired(dist = Dist.CLIENT)
+	@Autowired
+	@RequiresDist(Dist.CLIENT)
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	public static void render(Minecraft minecraft, GuiGraphicsExtractor graphics, Gui gui, Player player) {

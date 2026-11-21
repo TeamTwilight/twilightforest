@@ -52,7 +52,9 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 			this.makeSmoothCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
 		} else if (this.enumHead == 2) {
 			this.makeSpheroidCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
-		} else super.makeCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
+		} else {
+			super.makeCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
+		}
 	}
 
 	//Pretty much a 1:1 vanilla copy of the big red mushroom cap code
@@ -125,8 +127,10 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 	 */
 	private static boolean isInsideSmoothShape(int height, int j, int x, int y, int z) {
 		int i = y - (height - 2);
-		if (i == 4 || Math.abs(x) > j || Math.abs(z) > j) return false;
-		if (i >= 2) return true;
+		if (i == 4 || Math.abs(x) > j || Math.abs(z) > j)
+			return false;
+		if (i >= 2)
+			return true;
 
 		boolean xIsMin = x == -j;
 		boolean xIsMax = x == j;
@@ -135,7 +139,8 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 		boolean xMinMax = xIsMin || xIsMax;
 		boolean zMinMax = zIsMin || zIsMax;
 
-		if (i == 1 && ((xMinMax && Math.abs(z) == j - 1) || (zMinMax && Math.abs(x) == j - 1))) return false;
+		if (i == 1 && ((xMinMax && Math.abs(z) == j - 1) || (zMinMax && Math.abs(x) == j - 1)))
+			return false;
 
 		return xMinMax != zMinMax || (Math.abs(x) == Math.abs(z) && Math.abs(x) == j - 1);
 	}

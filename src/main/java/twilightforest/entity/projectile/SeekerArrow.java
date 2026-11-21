@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFEntities;
 
 import java.util.List;
@@ -127,7 +127,8 @@ public class SeekerArrow extends TFArrow {
 					}
 				}
 				for (LivingEntity monster : monsters) {
-					if (monster instanceof NeutralMob) continue;
+					if (monster instanceof NeutralMob)
+						continue;
 
 					if (monster.hasLineOfSight(this)) {
 						setTarget(monster);
@@ -138,9 +139,11 @@ public class SeekerArrow extends TFArrow {
 
 			for (LivingEntity living : entityList) {
 
-				if (!living.hasLineOfSight(this)) continue;
+				if (!living.hasLineOfSight(this))
+					continue;
 
-				if (living == this.getOwner()) continue;
+				if (living == this.getOwner())
+					continue;
 
 				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner())
 					continue;
@@ -170,8 +173,7 @@ public class SeekerArrow extends TFArrow {
 		return new Vec3(target.getX() - this.getX(), (target.getY() + target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
 	}
 
-	@Nullable
-	private Entity getTarget() {
+	private @Nullable Entity getTarget() {
 		return this.level().getEntity(this.getEntityData().get(TARGET));
 	}
 

@@ -27,7 +27,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.SimplifiedAttackGoal;
@@ -129,7 +129,8 @@ public class Wraith extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
-		if (type == EntitySpawnReason.STRUCTURE || type == EntitySpawnReason.SPAWNER) this.setRestrictionPoint(GlobalPos.of(accessor.getLevel().dimension(), this.blockPosition()));
+		if (type == EntitySpawnReason.STRUCTURE || type == EntitySpawnReason.SPAWNER)
+			this.setRestrictionPoint(GlobalPos.of(accessor.getLevel().dimension(), this.blockPosition()));
 		return super.finalizeSpawn(accessor, difficulty, type, data);
 	}
 

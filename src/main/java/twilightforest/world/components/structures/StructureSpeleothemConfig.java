@@ -9,7 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.iterators.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
@@ -17,7 +17,6 @@ import twilightforest.world.components.speleothem.SpeleothemVarietyConfig;
 import twilightforest.world.components.speleothem.Stalactite;
 import twilightforest.world.components.speleothem.StalactiteReloadListener;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -39,7 +38,6 @@ public record StructureSpeleothemConfig(
 		Codec.STRING.xmap(String::toLowerCase, String::toLowerCase).fieldOf("type").forGetter(StructureSpeleothemConfig::speleothemVarietyType)
 	).apply(inst, StructureSpeleothemConfig::fromLocation));
 
-	@NotNull
 	public static StructureSpeleothemConfig fromLocation(RectangleLatticeIterator.TriangularLatticeConfig latticeConfig, final String type) {
 		Supplier<SpeleothemVarietyConfig> lazyConfigSupplier = Suppliers.memoize(() -> StalactiteReloadListener.HILL_CONFIGS.get(type));
 
@@ -55,7 +53,6 @@ public record StructureSpeleothemConfig(
 		);
 	}
 
-	@NotNull
 	private static Function<RandomSource, Stalactite> compileStalagmites(Supplier<SpeleothemVarietyConfig> varietyConfigSupplier) {
 		SpeleothemVarietyConfig varietyConfig = varietyConfigSupplier.get();
 
@@ -66,7 +63,6 @@ public record StructureSpeleothemConfig(
 		return compileSpeleothemsSimple(stalactites);
 	}
 
-	@NotNull
 	private static Function<RandomSource, Stalactite> compileStalactites(Supplier<SpeleothemVarietyConfig> varietyConfigSupplier) {
 		SpeleothemVarietyConfig varietyConfig = varietyConfigSupplier.get();
 
@@ -134,12 +130,10 @@ public record StructureSpeleothemConfig(
 		return compileSpeleothems(unbakedRandomList);
 	}
 
-	@NotNull
 	private static Function<RandomSource, Stalactite> compileSpeleothemsSimple(List<Stalactite> stalactites) {
 		return compileSpeleothems(stalactites.stream().map(stalactite -> new Weighted<>(stalactite, stalactite.weight())).toList());
 	}
 
-	@NotNull
 	private static Function<RandomSource, Stalactite> compileSpeleothems(List<Weighted<Stalactite>> unbakedRandomList) {
 		// Construct this once. Constructing it inside the lambda means it'll be constructed each time the lambda is invoked
 		WeightedList<Stalactite> randomList = WeightedList.of(unbakedRandomList);
@@ -169,22 +163,18 @@ public record StructureSpeleothemConfig(
 		return variety != null && variety.shouldDoAStalagmite(rand);
 	}
 
-	@NotNull
 	public Stalactite getStalactite(RandomSource rand) {
 		return this.stalactiteVariety.get().apply(rand);
 	}
 
-	@NotNull
 	public Stalactite getStalagmite(RandomSource rand) {
 		return this.stalagmiteVariety.get().apply(rand);
 	}
 
-	@NotNull
 	public Stalactite getSpeleothem(boolean hanging, RandomSource rand) {
 		return hanging ? this.getStalactite(rand) : this.getStalagmite(rand);
 	}
 
-	@NotNull
 	public Iterable<BlockPos.MutableBlockPos> latticeIterator(@Nullable BoundingBox bounds, int yLevel) {
 		if (bounds == null)
 			return List.of();

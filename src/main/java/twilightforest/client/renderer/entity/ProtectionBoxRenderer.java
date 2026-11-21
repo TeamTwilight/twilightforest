@@ -33,7 +33,8 @@ public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, Protect
 	public void submit(ProtectionBoxRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 
 		float alpha = 1.0F;
-		if (state.life < 20) alpha = state.life / 20.0F;
+		if (state.life < 20)
+			alpha = state.life / 20.0F;
 
 		this.boxModel.setupAnim(state);
 		submitNodeCollector.submitModel(this.boxModel, state, poseStack, TFRenderTypes.PROTECTION_BOX, state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.white(alpha), null, state.outlineColor, null);

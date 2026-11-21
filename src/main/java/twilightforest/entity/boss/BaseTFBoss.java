@@ -30,7 +30,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.boss.bar.ServerTFBossBar;
@@ -77,7 +77,8 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.getBossBar().addPlayer(player);
-		if (this.deathTime > 0) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+		if (this.deathTime > 0)
+			PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
 	}
 
 	@Override
@@ -116,7 +117,8 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (this.level() instanceof ServerLevel server && this.shouldSpawnLoot(server)) this.postmortem(server, cause);
+		if (this.level() instanceof ServerLevel server && this.shouldSpawnLoot(server))
+			this.postmortem(server, cause);
 	}
 
 	// mark the boss structure as conquered, separate method, so it can be overridden
@@ -128,7 +130,8 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (this.level() instanceof ServerLevel serverLevel) this.postRemoval(serverLevel, reason);
+		if (this.level() instanceof ServerLevel serverLevel)
+			this.postRemoval(serverLevel, reason);
 		super.remove(reason);
 	}
 
@@ -209,8 +212,12 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
                 if (this.isDeathAnimationFinished()) {
                     this.level().broadcastEntityEvent(this, (byte) 60); // makePoofParticles()
                     this.remove(RemovalReason.KILLED);
-                } else this.tickBossBar();
-            } else this.tickDeathAnimation();
+                } else {
+					this.tickBossBar();
+				}
+            } else {
+				this.tickDeathAnimation();
+			}
 		}
 	}
 

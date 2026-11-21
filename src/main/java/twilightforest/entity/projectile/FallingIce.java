@@ -41,7 +41,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.init.TFDamageTypes;
@@ -55,8 +55,7 @@ public class FallingIce extends Entity {
 	public int time;
 	protected final int fallDamageMax = 100; //TF: change max damage to 100 damage from 40
 	public final float[] damagePerDifficulty = {0.0F, 0.5F, 1.0F, 2.0F}; //TF: change the damage done per block fallen based on difficulty
-	@Nullable
-	public CompoundTag blockData;
+	public @Nullable CompoundTag blockData;
 	protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(FallingIce.class, EntityDataSerializers.BLOCK_POS);
 
 	public FallingIce(EntityType<? extends FallingIce> type, Level level) {

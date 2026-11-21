@@ -20,7 +20,7 @@ public class SpikeBlockModel extends EntityModel<EntityRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var block = partdefinition.addOrReplaceChild("block", CubeListBuilder.create()
+		PartDefinition block = partdefinition.addOrReplaceChild("block", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.ZERO);

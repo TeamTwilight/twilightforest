@@ -19,7 +19,8 @@ import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.client.overlay.ItemDisplayOverlay;
@@ -44,7 +45,8 @@ public class OverlayHandler {
 	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
-	@Autowired(dist = Dist.CLIENT)
+	@Autowired
+	@RequiresDist(Dist.CLIENT)
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	protected static void registerOverlays(RegisterGuiLayersEvent event) {
@@ -138,7 +140,8 @@ public class OverlayHandler {
 			} else {
 				OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
 
-				if (oreScannerData == null) return;
+				if (oreScannerData == null)
+					return;
 
 				long identifier = oreScannerData.universalId();
 				if (identifier != 0L && !ORE_METER_STAT_CACHE.containsKey(identifier)) {
@@ -250,7 +253,7 @@ public class OverlayHandler {
 		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_ratio").withStyle(ChatFormatting.GRAY));
 
 		for (int count : oreCounts) {
-			var percentage = FORMAT.format(count * 100.0F / totalScanned);
+			String percentage = FORMAT.format(count * 100.0F / totalScanned);
 			toList.add(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
 		}
 
@@ -312,8 +315,7 @@ public class OverlayHandler {
 		}
 	}
 
-	@Nullable
-	private static Player getCameraPlayer() {
+	private static @Nullable Player getCameraPlayer() {
 		return Minecraft.getInstance().getCameraEntity() instanceof Player player ? player : null;
 	}
 }

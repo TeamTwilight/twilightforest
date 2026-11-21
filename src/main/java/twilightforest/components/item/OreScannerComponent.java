@@ -14,7 +14,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
@@ -137,8 +137,10 @@ public class OreScannerComponent {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		OreScannerComponent that = (OreScannerComponent) o;
 		return xSpan == that.xSpan && zSpan == that.zSpan && scanDurationTicks == that.scanDurationTicks && ticksProgressed == that.ticksProgressed && Objects.equals(origin, that.origin) && Objects.equals(blockCounter, that.blockCounter);
 	}

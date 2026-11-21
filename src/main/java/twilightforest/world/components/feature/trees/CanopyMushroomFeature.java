@@ -108,7 +108,8 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 			BlockState blockstate = featureConfiguration.stemProvider().getState(levelAccessor, random, pos);
 
 			if (blockstate.hasProperty(HugeMushroomBlock.DOWN)) {
-				if (i == Math.min(src.getY(), dest.getY())) blockstate = blockstate.setValue(HugeMushroomBlock.DOWN, true);//Seal up the bottom one, so it looks better
+				if (i == Math.min(src.getY(), dest.getY()))
+					blockstate = blockstate.setValue(HugeMushroomBlock.DOWN, true); //Seal up the bottom one, so it looks better
 			}
 
 			BlockPos blockPos = new BlockPos(dest.getX(), i, dest.getZ());

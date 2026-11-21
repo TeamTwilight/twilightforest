@@ -55,7 +55,8 @@ public class CampStructure extends Structure implements DecorationClearance {
 			Identifier templatePool = campPieces.start;
 			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition.mutable(), oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
 
-			if (twilightJigsawPiece == null) return;
+			if (twilightJigsawPiece == null)
+				return;
 
 			structurePiecesBuilder.addPiece(twilightJigsawPiece);
 

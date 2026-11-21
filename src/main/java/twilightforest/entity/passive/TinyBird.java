@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFSounds;
@@ -101,7 +101,8 @@ public class TinyBird extends FlyingBird {
 
 	@Override
 	public boolean isSpooked() {
-		if (this.getLastHurtByMob() != null) return true;
+		if (this.getLastHurtByMob() != null)
+			return true;
 		Player closestPlayer = this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
 		return closestPlayer != null && closestPlayer.isHolding(stack -> stack.is(this.getTemptItems()));
 	}

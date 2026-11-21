@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.util.features.FeatureLogic;
 
 public abstract class TemplateFeature<T extends FeatureConfiguration> extends Feature<T> {
@@ -59,7 +59,8 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
 		BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
-		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) return false;
+		if (!offsetToAverageGroundLevel(world, startPos, transformedSize))
+			return false;
 
 		startPos.move(0, this.yLevelOffset(), 0);
 
@@ -81,8 +82,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		return true;
 	}
 
-	@Nullable
-	protected abstract StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
+	protected abstract @Nullable StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
 
 	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, T config) {
 	}
@@ -110,12 +110,15 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
 				while (y >= 0) {
 					BlockState state = world.getBlockState(new BlockPos(x, y, z));
-					if (FeatureLogic.isBlockNotOk(state)) return false;
-					if (FeatureLogic.isBlockOk(state)) break;
+					if (FeatureLogic.isBlockNotOk(state))
+						return false;
+					if (FeatureLogic.isBlockOk(state))
+						break;
 					y--;
 				}
 
-				if (y < 0) return false;
+				if (y < 0)
+					return false;
 
 				heights.add(y);
 			}

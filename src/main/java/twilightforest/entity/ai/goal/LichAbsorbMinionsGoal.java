@@ -44,9 +44,11 @@ public class LichAbsorbMinionsGoal extends Goal {
 
 	@Override
 	public void tick() {
-		if (this.lich.getTeleportInvisibility() > 0) return;
+		if (this.lich.getTeleportInvisibility() > 0)
+			return;
 		super.tick();
-		if (this.lich.getScepterTimeLeft() > 0) return;
+		if (this.lich.getScepterTimeLeft() > 0)
+			return;
 
 		List<LichMinion> minions = this.lich.level().getEntitiesOfClass(LichMinion.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D))
 			.stream().filter(m -> m.master == this.lich).toList();

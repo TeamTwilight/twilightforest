@@ -110,9 +110,11 @@ public class SinisterSpawnerBlockEntity extends BlockEntity implements Spawner {
 
 	@Nullable
 	public LootTable getLootTable() {
-		if (this.level == null || this.lootTable == null) return null;
+		if (this.level == null || this.lootTable == null)
+			return null;
 		MinecraftServer server = this.level.getServer();
-		if (server == null) return null;
+		if (server == null)
+			return null;
 		return server.reloadableRegistries().getLootTable(this.lootTable);
 	}
 

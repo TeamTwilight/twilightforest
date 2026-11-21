@@ -30,7 +30,8 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, Kn
 
 	@Override
 	public void submit(KnightPhantomRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
-		if (!state.isDying) super.submit(state, poseStack, submitNodeCollector, camera);
+		if (!state.isDying)
+			super.submit(state, poseStack, submitNodeCollector, camera);
 	}
 
 	@Override

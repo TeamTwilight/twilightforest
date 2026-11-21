@@ -336,7 +336,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 			.addCriterion("uncraft_table", UncraftItemTrigger.TriggerInstance.uncraftedItem(items, TFBlocks.UNCRAFTING_TABLE))
 			.save(consumer, "twilightforest:uncraft_uncrafting_table");
 
-		var gear = Advancement.Builder.advancement().parent(root).display(
+		AdvancementHolder gear = Advancement.Builder.advancement().parent(root).display(
 				TFItems.TRAVELLERS_BOOTS,
 				Component.translatable("advancement.twilightforest.craft_travellers_gear"),
 				Component.translatable("advancement.twilightforest.craft_travellers_gear.desc"),

@@ -35,13 +35,16 @@ public class TFPortalAttachment {
 					this.isInsidePortal = false;
 				}
 			}
-		} else if (this.getPortalTimer() > 0) this.portalTimer -= 2;
+		} else if (this.getPortalTimer() > 0) {
+			this.portalTimer -= 2;
+		}
 
 		if (player.level().isClientSide() && player instanceof LocalPlayer local) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (this.isInsidePortal()) {
 				if (minecraft.gui.screen() != null && !minecraft.gui.screen().isPauseScreen() && !(minecraft.gui.screen() instanceof DeathScreen)) {
-					if (minecraft.gui.screen() instanceof AbstractContainerScreen) local.closeContainer();
+					if (minecraft.gui.screen() instanceof AbstractContainerScreen)
+						local.closeContainer();
 					minecraft.gui.setScreen(null);
 				}
 				this.isInsidePortal = false;

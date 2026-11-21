@@ -211,7 +211,8 @@ public class UrGhast extends BaseTFBoss {
 
 	@Override
 	public void tick() {
-		if (this.level().isClientSide() && !this.isDeadOrDying() && this.isInTantrum()) TFWeatherRenderer.urGhastAlive = true;
+		if (this.level().isClientSide() && !this.isDeadOrDying() && this.isInTantrum())
+			TFWeatherRenderer.urGhastAlive = true;
 		super.tick();
 	}
 

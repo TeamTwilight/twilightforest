@@ -1,6 +1,5 @@
 package twilightforest.util.iterators;
 
-import org.jetbrains.annotations.NotNull;
 import twilightforest.util.BinaryIntegerFunction;
 
 import java.util.Iterator;
@@ -66,7 +65,8 @@ public class XZQuadrantIterator<T> implements Iterator<T>, Iterable<T> {
 
 	// Primes this iterator for next, or deadlocks its completion
 	private void tickXZ() {
-		if (!this.hasNext()) return;
+		if (!this.hasNext())
+			return;
 
 		if (this.dZ < this.radius) {
 			this.dZ++;
@@ -76,7 +76,6 @@ public class XZQuadrantIterator<T> implements Iterator<T>, Iterable<T> {
 		}
 	}
 
-	@NotNull
 	@Override
 	public Iterator<T> iterator() {
 		return this;

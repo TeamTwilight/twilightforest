@@ -38,7 +38,7 @@ public class ASMUtil {
 	 * If you are looking for a #findFirst then use Stream#findFirst, you dummy
 	 */
 	public static <T extends AbstractInsnNode> Optional<T> findLast(Stream<T> stream) {
-		return stream.reduce((a, b) -> b);
+		return stream.reduce((_, b) -> b);
 	}
 
 	public static Stream<AbstractInsnNode> findInstructions(Stream<AbstractInsnNode> stream, int opcode) {

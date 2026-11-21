@@ -37,8 +37,10 @@ public class RopeItem extends BlockItem {
 			return context;
 		} else {
 			Direction direction = this.getForward(context, blockstate, blockpos, level);
-			if (direction == null) return null;
-			if (direction == Direction.UP) direction = Direction.DOWN;
+			if (direction == null)
+				return null;
+			if (direction == Direction.UP)
+				direction = Direction.DOWN;
 
 			int i = 0;
 			BlockPos.MutableBlockPos mutableBlockPos = blockpos.mutable();
@@ -55,9 +57,12 @@ public class RopeItem extends BlockItem {
 
 				blockstate = level.getBlockState(mutableBlockPos);
 				if (!blockstate.is(this.getBlock())) {
-					if (blockstate.canBeReplaced(context)) return BlockPlaceContext.at(context, mutableBlockPos, direction);
+					if (blockstate.canBeReplaced(context))
+						return BlockPlaceContext.at(context, mutableBlockPos, direction);
 					break;
-				} else if (!stateHasValue(blockstate, direction)) return BlockPlaceContext.at(context, mutableBlockPos, direction);
+				} else if (!stateHasValue(blockstate, direction)) {
+					return BlockPlaceContext.at(context, mutableBlockPos, direction);
+				}
 
 				mutableBlockPos.move(direction);
 				if (direction.getAxis().isHorizontal()) {
@@ -101,26 +106,33 @@ public class RopeItem extends BlockItem {
 	protected @Nullable Direction getForward(BlockPlaceContext context, BlockState state, BlockPos pos, Level level) {
 		Direction face = context.getClickedFace();
 		BlockPos relativePos = pos.relative(face);
-		if (RopeBlock.canConnectTo(level.getBlockState(relativePos), face, level, relativePos)) return face;
+		if (RopeBlock.canConnectTo(level.getBlockState(relativePos), face, level, relativePos))
+			return face;
 		face = face.getOpposite();
 		relativePos = pos.relative(face);
-		if (RopeBlock.canConnectTo(level.getBlockState(relativePos), face, level, relativePos)) return face;
+		if (RopeBlock.canConnectTo(level.getBlockState(relativePos), face, level, relativePos))
+			return face;
 
 		List<Direction> directions = Arrays.asList(context.getNearestLookingDirections());
-		if (context.isSecondaryUseActive()) Collections.reverse(directions);
+		if (context.isSecondaryUseActive())
+			Collections.reverse(directions);
 
 		for (int i = 0; i < 3; i++) {
 			Direction dir = directions.get(i);
-			if (state.getValue(RopeBlock.Y)) return Direction.DOWN;
+			if (state.getValue(RopeBlock.Y))
+				return Direction.DOWN;
 			else if ((dir.getAxis() == Direction.Axis.X && state.getValue(RopeBlock.X)) || (dir.getAxis() == Direction.Axis.Z && state.getValue(RopeBlock.Z))) {
 				for (int j = 0; j < 2; j++) {
-					if (j == 1) dir = dir.getOpposite();
+					if (j == 1)
+						dir = dir.getOpposite();
 					BlockPos.MutableBlockPos mutableBlockPos = pos.mutable();
 					for (int k = 1; k < EXTEND_RANGE; k++) {
 						mutableBlockPos.move(dir);
 						BlockState relativeState = level.getBlockState(mutableBlockPos);
-						if (relativeState.canBeReplaced() || relativeState.is(this.getBlock())) return dir;
-						else if (!relativeState.is(this.getBlock())) break;
+						if (relativeState.canBeReplaced() || relativeState.is(this.getBlock()))
+							return dir;
+						else if (!relativeState.is(this.getBlock()))
+							break;
 					}
 				}
 			}

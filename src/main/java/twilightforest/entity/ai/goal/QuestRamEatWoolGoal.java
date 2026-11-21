@@ -4,7 +4,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.passive.QuestRam;
 
 import java.util.Comparator;
@@ -14,8 +14,7 @@ import java.util.List;
 public class QuestRamEatWoolGoal extends Goal {
 	private final QuestRam ram;
 	private final PathNavigation navigation;
-	@Nullable
-	private ItemEntity targetItem = null;
+	private @Nullable ItemEntity targetItem = null;
 
 	public QuestRamEatWoolGoal(QuestRam ram) {
 		this.ram = ram;

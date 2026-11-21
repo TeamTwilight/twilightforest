@@ -44,7 +44,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
@@ -203,10 +203,9 @@ public class Naga extends BaseTFBoss {
 		}
 	}
 
-	@Nullable
 	@Override
 	@SuppressWarnings("deprecation")
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
 			AttributeModifier modifier = new AttributeModifier(TwilightForestMod.prefix("difficulty_health_boost"), hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
@@ -480,7 +479,8 @@ public class Naga extends BaseTFBoss {
 
 
 			double straightenForce = 0.05D + (1.0D / (i + 1)) * 0.5D;
-			if (this.isDeadOrDying()) straightenForce = 0.0D; //Dead snakes don't move
+			if (this.isDeadOrDying())
+				straightenForce = 0.0D; //Dead snakes don't move
 
 			double idealX = -Mth.sin(angle) * straightenForce;
 			double idealZ = Mth.cos(angle) * straightenForce;
@@ -518,9 +518,8 @@ public class Naga extends BaseTFBoss {
 		TFPart.assignPartIDs(this);
 	}
 
-	@Nullable
 	@Override
-	public PartEntity<?>[] getParts() {
+	public @Nullable PartEntity<?>[] getParts() {
 		return this.bodySegments;
 	}
 
@@ -568,10 +567,12 @@ public class Naga extends BaseTFBoss {
 
             for (int p = 1; p <= 4; p++) {
                 int trailTime = (this.deathTime - DEATH_ANIMATION_DURATION) - p;
-                if (trailTime < 0) continue;
+                if (trailTime < 0)
+					continue;
 				for (double d = 0.0D; d < 1.0D; d += 0.25D) {
 					double preciseTime = trailTime - d;
-					if (preciseTime < 0.0D) continue;
+					if (preciseTime < 0.0D)
+						continue;
 					double factor = preciseTime / (double) DEATH_PARTICLES_DURATION;
 					Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);
 					BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
@@ -585,7 +586,8 @@ public class Naga extends BaseTFBoss {
 
 	@Override
 	public void makePoofParticles() {
-		if (this.getDeathSound() != null) this.playSound(this.getDeathSound(), this.getSoundVolume() * 1.25F, this.getVoicePitch() * 0.25F);
+		if (this.getDeathSound() != null)
+			this.playSound(this.getDeathSound(), this.getSoundVolume() * 1.25F, this.getVoicePitch() * 0.25F);
 		this.makePoofAt(this.position());
 	}
 

@@ -54,7 +54,7 @@ public class DeathTomeModel extends EntityModel<DeathTomeRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var book = partdefinition.addOrReplaceChild("book", CubeListBuilder.create(), PartPose.ZERO);
+		PartDefinition book = partdefinition.addOrReplaceChild("book", CubeListBuilder.create(), PartPose.ZERO);
 
 		book.addOrReplaceChild("pages_right", CubeListBuilder.create()
 				.texOffs(0, 10)
@@ -90,7 +90,7 @@ public class DeathTomeModel extends EntityModel<DeathTomeRenderState> {
 				.addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F),
 			PartPose.rotation(0, Mth.HALF_PI, 0));
 
-		var paperStorm = partdefinition.addOrReplaceChild("paper_storm", CubeListBuilder.create(), PartPose.ZERO);
+		PartDefinition paperStorm = partdefinition.addOrReplaceChild("paper_storm", CubeListBuilder.create(), PartPose.ZERO);
 
 		paperStorm.addOrReplaceChild("loose_page_0", CubeListBuilder.create()
 				.texOffs(24, 10)

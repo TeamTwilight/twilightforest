@@ -77,7 +77,8 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 
 	@Override
 	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
-		if (state.getValue(WATERLOGGED)) ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		if (state.getValue(WATERLOGGED))
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 

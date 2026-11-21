@@ -6,10 +6,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,9 +23,8 @@ public class StateTransfiguringProcessor implements StructureProcessor {
 		this.rules = Collections.unmodifiableList(rules);
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+	public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
 		RandomSource random = RandomSource.create(Mth.getSeed(modifiedBlockInfo.pos()));
 		long i = random.nextLong();
 		// Re-seed the random source for each loop iteration, the positional seed defines the initial random value

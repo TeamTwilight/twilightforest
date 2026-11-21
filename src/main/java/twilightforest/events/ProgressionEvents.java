@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -35,7 +35,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFAdvancements;
@@ -65,16 +65,16 @@ import java.util.*;
 @Component
 public class ProgressionEvents {
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::gameRuleChanged);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockBreaking);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockPlacing);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockInteracting);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaMultiblocks);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaEntityDamage);
-		NeoForge.EVENT_BUS.addListener(this::performProtectionAndPortalChecks);
-		NeoForge.EVENT_BUS.addListener(this::syncProgressionGameRuleStatus);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::gameRuleChanged);
+		bus.addListener(this::preventLockedAreaBlockBreaking);
+		bus.addListener(this::preventLockedAreaBlockPlacing);
+		bus.addListener(this::preventLockedAreaBlockInteracting);
+		bus.addListener(this::preventLockedAreaMultiblocks);
+		bus.addListener(this::preventLockedAreaEntityDamage);
+		bus.addListener(this::performProtectionAndPortalChecks);
+		bus.addListener(this::syncProgressionGameRuleStatus);
 	}
 
 	/**
@@ -92,7 +92,8 @@ public class ProgressionEvents {
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
 	 */
 	private void preventLockedAreaBlockBreaking(BreakBlockEvent event) {
-		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled())
+			return;
 
 		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, event.getPlayer(), pos)) {
@@ -105,7 +106,8 @@ public class ProgressionEvents {
 	 * Check if the player is trying to place a block in a structure that's considered inaccessible for progression reasons
 	 */
 	private void preventLockedAreaBlockPlacing(PlayerInteractEvent.RightClickBlock event) {
-		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled())
+			return;
 
 		BlockPos pos = event.getPos();
 		if (isAreaProtected(level, event.getEntity(), pos)) {
@@ -120,7 +122,8 @@ public class ProgressionEvents {
 	private void preventLockedAreaMultiblocks(BlockEvent.EntityMultiPlaceEvent event) {
 		Entity entity = event.getEntity();
 
-		if (!(event.getLevel() instanceof ServerLevel level) || !(entity instanceof Player player) || event.isCanceled()) return;
+		if (!(event.getLevel() instanceof ServerLevel level) || !(entity instanceof Player player) || event.isCanceled())
+			return;
 
 		for (BlockSnapshot snapshot : event.getReplacedBlockSnapshots()) {
 			BlockPos pos = snapshot.getPos();
@@ -192,7 +195,8 @@ public class ProgressionEvents {
 	private void performProtectionAndPortalChecks(PlayerTickEvent.Post event) {
 		Player eventPlayer = event.getEntity();
 
-		if (!(eventPlayer instanceof ServerPlayer player)) return;
+		if (!(eventPlayer instanceof ServerPlayer player))
+			return;
 		ServerLevel level = player.level();
 
 		// check for portal creation, at least if it's not disabled
@@ -256,7 +260,8 @@ public class ProgressionEvents {
 				}
 			}
 
-			if (qualified == null) return;
+			if (qualified == null)
+				return;
 
 			if (!player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
 				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
@@ -296,7 +301,10 @@ public class ProgressionEvents {
 	}
 
 	private static void sendAreaProtectionPacket(ServerLevel level, BlockPos pos, List<BoundingBox> sbb) {
-		PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), 64, new AreaProtectionPacket(sbb, pos));
+		int[] entityIds = new int[sbb.size()];
+		for (int i = 0; i < entityIds.length; i++)
+			entityIds[i] = level.getNextEntityId();
+		PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), 64, new AreaProtectionPacket(sbb, pos, entityIds));
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {

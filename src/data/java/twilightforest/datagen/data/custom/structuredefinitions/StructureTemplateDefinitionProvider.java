@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.util.StructureTemplateDefinition;
@@ -92,7 +92,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected void add(Identifier templateId, Identifier poolId, TemplatePoolInstance poolData) {
-		Map<Identifier, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
+		Map<Identifier, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, _ -> new HashMap<>());
 
 		poolWeightsForTemplate.put(poolId, poolData);
 	}
@@ -113,7 +113,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		);
 	}
 
-	protected TemplatePoolInstance weightedRigidTemplate(int weight, int beardifierGroundDelta, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers, @Nullable TemplatePoolInstance.ChooseRandomProcessors randomizedProcessors, @Nullable Map<String, String> poolAliases) {
+	protected TemplatePoolInstance weightedRigidTemplate(int weight, int beardifierGroundDelta, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers, TemplatePoolInstance.@Nullable ChooseRandomProcessors randomizedProcessors, @Nullable Map<String, String> poolAliases) {
 		return new TemplatePoolInstance(
 				weight,
 			Optional.empty(),

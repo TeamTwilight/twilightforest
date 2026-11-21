@@ -1,10 +1,8 @@
 package twilightforest.entity.ai.goal;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.SnowQueen;
@@ -47,7 +45,9 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 		} else //attacker.canEntityBeSeen(target);
 			if (!target.isAlive()) {
 				return false;
-			} else return this.attacker.getCurrentPhase() == Phase.BEAM;
+			} else {
+				return this.attacker.getCurrentPhase() == Phase.BEAM;
+			}
 	}
 
 	@Override
@@ -60,7 +60,9 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 			return false;
 		} else if (this.seekTimer >= this.maxSeekTime) {
 			return false;
-		} else return this.beamTimer < this.maxBeamTime;
+		} else {
+			return this.beamTimer < this.maxBeamTime;
+		}
 	}
 
 	@Override

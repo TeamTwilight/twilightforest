@@ -75,7 +75,8 @@ public class CustomTextureParticle extends SingleQuadParticle {
 			particle.scale(0.75F);
 			particle.gravity = 0.0F;
 			particle.lifetime = (int)(8.0F / (particle.random.nextFloat() * 0.5F + 0.5F) * 0.5F);
-			if (particle.lifetime <= 1) particle.lifetime = 2;
+			if (particle.lifetime <= 1)
+				particle.lifetime = 2;
 			return particle;
 		}
 	}

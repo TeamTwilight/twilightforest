@@ -35,7 +35,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import tamaized.beanification.Autowired;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
@@ -90,9 +90,8 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		return false;
 	}
 
-	@Nullable
 	@Override
-	public Animal getBreedOffspring(ServerLevel level, AgeableMob mate) {
+	public @Nullable Animal getBreedOffspring(ServerLevel level, AgeableMob mate) {
 		return null;
 	}
 

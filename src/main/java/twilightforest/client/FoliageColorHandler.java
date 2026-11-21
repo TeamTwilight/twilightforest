@@ -2,7 +2,6 @@ package twilightforest.client;
 
 import com.google.common.collect.MapMaker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -10,7 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.init.TFBiomes;
 import twilightforest.world.components.BiomeColorAlgorithms;
 
@@ -24,16 +23,16 @@ public final class FoliageColorHandler {
 	private BiomeColorAlgorithms biomeColorAlgorithms;
 
 	private final Map<ResourceKey<Biome>, Handler> REGISTRY = new HashMap<>() {{
-		put(TFBiomes.SPOOKY_FOREST, (o, x, z) -> biomeColorAlgorithms.spookyFoliage(x, z));
+		put(TFBiomes.SPOOKY_FOREST, (_, x, z) -> biomeColorAlgorithms.spookyFoliage(x, z));
 		put(TFBiomes.ENCHANTED_FOREST, (o, x, z) -> biomeColorAlgorithms.enchanted(o, (int) x, (int) z));
-		put(TFBiomes.DARK_FOREST_CENTER, (o, x, z) -> biomeColorAlgorithms.darkForestCenterFoliage(x, z));
-		put(TFBiomes.DARK_FOREST, (o, x, z) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Foliage));
-		put(TFBiomes.SWAMP, (o, x, z) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Foliage));
+		put(TFBiomes.DARK_FOREST_CENTER, (_, x, z) -> biomeColorAlgorithms.darkForestCenterFoliage(x, z));
+		put(TFBiomes.DARK_FOREST, (_, _, _) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Foliage));
+		put(TFBiomes.SWAMP, (_, _, _) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Foliage));
 	}};
 
 	private final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
 
-	@PostConstruct(PostConstruct.Bus.GAME)
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
 	private void setup(IEventBus bus) {
 		bus.addListener(EntityLeaveLevelEvent.class, event -> {
 			if (event.getLevel().isClientSide()) {
@@ -60,7 +59,7 @@ public final class FoliageColorHandler {
 
 	@FunctionalInterface
 	private interface Handler {
-		Handler DEFAULT = (o, x, z) -> o;
+		Handler DEFAULT = (o, _, _) -> o;
 
 		int apply(int o, double x, double z);
 	}

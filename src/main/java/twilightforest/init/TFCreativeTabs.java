@@ -35,7 +35,7 @@ public class TFCreativeTabs {
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLOCKS = TABS.register("blocks", () -> CreativeModeTab.builder()
 		.title(Component.translatable("itemGroup.twilightforest.blocks"))
 		.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE))
-		.displayItems((parameters, output) -> {
+		.displayItems((_, output) -> {
 			output.accept(TFBlocks.TWILIGHT_OAK_LOG);
 			output.accept(TFBlocks.TWILIGHT_OAK_WOOD);
 			output.accept(TFItems.HOLLOW_TWILIGHT_OAK_LOG);
@@ -432,7 +432,7 @@ public class TFCreativeTabs {
 		.withTabsBefore(BLOCKS.getKey())
 		.title(Component.translatable("itemGroup.twilightforest.items"))
 		.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE))
-		.displayItems((parameters, output) -> {
+		.displayItems((_, output) -> {
 			output.accept(TFItems.MAGIC_MAP);
 			output.accept(TFItems.MAZE_MAP);
 			output.accept(TFItems.ORE_MAP);
@@ -603,7 +603,7 @@ public class TFCreativeTabs {
 		.withTabsBefore(EQUIPMENT.getKey())
 		.title(Component.translatable("itemGroup.twilightforest.food"))
 		.icon(() -> new ItemStack(TFItems.COOKED_MEEF.get()))
-		.displayItems((parameters, output) -> {
+		.displayItems((_, output) -> {
 			output.accept(TFItems.TORCHBERRIES);
 			output.accept(TFItems.RASPBERRY);
 			output.accept(TFItems.BLUEBERRY);

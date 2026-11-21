@@ -10,8 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.tags.TFBlockTags;
@@ -108,8 +107,7 @@ public final class FeatureLogic {
 	}
 
 	// North is treated for default rotation and null means you're not on the wall
-	@Nullable
-	public static Rotation wallVolumeRotation(RandomSource rand, int deltaX, int deltaZ, int xBound, int zBound) {
+	public static @Nullable Rotation wallVolumeRotation(RandomSource rand, int deltaX, int deltaZ, int xBound, int zBound) {
 		boolean westWall = deltaX == 0;
 		boolean northWall = deltaZ == 0;
 		boolean eastWall = deltaX == xBound;
@@ -122,7 +120,6 @@ public final class FeatureLogic {
 	}
 
 	// North is treated for default rotation, plan your code accordingly
-	@NotNull
 	public static Rotation getRotation(RandomSource rand, boolean north, boolean east, boolean south, boolean west) {
 		// North -> NONE
 		// East -> CLOCKWISE_90
@@ -132,12 +129,17 @@ public final class FeatureLogic {
 
 		List<Rotation> availableForRandom = new ArrayList<>();
 
-		if (north) availableForRandom.add(Rotation.NONE);
-		if (east) availableForRandom.add(Rotation.CLOCKWISE_90);
-		if (south) availableForRandom.add(Rotation.CLOCKWISE_180);
-		if (west) availableForRandom.add(Rotation.COUNTERCLOCKWISE_90);
+		if (north)
+			availableForRandom.add(Rotation.NONE);
+		if (east)
+			availableForRandom.add(Rotation.CLOCKWISE_90);
+		if (south)
+			availableForRandom.add(Rotation.CLOCKWISE_180);
+		if (west)
+			availableForRandom.add(Rotation.COUNTERCLOCKWISE_90);
 
-		if (availableForRandom.isEmpty()) return Rotation.NONE;
+		if (availableForRandom.isEmpty())
+			return Rotation.NONE;
 
 		Util.shuffle(availableForRandom, rand);
 

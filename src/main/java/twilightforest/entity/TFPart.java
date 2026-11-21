@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
 
@@ -70,14 +70,20 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 			this.setRot(this.getYRot(), this.getXRot());
 		}
 
-		while (getYRot() - this.yRotO < -180F) this.yRotO -= 360F;
-		while (getYRot() - this.yRotO >= 180F) this.yRotO += 360F;
+		while (getYRot() - this.yRotO < -180F)
+			this.yRotO -= 360F;
+		while (getYRot() - this.yRotO >= 180F)
+			this.yRotO += 360F;
 
-		while (this.renderYawOffset - this.prevRenderYawOffset < -180F) this.prevRenderYawOffset -= 360F;
-		while (this.renderYawOffset - this.prevRenderYawOffset >= 180F) this.prevRenderYawOffset += 360F;
+		while (this.renderYawOffset - this.prevRenderYawOffset < -180F)
+			this.prevRenderYawOffset -= 360F;
+		while (this.renderYawOffset - this.prevRenderYawOffset >= 180F)
+			this.prevRenderYawOffset += 360F;
 
-		while (getXRot() - this.xRotO < -180F) this.xRotO -= 360F;
-		while (getXRot() - this.xRotO >= 180F) this.xRotO += 360F;
+		while (getXRot() - this.xRotO < -180F)
+			this.xRotO -= 360F;
+		while (getXRot() - this.xRotO >= 180F)
+			this.xRotO += 360F;
 	}
 
 	public final void updateLastPos() {

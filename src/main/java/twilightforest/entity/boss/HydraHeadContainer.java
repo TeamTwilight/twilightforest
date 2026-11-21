@@ -20,7 +20,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
@@ -48,8 +48,7 @@ public class HydraHeadContainer {
 	private static final double FLAME_PARTICLE_AVERAGE_SPEED = 1.5D;
 	private static final double FLAME_PARTICLE_SPEED_DEVIATION = 0.5D;
 
-	@Nullable
-	private static final State NEXT_AUTOMATIC = null;
+	private static final @Nullable State NEXT_AUTOMATIC = null;
 
 	enum State {
 		IDLE(10),
@@ -120,18 +119,15 @@ public class HydraHeadContainer {
 	public final HydraNeck neckd;
 	public final HydraNeck necke;
 
-	@Nullable
-	public Entity targetEntity;
+	public @Nullable Entity targetEntity;
 
 	private double targetX;
 	private double targetY;
 	private double targetZ;
 
-	@Nullable
-	private State prevState;
+	private @Nullable State prevState;
 	private State currentState;
-	@Nullable
-	private State nextState;
+	private @Nullable State nextState;
 
 	public boolean isSecondaryAttacking;
 
@@ -731,8 +727,7 @@ public class HydraHeadContainer {
 
 	// TODO this seems copied from somewhere?
 	@SuppressWarnings("ConstantConditions")
-	@Nullable
-	private Entity getHeadLookTarget() {
+	private @Nullable Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
 		Vec3 srcVec = new Vec3(this.headEntity.getX(), this.headEntity.getY() + 1.0, this.headEntity.getZ());

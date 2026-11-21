@@ -4,7 +4,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.datagen.generator.AssetsGenerator;
 import twilightforest.datagen.generator.DataGenerator;
 
@@ -17,7 +17,7 @@ public class DataGenerators {
 	@Autowired
 	private DataGenerator dataGenerator;
 
-	@PostConstruct
+	@EventBusPostConstruct
 	private void register(IEventBus bus) {
 		bus.addListener(GatherDataEvent.Client.class, event -> {
 			this.dataGenerator.generate(event);

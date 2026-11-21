@@ -163,7 +163,8 @@ public class OminousCandleBlock extends BaseEntityBlock {
 				level.setBlock(pos, state.setValue(CANDLES, state.getValue(CANDLES) + 1), Block.UPDATE_ALL);
 
 				candleBlock.setPlacedBy(level, pos, state, player, stack);
-				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
+				if (player instanceof ServerPlayer)
+					CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
 				player.awardStat(Stats.ITEM_USED.get(blockItem));
 
 				BlockState newState = level.getBlockState(pos);

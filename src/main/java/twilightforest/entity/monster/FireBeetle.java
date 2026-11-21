@@ -23,7 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.goal.BreathAttackGoal;
 import twilightforest.init.TFDamageTypes;
@@ -62,9 +62,8 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.FIRE_BEETLE_AMBIENT.get();
 	}
 

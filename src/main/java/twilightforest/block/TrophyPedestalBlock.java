@@ -91,7 +91,8 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	@Override
 	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		level.updateNeighbourForOutputSignal(pos, this);
-		if (level.isClientSide() || state.getValue(ACTIVE) || !isTrophyOnTop(level, pos)) return;
+		if (level.isClientSide() || state.getValue(ACTIVE) || !isTrophyOnTop(level, pos))
+			return;
 
 		if (LandmarkUtil.isProgressionEnforced((ServerLevel) level)) {
 			if (this.areNearbyPlayersEligible(level, pos)) {
@@ -119,7 +120,8 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	private boolean areNearbyPlayersEligible(Level level, BlockPos pos) {
 		for (Player player : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
-			if (this.isPlayerEligible(player)) return true;
+			if (this.isPlayerEligible(player))
+				return true;
 		}
 		return false;
 	}

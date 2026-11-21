@@ -34,7 +34,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
 import twilightforest.network.UpdateTFMultipartPacket;
@@ -167,7 +167,8 @@ public class Hydra extends BaseTFBoss {
 
 	@Override
 	public void aiStep() {
-		if (this.renderFakeHeads) this.renderFakeHeads = false;
+		if (this.renderFakeHeads)
+			this.renderFakeHeads = false;
 		this.clearFire();
 		this.body.tick();
 		this.leftLeg.tick();
@@ -495,8 +496,7 @@ public class Hydra extends BaseTFBoss {
 		return distX * distX + distZ * distZ;
 	}
 
-	@Nullable
-	private LivingEntity findSecondaryTarget(double range) {
+	private @Nullable LivingEntity findSecondaryTarget(double range) {
 		return this.level().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
 			.stream()
 			.filter(e -> !(e instanceof Hydra))
@@ -520,7 +520,8 @@ public class Hydra extends BaseTFBoss {
 		double d1 = (part.getBoundingBox().minZ + part.getBoundingBox().maxZ) / 2.0D;
 
 		for (Entity entity : entities) {
-			if (entity instanceof Player player && player.isCreative()) continue;
+			if (entity instanceof Player player && player.isCreative())
+				continue;
 			if (entity instanceof LivingEntity) {
 				double d2 = entity.getX() - d0;
 				double d3 = entity.getZ() - d1;
@@ -652,9 +653,8 @@ public class Hydra extends BaseTFBoss {
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
-	@Nullable
 	@Override
-	public PartEntity<?>[] getParts() {
+	public @Nullable PartEntity<?>[] getParts() {
 		return this.partArray;
 	}
 
@@ -682,7 +682,8 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	private void repositionParts() {
-		if (this.partArray == null) return;
+		if (this.partArray == null)
+			return;
 
 		for (HydraHeadContainer container : this.hc) {
 			container.setHeadPosition();
@@ -801,7 +802,8 @@ public class Hydra extends BaseTFBoss {
 			this.remove(RemovalReason.KILLED);
 		}
 
-		if (this.level().isClientSide()) this.tickDeathAnimation();
+		if (this.level().isClientSide())
+			this.tickDeathAnimation();
 	}
 
 	@Override

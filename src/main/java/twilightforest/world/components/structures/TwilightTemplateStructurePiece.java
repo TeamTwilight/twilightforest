@@ -31,7 +31,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 
 	@SuppressWarnings("this-escape")
 	public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings placeSettings) {
-		super(structurePieceType, compoundTag, ctx.structureTemplateManager(), rl -> placeSettings);
+		super(structurePieceType, compoundTag, ctx.structureTemplateManager(), _ -> placeSettings);
 		this.rotation = this.getRotation();
 		this.mirror = this.getMirror();
 

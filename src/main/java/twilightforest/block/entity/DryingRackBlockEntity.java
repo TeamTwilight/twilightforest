@@ -127,7 +127,8 @@ public class DryingRackBlockEntity extends BlockEntity {
 	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel serverLevel, ReloadableServerRegistries.Holder holder) {
 		LootTable lootTable = holder.getLootTable(lootTableKey);
 
-		if (lootTable == LootTable.EMPTY) return false;
+		if (lootTable == LootTable.EMPTY)
+			return false;
 
 		LootParams params = new LootParams.Builder(serverLevel).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.getBlockPos())).create(LootContextParamSets.CHEST);
 

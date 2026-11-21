@@ -6,12 +6,11 @@ import net.minecraft.client.renderer.entity.state.ArmorStandRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 
-	@Nullable
-	private EquipmentSlot slot;
+	private @Nullable EquipmentSlot slot;
 
 	public TFArmorModel(ModelPart root) {
 		super(root);
@@ -53,7 +52,8 @@ public class TFArmorModel extends HumanoidModel<HumanoidRenderState> {
 	}
 
 	private void applyPartVisibility() {
-		if (this.slot == null) return;
+		if (this.slot == null)
+			return;
 
 		this.allParts().forEach(part -> part.visible = false);
 		this.root().visible = true;

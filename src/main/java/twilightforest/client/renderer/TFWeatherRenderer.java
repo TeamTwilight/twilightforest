@@ -35,7 +35,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.custom.Enforcements;
@@ -62,12 +62,9 @@ public class TFWeatherRenderer {
 	public static final float[] rainxs = new float[1024];
 	public static final float[] rainzs = new float[1024];
 
-	@Nullable
-	private static List<Pair<BoundingBox, Boolean>> boxData;
-	@Nullable
-	private static HashMap<Pair<Integer, Integer>, List<Pair<Integer, Integer>>> rainIntervals;
-	@Nullable
-	private static BoundingBox pBoxOld;
+	private static @Nullable List<Pair<BoundingBox, Boolean>> boxData;
+	private static @Nullable HashMap<Pair<Integer, Integer>, List<Pair<Integer, Integer>>> rainIntervals;
+	private static @Nullable BoundingBox pBoxOld;
 
 	private static final RandomSource random = RandomSource.create();
 
@@ -246,7 +243,8 @@ public class TFWeatherRenderer {
 					int rainMin = segment.getFirst();
 					int rainMax = segment.getSecond();
 
-					if (rainMin >= rainMax) continue;
+					if (rainMin >= rainMax)
+						continue;
 
 					random.setSeed((long) x * x * 3121 + x * 45238971L ^ (long) z * z * 418711 + z * 13761L);
 					if (drawFlag != 0) {
@@ -312,7 +310,8 @@ public class TFWeatherRenderer {
 	private static List<Pair<Integer, Integer>> getRainIntervals(int x, int z, BoundingBox pBox, List<BoundingBox> boxes) {
 		List<Pair<Integer, Integer>> intervals = new ArrayList<>();
 		for (BoundingBox box : boxes) {
-			if (!box.intersects(x, z, x, z)) continue;
+			if (!box.intersects(x, z, x, z))
+				continue;
 			int rainMin = Math.max(pBox.minY(), box.minY());
 			int rainMax = Math.min(pBox.maxY(), box.maxY() + 1);  // + 1 because renderEffect() renders from rainMin to rainMax as floats
 			if (rainMin < rainMax) {
@@ -377,8 +376,7 @@ public class TFWeatherRenderer {
 		progressionEnforced = enforce;
 	}
 
-	@Nullable
-	private static TFWeatherRenderer.WeatherRenderType getRenderType(Restriction restriction) {
+	private static TFWeatherRenderer.@Nullable WeatherRenderType getRenderType(Restriction restriction) {
 		if (restriction.enforcement().equals(Enforcements.FROST.getKey()))
 			return WeatherRenderType.BLIZZARD;
 		else if (restriction.enforcement().equals(Enforcements.HUNGER.getKey()))

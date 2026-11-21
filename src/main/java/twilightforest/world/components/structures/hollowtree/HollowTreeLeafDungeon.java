@@ -130,7 +130,8 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		BlockPos pos = this.getWorldPos(x, y, z).relative(direction, 2);
 
 		BlockState state = stateProvider.getState(world, random, pos).mirror(this.mirror).rotate(world, pos, this.rotation);
-		if (state.getBlock() instanceof ChestBlock) state = state.setValue(ChestBlock.FACING, direction.getOpposite());
+		if (state.getBlock() instanceof ChestBlock)
+			state = state.setValue(ChestBlock.FACING, direction.getOpposite());
 
 		if (sbb.isInside(pos) && !world.getBlockState(pos).is(state.getBlock())) {
 			world.setBlock(pos, state, Block.UPDATE_CLIENTS);

@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;

@@ -74,7 +74,8 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 			finalShape = Shapes.or(finalShape, EAST_SHAPE);
 		}
 		//make it a full block if for some reason theres not a single piece of fence showing. That way people can still interact with the block
-		if (finalShape.isEmpty()) finalShape = Shapes.block();
+		if (finalShape.isEmpty())
+			finalShape = Shapes.block();
 		return finalShape;
 	}
 
@@ -153,9 +154,12 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		boolean above = level.getBlockState(up).is(this) && (upState.is(this) || this.connectsTo(upState, upState.isFaceSturdy(level, up.relative(direction), direction.getOpposite())));
 		boolean below = level.getBlockState(down).is(this) && (downState.is(this) || this.connectsTo(downState, downState.isFaceSturdy(level, down.relative(direction), direction.getOpposite())));
 
-		if (above && below) return FenceSide.MIDDLE;
-		if (!above && below) return FenceSide.TOP;
-		if (above) return FenceSide.BOTTOM;
+		if (above && below)
+			return FenceSide.MIDDLE;
+		if (!above && below)
+			return FenceSide.TOP;
+		if (above)
+			return FenceSide.BOTTOM;
 		return FenceSide.FULL;
 	}
 
@@ -163,26 +167,33 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		BlockState above = level.getBlockState(pos.above());
 
 		boolean shouldAnyBePost = shouldAnyBePost(level, state, pos);
-		if (allowCap && state.getValue(POST) == PostState.CAPPED && above.canBeReplaced()) return PostState.CAPPED;
-		if (shouldAnyBePost) return PostState.POST;
-		else return shouldBePost(state) ? PostState.POST : PostState.NONE;
+		if (allowCap && state.getValue(POST) == PostState.CAPPED && above.canBeReplaced())
+			return PostState.CAPPED;
+		if (shouldAnyBePost)
+			return PostState.POST;
+		else
+			return shouldBePost(state) ? PostState.POST : PostState.NONE;
 	}
 
 	private static boolean shouldAnyBePost(LevelReader level, BlockState state, BlockPos pos) {
 		BlockPos.MutableBlockPos mutable = pos.above().mutable();
 		while (true) {
 			BlockState checkState = level.getBlockState(mutable);
-			if (!checkState.is(state.getBlock())) break;
+			if (!checkState.is(state.getBlock()))
+				break;
 			mutable.move(Direction.UP);
-			if (shouldBePost(checkState) || checkState.getValue(POST) == PostState.CAPPED) return true;
+			if (shouldBePost(checkState) || checkState.getValue(POST) == PostState.CAPPED)
+				return true;
 		}
 
 		mutable.set(pos.below());
 		while (true) {
 			BlockState checkState = level.getBlockState(mutable);
-			if (!checkState.is(state.getBlock())) break;
+			if (!checkState.is(state.getBlock()))
+				break;
 			mutable.move(Direction.DOWN);
-			if (shouldBePost(checkState)) return true;
+			if (shouldBePost(checkState))
+				return true;
 		}
 
 		return false;

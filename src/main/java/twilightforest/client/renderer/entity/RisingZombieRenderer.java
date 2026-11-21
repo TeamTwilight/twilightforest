@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RisingZombieModel;
 import twilightforest.client.state.entity.RisingZombieRenderState;
@@ -41,18 +41,18 @@ public class RisingZombieRenderer extends HumanoidMobRenderer<RisingZombie, Risi
 		state.risingTicks = entity.getRisingTicks();
 	}
 
-	@Nullable
 	@Override
-	protected RenderType getRenderType(RisingZombieRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
+	protected @Nullable RenderType getRenderType(RisingZombieRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
 		// Render normally for spectators instead of very translucent
-		if (translucent) return this.model.renderType(this.getTextureLocation(state));
+		if (translucent)
+			return this.model.renderType(this.getTextureLocation(state));
 		return super.getRenderType(state, bodyVisible, translucent, glowing);
 	}
 
 	@Override
 	protected void setupRotations(RisingZombieRenderState state, PoseStack stack, float bodyRot, float scale) {
 		super.setupRotations(state, stack, bodyRot, scale);
-		var tick = state.risingTicks;
+		int tick = state.risingTicks;
 		stack.translate(0.0F, -(80.0F - Math.min(80.0F, tick)) / 80.0F, 0.0F);
 		stack.translate(0.0F, -(40.0F - Math.clamp(tick - 80.0F, 0.0F, 40.0F)) / 40.0F, 0.0F);
 		final float yOff = 1.0F;

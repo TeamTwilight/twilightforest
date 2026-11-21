@@ -54,7 +54,7 @@ public class MapLocatorCommand {
 
 	private int run(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> players, boolean skipKnownStructures) throws CommandSyntaxException {
 		var structure = ResourceOrTagKeyArgument.getResourceOrTagKey(context, "structure", Registries.STRUCTURE, ERROR_STRUCTURE_INVALID);
-		var source = context.getSource();
+		CommandSourceStack source = context.getSource();
 
 		Registry<Structure> registry = source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE);
 		HolderSet<Structure> holderset = LocateCommand.getHolders(structure, registry).orElseThrow(() -> ERROR_STRUCTURE_INVALID.create(structure.asPrintable()));

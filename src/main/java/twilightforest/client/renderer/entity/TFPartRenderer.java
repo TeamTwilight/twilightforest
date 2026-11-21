@@ -16,7 +16,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.state.entity.PartEntityState;
 import twilightforest.entity.TFPart;
 
@@ -60,8 +60,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntitySt
 		return OverlayTexture.pack(OverlayTexture.u(OverlayTexture.NO_WHITE_U), OverlayTexture.v(state.hasRedOverlay));
 	}
 
-	@Nullable
-	protected RenderType getRenderType(S state, boolean visible, boolean ghostly, boolean glowing) {
+	protected @Nullable RenderType getRenderType(S state, boolean visible, boolean ghostly, boolean glowing) {
 		Identifier Identifier = this.getTextureLocation(state);
 		if (ghostly) {
 			return RenderTypes.itemTranslucent(Identifier);

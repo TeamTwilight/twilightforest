@@ -26,7 +26,7 @@ public class KeepsakeCasketModel extends Model<Float> {
 	public static LayerDefinition create(boolean addSpikes) {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
-		var lid = partdefinition.addOrReplaceChild("lid", CubeListBuilder.create()
+		PartDefinition lid = partdefinition.addOrReplaceChild("lid", CubeListBuilder.create()
 				.texOffs(0, 0).addBox(-8.0F, -8.0F, -13.0F, 16.0F, 10.0F, 14.0F),
 			PartPose.offset(0.0F, -6.0F, 6.0F));
 

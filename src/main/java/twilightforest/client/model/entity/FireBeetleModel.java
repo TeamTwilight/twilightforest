@@ -42,7 +42,7 @@ public class FireBeetleModel extends EntityModel<LivingEntityRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -4.0F, -6.0F, 8.0F, 6.0F, 6.0F),
 			PartPose.offset(0.0F, 19.0F, -5.0F));
@@ -67,7 +67,7 @@ public class FireBeetleModel extends EntityModel<LivingEntityRenderState> {
 				.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
 			PartPose.offset(3.0F, -2.0F, -5.0F));
 
-		var jaw1a = head.addOrReplaceChild("jaw_1a", CubeListBuilder.create()
+		PartDefinition jaw1a = head.addOrReplaceChild("jaw_1a", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(0.0F, 0.0F, -2F, 1.0F, 1.0F, 2.0F),
 			PartPose.offsetAndRotation(-3.0F, 0.0F, -6.0F, 0.3490659F, 0.0F, 0.0F));
@@ -77,7 +77,7 @@ public class FireBeetleModel extends EntityModel<LivingEntityRenderState> {
 				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 2.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, -2.0F, 0.0F, 1.570796F, 0.0F));
 
-		var jaw1b = head.addOrReplaceChild("jaw_2a", CubeListBuilder.create()
+		PartDefinition jaw1b = head.addOrReplaceChild("jaw_2a", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-1.0F, 0.0F, -2.0F, 1.0F, 1.0F, 2.0F),
 			PartPose.offsetAndRotation(3.0F, 0.0F, -6.0F, 0.3490659F, 0.0F, 0.0F));

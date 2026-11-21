@@ -23,9 +23,9 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -62,7 +62,7 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 
 		//index 0 is used by ConnectionLogic.NONE, index 1 by everything else
 		Material.Baked[] overlaySprites = new Material.Baked[]{materials.get(this.textures.overlay(), debugName), materials.get(this.textures.overlayConnected(), debugName)};
-		@Nullable Material.Baked baseSprite = this.textures.base().map(material -> materials.get(material, debugName)).orElse(null);
+		Material.@Nullable Baked baseSprite = this.textures.base().map(material -> materials.get(material, debugName)).orElse(null);
 		Material.Baked particle = materials.get(this.textures.particle().or(this.textures::base).orElse(this.textures.overlay()), debugName);
 
 		Vector3fc from = this.element.from();
@@ -75,7 +75,8 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 
 		for (Direction face : Direction.values()) {
 			Direction cull = getCullface(face, from, to);
-			if (cull == null) unculledFaces.add(face);
+			if (cull == null)
+				unculledFaces.add(face);
 
 			Direction[] planeDirections = ConnectionLogic.AXIS_PLANE_DIRECTIONS[face.getAxis().ordinal()];
 			BakedQuad[] faceBaseQuads = new BakedQuad[4];
@@ -107,7 +108,8 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 				}
 			}
 
-			if (baseSprite != null) baseQuads.put(face, faceBaseQuads);
+			if (baseSprite != null)
+				baseQuads.put(face, faceBaseQuads);
 			connectedQuads.put(face, faceConnectedQuads);
 		}
 
@@ -122,8 +124,7 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 	/**
 	 * A face may only be culled against its neighbor when the element actually touches that side of the block.
 	 */
-	@Nullable
-	private static Direction getCullface(Direction face, Vector3fc from, Vector3fc to) {
+	private static @Nullable Direction getCullface(Direction face, Vector3fc from, Vector3fc to) {
 		boolean onBoundary = switch (face) {
 			case DOWN -> from.y() == 0.0F;
 			case UP -> to.y() == 16.0F;
@@ -147,8 +148,12 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 		}
 
 		return state -> {
-			for (Block block : blocks) if (state.is(block)) return true;
-			for (TagKey<Block> tag : tags) if (state.is(tag)) return true;
+			for (Block block : blocks)
+				if (state.is(block))
+					return true;
+			for (TagKey<Block> tag : tags)
+				if (state.is(tag))
+					return true;
 			return false;
 		};
 	}
@@ -223,10 +228,8 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 	public static final class Builder {
 		private final Material overlay;
 		private final Material overlayConnected;
-		@Nullable
-		private Material base;
-		@Nullable
-		private Material particle;
+		private @Nullable Material base;
+		private @Nullable Material particle;
 		private final List<Either<TagKey<Block>, Block>> connectables = new ArrayList<>();
 		private Set<Direction> faces = EnumSet.allOf(Direction.class);
 		private boolean renderOverlayOnAllFaces = true;
@@ -253,13 +256,15 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 		}
 
 		public Builder connectsTo(Block... blocks) {
-			for (Block block : blocks) this.connectables.add(Either.right(block));
+			for (Block block : blocks)
+				this.connectables.add(Either.right(block));
 			return this;
 		}
 
 		@SafeVarargs
 		public final Builder connectsTo(TagKey<Block>... tags) {
-			for (TagKey<Block> tag : tags) this.connectables.add(Either.left(tag));
+			for (TagKey<Block> tag : tags)
+				this.connectables.add(Either.left(tag));
 			return this;
 		}
 

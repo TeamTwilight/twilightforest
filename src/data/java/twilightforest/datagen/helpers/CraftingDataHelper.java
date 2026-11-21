@@ -232,7 +232,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	@SafeVarargs
 	protected final DataComponentPatch.Builder buildEnchants(HolderLookup.Provider provider, Pair<ResourceKey<Enchantment>, Integer>... enchantments) {
 		HolderLookup.RegistryLookup<Enchantment> lookup = provider.lookupOrThrow(Registries.ENCHANTMENT);
-		var itemEnchants = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+		ItemEnchantments.Mutable itemEnchants = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
 		for (var pair : enchantments) {
 			itemEnchants.set(lookup.getOrThrow(pair.getFirst()), pair.getSecond());
 		}

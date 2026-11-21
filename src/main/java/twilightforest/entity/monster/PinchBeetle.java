@@ -17,7 +17,7 @@ import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.init.TFDamageTypes;
@@ -51,9 +51,8 @@ public class PinchBeetle extends Monster implements IHostileMount {
 			.add(Attributes.ARMOR, 2.0D);
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.PINCH_BEETLE_AMBIENT.get();
 	}
 
@@ -118,7 +117,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		if (this.getPassengers().isEmpty()) {
-			var v = entity.getVehicle();
+			Entity v = entity.getVehicle();
 
 			if (v == null || !v.is(TFEntityTypeTags.RIDES_OBSTRUCT_SNATCHING)) {
 				// Pluck them from the boat, minecart, donkey, or whatever

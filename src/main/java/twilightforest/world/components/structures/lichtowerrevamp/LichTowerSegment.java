@@ -86,7 +86,8 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		for (int stackIndex = 0; stackIndex < segments; stackIndex++) {
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, segmentId, "twilightforest:lich_tower/tower_below", context.random());
 
-			if (placeableJunction == null) continue;
+			if (placeableJunction == null)
+				continue;
 
 			boolean putWings = stackIndex > segments >> 1;
 			boolean putGallery = stackIndex == segments - 1;
@@ -97,7 +98,8 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 
 			JigsawRecord firstJunction = placeableJunction.findFirst("twilightforest:lich_tower/tower_above");
 
-			if (firstJunction == null) break;
+			if (firstJunction == null)
+				break;
 
 			priorPiece = towerSegment;
 			priorJigsawOffset = firstJunction.pos();
@@ -136,7 +138,8 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/bridge" -> {
-				if (!this.putWings) return;
+				if (!this.putWings)
+					return;
 
 				// If this is the top segment, then place only the gallery so that the normal side towers place lower
 				//  and thus generate taller without colliding into the boss room

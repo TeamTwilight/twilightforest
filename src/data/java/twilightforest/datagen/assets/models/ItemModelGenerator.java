@@ -428,7 +428,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		for (int i = 0; i < 3; i++) {
 			potionEntries.add(ItemModelUtils.override(ItemModelUtils.tintedModel(this.createFlatItemModel(flask, "_" + (i + 1), ModelTemplates.FLAT_ITEM), new PotionFlaskTintSource()), i + 1));
 			if (i == 0) {
-				var base = ItemModelUtils.plainModel(this.createFlatItemModel(flask, ModelTemplates.FLAT_ITEM));
+				ItemModel.Unbaked base = ItemModelUtils.plainModel(this.createFlatItemModel(flask, ModelTemplates.FLAT_ITEM));
 				flaskEntries.add(ItemModelUtils.override(crackable ?
 					ItemModelUtils.conditional(new HasComponent(TFDataComponents.POTION_FLASK_CONTENTS.get(), true),
 						ItemModelUtils.plainModel(this.createFlatItemModel(flask, suffixes[i], ModelTemplates.FLAT_ITEM)), base) : base, 0));

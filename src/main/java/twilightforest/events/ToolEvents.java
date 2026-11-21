@@ -25,7 +25,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.EventHooks;
@@ -34,9 +34,8 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
-import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.block.GiantBlock;
 import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.init.TFDataAttachments;
@@ -53,16 +52,16 @@ public class ToolEvents {
 	private static final int KNIGHTMETAL_BONUS_DAMAGE = 2;
 	private static final int MINOTAUR_AXE_BONUS_DAMAGE = 7;
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::onEnderBowHit);
-		NeoForge.EVENT_BUS.addListener(this::fieryToolSetFire);
-		NeoForge.EVENT_BUS.addListener(this::doKnightmetalToolLogic);
-		NeoForge.EVENT_BUS.addListener(this::addExtraAxeChargingDamage);
-		NeoForge.EVENT_BUS.addListener(this::damageNonMazebreakerToolsMore);
-		NeoForge.EVENT_BUS.addListener(this::preventFatigueWithPocketWatch);
-		NeoForge.EVENT_BUS.addListener(this::handleGiantPickaxeMining);
-		NeoForge.EVENT_BUS.addListener(this::refreshOreMagnetCache);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::onEnderBowHit);
+		bus.addListener(this::fieryToolSetFire);
+		bus.addListener(this::doKnightmetalToolLogic);
+		bus.addListener(this::addExtraAxeChargingDamage);
+		bus.addListener(this::damageNonMazebreakerToolsMore);
+		bus.addListener(this::preventFatigueWithPocketWatch);
+		bus.addListener(this::handleGiantPickaxeMining);
+		bus.addListener(this::refreshOreMagnetCache);
 	}
 
 	private void onEnderBowHit(ProjectileImpactEvent evt) {
@@ -75,7 +74,7 @@ public class ToolEvents {
 			if (arrow.getPersistentData().contains(EnderBowItem.KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
-				@Nullable Entity playerVehicle = player.getVehicle();
+				Entity playerVehicle = player.getVehicle();
 
 				player.setYRot(living.getYRot());
 				player.teleportTo(living.getX(), living.getY(), living.getZ());
@@ -169,7 +168,7 @@ public class ToolEvents {
 		BlockState state = event.getState();
 
 		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state, pos)) {
-			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			GiantPickaxeMiningAttachment attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 
 			if (shouldBreakGiantBlock(player, attachment)) {
 				attachment.setBreaking(true); // Tell the capability that a block breaking loop is happening, so it knows to fail the if check above. Otherwise, this would go on forever

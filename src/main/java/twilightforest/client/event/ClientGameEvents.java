@@ -27,11 +27,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import tamaized.beanification.PostConstruct;
+import tamaized.beanification.connector.fml.EventBusPostConstruct;
+import tamaized.beanification.connector.fml.RequiresDist;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.block.GiantBlock;
@@ -58,7 +59,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-@tamaized.beanification.Component(dist = Dist.CLIENT)
+@RequiresDist(Dist.CLIENT)
+@tamaized.beanification.Component
 public class ClientGameEvents {
 	private final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
 	private final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
@@ -71,34 +73,35 @@ public class ClientGameEvents {
 	private int lastAurora = 0;
 	private final AuroraRenderer auroraRenderer = new AuroraRenderer();
 
-	@Autowired(dist = Dist.CLIENT)
+	@Autowired
+	@RequiresDist(Dist.CLIENT)
 	private HolderMatcher holderMatcher;
 
-	@PostConstruct
 	@SuppressWarnings("DuplicatedCode")
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::addCustomTooltips);
-		NeoForge.EVENT_BUS.addListener(this::clientTick);
-		NeoForge.EVENT_BUS.addListener(this::customizeSplashes);
-		NeoForge.EVENT_BUS.addListener(this::clearEntityRenderUtilMap);
-		NeoForge.EVENT_BUS.addListener(this::endAuroraFrame);
-		NeoForge.EVENT_BUS.addListener(this::killVignette);
-		NeoForge.EVENT_BUS.addListener(this::removeHostileMountHealth);
-		NeoForge.EVENT_BUS.addListener(this::renderAurora);
-		NeoForge.EVENT_BUS.addListener(this::renderCustomBossbars);
-		NeoForge.EVENT_BUS.addListener(this::renderGiantBlockOutlines);
-		NeoForge.EVENT_BUS.addListener(this::shakeCamera);
-		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
-		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
+	@EventBusPostConstruct(EventBusPostConstruct.Bus.GAME)
+	private void setup(IEventBus bus) {
+		bus.addListener(this::addCustomTooltips);
+		bus.addListener(this::clientTick);
+		bus.addListener(this::customizeSplashes);
+		bus.addListener(this::clearEntityRenderUtilMap);
+		bus.addListener(this::endAuroraFrame);
+		bus.addListener(this::killVignette);
+		bus.addListener(this::removeHostileMountHealth);
+		bus.addListener(this::renderAurora);
+		bus.addListener(this::renderCustomBossbars);
+		bus.addListener(this::renderGiantBlockOutlines);
+		bus.addListener(this::shakeCamera);
+		bus.addListener(this::translateBookAuthor);
+		bus.addListener(this::updateBowFOV);
 
-		NeoForge.EVENT_BUS.addListener(FogHandler::colorFog);
+		bus.addListener(FogHandler::colorFog);
 
-		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
+		bus.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
 
-		NeoForge.EVENT_BUS.addListener(TFSkyRenderer::extractLevelRender);
-		NeoForge.EVENT_BUS.addListener(TFWeatherRenderer::extractUrGhastRain);
+		bus.addListener(TFSkyRenderer::extractLevelRender);
+		bus.addListener(TFWeatherRenderer::extractUrGhastRain);
 
-		NeoForge.EVENT_BUS.addListener(MapDataManager::clearCache);
+		bus.addListener(MapDataManager::clearCache);
 	}
 
 	private void customizeSplashes(ScreenEvent.Init.Post event) {

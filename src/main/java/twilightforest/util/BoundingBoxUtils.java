@@ -8,7 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -20,8 +20,7 @@ public class BoundingBoxUtils {
 
 	// This method has been renamed to be the intersection because it functionally is.
 	// If you're looking for the union equivalent, use `BoundingBox#encapsulate`
-	@Nullable
-	public static BoundingBox getIntersectionOfSBBs(BoundingBox box1, BoundingBox box2) {
+	public static @Nullable BoundingBox getIntersectionOfSBBs(BoundingBox box1, BoundingBox box2) {
 		if (!box1.intersects(box2))
 			return null;
 
@@ -88,9 +87,9 @@ public class BoundingBoxUtils {
 		};
 	}
 
-	@Nullable
-	public static AABB vectorsMinMax(List<Vec3> vec3List, double expand) {
-		if (vec3List.isEmpty()) return null;
+	public static @Nullable AABB vectorsMinMax(List<Vec3> vec3List, double expand) {
+		if (vec3List.isEmpty())
+			return null;
 
 		Vec3 first = vec3List.getFirst();
 
@@ -138,7 +137,8 @@ public class BoundingBoxUtils {
 	public static BoundingBox safeRetract(BoundingBox box, Direction direction, int length) {
 		int span = getSpan(box, direction.getAxis());
 
-		if (span <= length) return box;
+		if (span <= length)
+			return box;
 
 		return switch (direction) {
 			case WEST -> cloneWithAdjustments(box, length, 0, 0, 0, 0, 0);

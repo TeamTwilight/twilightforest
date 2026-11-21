@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 
 import java.util.HashSet;
@@ -32,9 +32,8 @@ public final class CourtyardTerraceTemplateProcessor implements StructureProcess
 	private CourtyardTerraceTemplateProcessor() {
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+	public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
 		BlockState newState = newInfo.state();
 
 		if (newState.getBlock() == Blocks.SANDSTONE_SLAB) {

@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.resources.model.cuboid.CuboidFace;
 import net.minecraft.core.Direction;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.model.block.forcefield.ForceFieldElement;
 import twilightforest.client.model.block.forcefield.ForceFieldModel.ExtraDirection;
 
@@ -63,8 +63,7 @@ public class ForceFieldModelBuilder {
 		private final boolean shade;
 		private final int light;
 		private final int tint;
-		@Nullable
-		private Pair<ExtraDirection, Boolean> condition = null;
+		private @Nullable Pair<ExtraDirection, Boolean> condition = null;
 		private final List<ExtraDirection> parents = new ArrayList<>();
 
 		private ForceFieldElementBuilder(boolean defaultShade, int brightnessOverride, int tint) {
@@ -151,8 +150,7 @@ public class ForceFieldModelBuilder {
 
 		public class FaceBuilder {
 
-			@Nullable
-			private Direction cullface;
+			private @Nullable Direction cullface;
 			private int tintindex;
 			private CuboidFace.UVs uvs = new CuboidFace.UVs(0.0F, 0.0F, 16.0F, 16.0F);
 

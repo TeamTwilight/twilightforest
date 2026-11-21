@@ -1,7 +1,6 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
@@ -18,12 +17,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-import twilightforest.loot.TFLootTables;
 
 public class Bighorn extends Sheep {
 
@@ -37,17 +34,15 @@ public class Bighorn extends Sheep {
 			: DyeColor.byId(random.nextInt(16));
 	}
 
-	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData livingdata) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData livingdata) {
 		livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata);
 		this.setColor(getRandomFleeceColor(accessor.getRandom()));
 		return livingdata;
 	}
 
-	@Nullable
 	@Override
-	public Sheep getBreedOffspring(ServerLevel world, AgeableMob ageable) {
+	public @Nullable Sheep getBreedOffspring(ServerLevel world, AgeableMob ageable) {
 		if (!(ageable instanceof Bighorn otherParent)) {
 			TwilightForestMod.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
 			return null;

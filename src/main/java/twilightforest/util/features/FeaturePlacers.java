@@ -41,7 +41,8 @@ public final class FeaturePlacers {
 	public static <T extends Mob> void placeEntity(EntityType<T> entityType, BlockPos pos, ServerLevelAccessor levelAccessor) {
 		Mob mob = entityType.create(levelAccessor.getLevel(), EntitySpawnReason.STRUCTURE);
 
-		if (mob == null) return;
+		if (mob == null)
+			return;
 
 		mob.setPersistenceRequired();
 		mob.snapTo(pos, 0.0F, 0.0F);
@@ -71,7 +72,8 @@ public final class FeaturePlacers {
 
 		// go through block by block and stop drawing when we head too far into open air
 		for (BlockPos coord : new VoxelBresenhamIterator(start.below(), dest)) {
-			if (!placeIfValidRootPos(world, placer, rand, coord, config)) return;
+			if (!placeIfValidRootPos(world, placer, rand, coord, config))
+				return;
 		}
 	}
 
@@ -86,11 +88,13 @@ public final class FeaturePlacers {
 	}
 
 	public static void placeProvidedBlock(WorldGenLevel world, BiConsumer<BlockPos, BlockState> worldPlacer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, RandomSource random) {
-		if (predicate.apply(world, pos)) worldPlacer.accept(pos, config.getState(world, random, pos));
+		if (predicate.apply(world, pos))
+			worldPlacer.accept(pos, config.getState(world, random, pos));
 	}
 
 	public static void placeLeaf(WorldGenLevel world, FoliagePlacer.FoliageSetter setter, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, RandomSource random) {
-		if (predicate.apply(world, pos)) setter.set(pos, config.getState(world, random, pos));
+		if (predicate.apply(world, pos))
+			setter.set(pos, config.getState(world, random, pos));
 	}
 
 	public static void placeCircleOdd(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config) {
@@ -163,7 +167,8 @@ public final class FeaturePlacers {
 		FeaturePlacers.placeLeaf(world, setter, predicate, centerPos, config, random);
 
 		for (int y = 0; y <= yRadius; y++) {
-			if (y > yRadius) continue;
+			if (y > yRadius)
+				continue;
 
 			FeaturePlacers.placeLeaf(world, setter, predicate, centerPos.offset(0, y, 0), config, random);
 			FeaturePlacers.placeLeaf(world, setter, predicate, centerPos.offset(0, -y, 0), config, random);
@@ -171,7 +176,8 @@ public final class FeaturePlacers {
 
 		for (int x = 0; x <= xzRadius; x++) {
 			for (int z = 1; z <= xzRadius; z++) {
-				if (x * x + z * z > xzRadiusSquared) continue;
+				if (x * x + z * z > xzRadiusSquared)
+					continue;
 
 				FeaturePlacers.placeLeaf(world, setter, predicate, centerPos.offset(x, 0, z), config, random);
 				FeaturePlacers.placeLeaf(world, setter, predicate, centerPos.offset(-x, 0, -z), config, random);
@@ -207,7 +213,8 @@ public final class FeaturePlacers {
 		FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos, config, random);
 
 		for (int y = 0; y <= yRadius; y++) {
-			if (y > yRadius) continue;
+			if (y > yRadius)
+				continue;
 
 			FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(0, y, 0), config, random);
 			FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(0, -y, 0), config, random);
@@ -215,7 +222,8 @@ public final class FeaturePlacers {
 
 		for (int x = 0; x <= xzRadius; x++) {
 			for (int z = 1; z <= xzRadius; z++) {
-				if (x * x + z * z > xzRadiusSquared) continue;
+				if (x * x + z * z > xzRadiusSquared)
+					continue;
 
 				FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(x, 0, z), config, random);
 				FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-x, 0, -z), config, random);
@@ -227,15 +235,23 @@ public final class FeaturePlacers {
 					if ((x * x + z * z) * yRadiusSquared + ySquare <= superRadiusSquared) {
 						if ((((x + 1) * (x + 1) + z * z) * yRadiusSquared) + ySquare > superRadiusSquared && ((x * x + (z + 1) * (z + 1)) * yRadiusSquared) + ySquare > superRadiusSquared) {
 							// randomly don't generate some blocks on the very edges of the circles that comprise the leaf blob
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(x, y, z), config, random);
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-x, y, -z), config, random);
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-z, y, x), config, random);
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(z, y, -x), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(x, y, z), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-x, y, -z), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-z, y, x), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(z, y, -x), config, random);
 
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(x, -y, z), config, random);
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-x, -y, -z), config, random);
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-z, -y, x), config, random);
-							if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(z, -y, -x), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(x, -y, z), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-x, -y, -z), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-z, -y, x), config, random);
+							if (random.nextInt(3) != 0)
+								FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(z, -y, -x), config, random);
 							continue;
 						}
 
@@ -315,7 +331,8 @@ public final class FeaturePlacers {
 	}
 
 	public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, Property<T> property) {
-		if (!stateIn.hasProperty(property) || !stateOut.hasProperty(property)) return stateOut;
+		if (!stateIn.hasProperty(property) || !stateOut.hasProperty(property))
+			return stateOut;
 		return stateOut.setValue(property, stateIn.getValue(property));
 	}
 
@@ -365,7 +382,8 @@ public final class FeaturePlacers {
 		float radiusSquared = radius * radius;
 
 		BoundingBox commonRegion = BoundingBoxUtils.getIntersectionOfSBBs(chunkBox, structureBox);
-		if (commonRegion == null) return;
+		if (commonRegion == null)
+			return;
 
 		processDomeColumn(level, centerPos, radiusSquared, commonRegion, target, replacement);
 
@@ -390,7 +408,8 @@ public final class FeaturePlacers {
 		float radiusSquared = radius * radius;
 
 		BoundingBox commonRegion = BoundingBoxUtils.getIntersectionOfSBBs(chunkBox, structureBox);
-		if (commonRegion == null) return;
+		if (commonRegion == null)
+			return;
 
 		processDomeColumn(level, centerPos, radiusSquared, commonRegion, target, replacement);
 
@@ -411,7 +430,8 @@ public final class FeaturePlacers {
 	}
 
 	public static void processDomeColumn(WorldGenLevel level, BlockPos pos, float height, BoundingBox mask, HolderSet<Block> target, BlockState replacement) {
-		if (!mask.isInside(pos)) return;
+		if (!mask.isInside(pos))
+			return;
 
 		for (int dY = 0; dY < height; dY++) {
 			BlockPos posElevated = pos.above(dY);
@@ -423,7 +443,8 @@ public final class FeaturePlacers {
 	}
 
 	public static void processDomeColumn(WorldGenLevel level, BlockPos pos, float height, BoundingBox mask, Block target, BlockState replacement) {
-		if (!mask.isInside(pos)) return;
+		if (!mask.isInside(pos))
+			return;
 
 		for (int dY = 0; dY < height; dY++) {
 			BlockPos posElevated = pos.above(dY);

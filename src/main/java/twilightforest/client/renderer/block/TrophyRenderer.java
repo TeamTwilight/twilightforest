@@ -20,9 +20,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TrophyBlock;
@@ -108,7 +108,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 	}
 
 	@Override
-	public void extractRenderState(TrophyBlockEntity blockEntity, TrophyRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@org.jspecify.annotations.Nullable CrumblingOverlay breakProgress) {
+	public void extractRenderState(TrophyBlockEntity blockEntity, TrophyRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 		state.wall = blockEntity.getBlockState().getBlock() instanceof TrophyWallBlock;
 		state.animationProgress = blockEntity.getAnimationProgress(partialTicks);

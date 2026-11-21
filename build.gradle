@@ -14,7 +14,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "tamaized:beanification:${beanification_version}:gradle"
+		classpath "tamaized:beanification-fml-connector:${beanification_version}:gradle"
 	}
 }
 
@@ -255,7 +255,7 @@ repositories {
 dependencies {
 	jarJar implementation(project(":asm"))
 
-	def beanification = "tamaized:beanification:${project.beanification_version}"
+	def beanification = "tamaized:beanification-fml-connector:${project.beanification_version}"
 	implementation beanification
 	shade beanification
 	testImplementation "${beanification}:tests"
@@ -384,7 +384,7 @@ publishing {
 
 				def deps = depsProvider.get()
 
-				addDep('tamaized', 'beanification', deps.beanification_version)
+				addDep('tamaized', 'beanification-fml-connector', deps.beanification_version)
 			}
 		}
 	}

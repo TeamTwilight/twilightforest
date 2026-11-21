@@ -52,6 +52,7 @@ public class ServerTFBossBar extends ServerBossEvent {
 			this.overlay = overlay;
 			change = true;
 		}
-		if (change) this.players.forEach(serverPlayer -> serverPlayer.connection.send(new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp)));
+		if (change)
+			this.players.forEach(serverPlayer -> serverPlayer.connection.send(new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp)));
 	}
 }

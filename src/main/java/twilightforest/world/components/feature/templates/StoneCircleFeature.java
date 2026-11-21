@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.CobbleVariants;
 
@@ -18,9 +18,8 @@ public class StoneCircleFeature extends TemplateFeature<NoneFeatureConfiguration
 		super(config);
 	}
 
-	@Nullable
 	@Override
-	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
+	protected @Nullable StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
 		return templateManager.getOrCreate(STONE_CIRCLE);
 	}
 

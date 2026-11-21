@@ -43,8 +43,9 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 		if (!this.mob.getPassengers().isEmpty() && this.mob.getPassengers().getFirst() instanceof LivingEntity victim) {
 			damageRider(victim);
 			this.throwTimer--;
-		} else
+		} else {
 			super.tick();
+		}
 	}
 
 	private void damageRider(LivingEntity victim) {
@@ -60,7 +61,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			this.resetAttackCooldown();
 			this.mob.swing(InteractionHand.MAIN_HAND);
 			if (this.mob.getPassengers().isEmpty()) {
-				var v = victim.getVehicle();
+				Entity v = victim.getVehicle();
 
 				if (v == null || !v.is(TFEntityTypeTags.RIDES_OBSTRUCT_SNATCHING)) {
 					// Pluck them from the boat, minecart, donkey, or whatever

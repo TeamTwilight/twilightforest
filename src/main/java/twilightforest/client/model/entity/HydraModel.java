@@ -61,21 +61,21 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 				.addBox(12.0F, 40.0F, -20.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.offset(-48.0F, -24.0F, 0.0F));
 
-		var tail1 = partdefinition.addOrReplaceChild("tail_1", CubeListBuilder.create()
+		PartDefinition tail1 = partdefinition.addOrReplaceChild("tail_1", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
 				.addBox(-2.0F, -28.0F, -11.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(0.0F, 6.0F, 108.0F));
 
-		var tail2 = tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
+		PartDefinition tail2 = tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
 				.addBox(-2.0F, -28.0F, -11.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(0.0F, 0.0F, 32.0F));
 
-		var tail3 = tail2.addOrReplaceChild("tail_3", CubeListBuilder.create()
+		PartDefinition tail3 = tail2.addOrReplaceChild("tail_3", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
@@ -89,7 +89,7 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 				.addBox(-2.0F, -28.0F, -11.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(0.0F, 0.0F, 32.0F));
 
-		var head1 = partdefinition.addOrReplaceChild("head_1", CubeListBuilder.create()
+		PartDefinition head1 = partdefinition.addOrReplaceChild("head_1", CubeListBuilder.create()
 				.texOffs(272, 0)
 				.addBox(-16.0F, -14.0F, -32.0F, 32.0F, 24.0F, 32.0F)
 				.texOffs(272, 56)
@@ -108,14 +108,14 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 				.addBox(-24.0F, -40.0F, 0.0F, 48.0F, 48.0F, 4.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, -10.0F, -0.5235988F, 0.0F, 0.0F));
 
-		var neck1a = partdefinition.addOrReplaceChild("neck_1a", CubeListBuilder.create()
+		PartDefinition neck1a = partdefinition.addOrReplaceChild("neck_1a", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
 				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(-42.0F, -48.0F, 0.0F));
 
-		var neck1b = neck1a.addOrReplaceChild("neck_1b", CubeListBuilder.create()
+		PartDefinition neck1b = neck1a.addOrReplaceChild("neck_1b", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
@@ -129,7 +129,7 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(-16.0F, -16.0F, -16.0F));
 
-		var head2 = partdefinition.addOrReplaceChild("head_2", CubeListBuilder.create()
+		PartDefinition head2 = partdefinition.addOrReplaceChild("head_2", CubeListBuilder.create()
 				.texOffs(272, 0)
 				.addBox(-16.0F, -14.0F, -32.0F, 32.0F, 24.0F, 32.0F)
 				.texOffs(272, 56)
@@ -148,14 +148,14 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 				.addBox(-24.0F, -40.0F, 0.0F, 48.0F, 48.0F, 4.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, -10.0F, -0.5235988F, 0.0F, 0.0F));
 
-		var neck2a = partdefinition.addOrReplaceChild("neck_2a", CubeListBuilder.create()
+		PartDefinition neck2a = partdefinition.addOrReplaceChild("neck_2a", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
 				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(0.0F, -48.0F, 0.0F));
 
-		var neck2b = neck2a.addOrReplaceChild("neck_2b", CubeListBuilder.create()
+		PartDefinition neck2b = neck2a.addOrReplaceChild("neck_2b", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
@@ -169,7 +169,7 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(0.0F, -24.0F, -16.0F));
 
-		var head3 = partdefinition.addOrReplaceChild("head_3", CubeListBuilder.create()
+		PartDefinition head3 = partdefinition.addOrReplaceChild("head_3", CubeListBuilder.create()
 				.texOffs(272, 0)
 				.addBox(-16.0F, -14.0F, -32.0F, 32.0F, 24.0F, 32.0F)
 				.texOffs(272, 56)
@@ -188,14 +188,14 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 				.addBox(-24.0F, -40.0F, 0.0F, 48.0F, 48.0F, 4.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, -10.0F, -0.5235988F, 0.0F, 0.0F));
 
-		var neck3a = partdefinition.addOrReplaceChild("neck_3a", CubeListBuilder.create()
+		PartDefinition neck3a = partdefinition.addOrReplaceChild("neck_3a", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
 				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.offset(42.0F, -48.0F, 0.0F));
 
-		var neck3b = neck3a.addOrReplaceChild("neck_3b", CubeListBuilder.create()
+		PartDefinition neck3b = neck3a.addOrReplaceChild("neck_3b", CubeListBuilder.create()
 				.texOffs(128, 136)
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)

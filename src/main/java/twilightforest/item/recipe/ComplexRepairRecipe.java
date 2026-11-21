@@ -52,7 +52,8 @@ public class ComplexRepairRecipe extends CustomRecipe {
 				ItemStack stackInQuestion = input.getItem(i);
 				if (!stackInQuestion.isEmpty()) {
 					if (this.input.test(stackInQuestion) && stackInQuestion.isDamaged()) {
-						if (toRepair != null) return false;
+						if (toRepair != null)
+							return false;
 						toRepair = stackInQuestion;
 					} else if (this.repairItems.getFirst().test(stackInQuestion)) {
 						ingredients++;
@@ -68,7 +69,8 @@ public class ComplexRepairRecipe extends CustomRecipe {
 				ItemStack stackInQuestion = input.getItem(i);
 				if (!stackInQuestion.isEmpty()) {
 					if (this.input.test(stackInQuestion) && stackInQuestion.isDamaged()) {
-						if (toRepair != null) return false;
+						if (toRepair != null)
+							return false;
 						toRepair = stackInQuestion;
 					}
 				}
@@ -96,7 +98,7 @@ public class ComplexRepairRecipe extends CustomRecipe {
 		}
 
 		if (toRepair != null) {
-			var copy = toRepair.copy();
+			ItemStack copy = toRepair.copy();
 			if (ingredients > 0) {
 				copy.setDamageValue(toRepair.getDamageValue() - (this.getRepairDurability() * ingredients));
 			} else {

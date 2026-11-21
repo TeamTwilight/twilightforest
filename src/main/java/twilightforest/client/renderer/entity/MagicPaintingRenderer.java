@@ -25,14 +25,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.client.state.entity.MagicPaintingRenderState;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer.OpacityModifier;
 import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
-
-import javax.annotation.Nullable;
 
 public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPaintingRenderState> {
 
@@ -79,7 +78,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 
 			for (MagicPaintingVariant.Layer layer : state.variant.layers()) {
 				float alpha = this.getAlpha(layer.opacityModifier(), state, cameraState, state.partialTick);
-				if (alpha <= 0.0F) continue;
+				if (alpha <= 0.0F)
+					continue;
 
 				Parallax parallax = layer.parallax();
 
@@ -191,56 +191,62 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 	protected void vertex(PoseStack.Pose pose, VertexConsumer consumer, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light, float a, boolean localLighting) {
 		consumer.addVertex(pose, x, y, z).setColor(255, 255, 255, (int) (255.0F * a)).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light);
 
-		if (localLighting) consumer.setNormal(normX, normY, normZ);
-		else consumer.setNormal(pose, normX, normY, normZ);
+		if (localLighting)
+			consumer.setNormal(normX, normY, normZ);
+		else
+			consumer.setNormal(pose, normX, normY, normZ);
 	}
 
 	protected double getWidthOffset(@Nullable Parallax parallax, MagicPaintingRenderState state, CameraRenderState cameraState, double widthDiff) {
-		if (parallax != null) switch (parallax.type()) {
-			case VIEW_ANGLE -> {
-				Vec3 camPos = cameraState.pos;
+		if (parallax != null) {
+			switch (parallax.type()) {
+				case VIEW_ANGLE -> {
+					Vec3 camPos = cameraState.pos;
 
-				Vec3 paintPos = state.position.relative(state.direction.getOpposite(), 1.0D);
+					Vec3 paintPos = state.position.relative(state.direction.getOpposite(), 1.0D);
 
-				double x = camPos.x - paintPos.x;
-				double z = camPos.z - paintPos.z;
-				double yRot = Mth.wrapDegrees((float) (Mth.atan2(z, x) * (double) (180F / (float) Math.PI)) - 90.0F - state.yRot);
-				return widthDiff + Mth.clamp(yRot * parallax.multiplier() * widthDiff, -widthDiff, widthDiff);
-			}
-			case SINE_TIME -> {
-				return widthDiff + (Math.sin(state.ageInTicks * parallax.multiplier()) * widthDiff);
-			}
-			case LINEAR_TIME -> {
-				double trueTick = state.ageInTicks * parallax.multiplier();
-				double wholeDiff = widthDiff * 2.0D;
-				return widthDiff + (parallax.multiplier() > 0.0D ? -widthDiff + (trueTick % wholeDiff) : widthDiff - (trueTick % wholeDiff));
+					double x = camPos.x - paintPos.x;
+					double z = camPos.z - paintPos.z;
+					double yRot = Mth.wrapDegrees((float) (Mth.atan2(z, x) * (double) (180F / (float) Math.PI)) - 90.0F - state.yRot);
+					return widthDiff + Mth.clamp(yRot * parallax.multiplier() * widthDiff, -widthDiff, widthDiff);
+				}
+				case SINE_TIME -> {
+					return widthDiff + (Math.sin(state.ageInTicks * parallax.multiplier()) * widthDiff);
+				}
+				case LINEAR_TIME -> {
+					double trueTick = state.ageInTicks * parallax.multiplier();
+					double wholeDiff = widthDiff * 2.0D;
+					return widthDiff + (parallax.multiplier() > 0.0D ? -widthDiff + (trueTick % wholeDiff) : widthDiff - (trueTick % wholeDiff));
+				}
 			}
 		}
 		return 0.0D;
 	}
 
 	protected double getHeightOffset(@Nullable Parallax parallax, MagicPaintingRenderState state, CameraRenderState cameraState, double heightDiff) {
-		if (parallax != null) switch (parallax.type()) {
-			case VIEW_ANGLE -> {
-				Vec3 camPos = cameraState.pos;
+		if (parallax != null) {
+			switch (parallax.type()) {
+				case VIEW_ANGLE -> {
+					Vec3 camPos = cameraState.pos;
 
-				Vec3 paintPos = state.position.relative(state.direction.getOpposite(), 1.0D);
+					Vec3 paintPos = state.position.relative(state.direction.getOpposite(), 1.0D);
 
-				double x = camPos.x - paintPos.x;
-				double y = camPos.y - paintPos.y;
-				double z = camPos.z - paintPos.z;
-				double pythagoras = Math.sqrt(x * x + z * z);
-				double xRot = Mth.wrapDegrees((float) (-(Mth.atan2(y, pythagoras) * (double) (180F / (float) Math.PI))));
+					double x = camPos.x - paintPos.x;
+					double y = camPos.y - paintPos.y;
+					double z = camPos.z - paintPos.z;
+					double pythagoras = Math.sqrt(x * x + z * z);
+					double xRot = Mth.wrapDegrees((float) (-(Mth.atan2(y, pythagoras) * (double) (180F / (float) Math.PI))));
 
-				return heightDiff - Mth.clamp(xRot * parallax.multiplier() * heightDiff, -heightDiff, heightDiff);
-			}
-			case SINE_TIME -> {
-				return heightDiff - (Math.cos(state.ageInTicks * parallax.multiplier()) * heightDiff);
-			}
-			case LINEAR_TIME -> {
-				double trueTick = state.ageInTicks * parallax.multiplier();
-				double wholeDiff = heightDiff * 2.0D;
-				return heightDiff - (parallax.multiplier() > 0.0D ? -heightDiff + (trueTick % wholeDiff) : heightDiff - (trueTick % wholeDiff));
+					return heightDiff - Mth.clamp(xRot * parallax.multiplier() * heightDiff, -heightDiff, heightDiff);
+				}
+				case SINE_TIME -> {
+					return heightDiff - (Math.cos(state.ageInTicks * parallax.multiplier()) * heightDiff);
+				}
+				case LINEAR_TIME -> {
+					double trueTick = state.ageInTicks * parallax.multiplier();
+					double wholeDiff = heightDiff * 2.0D;
+					return heightDiff - (parallax.multiplier() > 0.0D ? -heightDiff + (trueTick % wholeDiff) : heightDiff - (trueTick % wholeDiff));
+				}
 			}
 		}
 		return 0.0D;
@@ -250,7 +256,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 
 	protected float getAlpha(@Nullable OpacityModifier opacityModifier, MagicPaintingRenderState state, CameraRenderState cameraState, float partialTicks) {
 		ClientLevel level = Minecraft.getInstance().level;
-		if (level == null || opacityModifier == null) return 1.0F;
+		if (level == null || opacityModifier == null)
+			return 1.0F;
 
 		float a = 1.0F;
 		switch (opacityModifier.type()) {
@@ -267,7 +274,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 				if (opacityModifier.from() < opacityModifier.to()) {
 					a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() - opacityModifier.from())) - 0.5F) * 2.0F;
 				} else {
-					if (time < opacityModifier.to()) time += DAY_LENGTH;
+					if (time < opacityModifier.to())
+						time += DAY_LENGTH;
 					a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() + DAY_LENGTH - opacityModifier.from())) - 0.5F) * 2.0F;
 				}
 			}
@@ -305,22 +313,30 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 		}
 
 		a = Mth.clamp(a, 0.0F, 1.0F);
-		if (opacityModifier.type().powerOfMultiplier()) a = (float) Math.pow(a, opacityModifier.multiplier());
-		if (opacityModifier.invert()) a = 1.0F - a;
+		if (opacityModifier.type().powerOfMultiplier())
+			a = (float) Math.pow(a, opacityModifier.multiplier());
+		if (opacityModifier.invert())
+			a = 1.0F - a;
 		a = a * (opacityModifier.max() - opacityModifier.min()) + opacityModifier.min();
 		return a;
 	}
 
 	protected static float fromTo(float from, float to, float value) {
-		if (from < to) return (value - from) / (to - from);
-		else return (from - value) / (from - to);
+		if (from < to)
+			return (value - from) / (to - from);
+		else
+			return (from - value) / (from - to);
 	}
 
 	protected int getFrameUV(int i, int maxI) {
-		if (maxI <= 1) return 4;
-		else if (i == 0) return 1;
-		else if (i == maxI - 1) return 3;
-		else return 2;
+		if (maxI <= 1)
+			return 4;
+		else if (i == 0)
+			return 1;
+		else if (i == maxI - 1)
+			return 3;
+		else
+			return 2;
 	}
 
 	@Override
@@ -341,7 +357,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 
 		int widthAsBlock = variant.width() / 16;
 		int heightAsBlock = variant.height() / 16;
-		if (state.lightCoords.length != widthAsBlock * heightAsBlock) state.lightCoords = new int[widthAsBlock * heightAsBlock];
+		if (state.lightCoords.length != widthAsBlock * heightAsBlock)
+			state.lightCoords = new int[widthAsBlock * heightAsBlock];
 
 		float halfWidth = (float) (-widthAsBlock) / 2.0F;
 		float halfHeight = (float) (-heightAsBlock) / 2.0F;

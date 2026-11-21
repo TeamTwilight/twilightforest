@@ -29,7 +29,8 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 		buf.writeInt(this.rotation());
 		buf.writeBlockPos(this.pos());
 		buf.writeBoolean(this.empty());
-		if (!this.empty()) ItemStack.STREAM_CODEC.encode(buf, this.stack());
+		if (!this.empty())
+			ItemStack.STREAM_CODEC.encode(buf, this.stack());
 	}
 
 	@Override

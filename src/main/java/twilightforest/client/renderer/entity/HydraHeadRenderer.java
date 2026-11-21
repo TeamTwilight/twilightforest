@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraHeadModel;
 import twilightforest.client.state.entity.HydraHeadRenderState;
@@ -34,7 +34,8 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 	@Override
 	protected @Nullable RenderType getRenderType(HydraHeadRenderState state, boolean visible, boolean ghostly, boolean glowing) {
 		// see whether we want to render these
-		if (!state.active) return null;
+		if (!state.active)
+			return null;
 		return super.getRenderType(state, visible, ghostly, glowing);
 	}
 
@@ -51,13 +52,12 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 	@Override
 	public void extractRenderState(HydraHead entity, HydraHeadRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
-		var container = getHeadObject(entity);
+		HydraHeadContainer container = getHeadObject(entity);
 		state.active = container == null || entity.isActive();
 		state.mouthAngle = Mth.lerp(partialTick, entity.getMouthOpenLast(), entity.getMouthOpen());
 	}
 
-	@Nullable
-	public static HydraHeadContainer getHeadObject(HydraHead entity) {
+	public static @Nullable HydraHeadContainer getHeadObject(HydraHead entity) {
 		Hydra hydra = entity.getParent();
 
 		if (hydra != null) {

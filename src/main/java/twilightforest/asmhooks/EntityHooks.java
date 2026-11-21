@@ -14,6 +14,7 @@ import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 
+@SuppressWarnings({"JavadocReference", "unused"})
 public class EntityHooks {
 
 	/**

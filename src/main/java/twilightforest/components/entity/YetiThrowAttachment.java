@@ -3,14 +3,13 @@ package twilightforest.components.entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.network.UpdateThrownPacket;
 
 public class YetiThrowAttachment {
 
 	private boolean thrown;
-	@Nullable
-	private LivingEntity thrower;
+	private @Nullable LivingEntity thrower;
 
 	public void tick(Player player) {
 		if (this.getThrown()) {
@@ -37,7 +36,8 @@ public class YetiThrowAttachment {
 	private void sendUpdatePacket(Player player) {
 		if (!player.level().isClientSide()) {
 			int throwerID = 0;
-			if (this.thrower != null) throwerID = this.thrower.getId();
+			if (this.thrower != null)
+				throwerID = this.thrower.getId();
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new UpdateThrownPacket(player.getId(), this.thrown, throwerID));
 		}
 	}

@@ -48,7 +48,8 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 		for (BlockPos coords : new VoxelBresenhamIterator(rSrc, rDest)) {
 			BlockPos.MutableBlockPos worldPos = this.getWorldPos(coords.getX(), coords.getY(), coords.getZ());
 
-			if (!sbb.isInside(worldPos)) continue;
+			if (!sbb.isInside(worldPos))
+				continue;
 
 			BlockState block = world.getBlockState(worldPos);
 

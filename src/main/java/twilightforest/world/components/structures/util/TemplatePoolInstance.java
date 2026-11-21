@@ -71,7 +71,8 @@ public record TemplatePoolInstance(int weight, Optional<Holder<StructureProcesso
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || this.getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass())
+			return false;
         TemplatePoolInstance that = (TemplatePoolInstance) o;
         return Objects.equals(this.weight(), that.weight())
                 && this.terrainAdjustment() == that.terrainAdjustment()

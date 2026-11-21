@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * If a hollow version of the log you want doesnt exist, set it to Blocks.AIR and the feature will fix it up for ya

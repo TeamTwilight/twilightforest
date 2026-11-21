@@ -1,7 +1,5 @@
 package twilightforest.util.iterators;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Iterator;
 
 /**
@@ -37,13 +35,13 @@ public class ZippedIterator<E> implements Iterator<E>, Iterable<E> {
 		Iterator<E> other = this.firstNext ? this.second : this.first;
 
 		// Should the other iterator be switched to? Flip iterator selector if so
-		if (other.hasNext()) this.firstNext = !this.firstNext;
+		if (other.hasNext())
+			this.firstNext = !this.firstNext;
 		// If the current iterator is also empty, then this iterator's hasNext() will become false, causing termination
 
 		return current.next();
 	}
 
-	@NotNull
 	@Override
 	public Iterator<E> iterator() {
 		return this;

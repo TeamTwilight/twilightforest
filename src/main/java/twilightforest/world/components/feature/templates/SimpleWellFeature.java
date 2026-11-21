@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.feature.config.SwizzleConfig;
@@ -25,9 +25,8 @@ public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
 		super(config);
 	}
 
-	@Nullable
 	@Override
-	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
+	protected @Nullable StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
 		return templateManager.getOrCreate(WELL_TOP);
 	}
 
@@ -45,7 +44,8 @@ public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
 	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
 		StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
 
-		if (template == null) return;
+		if (template == null)
+			return;
 
 		placementPos = placementPos.below(template.getSize().getY());//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 		placementSettings.addProcessor(SmartGrassProcessor.INSTANCE);
@@ -65,7 +65,8 @@ public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
 		BlockPos blockPos = info.pos();
 
 		// removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
-		if (!s.startsWith("loot")) return;
+		if (!s.startsWith("loot"))
+			return;
 
 		if (random.nextBoolean()) {
 			world.setBlock(blockPos, random.nextBoolean() ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
@@ -83,7 +84,8 @@ public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
 
 		TFLootTables.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS, TFLootTables.WELL);
 
-		if (random.nextBoolean()) return;
+		if (random.nextBoolean())
+			return;
 
 		world.setBlock(blockPos.relative(dir), Blocks.HOPPER.defaultBlockState().setValue(HopperBlock.FACING, dir.getOpposite()), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 	}

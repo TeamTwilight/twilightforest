@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.monster.Redcap;
 
 public abstract class RedcapBaseGoal extends Goal {
@@ -32,8 +32,7 @@ public abstract class RedcapBaseGoal extends Goal {
 		return difference < 60 || difference > 300;
 	}
 
-	@Nullable
-	public BlockPos findBlockTNTNearby(int range) {
+	public @Nullable BlockPos findBlockTNTNearby(int range) {
 		BlockPos entityPos = this.redcap.blockPosition();
 
 		for (int x = -range; x <= range; x++) {
