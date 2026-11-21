@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.RotationUtil;
@@ -22,9 +22,8 @@ public class SmartGrassProcessor implements StructureProcessor {
 	private SmartGrassProcessor() {
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+	public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
 		if (originalBlockInfo.state().getBlock() != Blocks.GRASS_BLOCK)
 			return modifiedBlockInfo;
 

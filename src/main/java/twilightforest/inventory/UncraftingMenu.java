@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
@@ -63,8 +63,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 	// Store the currently selected recipe for use later down the line.
 	// Currently used for determining if the recipe is an uncrafting one and for determining custom costs
-	@Nullable
-	public Recipe<?> storedGhostRecipe = null;
+	public @Nullable Recipe<?> storedGhostRecipe = null;
 
 	public static UncraftingMenu fromNetwork(int id, Inventory inventory) {
 		return new UncraftingMenu(id, inventory, inventory.player.level(), ContainerLevelAccess.NULL);

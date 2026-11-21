@@ -25,7 +25,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
 import twilightforest.init.TFEntities;
@@ -107,9 +107,8 @@ public class LowerGoblinKnight extends Monster {
 		this.setHasArmor(compound.getBooleanOr("hasArmor", false));
 	}
 
-	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 
 		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
@@ -135,9 +134,8 @@ public class LowerGoblinKnight extends Monster {
 
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.get() : TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
 	}
 

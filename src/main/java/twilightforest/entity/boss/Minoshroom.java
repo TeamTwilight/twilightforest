@@ -26,7 +26,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.ai.goal.GroundAttackGoal;
@@ -133,9 +133,8 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 		}
 	}
 
-	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);

@@ -22,7 +22,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.ai.goal.AlwaysWatchTargetGoal;
 import twilightforest.init.TFSounds;
 
@@ -97,9 +97,8 @@ public class HelmetCrab extends Monster {
 		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.HELMET_CRAB_AMBIENT.get();
 	}
 

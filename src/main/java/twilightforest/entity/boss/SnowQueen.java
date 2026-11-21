@@ -34,7 +34,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.goal.HoverBeamGoal;
@@ -412,9 +412,8 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
-	@Nullable
 	@Override
-	public PartEntity<?>[] getParts() {
+	public @Nullable PartEntity<?>[] getParts() {
 		return this.iceArray;
 	}
 

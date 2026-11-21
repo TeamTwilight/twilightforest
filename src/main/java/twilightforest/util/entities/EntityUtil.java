@@ -42,7 +42,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
@@ -114,8 +114,7 @@ public class EntityUtil {
 		handle_HangingEntity_setDirection = tmp_handle_HangingEntity_setDirection;
 	}
 
-	@Nullable
-	public static SoundEvent getDeathSound(LivingEntity living) {
+	public static @Nullable SoundEvent getDeathSound(LivingEntity living) {
 		SoundEvent sound = null;
 		if (handle_LivingEntity_getDeathSound != null) {
 			try {
@@ -172,8 +171,7 @@ public class EntityUtil {
 	}
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException
-	@Nullable
-	private static <T extends Entity> T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
+	private static <T extends Entity> @Nullable T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
 		try {
 			return type.create(levelAccessor.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {
@@ -205,13 +203,11 @@ public class EntityUtil {
 		return false;
 	}
 
-	@Nullable
-	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
+	public static @Nullable Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
 		return getPaintingOfSize(level, rand, minSize, minSize, false);
 	}
 
-	@Nullable
-	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
+	public static @Nullable Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
 		for (Holder.Reference<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).listElements().toList()) {
@@ -376,8 +372,7 @@ public class EntityUtil {
 		return false;
 	}
 
-	@Nullable
-	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
+	public static <T extends Entity> @Nullable T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
 		try {
 			return type.create(level.getLevel(), EntitySpawnReason.NATURAL);
 		} catch (Exception exception) {

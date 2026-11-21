@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 
 import java.util.*;
@@ -103,8 +103,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 	/**
 	 * What, if anything, is the head currently looking at?
 	 */
-	@Nullable
-	private Entity getHeadLookTarget() {
+	private @Nullable Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
 		double offset = 3.0D;

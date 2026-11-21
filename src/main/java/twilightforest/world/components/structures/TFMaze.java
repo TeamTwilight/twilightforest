@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
@@ -40,8 +40,7 @@ public class TFMaze {
 
 	public int type; // 1-3 = various sizes hollow hills
 
-	@Nullable
-	public StructurePiece.BlockSelector wallBlocks;
+	public StructurePiece.@Nullable BlockSelector wallBlocks;
 
 	public BlockState wallBlockState;
 

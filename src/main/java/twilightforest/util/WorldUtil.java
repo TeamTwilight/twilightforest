@@ -30,7 +30,6 @@ import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDimension;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
@@ -151,7 +150,7 @@ public final class WorldUtil {
 
 		double distance = Double.MAX_VALUE;
 
-		@Nullable Pair<BlockPos, Holder<Structure>> nearest = null;
+		Pair<BlockPos, Holder<Structure>> nearest = null;
 		StructureManager structureManager = level.structureManager();
 
 		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, chunkSearchRadius)) {

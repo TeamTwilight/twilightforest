@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 import twilightforest.tags.TFBlockTags;
@@ -55,9 +55,8 @@ public class GiantMiner extends Monster {
 			.add(Attributes.STEP_HEIGHT, 1.2D);
 	}
 
-	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);

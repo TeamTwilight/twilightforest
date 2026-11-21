@@ -50,7 +50,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
@@ -134,10 +134,9 @@ public class KnightPhantom extends BaseTFBoss {
 			this.getBossBar().removeAllPlayers(); // Remove boss bar if there is another knight alive
 	}
 
-	@Nullable
 	@Override
 	@SuppressWarnings({"deprecation"})
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);

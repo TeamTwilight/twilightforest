@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.function.Function;
@@ -277,9 +277,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		}
 	}
 
-	@Nullable
 	@Override
-	public BlockState getCarveState(CarvingContext context, CaveCarverConfiguration config, BlockPos pos, Aquifer aquifer) {
+	public @Nullable BlockState getCarveState(CarvingContext context, CaveCarverConfiguration config, BlockPos pos, Aquifer aquifer) {
 		return Blocks.CAVE_AIR.defaultBlockState();
 	}
 }

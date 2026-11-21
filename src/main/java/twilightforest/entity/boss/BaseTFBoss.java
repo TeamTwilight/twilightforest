@@ -30,7 +30,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.boss.bar.ServerTFBossBar;

@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.util.features.FeatureLogic;
 
 public abstract class TemplateFeature<T extends FeatureConfiguration> extends Feature<T> {
@@ -82,8 +82,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		return true;
 	}
 
-	@Nullable
-	protected abstract StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
+	protected abstract @Nullable StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
 
 	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, T config) {
 	}

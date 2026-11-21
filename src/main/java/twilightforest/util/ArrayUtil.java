@@ -3,7 +3,7 @@ package twilightforest.util;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -21,8 +21,7 @@ public final class ArrayUtil {
 		return array[index % array.length];
 	}
 
-	@Nullable
-	public static <T> T orNull(T[] array, int index) {
+	public static <T> @Nullable T orNull(T[] array, int index) {
 		if (index >= 0 && index < array.length) {
 			return array[index];
 		} else {
@@ -30,8 +29,7 @@ public final class ArrayUtil {
 		}
 	}
 
-	@Nullable
-	public static <T> T randomOrNull(T@Nullable[] array, RandomSource random) {
+	public static <T> @Nullable T randomOrNull(T@Nullable[] array, RandomSource random) {
 		return array == null || array.length == 0 ? null : Util.getRandom(array, random);
 	}
 

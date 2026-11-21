@@ -38,7 +38,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.projectile.TomeBolt;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -222,9 +222,8 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		return false;
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.DEATH_TOME_AMBIENT.get();
 	}
 

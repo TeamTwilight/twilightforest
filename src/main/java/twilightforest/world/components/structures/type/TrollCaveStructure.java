@@ -7,7 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;

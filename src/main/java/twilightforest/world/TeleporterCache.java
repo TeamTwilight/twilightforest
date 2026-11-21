@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.SavedDataStorage;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
@@ -44,8 +44,7 @@ public class TeleporterCache extends SavedData {
 		this.setDirty();
 	}
 
-	@Nullable
-	TFTeleporter.PortalPosition getPortalPosition(Identifier dimension, ColumnPos pos) {
+	TFTeleporter.@Nullable PortalPosition getPortalPosition(Identifier dimension, ColumnPos pos) {
 		ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, dimension);
 
 		if (this.destinationCoordinateCache.containsKey(levelKey)) {

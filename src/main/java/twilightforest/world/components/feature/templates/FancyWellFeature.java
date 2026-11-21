@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.feature.config.SwizzleConfig;
@@ -26,9 +26,8 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 		super(config);
 	}
 
-	@Nullable
 	@Override
-	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
+	protected @Nullable StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
 		return templateManager.getOrCreate(WELL_TOP);
 	}
 

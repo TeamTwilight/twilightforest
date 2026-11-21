@@ -34,7 +34,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
 import twilightforest.network.UpdateTFMultipartPacket;
@@ -496,8 +496,7 @@ public class Hydra extends BaseTFBoss {
 		return distX * distX + distZ * distZ;
 	}
 
-	@Nullable
-	private LivingEntity findSecondaryTarget(double range) {
+	private @Nullable LivingEntity findSecondaryTarget(double range) {
 		return this.level().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
 			.stream()
 			.filter(e -> !(e instanceof Hydra))
@@ -654,9 +653,8 @@ public class Hydra extends BaseTFBoss {
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
-	@Nullable
 	@Override
-	public PartEntity<?>[] getParts() {
+	public @Nullable PartEntity<?>[] getParts() {
 		return this.partArray;
 	}
 

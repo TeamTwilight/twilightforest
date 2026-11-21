@@ -43,7 +43,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.block.ChiseledCanopyShelfBlock;

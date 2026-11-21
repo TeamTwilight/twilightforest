@@ -2,7 +2,7 @@ package twilightforest.enums;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
@@ -24,8 +24,7 @@ public enum BossVariant implements StringRepresentable {
 
 	public static final EnumCodec<BossVariant> CODEC = StringRepresentable.fromEnum(BossVariant::values);
 	private final TrophyType trophyType;
-	@Nullable
-	private final Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType;
+	private final @Nullable Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType;
 
 	BossVariant(TrophyType trophyType, @Nullable Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType) {
 		this.trophyType = trophyType;
@@ -41,9 +40,7 @@ public enum BossVariant implements StringRepresentable {
 		return this.trophyType;
 	}
 
-
-	@Nullable
-	public BlockEntityType<? extends BossSpawnerBlockEntity<?>> getType() {
+	public @Nullable BlockEntityType<? extends BossSpawnerBlockEntity<?>> getType() {
 		return blockEntityType != null ? blockEntityType.get() : null;
 	}
 

@@ -32,7 +32,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.ThrownBlock;
 import twilightforest.init.TFBlocks;
@@ -50,8 +50,7 @@ public class Troll extends Monster implements RangedAttackMob {
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
 	private int rockCooldown;
-	@Nullable
-	private BlockState rock;
+	private @Nullable BlockState rock;
 
 	@SuppressWarnings("this-escape")
 	public Troll(EntityType<? extends Troll> type, Level level) {
@@ -196,9 +195,8 @@ public class Troll extends Monster implements RangedAttackMob {
 		}
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.TROLL_AMBIENT.get();
 	}
 

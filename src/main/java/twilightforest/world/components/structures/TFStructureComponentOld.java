@@ -29,7 +29,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.loot.TFLootTables;
@@ -545,8 +545,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	/**
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
-	@Nullable
-	public static StructurePiece findIntersectingExcluding(List<StructurePiece> list, BoundingBox toCheck, StructurePiece exclude) {
+	public static @Nullable StructurePiece findIntersectingExcluding(List<StructurePiece> list, BoundingBox toCheck, StructurePiece exclude) {
 		Iterator<StructurePiece> iterator = list.iterator();
 		StructurePiece structurecomponent;
 

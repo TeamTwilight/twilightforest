@@ -55,7 +55,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.OminousCandleBlock;
 import twilightforest.components.entity.FortificationShieldAttachment;
@@ -116,10 +116,9 @@ public class Lich extends BaseTFBoss {
 		this.setRestrictionPoint(otherLich.getRestrictionPoint());
 	}
 
-	@Nullable
 	@Override
 	@SuppressWarnings({"deprecation"})
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnType, @Nullable SpawnGroupData spawnGroupData) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnType, @Nullable SpawnGroupData spawnGroupData) {
 		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 		if (!this.isShadowClone()) {
 			this.setItemInHand(InteractionHand.MAIN_HAND, TFItems.FORTIFICATION_SCEPTER.toStack());
@@ -502,13 +501,11 @@ public class Lich extends BaseTFBoss {
 		}
 	}
 
-	@Nullable
-	public EntityReference<LivingEntity> getMasterReference() {
+	public @Nullable EntityReference<LivingEntity> getMasterReference() {
 		return this.getEntityData().get(MASTER_LICH).orElse(null);
 	}
 
-	@Nullable
-	public Lich getMaster() {
+	public @Nullable Lich getMaster() {
 		if (this.level() instanceof ServerLevel server && this.getMasterReference() != null) {
 			Entity entity = server.getEntity(this.getMasterReference().getUUID());
 			if (entity instanceof Lich lich) {
@@ -636,8 +633,7 @@ public class Lich extends BaseTFBoss {
 	 * Returns coords that would be good to teleport to.
 	 * Returns null if we can't find anything
 	 */
-	@Nullable
-	public Vec3 findVecInLOSOf(@Nullable Entity targetEntity) {
+	public @Nullable Vec3 findVecInLOSOf(@Nullable Entity targetEntity) {
 		if (targetEntity == null)
 			return null;
 		double origX = this.getX();
@@ -902,9 +898,8 @@ public class Lich extends BaseTFBoss {
 	//                OVERRIDES                //
 	//-----------------------------------------//
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return this.isShadowClone() ? null : TFSounds.LICH_AMBIENT.get();
 	}
 
@@ -1087,8 +1082,7 @@ public class Lich extends BaseTFBoss {
 		return angle + f;
 	}
 
-	@Nullable
-	protected Entity lookAtUponDeath() {
+	protected @Nullable Entity lookAtUponDeath() {
 		if (this.getTarget() != null)
 			return this.getTarget();
 		else if (this.lastHurtByPlayer != null)

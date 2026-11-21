@@ -24,7 +24,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.tags.TFPaintingVariantTags;
@@ -87,7 +86,6 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 		if (params.length != 3)
 			return false;
 
-		@Nullable
 		Direction dir = DirectionUtil.fromStringOrElse(params[0], null);
 
 		if (dir == null || dir.getAxis().isVertical() || !StringUtils.isNumeric(params[1]) || !StringUtils.isNumeric(params[2]) || !(level instanceof WorldGenLevel genLevel))

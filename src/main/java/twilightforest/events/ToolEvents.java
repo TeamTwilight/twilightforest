@@ -34,7 +34,6 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
-import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.connector.fml.EventBusPostConstruct;
 import twilightforest.block.GiantBlock;
@@ -75,7 +74,7 @@ public class ToolEvents {
 			if (arrow.getPersistentData().contains(EnderBowItem.KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
-				@Nullable Entity playerVehicle = player.getVehicle();
+				Entity playerVehicle = player.getVehicle();
 
 				player.setYRot(living.getYRot());
 				player.teleportTo(living.getX(), living.getY(), living.getZ());

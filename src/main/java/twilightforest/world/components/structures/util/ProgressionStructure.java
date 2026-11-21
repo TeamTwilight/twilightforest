@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -81,8 +81,7 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 	}
 
 	@Override
-	@Nullable
-	public Mob createHintMonster(Level world) {
+	public @Nullable Mob createHintMonster(Level world) {
 		return this.hintConfig.map(config -> config.hintMob().create(world, EntitySpawnReason.STRUCTURE)).orElse(null);
 	}
 }

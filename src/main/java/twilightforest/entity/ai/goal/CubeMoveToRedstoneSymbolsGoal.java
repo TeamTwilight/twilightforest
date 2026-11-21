@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.entity.RovingCube;
 
 import java.util.EnumSet;
@@ -51,8 +51,7 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 	/**
 	 * Search the area for a redstone circle (8 redstone dust around a blank square)
 	 */
-	@Nullable
-	private BlockPos searchForRedstoneSymbol(RovingCube cube) {
+	private @Nullable BlockPos searchForRedstoneSymbol(RovingCube cube) {
 		BlockPos curPos = new BlockPos(cube.blockPosition());
 
 		for (int x = -16; x < 16; x++) {

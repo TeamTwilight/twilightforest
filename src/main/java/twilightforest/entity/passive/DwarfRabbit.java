@@ -26,7 +26,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFEntities;
@@ -66,9 +66,8 @@ public class DwarfRabbit extends Animal {
 			.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
-	@Nullable
 	@Override
-	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
+	public @Nullable AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level, EntitySpawnReason.BREEDING);
 		Holder<DwarfRabbitVariant> variant = DwarfRabbitVariant.getRandomCommonVariant(level.registryAccess(), level.getRandom());
 		if (dwarf != null && mob instanceof DwarfRabbit parent) {
@@ -142,21 +141,18 @@ public class DwarfRabbit extends Animal {
 		return stack.is(TFItemTags.DWARF_RABBIT_TEMPT_ITEMS);
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getDeathSound() {
+	protected @Nullable SoundEvent getDeathSound() {
 		return TFSounds.DWARF_RABBIT_DEATH.get();
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
+	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.DWARF_RABBIT_HURT.get();
 	}
 
-	@Nullable
 	@Override
-	protected SoundEvent getAmbientSound() {
+	protected @Nullable SoundEvent getAmbientSound() {
 		return TFSounds.DWARF_RABBIT_AMBIENT.get();
 	}
 }

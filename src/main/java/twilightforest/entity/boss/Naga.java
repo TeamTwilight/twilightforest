@@ -44,7 +44,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
@@ -203,10 +203,9 @@ public class Naga extends BaseTFBoss {
 		}
 	}
 
-	@Nullable
 	@Override
 	@SuppressWarnings("deprecation")
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
 			AttributeModifier modifier = new AttributeModifier(TwilightForestMod.prefix("difficulty_health_boost"), hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
@@ -519,9 +518,8 @@ public class Naga extends BaseTFBoss {
 		TFPart.assignPartIDs(this);
 	}
 
-	@Nullable
 	@Override
-	public PartEntity<?>[] getParts() {
+	public @Nullable PartEntity<?>[] getParts() {
 		return this.bodySegments;
 	}
 

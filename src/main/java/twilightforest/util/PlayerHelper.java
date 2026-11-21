@@ -8,7 +8,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -40,8 +40,7 @@ public class PlayerHelper {
 	}
 	*/
 
-	@Nullable
-	public static AdvancementHolder getAdvancement(Player player, Identifier advancementLocation) {
+	public static @Nullable AdvancementHolder getAdvancement(Player player, Identifier advancementLocation) {
 		if (player.level().isClientSide() && player instanceof LocalPlayer localPlayer) {
 			ClientAdvancements manager = localPlayer.connection.getAdvancements();
 			return manager.get(advancementLocation);

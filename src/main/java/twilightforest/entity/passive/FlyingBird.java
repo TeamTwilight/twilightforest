@@ -17,7 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFSounds;
 
 //flying logic moved out of TinyBird, put here instead.
@@ -27,8 +27,7 @@ public abstract class FlyingBird extends Bird {
 	private static final EntityDataAccessor<Byte> DATA_BIRDFLAGS = SynchedEntityData.defineId(FlyingBird.class, EntityDataSerializers.BYTE);
 
 	// [VanillaCopy] Bat field
-	@Nullable
-	private BlockPos targetPosition;
+	private @Nullable BlockPos targetPosition;
 	private int currentFlightTime;
 
 	@SuppressWarnings("this-escape")

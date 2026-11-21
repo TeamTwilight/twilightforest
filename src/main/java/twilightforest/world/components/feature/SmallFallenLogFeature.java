@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.HorizontalHollowLogBlock;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
@@ -52,7 +51,6 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 
 		// determine wood type
 		BlockState logState = config.normal();
-		@Nullable
 		BlockState hollowLogState = config.hollow();
 		BlockState branchState;
 

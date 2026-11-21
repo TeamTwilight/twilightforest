@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.tags.TFBlockTags;
@@ -107,8 +107,7 @@ public final class FeatureLogic {
 	}
 
 	// North is treated for default rotation and null means you're not on the wall
-	@Nullable
-	public static Rotation wallVolumeRotation(RandomSource rand, int deltaX, int deltaZ, int xBound, int zBound) {
+	public static @Nullable Rotation wallVolumeRotation(RandomSource rand, int deltaX, int deltaZ, int xBound, int zBound) {
 		boolean westWall = deltaX == 0;
 		boolean northWall = deltaZ == 0;
 		boolean eastWall = deltaX == xBound;

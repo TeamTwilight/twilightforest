@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
@@ -233,9 +233,8 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 			return TFStructureProcessors.WEB.get();
 		}
 
-		@Nullable
 		@Override
-		public StructureTemplate.StructureBlockInfo process(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_process_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+		public StructureTemplate.@Nullable StructureBlockInfo process(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_process_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
 			return blockInfo.state().getBlock() == Blocks.GRASS_BLOCK ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new StructureTemplate.StructureBlockInfo(pos, Blocks.COBWEB.defaultBlockState(), null) : blockInfo;
 		}
 	}
