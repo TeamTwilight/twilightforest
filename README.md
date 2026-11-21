@@ -16,10 +16,11 @@ Java Code specifically under these listed directories follow this [LICENSE file 
 ## Supported Versions
 ### Latest Minecraft Version
 New features and bugfixes will happen on this version.
-Right now this is **26.2.0**.
+Right now this is **26.3.0**.
 ### LTS
 Only bugfixes will happen on this version.
 LTS Minecraft Versions:
+- 26.2.0
 - 26.1.2
 
 ## Downloads
