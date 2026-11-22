@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.util.KeyDispatchDataCodec;
-import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.util.Interval;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 
-public record OpenWaterProximityFunction(DensityFunction terrain, int fluidLevel, int radius) implements DensityFunction.SimpleFunction {
+public record OpenWaterProximityFunction(DensityFunction terrain, int fluidLevel, int radius) implements DensityFunction {
 
 	public static final MapCodec<OpenWaterProximityFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		DensityFunction.CODEC.fieldOf("terrain").forGetter(OpenWaterProximityFunction::terrain),
@@ -15,37 +15,48 @@ public record OpenWaterProximityFunction(DensityFunction terrain, int fluidLevel
 		Codec.intRange(0, 32).fieldOf("radius").forGetter(OpenWaterProximityFunction::radius)
 	).apply(instance, OpenWaterProximityFunction::new));
 
-	public static final KeyDispatchDataCodec<OpenWaterProximityFunction> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
+	@Override
+	public DensitySampler compileSampler(CompileContext context) {
+		return new OpenWaterProximityFunction.Sampler(terrain.compileSampler(context), fluidLevel, radius);
+	}
 
 	@Override
-	public double compute(FunctionContext context) {
-		int belowFluidLevel = fluidLevel - 1;
-		for (int dx = -radius; dx <= radius; dx += QuartPos.SIZE) {
-			for (int dz = -radius; dz <= radius; dz += QuartPos.SIZE) {
-				if (terrain.compute(new SinglePointContext(context.blockX() + dx, belowFluidLevel, context.blockZ() + dz)) <= 0.0)
-					return 1.0;
+	public DensityFunction rewriteChildren(DfRewriteRule rule) {
+		return this;
+	}
+
+	@Override
+	public Interval range() {
+		return Interval.NEGATIVE_ONE_TO_ONE;
+	}
+
+	@Override
+	public @Axes int domainAxes() {
+		return AXIS_X | AXIS_Z;
+	}
+
+	@Override
+	public MapCodec<? extends DensityFunction> codec() {
+		return CODEC;
+	}
+
+	public record Sampler(DensitySampler terrain, int fluidLevel, int radius) implements DensitySampler {
+
+		@Override
+		public float sampleValue(SamplerContext context, int blockX, int blockY, int blockZ) {
+			int belowFluidLevel = fluidLevel - 1;
+			for (int dx = -radius; dx <= radius; dx += QuartPos.SIZE) {
+				for (int dz = -radius; dz <= radius; dz += QuartPos.SIZE) {
+					if (terrain.sampleValue(context, blockX + dx, belowFluidLevel, blockZ + dz) <= 0.0)
+						return 1.0f;
+				}
 			}
+			return -1.0f;
 		}
-		return -1.0;
-	}
 
-	@Override
-	public double minValue() {
-		return -1.0;
-	}
-
-	@Override
-	public double maxValue() {
-		return 1.0;
-	}
-
-	@Override
-	public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-		return KEY_CODEC;
-	}
-
-	@Override
-	public DensityFunction mapChildren(Visitor visitor) {
-		return new OpenWaterProximityFunction(visitor.apply(terrain), fluidLevel, radius);
+		@Override
+		public void sampleVolume(SamplerContext context, DensityBuffer outputBuffer, DensityVolume volume) {
+			DensitySampler.sampleVolumeNaive(context, outputBuffer, volume, this);
+		}
 	}
 }
