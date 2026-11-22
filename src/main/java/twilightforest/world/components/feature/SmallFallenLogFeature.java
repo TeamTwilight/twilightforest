@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -10,59 +11,64 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import twilightforest.block.HorizontalHollowLogBlock;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeatureUtil;
-import twilightforest.world.components.feature.config.HollowLogConfig;
 
-public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
+public record SmallFallenLogFeature(BlockState normal, BlockState hollow) implements Feature {
 
-	public SmallFallenLogFeature(Codec<HollowLogConfig> configIn) {
-		super(configIn);
+	public static final MapCodec<SmallFallenLogFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		BlockState.CODEC
+			.fieldOf("normal")
+			.forGetter(SmallFallenLogFeature::normal),
+		BlockState.CODEC
+			.fieldOf("hollow")
+			.forGetter(SmallFallenLogFeature::hollow)
+	).apply(instance, SmallFallenLogFeature::new));
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<HollowLogConfig> ctx) {
-		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
-		RandomSource rand = ctx.random();
-		HollowLogConfig config = ctx.config();
-		boolean shouldMakeAllHollow = rand.nextBoolean();
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		boolean shouldMakeAllHollow = randomSource.nextBoolean();
 
 		// determine direction
-		boolean goingX = rand.nextBoolean();
+		boolean goingX = randomSource.nextBoolean();
 
 		// length
-		int length = rand.nextInt(4) + 3;
+		int length = randomSource.nextInt(4) + 3;
 
 		// check area clear
 		if (goingX) {
-			if (!FeatureUtil.isAreaSuitable(world, pos, length, 2, 2, true)) {
+			if (!FeatureUtil.isAreaSuitable(worldGenLevel, blockPos, length, 2, 2, true)) {
 				return false;
 			}
 		} else {
-			if (!FeatureUtil.isAreaSuitable(world, pos, 2, 2, length, true)) {
+			if (!FeatureUtil.isAreaSuitable(worldGenLevel, blockPos, 2, 2, length, true)) {
 				return false;
 			}
 		}
 
 		// determine wood type
-		BlockState logState = config.normal();
-		BlockState hollowLogState = config.hollow();
+		BlockState logState = normal();
+		BlockState hollowLogState = hollow();
 		BlockState branchState;
 
-		if (config.hollow().isAir())
+		if (hollow().isAir())
 			hollowLogState = null;
 
 		//sometimes make floating logs
-		if (rand.nextInt(5) == 0 && world.getBlockState(pos).liquid()) {
-			BlockPos.MutableBlockPos floatingPos = pos.mutable();
+		if (randomSource.nextInt(5) == 0 && worldGenLevel.getBlockState(blockPos).liquid()) {
+			BlockPos.MutableBlockPos floatingPos = blockPos.mutable();
 			for (int i = 0; i < 10; i++) {
-				if (world.getBlockState(floatingPos.above()).isAir()) {
-					pos = floatingPos.immutable();
+				if (worldGenLevel.getBlockState(floatingPos.above()).isAir()) {
+					blockPos = floatingPos.immutable();
 					break;
 				} else {
 					floatingPos.move(0, 1, 0);
@@ -75,50 +81,50 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 			logState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 			if (hollowLogState != null) {
 				hollowLogState = hollowLogState.setValue(HorizontalHollowLogBlock.HORIZONTAL_AXIS, Direction.Axis.X)
-					.setValue(HorizontalHollowLogBlock.VARIANT, determineHollowProperties(world, pos, rand));
+					.setValue(HorizontalHollowLogBlock.VARIANT, determineHollowProperties(worldGenLevel, blockPos, randomSource));
 			}
 			branchState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
 			for (int lx = 0; lx < length; lx++) {
-				world.setBlock(pos.offset(lx, 0, 1), hollowOrNormal(world, shouldMakeAllHollow, hollowLogState, logState), Block.UPDATE_ALL);
-				if (rand.nextInt(3) > 0) {
-					world.setBlock(pos.offset(lx, 1, 1), mossOrSeagrass(world, pos.offset(lx, 1, 1)), Block.UPDATE_ALL);
-					this.markAboveForPostProcessing(world, pos.offset(lx, 0, 1));
+				worldGenLevel.setBlock(blockPos.offset(lx, 0, 1), hollowOrNormal(worldGenLevel, shouldMakeAllHollow, hollowLogState, logState), Block.UPDATE_ALL);
+				if (randomSource.nextInt(3) > 0) {
+					worldGenLevel.setBlock(blockPos.offset(lx, 1, 1), mossOrSeagrass(worldGenLevel, blockPos.offset(lx, 1, 1)), Block.UPDATE_ALL);
+					this.markAboveForPostProcessing(worldGenLevel, blockPos.offset(lx, 0, 1));
 				}
 			}
 		} else {
 			logState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 			if (hollowLogState != null) {
 				hollowLogState = hollowLogState.setValue(HorizontalHollowLogBlock.HORIZONTAL_AXIS, Direction.Axis.Z)
-					.setValue(HorizontalHollowLogBlock.VARIANT, determineHollowProperties(world, pos, rand));
+					.setValue(HorizontalHollowLogBlock.VARIANT, determineHollowProperties(worldGenLevel, blockPos, randomSource));
 			}
 			branchState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 			for (int lz = 0; lz < length; lz++) {
-				world.setBlock(pos.offset(1, 0, lz), hollowOrNormal(world, shouldMakeAllHollow, hollowLogState, logState), Block.UPDATE_ALL);
-				if (rand.nextInt(3) > 0) {
-					world.setBlock(pos.offset(1, 1, lz), mossOrSeagrass(world, pos.offset(1, 1, lz)), Block.UPDATE_ALL);
-					this.markAboveForPostProcessing(world, pos.offset(1, 0, lz));
+				worldGenLevel.setBlock(blockPos.offset(1, 0, lz), hollowOrNormal(worldGenLevel, shouldMakeAllHollow, hollowLogState, logState), Block.UPDATE_ALL);
+				if (randomSource.nextInt(3) > 0) {
+					worldGenLevel.setBlock(blockPos.offset(1, 1, lz), mossOrSeagrass(worldGenLevel, blockPos.offset(1, 1, lz)), Block.UPDATE_ALL);
+					this.markAboveForPostProcessing(worldGenLevel, blockPos.offset(1, 0, lz));
 				}
 			}
 		}
 
 		// possibly make branch
-		if (rand.nextInt(3) > 0) {
+		if (randomSource.nextInt(3) > 0) {
 			int bx;
 			int bz;
 			if (goingX) {
-				bx = rand.nextInt(length);
-				bz = rand.nextBoolean() ? 2 : 0;
+				bx = randomSource.nextInt(length);
+				bz = randomSource.nextBoolean() ? 2 : 0;
 			} else {
-				bx = rand.nextBoolean() ? 2 : 0;
-				bz = rand.nextInt(length);
+				bx = randomSource.nextBoolean() ? 2 : 0;
+				bz = randomSource.nextInt(length);
 
 			}
-			world.setBlock(pos.offset(bx, 0, bz), branchState, Block.UPDATE_ALL);
-			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(bx, 1, bz), mossOrSeagrass(world, pos.offset(bx, 1, bz)), Block.UPDATE_ALL);
-				this.markAboveForPostProcessing(world, pos.offset(bx, 0, bz));
+			worldGenLevel.setBlock(blockPos.offset(bx, 0, bz), branchState, Block.UPDATE_ALL);
+			if (randomSource.nextBoolean()) {
+				worldGenLevel.setBlock(blockPos.offset(bx, 1, bz), mossOrSeagrass(worldGenLevel, blockPos.offset(bx, 1, bz)), Block.UPDATE_ALL);
+				this.markAboveForPostProcessing(worldGenLevel, blockPos.offset(bx, 0, bz));
 			}
 		}
 

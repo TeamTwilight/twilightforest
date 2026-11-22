@@ -1,53 +1,54 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import twilightforest.util.features.FeatureUtil;
 
-public class FireJetFeature extends Feature<BlockStateConfiguration> {
+public record FireJetFeature(BlockState state) implements Feature {
 
-	public FireJetFeature(Codec<BlockStateConfiguration> configIn) {
-		super(configIn);
+	public static final MapCodec<FireJetFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		BlockState.CODEC.fieldOf("state").forGetter(FireJetFeature::state)
+	).apply(instance, FireJetFeature::new));
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<BlockStateConfiguration> ctx) {
-		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
-		RandomSource rand = ctx.random();
-		BlockStateConfiguration config = ctx.config();
-
-		if (!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5))
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		if (!FeatureUtil.isAreaSuitable(worldGenLevel, blockPos, 5, 2, 5))
 			return false;
 
 		for (int i = 0; i < 4; ++i) {
-			BlockPos dPos = pos.offset(
-				rand.nextInt(8) - rand.nextInt(8),
-				rand.nextInt(4) - rand.nextInt(4),
-				rand.nextInt(8) - rand.nextInt(8)
+			BlockPos dPos = blockPos.offset(
+				randomSource.nextInt(8) - randomSource.nextInt(8),
+				randomSource.nextInt(4) - randomSource.nextInt(4),
+				randomSource.nextInt(8) - randomSource.nextInt(8)
 			);
 
-			if (world.isEmptyBlock(dPos) && world.canSeeSkyFromBelowWater(dPos) && world.getBlockState(dPos.below()).is(BlockTags.SUBSTRATE_OVERWORLD)
-				&& world.getBlockState(dPos.east().below()).is(BlockTags.SUBSTRATE_OVERWORLD) && world.getBlockState(dPos.west().below()).is(BlockTags.SUBSTRATE_OVERWORLD)
-				&& world.getBlockState(dPos.south().below()).is(BlockTags.SUBSTRATE_OVERWORLD) && world.getBlockState(dPos.north().below()).is(BlockTags.SUBSTRATE_OVERWORLD)) {
+			if (worldGenLevel.isEmptyBlock(dPos) && worldGenLevel.canSeeSkyFromBelowWater(dPos) && worldGenLevel.getBlockState(dPos.below()).is(BlockTags.SUBSTRATE_OVERWORLD)
+				&& worldGenLevel.getBlockState(dPos.east().below()).is(BlockTags.SUBSTRATE_OVERWORLD) && worldGenLevel.getBlockState(dPos.west().below()).is(BlockTags.SUBSTRATE_OVERWORLD)
+				&& worldGenLevel.getBlockState(dPos.south().below()).is(BlockTags.SUBSTRATE_OVERWORLD) && worldGenLevel.getBlockState(dPos.north().below()).is(BlockTags.SUBSTRATE_OVERWORLD)) {
 
 				//create blocks around the jet/smoker, just in case
 				for (int gx = -2; gx <= 2; gx++) {
 					for (int gz = -2; gz <= 2; gz++) {
 						BlockPos grassPos = dPos.offset(gx, -1, gz);
-						world.setBlock(grassPos, Blocks.GRASS_BLOCK.defaultBlockState(), 0);
+						worldGenLevel.setBlock(grassPos, Blocks.GRASS_BLOCK.defaultBlockState(), 0);
 					}
 				}
 
 				// jet
-				world.setBlock(dPos.below(), config.state, 0);
+				worldGenLevel.setBlock(dPos.below(), state(), 0);
 
 				// create reservoir with stone walls
 				for (int rx = -2; rx <= 2; rx++) {
@@ -55,12 +56,12 @@ public class FireJetFeature extends Feature<BlockStateConfiguration> {
 						BlockPos dPos2 = dPos.offset(rx, -2, rz);
 						if ((rx == 1 || rx == 0 || rx == -1) && (rz == 1 || rz == 0 || rz == -1)) {
 							// lava reservoir
-							world.setBlock(dPos2, Blocks.LAVA.defaultBlockState(), 0);
-						} else if (!world.getBlockState(dPos2).is(Blocks.LAVA)) {
+							worldGenLevel.setBlock(dPos2, Blocks.LAVA.defaultBlockState(), 0);
+						} else if (!worldGenLevel.getBlockState(dPos2).is(Blocks.LAVA)) {
 							// only stone where there is no lava
-							world.setBlock(dPos2, Blocks.STONE.defaultBlockState(), 0);
+							worldGenLevel.setBlock(dPos2, Blocks.STONE.defaultBlockState(), 0);
 						}
-						world.setBlock(dPos2.below(), Blocks.STONE.defaultBlockState(), 0);
+						worldGenLevel.setBlock(dPos2.below(), Blocks.STONE.defaultBlockState(), 0);
 					}
 				}
 			}

@@ -2,7 +2,10 @@ package twilightforest.world.components.feature;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -11,44 +14,51 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import twilightforest.block.SnowLoggable;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.util.TFMathUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.feature.config.BerryBushConfig;
 
 import java.util.List;
 
-public class BerryBushFeature extends Feature<BerryBushConfig> {
+public record BerryBushFeature(BlockState bushState, TagKey<Block> placesOn, boolean canBeSnowy) implements Feature {
+
 	private static final float DEFAULT_RIPE_PROBABILITY = 0.2F;
 
-	public BerryBushFeature(Codec<BerryBushConfig> codec) {
-		super(codec);
+	public static final MapCodec<BerryBushFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		BlockState.CODEC
+			.fieldOf("bush")
+			.forGetter(BerryBushFeature::bushState),
+		TagKey.codec(Registries.BLOCK)
+			.fieldOf("generates_on")
+			.forGetter(BerryBushFeature::placesOn),
+		Codec.BOOL
+			.fieldOf("can_generate_snowy")
+			.forGetter(BerryBushFeature::canBeSnowy)
+	).apply(instance, BerryBushFeature::new));
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<BerryBushConfig> context) {
-		WorldGenLevel level = context.level();
-		BlockPos pos = context.origin();
-		BlockState stateToPlace = context.config().bushState();
-		RandomSource random = context.random();
-		TagKey<Block> generatesOn = context.config().placesOn();
-
-		if (!level.getBlockState(pos.below()).is(generatesOn))
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		if (!worldGenLevel.getBlockState(blockPos.below()).is(placesOn()))
 			return false;
 
-		boolean isInSnowyBiome = context.config().canBeSnowy() && level.getBiome(pos).value().shouldSnow(level, pos);
-		return switch (this.chooseSize(random)) {
-			case LARGE -> this.generateLargeNode(level, pos, stateToPlace, generatesOn, random, isInSnowyBiome);
-			case MEDIUM -> this.generateMediumNode(level, pos, stateToPlace, generatesOn, random, isInSnowyBiome);
-			case SMALL -> this.generateSmallNode(level, pos, stateToPlace, generatesOn, random, isInSnowyBiome);
-			default -> this.setBush(level, pos, stateToPlace, generatesOn, random.nextInt(4), isInSnowyBiome);
+		boolean isInSnowyBiome = canBeSnowy() && worldGenLevel.getBiome(blockPos).value().shouldSnow(worldGenLevel, blockPos);
+		return switch (this.chooseSize(randomSource)) {
+			case LARGE -> this.generateLargeNode(worldGenLevel, blockPos, bushState(), placesOn(), randomSource, isInSnowyBiome);
+			case MEDIUM -> this.generateMediumNode(worldGenLevel, blockPos, bushState(), placesOn(), randomSource, isInSnowyBiome);
+			case SMALL -> this.generateSmallNode(worldGenLevel, blockPos, bushState(), placesOn(), randomSource, isInSnowyBiome);
+			default -> this.setBush(worldGenLevel, blockPos, bushState(), placesOn(), randomSource.nextInt(4), isInSnowyBiome);
 		};
 	}
 
-	protected boolean generateLargeNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
+	private boolean generateLargeNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
 		boolean placed = false;
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
@@ -73,7 +83,7 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 		return placed;
 	}
 
-	protected boolean generateMediumNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
+	private boolean generateMediumNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
 		boolean placed = false;
 		for (int dy = -1; dy <= 2; dy++) {
 			int maxTaxicabDistance = Math.min(2 - dy, 2);
@@ -87,7 +97,7 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 		return placed;
 	}
 
-	protected boolean generateSmallNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
+	private boolean generateSmallNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
 		boolean placed = this.setBush(level, pos.offset(0, 0, 0), state, generatesOn, random, isInSnowyBiome);
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 0; dy++) {
@@ -100,11 +110,11 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 		return placed;
 	}
 
-	protected boolean setBush(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
+	private boolean setBush(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
 		return this.setBush(level, pos, state, generatesOn, random.nextFloat() < DEFAULT_RIPE_PROBABILITY ? 3 : 2, isInSnowyBiome);
 	}
 
-	protected boolean setBush(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, int age, boolean isInSnowyBiome) {
+	private boolean setBush(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, int age, boolean isInSnowyBiome) {
 		BlockState stateToReplace = level.getBlockState(pos);
 		if (!stateToReplace.is(TFBlockTags.TF_BERRY_BUSHES_REPLACE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
 			return false;
@@ -124,7 +134,7 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 		return true;
 	}
 
-	protected BushNodeSizes chooseSize(RandomSource random) {
+	private BushNodeSizes chooseSize(RandomSource random) {
 		List<Pair<BushNodeSizes, Float>> weights = List.of(
 			Pair.of(BushNodeSizes.LARGE, 1F),
 			Pair.of(BushNodeSizes.MEDIUM, 2F),
