@@ -3,12 +3,12 @@ package twilightforest.world.components.chunkgenerators;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.util.Interval;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 
 // Negative radius values cause a bowling-up shaped zero-threshold over this DensityFunction's field, making it useful for the hollow hill's floor alongside as its regular mound shape
-public record TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float cosAngleBiasDirection, float sinAngleBiasDirection, boolean isXOriented, boolean isOnRightSide) implements DensityFunction.SimpleFunction {
+public record TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float cosAngleBiasDirection, float sinAngleBiasDirection, boolean isXOriented, boolean isOnRightSide) implements DensityFunction, DensitySampler {
 	public static final MapCodec<TanhHillFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.FLOAT.fieldOf("x_center").forGetter(TanhHillFunction::centerX),
 		Codec.FLOAT.fieldOf("y_bottom").forGetter(TanhHillFunction::bottomY),
@@ -20,19 +20,16 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 		Codec.BOOL.fieldOf("is_x_oriented").forGetter(TanhHillFunction::isXOriented),
 		Codec.BOOL.fieldOf("is_on_right_side").forGetter(TanhHillFunction::isOnRightSide)
 	).apply(instance, TanhHillFunction::new));
-	public static final KeyDispatchDataCodec<TanhHillFunction> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 	private static final float PERPENDICULAR_BIAS = 1.3F;
 
 	public TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float angleBiasDirection, boolean isXOriented, boolean isOnRightSide) {
 		this(centerX, bottomY, centerZ, radius, heightScale, Mth.cos(angleBiasDirection), Mth.sin(angleBiasDirection), isXOriented, isOnRightSide);
 	}
 
-
-		@Override
-	public double compute(FunctionContext context) {
-		float dX = context.blockX() - this.centerX;
-		float dY = context.blockY() - this.bottomY;
-		float dZ = context.blockZ() - this.centerZ;
+	public float compute(int x, int y, int z) {
+		float dX = x - this.centerX;
+		float dY = y - this.bottomY;
+		float dZ = z - this.centerZ;
 		if (isXOriented)  // Make mounds more parallel to the trunk axis in shape
 			dZ *= PERPENDICULAR_BIAS;
 		else
@@ -40,7 +37,7 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 		return compute(dX, dY, dZ);
 	}
 
-	public double compute(float dX, float dY, float dZ) {
+	public float compute(float dX, float dY, float dZ) {
 		if (dY > 10 || dY < -10)
 			return -1;
 		float perpendicularDist = isXOriented ? dZ : dX;
@@ -74,17 +71,38 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 	}
 
 	@Override
-	public double minValue() {
-		return -1;
+	public DensitySampler compileSampler(CompileContext compileContext) {
+		return this;
 	}
 
 	@Override
-	public double maxValue() {
-		return 1;
+	public DensityFunction rewriteChildren(DfRewriteRule dfRewriteRule) {
+		return this;
 	}
 
 	@Override
-	public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-		return KEY_CODEC;
+	public Interval range() {
+		return Interval.NEGATIVE_ONE_TO_ONE;
 	}
+
+	@Override
+	public @Axes int domainAxes() {
+		return DensityFunction.ALL_AXES;
+	}
+
+	@Override
+	public MapCodec<? extends DensityFunction> codec() {
+		return CODEC;
+	}
+
+	@Override
+	public float sampleValue(SamplerContext samplerContext, int x, int y, int z) {
+		return this.compute(x, y, z);
+	}
+
+	@Override
+	public void sampleVolume(SamplerContext context, DensityBuffer outputBuffer, DensityVolume volume) {
+		DensitySampler.sampleVolumeNaive(context, outputBuffer, volume, this);
+	}
+
 }
