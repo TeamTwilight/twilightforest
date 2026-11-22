@@ -2,7 +2,6 @@ package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -44,8 +43,6 @@ import java.util.Map;
 
 public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
-	public static final MapCodec<DryingRackBlock> CODEC = simpleCodec(DryingRackBlock::new);
-
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
@@ -58,11 +55,6 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 		super(properties);
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

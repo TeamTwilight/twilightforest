@@ -20,7 +20,7 @@ import twilightforest.init.custom.TemplateMarkerHandlers;
 
 public record DryingRackMarkerHandler(BlockStateProvider provider, ResourceKey<LootTable> lootTable) implements TemplateMarkerHandler {
 	public static final MapCodec<DryingRackMarkerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		BlockStateProvider.CODEC.fieldOf("drying_rack_block").forGetter(DryingRackMarkerHandler::provider),
+		BlockStateProvider.DIRECT_CODEC.fieldOf("drying_rack_block").forGetter(DryingRackMarkerHandler::provider),
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("loot_table").forGetter(DryingRackMarkerHandler::lootTable)
 	).apply(instance, DryingRackMarkerHandler::new));
 

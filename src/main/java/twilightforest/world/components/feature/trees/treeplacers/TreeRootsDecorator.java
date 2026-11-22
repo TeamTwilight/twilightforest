@@ -18,15 +18,15 @@ import twilightforest.util.iterators.VoxelBresenhamIterator;
 import java.util.Optional;
 
 public class TreeRootsDecorator extends TreeDecorator {
-	private static final SimpleStateProvider EMPTY = BlockStateProvider.simple(Blocks.AIR.defaultBlockState());
+	private static final SimpleStateProvider EMPTY = BlockStateProvider.of(Blocks.AIR.defaultBlockState());
 
 	public static final MapCodec<TreeRootsDecorator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.intRange(0, 16).fieldOf("base_strand_count").forGetter(o -> o.strands),
 		Codec.intRange(0, 16).fieldOf("additional_random_strands").forGetter(o -> o.addExtraStrands),
 		Codec.intRange(0, 32).fieldOf("root_length").forGetter(o -> o.length),
 		Codec.INT.fieldOf("y_offset").forGetter(o -> o.yOffset),
-		BlockStateProvider.CODEC.optionalFieldOf("exposed_roots_provider").forGetter(o -> Optional.ofNullable(o.surfaceBlock != EMPTY ? o.surfaceBlock : null)),
-		BlockStateProvider.CODEC.fieldOf("ground_roots_provider").forGetter(o -> o.rootBlock),
+		BlockStateProvider.DIRECT_CODEC.optionalFieldOf("exposed_roots_provider").forGetter(o -> Optional.ofNullable(o.surfaceBlock != EMPTY ? o.surfaceBlock : null)),
+		BlockStateProvider.DIRECT_CODEC.fieldOf("ground_roots_provider").forGetter(o -> o.rootBlock),
 		Codec.INT.fieldOf("rootPenetrability").forGetter(o -> o.rootPenetrability)
 	).apply(instance, TreeRootsDecorator::new));
 

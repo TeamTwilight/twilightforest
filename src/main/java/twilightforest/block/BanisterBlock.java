@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -48,7 +47,6 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final EnumProperty<BanisterShape> SHAPE = EnumProperty.create("shape", BanisterShape.class);
 	public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
-	public static final MapCodec<BanisterBlock> CODEC = simpleCodec(BanisterBlock::new);
 	// These extend upwards to 16 instead of 12 because they're used on both the Tall and Connected shapes
 	private static final VoxelShape NORTH_SUPPORTS_TALL = Shapes.or(
 		Block.box(2.5D, 0.0D, 0.0D, 5.5D, 16.0D, 3.0D),
@@ -123,11 +121,6 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		super(properties);
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(SHAPE, BanisterShape.TALL).setValue(EXTENDED, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

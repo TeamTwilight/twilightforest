@@ -1,9 +1,9 @@
 package twilightforest.client.renderer;
 
-import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -377,15 +377,15 @@ public class TFWeatherRenderer {
 	}
 
 	private static TFWeatherRenderer.@Nullable WeatherRenderType getRenderType(Restriction restriction) {
-		if (restriction.enforcement().equals(Enforcements.FROST.getKey()))
+		if (restriction.enforcement().equals(Enforcements.FROST.keyOrNull()))
 			return WeatherRenderType.BLIZZARD;
-		else if (restriction.enforcement().equals(Enforcements.HUNGER.getKey()))
+		else if (restriction.enforcement().equals(Enforcements.HUNGER.keyOrNull()))
 			return WeatherRenderType.MOSQUITO;
-		else if (restriction.enforcement().equals(Enforcements.FIRE.getKey()))
+		else if (restriction.enforcement().equals(Enforcements.FIRE.keyOrNull()))
 			return WeatherRenderType.ASHES;
-		else if (restriction.enforcement().equals(Enforcements.DARKNESS.getKey()))
+		else if (restriction.enforcement().equals(Enforcements.DARKNESS.keyOrNull()))
 			return random.nextBoolean() ? WeatherRenderType.DARK_STREAM : null;
-		else if (restriction.enforcement().equals(Enforcements.ACID_RAIN.getKey()))
+		else if (restriction.enforcement().equals(Enforcements.ACID_RAIN.keyOrNull()))
 			return WeatherRenderType.BIG_RAIN;
 		return null;
 	}

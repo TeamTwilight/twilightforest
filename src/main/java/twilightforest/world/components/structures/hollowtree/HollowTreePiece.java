@@ -37,14 +37,14 @@ public abstract class HollowTreePiece extends StructurePiece {
 	public static final IntProvider DEFAULT_HEIGHT = UniformInt.of(32, 95);
 	public static final IntProvider DEFAULT_RADIUS = UniformInt.of(1, 4);
 
-	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.value());
-	public static final BlockStateProvider DEFAULT_WOOD = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value());
-	public static final BlockStateProvider DEFAULT_ROOT = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.value());
-	public static final BlockStateProvider DEFAULT_LEAVES = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value());
-	public static final BlockStateProvider DEFAULT_VINE = BlockStateProvider.simple(Blocks.VINE.defaultBlockState());
+	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.of(TFBlocks.TWILIGHT_OAK_LOG.value());
+	public static final BlockStateProvider DEFAULT_WOOD = BlockStateProvider.of(TFBlocks.TWILIGHT_OAK_WOOD.value());
+	public static final BlockStateProvider DEFAULT_ROOT = BlockStateProvider.of(TFBlocks.ROOT_BLOCK.value());
+	public static final BlockStateProvider DEFAULT_LEAVES = BlockStateProvider.of(TFBlocks.TWILIGHT_OAK_LEAVES.value());
+	public static final BlockStateProvider DEFAULT_VINE = BlockStateProvider.of(Blocks.VINE.defaultBlockState());
 	public static final BlockStateProvider DEFAULT_BUG = new WeightedStateProvider(WeightedList.<BlockState>builder().add(TFBlocks.FIREFLY.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH), 1).add(TFBlocks.CICADA.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH), 1).build());
-	public static final BlockStateProvider DEFAULT_DUNGEON_AIR = BlockStateProvider.simple(Blocks.AIR);
-	public static final BlockStateProvider DEFAULT_DUNGEON_LOOT_BLOCK = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST));
+	public static final BlockStateProvider DEFAULT_DUNGEON_AIR = BlockStateProvider.of(Blocks.AIR);
+	public static final BlockStateProvider DEFAULT_DUNGEON_LOOT_BLOCK = BlockStateProvider.of(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST));
 
 	public static final ResourceKey<LootTable> DEFAULT_DUNGEON_LOOT_TABLE = TFLootTables.TREE_CACHE;
 	public static final Holder<EntityType<?>> DEFAULT_DUNGEON_MONSTER = TFEntities.SWARM_SPIDER;

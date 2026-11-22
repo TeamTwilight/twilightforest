@@ -175,9 +175,9 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
-	public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflectingEntity, @Nullable EntityReference<Entity> newOwner, boolean byAttack) {
+	public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflectingEntity, @Nullable EntityReference<Entity> newOwner, boolean byAttack, Vec3 power) {
 		setOnGround(false);
-		return super.deflect(deflection, deflectingEntity, newOwner, byAttack);
+		return super.deflect(deflection, deflectingEntity, newOwner, byAttack, power);
 	}
 
 	@Override

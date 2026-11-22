@@ -78,7 +78,7 @@ public class ToolEvents {
 
 				player.setYRot(living.getYRot());
 				player.teleportTo(living.getX(), living.getY(), living.getZ());
-				player.invulnerableTime = 40;
+				player.setInvulnerableTime(40);
 				player.level().broadcastEntityEvent(player, (byte) 46);
 				if (living.isPassenger() && living.getVehicle() != null) {
 					player.startRiding(living.getVehicle(), true, true);

@@ -15,7 +15,7 @@ import twilightforest.init.custom.TemplateMarkerHandlers;
 
 public record BlockPlaceMarkerHandler(BlockStateProvider provider) implements TemplateMarkerHandler {
 	public static final MapCodec<BlockPlaceMarkerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		BlockStateProvider.CODEC.fieldOf("block_state").forGetter(BlockPlaceMarkerHandler::provider)
+		BlockStateProvider.DIRECT_CODEC.fieldOf("block_state").forGetter(BlockPlaceMarkerHandler::provider)
 	).apply(instance, BlockPlaceMarkerHandler::new));
 
 	@Override

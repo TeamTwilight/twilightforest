@@ -71,10 +71,10 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 
-		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
-		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
-		this.inside = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
-		this.lootContainer = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
+		this.wood = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.leaves = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
+		this.inside = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
+		this.lootContainer = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
 		this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getStringOr("loot_table", "")));
 
@@ -91,10 +91,10 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putInt("leafRadius", this.radius);
 
-		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.inside).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.lootContainer).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("wood", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("leaves", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("air", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.inside).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("loot_block", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.lootContainer).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
 		tag.putString("loot_table", this.lootTable.identifier().toString());
 

@@ -61,10 +61,10 @@ public class CapabilityEvents {
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
             FortificationShieldAttachment attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
 			if (attachment.shieldsLeft() > 0) {
-				if (living.invulnerableTime <= 0) {
+				if (living.getInvulnerableTime() <= 0) {
 					attachment.breakShield(living, false);
 					FortificationShieldAttachment.addShieldBreakParticles(event.getSource(), living);
-					living.invulnerableTime = 20; //invulnerableDuration was only a static constant.
+					living.setInvulnerableTime(20); //invulnerableDuration was only a static constant.
 				}
 				event.setCanceled(true);
 			}

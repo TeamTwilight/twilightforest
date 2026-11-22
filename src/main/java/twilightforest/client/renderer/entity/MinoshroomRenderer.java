@@ -95,7 +95,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 					this.getParentModel().head.translateAndRotate(poseStack);
 					// TF - adjust head shroom
 					poseStack.translate(0.0D, -0.9D, 0.05D);
-					poseStack.mulPose(Axis.YP.rotationDegrees(-78.0F));
+					poseStack.rotate(Axis.YP.rotationDegrees(-78.0F));
 					poseStack.scale(-1.0F, -1.0F, 1.0F);
 					poseStack.translate(-0.5D, -0.5D, -0.5D);
 					this.submitMushroomBlock(

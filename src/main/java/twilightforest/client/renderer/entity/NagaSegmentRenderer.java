@@ -31,8 +31,8 @@ public class NagaSegmentRenderer extends TFPartRenderer<NagaSegment, NagaSegment
 			}
 			float yaw2 = state.yRotO + yawDiff * state.partialTick;
 
-			stack.mulPose(Axis.YP.rotationDegrees(yaw2));
-			stack.mulPose(Axis.XP.rotationDegrees(state.xRot));
+			stack.rotate(Axis.YP.rotationDegrees(yaw2));
+			stack.rotate(Axis.XP.rotationDegrees(state.xRot));
 
 			stack.scale(2.0F, 2.0F, 2.0F);
 			stack.translate(0.0D, -1.25F, 0.0D);

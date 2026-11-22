@@ -5,6 +5,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -17,11 +18,9 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFStructures;
 import twilightforest.world.components.structures.TreeGrowerStartable;
 
-import java.util.Optional;
-
 public class StructureTreeGrower extends TreeGrower {
 	public StructureTreeGrower(String name) {
-		super(name, Optional.empty(), Optional.empty(), Optional.empty());
+		super(name, WeightedList.of(), WeightedList.of(), WeightedList.of(), null);
 	}
 
 	//copied from PlaceCommand.placeStructure
@@ -32,7 +31,7 @@ public class StructureTreeGrower extends TreeGrower {
 		if (!(structure instanceof TreeGrowerStartable treeGrowerStartable) || !treeGrowerStartable.checkSaplingClearance(level, pos))
 			return false;
 
-		StructureStart structurestart = treeGrowerStartable.generateFromSapling(level.registryAccess(), generator, generator.getBiomeSource(), level.getChunkSource().randomState(), level.getStructureManager(), level.getSeed(), pos, level);
+		StructureStart structurestart = treeGrowerStartable.generateFromSapling(level.registryAccess(), generator, generator.getBiomeSource(), level.getChunkSource().randomState(), level.getStructureTemplateManager(), level.getSeed(), pos, level);
 
 		if (!structurestart.isValid())
 			return false;

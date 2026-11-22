@@ -8,7 +8,7 @@ public record BranchesConfig(BlockStateProvider branchProvider, int branchCount,
 							 double spacingYaw, double downwardsPitch) {
 	public static final Codec<BranchesConfig> CODEC = RecordCodecBuilder.create(instance ->
 		instance.group(
-			BlockStateProvider.CODEC.fieldOf("branch_provider").forGetter(p -> p.branchProvider),
+			BlockStateProvider.DIRECT_CODEC.fieldOf("branch_provider").forGetter(p -> p.branchProvider),
 			Codec.intRange(0, 16).fieldOf("count_minimum").forGetter(o -> o.branchCount),
 			Codec.intRange(0, 16).fieldOf("random_add_count").orElse(0).forGetter(o -> o.randomAddBranches),
 			Codec.doubleRange(1, 24).fieldOf("length").forGetter(o -> o.length),

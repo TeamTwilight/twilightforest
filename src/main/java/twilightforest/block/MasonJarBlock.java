@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -15,7 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -37,16 +35,10 @@ import twilightforest.init.TFSounds;
 import java.util.List;
 
 public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
-	public static final MapCodec<MasonJarBlock> CODEC = simpleCodec(MasonJarBlock::new);
 	private static final int SLOT = 0;
 
 	public MasonJarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

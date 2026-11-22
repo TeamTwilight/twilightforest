@@ -16,7 +16,7 @@ public class TrunkSideDecorator extends TreeDecorator {
 	public static final MapCodec<TrunkSideDecorator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.intRange(0, 64).fieldOf("placement_count").forGetter(o -> o.count),
 		Codec.floatRange(0f, 1f).fieldOf("probability_of_placement").forGetter(o -> o.probability),
-		BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.decoration)
+		BlockStateProvider.DIRECT_CODEC.fieldOf("deco_provider").forGetter(o -> o.decoration)
 	).apply(instance, TrunkSideDecorator::new));
 
 	private final int count;
