@@ -7,10 +7,10 @@ import net.minecraft.world.item.component.TooltipDisplay;
 
 import java.util.function.Consumer;
 
-public class KnightmetalAxeItem extends AxeItem {
+public class KnightmetalAxeItem extends Item {
 
 	public KnightmetalAxeItem(ToolMaterial material, float damage, float speed, Properties properties) {
-		super(material, damage, speed, properties);
+		super(properties.axe(material, damage, speed));
 	}
 
 	@Override
