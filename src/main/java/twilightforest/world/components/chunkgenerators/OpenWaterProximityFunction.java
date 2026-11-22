@@ -22,7 +22,8 @@ public record OpenWaterProximityFunction(DensityFunction terrain, int fluidLevel
 
 	@Override
 	public DensityFunction rewriteChildren(DfRewriteRule rule) {
-		return new OpenWaterProximityFunction(terrain.rewriteChildren(rule), fluidLevel, radius);
+		DensityFunction rewrite = rule.rewrite(terrain);
+		return rewrite == terrain ? this : new OpenWaterProximityFunction(rewrite, fluidLevel, radius);
 	}
 
 	@Override
