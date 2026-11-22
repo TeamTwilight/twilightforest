@@ -6,7 +6,6 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.TriState;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.*;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
 import net.minecraft.world.timeline.Timeline;
 import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 import org.joml.Vector3f;
@@ -91,6 +91,7 @@ public class TFDimensionGenerator {
     public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+        HolderGetter<MaterialCondition> conditions = context.lookup(Registries.MATERIAL_CONDITION);
         DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctionGenerator.SKYLIGHT_TERRAIN : TFDensityFunctionGenerator.FORESTED_TERRAIN));
 
         NoiseSettings tfNoise = NoiseSettings.create(
@@ -112,7 +113,7 @@ public class TFDimensionGenerator {
                     finalDensity,
                     finalDensity
             ),
-            TFSurfaceRules.tfSurface(biomes),
+            TFMaterialRules.tfSurface(biomes, conditions),
             List.of(),
             TFDimension.SEALEVEL,
             false,
