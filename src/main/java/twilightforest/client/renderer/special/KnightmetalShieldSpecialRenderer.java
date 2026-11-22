@@ -23,7 +23,7 @@ public record KnightmetalShieldSpecialRenderer(SpriteGetter sprites, Knightmetal
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
-		collector.submitModel(this.model, Unit.INSTANCE, stack, light, overlay, -1, SHIELD_BASE, this.sprites, outlineColor, null);
+		collector.submitModel(this.model, Unit.INSTANCE, stack, light, overlay, -1, SHIELD_BASE, this.sprites, outlineColor);
 
 		if (hasFoil) {
 			collector.submitModel(this.model, Unit.INSTANCE, stack, RenderTypes.entityGlint(), light, overlay, -1, this.sprites.get(SHIELD_BASE), 0, null);

@@ -31,9 +31,9 @@ public class RovingCubeRenderer extends EntityRenderer<RovingCube, CubeOfAnnihil
 
 
 		poseStack.scale(2.0F, 2.0F, 2.0F);
-		poseStack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees(state.ageInTicks) * 11.0F));
+		poseStack.rotate(Axis.YP.rotationDegrees(Mth.wrapDegrees(state.ageInTicks) * 11.0F));
 		poseStack.translate(0.0F, 0.75F, 0.0F);
-		submitNodeCollector.submitModel(this.model, state, poseStack, this.model.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		submitNodeCollector.submitModel(this.model, state, poseStack, this.model.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		poseStack.popPose();
 	}
 

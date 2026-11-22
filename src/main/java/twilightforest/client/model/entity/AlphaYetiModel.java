@@ -223,6 +223,6 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 		RenderType renderType = RenderTypes.entityCutout(AlphaYetiRenderer.TEXTURE);
 		collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
 		if (breakProgress != null)
-			collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 	}
 }

@@ -49,7 +49,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 
 		if (variant != null) {
 			stack.pushPose();
-			stack.mulPose(Axis.YP.rotationDegrees(180.0F - state.direction.get2DDataValue() * 90));
+			stack.rotate(Axis.YP.rotationDegrees(180.0F - state.direction.get2DDataValue() * 90));
 			stack.scale(0.0625F, 0.0625F, 0.0625F);
 			TextureAtlasSprite textureatlassprite = this.paintingAtlas.getSprite(variant.backTexture());
 			this.renderPainting(state, camera, stack, collector, RenderTypes.entityTranslucent(textureatlassprite.atlasLocation()), state.lightCoords, variant.width(), variant.height(), textureatlassprite);

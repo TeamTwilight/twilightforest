@@ -41,7 +41,7 @@ public class OminousCandleRenderer implements BlockEntityRenderer<OminousCandleB
 	public void submit(OminousCandleRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
 		stack.pushPose();
 		stack.translate(0.5D, 0.0D, 0.5D);
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+		stack.rotate(Axis.YP.rotationDegrees(180.0F));
 
 		for (int i = 0; i < state.candles.size(); i++) {
 			stack.pushPose();

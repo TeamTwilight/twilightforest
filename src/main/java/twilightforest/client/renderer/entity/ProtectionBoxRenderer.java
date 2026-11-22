@@ -25,7 +25,7 @@ public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, Protect
 	}
 
 	@Override
-	public boolean shouldRender(ProtectionBox entity, Frustum frustum, double x, double y, double z) {
+	public boolean shouldRender(ProtectionBox entity, Frustum culler, double camX, double camY, double camZ, float partialTicks) {
 		return true;
 	}
 
@@ -37,7 +37,7 @@ public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, Protect
 			alpha = state.life / 20.0F;
 
 		this.boxModel.setupAnim(state);
-		submitNodeCollector.submitModel(this.boxModel, state, poseStack, TFRenderTypes.PROTECTION_BOX, state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.white(alpha), null, state.outlineColor, null);
+		submitNodeCollector.submitModel(this.boxModel, state, poseStack, TFRenderTypes.PROTECTION_BOX, state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.white(alpha), null, state.outlineColor);
 	}
 
 	@Override

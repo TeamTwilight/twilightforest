@@ -151,6 +151,6 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 		RenderType renderType = RenderTypes.entityCutout(LichRenderer.TEXTURE);
 		collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
 		if (breakProgress != null)
-			collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 	}
 }

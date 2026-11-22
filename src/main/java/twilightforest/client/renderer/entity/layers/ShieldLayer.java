@@ -69,9 +69,9 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 
 			// perform the rotations, accounting for the fact that baked models are corner-based
 			// Z gets extra 180 degrees to flip visual upside-down, since scaling y by -1 will cause back-faces to render instead
-			stack.mulPose(Axis.ZP.rotationDegrees(180.0F + rotateAngleZ * (180.0F / Mth.PI)));
-			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180.0F / Mth.PI) + (c * (360.0F / count))));
-			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180.0F / Mth.PI)));
+			stack.rotate(Axis.ZP.rotationDegrees(180.0F + rotateAngleZ * (180.0F / Mth.PI)));
+			stack.rotate(Axis.YP.rotationDegrees(rotateAngleY * (180.0F / Mth.PI) + (c * (360.0F / count))));
+			stack.rotate(Axis.XP.rotationDegrees(rotateAngleX * (180.0F / Mth.PI)));
 			stack.translate(-0.5F, -0.65F, -0.5F);
 
 			// push the shields outwards from the center of rotation

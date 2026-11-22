@@ -27,8 +27,8 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWep, ThrownWepRender
 		float spin = state.ageInTicks * 10.0F;
 		// size up
 		stack.scale(1.25F, 1.25F, 1.25F);
-		stack.mulPose(Axis.YP.rotationDegrees(state.yRot + 90.0F));
-		stack.mulPose(Axis.ZP.rotationDegrees(spin));
+		stack.rotate(Axis.YP.rotationDegrees(state.yRot + 90.0F));
+		stack.rotate(Axis.ZP.rotationDegrees(spin));
 		float f9 = 0.5F;
 		float f10 = 0.25F;
 		float f12 = 0.0625F;

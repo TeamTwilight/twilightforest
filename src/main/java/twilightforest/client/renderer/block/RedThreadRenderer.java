@@ -48,8 +48,8 @@ public class RedThreadRenderer implements BlockEntityRenderer<RedThreadBlockEnti
 			stack.pushPose();
 			Vec3 xyz = getXYZ(sides.getKey());
 			stack.translate(xyz.x, xyz.y, xyz.z);
-			stack.mulPose(Axis.ZP.rotationDegrees(getZPDegrees(sides.getKey())));
-			stack.mulPose(Axis.XP.rotationDegrees(getXPDegrees(sides.getKey())));
+			stack.rotate(Axis.ZP.rotationDegrees(getZPDegrees(sides.getKey())));
+			stack.rotate(Axis.XP.rotationDegrees(getXPDegrees(sides.getKey())));
 			stack.pushPose();
 			stack.translate(0.5D, 0D, 0.5D);
 			this.renderSide(sides.getValue(), sides.getKey(), stack, collector, state.glowing ? TFRenderTypes.RED_THREAD : RenderTypes.entityCutoutCull(TEXTURE), state.glowing ? LightCoordsUtil.FULL_BRIGHT : state.lightCoords);

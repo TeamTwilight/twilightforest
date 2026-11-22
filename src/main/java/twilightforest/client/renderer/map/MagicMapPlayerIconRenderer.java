@@ -37,7 +37,7 @@ public class MagicMapPlayerIconRenderer implements IMapDecorationRenderer, BiCon
 
 		stack.pushPose();
 		stack.translate(decoration.x / 2.0F + 64.0F, decoration.y / 2.0F + 64.0F, -0.02F);
-		stack.mulPose(Axis.ZP.rotationDegrees(decoration.rot * 360 / 16.0F));
+		stack.rotate(Axis.ZP.rotationDegrees(decoration.rot * 360 / 16.0F));
 		stack.scale(4.0F, 4.0F, 3.0F);
 		stack.translate(-0.125F, 0.125F, 0.0F);
 		submitNodeCollector.submitCustomGeometry(stack, RenderTypes.text(textureatlassprite.atlasLocation()), (pose, consumer) -> {

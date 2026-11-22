@@ -38,15 +38,22 @@ public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity, 
 	public static void submitFirefly(FireflyModel model, int yaw, float glow, float rotation, Direction facing, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.5F, 0.5F);
-		stack.mulPose(facing.getRotation());
-		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F + rotation));
-		stack.mulPose(Axis.YN.rotationDegrees(yaw));
+		stack.rotate(facing.getRotation());
+		stack.rotate(Axis.ZP.rotationDegrees(180.0F));
+		stack.rotate(Axis.YP.rotationDegrees(180.0F + rotation));
+		stack.rotate(Axis.YN.rotationDegrees(yaw));
 		RenderType bodyRenderType = RenderTypes.entityCutout(TEXTURE);
-		collector.submitModelPart(model.legs, stack, bodyRenderType, light, overlay, null, -1, breakProgress);
-		collector.submitModelPart(model.fatBody, stack, bodyRenderType, light, overlay, null, -1, breakProgress);
-		collector.submitModelPart(model.skinnyBody, stack, bodyRenderType, light, overlay, null, -1, breakProgress);
-		collector.submitModelPart(model.glow, stack, RenderTypes.entityTranslucentEmissive(TEXTURE), light, overlay, null, ARGB.white(glow), breakProgress);
+		RenderType glowRenderType = RenderTypes.entityTranslucentEmissive(TEXTURE);
+		collector.submitModelPart(model.legs, stack, bodyRenderType, light, overlay, null, -1);
+		collector.submitModelPart(model.fatBody, stack, bodyRenderType, light, overlay, null, -1);
+		collector.submitModelPart(model.skinnyBody, stack, bodyRenderType, light, overlay, null, -1);
+		collector.submitModelPart(model.glow, stack, glowRenderType, light, overlay, null, ARGB.white(glow));
+		if (breakProgress != null) {
+			collector.order(1).submitCrumblingOverlay(model.legs, stack, bodyRenderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(model.fatBody, stack, bodyRenderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(model.skinnyBody, stack, bodyRenderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(model.glow, stack, glowRenderType, light, overlay, ARGB.white(glow), breakProgress);
+		}
 		stack.popPose();
 	}
 

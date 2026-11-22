@@ -70,7 +70,7 @@ public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<N
 	}
 
 	@Override
-	protected AABB getBoundingBoxForCulling(Naga entity) {
+	protected AABB getBoundingBoxForCulling(Naga entity, float partialTicks) {
 		return entity.getBoundingBox().inflate(16.0D, 16.0D, 16.0D);
 	}
 }

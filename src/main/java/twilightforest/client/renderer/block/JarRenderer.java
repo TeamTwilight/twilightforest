@@ -142,7 +142,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	public void submit(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
 		poseStack.pushPose();
 		poseStack.translate(0.5D, 0.0D, 0.5D);
-		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+		poseStack.rotate(Axis.YP.rotationDegrees(180.0F));
 		poseStack.translate(-0.5D, 0.0D, -0.5D);
 		WobbleStyle wobbleStyle = state.lastWobbleStyle;
 
@@ -217,7 +217,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 
 			poseStack.pushPose();
 			poseStack.translate(0.5D, 0.4375D, 0.5D);
-			poseStack.mulPose(Axis.YN.rotationDegrees(state.itemRotation));
+			poseStack.rotate(Axis.YN.rotationDegrees(state.itemRotation));
 			poseStack.scale(0.5F, 0.5F, 0.5F);
 			state.item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 			poseStack.popPose();

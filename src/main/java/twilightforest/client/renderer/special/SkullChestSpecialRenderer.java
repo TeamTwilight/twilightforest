@@ -19,7 +19,7 @@ public record SkullChestSpecialRenderer(KeepsakeCasketModel model, float opennes
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
 		SkullChestRenderer.applyCasketItemPose(stack);
-		collector.submitModel(this.model(), this.openness(), stack, SkullChestRenderer.SKULL_CHEST_TEXTURE, light, overlay, outlineColor, null);
+		collector.submitModel(this.model(), this.openness(), stack, SkullChestRenderer.SKULL_CHEST_TEXTURE, light, overlay, outlineColor);
 	}
 
 	@Override

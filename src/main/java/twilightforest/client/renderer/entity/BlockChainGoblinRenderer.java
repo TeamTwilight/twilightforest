@@ -47,11 +47,11 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 
 		stack.translate(blockInX, blockInY, blockInZ);
 
-		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(state.yRot)));
-		stack.mulPose(Axis.XP.rotationDegrees(state.xRot));
+		stack.rotate(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(state.yRot)));
+		stack.rotate(Axis.XP.rotationDegrees(state.xRot));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		collector.submitModel(this.model, state, stack, this.model.renderType(BLOCK_AND_CHAIN_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		collector.submitModel(this.model, state, stack, this.model.renderType(BLOCK_AND_CHAIN_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		stack.popPose();
 
 		if (state.deathTime <= 0) {
@@ -79,13 +79,13 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 	}
 
 	@Override
-	public boolean shouldRender(BlockChainGoblin entity, Frustum frustum, double camX, double camY, double camZ) {
-		if (super.shouldRender(entity, frustum, camX, camY, camZ)) {
+	public boolean shouldRender(BlockChainGoblin entity, Frustum culler, double camX, double camY, double camZ, float partialTicks) {
+		if (super.shouldRender(entity, culler, camX, camY, camZ, partialTicks)) {
 			return true;
 		} else {
 			Vec3 vec3d = this.getPosition(entity.block, entity.block.getBbHeight() * 0.5D);
 			Vec3 vec3d1 = this.getPosition(entity.block, entity.block.getEyeHeight());
-			return frustum.isVisible(new AABB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z));
+			return culler.isVisible(new AABB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z));
 		}
 	}
 

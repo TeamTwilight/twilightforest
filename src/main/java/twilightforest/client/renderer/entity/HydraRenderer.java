@@ -34,7 +34,7 @@ public class HydraRenderer extends MobRenderer<Hydra, HydraRenderState, HydraMod
 		}
 
 		if (!state.hasPose(Pose.SLEEPING)) {
-			stack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
+			stack.rotate(Axis.YP.rotationDegrees(180.0F - yaw));
 		}
 
 		if (state.deathTime > 0) {
@@ -44,10 +44,10 @@ public class HydraRenderer extends MobRenderer<Hydra, HydraRenderState, HydraMod
 				f = 1.0F;
 			}
 
-			stack.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees()));
+			stack.rotate(Axis.ZP.rotationDegrees(f * this.getFlipDegrees()));
 		} else if (state.isUpsideDown) {
 			stack.translate(0.0F, 6.0F, 0.0F);
-			stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+			stack.rotate(Axis.ZP.rotationDegrees(180.0F));
 		}
 	}
 
@@ -73,7 +73,7 @@ public class HydraRenderer extends MobRenderer<Hydra, HydraRenderState, HydraMod
 	}
 
 	@Override
-	protected AABB getBoundingBoxForCulling(Hydra entity) {
+	protected AABB getBoundingBoxForCulling(Hydra entity, float partialTicks) {
 		return entity.getBoundingBox().inflate(16.0D, 16.0D, 16.0D);
 	}
 }

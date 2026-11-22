@@ -31,7 +31,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRender
 			}
 			float yaw2 = state.yRotO + yawDiff * state.partialTick;
 
-			stack.mulPose(Axis.YN.rotationDegrees(yaw2 + 180));
+			stack.rotate(Axis.YN.rotationDegrees(yaw2 + 180));
 			super.submit(state, stack, buffer, cameraRenderState);
 
 		}

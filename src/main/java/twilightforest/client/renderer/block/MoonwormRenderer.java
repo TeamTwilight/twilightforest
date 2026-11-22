@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
@@ -34,11 +35,14 @@ public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity
 	public static void submitMoonworm(MoonwormModel model, MoonwormRenderState state, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, int outlineColor, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.5F, 0.5F);
-		stack.mulPose(state.facing.getRotation());
-		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F + state.rotation));
-		stack.mulPose(Axis.YN.rotationDegrees(state.yaw));
-		collector.submitModel(model, state, stack, model.renderType(TEXTURE), light, overlay, outlineColor, breakProgress);
+		stack.rotate(state.facing.getRotation());
+		stack.rotate(Axis.ZP.rotationDegrees(180.0F));
+		stack.rotate(Axis.YP.rotationDegrees(180.0F + state.rotation));
+		stack.rotate(Axis.YN.rotationDegrees(state.yaw));
+		RenderType renderType = model.renderType(TEXTURE);
+		collector.submitModel(model, state, stack, renderType, light, overlay, outlineColor);
+		if (breakProgress != null)
+			collector.order(1).submitCrumblingOverlay(model, state, stack, renderType, light, overlay, outlineColor, breakProgress);
 		stack.popPose();
 	}
 

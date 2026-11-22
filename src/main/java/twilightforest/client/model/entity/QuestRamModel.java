@@ -226,7 +226,7 @@ public class QuestRamModel extends EntityModel<QuestingRamRenderState> implement
 		RenderType renderType = RenderTypes.entityCutout(QuestRamRenderer.TEXTURE);
 		collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
 		if (breakProgress != null)
-			collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
 		collector.order(1).submitModelPart(this.head, stack, RenderTypes.entityTranslucent(QuestRamRenderer.LINE_TEXTURE), LightCoordsUtil.FULL_BRIGHT, overlay, null);

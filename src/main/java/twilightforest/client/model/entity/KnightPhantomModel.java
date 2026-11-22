@@ -150,14 +150,14 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 			RenderType renderType = RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE);
 			collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
 			if (breakProgress != null)
-				collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
+				collector.order(1).submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 			stack.popPose();
 		} else {
 			stack.translate(0.0F, 0.25F, 0.0F);
 			RenderType renderType = RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE);
 			collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
 			if (breakProgress != null)
-				collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
+				collector.order(1).submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 			stack.scale(1.1F, 1.1F, 1.1F);
 			stack.translate(0.0F, 0.05F, 0.0F);
 			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, overlay, null);

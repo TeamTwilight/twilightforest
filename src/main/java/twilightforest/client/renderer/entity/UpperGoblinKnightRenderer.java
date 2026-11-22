@@ -24,7 +24,7 @@ public class UpperGoblinKnightRenderer extends HumanoidMobRenderer<UpperGoblinKn
 		super.setupRotations(state, stack, rotationYaw, scale);
 
 		if (state.spearTimer > 0) {
-			stack.mulPose(Axis.XP.rotationDegrees(state.getPitchForAttack()));
+			stack.rotate(Axis.XP.rotationDegrees(state.getPitchForAttack()));
 		}
 	}
 

@@ -54,9 +54,9 @@ public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<?
 			float dz = ((random.nextFloat() * (state.boundingBoxWidth * 2.0F)) - state.boundingBoxWidth) * 0.1F;
 			stack.translate(dx, dy, dz);
 			stack.scale(0.5F, 0.5F, 0.5F);
-			stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360F));
-			stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360F));
-			stack.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360F));
+			stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360F));
+			stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360F));
+			stack.rotate(Axis.ZP.rotationDegrees(random.nextFloat() * 360F));
 			stack.translate(-0.5F, -0.5F, -0.5F);
 
 			iceModel.submit(stack, submitNodeCollector, light, OverlayTexture.NO_OVERLAY, 0);

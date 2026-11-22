@@ -44,11 +44,10 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortar, HydraMortar
 		float alpha = (1.0F - f / 100.0F) * 0.8F;
 
 		RenderType renderType = this.mortarModel.renderType(TEXTURE);
-		submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 
 		if (state.fuse / 5 % 2 == 0) {
-			submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.pack(OverlayTexture.u(1.0F), 10), ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F), null, state.outlineColor, null);
-
+			submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.pack(OverlayTexture.u(1.0F), 10), ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F), null, state.outlineColor);
 		}
 
 		stack.popPose();

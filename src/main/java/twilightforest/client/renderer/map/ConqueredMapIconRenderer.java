@@ -33,7 +33,7 @@ public class ConqueredMapIconRenderer implements IMapDecorationRenderer, MapDeco
 
 		stack.pushPose();
 		stack.translate(decoration.x / 2.0F + 64.0F, decoration.y / 2.0F + 64.0F, 0.0F);
-		stack.mulPose(Axis.ZP.rotationDegrees((decoration.rot * 360) / 16.0F));
+		stack.rotate(Axis.ZP.rotationDegrees((decoration.rot * 360) / 16.0F));
 		stack.scale(2.0F, 2.0F, 2.0F);
 		stack.translate(-1.0F, -1.0F, -0.005F);
 		float depth = -0.095F;

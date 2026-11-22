@@ -136,6 +136,6 @@ public class UrGhastModel extends TFGhastModel<TFGhastRenderState> implements Tr
 		RenderType renderType = RenderTypes.entityCutout(UrGhastRenderer.TEXTURE);
 		collector.submitModelPart(this.body, stack, renderType, light, overlay, null, -1);
 		if (breakProgress != null)
-			collector.submitCrumblingOverlay(this.body, stack, renderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(this.body, stack, renderType, light, overlay, -1, breakProgress);
 	}
 }

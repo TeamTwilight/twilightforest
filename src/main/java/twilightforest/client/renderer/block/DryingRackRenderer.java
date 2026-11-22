@@ -34,7 +34,7 @@ public class DryingRackRenderer implements BlockEntityRenderer<DryingRackBlockEn
 		stack.pushPose();
 		stack.translate(0.4F * dir.getStepX() + 0.5F, state.renderOffset, 0.4F * dir.getStepZ() + 0.5F);
 		stack.scale(0.99F, 0.99F, 0.99F); //fix possible z-fighting
-		stack.mulPose(Axis.YP.rotationDegrees(-dir.toYRot()));
+		stack.rotate(Axis.YP.rotationDegrees(-dir.toYRot()));
 		state.item.submit(stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 		stack.popPose();
 	}

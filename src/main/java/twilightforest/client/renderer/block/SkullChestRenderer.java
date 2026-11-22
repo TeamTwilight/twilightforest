@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -45,14 +46,17 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
 
-		collector.submitModel(this.model, lidRotation, stack, this.model.renderType(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+		RenderType renderType = this.model.renderType(state.texture);
+		collector.submitModel(this.model, lidRotation, stack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+		if (state.breakProgress != null)
+			collector.order(1).submitCrumblingOverlay(this.model, lidRotation, stack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		stack.popPose();
 	}
 
 	public static void applyCasketPose(PoseStack stack, Direction facing) {
 		stack.translate(0.5F, 0.0F, 0.5F);
-		stack.mulPose(facing.getRotation());
-		stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+		stack.rotate(facing.getRotation());
+		stack.rotate(Axis.XP.rotationDegrees(90.0F));
 	}
 
 	public static void applyCasketItemPose(PoseStack stack) {

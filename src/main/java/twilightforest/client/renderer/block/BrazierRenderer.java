@@ -48,7 +48,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, 
 		float y = 0.35F * state.light.getFireSize();
 		stack.translate(0.26F, 1.6F, 0.5F);
 		stack.scale(0.35F, y, 0.35F);
-		stack.mulPose(Axis.YP.rotationDegrees(45.0F));
+		stack.rotate(Axis.YP.rotationDegrees(45.0F));
 		if (state.light.isLit() && y > 0.0F) {
 			state.fire.submit(stack, collector, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
 		}
@@ -65,7 +65,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, 
 
 	public static void applyBrazierPose(PoseStack stack) {
 		stack.translate(0.5F, 1.5F, 0.5F);
-		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		stack.rotate(Axis.ZP.rotationDegrees(180.0F));
 	}
 
 	@Override

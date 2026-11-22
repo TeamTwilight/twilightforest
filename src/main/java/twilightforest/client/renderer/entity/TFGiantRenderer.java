@@ -106,8 +106,8 @@ public class TFGiantRenderer<T extends GiantMiner> extends HumanoidMobRenderer<T
 			if (!item.isEmpty()) {
 				stack.pushPose();
 				this.getParentModel().translateToHand(state, arm, stack);
-				stack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-				stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+				stack.rotate(Axis.XP.rotationDegrees(-90.0F));
+				stack.rotate(Axis.YP.rotationDegrees(180.0F));
 				boolean flag = arm == HumanoidArm.LEFT;
 				// TF - move item a bit to actually fit in the giant's hand (y and z changes)
 				stack.translate((float) (flag ? -1 : 1) / 16.0F, 0.0D, -0.5D);

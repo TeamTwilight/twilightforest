@@ -46,7 +46,7 @@ public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, Living
 
 	@Override
 	protected void setupRotations(LivingEntityRenderState state, PoseStack stack, float yRot, float scale) {
-		stack.mulPose(Axis.YP.rotationDegrees(180 - yRot));
+		stack.rotate(Axis.YP.rotationDegrees(180 - yRot));
 	}
 
 	@Override

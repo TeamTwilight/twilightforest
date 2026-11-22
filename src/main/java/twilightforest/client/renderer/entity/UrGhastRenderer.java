@@ -23,10 +23,10 @@ public class UrGhastRenderer extends MobRenderer<UrGhast, TFGhastRenderState, Ur
 	}
 
 	@Override
-	public boolean shouldRender(UrGhast entity, Frustum frustum, double x, double y, double z) {
+	public boolean shouldRender(UrGhast entity, Frustum culler, double camX, double camY, double camZ, float partialTicks) {
 		if (entity.deathTime > UrGhast.DEATH_ANIMATION_DURATION / 3)
 			return false;
-		return super.shouldRender(entity, frustum, x, y, z);
+		return super.shouldRender(entity, culler, camX, camY, camZ, partialTicks);
 	}
 
 	@Override

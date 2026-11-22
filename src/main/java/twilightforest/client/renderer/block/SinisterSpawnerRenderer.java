@@ -64,9 +64,9 @@ public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpaw
 	public static void submitEntityInSpawner(PoseStack stack, SubmitNodeCollector collector, EntityRenderState displayEntity, EntityRenderDispatcher entityRenderer, float spin, float scale, CameraRenderState camera) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.4F, 0.5F);
-		stack.mulPose(Axis.YP.rotationDegrees(spin));
+		stack.rotate(Axis.YP.rotationDegrees(spin));
 		stack.translate(0.0F, -0.2F, 0.0F);
-		stack.mulPose(Axis.XP.rotationDegrees(-30.0F));
+		stack.rotate(Axis.XP.rotationDegrees(-30.0F));
 		stack.scale(scale, scale, scale);
 		entityRenderer.submit(displayEntity, camera, 0.0D, 0.0D, 0.0D, stack, collector);
 		stack.popPose();

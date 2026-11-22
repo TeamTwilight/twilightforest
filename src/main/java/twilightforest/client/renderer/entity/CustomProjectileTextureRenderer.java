@@ -67,8 +67,8 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable,
 		stack.pushPose();
 		stack.scale(0.5F * this.scale, 0.5F * this.scale, 0.5F * this.scale);
 
-		stack.mulPose(camera.orientation);
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+		stack.rotate(camera.orientation);
+		stack.rotate(Axis.YP.rotationDegrees(180.0F));
 		submitNodeCollector.submitCustomGeometry(stack, RenderTypes.entityCutout(this.texture), (pose1, vertexConsumer) -> {
 			vertex(vertexConsumer, pose1, light, 0.0F, 0.0F, 0.0F, 1.0F, overlay);
 			vertex(vertexConsumer, pose1, light, 1.0F, 0.0F, 1.0F, 1.0F, overlay);

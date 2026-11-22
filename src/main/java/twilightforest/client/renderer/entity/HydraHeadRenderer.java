@@ -26,7 +26,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 
 	@Override
 	public void submit(HydraHeadRenderState state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
-		stack.mulPose(Axis.YP.rotationDegrees(-180));
+		stack.rotate(Axis.YP.rotationDegrees(-180));
 		super.submit(state, stack, buffer, cameraRenderState);
 	}
 

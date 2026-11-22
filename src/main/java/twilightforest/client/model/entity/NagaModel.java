@@ -51,6 +51,6 @@ public class NagaModel<T extends EntityRenderState> extends EntityModel<T> imple
 		RenderType renderType = RenderTypes.entityCutout(NagaRenderer.TEXTURE);
 		collector.submitModelPart(this.head, stack, renderType, light, overlay, null, -1);
 		if (breakProgress != null)
-			collector.submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
+			collector.order(1).submitCrumblingOverlay(this.head, stack, renderType, light, overlay, -1, breakProgress);
 	}
 }

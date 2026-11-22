@@ -24,8 +24,8 @@ public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock, FallingBloc
 	}
 
 	@Override
-	public boolean shouldRender(ThrownBlock entity, Frustum culler, double camX, double camY, double camZ) {
-		return super.shouldRender(entity, culler, camX, camY, camZ) && entity.getBlockState() != entity.level().getBlockState(entity.blockPosition());
+	public boolean shouldRender(ThrownBlock entity, Frustum culler, double camX, double camY, double camZ, float partialTicks) {
+		return super.shouldRender(entity, culler, camX, camY, camZ, partialTicks) && entity.getBlockState() != entity.level().getBlockState(entity.blockPosition());
 	}
 
 	@Override
