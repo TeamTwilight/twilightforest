@@ -19,7 +19,7 @@ public record IsMinionCondition(boolean inverse) implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext context) {
-		return context.getOptionalParameter(LootContextParams.THIS_ENTITY) instanceof CarminiteGhastling ghastling && ghastling.isMinion() == !inverse;
+		return context.getOptional(LootContextParams.THIS_ENTITY) instanceof CarminiteGhastling ghastling && ghastling.isMinion() == !inverse;
 	}
 
 	public static Builder builder(boolean inverse) {

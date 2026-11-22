@@ -3,6 +3,8 @@ package twilightforest.loot.modifiers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.Holder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -15,13 +17,14 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FieryToolSmeltingModifier extends LootModifier {
 	public static final MapCodec<FieryToolSmeltingModifier> CODEC = RecordCodecBuilder.mapCodec(inst -> LootModifier.codecStart(inst).apply(inst, FieryToolSmeltingModifier::new));
 
-	public FieryToolSmeltingModifier(LootItemCondition[] conditions, int priority) {
-		super(conditions, priority);
+	public FieryToolSmeltingModifier(Optional<Holder<LootItemCondition>> condition, int priority) {
+		super(condition, priority);
 	}
 
 	@Override
@@ -37,8 +40,8 @@ public class FieryToolSmeltingModifier extends LootModifier {
 				.orElse(Pair.of(stack, 0.0F))).toList();
 
 		float xp = (float) list.stream().mapToDouble(Pair::getRight).sum();
-		if (xp > 0.0F && context.hasParameter(LootContextParams.THIS_ENTITY)) {
-			ExperienceOrb.award(context.getLevel(), context.getParameter(LootContextParams.THIS_ENTITY).position(), Math.round(xp));
+		if (xp > 0.0F && context.getOptional(LootContextParams.THIS_ENTITY) instanceof Entity entity) {
+			ExperienceOrb.award(context.getLevel(), entity.position(), Math.round(xp));
 		}
 
 		return list.stream().map(Pair::getLeft).collect(Collectors.toCollection(ObjectArrayList::new));

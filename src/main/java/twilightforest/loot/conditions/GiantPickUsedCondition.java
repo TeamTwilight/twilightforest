@@ -28,7 +28,7 @@ public record GiantPickUsedCondition(LootContext.EntityTarget target) implements
 
 	@Override
 	public boolean test(LootContext context) {
-		if (context.getOptionalParameter(this.target.contextParam()) instanceof Player player) {
+		if (context.getOptional(this.target.contextParam()) instanceof Player player) {
 			GiantPickaxeMiningAttachment attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 			return player.level().getGameTime() == attachment.getMining() && attachment.canMakeGiantBlock();
 		}

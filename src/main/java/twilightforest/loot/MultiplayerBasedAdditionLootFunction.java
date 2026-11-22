@@ -2,53 +2,55 @@ package twilightforest.loot;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 
-import java.util.List;
+import java.util.Optional;
 
 public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFunction {
-	public static final MapCodec<MultiplayerBasedAdditionLootFunction> CODEC = RecordCodecBuilder.mapCodec(
-		p_298131_ -> commonFields(p_298131_)
-			.and(NumberProviders.CODEC.fieldOf("extra_count_per_player").forGetter(o -> o.value))
-			.apply(p_298131_, MultiplayerBasedAdditionLootFunction::new)
+	public static final MapCodec<MultiplayerBasedAdditionLootFunction> MAP_CODEC = RecordCodecBuilder.mapCodec(
+		instance -> commonFields(instance)
+			.and(ContextIntProviders.DIRECT_CODEC.fieldOf("extra_count_per_player").forGetter(o -> o.value))
+			.apply(instance, MultiplayerBasedAdditionLootFunction::new)
 	);
 
-	private final NumberProvider value;
+	private final ContextIntProvider value;
 
-	public MultiplayerBasedAdditionLootFunction(List<LootItemCondition> predicates, NumberProvider value) {
-		super(predicates);
+	public MultiplayerBasedAdditionLootFunction(Optional<Holder<LootItemCondition>> condition, ContextIntProvider value) {
+		super(condition);
 		this.value = value;
 	}
 
-	public static MultiplayerBasedAdditionLootFunction.Builder addForAllParticipatingPlayers(NumberProvider additionPerPlayer) {
+	public static MultiplayerBasedAdditionLootFunction.Builder addForAllParticipatingPlayers(ContextIntProvider additionPerPlayer) {
 		return new MultiplayerBasedAdditionLootFunction.Builder(additionPerPlayer);
 	}
 
 	@Override
 	public MapCodec<? extends LootItemConditionalFunction> codec() {
-		return CODEC;
+		return MAP_CODEC;
 	}
 
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
 		if (TFConfig.multiplayerFightAdjuster.adjustsLootRolls()) {
-			if (context.hasParameter(LootContextParams.THIS_ENTITY) && context.getParameter(LootContextParams.THIS_ENTITY).hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
-				int qualifiedPlayers = context.getParameter(LootContextParams.THIS_ENTITY).getData(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
+			if (context.getOptional(LootContextParams.THIS_ENTITY) instanceof Entity entity && entity.hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
+				int qualifiedPlayers = entity.getData(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				if (qualifiedPlayers > 1) {
 					int participatingPlayers = qualifiedPlayers - 1;
 					int extraItems = this.value.getInt(context) * participatingPlayers;
 					stack.setCount(Mth.clamp(stack.getCount() + extraItems, 0, stack.getMaxStackSize()));
-					TwilightForestMod.LOGGER.debug("{} extra players participated in a fight against {}, dropping {} extra {} for a total of {}.", participatingPlayers, context.getParameter(LootContextParams.THIS_ENTITY).getType().getDescription().getString(), extraItems, stack.getItemName().getString(), stack.getCount());
+					TwilightForestMod.LOGGER.debug("{} extra players participated in a fight against {}, dropping {} extra {} for a total of {}.", participatingPlayers, entity.getType().getDescription().getString(), extraItems, stack.getItemName().getString(), stack.getCount());
 				}
 			}
 		}
@@ -56,9 +58,9 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 	}
 
 	public static class Builder extends LootItemConditionalFunction.Builder<MultiplayerBasedAdditionLootFunction.Builder> {
-		private final NumberProvider count;
+		private final ContextIntProvider count;
 
-		public Builder(NumberProvider pLootingMultiplier) {
+		public Builder(ContextIntProvider pLootingMultiplier) {
 			this.count = pLootingMultiplier;
 		}
 
@@ -69,7 +71,7 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 
 		@Override
 		public MultiplayerBasedAdditionLootFunction build() {
-			return new MultiplayerBasedAdditionLootFunction(this.getConditions(), this.count);
+			return new MultiplayerBasedAdditionLootFunction(this.getCondition(), this.count);
 		}
 	}
 }

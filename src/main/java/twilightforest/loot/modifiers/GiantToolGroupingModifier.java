@@ -3,6 +3,7 @@ package twilightforest.loot.modifiers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -18,19 +19,20 @@ import twilightforest.init.TFDataAttachments;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class GiantToolGroupingModifier extends LootModifier {
 	public static Map<Block, Item> CONVERSIONS = new HashMap<>(); // Map of block-to-giant block conversions. Supposed to be similar to vanilla's AxeItem.STRIPPABLES Map
 
 	public static final MapCodec<GiantToolGroupingModifier> CODEC = RecordCodecBuilder.mapCodec(inst -> LootModifier.codecStart(inst).apply(inst, GiantToolGroupingModifier::new));
 
-	public GiantToolGroupingModifier(LootItemCondition[] conditions, int priority) {
-		super(conditions, priority);
+	public GiantToolGroupingModifier(Optional<Holder<LootItemCondition>> condition, int priority) {
+		super(condition, priority);
 	}
 
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-		if (context.getParameter(LootContextParams.THIS_ENTITY) instanceof Player player) {
+		if (context.getOptional(LootContextParams.THIS_ENTITY) instanceof Player player) {
 			if (!generatedLoot.isEmpty() && generatedLoot.getFirst().getItem() instanceof BlockItem block) {
 				if (CONVERSIONS.containsKey(block.getBlock())) { // Should be true but let's double-check
 					GiantPickaxeMiningAttachment attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
