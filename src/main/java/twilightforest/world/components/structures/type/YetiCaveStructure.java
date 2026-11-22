@@ -6,8 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jspecify.annotations.Nullable;
@@ -86,7 +86,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 		);
 		//if (true) return floorCeiling;
 
-		DensityFunction walls = DensityFunctions.yClampedGradient(-3 + riser, 21 + riser, -9.5, -2.5);
+		DensityFunction walls = DensityFunctions.yClampedGradient(-3 + riser, 21 + riser, -9.5F, -2.5F);
 
 		// Entrances & actual square interior, as a negative
 		DensityFunction interiorCarver = DensityFunctions.min(
