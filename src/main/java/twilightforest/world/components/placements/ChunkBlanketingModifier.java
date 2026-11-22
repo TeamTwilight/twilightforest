@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -28,7 +28,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 	public static final MapCodec<ChunkBlanketingModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.floatRange(0.0f, 1.0f).fieldOf("integrity").forGetter(o -> o.integrity),
 		Heightmap.Types.CODEC.fieldOf("heightmap").forGetter(o -> o.heightmap),
-		RegistryCodecs.homogeneousList(Registries.BIOME).optionalFieldOf("biome_lock").forGetter(o -> o.biomeRLOptional)
+		RegistryCodecs.holderSet(Registries.BIOME).optionalFieldOf("biome_lock").forGetter(o -> o.biomeRLOptional)
 	).apply(instance, ChunkBlanketingModifier::new));
 
 	public final float integrity;

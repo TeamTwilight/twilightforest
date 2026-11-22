@@ -1,8 +1,9 @@
 package twilightforest.init.custom;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.RegistryFileCodec;
+import net.minecraft.core.registries.codec.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import twilightforest.TFRegistries;
@@ -10,7 +11,7 @@ import twilightforest.init.TFStructures;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 public class StructureSpeleothemConfigs {
-	public static final RegistryFileCodec<StructureSpeleothemConfig> CODEC = RegistryFileCodec.create(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC, false);
+	public static final Codec<Holder<StructureSpeleothemConfig>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC, false);
 
 	public static final ResourceKey<StructureSpeleothemConfig> SMALL_HILL = makeKey(TFStructures.HOLLOW_HILL_SMALL.identifier());
 	public static final ResourceKey<StructureSpeleothemConfig> MEDIUM_HILL = makeKey(TFStructures.HOLLOW_HILL_MEDIUM.identifier());

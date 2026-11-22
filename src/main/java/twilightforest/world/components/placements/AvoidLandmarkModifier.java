@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -31,7 +32,7 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 		Codec.BOOL.fieldOf("occupies_underground").forGetter(o -> o.occupiesUnderground),
 		Codec.BOOL.fieldOf("occupies_vegetation").forGetter(o -> o.occupiesVegetation),
 		Codec.INT.fieldOf("additional_clearance").forGetter(o -> o.additionalClearance),
-		RegistryCodecs.homogeneousList(Registries.STRUCTURE).fieldOf("structures_allowed").forGetter(m -> m.structuresAllowed)
+		RegistryCodecs.holderSet(Registries.STRUCTURE).fieldOf("structures_allowed").forGetter(m -> m.structuresAllowed)
 	).apply(instance, AvoidLandmarkModifier::new)).validate(AvoidLandmarkModifier::validate);
 
 	private final boolean occupiesSurface;
