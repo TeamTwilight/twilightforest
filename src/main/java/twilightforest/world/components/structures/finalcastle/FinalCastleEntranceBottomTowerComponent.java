@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
@@ -26,7 +25,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -41,7 +40,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 	/**
 	 * Add some stairs leading to this tower
 	 */
-	private boolean addStairs(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean addStairs(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
@@ -51,9 +50,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 		FinalCastleEntranceStairsComponent stairs = new FinalCastleEntranceStairsComponent(index, dx.getX(), dx.getY(), dx.getZ(), direction);
 
 		list.addPiece(stairs);
-		if (list instanceof StructurePiecesBuilder start) {
-			stairs.addChildren(start.pieces.get(0), list, rand);
-		}
+		stairs.addChildren(list.pieces.getFirst(), list, rand);
 		return true;
 	}
 

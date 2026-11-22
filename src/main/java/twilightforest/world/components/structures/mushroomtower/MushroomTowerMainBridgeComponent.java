@@ -4,7 +4,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
@@ -22,7 +21,7 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 	}
 
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		// make a new size 15 main tower
 		Direction direction = getStructureRelativeRotation(rotation);
@@ -34,9 +33,7 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 		MushroomTowerMainComponent wing = new MushroomTowerMainComponent(index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
 
 		list.addPiece(wing);
-		if (list instanceof StructurePiecesBuilder start) {
-			wing.addChildren(start.pieces.get(0), list, rand);
-		}
+		wing.addChildren(list.pieces.getFirst(), list, rand);
 		addOpening(x, y, z, rotation);
 
 		return true;

@@ -16,9 +16,9 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
@@ -83,7 +83,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -126,7 +126,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Attach a roof to this tower.
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void makeARoof(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		int index = this.getGenDepth();
 
 		TowerRoofComponent roof = switch (rand.nextInt(5)) {
@@ -142,7 +142,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void makeAttachedRoof(StructurePieceAccessor list, RandomSource rand) {
+	protected void makeAttachedRoof(StructurePiecesBuilder list, RandomSource rand) {
 		int index = this.getGenDepth();
 		TowerRoofComponent roof;
 
@@ -175,7 +175,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
 	@Override
-	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void makeABeard(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(this.getGenDepth() + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
@@ -185,7 +185,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Make another wing just like this one
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 8) {
 			return false;
@@ -217,7 +217,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	protected boolean makeTowerBalcony(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
+	protected boolean makeTowerBalcony(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 

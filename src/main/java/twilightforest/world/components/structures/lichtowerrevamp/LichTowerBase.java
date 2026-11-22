@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
@@ -61,7 +62,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	}
 
 	@Override
-	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePiecesBuilder pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/tower_below" -> LichTowerSegment.buildTowerBySegments(pieceAccessor, context, connection.pos(), connection.orientation(), this, this.structureManager, context.random().nextIntBetweenInclusive(12, 15));
 			case "twilightforest:lich_tower/bridge" -> {

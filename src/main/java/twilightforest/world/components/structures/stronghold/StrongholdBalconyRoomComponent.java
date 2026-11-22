@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -56,7 +56,7 @@ public class StrongholdBalconyRoomComponent extends KnightStrongholdComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		// lower left exit

@@ -11,9 +11,9 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -40,7 +40,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -48,7 +48,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 6) {
 			return false;

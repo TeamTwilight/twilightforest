@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import tamaized.beanification.Autowired;
@@ -56,7 +56,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		BlockPos pos = this.getWorldPos(RADIUS / 2, 1, RADIUS / 2).immutable();

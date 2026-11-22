@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -53,7 +52,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -95,7 +94,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		}
 	}
 
-	protected boolean addDungeonRoom(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, Rotation rotation, int level) {
+	protected boolean addDungeonRoom(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand, Rotation rotation, int level) {
 		rotation = rotation.getRotated(this.rotation);
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
@@ -104,31 +103,27 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		BoundingBox largerBB = BoundingBoxUtils.clone(dRoom.getBoundingBox());
 
-		if (list instanceof StructurePiecesBuilder start) {
-			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.pieces, largerBB, this);
-			if (intersect == null) {
-				list.addPiece(dRoom);
-				dRoom.addChildren(parent, list, rand);
-				return true;
-			}
+		StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(list.pieces, largerBB, this);
+		if (intersect == null) {
+			list.addPiece(dRoom);
+			dRoom.addChildren(parent, list, rand);
+			return true;
 		}
 		return false;
 	}
 
-	protected boolean addDungeonExit(StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
+	protected boolean addDungeonExit(StructurePiecesBuilder list, RandomSource rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 
 		rotation = rotation.getRotated(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 		FinalCastleDungeonExitComponent dRoom = new FinalCastleDungeonExitComponent(this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
-		if (list instanceof StructurePiecesBuilder start) {
-			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.pieces, dRoom.getBoundingBox(), this);
-			if (intersect == null) {
-				list.addPiece(dRoom);
-				dRoom.addChildren(this, list, rand);
-				return true;
-			}
+		StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(list.pieces, dRoom.getBoundingBox(), this);
+		if (intersect == null) {
+			list.addPiece(dRoom);
+			dRoom.addChildren(this, list, rand);
+			return true;
 		}
 		return false;
 	}

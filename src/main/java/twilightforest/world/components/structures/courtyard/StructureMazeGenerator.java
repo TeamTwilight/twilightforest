@@ -9,9 +9,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.Diagonals;
@@ -60,7 +60,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 
 	// Actually assemble maze
 	@Override
-	public void addChildren(StructurePiece structureComponent, StructurePieceAccessor list, RandomSource random) {
+	public void addChildren(StructurePiece structureComponent, StructurePiecesBuilder list, RandomSource random) {
 		super.addChildren(structureComponent, list, random);
 		final int offset = 6;
 
@@ -169,7 +169,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 	}
 
 	@SuppressWarnings({"fallthrough"})
-	private void processInnerWallsAndFloor(StructurePiece structureComponent, StructurePieceAccessor list, RandomSource random, final int offset, final Rotation[] rotations) {
+	private void processInnerWallsAndFloor(StructurePiece structureComponent, StructurePiecesBuilder list, RandomSource random, final int offset, final Rotation[] rotations) {
 		for (int x = 0; x < widthInCellCount - 1; x++) {
 			for (int y = 0; y < heightInCellCount - 1; y++) {
 				final boolean xCenter = x == (widthInCellCount / 2) - 1;
@@ -395,7 +395,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 		}
 	}
 
-	private void processOuterWalls(StructurePiece structureComponent, StructurePieceAccessor list, RandomSource random, final int offset, final Rotation[] rotations) {
+	private void processOuterWalls(StructurePiece structureComponent, StructurePiecesBuilder list, RandomSource random, final int offset, final Rotation[] rotations) {
 		// -------- WALLS
 		for (Diagonals diagonal : Diagonals.values()) {
 			// Walls at corner notches going with X Axis, crossing Z Axis. Sideways.

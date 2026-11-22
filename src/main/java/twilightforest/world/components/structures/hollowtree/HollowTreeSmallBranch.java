@@ -10,8 +10,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.features.FeatureLogic;
 
@@ -25,7 +25,7 @@ public class HollowTreeSmallBranch extends HollowTreeMedBranch {
 	}
 
 	@Override
-	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece structurecomponent, StructurePiecesBuilder list, RandomSource rand) {
 		// No-op
 	}
 

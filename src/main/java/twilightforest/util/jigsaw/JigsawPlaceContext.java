@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -104,11 +104,11 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 		return template.getBoundingBox(this.templatePos, this.placementSettings.getRotation(), this.placementSettings.getRotationPivot(), this.placementSettings.getMirror());
 	}
 
-	public boolean isWithoutCollision(StructureTemplateManager manager, StructurePieceAccessor pieceAccessor, UnaryOperator<BoundingBox> transformer) {
+	public boolean isWithoutCollision(StructureTemplateManager manager, StructurePiecesBuilder pieceAccessor, UnaryOperator<BoundingBox> transformer) {
 		return pieceAccessor.findCollisionPiece(transformer.apply(this.makeBoundingBox(manager))) == null;
 	}
 
-	public boolean isWithoutCollision(StructureTemplateManager manager, StructurePieceAccessor pieceAccessor) {
+	public boolean isWithoutCollision(StructureTemplateManager manager, StructurePiecesBuilder pieceAccessor) {
 		return this.isWithoutCollision(manager, pieceAccessor, b -> b);
 	}
 

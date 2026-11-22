@@ -10,8 +10,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFStructurePieceTypes;
@@ -34,7 +34,7 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, RandomSource random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePiecesBuilder list, RandomSource random) {
 		// NO-OP
 	}
 

@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -95,6 +96,6 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 	}
 
 	@Override
-	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePiecesBuilder pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 }

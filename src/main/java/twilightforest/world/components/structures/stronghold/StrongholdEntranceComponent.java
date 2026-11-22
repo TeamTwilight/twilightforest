@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
@@ -36,39 +35,37 @@ public class StrongholdEntranceComponent extends KnightStrongholdComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor old, RandomSource random) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder old, RandomSource random) {
 		super.addChildren(parent, old, random);
 
-		if (old instanceof StructurePiecesBuilder start) {
-			List<StructurePiece> list = start.pieces;
+		List<StructurePiece> list = old.pieces;
 
-			// make a random component in each direction
-			this.lowerPieces.prepareStructurePieces();
-			this.addNewComponent(parent, old, random, Rotation.NONE, 4, 1, 18);
-			this.lowerPieces.prepareStructurePieces();
-			if (this.listContainsBossRoom(list)) {
-				this.lowerPieces.markBossRoomUsed();
-			}
-			this.addNewComponent(parent, old, random, Rotation.CLOCKWISE_90, -1, 1, 13);
-			this.lowerPieces.prepareStructurePieces();
-			if (this.listContainsBossRoom(list)) {
-				this.lowerPieces.markBossRoomUsed();
-			}
-			this.addNewComponent(parent, old, random, Rotation.CLOCKWISE_180, 13, 1, -1);
-			this.lowerPieces.prepareStructurePieces();
-			if (this.listContainsBossRoom(list)) {
-				this.lowerPieces.markBossRoomUsed();
-			}
-			this.addNewComponent(parent, old, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
-			if (!this.listContainsBossRoom(list)) {
-				TwilightForestMod.LOGGER.error("Did not find boss room from exit 3 - EPIC FAIL"); //Sorry, no fatal here anymore
-			}
-
-			// add the upper stronghold
-			KnightStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
-			list.add(accessChamber);
-			accessChamber.addChildren(this, old, random);
+		// make a random component in each direction
+		this.lowerPieces.prepareStructurePieces();
+		this.addNewComponent(parent, old, random, Rotation.NONE, 4, 1, 18);
+		this.lowerPieces.prepareStructurePieces();
+		if (this.listContainsBossRoom(list)) {
+			this.lowerPieces.markBossRoomUsed();
 		}
+		this.addNewComponent(parent, old, random, Rotation.CLOCKWISE_90, -1, 1, 13);
+		this.lowerPieces.prepareStructurePieces();
+		if (this.listContainsBossRoom(list)) {
+			this.lowerPieces.markBossRoomUsed();
+		}
+		this.addNewComponent(parent, old, random, Rotation.CLOCKWISE_180, 13, 1, -1);
+		this.lowerPieces.prepareStructurePieces();
+		if (this.listContainsBossRoom(list)) {
+			this.lowerPieces.markBossRoomUsed();
+		}
+		this.addNewComponent(parent, old, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
+		if (!this.listContainsBossRoom(list)) {
+			TwilightForestMod.LOGGER.error("Did not find boss room from exit 3 - EPIC FAIL"); //Sorry, no fatal here anymore
+		}
+
+		// add the upper stronghold
+		KnightStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
+		list.add(accessChamber);
+		accessChamber.addChildren(this, old, random);
 	}
 
 	private boolean listContainsBossRoom(List<StructurePiece> list) {

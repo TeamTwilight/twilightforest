@@ -8,9 +8,9 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -81,7 +81,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	/**
 	 * Does this roof intersect anything except the parent tower?
 	 */
-	public boolean fits(TowerWingComponent parent, StructurePieceAccessor list) {
+	public boolean fits(TowerWingComponent parent, StructurePiecesBuilder list) {
 		return list.findCollisionPiece(this.boundingBox) == parent;
 	}
 }

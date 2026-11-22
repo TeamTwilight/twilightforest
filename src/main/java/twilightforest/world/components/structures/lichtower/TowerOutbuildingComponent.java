@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -32,14 +32,14 @@ public class TowerOutbuildingComponent extends TowerWingComponent {
 	 * NO BEARDS!
 	 */
 	@Override
-	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void makeABeard(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 	}
 
 	/**
 	 * Outbuildings should not make new wings close to the ground.
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation direction) {
+	public boolean makeTowerWing(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation direction) {
 		if (y > 7) {
 			return super.makeTowerWing(list, rand, index, x, y, z, wingSize, wingHeight, direction);
 		} else {

@@ -7,8 +7,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
@@ -35,7 +35,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 //			int amtToLower = (((this.boundingBox.maxY - 245) / 5) * 5) + 5;
 //
 //			FMLLog.info("[TwilightForest] Lowering Dark Tower max height by %d to be within world bounds", amtToLower);
-//			
+//
 //			this.height -= amtToLower;
 //			this.boundingBox.maxY -= amtToLower;
 //		}
@@ -51,7 +51,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -66,7 +66,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
 		// limit sprawl to a reasonable amount
 		if (this.getGenDepth() < 3) {
-			// make a special sub-tower that will lead back here 
+			// make a special sub-tower that will lead back here
 			// try 6 times
 			for (int i = 0; i < 6; i++) {
 				mainDir = makeAscenderTower(list, rand);
@@ -99,7 +99,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	/**
 	 * Make a new ascender tower.  Returns direction if successful, null if not.
 	 */
-	private Rotation makeAscenderTower(StructurePieceAccessor list, RandomSource rand) {
+	private Rotation makeAscenderTower(StructurePiecesBuilder list, RandomSource rand) {
 
 		Rotation mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
 		int[] dest = getValidOpening(rand, mainDir);
@@ -119,7 +119,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	 * Make a mushroom roof!
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void makeARoof(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		TowerRoofComponent roof = new TowerRoofMushroomComponent(this.getGenDepth() + 1, this, 1.6F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);

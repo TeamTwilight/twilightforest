@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -35,7 +35,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -44,7 +44,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	/**
 	 * build more steps towards the specified direction
 	 */
-	public FinalCastleDungeonStepsComponent buildMoreStepsTowards(StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
+	public FinalCastleDungeonStepsComponent buildMoreStepsTowards(StructurePiecesBuilder list, RandomSource rand, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 
@@ -76,7 +76,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	/**
 	 * build a new level under the exit
 	 */
-	public FinalCastleDungeonEntranceComponent buildLevelUnder(StructurePieceAccessor list, RandomSource rand, int level) {
+	public FinalCastleDungeonEntranceComponent buildLevelUnder(StructurePiecesBuilder list, RandomSource rand, int level) {
 		// find center of landing
 		int dx = this.getWorldX(2, 19);
 		int dy = this.getWorldY(-7);
@@ -93,7 +93,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	/**
 	 * build the boss room
 	 */
-	public FinalCastleDungeonForgeRoomComponent buildBossRoomUnder(StructurePieceAccessor list, RandomSource rand) {
+	public FinalCastleDungeonForgeRoomComponent buildBossRoomUnder(StructurePiecesBuilder list, RandomSource rand) {
 		// find center of landing
 		int dx = this.getWorldX(2, 19);
 		int dy = this.getWorldY(-31);

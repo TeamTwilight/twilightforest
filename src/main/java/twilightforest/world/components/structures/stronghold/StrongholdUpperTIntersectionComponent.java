@@ -6,8 +6,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class StrongholdUpperTIntersectionComponent extends StrongholdUpperCompon
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		// make a random component to the left

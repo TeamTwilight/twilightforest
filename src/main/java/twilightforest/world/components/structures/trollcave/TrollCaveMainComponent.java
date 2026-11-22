@@ -17,10 +17,10 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFFeatures;
@@ -80,7 +80,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		// make 4 caves
 		for (final Rotation caveRotation : RotationUtil.ROTATIONS) {
 			BlockPos dest = getValidOpening(rand, caveRotation);
@@ -93,7 +93,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		vault.addChildren(this, list, rand);
 	}
 
-	protected boolean makeSmallerCave(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeSmallerCave(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 

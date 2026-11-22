@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -73,7 +72,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -87,7 +86,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		makeARoof(parent, list, rand);
 		if (!this.hasBase) {
 			makeABeard(parent, list, rand);
-		} else if (list instanceof StructurePiecesBuilder structurePiecesBuilder){
+		} else if (list instanceof StructurePiecesBuilder structurePiecesBuilder) {
 			UtilityPiece utilityPiece = new UtilityPiece(getGenDepth() + 1,
 				new BoundingBox(
 					boundingBox.minX(), structurePiecesBuilder.pieces.stream().mapToInt(piece -> piece.getBoundingBox().minY()).min().getAsInt(), boundingBox.minZ(),
@@ -126,11 +125,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	protected boolean shouldHaveBase(StructurePieceAccessor list, RandomSource rand) {
-		if (!(list instanceof StructurePiecesBuilder start))
-			return false;
-
-		if (start.pieces.stream().anyMatch(piece -> {
+	protected boolean shouldHaveBase(StructurePiecesBuilder list, RandomSource rand) {
+		if (list.pieces.stream().anyMatch(piece -> {
 			BoundingBox pieceBox = piece.getBoundingBox();
 			BoundingBox box = this.getBoundingBox();
 			Rectangle rectanglePiece = new Rectangle(pieceBox.minX(), pieceBox.minZ(), pieceBox.maxX() - pieceBox.minX(), pieceBox.maxZ() - pieceBox.minZ());
@@ -157,21 +153,21 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (!(list instanceof StructurePiecesBuilder start) || !start.pieces.isEmpty() && isOutOfRange(start.pieces.getFirst(), dx[0], dx[2], RANGE))
+		if (!list.pieces.isEmpty() && isOutOfRange(list.pieces.getFirst(), dx[0], dx[2], RANGE))
 			return false;
 
 		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		BoundingBox sbb = wing.getBoundingBox();
-		StructurePiece intersect = start.findCollisionPiece(new BoundingBox(
+		StructurePiece intersect = list.findCollisionPiece(new BoundingBox(
 			sbb.minX(), sbb.minY() - Math.round(this.size * 1.414F), sbb.minZ(),  // Magic constant is a copy-paste from IceTowerBeardComponent
 			sbb.maxX(), sbb.maxY() + Math.round(this.size * 1.414F), sbb.maxZ()));  // Calculated magic constant from IceTowerRoofComponent
-		if (intersect != null && intersect != this || start.pieces.stream().anyMatch(piece -> {
+		if (intersect != null && intersect != this || list.pieces.stream().anyMatch(piece -> {
 			BoundingBox pieceBox = piece.getBoundingBox();
 			BoundingBox box = this.getBoundingBox();
 			Rectangle rectanglePiece = new Rectangle(pieceBox.minX(), pieceBox.minZ(), pieceBox.maxX() - pieceBox.minX(), pieceBox.maxZ() - pieceBox.minZ());
@@ -181,7 +177,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			return false;
 
 		list.addPiece(wing);
-		wing.addChildren(start.pieces.getFirst(), list, rand);
+		wing.addChildren(list.pieces.getFirst(), list, rand);
 		addOpening(x, y, z, rotation);
 		return true;
 	}
@@ -189,7 +185,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Make a new wing
 	 */
-	public boolean makeBossTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeBossTowerWing(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
@@ -874,7 +870,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * This function keeps trying roofs starting with the largest and fanciest, and then keeps trying smaller and plainer ones
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void makeARoof(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		int index = this.getGenDepth();
 		tryToFitRoof(list, rand, new IceTowerRoofComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 	}
@@ -883,7 +879,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
 	@Override
-	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void makeABeard(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		int index = this.getGenDepth();
 		IceTowerBeardComponent beard;
 		beard = new IceTowerBeardComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());

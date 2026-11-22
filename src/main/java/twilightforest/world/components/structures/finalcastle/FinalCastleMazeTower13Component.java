@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -92,7 +91,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -111,7 +110,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	/**
 	 * Build more components towards the destination
 	 */
-	public void buildTowards(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, BlockPos dest) {
+	public void buildTowards(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand, BlockPos dest) {
 		// regular building first, adds roof/foundation
 		this.addChildren(parent, list, rand);
 
@@ -149,7 +148,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		this.buildNonCriticalTowers(list, rand);
 	}
 
-	protected void buildNonCriticalTowers(StructurePieceAccessor list, RandomSource rand) {
+	protected void buildNonCriticalTowers(StructurePiecesBuilder list, RandomSource rand) {
 		// pick a random direction
 		Direction dir = RotationUtil.getRandomFacing(rand);
 		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getOrientation(), dir);
@@ -228,7 +227,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		return this.getOrientation();
 	}
 
-	private boolean buildContinueTowerTowards(StructurePieceAccessor list, RandomSource rand, BlockPos dest, Direction facing, int howFar) {
+	private boolean buildContinueTowerTowards(StructurePiecesBuilder list, RandomSource rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// adjust opening towards dest.getY() if we are getting close to dest
@@ -294,7 +293,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		return false;
 	}
 
-	protected boolean buildDamagedTower(StructurePieceAccessor list, RandomSource rand, Direction facing) {
+	protected boolean buildDamagedTower(StructurePiecesBuilder list, RandomSource rand, Direction facing) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		int howFar = 14 + rand.nextInt(24);
@@ -347,7 +346,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		return openY;
 	}
 
-	private boolean buildEndTowerTowards(StructurePieceAccessor list, RandomSource rand, BlockPos dest, Direction facing, int howFar) {
+	private boolean buildEndTowerTowards(StructurePiecesBuilder list, RandomSource rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = new BlockPos(
 			opening.getX(),

@@ -23,8 +23,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
@@ -81,15 +81,15 @@ public class HollowTreeTrunk extends HollowTreePiece {
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 
-		this.log = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("log")).result().orElse(HollowTreePiece.DEFAULT_LOG);
-		this.wood = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
-		this.root = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("root")).result().orElse(HollowTreePiece.DEFAULT_ROOT);
-		this.leaves = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
-		this.vine = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("vine")).result().orElse(HollowTreePiece.DEFAULT_VINE);
-		this.bug = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("bug")).result().orElse(HollowTreePiece.DEFAULT_BUG);
-		this.dungeonWood = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
-		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
-		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
+		this.log = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("log")).result().orElse(HollowTreePiece.DEFAULT_LOG);
+		this.wood = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.root = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("root")).result().orElse(HollowTreePiece.DEFAULT_ROOT);
+		this.leaves = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("leaves")).result().orElse(HollowTreePiece.DEFAULT_LEAVES);
+		this.vine = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("vine")).result().orElse(HollowTreePiece.DEFAULT_VINE);
+		this.bug = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("bug")).result().orElse(HollowTreePiece.DEFAULT_BUG);
+		this.dungeonWood = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_wood")).result().orElse(HollowTreePiece.DEFAULT_WOOD);
+		this.dungeonAir = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
+		this.dungeonLootBlock = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
 		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getStringOr("dungeon_loot_table", "")));
 
@@ -107,15 +107,15 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		tag.putInt("trunkHeight", this.height);
 		tag.putInt("trunkRadius", this.radius);
 
-		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("root", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.root).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("vine", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.vine).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("bug", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.bug).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonWood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("log", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("wood", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("root", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.root).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("leaves", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("vine", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.vine).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("bug", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.bug).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_wood", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonWood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_air", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_loot_block", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
 		tag.putString("dungeon_loot_table", this.dungeonLootTable.identifier().toString());
 
@@ -126,7 +126,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	 * Add on the various bits and doo-dads we need to succeed
 	 */
 	@Override
-	public void addChildren(StructurePiece piece, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece piece, StructurePiecesBuilder list, RandomSource rand) {
 		int index = this.getGenDepth();
 
 		// 3-5 couple branches on the way up...
@@ -152,7 +152,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	/**
 	 * Build the crown of the tree
 	 */
-	protected void buildFullCrown(StructurePieceAccessor list, RandomSource rand, int index) {
+	protected void buildFullCrown(StructurePiecesBuilder list, RandomSource rand, int index) {
 		int crownRadius = this.radius * 4 + 4;
 		int bvar = this.radius + 2;
 
@@ -173,7 +173,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	 * Build a ring of branches around the tree
 	 * size 0 = small, 1 = med, 2 = large, 3 = root
 	 */
-	protected int buildBranchRing(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int heightVar, int length, double tilt, int minBranches, int maxBranches, int size, boolean leafy) {
+	protected int buildBranchRing(StructurePiecesBuilder list, RandomSource rand, int index, int branchHeight, int heightVar, int length, double tilt, int minBranches, int maxBranches, int size, boolean leafy) {
 		//let's do this!
 		int numBranches = rand.nextInt(maxBranches - minBranches + 1) + minBranches;
 		double branchRotation = 1.0 / numBranches;
@@ -202,21 +202,21 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	}
 
 
-	public void makeSmallBranch(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeSmallBranch(StructurePiecesBuilder list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
 		HollowTreeSmallBranch branch = new HollowTreeSmallBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy, this.wood, this.leaves);
 		list.addPiece(branch);
 		branch.addChildren(this, list, rand);
 	}
 
-	public void makeMedBranch(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeMedBranch(StructurePiecesBuilder list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
 		HollowTreeMedBranch branch = new HollowTreeMedBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy, this.wood, this.leaves);
 		list.addPiece(branch);
 		branch.addChildren(this, list, rand);
 	}
 
-	public void makeLargeBranch(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeLargeBranch(StructurePiecesBuilder list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
 		HollowTreeLargeBranch branch = new HollowTreeLargeBranch(index, bSrc, branchLength, branchRotation, branchAngle, leafy, rand, this.wood, this.leaves, this.dungeonWood, this.dungeonAir, this.dungeonLootBlock, this.dungeonLootTable, this.dungeonMonster);
 		list.addPiece(branch);
@@ -224,7 +224,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	}
 
 
-	public void makeRoot(StructurePieceAccessor list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
+	public void makeRoot(StructurePiecesBuilder list, RandomSource rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle) {
 		BlockPos bSrc = this.getBranchSrc(branchHeight, branchRotation);
 		HollowTreeRoot branch = new HollowTreeRoot(index, bSrc, branchLength, branchRotation, branchAngle, false, this.root, this.wood);
 		list.addPiece(branch);

@@ -10,8 +10,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponent;
 
@@ -27,12 +27,12 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected boolean shouldHaveBase(StructurePieceAccessor list, RandomSource rand) {
+	protected boolean shouldHaveBase(StructurePiecesBuilder list, RandomSource rand) {
 		return true;
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponent tfStructureComponent) {
 			this.deco = tfStructureComponent.deco;
 		}
@@ -55,7 +55,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	/**
 	 * Add some stairs leading to this tower
 	 */
-	private boolean addStairs(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean addStairs(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
@@ -73,7 +73,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		return false;
 	}
 

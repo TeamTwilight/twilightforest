@@ -260,7 +260,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		return new BlockPos(Mth.lerpDiscrete(delta, first.getX(), second.getX()), Mth.lerpDiscrete(delta, first.getY(), second.getY()), Mth.lerpDiscrete(delta, first.getZ(), second.getZ()));
 	}
 
-	public void addDecoration(TwilightJigsawPiece parent, StructurePieceAccessor pieces, RandomSource random, Structure.GenerationContext context) {
+	public void addDecoration(TwilightJigsawPiece parent, StructurePiecesBuilder pieces, RandomSource random, Structure.GenerationContext context) {
 		this.addChildren(parent, pieces, random);
 
 		Direction.Axis axis = this.direction.getAxis();

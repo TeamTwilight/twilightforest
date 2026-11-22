@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
@@ -44,7 +43,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		// add foundation
 		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
@@ -118,61 +117,57 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	/**
 	 * Build a side tower, then tell it to start building towards the destination
 	 */
-	private void buildTowerMaze(StructurePieceAccessor list, RandomSource rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
-		if (list instanceof StructurePiecesBuilder start) {
-			boolean complete = false;
-			int iterations = 0;
-			while (!complete && iterations < 15) {
-				iterations++;
-				// duplicate list
-				List<StructurePiece> before = new LinkedList<>(start.pieces);
+	private void buildTowerMaze(StructurePiecesBuilder list, RandomSource rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
+		boolean complete = false;
+		int iterations = 0;
+		while (!complete && iterations < 15) {
+			iterations++;
+			// duplicate list
+			List<StructurePiece> before = new LinkedList<>(list.pieces);
 
-				// build
-				BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+			// build
+			BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
+			FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
-				// add bridge
-				BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
-				FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+			// add bridge
+			BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
+			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 
-				list.addPiece(bridge);
-				bridge.addChildren(this, list, rand);
+			list.addPiece(bridge);
+			bridge.addChildren(this, list, rand);
 
-				// don't check if the bounding box is clear, there's either nothing there or we've made a terrible mistake
-				list.addPiece(sTower);
-				sTower.buildTowards(this, list, rand, dest);
+			// don't check if the bounding box is clear, there's either nothing there or we've made a terrible mistake
+			list.addPiece(sTower);
+			sTower.buildTowards(this, list, rand, dest);
 
-				// check if we've successfully built the end tower
-				//TwilightForestMod.LOGGER.debug("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
-				if (this.isMazeComplete(list, type)) {
-					//TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
-					complete = true;
-				} else {
-					//TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
-					start.pieces.clear();
-					start.pieces.addAll(before);
-				}
+			// check if we've successfully built the end tower
+			//TwilightForestMod.LOGGER.debug("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
+			if (this.isMazeComplete(list, type)) {
+				//TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
+				complete = true;
+			} else {
+				//TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
+				list.pieces.clear();
+				list.pieces.addAll(before);
 			}
 		}
 	}
 
-	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
-		if (list instanceof StructurePiecesBuilder start) {
-			if (start.pieces.size() > 60) {
-				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", BuiltInRegistries.BLOCK.getKey(type.getBlock()).toString());
+	private boolean isMazeComplete(StructurePiecesBuilder list, BlockState type) {
+		if (list.pieces.size() > 60) {
+			//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", BuiltInRegistries.BLOCK.getKey(type.getBlock()).toString());
+		}
+		for (StructurePiece structurecomponent : list.pieces) {
+			BoundingBox boundingBox = structurecomponent.getBoundingBox();
+			int x = (boundingBox.maxX() - boundingBox.minX() / 2) + boundingBox.minX();
+			int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();
+			int z = (boundingBox.maxZ() - boundingBox.minZ() / 2) + boundingBox.minZ();
+			//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
+			if (type == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
+				return true;
 			}
-			for (StructurePiece structurecomponent : start.pieces) {
-				BoundingBox boundingBox = structurecomponent.getBoundingBox();
-				int x = (boundingBox.maxX() - boundingBox.minX() / 2) + boundingBox.minX();
-				int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();
-				int z = (boundingBox.maxZ() - boundingBox.minZ() / 2) + boundingBox.minZ();
-				//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
-				if (type == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
-					return true;
-				}
-				if (type == TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleBellTower21Component) {
-					return true;
-				}
+			if (type == TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleBellTower21Component) {
+				return true;
 			}
 		}
 		return false;

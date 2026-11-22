@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
@@ -50,7 +50,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -65,7 +65,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
-		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(BELL_TOWER_TEMP_POOL, this.getWorldPos(0, 9, 10), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/room", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
+		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(BELL_TOWER_TEMP_POOL, this.getWorldPos(0, 9, 10), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/room", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureTemplateManager());
 		if (templatePiece != null) {
 			list.addPiece(templatePiece);
 		}

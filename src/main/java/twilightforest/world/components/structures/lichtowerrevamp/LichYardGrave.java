@@ -14,6 +14,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -88,6 +89,6 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 	}
 
 	@Override
-	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePiecesBuilder pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 }

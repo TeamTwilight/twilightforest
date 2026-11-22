@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -32,7 +32,7 @@ public class StrongholdRightTurnComponent extends KnightStrongholdComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		// entrance
@@ -51,7 +51,7 @@ public class StrongholdRightTurnComponent extends KnightStrongholdComponent {
 
 //		// entrance doorway
 //		placeDoorwayAt(world, rand, 2, 4, 1, 0, sbb);
-//		
+//
 //		// right turn doorway
 //		placeDoorwayAt(world, rand, 1, 0, 1, 4, sbb);
 

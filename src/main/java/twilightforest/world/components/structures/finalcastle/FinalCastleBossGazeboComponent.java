@@ -11,8 +11,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
@@ -45,13 +45,13 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		this.deco = new StructureTFDecoratorCastle();
 		this.deco.blockState = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();
 
 		this.deco.fenceState = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
 
-		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(GAZEBO_TEMP_POOL, this.getWorldPos(10, -1, 10), this.rotation.rotation().rotate(FrontAndTop.UP_SOUTH), "twilightforest:final_castle/final_boss", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
+		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(GAZEBO_TEMP_POOL, this.getWorldPos(10, -1, 10), this.rotation.rotation().rotate(FrontAndTop.UP_SOUTH), "twilightforest:final_castle/final_boss", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureTemplateManager());
 		if (templatePiece != null) {
 			list.addPiece(templatePiece);
 		}

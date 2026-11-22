@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
@@ -33,7 +33,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -60,7 +60,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 	 * Attach a roof to this tower.
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void makeARoof(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		//nope;
 	}
 

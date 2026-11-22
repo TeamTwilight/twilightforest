@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import org.jspecify.annotations.Nullable;
@@ -57,7 +56,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		// make 4 caves
 		if (this.getGenDepth() < 3) {
 			for (final Rotation rotation : RotationUtil.ROTATIONS) {
@@ -229,7 +228,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return HugeMushroomUtil.getState(defaultRotation, mushroomBlockState);
 	}
 
-	protected boolean makeGardenCave(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeGardenCave(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
@@ -249,14 +248,12 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return false;
 	}
 
-	private @Nullable StructurePiece findNearbyGarden(StructurePieceAccessor list, BoundingBox boundingBox) {
+	private @Nullable StructurePiece findNearbyGarden(StructurePiecesBuilder list, BoundingBox boundingBox) {
 		BoundingBox largeBox = new BoundingBox(boundingBox.minX() - 30, boundingBox.minY() - 30, boundingBox.minZ() - 30, boundingBox.maxX() - 30, boundingBox.maxY() - 30, boundingBox.maxZ() - 30);
 
-		if (list instanceof StructurePiecesBuilder start) {
-			for (StructurePiece component : start.pieces) {
-				if (component instanceof TrollCaveGardenComponent && component.getBoundingBox().intersects(largeBox)) {
-					return component;
-				}
+		for (StructurePiece component : list.pieces) {
+			if (component instanceof TrollCaveGardenComponent && component.getBoundingBox().intersects(largeBox)) {
+				return component;
 			}
 		}
 
@@ -264,7 +261,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	protected boolean makeSmallerCave(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeSmallerCave(StructurePiecesBuilder list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		if (super.makeSmallerCave(list, rand, index, x, y, z, caveSize, caveHeight, rotation)) {
 			this.openingTowards[rotation.ordinal()] = true;
 			return true;
