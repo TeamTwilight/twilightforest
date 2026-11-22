@@ -2,12 +2,12 @@ package twilightforest.advancements;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import twilightforest.init.TFAdvancements;
 
 import java.util.Optional;
@@ -23,10 +23,10 @@ public class AddModifierTrigger extends SimpleCriterionTrigger<AddModifierTrigge
 		this.trigger(player, (instance) -> instance.test(modifier));
 	}
 
-	public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Identifier> modifier) implements SimpleInstance {
+	public record TriggerInstance(Optional<Holder<LootItemCondition>> player, Optional<Identifier> modifier) implements SimpleInstance {
 
 		public static final Codec<AddModifierTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(AddModifierTrigger.TriggerInstance::player),
+				LootItemCondition.CODEC.optionalFieldOf("player").forGetter(AddModifierTrigger.TriggerInstance::player),
 				Identifier.CODEC.optionalFieldOf("modifier").forGetter(AddModifierTrigger.TriggerInstance::modifier))
 			.apply(instance, AddModifierTrigger.TriggerInstance::new));
 

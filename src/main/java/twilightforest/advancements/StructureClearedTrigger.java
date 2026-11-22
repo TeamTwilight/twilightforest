@@ -2,14 +2,14 @@ package twilightforest.advancements;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import twilightforest.init.TFAdvancements;
 
 import java.util.Optional;
@@ -25,10 +25,10 @@ public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureCle
 		this.trigger(player, (instance) -> instance.test(structure));
 	}
 
-	public record TriggerInstance(Optional<ContextAwarePredicate> player, ResourceKey<Structure> structure) implements SimpleInstance {
+	public record TriggerInstance(Optional<Holder<LootItemCondition>> player, ResourceKey<Structure> structure) implements SimpleInstance {
 
 		public static final Codec<StructureClearedTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(StructureClearedTrigger.TriggerInstance::player),
+				LootItemCondition.CODEC.optionalFieldOf("player").forGetter(StructureClearedTrigger.TriggerInstance::player),
 				ResourceKey.codec(Registries.STRUCTURE).fieldOf("structure").forGetter(StructureClearedTrigger.TriggerInstance::structure))
 			.apply(instance, StructureClearedTrigger.TriggerInstance::new));
 

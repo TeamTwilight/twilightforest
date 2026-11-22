@@ -2,14 +2,14 @@ package twilightforest.advancements;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import twilightforest.init.TFAdvancements;
 
 import java.util.Optional;
@@ -25,10 +25,10 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Trigge
 		this.trigger(player, (instance) -> instance.matches(bug));
 	}
 
-	public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Block> bugType) implements SimpleInstance {
+	public record TriggerInstance(Optional<Holder<LootItemCondition>> player, Optional<Block> bugType) implements SimpleInstance {
 
 		public static final Codec<KillBugTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(KillBugTrigger.TriggerInstance::player),
+				LootItemCondition.CODEC.optionalFieldOf("player").forGetter(KillBugTrigger.TriggerInstance::player),
 				BuiltInRegistries.BLOCK.byNameCodec().optionalFieldOf("bug").forGetter(KillBugTrigger.TriggerInstance::bugType))
 			.apply(instance, KillBugTrigger.TriggerInstance::new));
 

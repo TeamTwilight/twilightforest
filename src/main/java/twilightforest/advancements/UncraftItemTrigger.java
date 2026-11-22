@@ -2,16 +2,16 @@ package twilightforest.advancements;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
 import net.minecraft.advancements.predicates.ItemPredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import twilightforest.init.TFAdvancements;
 
 import java.util.Optional;
@@ -27,10 +27,10 @@ public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigge
 		this.trigger(player, (instance) -> instance.matches(stack));
 	}
 
-	public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ItemPredicate> item) implements SimpleInstance {
+	public record TriggerInstance(Optional<Holder<LootItemCondition>> player, Optional<ItemPredicate> item) implements SimpleInstance {
 
 		public static final Codec<UncraftItemTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(UncraftItemTrigger.TriggerInstance::player),
+				LootItemCondition.CODEC.optionalFieldOf("player").forGetter(UncraftItemTrigger.TriggerInstance::player),
 				ItemPredicate.CODEC.optionalFieldOf("item").forGetter(UncraftItemTrigger.TriggerInstance::item))
 			.apply(instance, UncraftItemTrigger.TriggerInstance::new));
 
