@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.ItemContainerContents;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
@@ -22,7 +23,9 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	public TravellersBeltTooltipComponent(TravellersArmorBeltItem.Tooltip tooltip) {
 		ItemContainerContents contents = tooltip.contents();
 		for (int i = 0; i < 9; i++) {
-			ItemStack stack = contents.getSlots() <= i ? ItemStack.EMPTY : contents.getStackInSlot(i);
+			ItemStack stack = contents.getSlots() <= i
+				? ItemStack.EMPTY
+				: contents.getTemplateInSlot(i).map(ItemStackTemplate::create).orElse(ItemStack.EMPTY);
 			this.contents.add(stack);
 		}
 	}

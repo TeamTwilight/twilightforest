@@ -132,7 +132,7 @@ public class BlockChainGoblin extends Monster {
 	}
 
 	public boolean isSwingingChain() {
-		return this.swinging || (this.getTarget() != null && this.recoilCounter == 0);
+		return this.isSwinging() || (this.getTarget() != null && this.recoilCounter == 0);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.TooltipDisplay;
 import twilightforest.init.TFDataComponents;
@@ -62,7 +63,9 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		boolean hasChanged = false;
 		for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
 			ItemStack inventoryStack = inventory.getItem(slotIndex);
-			ItemStack beltStack = containerContents.getSlots() <= slotIndex ? ItemStack.EMPTY : containerContents.getStackInSlot(slotIndex);
+			ItemStack beltStack = containerContents.getSlots() <= slotIndex ?
+				ItemStack.EMPTY
+				: containerContents.getTemplateInSlot(slotIndex).map(ItemStackTemplate::create).orElse(ItemStack.EMPTY);
 			if (inventoryStack.canFitInsideContainerItems() && !inventoryStack.is(TFItemTags.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
 				hotbarStacks.set(slotIndex, inventoryStack);
 				inventory.setItem(slotIndex, beltStack);
