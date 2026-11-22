@@ -22,6 +22,8 @@ import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
 import net.minecraft.world.timeline.Timeline;
 import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
@@ -73,10 +75,10 @@ public class TFDimensionGenerator {
                         .set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
                         .set(EnvironmentAttributes.SKY_LIGHT_LEVEL, 9.0F)
 						.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
-                        .set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(ARGB.colorFromFloat(1.0F, 0.65F, 0.65F, 1.0F)))
-						.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, ARGB.vector3fFromRGB24(-16119286))
+                        .set(EnvironmentAttributes.SKY_LIGHT_COLOR, new Vector3f(0.65F, 0.65F, 1.0F))
+						.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, new Vector3f(10f / 255f, 10f / 255f, 10f / 255f))
 						.set(EnvironmentAttributes.CLOUD_HEIGHT, 128.0F)
-						.set(EnvironmentAttributes.CLOUD_COLOR, ARGB.vector4fFromARGB32(ARGB.colorFromFloat(1.0F, 0.5F, 0.5F, 0.55F)))
+						.set(EnvironmentAttributes.CLOUD_COLOR, new Vector4f(1.0F, 0.5F, 0.5F, 0.55F))
 						.set(EnvironmentAttributes.CLOUD_FOG_END_DISTANCE, 768.0F)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_WEATHER_EFFECTS, TwilightForestRenderInfo.WEATHER_RENDERER)
