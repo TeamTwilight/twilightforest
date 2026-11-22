@@ -88,8 +88,8 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 		this.collar.skipDraw = state.isShadowClone;
 
 		if (state.phase != 3) {
-			float ogSin = Mth.sin(state.attackTime * Mth.PI);
-			float otherSin = Mth.sin((1.0F - (1.0F - state.attackTime) * (1.0F - state.attackTime)) * Mth.PI);
+			float ogSin = Mth.sin(state.swingAnimation * Mth.PI);
+			float otherSin = Mth.sin((1.0F - (1.0F - state.swingAnimation) * (1.0F - state.swingAnimation)) * Mth.PI);
 			if (state.ageInTicks > 0 && state.deathTime <= 0) {
 				this.leftArm.zRot = 0.5F;
 				this.leftArm.yRot = 0.1F - ogSin * 0.6F;

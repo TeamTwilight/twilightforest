@@ -92,8 +92,8 @@ public class TrollModel extends HumanoidModel<TrollRenderState> {
 			this.leftArm.xRot += Mth.PI;
 		}
 
-		if (entity.attackTime > 0F) {
-			float swing = 1.0F - entity.attackTime;
+		if (entity.swingAnimation > 0F) {
+			float swing = 1.0F - entity.swingAnimation;
 
 			this.rightArm.xRot -= (Mth.PI * swing);
 			this.leftArm.xRot -= (Mth.PI * swing);

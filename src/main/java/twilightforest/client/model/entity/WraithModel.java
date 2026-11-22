@@ -41,8 +41,8 @@ public class WraithModel extends HumanoidModel<HumanoidRenderState> {
 	public void setupAnim(HumanoidRenderState entity) {
 		super.setupAnim(entity);
 
-		float var8 = Mth.sin(entity.attackTime * Mth.PI);
-		float var9 = Mth.sin((1.0F - (1.0F - entity.attackTime) * (1.0F - entity.attackTime)) * Mth.PI);
+		float var8 = Mth.sin(entity.swingAnimation * Mth.PI);
+		float var9 = Mth.sin((1.0F - (1.0F - entity.swingAnimation) * (1.0F - entity.swingAnimation)) * Mth.PI);
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 		this.rightArm.yRot = -(0.1F - var8 * 0.6F);
