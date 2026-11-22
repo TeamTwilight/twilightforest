@@ -14,16 +14,13 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import twilightforest.init.TFFeatureModifiers;
 
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
 
 // Ideally, you should not be mixing this with other decorators unless you know what you're doing
 // This litters memory with 256 block positions for each chunk. USE SPARINGLY
-public class ChunkBlanketingModifier extends PlacementModifier {
+public class ChunkBlanketingModifier implements PlacementModifier {
 
 	public static final MapCodec<ChunkBlanketingModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.floatRange(0.0f, 1.0f).fieldOf("integrity").forGetter(o -> o.integrity),
@@ -46,33 +43,29 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 	}
 
 	@Override
-	public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos placement) {
-		ArrayList<BlockPos> coordinates = new ArrayList<>();
-
-		WorldGenLevel level = context.getLevel();
-		ChunkAccess chunk = level.getChunk(placement);
+	public void modify(PlacementContext placementContext, RandomSource randomSource, BlockPos blockPos, Consumer<BlockPos> consumer) {
+		WorldGenLevel level = placementContext.getLevel();
+		ChunkAccess chunk = level.getChunk(blockPos);
 
 		int chunkOriginX = chunk.getPos().getMinBlockX();
 		int chunkOriginZ = chunk.getPos().getMinBlockZ();
 
 		for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
-				if (random.nextFloat() > this.integrity)
+				if (randomSource.nextFloat() > this.integrity)
 					continue;
 
 				BlockPos pos = new BlockPos(chunkOriginX + xInChunk, chunk.getHeight(this.heightmap, xInChunk, zInChunk) + 1, chunkOriginZ + zInChunk);
 
 				if (this.biomeRLOptional.isEmpty() || this.biomeRLOptional.get().contains(level.getBiome(pos))) {
-					coordinates.add(pos);
+					consumer.accept(pos);
 				}
 			}
 		}
-
-		return coordinates.stream();
 	}
 
 	@Override
-	public PlacementModifierType<?> type() {
-		return TFFeatureModifiers.CHUNK_BLANKETING.get();
+	public MapCodec<? extends PlacementModifier> codec() {
+		return CODEC;
 	}
 }
