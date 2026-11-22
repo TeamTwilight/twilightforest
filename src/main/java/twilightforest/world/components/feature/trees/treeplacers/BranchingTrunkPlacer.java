@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
@@ -49,31 +49,31 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 	}
 
 	@Override
-	public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
+	public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel worldGenLevel, BiConsumer<BlockPos, BlockState> biConsumer, RandomSource randomSource, int i, BlockPos blockPos, TreeFeature treeFeature) {
 		List<FoliagePlacer.FoliageAttachment> leafAttachments = Lists.newArrayList();
 
 		if (this.preventExposedRoot) {
 			for (Direction direction : Direction.Plane.HORIZONTAL) {
-				if (worldReader.isStateAtPosition(startPos.below().relative(direction), BlockBehaviour.BlockStateBase::canBeReplaced)) {
-					worldPlacer.accept(startPos.below(), (BlockState)Function.identity().apply(treeConfig.trunkProvider.getState(worldReader, random, startPos.below())));
+				if (worldGenLevel.isStateAtPosition(blockPos.below().relative(direction), BlockBehaviour.BlockStateBase::canBeReplaced)) {
+					biConsumer.accept(blockPos.below(), (BlockState)Function.identity().apply(treeFeature.trunkProvider().value().getState(worldGenLevel, randomSource, blockPos.below())));
 					break;
 				}
 			}
 		}
 
-		for (int y = 0; y <= height; y++) { // Keep building upwards until we cannot, and then adjust height if we run into something
-			if (!placeLog(worldReader, worldPlacer, random, startPos.above(y), treeConfig)) {
-				height = y;
+		for (int y = 0; y <= i; y++) { // Keep building upwards until we cannot, and then adjust height if we run into something
+			if (!placeLog(worldGenLevel, biConsumer, randomSource, blockPos.above(y), treeFeature)) {
+				i = y;
 				break;
 			}
 		}
 
-		leafAttachments.add(new FoliagePlacer.FoliageAttachment(startPos.above(height), 0, false));
+		leafAttachments.add(new FoliagePlacer.FoliageAttachment(blockPos.above(i), 0, false));
 
-		int numBranches = this.branchesConfig.branchCount() + random.nextInt(this.branchesConfig.randomAddBranches() + 1);
-		float offset = random.nextFloat();
+		int numBranches = this.branchesConfig.branchCount() + randomSource.nextInt(this.branchesConfig.randomAddBranches() + 1);
+		float offset = randomSource.nextFloat();
 		for (int b = 0; b < numBranches; b++) {
-			buildBranch(worldReader, worldPlacer, startPos, leafAttachments, height - this.branchDownwardOffset + b, this.branchesConfig.length(), this.branchesConfig.spacingYaw() * b + offset, this.branchesConfig.downwardsPitch(), random, this.perpendicularBranches);
+			buildBranch(worldGenLevel, biConsumer, blockPos, leafAttachments, i - this.branchDownwardOffset + b, this.branchesConfig.length(), this.branchesConfig.spacingYaw() * b + offset, this.branchesConfig.downwardsPitch(), randomSource, this.perpendicularBranches);
 		}
 
 		return leafAttachments;
