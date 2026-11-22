@@ -49,6 +49,7 @@ public class TrollRootBlock extends Block {
 				dropFromBlockInteractLootTable(
 					serverLevel,
 					TFLootTables.TROLLBER_PLANT_DROPS,
+					pos,
 					state,
 					null,
 					null,

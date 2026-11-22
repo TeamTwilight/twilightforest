@@ -155,26 +155,26 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	@Override
 	@SuppressWarnings("deprecation")
 	//check each side of the block, as well as above and below each of those positions for valid spots
-	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
+	public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
 		for (Direction dir : Direction.values()) {
 			if (dir != Direction.UP && dir != Direction.DOWN) {
-				BlockState blockAt = getter.getBlockState(pos.relative(dir));
+				BlockState blockAt = levelReader.getBlockState(blockPos.relative(dir));
 				if (
-					!getter.getBlockState(pos.relative(dir).above()).isSolid() &&
+					!levelReader.getBlockState(blockPos.relative(dir).above()).isSolid() &&
 						(blockAt.is(BlockTags.SUBSTRATE_OVERWORLD) || blockAt.is(Blocks.FARMLAND)) &&
 						!blockAt.is(TFBlocks.UBEROUS_SOIL)) {
 					return true;
 
 				} else if (
-					!getter.getBlockState(pos.relative(dir).above().above()).isSolid() &&
-						(getter.getBlockState(pos.relative(dir).above()).is(BlockTags.SUBSTRATE_OVERWORLD) || getter.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
-						!getter.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL)) {
+					!levelReader.getBlockState(blockPos.relative(dir).above().above()).isSolid() &&
+						(levelReader.getBlockState(blockPos.relative(dir).above()).is(BlockTags.SUBSTRATE_OVERWORLD) || levelReader.getBlockState(blockPos.relative(dir).above()).is(Blocks.FARMLAND)) &&
+						!levelReader.getBlockState(blockPos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL)) {
 					return true;
 
 				} else if (
-					!getter.getBlockState(pos.relative(dir)).isSolid() &&
-						(getter.getBlockState(pos.relative(dir).below()).is(BlockTags.SUBSTRATE_OVERWORLD) || getter.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
-						!getter.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL)) {
+					!levelReader.getBlockState(blockPos.relative(dir)).isSolid() &&
+						(levelReader.getBlockState(blockPos.relative(dir).below()).is(BlockTags.SUBSTRATE_OVERWORLD) || levelReader.getBlockState(blockPos.relative(dir).below()).is(Blocks.FARMLAND)) &&
+						!levelReader.getBlockState(blockPos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL)) {
 					return true;
 				}
 			}
@@ -183,7 +183,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, RandomSource rand, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
 		return true;
 	}
 
@@ -191,32 +191,32 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	@SuppressWarnings("deprecation")
 	//check each side of the block, as well as above and below each of those positions to check for a place to put a block
 	//the above and below checks allow the patch to jump to a new y level, makes spreading easier
-	public void performBonemeal(ServerLevel level, RandomSource rand, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
 		List<Direction> directions = Arrays.asList(Direction.values());
 		Collections.shuffle(directions);
 		for (Direction dir : directions) {
 			if (dir != Direction.UP && dir != Direction.DOWN) {
-				BlockState blockAt = level.getBlockState(pos.relative(dir));
+				BlockState blockAt = serverLevel.getBlockState(blockPos.relative(dir));
 				if (
-					!level.getBlockState(pos.relative(dir).above()).isSolid() &&
+					!serverLevel.getBlockState(blockPos.relative(dir).above()).isSolid() &&
 						(blockAt.is(BlockTags.SUBSTRATE_OVERWORLD) || blockAt.is(Blocks.FARMLAND)) &&
 						!blockAt.is(TFBlocks.UBEROUS_SOIL)) {
 
-					this.spreadTo(level, pos.relative(dir));
+					this.spreadTo(serverLevel, blockPos.relative(dir));
 					break;
 				} else if (
-					!level.getBlockState(pos.relative(dir).above().above()).isSolid() &&
-						(level.getBlockState(pos.relative(dir).above()).is(BlockTags.SUBSTRATE_OVERWORLD) || level.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
-						!level.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL)) {
+					!serverLevel.getBlockState(blockPos.relative(dir).above().above()).isSolid() &&
+						(serverLevel.getBlockState(blockPos.relative(dir).above()).is(BlockTags.SUBSTRATE_OVERWORLD) || serverLevel.getBlockState(blockPos.relative(dir).above()).is(Blocks.FARMLAND)) &&
+						!serverLevel.getBlockState(blockPos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL)) {
 
-					this.spreadTo(level, pos.relative(dir).above());
+					this.spreadTo(serverLevel, blockPos.relative(dir).above());
 					break;
 				} else if (
-					!level.getBlockState(pos.relative(dir)).isSolid() &&
-						(level.getBlockState(pos.relative(dir).below()).is(BlockTags.SUBSTRATE_OVERWORLD) || level.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
-						!level.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL)) {
+					!serverLevel.getBlockState(blockPos.relative(dir)).isSolid() &&
+						(serverLevel.getBlockState(blockPos.relative(dir).below()).is(BlockTags.SUBSTRATE_OVERWORLD) || serverLevel.getBlockState(blockPos.relative(dir).below()).is(Blocks.FARMLAND)) &&
+						!serverLevel.getBlockState(blockPos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL)) {
 
-					this.spreadTo(level, pos.relative(dir).below());
+					this.spreadTo(serverLevel, blockPos.relative(dir).below());
 					break;
 				}
 			}

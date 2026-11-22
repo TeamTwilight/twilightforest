@@ -8,10 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.ItemAbilities;
@@ -61,20 +58,20 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-		return state.getValue(AGE) < MAX_AGE - 1 || level.getBlockState(pos.above()).isAir() || level.getBlockState(pos.above()).is(Blocks.SNOW);
+	public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
+		return blockState.getValue(AGE) < MAX_AGE - 1 || levelReader.getBlockState(blockPos.above()).isAir() || levelReader.getBlockState(blockPos.above()).is(Blocks.SNOW);
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		int age = state.getValue(AGE);
+	public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
+		int age = blockState.getValue(AGE);
 		if (age < 2)
-			this.grow(state, level, pos, Math.min(state.getValue(AGE) + 1 + random.nextInt(2), MAX_AGE - 1));
-		this.tryGrowUpwards(state, level, pos, random);
+			this.grow(blockState, serverLevel, blockPos, Math.min(blockState.getValue(AGE) + 1 + randomSource.nextInt(2), MAX_AGE - 1));
+		this.tryGrowUpwards(blockState, serverLevel, blockPos, randomSource);
 	}
 }

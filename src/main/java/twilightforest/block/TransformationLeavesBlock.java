@@ -6,15 +6,16 @@ import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.FallingParticlesLeavesBlock;
+import net.minecraft.world.level.block.sounds.AmbientLeavesBlockSoundPlayer;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFParticleType;
 
-public class TransformationLeavesBlock extends LeavesBlock {
+public class TransformationLeavesBlock extends FallingParticlesLeavesBlock {
 
 	public TransformationLeavesBlock(BlockBehaviour.Properties properties) {
-		super(1.0F, properties);
+		super(1.0F, AmbientLeavesBlockSoundPlayer.noAmbientSound(), properties);
 	}
 
 	@Override

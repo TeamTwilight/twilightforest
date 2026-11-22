@@ -31,6 +31,7 @@ public class LiverootBlock extends Block {
 				dropFromBlockInteractLootTable(
 					serverLevel,
 					TFLootTables.LIVEROOT_STRIP_DROPS,
+					pos,
 					state,
 					null,
 					stack,

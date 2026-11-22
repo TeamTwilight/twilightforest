@@ -7,6 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -31,13 +32,13 @@ public class RootStrandBlock extends TFPlantBlock implements BonemealableBlock {
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
-		return this.isBottomOpen(getter, pos);
+	public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
+		return this.isBottomOpen(levelReader, blockPos);
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
-		return this.isBottomOpen(level, pos);
+	public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
+		return this.isBottomOpen(level, blockPos);
 	}
 
 	private boolean isBottomOpen(BlockGetter getter, BlockPos pos) {
@@ -50,15 +51,15 @@ public class RootStrandBlock extends TFPlantBlock implements BonemealableBlock {
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		BlockPos.MutableBlockPos mutable = pos.mutable();
+	public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
+		BlockPos.MutableBlockPos mutable = blockPos.mutable();
 
 		do {
 			mutable.move(Direction.DOWN);
-		} while (level.getBlockState(mutable).is(this));
+		} while (serverLevel.getBlockState(mutable).is(this));
 
-		if (level.getBlockState(mutable).isAir() || level.getBlockState(mutable).canBeReplaced()) {
-			level.setBlockAndUpdate(mutable, this.defaultBlockState());
+		if (serverLevel.getBlockState(mutable).isAir() || serverLevel.getBlockState(mutable).canBeReplaced()) {
+			serverLevel.setBlockAndUpdate(mutable, this.defaultBlockState());
 		}
 	}
 }
