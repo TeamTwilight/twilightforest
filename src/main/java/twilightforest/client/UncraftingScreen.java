@@ -186,7 +186,9 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 					pX,
 					pY,
 					DefaultTooltipPositioner.INSTANCE,
-					container.slots.get(2 + i).getItem().get(DataComponents.TOOLTIP_STYLE));
+					container.slots.get(2 + i).getItem().get(DataComponents.TOOLTIP_STYLE),
+					false
+				);
 			}
 		}
 
@@ -198,7 +200,9 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 				pX,
 				pY,
 				DefaultTooltipPositioner.INSTANCE,
-				null);
+				null,
+				false
+			);
 		} else {
 			super.extractTooltip(graphics, pX, pY);
 		}

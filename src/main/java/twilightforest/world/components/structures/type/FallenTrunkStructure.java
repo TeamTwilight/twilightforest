@@ -32,7 +32,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		Structure.settingsCodec(instance),
 		IntProviders.codec(16, 32).fieldOf("length").forGetter(s -> s.length),
 		IntProviders.codec(20, 32).fieldOf("big_trunk_length").forGetter(s -> s.bigTrunkLength),
-		BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),
+		BlockStateProvider.DIRECT_CODEC.fieldOf("log").forGetter(s -> s.log),
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("chest_loot_table").forGetter(s -> s.chestLootTable)
 	).apply(instance, FallenTrunkStructure::new));
 	public static final List<Integer> radiuses = List.of(1, 2, 4);
