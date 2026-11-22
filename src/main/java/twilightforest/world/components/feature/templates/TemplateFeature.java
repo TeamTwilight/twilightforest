@@ -1,7 +1,6 @@
 package twilightforest.world.components.feature.templates;
 
 import com.google.common.math.StatsAccumulator;
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
@@ -15,10 +14,9 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.StructureMode;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -26,19 +24,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.jspecify.annotations.Nullable;
 import twilightforest.util.features.FeatureLogic;
 
-public abstract class TemplateFeature<T extends FeatureConfiguration> extends Feature<T> {
-	public TemplateFeature(Codec<T> config) {
-		super(config);
-	}
+public abstract class TemplateFeature implements Feature {
 
 	@Override // Loosely based on WorldGenFossils
-	public final boolean place(FeaturePlaceContext<T> ctx) {
-		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
-		RandomSource random = world.getRandom();
-		T config = ctx.config();
-
-		StructureTemplateManager templateManager = world.getLevel().getServer().getStructureManager();
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		RandomSource random = worldGenLevel.getRandom();
+		StructureTemplateManager templateManager = worldGenLevel.getLevel().getServer().getStructureTemplateManager();
 		StructureTemplate template = this.getTemplate(templateManager, random);
 
 		if (template == null)
@@ -47,10 +38,10 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		Rotation rotation = Rotation.getRandom(random);
 		Mirror mirror = Util.getRandom(Mirror.values(), random);
 
-		ChunkPos chunkpos = ChunkPos.containing(pos);
-		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), world.getMinY(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), world.getMaxY(), chunkpos.getMaxBlockZ());
+		ChunkPos chunkpos = ChunkPos.containing(blockPos);
+		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), worldGenLevel.getMinY(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), worldGenLevel.getMaxY(), chunkpos.getMaxBlockZ());
 
-		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, pos.getY(), 0);
+		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, blockPos.getY(), 0);
 
 		Vec3i transformedSize = template.getSize(rotation);
 		int dx = random.nextInt(16 - transformedSize.getX());
@@ -59,7 +50,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
 		BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
-		if (!offsetToAverageGroundLevel(world, startPos, transformedSize))
+		if (!offsetToAverageGroundLevel(worldGenLevel, startPos, transformedSize))
 			return false;
 
 		startPos.move(0, this.yLevelOffset(), 0);
@@ -67,30 +58,30 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
 
 		StructurePlaceSettings placementSettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureMask).setRandom(random);
-		this.modifySettings(placementSettings.clearProcessors(), random, config);
+		this.modifySettings(placementSettings.clearProcessors(), random);
 
-		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
+		template.placeInWorld(worldGenLevel, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
 		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
 			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
 			if (info.nbt() != null && mode == StructureMode.DATA)
-				this.processMarkers(info, world, rotation, mirror, random);
+				this.processMarkers(info, worldGenLevel, rotation, mirror, random);
 		}
 
-		this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos, config);
+		this.postPlacement(worldGenLevel, random, templateManager, rotation, mirror, placementSettings, placementPos);
 
 		return true;
 	}
 
 	protected abstract @Nullable StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
 
-	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, T config) {
+	protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
 	}
 
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
 	}
 
-	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, T config) {
+	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
 	}
 
 	protected int yLevelOffset() {

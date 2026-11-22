@@ -1,16 +1,15 @@
 package twilightforest.world.components.feature.config;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TFRegistries;
@@ -22,11 +21,18 @@ import twilightforest.world.components.processors.WoodPaletteSwizzle;
 import java.util.Collections;
 import java.util.List;
 
-public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedList<Weighted<HolderSet<WoodPalette>>> paletteChoices, List<ProcessorRule> preprocessingRules) implements FeatureConfiguration {
-	public static final Codec<SwizzleConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-		RegistryCodecs.homogeneousList(TFRegistries.Keys.WOOD_PALETTES).fieldOf("target_palettes").forGetter(SwizzleConfig::targets),
-		WeightedList.codec(Weighted.codec(RegistryCodecs.homogeneousList(TFRegistries.Keys.WOOD_PALETTES))).fieldOf("palette_choices").forGetter(SwizzleConfig::paletteChoices),
-		ProcessorRule.CODEC.listOf().fieldOf("preprocessing_rules").orElseGet(Collections::emptyList).forGetter(SwizzleConfig::preprocessingRules)
+public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedList<Weighted<HolderSet<WoodPalette>>> paletteChoices, List<ProcessorRule> preprocessingRules) {
+	public static final MapCodec<SwizzleConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		RegistryCodecs.holderSet(TFRegistries.Keys.WOOD_PALETTES)
+			.fieldOf("target_palettes")
+			.forGetter(SwizzleConfig::targets),
+		WeightedList.codec(Weighted.codec(RegistryCodecs.holderSet(TFRegistries.Keys.WOOD_PALETTES)))
+			.fieldOf("palette_choices")
+			.forGetter(SwizzleConfig::paletteChoices),
+		ProcessorRule.CODEC.listOf()
+			.fieldOf("preprocessing_rules")
+			.orElseGet(Collections::emptyList)
+			.forGetter(SwizzleConfig::preprocessingRules)
 	).apply(instance, SwizzleConfig::new));
 
 	public static WeightedList<Weighted<HolderSet<WoodPalette>>> buildRarityPalette(HolderGetter<WoodPalette> paletteHolders) {

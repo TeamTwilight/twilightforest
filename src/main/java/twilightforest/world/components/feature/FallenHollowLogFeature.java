@@ -1,6 +1,6 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -11,13 +11,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeatureUtil;
 
-public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
+public class FallenHollowLogFeature implements Feature {
 
 	final BlockState mossPatch = TFBlocks.MOSS_PATCH.get().defaultBlockState();
 	final BlockState oakLeaves = TFBlocks.TWILIGHT_OAK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
@@ -26,17 +25,18 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 	final BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
 	final BlockState firefly = TFBlocks.FIREFLY.get().defaultBlockState();
 
-	public FallenHollowLogFeature(Codec<NoneFeatureConfiguration> configIn) {
-		super(configIn);
+	public static final MapCodec<FallenHollowLogFeature> MAP_CODEC = MapCodec.unit(FallenHollowLogFeature::new);
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
-		RandomSource rand = ctx.random();
-
-		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		return randomSource.nextBoolean()
+			? makeLog4Z(worldGenLevel, randomSource, blockPos)
+			: makeLog4X(worldGenLevel, randomSource, blockPos);
 	}
 
 	private boolean makeLog4Z(WorldGenLevel world, RandomSource rand, BlockPos pos) {

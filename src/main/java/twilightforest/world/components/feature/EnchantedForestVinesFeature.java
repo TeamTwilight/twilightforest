@@ -1,7 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.llamalad7.mixinextras.lib.apache.commons.tuple.Pair;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -10,24 +10,28 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.init.TFBlocks;
 
 import java.util.*;
 
-public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguration> {
+public record EnchantedForestVinesFeature() implements Feature {
+
 	private static final int rarity = 7;
 	private static final int extraRarityOnTrees = 8;
 
-	public EnchantedForestVinesFeature(Codec<NoneFeatureConfiguration> codec) {super(codec);}
+	public static final MapCodec<EnchantedForestVinesFeature> MAP_CODEC = MapCodec.unit(EnchantedForestVinesFeature::new);
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		WorldGenLevel world = context.level();
-		setAllPossibleStates(world, context.random(), context.origin());
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
+	}
+
+	@Override
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		setAllPossibleStates(worldGenLevel, randomSource, blockPos);
 		return true;
 	}
 
@@ -97,7 +101,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 	}
 
 	private boolean isSuitableBiome(WorldGenLevel world, BlockPos pos) {
-		return Objects.requireNonNull(world.getBiome(pos).getKey()).identifier().getPath().equals("enchanted_forest");
+		return Objects.requireNonNull(world.getBiome(pos).keyOrNull()).identifier().getPath().equals("enchanted_forest");
 	}
 
 	private boolean isTree(BlockState state) {

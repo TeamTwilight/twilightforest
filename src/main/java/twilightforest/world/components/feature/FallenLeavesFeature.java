@@ -1,6 +1,6 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -8,37 +8,36 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Fluids;
 import twilightforest.block.FallenLeavesBlock;
 import twilightforest.init.TFBlocks;
 
-public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
+public class FallenLeavesFeature implements Feature {
 
-	public FallenLeavesFeature(Codec<NoneFeatureConfiguration> config) {
-		super(config);
-	}
+	public static final MapCodec<FallenLeavesFeature> MAP_CODEC = MapCodec.unit(FallenLeavesFeature::new);
 
 	private final BlockState state = TFBlocks.FALLEN_LEAVES.get().defaultBlockState();
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-		WorldGenLevel level = ctx.level();
-		BlockPos position = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, ctx.origin());
-		RandomSource rand = ctx.random();
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
+	}
 
-		if (this.canPlace(position, level)) {
-			if (!level.getFluidState(position.below()).isEmpty()) {
-				return this.generateFlatPileOnWater(level, position, rand);
+	@Override
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		BlockPos position = worldGenLevel.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, blockPos);
+		if (this.canPlace(position, worldGenLevel)) {
+			if (!worldGenLevel.getFluidState(position.below()).isEmpty()) {
+				return this.generateFlatPileOnWater(worldGenLevel, position, randomSource);
 			} else {
-				int startHeight = rand.nextInt(6) + 1;
-				level.setBlock(position, this.state.setValue(FallenLeavesBlock.LAYERS, startHeight), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+				int startHeight = randomSource.nextInt(6) + 1;
+				worldGenLevel.setBlock(position, this.state.setValue(FallenLeavesBlock.LAYERS, startHeight), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 				for (int i = 0; i < startHeight; i++) {
-					this.generateCircleOfLeaves(level, position, rand, i, startHeight - i - 1);
-					if (rand.nextInt(3) == 0)
+					this.generateCircleOfLeaves(worldGenLevel, position, randomSource, i, startHeight - i - 1);
+					if (randomSource.nextInt(3) == 0)
 						i++;
 				}
 			}

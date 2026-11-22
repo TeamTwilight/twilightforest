@@ -1,15 +1,14 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.init.TFBlocks;
 
 /**
@@ -17,27 +16,26 @@ import twilightforest.init.TFBlocks;
  *
  * @author Ben
  */
-public class HugeWaterLilyFeature extends Feature<NoneFeatureConfiguration> {
+public record HugeWaterLilyFeature() implements Feature {
 
-	public HugeWaterLilyFeature(Codec<NoneFeatureConfiguration> config) {
-		super(config);
+	public static final MapCodec<HugeWaterLilyFeature> MAP_CODEC = MapCodec.unit(HugeWaterLilyFeature::new);
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
-		RandomSource random = ctx.random();
-
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
 		for (int i = 0; i < 4; i++) {
-			BlockPos pos_ = pos.offset(
-				random.nextInt(8) - random.nextInt(8),
-				random.nextInt(4) - random.nextInt(4),
-				random.nextInt(8) - random.nextInt(8)
+			BlockPos pos = blockPos.offset(
+				randomSource.nextInt(8) - randomSource.nextInt(8),
+				randomSource.nextInt(4) - randomSource.nextInt(4),
+				randomSource.nextInt(8) - randomSource.nextInt(8)
 			);
 
-			if (shouldPlacePadAt(world, pos_)) {
-				world.setBlock(pos_, TFBlocks.HUGE_WATER_LILY.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+			if (shouldPlacePadAt(worldGenLevel, pos)) {
+				worldGenLevel.setBlock(pos, TFBlocks.HUGE_WATER_LILY.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 			}
 		}
 

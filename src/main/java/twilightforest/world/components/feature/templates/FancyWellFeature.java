@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.templates;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -8,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.StructureMode;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -17,13 +19,24 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
-public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
+public class FancyWellFeature extends TemplateFeature {
 
 	private static final Identifier WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
 	private static final Identifier WELL_BOTTOM = TwilightForestMod.prefix("feature/well/fancy_well_bottom");
 
-	public FancyWellFeature(Codec<SwizzleConfig> config) {
-		super(config);
+	public static final MapCodec<FancyWellFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		SwizzleConfig.MAP_CODEC.forGetter(FancyWellFeature::getConfig)
+	).apply(instance, FancyWellFeature::new));
+
+	private final SwizzleConfig config;
+
+	public FancyWellFeature(SwizzleConfig config) {
+		this.config = config;
+	}
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
@@ -32,12 +45,12 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 	}
 
 	@Override
-	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
+	protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
 		config.buildAddProcessors(settings, random);
 	}
 
 	@Override
-	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
+	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
 		StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
 
 		if (template == null)
@@ -65,5 +78,9 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 		world.removeBlock(info.pos(), false);
 
 		TFLootTables.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS, TFLootTables.FANCY_WELL);
+	}
+
+	public SwizzleConfig getConfig() {
+		return config;
 	}
 }
