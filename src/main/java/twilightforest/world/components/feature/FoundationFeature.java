@@ -1,12 +1,17 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.BlockFamilies;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.FloatProvider;
-import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.*;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -14,46 +19,58 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.storage.loot.LootTable;
+import twilightforest.loot.TFLootTables;
+import twilightforest.util.TFBlockFamilies;
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.util.features.FeatureUtil;
-import twilightforest.world.components.feature.config.RuinedFoundationConfig;
 
-public class FoundationFeature extends Feature<RuinedFoundationConfig> {
+public record FoundationFeature(RuinedFoundationDimensions dimensions, RuinedFoundationBlocks blocks, ResourceKey<LootTable> lootTable) implements Feature {
 
-	public FoundationFeature(Codec<RuinedFoundationConfig> configIn) {
-		super(configIn);
+	public static final MapCodec<FoundationFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		RuinedFoundationDimensions.CODEC.forGetter(FoundationFeature::dimensions),
+		RuinedFoundationBlocks.CODEC.forGetter(FoundationFeature::blocks),
+		ResourceKey.codec(Registries.LOOT_TABLE)
+			.fieldOf("loot_table")
+			.forGetter(FoundationFeature::lootTable)
+	).apply(instance, FoundationFeature::new));
+
+	public static FoundationFeature withDefaultBlocks(boolean floorWaterlogged) {
+		RuinedFoundationBlocks foundationBlocks = RuinedFoundationBlocks.blocksFromFamilies(floorWaterlogged, BlockFamilies.OAK_PLANKS, BlockFamilies.COBBLESTONE, BlockFamilies.MOSSY_COBBLESTONE, BlockStateProvider.of(Blocks.CHEST));
+		return new FoundationFeature(RuinedFoundationDimensions.makeDefault(), foundationBlocks, TFLootTables.FOUNDATION_BASEMENT);
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<RuinedFoundationConfig> ctx) {
-		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
-		RandomSource rand = ctx.random();
-		RuinedFoundationConfig config = ctx.config();
-		RuinedFoundationConfig.RuinedFoundationDimensions dimensions = ctx.config().dimensions();
-		RuinedFoundationConfig.RuinedFoundationBlocks blocks = ctx.config().blocks();
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
+	}
+
+	@Override
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		RuinedFoundationDimensions dimensions = dimensions();
+		RuinedFoundationBlocks blocks = blocks();
 
 		IntProvider wallWidths = dimensions.wallWidth();
-		int xWidth = wallWidths.sample(rand);
-		int zWidth = wallWidths.sample(rand);
+		int xWidth = wallWidths.sample(randomSource);
+		int zWidth = wallWidths.sample(randomSource);
 
-		if (!FeatureUtil.isAreaSuitable(world, pos.offset(1, 0, 1), xWidth - 1, 4, zWidth - 1)) {
+		if (!FeatureUtil.isAreaSuitable(worldGenLevel, blockPos.offset(1, 0, 1), xWidth - 1, 4, zWidth - 1)) {
 			return false;
 		}
 
 		//okay!
-		generateFoundation(world, rand, pos, xWidth, zWidth, dimensions.wallHeights(), dimensions.placeFloorTest(), blocks.wallBlock(), blocks.wallTop(), blocks.decayedWall(), blocks.decayedTop(), blocks.floor());
+		generateFoundation(worldGenLevel, randomSource, blockPos, xWidth, zWidth, dimensions.wallHeights(), dimensions.placeFloorTest(), blocks.wallBlock(), blocks.wallTop(), blocks.decayedWall(), blocks.decayedTop(), blocks.floor());
 
 		//TODO: chimney?
 
-		int basementDepth = dimensions.basementHeight().sample(rand);
+		int basementDepth = dimensions.basementHeight().sample(randomSource);
 		if (basementDepth > 0) {
-			BlockPos basementCeilingPos = pos.offset(1, -3, 1);
-			generateBasement(xWidth - 2, zWidth - 2, basementDepth, world, basementCeilingPos, rand, dimensions.placeFloorTest(), blocks.floor(), blocks.basementPosts(), blocks.lootContainer(), config.lootTable());
+			BlockPos basementCeilingPos = blockPos.offset(1, -3, 1);
+			generateBasement(xWidth - 2, zWidth - 2, basementDepth, worldGenLevel, basementCeilingPos, randomSource, dimensions.placeFloorTest(), blocks.floor(), blocks.basementPosts(), blocks.lootContainer(), lootTable());
 		}
 
 		return true;
@@ -156,5 +173,84 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 		world.setBlock(placeAt, state, Block.UPDATE_ALL);
 
 		world.getChunk(placeAt).markPosForPostProcessing(placeAt);
+	}
+
+	public record RuinedFoundationDimensions(IntProvider wallWidth, IntProvider wallHeights, IntProvider basementHeight, FloatProvider placeFloorTest) {
+		public static final MapCodec<RuinedFoundationDimensions> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			IntProviders.codec(1, 16).fieldOf("wall_width").forGetter(RuinedFoundationDimensions::wallWidth),
+			IntProviders.codec(1, 32).fieldOf("wall_heights").forGetter(RuinedFoundationDimensions::wallHeights),
+			IntProviders.codec(0, 16).fieldOf("basement_height").forGetter(RuinedFoundationDimensions::basementHeight),
+			FloatProviders.codec(-8, 8).fieldOf("random_floor_chance").forGetter(RuinedFoundationDimensions::placeFloorTest)
+		).apply(inst, RuinedFoundationDimensions::new));
+
+		public static RuinedFoundationDimensions makeDefault() {
+			WeightedListInt basementHeights = new WeightedListInt(WeightedList.<IntProvider>builder()
+				// 50% basement chance!
+				.add(ConstantInt.of(3), 1)
+				.add(ConstantInt.of(0), 1)
+				.build()
+			);
+
+			return new RuinedFoundationDimensions(UniformInt.of(5, 9), UniformInt.of(1, 5), basementHeights, UniformFloat.of(-2, 1));
+		}
+	}
+
+	// Blockstates given are treated as the north orientation. Rotations apply for other-facing walls; corners resolving randomly.
+	public record RuinedFoundationBlocks(BlockStateProvider floor, BlockStateProvider basementPosts, BlockStateProvider lootContainer, BlockStateProvider wallBlock, BlockStateProvider wallTop, BlockStateProvider decayedWall, BlockStateProvider decayedTop) {
+		public static final MapCodec<RuinedFoundationBlocks> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			BlockStateProvider.DIRECT_CODEC.fieldOf("floor").forGetter(RuinedFoundationBlocks::floor),
+			BlockStateProvider.DIRECT_CODEC.fieldOf("basement_posts").forGetter(RuinedFoundationBlocks::basementPosts),
+			BlockStateProvider.DIRECT_CODEC.fieldOf("loot_container").forGetter(RuinedFoundationBlocks::lootContainer),
+			BlockStateProvider.DIRECT_CODEC.fieldOf("wall_block").forGetter(RuinedFoundationBlocks::wallBlock),
+			BlockStateProvider.DIRECT_CODEC.fieldOf("wall_top_block").forGetter(RuinedFoundationBlocks::wallTop),
+			BlockStateProvider.DIRECT_CODEC.fieldOf("decayed_wall_block").forGetter(RuinedFoundationBlocks::decayedWall),
+			BlockStateProvider.DIRECT_CODEC.fieldOf("decayed_wall_top_block").forGetter(RuinedFoundationBlocks::decayedTop)
+		).apply(inst, RuinedFoundationBlocks::new));
+
+		public static RuinedFoundationBlocks blocksFromFamilies(boolean floorWaterlogged, BlockFamily floorMaterial, BlockFamily wallMaterial, BlockFamily decayedMaterial, BlockStateProvider chestBlockProvider) {
+			boolean doFence = floorMaterial.get(BlockFamily.Variant.FENCE) != null;
+
+			BlockFamily.Variant basementSupports = doFence ? BlockFamily.Variant.FENCE : BlockFamily.Variant.WALL;
+			TFBlockFamilies.verifyFamilyShapes(floorMaterial, BlockFamily.Variant.SLAB, BlockFamily.Variant.STAIRS, basementSupports);
+
+			TFBlockFamilies.verifyFamilyShapes(wallMaterial, BlockFamily.Variant.SLAB, BlockFamily.Variant.STAIRS);
+			TFBlockFamilies.verifyFamilyShapes(decayedMaterial, BlockFamily.Variant.SLAB, BlockFamily.Variant.STAIRS);
+
+			BlockState floorStairs = floorMaterial.get(BlockFamily.Variant.STAIRS).defaultBlockState();
+
+			BlockState wallBlock = wallMaterial.getBaseBlock().defaultBlockState();
+			BlockState wallStairs = wallMaterial.get(BlockFamily.Variant.STAIRS).defaultBlockState();
+
+			BlockState decayedWall = decayedMaterial.getBaseBlock().defaultBlockState();
+			BlockState decayedStairs = decayedMaterial.get(BlockFamily.Variant.STAIRS).defaultBlockState();
+
+			final WeightedStateProvider floor = new WeightedStateProvider(WeightedList.<BlockState>builder()
+				.add(floorMaterial.getBaseBlock().defaultBlockState(), 39)
+				.add(floorMaterial.get(BlockFamily.Variant.SLAB).defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 1)
+				.add(floorStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH).setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 6)
+				.add(floorStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST).setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 2)
+				.add(floorStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH).setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 6)
+				.add(floorStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST).setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 2)
+				.build()
+			);
+
+			final WeightedStateProvider wallTop = new WeightedStateProvider(WeightedList.<BlockState>builder()
+				.add(wallBlock, 5)
+				.add(wallMaterial.get(BlockFamily.Variant.SLAB).defaultBlockState(), 1)
+				.add(wallStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST), 2)
+				.add(wallStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST), 2)
+				.build()
+			);
+
+			final WeightedStateProvider decayedTop = new WeightedStateProvider(WeightedList.<BlockState>builder()
+				.add(decayedWall, 5)
+				.add(decayedMaterial.get(BlockFamily.Variant.SLAB).defaultBlockState(), 1)
+				.add(decayedStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST), 2)
+				.add(decayedStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST), 2)
+				.build()
+			);
+
+			return new RuinedFoundationBlocks(floor, BlockStateProvider.of(floorMaterial.get(basementSupports).defaultBlockState()), chestBlockProvider, BlockStateProvider.of(wallBlock), wallTop, BlockStateProvider.of(decayedWall), decayedTop);
+		}
 	}
 }

@@ -35,7 +35,7 @@ public class TFFeatureTypes {
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<FallenLeavesFeature>> FALLEN_LEAVES = FEATURES.register("fallen_leaves", () -> FallenLeavesFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<SmallFallenLogFeature>> FALLEN_SMALL_LOG = FEATURES.register("fallen_small_log", () -> SmallFallenLogFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<FireJetFeature>> FIRE_JET = FEATURES.register("fire_jet", () -> FireJetFeature.MAP_CODEC);
-	public static final DeferredHolder<Feature<?>, Feature<RuinedFoundationConfig>> FOUNDATION = FEATURES.register("foundation", () -> new FoundationFeature(RuinedFoundationConfig.CODEC));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<FoundationFeature>> FOUNDATION = FEATURES.register("foundation", () -> FoundationFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<GraveyardFeature>> GRAVEYARD = FEATURES.register("graveyard", () -> GraveyardFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<GroveRuinsFeature>> GROVE_RUINS = FEATURES.register("grove_ruins", () -> GroveRuinsFeature.MAP_CODEC);
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> HOLLOW_STUMP = FEATURES.register("hollow_stump", () -> new HollowStumpFeature(TFTreeFeatureConfig.codecTFTreeConfig));
@@ -55,7 +55,7 @@ public class TFFeatureTypes {
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_HUGE_RED_MUSHROOM = FEATURES.register("troll_cave_huge_red_mushroom", () -> new TrollHugeRedMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_HUGE_BROWN_MUSHROOM = FEATURES.register("troll_cave_huge_brown_mushroom", () -> new TrollHugeBrownMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<StoneCircleFeature>> STONE_CIRCLE = FEATURES.register("stone_circle", () -> StoneCircleFeature.MAP_CODEC);
-	public static final DeferredHolder<Feature<?>, Feature<ThornsConfig>> THORNS = FEATURES.register("thorns", () -> new ThornFeature(ThornsConfig.CODEC));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<ThornFeature>> THORNS = FEATURES.register("thorns", () -> ThornFeature.MAP_CODEC);
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () -> new TimeTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<WebFeature>> WEBS = FEATURES.register("webs", () -> WebFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<SimpleWellFeature>> SIMPLE_WELL = FEATURES.register("simple_well", () -> SimpleWellFeature.MAP_CODEC);
