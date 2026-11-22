@@ -18,6 +18,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
 import net.minecraft.world.timeline.Timeline;
 import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 import twilightforest.TFRegistries;
@@ -63,7 +65,7 @@ public class TFDimensionGenerator {
                         .set(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(new Music(TFSounds.MUSIC, 1200, 12000, true)))
                         .set(EnvironmentAttributes.AMBIENT_SOUNDS, AmbientSounds.LEGACY_CAVE_SETTINGS)
                         .set(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)
-                        .set(EnvironmentAttributes.BED_RULE, new BedRule(BedRule.Rule.NEVER, BedRule.Rule.ALWAYS, false, Optional.empty()))
+                        .set(EnvironmentAttributes.BED_RULE, new BedRule(BedRule.Rule.NEVER, BedRule.Rule.ALWAYS, false, false, Optional.empty()))
                         .set(EnvironmentAttributes.PIGLINS_ZOMBIFY, false)
                         .set(EnvironmentAttributes.CAN_START_RAID, false)
                         .set(EnvironmentAttributes.CREAKING_ACTIVE, true)
@@ -71,10 +73,10 @@ public class TFDimensionGenerator {
                         .set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
                         .set(EnvironmentAttributes.SKY_LIGHT_LEVEL, 9.0F)
 						.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
-                        .set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.colorFromFloat(1.0F, 0.65F, 0.65F, 1.0F))
-						.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, -16119286)
+                        .set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(ARGB.colorFromFloat(1.0F, 0.65F, 0.65F, 1.0F)))
+						.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, ARGB.vector3fFromRGB24(-16119286))
 						.set(EnvironmentAttributes.CLOUD_HEIGHT, 128.0F)
-						.set(EnvironmentAttributes.CLOUD_COLOR, ARGB.colorFromFloat(1.0F, 0.5F, 0.5F, 0.55F))
+						.set(EnvironmentAttributes.CLOUD_COLOR, ARGB.vector4fFromARGB32(ARGB.colorFromFloat(1.0F, 0.5F, 0.5F, 0.55F)))
 						.set(EnvironmentAttributes.CLOUD_FOG_END_DISTANCE, 768.0F)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
                         .set(NeoForgeEnvironmentAttributes.CUSTOM_WEATHER_EFFECTS, TwilightForestRenderInfo.WEATHER_RENDERER)
@@ -91,9 +93,7 @@ public class TFDimensionGenerator {
 
         NoiseSettings tfNoise = NoiseSettings.create(
             -32, //TODO Deliberate over this. For now it'll be -32
-            256,
-            2,
-            2
+            256
         );
 
         return new NoiseGeneratorSettings(
@@ -102,28 +102,28 @@ public class TFDimensionGenerator {
             skylight ? Blocks.AIR.defaultBlockState() : Blocks.WATER.defaultBlockState(),
             new NoiseRouter(
                     DensityFunctions.zero(),
-                    skylight ? DensityFunctions.zero() : new OpenWaterProximityFunction(finalDensity, TFDimension.SEALEVEL, 4),
-                    DensityFunctions.zero(),
-                    DensityFunctions.zero(),
-                    DensityFunctions.zero(),
                     DensityFunctions.zero(),
                     DensityFunctions.zero(),
                     DensityFunctions.zero(),
                     DensityFunctions.zero(),
                     DensityFunctions.zero(),
                     finalDensity,
-                    finalDensity,
-                    DensityFunctions.zero(),
-                    DensityFunctions.zero(),
-                    DensityFunctions.zero()
+                    finalDensity
             ),
             TFSurfaceRules.tfSurface(biomes),
             List.of(),
             TFDimension.SEALEVEL,
             false,
-            !skylight,
+            skylight ? Optional.empty() : Optional.of(new Aquifer.Config(
+                    DensityFunctions.zero(),
+                    new OpenWaterProximityFunction(finalDensity, TFDimension.SEALEVEL, 4),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(), // FIXME new aquifer param, verify that this works
+                    DensityFunctions.zero()  // FIXME new aquifer param, verify that this works
+            )),
             false,
-            false
+            new NoiseGeneratorSettings.DebugFunctions(List.of())
         );
     }
 
