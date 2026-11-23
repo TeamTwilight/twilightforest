@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -314,14 +315,27 @@ public class Kobold extends Monster {
 			}
 		}
 
+		@Nullable
+		private ItemEntity target;
+
 		@Override
 		public void tick() {
-			List<ItemEntity> list = this.mob.level().getEntitiesOfClass(ItemEntity.class, this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
-			ItemStack itemstack = this.mob.getItemBySlot(EquipmentSlot.MAINHAND);
-			if (itemstack.isEmpty() && !list.isEmpty()) {
-				this.mob.getNavigation().moveTo(list.get(0), 1.2F);
-				this.mob.getLookControl().setLookAt(list.get(0).getX(), list.get(0).getY(), list.get(0).getZ());
+			if (!this.mob.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+				return;
+			// Re-query and re-path twice a second (or when the target is gone) instead of every tick.
+			if (this.target == null || !this.target.isAlive() || this.mob.tickCount % 10 == 0) {
+				List<ItemEntity> list = this.mob.level().getEntitiesOfClass(ItemEntity.class, this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
+				this.target = list.isEmpty() ? null : list.get(0);
+				if (this.target != null)
+					this.mob.getNavigation().moveTo(this.target, 1.2F);
 			}
+			if (this.target != null)
+				this.mob.getLookControl().setLookAt(this.target.getX(), this.target.getY(), this.target.getZ());
+		}
+
+		@Override
+		public void stop() {
+			this.target = null;
 		}
 
 		@Override

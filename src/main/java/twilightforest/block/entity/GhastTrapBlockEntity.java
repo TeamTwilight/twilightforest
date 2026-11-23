@@ -40,6 +40,12 @@ public class GhastTrapBlockEntity extends BlockEntity {
 	}
 
 	private void tickInactive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
+		// Server side this scan only collects dying ghastlings, which stay dying for 20 ticks, so every 5 ticks is enough.
+		// The client still scans every tick for its effects.
+		if (!level.isClientSide() && (level.getGameTime() + pos.asLong()) % 5 != 0) {
+			te.counter++;
+			return;
+		}
 		// check to see if there are any dying mini ghasts within our scan range
 		AABB aabb = new AABB(pos).inflate(10D, 16D, 10D);
 		List<CarminiteGhastling> nearbyGhasts = level.getEntitiesOfClass(CarminiteGhastling.class, aabb);

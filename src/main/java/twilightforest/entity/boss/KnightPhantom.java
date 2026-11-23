@@ -117,7 +117,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
-		if (this.isDeadOrDying()) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+		if (this.isDeadOrDying()) PacketDistributor.sendToPlayer(player, new UpdateDeathTimePacket(this.getId(), this.deathTime));  // only the new tracker needs it
 		else if (this.getNumber() == 0) this.getBossBar().addPlayer(player);
 	}
 
@@ -180,6 +180,9 @@ public class KnightPhantom extends BaseTFBoss {
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 		if (this.totalKnownKnights == Integer.MIN_VALUE) this.updateMyNumber();
+		// Only knight 0's boss bar has players (see startSeenByPlayer), and this sums health over a large entity query:
+		// do it on that knight only, twice a second, instead of on all six every tick.
+		if (this.getNumber() != 0 || this.tickCount % 10 != 0) return;
 		float health = 0F;
 		float maxHealth = 0F;
 		int amount = 0;

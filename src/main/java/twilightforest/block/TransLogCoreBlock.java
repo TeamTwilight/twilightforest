@@ -58,16 +58,26 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			int x = QuartPos.fromBlock(dPos.getX());
 			int z = QuartPos.fromBlock(dPos.getZ());
 
-			LevelChunk chunkAt = level.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
+			LevelChunk chunkAt = level.getChunkSource().getChunkNow(dPos.getX() >> 4, dPos.getZ() >> 4);
+			if (chunkAt == null)  // don't load chunks at large configured ranges
+				continue;
+			boolean changed = false;
 			for (LevelChunkSection section : chunkAt.getSections()) {
 				for (int sy = 0; sy < 16; sy += 4) {
 					int y = Mth.clamp(QuartPos.fromBlock(chunkAt.getMinSection() + sy), minY, maxY);
 					if (section.getBiomes().get(x & 3, y & 3, z & 3).is(target))
 						continue;
-					if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
+					if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container) {
 						container.set(x & 3, y & 3, z & 3, biome);
+						changed = true;
+					}
 				}
 			}
+
+			// getBiome above is fuzzy-zoomed and can disagree with the stored quart; then nothing was written here, so
+			// don't resend the whole chunk's biomes (or mark it unsaved) - just try another position.
+			if (!changed)
+				continue;
 
 			if (!chunkAt.isUnsaved()) chunkAt.setUnsaved(true);
 			level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunkAt));

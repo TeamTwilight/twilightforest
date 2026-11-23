@@ -25,9 +25,10 @@ public class SwapHotbarPacket implements CustomPacketPayload {
 	public static void handle(SwapHotbarPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
 			Player player = ctx.player();
+			// Each swap moves 9 stacks, rewrites the belt's contents and resyncs equipment to trackers.
+			if (!PacketRateLimiter.tryAcquire(player, "swap_hotbar", 5, 1))
+				return;
 			TravellersArmorBeltItem.travellersTrySwapHotbar(player);
-			if (player instanceof ServerPlayer serverPlayer)
-				serverPlayer.broadcastToPlayer(serverPlayer);
 		});
 	}
 }

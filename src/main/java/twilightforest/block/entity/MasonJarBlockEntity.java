@@ -119,18 +119,31 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	@SuppressWarnings("deprecation")
 	public void setChanged() {
 		super.setChanged();
+		// setChanged runs on every insert/extract (hoppers, pipes), often without a visible change: only relight when the
+		// emitted light changes and only resend the item when the displayed stack or rotation changes.
+		ItemStack stack = this.item.getItem();
 		if (this.level != null) {
-			BlockPos pos = this.getBlockPos();
-			AuxiliaryLightManager lightManager = this.level.getAuxLightManager(pos);
-			if (lightManager != null) {
-				lightManager.setLightAt(pos, this.item.getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock().defaultBlockState().getLightEmission() : 0);
+			int light = stack.getItem() instanceof BlockItem blockItem ? blockItem.getBlock().defaultBlockState().getLightEmission() : 0;
+			if (light != this.lastLight) {
+				this.lastLight = light;
+				BlockPos pos = this.getBlockPos();
+				AuxiliaryLightManager lightManager = this.level.getAuxLightManager(pos);
+				if (lightManager != null) {
+					lightManager.setLightAt(pos, light);
+				}
+				this.level.getLightEngine().checkBlock(pos);
 			}
-			this.level.getLightEngine().checkBlock(pos);
 		}
-		if (this.level instanceof ServerLevel serverLevel) {
-			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem(), this.itemRotation));
+		if (this.level instanceof ServerLevel serverLevel && (this.itemRotation != this.lastSentRotation || !ItemStack.matches(stack, this.lastSentItem))) {
+			this.lastSentItem = stack.copy();
+			this.lastSentRotation = this.itemRotation;
+			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), stack, this.itemRotation));
 		}
 	}
+
+	private int lastLight = -1;
+	private ItemStack lastSentItem = ItemStack.EMPTY;
+	private int lastSentRotation = Integer.MIN_VALUE;
 
 	public int getItemRotation() {
 		return this.itemRotation;

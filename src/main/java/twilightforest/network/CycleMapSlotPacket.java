@@ -22,7 +22,7 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 	public static void handle(CycleMapSlotPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
 			Player player = ctx.player();
-			if (!(player instanceof ServerPlayer serverPlayer))
+			if (!(player instanceof ServerPlayer serverPlayer) || !PacketRateLimiter.tryAcquire(player, "cycle_map_slot", 2, 1))
 				return;
 
 			ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);

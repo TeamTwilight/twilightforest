@@ -3,6 +3,7 @@ package twilightforest.world.components.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -55,6 +56,8 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 		int x = origin.getX();
 		int z = origin.getZ();
 		int placed = 0;
+		Optional<StructureStart> structureStart = null;
+		long structureChunk = 0;
 
 		for (int y = origin.getY(); y > world.getMinBuildHeight(); y--) {
 			if (placed >= maxCount)
@@ -68,10 +71,19 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 			}
 
 			BlockState state = ctx.config().state;
-			Optional<StructureStart> structureStart = LandmarkUtil.locateNearestLandmarkStart(world, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 			if (state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0)
 				state = TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState();
-			if (state.canSurvive(world, pos) && (spawnInStructure || structureStart.isEmpty() || !structureStart.get().getBoundingBox().isInside(pos))) {
+			if (!state.canSurvive(world, pos))
+				continue;
+			if (!spawnInStructure) {
+				// The landmark lookup only depends on the chunk; it used to run for every Y step of this column.
+				long chunkKey = ChunkPos.asLong(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+				if (structureStart == null || chunkKey != structureChunk) {
+					structureStart = LandmarkUtil.locateNearestLandmarkStart(world, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+					structureChunk = chunkKey;
+				}
+			}
+			if (spawnInStructure || structureStart.isEmpty() || !structureStart.get().getBoundingBox().isInside(pos)) {
 				world.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 				placed++;
 			}

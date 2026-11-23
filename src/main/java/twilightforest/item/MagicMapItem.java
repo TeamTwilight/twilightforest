@@ -34,6 +34,8 @@ import twilightforest.util.datamaps.MagicMapBiomeColor;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.WeakHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +102,19 @@ public class MagicMapItem extends MapItem {
 		return STR_ID + "_" + id;
 	}
 
-	private static final Map<ChunkPos, Holder<Biome>[]> CACHE = new HashMap<>();
+	// Biome grids per map area (512x512 references, ~1 MB each). Keyed weakly by level so another world or dimension
+	// never reuses a grid, and LRU-bounded since it was never evicted before.
+	private static final int CACHE_AREAS_PER_LEVEL = 16;
+	private static final Map<Level, Map<ChunkPos, Holder<Biome>[]>> CACHE = new WeakHashMap<>();
+
+	private static Map<ChunkPos, Holder<Biome>[]> biomeCache(Level level) {
+		return CACHE.computeIfAbsent(level, l -> new LinkedHashMap<>(16, 0.75F, true) {
+			@Override
+			protected boolean removeEldestEntry(Map.Entry<ChunkPos, Holder<Biome>[]> eldest) {
+				return this.size() > CACHE_AREAS_PER_LEVEL;
+			}
+		});
+	}
 
 	@Override
 	public void update(Level level, Entity viewer, MapItemSavedData data) {
@@ -115,7 +129,9 @@ public class MagicMapItem extends MapItem {
 
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			Holder<Biome>[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
+			Holder<Biome>[] biomes;
+			synchronized (CACHE) {
+				biomes = biomeCache(level).computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
 				@SuppressWarnings({"unchecked", "rawtypes"})
 				Holder<Biome>[] array = new Holder[128 * biomesPerPixel * 128 * biomesPerPixel];
 				for (int l = 0; l < 128 * biomesPerPixel; ++l) {
@@ -125,6 +141,7 @@ public class MagicMapItem extends MapItem {
 				}
 				return array;
 			});
+			}
 
 			Registry<Structure> structureRegistry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
 

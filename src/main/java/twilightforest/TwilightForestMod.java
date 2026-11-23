@@ -94,6 +94,9 @@ public final class TwilightForestMod {
 		TFRemapper.addRegistryAliases();
 		twilightforest.network.debug.PacketStats.init();
 		NeoForge.EVENT_BUS.addListener(twilightforest.util.multiparts.MultipartEntityUtil::sendFullMultipartDataOnStartTracking);
+		NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent e) -> TFGameRules.syncProgressionRule(e));
+		NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent e) -> TFGameRules.syncProgressionRule(e));
+		NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent e) -> TFGameRules.syncProgressionRule(e));
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
 		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);

@@ -11,6 +11,15 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class TFGameRules {
+
+	/**
+	 * Clients get a fresh level (with default game rules) on login, respawn and dimension change, but the progression
+	 * rule was only sent when it changed, so a server with it off showed clients locked-area effects. Resend it then.
+	 */
+	public static void syncProgressionRule(net.neoforged.neoforge.event.entity.player.PlayerEvent event) {
+		if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player)
+			PacketDistributor.sendToPlayer(player, new EnforceProgressionStatusPacket(player.serverLevel().getGameRules().getBoolean(ENFORCED_PROGRESSION_RULE.get())));
+	}
 	private static final Set<Supplier<GameRules.Key<?>>> GAME_RULES = new HashSet<>();
 
 	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> ENFORCED_PROGRESSION_RULE = register("tfEnforcedProgression",

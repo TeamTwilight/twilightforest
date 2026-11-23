@@ -14,6 +14,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -43,6 +45,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.network.MissingAdvancementToastPacket;
+import twilightforest.network.PacketRateLimiter;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
 import twilightforest.util.PlayerHelper;
@@ -90,7 +93,7 @@ public class ProgressionEvents {
 		BlockPos pos = event.getPos();
 		if (isAreaProtected(level, event.getEntity(), pos)) {
 			event.setCanceled(true);
-			event.getEntity().inventoryMenu.sendAllDataToRemote();
+			resyncHands(event.getEntity());
 		}
 	}
 
@@ -107,7 +110,7 @@ public class ProgressionEvents {
 
 			if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
 				event.setCanceled(true);
-				player.inventoryMenu.sendAllDataToRemote();
+				resyncHands(player);
 				break;
 			}
 		}
@@ -147,7 +150,7 @@ public class ProgressionEvents {
 							boxes.add(piece.getBoundingBox());
 					});
 
-					sendAreaProtectionPacket(level, pos, boxes);
+					sendAreaProtectionPacket(player, pos, boxes);
 
 					// send a hint monster?
 					structureHints.trySpawnHintMonster(level, player, pos);
@@ -282,19 +285,40 @@ public class ProgressionEvents {
 		return !level.getBlockState(pos).is(BlockTagGenerator.PROGRESSION_ALLOW_BREAKING);
 	}
 
-	private static void sendAreaProtectionPacket(ServerLevel level, BlockPos pos, List<BoundingBox> sbb) {
-		PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), 64, new AreaProtectionPacket(sbb, pos));
-	}
-
-	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
-		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.of(sbbData)));
+	/**
+	 * Only the player who hit the protection gets the box, at most every 10 ticks. It used to go to everyone within 64
+	 * blocks on every blocked click, break and hit (holding right-click repeats every 4 ticks).
+	 */
+	private static void sendAreaProtectionPacket(Player player, BlockPos pos, List<BoundingBox> sbb) {
+		if (player instanceof ServerPlayer sp && PacketRateLimiter.tryAcquire(sp, "area_protection", 10, 1)) {
+			PacketDistributor.sendToPlayer(sp, new AreaProtectionPacket(sbb, pos));
 		}
 	}
 
-	private static void sendAllClearPacket(Player player) {
+	/** The client only predicted the held item being used; resync the two hand slots rather than all 46 slots. */
+	private static void resyncHands(Player player) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.empty()));
+			Inventory inventory = sp.getInventory();
+			sp.connection.send(new ClientboundContainerSetSlotPacket(-2, 0, inventory.selected, inventory.getItem(inventory.selected)));
+			sp.connection.send(new ClientboundContainerSetSlotPacket(-2, 0, Inventory.SLOT_OFFHAND, inventory.getItem(Inventory.SLOT_OFFHAND)));
+		}
+	}
+
+	// Last protection state sent to each player; the 100-tick check resends only when it changes (clients keep it).
+	private static final Map<Player, Optional<List<Pair<BoundingBox, Boolean>>>> LAST_SENT_PROTECTION = new WeakHashMap<>();
+
+	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
+		sendStructureProtectionIfChanged(player, Optional.of(sbbData));
+	}
+
+	private static void sendAllClearPacket(Player player) {
+		sendStructureProtectionIfChanged(player, Optional.empty());
+	}
+
+	private static void sendStructureProtectionIfChanged(Player player, Optional<List<Pair<BoundingBox, Boolean>>> boxes) {
+		if (player instanceof ServerPlayer sp && !boxes.equals(LAST_SENT_PROTECTION.get(sp))) {
+			LAST_SENT_PROTECTION.put(sp, boxes);
+			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(boxes));
 		}
 	}
 }

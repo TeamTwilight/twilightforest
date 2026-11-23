@@ -44,8 +44,14 @@ public final class LandmarkUtil {
 	}
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, HolderSet<Structure> matching, int chunkX, int chunkZ) {
-		Set<Structure> structures = matching.stream().map(Holder::value).collect(Collectors.toSet());
-		return locateNearestMatchingLandmark(level, structures::contains, chunkX, chunkZ, true);
+		// Tags hold a handful of landmarks: scanning them beats building a HashSet on every call (every right-click,
+		// break and player hit in ProgressionEvents, plus worldgen).
+		return locateNearestMatchingLandmark(level, structure -> {
+			for (Holder<Structure> holder : matching)
+				if (holder.value() == structure)
+					return true;
+			return false;
+		}, chunkX, chunkZ, true);
 	}
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, Predicate<Structure> filter, int chunkX, int chunkZ, boolean checkReady) {

@@ -31,6 +31,9 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 	public static void handle(UncraftingGuiPacket message, IPayloadContext ctx) {
 		if (ctx.flow().isServerbound()) {
 			ctx.enqueueWork(() -> {
+				// Every operation re-runs the recipe lookup over all recipes; cap how often a client can trigger it.
+				if (!PacketRateLimiter.tryAcquire(ctx.player(), "uncrafting_gui", 1, 2))
+					return;
 				AbstractContainerMenu container = ctx.player().containerMenu;
 
 				if (container instanceof UncraftingMenu uncrafting) {

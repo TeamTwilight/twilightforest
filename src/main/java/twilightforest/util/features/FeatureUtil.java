@@ -60,12 +60,13 @@ public final class FeatureUtil {
 	}
 
 	public static boolean isAnyMatchInArea(BlockPos pos, int xWidth, int height, int zWidth, Predicate<BlockPos> predicate) {
-		return IntStream.range(0, xWidth)
-			.mapToObj(cx -> IntStream.range(0, height)
-				.mapToObj(cy -> IntStream.range(0, zWidth)
-					.mapToObj(cz -> pos.offset(cx, cy, cz))))
-			.flatMap(stream -> stream.flatMap(s -> s))
-			.anyMatch(predicate);
+		// Plain loops: the nested IntStream/flatMap version allocated several streams per call on a worldgen hot path.
+		for (int cx = 0; cx < xWidth; cx++)
+			for (int cy = 0; cy < height; cy++)
+				for (int cz = 0; cz < zWidth; cz++)
+					if (predicate.test(pos.offset(cx, cy, cz)))
+						return true;
+		return false;
 	}
 
 	/**

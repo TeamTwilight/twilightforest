@@ -76,7 +76,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.getBossBar().addPlayer(player);
-		if (this.deathTime > 0) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+		if (this.deathTime > 0) PacketDistributor.sendToPlayer(player, new UpdateDeathTimePacket(this.getId(), this.deathTime));  // only the new tracker needs it
 	}
 
 	@Override

@@ -51,6 +51,9 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 	 * Try several times to spawn a hint monster
 	 */
 	private long lastSpawnedHintMonsterTime;
+	// Failed rounds (e.g. player boxed in) used to retry all 20 attempts, each constructing a mob and raycasting, on
+	// every biome check and protected click. Space failed rounds 5 seconds apart.
+	private long lastHintMonsterAttemptTime = Long.MIN_VALUE / 2;
 
 	@Override
 	public void trySpawnHintMonster(Level world, Player player, BlockPos pos) {
@@ -61,9 +64,13 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 		if (currentTime < this.lastSpawnedHintMonsterTime) {
 			this.lastSpawnedHintMonsterTime = 0;
 		}
+		if (currentTime < this.lastHintMonsterAttemptTime) {
+			this.lastHintMonsterAttemptTime = Long.MIN_VALUE / 2;
+		}
 
-		if (currentTime - this.lastSpawnedHintMonsterTime > 1200) {
+		if (currentTime - this.lastSpawnedHintMonsterTime > 1200 && currentTime - this.lastHintMonsterAttemptTime >= 100) {
 			// okay, time is good, try several times to spawn one
+			this.lastHintMonsterAttemptTime = currentTime;
 			for (int i = 0; i < 20; i++) {
 				if (didSpawnHintMonster(world, player, pos)) {
 					this.lastSpawnedHintMonsterTime = currentTime;
