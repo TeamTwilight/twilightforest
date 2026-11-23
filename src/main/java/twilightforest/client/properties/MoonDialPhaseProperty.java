@@ -58,7 +58,7 @@ public class MoonDialPhaseProperty extends NeedleDirectionHelper implements Rang
 			return false; // How'd you get here?
 
         for (Holder<DimensionType> dimensionTypeHolder : dimensionTypes.get().getTagOrEmpty(TFDimensionTypeTags.MOON_DIAL_INDETERMINATE))
-            if (attunedDimension.equals(dimensionTypeHolder.getKey()))
+            if (attunedDimension.equals(dimensionTypeHolder.keyOrNull()))
                 return true;
 
         return false;

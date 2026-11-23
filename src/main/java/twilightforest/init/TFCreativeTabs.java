@@ -429,7 +429,7 @@ public class TFCreativeTabs {
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
-		.withTabsBefore(BLOCKS.getKey())
+		.withTabsBefore(BLOCKS.keyOrNull())
 		.title(Component.translatable("itemGroup.twilightforest.items"))
 		.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE))
 		.displayItems((_, output) -> {
@@ -515,7 +515,7 @@ public class TFCreativeTabs {
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EQUIPMENT = TABS.register("equipment", () -> CreativeModeTab.builder()
-		.withTabsBefore(ITEMS.getKey())
+		.withTabsBefore(ITEMS.keyOrNull())
 		.title(Component.translatable("itemGroup.twilightforest.equipment"))
 		.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
 		.displayItems((parameters, output) -> {
@@ -600,7 +600,7 @@ public class TFCreativeTabs {
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD = TABS.register("food", () -> CreativeModeTab.builder()
-		.withTabsBefore(EQUIPMENT.getKey())
+		.withTabsBefore(EQUIPMENT.keyOrNull())
 		.title(Component.translatable("itemGroup.twilightforest.food"))
 		.icon(() -> new ItemStack(TFItems.COOKED_MEEF.get()))
 		.displayItems((_, output) -> {

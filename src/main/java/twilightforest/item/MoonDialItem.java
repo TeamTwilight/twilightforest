@@ -68,7 +68,7 @@ public class MoonDialItem extends Item {
         }
 
         if (tuneTarget != DEFAULT_LEVEL) {
-			stack.set(TFDataComponents.MOON_DIAL_DIMENSION, level.dimensionTypeRegistration().getKey());
+			stack.set(TFDataComponents.MOON_DIAL_DIMENSION, level.dimensionTypeRegistration().keyOrNull());
 			stack.set(TFDataComponents.MOON_DIAL_LEVEL, level.dimension());
 		} else {
 			stack.remove(TFDataComponents.MOON_DIAL_DIMENSION);
