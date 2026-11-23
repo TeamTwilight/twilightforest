@@ -166,7 +166,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 			sheep.setCustomName(Component.literal(s));
 			sheep.setNoAi(true);
 			sheep.snapTo(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
-			sheep.setInvulnerable(true);
+			sheep.setPermanentlyInvulnerable(true);
 			sheep.setInvisible(true);
 			sheep.setCustomNameVisible(true);
 			sheep.setSilent(true);
