@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 
 import java.util.List;
 
-public class BoxDensityFunction implements DensityFunction {
+public record BoxDensityFunction(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, float minValue, float maxValue, TerrainAdjustment terrainAdjustment) implements DensityFunction {
 	public static final MapCodec<BoxDensityFunction> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 		Codec.INT.fieldOf("minX").forGetter(f -> f.minX),
 		Codec.INT.fieldOf("minY").forGetter(f -> f.minY),
@@ -24,22 +24,6 @@ public class BoxDensityFunction implements DensityFunction {
 		Codec.FLOAT.fieldOf("maxValue").forGetter(f -> f.maxValue),
 		TerrainAdjustment.CODEC.fieldOf("beardifier").forGetter(f -> f.terrainAdjustment)
 	).apply(inst, BoxDensityFunction::new));
-
-	private final int minX, minY, minZ, maxX, maxY, maxZ;
-	private final float minValue, maxValue;
-	private final TerrainAdjustment terrainAdjustment;
-
-	public BoxDensityFunction(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, float minValue, float maxValue, TerrainAdjustment terrainAdjustment) {
-		this.minX = minX;
-		this.minY = minY;
-		this.minZ = minZ;
-		this.maxX = maxX;
-		this.maxY = maxY;
-		this.maxZ = maxZ;
-		this.minValue = minValue;
-		this.maxValue = maxValue;
-		this.terrainAdjustment = terrainAdjustment;
-	}
 
 	public static DensityFunction combine(List<BoundingBox> boxes, int dYMin, int dYMax, TerrainAdjustment terrainAdjustment) {
 		if (boxes.isEmpty())
