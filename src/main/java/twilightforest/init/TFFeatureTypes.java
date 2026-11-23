@@ -21,11 +21,11 @@ public class TFFeatureTypes {
 
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TFSmallLakeFeature>> SMALL_LAKE = FEATURES.register("small_lake", () -> TFSmallLakeFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<BigMushgloomFeature>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () -> BigMushgloomFeature.MAP_CODEC);
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () -> new BrownCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_VANILLA_MUSHROOM = FEATURES.register("canopy_red_vanilla_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC, 0));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_SMOOTH_MUSHROOM = FEATURES.register("canopy_red_smooth_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC, 1));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_SPHEROID_MUSHROOM = FEATURES.register("canopy_red_spheroid_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC, 2));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_FLAT_MUSHROOM = FEATURES.register("canopy_red_flat_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC, 3));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<BrownCanopyMushroomFeature>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () -> BrownCanopyMushroomFeature.MAP_CODEC);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<RedCanopyMushroomFeature>> CANOPY_RED_VANILLA_MUSHROOM = FEATURES.register("canopy_red_vanilla_mushroom", () -> RedCanopyMushroomFeature.MAP_CODEC);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<RedCanopyMushroomFeature>> CANOPY_RED_SMOOTH_MUSHROOM = FEATURES.register("canopy_red_smooth_mushroom", () -> RedCanopyMushroomFeature.MAP_CODEC);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<RedCanopyMushroomFeature>> CANOPY_RED_SPHEROID_MUSHROOM = FEATURES.register("canopy_red_spheroid_mushroom", () -> RedCanopyMushroomFeature.MAP_CODEC);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<RedCanopyMushroomFeature>> CANOPY_RED_FLAT_MUSHROOM = FEATURES.register("canopy_red_flat_mushroom", () -> RedCanopyMushroomFeature.MAP_CODEC);
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> MEGA_OAK = FEATURES.register("mega_oak", () -> new MegaOakTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> MEGA_CANOPY = FEATURES.register("mega_canopy", () -> new MegaCanopyTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<BlockSpikeFeature>> CAVE_STALACTITE = FEATURES.register("block_spike", () -> BlockSpikeFeature.MAP_CODEC);
