@@ -6,6 +6,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Interval;
 import net.minecraft.world.level.levelgen.densityfunction.*;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
 
 public abstract class AbsoluteDifferenceFunction implements DensityFunction {
 
@@ -46,6 +49,19 @@ public abstract class AbsoluteDifferenceFunction implements DensityFunction {
 	}
 
 	protected abstract float calculate(int blockX, int blockZ);
+
+	// The sampler compiler keys its cache on value equality
+	@Override
+	public boolean equals(@Nullable Object o) {
+		if (o == null || this.getClass() != o.getClass()) return false;
+		AbsoluteDifferenceFunction that = (AbsoluteDifferenceFunction) o;
+		return Float.compare(this.max, that.max) == 0 && Float.compare(this.centerX, that.centerX) == 0 && Float.compare(this.centerZ, that.centerZ) == 0;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.max, this.centerX, this.centerZ);
+	}
 
 	public record Sampler(AbsoluteDifferenceFunction function) implements DensitySampler {
 
