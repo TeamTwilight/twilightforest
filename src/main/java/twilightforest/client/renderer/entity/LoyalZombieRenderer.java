@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.monster.zombie.AbstractZombieModel;
 import net.minecraft.client.model.monster.zombie.BabyZombieModel;
 import net.minecraft.client.model.monster.zombie.ZombieModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -11,7 +10,7 @@ import net.minecraft.util.ARGB;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.entity.monster.LoyalZombie;
 
-public class LoyalZombieRenderer extends HumanoidMobRenderer<LoyalZombie, ZombieRenderState, AbstractZombieModel<ZombieRenderState>> {
+public class LoyalZombieRenderer extends HumanoidMobRenderer<LoyalZombie, ZombieRenderState, ZombieModel<ZombieRenderState>> {
 	private static final Identifier ZOMBIE_LOCATION = Identifier.withDefaultNamespace("textures/entity/zombie/zombie.png");
 	private static final Identifier BABY_ZOMBIE_LOCATION = Identifier.withDefaultNamespace("textures/entity/zombie/zombie_baby.png");
 
