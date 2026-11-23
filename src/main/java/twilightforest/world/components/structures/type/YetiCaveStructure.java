@@ -6,8 +6,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jspecify.annotations.Nullable;
@@ -48,7 +50,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 
 	@SuppressWarnings("UnnecessaryLocalVariable")
 	@Override
-	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
+	public DensitySampler getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource, RandomState randomState) {
 		int riser = 5;
 
 		BlockPos centerPos = structurePieceSource.getBoundingBox().getCenter().above(riser);
@@ -139,6 +141,6 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 			DensityFunctions.mul(DensityFunctions.constant(16), interiorWithSmoothedEntrances)
 		);
 
-		return yetiCave;
+		return randomState.getSampler(yetiCave);
 	}
 }

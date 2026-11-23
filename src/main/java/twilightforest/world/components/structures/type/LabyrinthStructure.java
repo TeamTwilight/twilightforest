@@ -6,8 +6,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jspecify.annotations.Nullable;
@@ -47,7 +49,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 	}
 
 	@Override
-	public DensityFunction getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource) {
+	public DensitySampler getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource, RandomState randomState) {
 		final float radius = 35;
 
 		final BoundingBox structureBox = structurePieceSource.getBoundingBox();
@@ -97,6 +99,6 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 		// Everything above the hill mound surface are zeros. The interior's field has negative values where "inside" is and positive values where "not inside" is, with zeros forming the interior surfaces.
 		// This min() function combines these two surfaces formed by said zeros
 
-		return DensityFunctions.min(hillMound, interiorMasked);
+		return randomState.getSampler(DensityFunctions.min(hillMound, interiorMasked));
 	}
 }

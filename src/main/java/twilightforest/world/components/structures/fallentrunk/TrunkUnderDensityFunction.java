@@ -7,6 +7,10 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Beardifier;
+import net.minecraft.world.level.levelgen.densityfunction.DensityBuffer;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
+import net.minecraft.world.level.levelgen.densityfunction.DensityVolume;
+import net.minecraft.world.level.levelgen.densityfunction.SamplerContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import twilightforest.world.components.chunkgenerators.TanhHillFunction;
 
@@ -52,49 +56,50 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	}
 
 	@Override
-	public double compute(FunctionContext context) {
-		int x = context.blockX();
-		int y = context.blockY();
-		int z = context.blockZ();
+	public void sampleVolume(SamplerContext context, DensityBuffer outputBuffer, DensityVolume volume) {
+		DensitySampler.sampleVolumeNaive(context, outputBuffer, volume, this);
+	}
 
+	@Override
+	public float sampleValue(SamplerContext context, int x, int y, int z) {
 		int horizontalDistanceX = Math.max(0, Math.max(boundingBox.minX() - x, x - boundingBox.maxX()));
 		int horizontalDistanceZ = Math.max(0, Math.max(boundingBox.minZ() - z, z - boundingBox.maxZ()));
 		int adjustedGroundLevel = boundingBox.minY() + groundLevelDelta + (isBigTree ? 1 : 0);
 		int verticalDistance = y - adjustedGroundLevel;
 
-		double moundContribution = computeMoundsContribution(context);
+		float moundContribution = computeMoundsContribution(x, y, z);
 		if (moundContribution > 0)
 			return moundContribution;
 		return flatSurroundingTerrain(horizontalDistanceX, verticalDistance, horizontalDistanceZ);
 	}
 
-	public static double flatSurroundingTerrain(double x, double y, double z) {
+	public static float flatSurroundingTerrain(float x, float y, float z) {
 		if (y > 20 || y < -10)
 			return 0;
 		if (x == 0 && z == 0 && y > 0)
 			return -1;  // flat everything inside the trunk
-		final double a = FallenTrunkPiece.TERRAFORM_PIECE_SIZE, c = FallenTrunkPiece.TERRAFORM_PIECE_SIZE;
-		final double verticalScale = 0.7;
-		double normX = Math.abs(x / a);
-		double normZ = Math.abs(z / c);
-		double normalizedSquaredDistance = normX * normX + normZ * normZ;
+		final float a = FallenTrunkPiece.TERRAFORM_PIECE_SIZE, c = FallenTrunkPiece.TERRAFORM_PIECE_SIZE;
+		final float verticalScale = 0.7f;
+		float normX = Mth.abs(x / a);
+		float normZ = Mth.abs(z / c);
+		float normalizedSquaredDistance = normX * normX + normZ * normZ;
 
 		if (normalizedSquaredDistance >= 1.0)
-			return 0.0;
+			return 0.0f;
 
-		double normalizedDistance = Math.sqrt(normalizedSquaredDistance);
+		float normalizedDistance = Mth.sqrt(normalizedSquaredDistance);
 
 		double factor = 1.0 - normalizedDistance;
 		if (y < 0)  // make less steep to avoid vertical walls around the trunk
-			y = normalizedDistance * 0.5 + y / 5;  // add normalizedDistance to avoid axis aligned "stairs"
+			y = normalizedDistance * 0.5f + y / 5f;  // add normalizedDistance to avoid axis aligned "stairs"
 		// multiply by exponent to make the beardifier weaker with distance
-		return -y * factor / verticalScale * (Math.exp(-normalizedDistance / (Math.max(1 - normalizedDistance, 1e-8))));
+		return (float) (-y * factor / verticalScale * (Math.exp(-normalizedDistance / (Math.max(1 - normalizedDistance, 1e-8)))));
 	}
 
-	protected double computeMoundsContribution(FunctionContext context) {
-		int x = context.blockX() - boundingBox.minX();
-		int y = context.blockY() - boundingBox.minY();
-		int z = context.blockZ() - boundingBox.minZ();
+	protected float computeMoundsContribution(int blockX, int blockY, int blockZ) {
+		int x = blockX - boundingBox.minX();
+		int y = blockY - boundingBox.minY();
+		int z = blockZ - boundingBox.minZ();
 		int radius = getRadius(boundingBox);
 		double ax = Math.abs((isXOriented ? z : x) - radius + 1);
 		double az = Math.abs(y - radius + 1);
@@ -106,9 +111,9 @@ public class TrunkUnderDensityFunction extends Beardifier {
 				return -1;
 		}
 
-		double max = -1D;
+		float max = -1f;
 		for (TanhHillFunction h : tanhHillFunctions) {
-			double value = h.compute(context);
+			float value = h.compute(blockX, blockY, blockZ);
 			if (value > max)
 				max = value;
 		}

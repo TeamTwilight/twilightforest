@@ -9,8 +9,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -71,7 +73,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 	}
 
 	@Override
-	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
+	public DensitySampler getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource, RandomState randomState) {
 		List<BoundingBox> trimBoxes = new ArrayList<>();
 
 		int yBase = structurePieceSource.getPieces().getFirst().getBoundingBox().minY();
@@ -86,7 +88,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 			}
 		}
 
-		return DensityFunctions.mul(activator, BoxDensityFunction.combine(trimBoxes, -5, -5, TerrainAdjustment.BURY));
+		return randomState.getSampler(DensityFunctions.mul(activator, BoxDensityFunction.combine(trimBoxes, -5, -5, TerrainAdjustment.BURY)));
 	}
 
 	@Override

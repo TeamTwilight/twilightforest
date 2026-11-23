@@ -8,8 +8,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.init.TFStructurePieceTypes;
@@ -80,7 +82,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	}
 
 	@Override
-	public DensityFunction getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource) {
+	public DensitySampler getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource, RandomState randomState) {
 		int hillSize = this.size;
 
 		final float radius = (hillSize * 4 + 0.8f) * 8;
@@ -120,6 +122,6 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 
 		DensityFunction maskingSphere = FocusedDensityFunction.fromPos(hillCenter.below(Mth.ceil(radius * 0.1)), width * 0.5f + 5, width * 0.25f, 0).clamp(0, 1);
 
-		return DensityFunctions.mul(maskingSphere, DensityFunctions.mul(DensityFunctions.constant(8), hollowHill));
+		return randomState.getSampler(DensityFunctions.mul(maskingSphere, DensityFunctions.mul(DensityFunctions.constant(8), hollowHill)));
 	}
 }

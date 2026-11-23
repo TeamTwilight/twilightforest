@@ -7,8 +7,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jspecify.annotations.Nullable;
@@ -49,7 +51,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 	}
 
 	@Override
-	public DensityFunction getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource) {
+	public DensitySampler getStructureTerraformer(ChunkPos chunkSliceAt, StructureStart structurePieceSource, RandomState randomState) {
 		final int hillSize = 2;
 
 		final float radius = (hillSize * 4 + 0.8f) * 8;
@@ -95,6 +97,6 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 
 		DensityFunction lair = DensityFunctions.add(hillMasked, DensityFunctions.max(cutout, innerFloor).clamp(-2, 0));
 
-		return DensityFunctions.mul(DensityFunctions.constant(8), lair);
+		return randomState.getSampler(DensityFunctions.mul(DensityFunctions.constant(8), lair));
 	}
 }

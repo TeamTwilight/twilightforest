@@ -5,7 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.init.TFStructureTypes;
@@ -34,8 +35,8 @@ public class HedgeMazeStructure extends LandmarkStructure implements CustomDensi
 	}
 
 	@Override
-	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
-		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 0, 4);
+	public DensitySampler getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource, RandomState randomState) {
+		return randomState.getSampler(CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 0, 4));
 	}
 
 	@Override
