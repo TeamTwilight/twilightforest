@@ -11,6 +11,8 @@ import com.mojang.renderpearl.api.commands.RenderPass;
 import com.mojang.renderpearl.api.device.GpuDevice;
 import com.mojang.renderpearl.api.textures.GpuTextureView;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.DynamicGpuDataStorage;
+import net.minecraft.client.renderer.DynamicGpuDataStorageMapped;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -22,8 +24,8 @@ import java.util.function.Supplier;
 
 public class AuroraRenderer {
 
-	private final Supplier<DynamicUniformStorage<AuroraUniform>> uniformStorage = Suppliers.memoize(() ->
-		new DynamicUniformStorage<>("Twilight Forest Aurora UBO", AuroraUniform.SIZE, 2)
+	private final Supplier<DynamicGpuDataStorage<AuroraUniform>> uniformStorage = Suppliers.memoize(() ->
+		new DynamicGpuDataStorageMapped<>("Twilight Forest Aurora UBO", AuroraUniform.SIZE, GpuBuffer.USAGE_UNIFORM,2)
 	);
 
 	public void endFrame() {
@@ -48,7 +50,7 @@ public class AuroraRenderer {
 				new Vector3f(),
 				new Matrix4f()
 			);
-			GpuBufferSlice aurora = uniformStorage.get().writeUniform(new AuroraUniform(seed, x, y, z));
+			GpuBufferSlice aurora = uniformStorage.get().writeData(new AuroraUniform(seed, x, y, z));
 
 			try (
 				GpuBuffer vertexBuffer = device.createBuffer(
@@ -64,7 +66,7 @@ public class AuroraRenderer {
 					OptionalDouble.empty()
 				)
 			) {
-				pass.setPipeline(TFRenderPipelines.AURORA);
+				pass.setPipeline(RenderSystem.getCompiledPipeline(TFRenderPipelines.AURORA));
 				RenderSystem.bindDefaultUniforms(pass);
 				pass.setUniform("DynamicTransforms", transforms);
 				pass.setUniform(TFRenderPipelines.AURORA_UNIFORM, aurora);
@@ -75,7 +77,7 @@ public class AuroraRenderer {
 		}
 	}
 
-	private record AuroraUniform(int seed, float x, float y, float z) implements DynamicUniformStorage.DynamicUniform {
+	private record AuroraUniform(int seed, float x, float y, float z) implements DynamicGpuDataStorage.DynamicGpuData {
 
 		private static final int SIZE = new Std140SizeCalculator().putInt().putVec3().get();
 

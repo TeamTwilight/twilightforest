@@ -2,6 +2,7 @@ package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.renderpearl.api.pipeline.*;
+import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
 import twilightforest.TwilightForestMod;
 
@@ -33,7 +34,7 @@ public class TFRenderPipelines {
 		.withPrimitiveTopology(PrimitiveTopology.QUADS)
 		.withCull(true)
 		.withDepthStencilState(Optional.of(new DepthStencilState(CompareOp.ALWAYS_PASS, false)))
-		.withBindGroupLayout(BindGroupLayout.builder().withSampler("Sampler0").withSampler("Sampler2").build())
+		.withBindGroupLayout(BindGroupLayouts.SAMPLER0_SAMPLER2)
 		.build();
 
 	public static final RenderPipeline PROTECTION_BOX = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
@@ -50,7 +51,7 @@ public class TFRenderPipelines {
 		.withVertexBinding(0, DefaultVertexFormat.ENTITY)
 		.withPrimitiveTopology(PrimitiveTopology.QUADS)
 		.withDepthStencilState(DepthStencilState.DEFAULT)
-		.withBindGroupLayout(BindGroupLayout.builder().withSampler("Sampler0").build())
+		.withBindGroupLayout(BindGroupLayouts.SAMPLER0)
 		.build();
 
 	public static final RenderPipeline SHADOW_CLONE = RenderPipeline.builder(RenderPipelines.ENTITY_SNIPPET)
@@ -58,6 +59,6 @@ public class TFRenderPipelines {
 		.withShaderDefine("ALPHA_CUTOUT", 0.1F)
 		.withCull(false)
 		.withColorTargetState(new ColorTargetState(SHADOW))
-		.withBindGroupLayout(BindGroupLayout.builder().withSampler("Sampler1").build())
+		.withBindGroupLayout(BindGroupLayouts.SAMPLER1)
 		.build();
 }
