@@ -92,6 +92,7 @@ public final class TwilightForestMod {
 		TemplateMarkerHandlers.TEMPLATE_MARKER_HANDLER_TYPES.register(bus);
 
 		TFRemapper.addRegistryAliases();
+		twilightforest.network.debug.PacketStats.init();
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
 		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
