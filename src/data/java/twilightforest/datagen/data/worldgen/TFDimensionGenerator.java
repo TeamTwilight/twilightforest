@@ -92,7 +92,7 @@ public class TFDimensionGenerator {
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
         HolderGetter<MaterialCondition> conditions = context.lookup(Registries.MATERIAL_CONDITION);
-        DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctionGenerator.SKYLIGHT_TERRAIN : TFDensityFunctionGenerator.FORESTED_TERRAIN));
+        DensityFunction finalDensity = DensityFunctions.add(new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctionGenerator.SKYLIGHT_TERRAIN : TFDensityFunctionGenerator.FORESTED_TERRAIN)), DensityFunctions.beardifier());
 
         NoiseSettings tfNoise = NoiseSettings.create(
             -32, //TODO Deliberate over this. For now it'll be -32
