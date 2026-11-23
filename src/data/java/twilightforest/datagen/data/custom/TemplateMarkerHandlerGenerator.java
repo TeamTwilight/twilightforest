@@ -7,7 +7,6 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.custom.TemplateMarkerHandlers;
@@ -25,13 +24,13 @@ public class TemplateMarkerHandlerGenerator {
             .add(Blocks.AIR.defaultBlockState(), 3)
             .build()));
 
-        DryingRackMarkerHandler armorRack = new DryingRackMarkerHandler(SimpleStateProvider.simple(TFBlocks.CANOPY_DRYING_RACK.value()), TFLootTables.CAMP_ARMOR_RACK);
+        DryingRackMarkerHandler armorRack = new DryingRackMarkerHandler(BlockStateProvider.of(TFBlocks.CANOPY_DRYING_RACK.value()), TFLootTables.CAMP_ARMOR_RACK);
 
-        DryingRackMarkerHandler birchDryingRack = new DryingRackMarkerHandler(SimpleStateProvider.simple(TFBlocks.BIRCH_DRYING_RACK.value()), TFLootTables.CAMP_DRYING_RACK);
+        DryingRackMarkerHandler birchDryingRack = new DryingRackMarkerHandler(BlockStateProvider.of(TFBlocks.BIRCH_DRYING_RACK.value()), TFLootTables.CAMP_DRYING_RACK);
 
         PaintingMarkerHandler painting = new PaintingMarkerHandler(PaintingVariantTags.PLACEABLE);
 
-        LootMarkerHandler tentPot = new LootMarkerHandler(BlockStateProvider.simple(Blocks.DECORATED_POT), TFLootTables.CAMP_POT);
+        LootMarkerHandler tentPot = new LootMarkerHandler(BlockStateProvider.of(Blocks.DECORATED_POT), TFLootTables.CAMP_POT);
 
         Map<String, Holder<TemplateMarkerHandler>> keyedHandlers = Map.of(
             "twilight_oak_slab", Holder.direct(campfireSeat),

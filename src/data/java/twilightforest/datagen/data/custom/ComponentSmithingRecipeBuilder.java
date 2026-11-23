@@ -7,6 +7,7 @@ import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.RecipeUnlockedTrigger;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
@@ -55,7 +56,7 @@ public class ComponentSmithingRecipeBuilder {
 	public void save(RecipeOutput output, ResourceKey<Recipe<?>> id) {
 		this.ensureValid(id);
 		Advancement.Builder advancement$builder = output.advancement()
-			.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+			.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(output.lookup(Registries.RECIPE).getOrThrow(id)))
 			.rewards(AdvancementRewards.Builder.recipe(id))
 			.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
