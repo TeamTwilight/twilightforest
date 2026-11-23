@@ -185,7 +185,7 @@ public class MazeMapItem extends MapItem {
 										OreMapOreColor color = state.typeHolder().getData(TFDataMaps.ORE_MAP_ORE_COLOR);
 										if (color != null) {
 											multiset.add(color.color(), 1000);
-										} else if (!state.isAir() && state.is(Tags.Blocks.ORES)) {
+										} else if (!state.isAir() && state.is(Tags.BlockItems.ORES.block())) {
 											multiset.add(MapColor.COLOR_PINK, 1000);
 										}
 									}

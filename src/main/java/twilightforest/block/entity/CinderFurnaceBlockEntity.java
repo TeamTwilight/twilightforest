@@ -227,7 +227,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	}
 
 	private boolean canMultiply(ItemStack input) {
-		return input.is(ItemTags.LOGS) || input.is(Tags.Items.ORES);
+		return input.is(ItemTags.LOGS) || input.is(Tags.BlockItems.ORES.item());
 	}
 
 	/**
