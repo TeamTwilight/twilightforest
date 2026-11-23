@@ -2,27 +2,29 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 
 /**
  * Implement this interface to Structure classes, for influencing density-based chunkgen around a structure.
- * DensityFunction.FunctionContext objects provided to the returned DensityFunction will NOT be position-normalized to
- * the structure center.
+ * The returned DensitySampler receives world block positions. They are NOT position-normalized to the structure center.
  */
 public interface CustomDensitySource {
 	/**
-	 * Expect to make a new density functions for each chunk overlapping this Structure.
+	 * Expect to make a new density sampler for each chunk overlapping this Structure.
 	 * It will not process for any chunk outside the StructureStart's X-Z boundaries.
 	 *
 	 * @param chunkPosAt           The current chunk overlapping this Structure.
 	 * @param structurePieceSource The specific Structure instance, represented by the StructureStart. It has plenty of information that distinguishes the structure in-world. Treat it as if it were an Entity meant for immutability and take care to not modify it nor call its property-changing methods.
-	 * @return A custom density function, which will be added to the Beardifier's original density value.
+	 * @param randomState          Compiles a DensityFunction into a DensitySampler with {@link RandomState#getSampler(DensityFunction)}.
+	 * @return A custom density sampler, which will be added to the Beardifier's original density value.
 	 */
-	DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource);
+	DensitySampler getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource, RandomState randomState);
 
 	/**
 	 * Provides a DensityFunction that will cut out any terrain that wants to submerge the structure in a upside-down pyramid shape. Anything below the structure should remain untouched.
@@ -30,7 +32,7 @@ public interface CustomDensitySource {
 	 * @param structurePieceSource The specific Structure instance, represented by the StructureStart. It has plenty of information that distinguishes the structure in-world. Treat it as if it were an Entity meant for immutability and take care to not modify it nor call its property-changing methods.
 	 * @param yOffset How high should the inverted pyramid start.
 	 * @param horizontalPadding How much extra space that should be arranged around the terraformation
-	 * @return A custom density function, which will be added to the Beardifier's original density value.
+	 * @return A custom density function. Compile it with {@link RandomState#getSampler(DensityFunction)} before it is returned from {@link #getStructureTerraformer}.
 	 */
 	static DensityFunction getInvertedPyramidTerraformer(StructureStart structurePieceSource, int yOffset, int horizontalPadding) {
 		int vanillaBoxInflationFactor = 12; // Vanilla automatically inflates a structure's bounds by 12 in Structure.adjustBoundingBox()
