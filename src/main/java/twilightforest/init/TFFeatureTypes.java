@@ -47,10 +47,7 @@ public class TFFeatureTypes {
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<MonolithFeature>> MONOLITH = FEATURES.register("monolith", () -> MonolithFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<CheckAbovePatchFeature>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () -> CheckAbovePatchFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<BerryBushFeature>> BERRY_BUSH = FEATURES.register("berry_bush", () -> BerryBushFeature.MAP_CODEC);
-	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> UNDERGROUND_PLANTS = FEATURES.register("underground_plants", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC));
-	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> UNDERGROUND_PLANTS_IN_STRUCTURE = FEATURES.register("underground_plants_in_structure", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC, true));
-	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> OREBERRY_BUSHES = FEATURES.register("oreberry_bushes", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC, 1));
-	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> TROLL_VINES = FEATURES.register("troll_vines", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC, true));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<UndergroundPlantFeature>> UNDERGROUND_PLANTS = FEATURES.register("underground_plants", () -> UndergroundPlantFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TrollBigMushgloomFeature>> TROLL_BIG_MUSHGLOOM = FEATURES.register("troll_cave_big_mushgloom", () -> TrollBigMushgloomFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TrollHugeRedMushroomFeature>> TROLL_HUGE_RED_MUSHROOM = FEATURES.register("troll_cave_huge_red_mushroom", () -> TrollHugeRedMushroomFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TrollHugeBrownMushroomFeature>> TROLL_HUGE_BROWN_MUSHROOM = FEATURES.register("troll_cave_huge_brown_mushroom", () -> TrollHugeBrownMushroomFeature.MAP_CODEC);
