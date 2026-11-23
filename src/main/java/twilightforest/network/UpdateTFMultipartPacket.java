@@ -31,6 +31,38 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 		this(-1, entity, Arrays.stream(entity.getParts()).filter(part -> part instanceof TFPart<?>).map(part -> (TFPart<?>) part).collect(Collectors.toMap(TFPart::getId, TFPart::writeData)));
 	}
 
+	/**
+	 * Only the parts that changed since the last update (see {@link TFPart#writeDataIfChanged()}), or {@code null} when
+	 * nothing changed or the entity has no TF parts. Omitted parts are simply absent from the map, which clients already
+	 * handle, so the wire format is unchanged. Previously every part (46 for a Hydra) was resent on every tracker update.
+	 */
+	@Nullable
+	public static UpdateTFMultipartPacket delta(Entity entity) {
+		return collect(entity, TFPart::writeDataIfChanged);
+	}
+
+	/** Every TF part with all non-default data, for a player that just started tracking {@code entity}. */
+	@Nullable
+	public static UpdateTFMultipartPacket full(Entity entity) {
+		return collect(entity, TFPart::writeFullData);
+	}
+
+	@Nullable
+	private static UpdateTFMultipartPacket collect(Entity entity, java.util.function.Function<TFPart<?>, PartDataHolder> writer) {
+		PartEntity<?>[] parts = entity.getParts();
+		if (parts == null)
+			return null;
+		Map<Integer, PartDataHolder> data = new HashMap<>();
+		for (PartEntity<?> part : parts) {
+			if (part instanceof TFPart<?> tfPart) {
+				PartDataHolder holder = writer.apply(tfPart);
+				if (holder != null)
+					data.put(tfPart.getId(), holder);
+			}
+		}
+		return data.isEmpty() ? null : new UpdateTFMultipartPacket(-1, entity, data);
+	}
+
 	public void write(RegistryFriendlyByteBuf buf) {
 		if (this.entity == null)
 			throw new IllegalStateException("Null Entity while encoding UpdateTFMultipartPacket");

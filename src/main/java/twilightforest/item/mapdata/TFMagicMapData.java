@@ -125,9 +125,14 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	public void addTFDecoration(Holder<MapDecorationType> decorationType, @Nullable LevelAccessor level, String id, double x, double z, double yRot, boolean conquered) {
+		this.addTFDecoration(decorationType, level, id, x, z, yRot, Boolean.valueOf(conquered));
+	}
+
+	/** @param conquered {@code null} = unknown (e.g. chunk not loaded): keep the conquered state the map already has. */
+	public void addTFDecoration(Holder<MapDecorationType> decorationType, @Nullable LevelAccessor level, String id, double x, double z, double yRot, @Nullable Boolean conquered) {
 		this.addDecoration(decorationType, level, id, x, z, yRot, null);
 		MapDecoration deco = this.decorations.get(id);
-		if (deco != null) {
+		if (deco != null && conquered != null) {
 			String conqueredID = MagicMapItem.makeName(decorationType, deco.x(), deco.y());
 			if (conquered && !this.conqueredStructures.contains(conqueredID)) {
 				this.conqueredStructures.add(conqueredID);

@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +14,9 @@ import net.neoforged.neoforge.entity.PartEntity;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 import java.util.Objects;
 
 public abstract class TFPart<T extends Entity> extends PartEntity<T> {
@@ -118,7 +122,56 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		super.setId(id + 1);
 	}
 
+	// What trackers were last sent, so unchanged parts can be left out of UpdateTFMultipartPacket.
+	private static final double POS_EPSILON = 1.0D / 4096.0D;  // vanilla's delta-move precision
+	private static final float ROT_EPSILON = 0.01F;
+	private double lastSentX = Double.NaN, lastSentY, lastSentZ;
+	private float lastSentYRot, lastSentXRot, lastSentWidth, lastSentHeight;
+	private boolean lastSentFixed;
+
 	public UpdateTFMultipartPacket.PartDataHolder writeData() {
+		return this.createData(getEntityData().packDirty());
+	}
+
+	/**
+	 * Server-side delta for the regular tracker update: the part's state if its transform/size changed since it was
+	 * last sent or it has dirty entity data, otherwise {@code null} (the part is omitted and the client keeps its
+	 * current target). Consumes the dirty data, like {@link #writeData()}.
+	 */
+	@Nullable
+	public UpdateTFMultipartPacket.PartDataHolder writeDataIfChanged() {
+		List<SynchedEntityData.DataValue<?>> dirty = getEntityData().packDirty();
+		boolean changed = Double.isNaN(this.lastSentX)
+			|| Math.abs(this.getX() - this.lastSentX) > POS_EPSILON
+			|| Math.abs(this.getY() - this.lastSentY) > POS_EPSILON
+			|| Math.abs(this.getZ() - this.lastSentZ) > POS_EPSILON
+			|| Math.abs(this.getYRot() - this.lastSentYRot) > ROT_EPSILON
+			|| Math.abs(this.getXRot() - this.lastSentXRot) > ROT_EPSILON
+			|| this.dimensions.width() != this.lastSentWidth
+			|| this.dimensions.height() != this.lastSentHeight
+			|| this.dimensions.fixed() != this.lastSentFixed;
+		if (!changed && dirty == null)
+			return null;
+		this.lastSentX = this.getX();
+		this.lastSentY = this.getY();
+		this.lastSentZ = this.getZ();
+		this.lastSentYRot = this.getYRot();
+		this.lastSentXRot = this.getXRot();
+		this.lastSentWidth = this.dimensions.width();
+		this.lastSentHeight = this.dimensions.height();
+		this.lastSentFixed = this.dimensions.fixed();
+		return this.createData(dirty);
+	}
+
+	/**
+	 * Full snapshot for a player that just started tracking the parent: includes all non-default entity data, which
+	 * dirty-only updates would never deliver to a late tracker. Doesn't touch dirty flags or the delta baseline.
+	 */
+	public UpdateTFMultipartPacket.PartDataHolder writeFullData() {
+		return this.createData(getEntityData().getNonDefaultValues());
+	}
+
+	private UpdateTFMultipartPacket.PartDataHolder createData(@Nullable List<SynchedEntityData.DataValue<?>> data) {
 		return new UpdateTFMultipartPacket.PartDataHolder(
 			this.getX(),
 			this.getY(),
@@ -128,8 +181,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 			this.dimensions.width(),
 			this.dimensions.height(),
 			this.dimensions.fixed(),
-			getEntityData().packDirty());
-
+			data);
 	}
 
 	public void readData(UpdateTFMultipartPacket.PartDataHolder data) {

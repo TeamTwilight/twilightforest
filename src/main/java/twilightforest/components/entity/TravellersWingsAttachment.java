@@ -9,6 +9,8 @@ public class TravellersWingsAttachment {
 	public int sidestepTimer;
 	public long lastSidestepTime;
 	public boolean shouldPlaySideStepCooldownSound;
+	/** Client-side fall tracking for the animation state; see TravellersGearLogic#determineWingState. */
+	public float clientFallDistance;
 	public enum WingState {
 		IDLE,
 		WALK,

@@ -128,7 +128,13 @@ public class MagicMapItem extends MapItem {
 
 			Registry<Structure> structureRegistry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
 
+			// Like vanilla MapItem#update, only refresh every 16th column per tick (a full pass every 16 ticks) instead
+			// of all ~63x63 pixels and their landmark checks every tick while the map is held.
+			int step = data.getHoldingPlayer((Player) viewer).step++;
+
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
+				if ((xPixel & 15) != (step & 15))
+					continue;
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
 					if (xPixel >= 0 && zPixel >= 0 && xPixel < 128 && zPixel < 128) {
 						int xPixelDist = xPixel - viewerX;
@@ -165,7 +171,7 @@ public class MagicMapItem extends MapItem {
 								if (structureRegistry.getHolder(structureKey).map(structureRef -> structureRef.is(StructureTagGenerator.LANDMARK)).orElse(false)) {
 									TFMagicMapData tfData = (TFMagicMapData) data;
 									if (structureRegistry.getOrThrow(structureKey) instanceof LandmarkStructure landmark) {
-										landmark.getMapIcon().ifPresent(icon -> tfData.addTFDecoration(icon, level, makeName(icon, worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConquered(level, worldX, worldZ)));
+										landmark.getMapIcon().ifPresent(icon -> tfData.addTFDecoration(icon, level, makeName(icon, worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConqueredIfLoaded(level, worldX, worldZ)));  // never sync-load the landmark's chunk
 										//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
 									}
 								}

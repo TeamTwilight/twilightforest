@@ -54,6 +54,7 @@ import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifie
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.GradualGlidePacket;
 import twilightforest.network.ParticlePacket;
+import twilightforest.util.EffectUtil;
 
 import java.util.*;
 import java.util.function.Function;
@@ -214,7 +215,7 @@ public class TravellersGearEvents {
 
 	private void performStealth(PlayerTickEvent.Post event) {
 		if (!event.getEntity().level().isClientSide()) {
-			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
+			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> EffectUtil.maintainHiddenEffect(player1, MobEffects.INVISIBILITY, 0, TravellersGearLogic.STEALTH_EFFECT_DURATION, TravellersGearLogic.STEALTH_EFFECT_DURATION / 2));
 		}
 	}
 
@@ -247,12 +248,14 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 		TravellersGearLogic.travellersBootsSlimySolesBounce(livingEntity);
 
-		if (livingEntity.level().isClientSide()) return;
+		if (livingEntity.level().isClientSide()) {
+			TravellersGearLogic.determineWingState(livingEntity);  // purely visual, derived client-side
+			return;
+		}
 		TravellersGearLogic.travellersVestHaste(livingEntity);
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
-		TravellersGearLogic.determineWingState(livingEntity);
 	}
 
 	private static boolean hasAnyArmor(LivingEntity livingEntity) {

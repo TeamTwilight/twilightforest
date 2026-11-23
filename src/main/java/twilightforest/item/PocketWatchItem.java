@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import twilightforest.util.EffectUtil;
 
 import java.util.List;
 
@@ -26,12 +27,13 @@ public class PocketWatchItem extends Item {
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean held) {
 		if (!level.isClientSide && entity instanceof LivingEntity living) {
 			if ((slot >= 0 && slot <= 8) || slot == Inventory.SLOT_OFFHAND) {
-				living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 5, 0, false, false, false));
-				living.addEffect(new MobEffectInstance(MobEffects.JUMP, 5, 0, false, false, false));
+				// Not addEffect every tick: that forces an effect + attribute resync every tick (see EffectUtil).
+				EffectUtil.maintainHiddenEffect(living, MobEffects.MOVEMENT_SPEED, 0, 40, 20);
+				EffectUtil.maintainHiddenEffect(living, MobEffects.JUMP, 0, 40, 20);
 			}
 
 			if (living.isHolding(this)) {
-				living.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 5, 0, false, false, false));
+				EffectUtil.maintainHiddenEffect(living, MobEffects.DIG_SPEED, 0, 40, 20);
 			}
 		}
 	}

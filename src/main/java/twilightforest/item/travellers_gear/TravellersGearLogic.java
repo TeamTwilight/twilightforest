@@ -35,6 +35,7 @@ import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TravellersWingsStatePacket;
+import twilightforest.util.EffectUtil;
 import twilightforest.util.TFMathUtil;
 
 import java.util.Collections;
@@ -46,6 +47,8 @@ public class TravellersGearLogic {
 	private static final double AUTO_REPAIR_SUNLIGHT_BOOST = 3;
 	private static final double AUTO_REPAIR_TWILIGHT_BOOST = AUTO_REPAIR_SUNLIGHT_BOOST / 2;
 
+	public static final int STEALTH_EFFECT_DURATION = 20;
+
 	public static void travellersStealth(Player player, Consumer<Player> invisibilityHandler) {
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.STEALTH_MODIFIER))
 			return;
@@ -54,8 +57,14 @@ public class TravellersGearLogic {
 			invisibilityHandler.accept(player);
 		} else {
 			MobEffectInstance invisibilityEffect = player.getEffect(MobEffects.INVISIBILITY);
-			if (invisibilityEffect != null && invisibilityEffect.getDuration() < 2)
+			if (invisibilityEffect == null)
+				return;
+			if (!player.level().isClientSide() && EffectUtil.isMaintainedHiddenEffect(invisibilityEffect, STEALTH_EFFECT_DURATION)) {
+				// The stealth effect now lasts longer than a tick (see EffectUtil), so end it explicitly on standing up.
+				player.removeEffect(MobEffects.INVISIBILITY);
+			} else if (invisibilityEffect.getDuration() < 2) {
 				player.setInvisible(false);
+			}
 		}
 	}
 
@@ -179,14 +188,14 @@ public class TravellersGearLogic {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Integer amplifier = leggingsStack.get(TFDataComponents.HIGH_JUMP_AMPLIFIER);
 		if (TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.HIGH_JUMP_ABILITY) && amplifier != null)
-			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, amplifier, false, false, false));
+			EffectUtil.maintainHiddenEffect(livingEntity, MobEffects.JUMP, amplifier, 40, 20);
 	}
 
 	public static void travellersVestHaste(LivingEntity livingEntity) {
 		ItemStack chestStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Integer amplifier = chestStack.get(TFDataComponents.HASTE_AMPLIFIER);
 		if (TravellersModifiersManager.isModifierActive(livingEntity, chestStack, TravellersModifiersManager.HASTE_MODIFIER) && amplifier != null)
-			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
+			EffectUtil.maintainHiddenEffect(livingEntity, MobEffects.DIG_SPEED, amplifier, 40, 20);
 	}
 
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
@@ -360,21 +369,29 @@ public class TravellersGearLogic {
 		}
 	}
 
+	/**
+	 * Derives the wings' animation state. Runs on the <b>client</b> only, for every entity wearing the wings: everything
+	 * it reads (ground/air, sprinting, swimming, riding, walk animation, vertical movement) is already known client-side,
+	 * so the continuous states need no networking. Only the discrete double jump / sidestep events are sent by the
+	 * server ({@link #performDoubleJump}, {@link #performSidestep}); they lock the state for a few ticks here.
+	 * <p>
+	 * This used to run on the server for every living entity and send a TravellersWingsStatePacket on every change.
+	 */
 	public static void determineWingState(LivingEntity livingEntity) {
-		// Only entities actually wearing the wings have a wing state. Previously this ran for every living entity and
-		// broadcast a TravellersWingsStatePacket whenever any mob flickered between walk/idle/fall.
-		if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
-			// Players keep it: it also holds the sidestep cooldown, which must survive taking the wings off.
-			if (!(livingEntity instanceof Player) && livingEntity.hasData(TFDataAttachments.TRAVELLERS_WINGS))
-				livingEntity.removeData(TFDataAttachments.TRAVELLERS_WINGS);
+		if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS))
 			return;
-		}
 
-		// A freshly created attachment means the wings were just equipped: always send the first state so the client
-		// doesn't keep a stale one from a previous equip.
-		boolean forceSync = !livingEntity.hasData(TFDataAttachments.TRAVELLERS_WINGS);
 		TravellersWingsAttachment attachment = livingEntity.getData(TFDataAttachments.TRAVELLERS_WINGS);
 		TravellersWingsAttachment.WingState newState = TravellersWingsAttachment.WingState.IDLE;
+
+		// Server-side fallDistance and deltaMovement aren't maintained for remote entities on the client, so track the
+		// fall from the interpolated position instead (same rule as vanilla: descending accumulates, landing resets).
+		double dy = livingEntity.getY() - livingEntity.yo;
+		boolean flying = livingEntity instanceof Player p && p.getAbilities().flying;
+		if (livingEntity.onGround() || livingEntity.isInLiquid() || livingEntity.isPassenger() || flying)
+			attachment.clientFallDistance = 0;
+		else if (dy < 0)
+			attachment.clientFallDistance -= (float) dy;
 
 		boolean isLocked = false;
 		if (attachment.state == TravellersWingsAttachment.WingState.DOUBLE_JUMP) {
@@ -399,9 +416,9 @@ public class TravellersGearLogic {
 				newState = TravellersWingsAttachment.WingState.RIDE;
 			} else if (livingEntity.isSwimming()) {
 				newState = TravellersWingsAttachment.WingState.SWIM;
-			} else if (!livingEntity.onGround() && !livingEntity.isInLiquid() && livingEntity.fallDistance < 2.3F && (!(livingEntity instanceof Player p) || !p.getAbilities().flying)) {
+			} else if (!livingEntity.onGround() && !livingEntity.isInLiquid() && attachment.clientFallDistance < 2.3F && !flying) {
 				newState = TravellersWingsAttachment.WingState.FALL_SLOW;
-			} else if (livingEntity.getDeltaMovement().y < 0 && livingEntity.fallDistance > 2.3F) {
+			} else if (dy < 0 && attachment.clientFallDistance > 2.3F) {
 				newState = TravellersWingsAttachment.WingState.FALL_FAST;
 			} else if (livingEntity.isSprinting()) {
 				newState = TravellersWingsAttachment.WingState.SPRINT;
@@ -410,9 +427,6 @@ public class TravellersGearLogic {
 			}
 		}
 
-		if (forceSync || newState != attachment.state) {
-			attachment.state = newState;
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, new TravellersWingsStatePacket(livingEntity.getId(), newState, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer));
-		}
+		attachment.state = newState;
 	}
 }

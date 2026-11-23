@@ -37,6 +37,7 @@ public class BlockChainGoblin extends Monster {
 	//private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
 
 	private static final float CHAIN_SPEED = 16F;
+	private static final int CHAIN_SYNC_INTERVAL = 20;
 	private static final EntityDataAccessor<Byte> DATA_CHAINLENGTH = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> DATA_CHAINPOS = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Boolean> IS_THROWING = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BOOLEAN);
@@ -153,12 +154,10 @@ public class BlockChainGoblin extends Monster {
 
 		if (!this.level().isClientSide()) {
 			this.getEntityData().set(DATA_CHAINLENGTH, (byte) Math.floor(this.getChainLength() * 127.0F));
-			this.getEntityData().set(DATA_CHAINPOS, (byte) Math.floor(this.getChainAngle() / 360.0F * 255.0F));
-		} else {
-			// synch chain pos if it's wrong
-			if (Math.abs(this.chainAngle - this.getChainAngle()) > CHAIN_SPEED * 2) {
-				this.chainAngle = this.getChainAngle();
-			}
+			// The angle advances by a constant CHAIN_SPEED every tick and clients simulate it themselves, so only send
+			// an occasional correction instead of an entity-data packet to every tracker every tick.
+			if (this.tickCount % CHAIN_SYNC_INTERVAL == 0)
+				this.getEntityData().set(DATA_CHAINPOS, (byte) Math.floor(this.chainAngle / 360.0F * 255.0F));
 		}
 
 		if (this.isAlive()) {
@@ -264,11 +263,14 @@ public class BlockChainGoblin extends Monster {
 	 * Angle between 0 and 360 to place the chain at
 	 */
 	private float getChainAngle() {
-		if (!this.level().isClientSide()) {
-			return this.chainAngle;
-		} else {
-			return (this.getEntityData().get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
-		}
+		return this.chainAngle;  // simulated on both sides, corrected from DATA_CHAINPOS on the client
+	}
+
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		super.onSyncedDataUpdated(key);
+		if (DATA_CHAINPOS.equals(key) && this.level().isClientSide())
+			this.chainAngle = (this.getEntityData().get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
 	}
 
 	/**

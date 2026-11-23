@@ -64,6 +64,18 @@ public final class LandmarkUtil {
 		return Optional.empty();
 	}
 
+	/**
+	 * Like {@link #isConquered} but never loads a chunk: returns {@code null} when the landmark's center chunk isn't
+	 * loaded, so callers polling many positions (the magic map) can keep their last known state instead.
+	 */
+	@Nullable
+	public static Boolean isConqueredIfLoaded(Level level, int blockX, int blockZ) {
+		BlockPos nearestFeature = LegacyLandmarkPlacements.getNearestCenterXZ(blockX >> 4, blockZ >> 4);
+		if (!level.hasChunk(SectionPos.blockToSectionCoord(nearestFeature.getX()), SectionPos.blockToSectionCoord(nearestFeature.getZ())))
+			return null;
+		return isConquered(level, blockX, blockZ);
+	}
+
 	public static boolean isConquered(Level level, int blockX, int blockZ) {
 		Optional<StructureStart> start = locateNearestMatchingLandmark(level, s -> s instanceof CustomStructureData, blockX >> 4, blockZ >> 4, false);
 		return start.filter(structureStart -> structureStart instanceof TFStructureStart tfStructureStart && tfStructureStart.isConquered()).isPresent();
