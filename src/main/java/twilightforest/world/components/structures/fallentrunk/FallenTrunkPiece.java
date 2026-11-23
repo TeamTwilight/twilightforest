@@ -25,8 +25,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
@@ -38,7 +38,7 @@ import twilightforest.world.components.structures.type.FallenTrunkStructure;
 import java.util.*;
 
 public class FallenTrunkPiece extends StructurePiece {
-	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get());
+	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.of(TFBlocks.TWILIGHT_OAK_LOG.get());
 
 	public static final int ERODED_LENGTH = 2;
 	protected static final float MOSS_CHANCE = 0.44F;
@@ -69,7 +69,7 @@ public class FallenTrunkPiece extends StructurePiece {
 		this.radius = tag.getIntOr("radius", 0);
 
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
-		log = BlockStateProvider.CODEC.parse(ops, tag.getCompoundOrEmpty("log")).result().orElse(DEFAULT_LOG);
+		log = BlockStateProvider.DIRECT_CODEC.parse(ops, tag.getCompoundOrEmpty("log")).result().orElse(DEFAULT_LOG);
 		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getStringOr("chest_loot_table", "")));
 		this.holeSeed = tag.getIntOr("hole_seed", 0);
 		this.hole = new Hole(this, RandomSource.create(holeSeed));
@@ -79,13 +79,13 @@ public class FallenTrunkPiece extends StructurePiece {
 	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putInt("length", this.length);
 		tag.putInt("radius", this.radius);
-		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("log", BlockStateProvider.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.putString("chest_loot_table", this.chestLootTable.identifier().toString());
 		tag.putLong("hole_seed", this.holeSeed);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePiecesBuilder list, RandomSource rand) {
 		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(TERRAFORM_PIECE_SIZE));
 		list.addPiece(terraformingPiece);
 
