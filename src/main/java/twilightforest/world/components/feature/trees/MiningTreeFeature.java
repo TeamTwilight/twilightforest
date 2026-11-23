@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -8,22 +9,28 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.features.FeatureUtil;
 import twilightforest.util.RootPlacer;
-import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.config.TreeConfig;
 
 import java.util.function.BiConsumer;
 
-public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
+public record MiningTreeFeature(TreeConfig config) implements TFTreeFeature {
 
-	public MiningTreeFeature(Codec<TFTreeFeatureConfig> config) {
-		super(config);
+	public static final MapCodec<MiningTreeFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		TreeConfig.MAP_CODEC.forGetter(MiningTreeFeature::config)
+	).apply(instance, MiningTreeFeature::new));
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
+	public boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer) {
 		if (world.isOutsideBuildHeight(pos.getY() + 12)) {
 			return false;
 		}
@@ -35,21 +42,21 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 
 		// 9 block high trunk
 		for (int dy = 0; dy <= 9; dy++) {
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.above(dy), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.above(dy), config().trunkProvider());
 		}
 
 		// branches with leaf blocks
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, 1), true, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, 2), false, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 8, 3), false, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 7, 4), false, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, 5), false, config);
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, 1), true, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, 2), false, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 8, 3), false, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 7, 4), false, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, 5), false, config());
 
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, -1), true, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, -2), false, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 8, -3), false, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 7, -4), false, config);
-		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, -5), false, config);
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, -1), true, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 9, -2), false, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 8, -3), false, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 7, -4), false, config());
+		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, -5), false, config());
 
 		// place minewood core
 		BlockState stateAtCorePos = world.getBlockState(pos.above());
@@ -60,23 +67,23 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config().trunkProvider());
 		} else {
-			FeaturePlacers.placeIfValidRootPos(world, decorationPlacer, random, pos.below(), config.rootsProvider);
+			FeaturePlacers.placeIfValidRootPos(world, decorationPlacer, random, pos.below(), config().rootsProvider());
 		}
 
 		// roots!
 		int numRoots = 3 + random.nextInt(2);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			FeaturePlacers.buildRoot(world, decorationPlacer, random, pos, offset, b, config.rootsProvider);
+			FeaturePlacers.buildRoot(world, decorationPlacer, random, pos, offset, b, config().rootsProvider());
 		}
 
 		return true;
 	}
 
-	protected static void putBranchWithLeaves(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
-		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos, config.branchProvider);
+	private static void putBranchWithLeaves(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource rand, BlockPos pos, boolean bushy, TreeConfig config) {
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos, config.branchProvider());
 
 		for (int lx = -1; lx <= 1; lx++) {
 			for (int ly = -1; ly <= 1; ly++) {
@@ -84,7 +91,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 					if (!bushy && Math.abs(ly) > 0 && Math.abs(lx) > 0) {
 						continue;
 					}
-					FeaturePlacers.placeProvidedBlock(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, pos.offset(lx, ly, lz), config.leavesProvider, rand);
+					FeaturePlacers.placeProvidedBlock(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, pos.offset(lx, ly, lz), config.leavesProvider(), rand);
 				}
 			}
 		}

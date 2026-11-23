@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -9,25 +10,37 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.RootPlacer;
 import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.features.FeatureUtil;
-import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.util.features.HollowTreeUtil;
+import twilightforest.world.components.feature.config.TreeConfig;
 
 import java.util.function.BiConsumer;
 
-public class TimeTreeFeature extends HollowTreeFeature {
-	public TimeTreeFeature(Codec<TFTreeFeatureConfig> config) {
-		super(config);
+public record TimeTreeFeature(TreeConfig config) implements TFTreeFeature {
+
+	@Autowired
+	private static HollowTreeUtil hollowTreeUtil;
+
+	public static final MapCodec<TimeTreeFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		TreeConfig.MAP_CODEC.forGetter(TimeTreeFeature::config)
+	).apply(instance, TimeTreeFeature::new));
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
+	public boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer) {
 		final int height = 8;
 		final int radius = 1;
 
-		// do we have enough height?
+		// Do we have enough height?
 		if (world.isOutsideBuildHeight(pos.getY() + 1)
 			|| world.isOutsideBuildHeight(pos.getY() + height + radius)
 			|| FeatureUtil.isAnyMatchInArea(pos.subtract(new Vec3i(1, 4, 1)), 3, 4, 3, blockPos -> world.getBlockState(blockPos).is(BlockTags.FEATURES_CANNOT_REPLACE))
@@ -35,27 +48,27 @@ public class TimeTreeFeature extends HollowTreeFeature {
 				return false;
  		}
 
-		// check if we're on dirt or grass
+		// Check if we're on dirt or grass
 		if (world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, TFBlocks.TIME_SAPLING.get().defaultBlockState()).isFalse()) {
 			return false;
 		}
 
 		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
 		// 3-5 roots at the bottom
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 0, 12, 0.75D, 3, 5, 3, false, config);
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 0, 12, 0.75D, 3, 5, HollowTreeUtil.BranchType.ROOT, false, config());
 
-		// several more taproots
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 2, 18, 0.9D, 3, 5, 3, false, config);
+		// Several more taproots
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 2, 18, 0.9D, 3, 5, HollowTreeUtil.BranchType.ROOT, false, config());
 
-		// make a tree!
+		// Make a tree!
 
-		// build the trunk
-		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, height, config);
+		// Build the trunk
+		hollowTreeUtil.buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, height, config());
 
-		// build the crown
-		buildTinyCrown(world, trunkPlacer, leavesPlacer, random, pos, radius, height, config);
+		// Build the crown
+		buildTinyCrown(world, trunkPlacer, leavesPlacer, random, pos, radius, height);
 
-		// add clock block
+		// Add clock block
 		BlockPos corePos = pos.offset(-1, 2, 0);
 		BlockState stateAtCorePos = world.getBlockState(pos.above());
 		if (stateAtCorePos.is(BlockTags.LOGS) || stateAtCorePos.canBeReplaced()) {
@@ -70,21 +83,20 @@ public class TimeTreeFeature extends HollowTreeFeature {
 	 * Build the crown of the tree. This builds a smaller crown, since the large
 	 * ones were causing some performance issues
 	 */
-	protected void buildTinyCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int radius
-		, int height, TFTreeFeatureConfig config) {
+	private void buildTinyCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int radius, int height) {
 		final int crownRadius = 4;
 		final int bvar = 1;
 
 		// 3-5 medium branches starting at the bottom of the crown
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height - crownRadius, 0, crownRadius, 0.35D, bvar, bvar + 2, 1, true, config);
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height - crownRadius, 0, crownRadius, 0.35D, bvar, bvar + 2, HollowTreeUtil.BranchType.MEDIUM, true, config());
 
 		// 3-5 medium branches at the crown middle
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height - (crownRadius >> 1), 0, crownRadius, 0.28D, bvar, bvar + 2, 1, true, config);
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height - (crownRadius >> 1), 0, crownRadius, 0.28D, bvar, bvar + 2, HollowTreeUtil.BranchType.MEDIUM, true, config());
 
-		// 2-4 medium branches at the crown top
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height, 0, crownRadius, 0.15D, 2, 4, 0, true, config);
+		// 2-4 small branches at the crown top
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height, 0, crownRadius, 0.15D, 2, 4, HollowTreeUtil.BranchType.SMALL, true, config());
 
-		// 3-6 medium branches going straight up
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height, 0, crownRadius >> 1, 0.05D, bvar, bvar + 2, 0, true, config);
+		// 3-6 small branches going straight up
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, height, 0, crownRadius >> 1, 0.05D, bvar, bvar + 2, HollowTreeUtil.BranchType.SMALL, true, config());
 	}
 }
