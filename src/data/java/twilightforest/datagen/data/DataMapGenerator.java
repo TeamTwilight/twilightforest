@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import net.neoforged.neoforge.registries.datamaps.builtin.ParrotImitation;
+import net.neoforged.neoforge.registries.datamaps.builtin.Transformable;
 import twilightforest.init.*;
 import twilightforest.util.datamaps.CrumbledBlock;
 import twilightforest.util.datamaps.EntityTransformation;
@@ -30,6 +31,24 @@ public class DataMapGenerator extends DataMapProvider {
 	@Override
 	@SuppressWarnings("deprecation")
 	protected void gather(HolderLookup.Provider provider) {
+
+		var blockTransformers = this.builder(NeoForgeDataMaps.TRANSFORMABLES);
+		blockTransformers.add(TFBlocks.TWILIGHT_OAK_LOG, Transformable.stripping(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get()), false);
+		blockTransformers.add(TFBlocks.CANOPY_LOG, Transformable.stripping(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get()), false);
+		blockTransformers.add(TFBlocks.MANGROVE_LOG, Transformable.stripping(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get()), false);
+		blockTransformers.add(TFBlocks.DARK_LOG, Transformable.stripping(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get()), false);
+		blockTransformers.add(TFBlocks.TIME_LOG, Transformable.stripping(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get()), false);
+		blockTransformers.add(TFBlocks.TRANSFORMATION_LOG, Transformable.stripping(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get()), false);
+		blockTransformers.add(TFBlocks.MINING_LOG, Transformable.stripping(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get()), false);
+		blockTransformers.add(TFBlocks.SORTING_LOG, Transformable.stripping(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get()), false);
+		blockTransformers.add(TFBlocks.TWILIGHT_OAK_WOOD, Transformable.stripping(TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get()), false);
+		blockTransformers.add(TFBlocks.CANOPY_WOOD, Transformable.stripping(TFBlocks.CANOPY_WOOD.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get()), false);
+		blockTransformers.add(TFBlocks.MANGROVE_WOOD, Transformable.stripping(TFBlocks.MANGROVE_WOOD.get(), TFBlocks.STRIPPED_MANGROVE_WOOD.get()), false);
+		blockTransformers.add(TFBlocks.DARK_WOOD, Transformable.stripping(TFBlocks.DARK_WOOD.get(), TFBlocks.STRIPPED_DARK_WOOD.get()), false);
+		blockTransformers.add(TFBlocks.TIME_WOOD, Transformable.stripping(TFBlocks.TIME_WOOD.get(), TFBlocks.STRIPPED_TIME_WOOD.get()), false);
+		blockTransformers.add(TFBlocks.TRANSFORMATION_WOOD, Transformable.stripping(TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get()), false);
+		blockTransformers.add(TFBlocks.MINING_WOOD, Transformable.stripping(TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_WOOD.get()), false);
+		blockTransformers.add(TFBlocks.SORTING_WOOD, Transformable.stripping(TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get()), false);
 
 		var parrot = this.builder(NeoForgeDataMaps.PARROT_IMITATIONS);
 		parrot.add(TFEntities.ALPHA_YETI, new ParrotImitation(TFSounds.ALPHA_YETI_PARROT.get()), false);
