@@ -12,6 +12,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
+import net.minecraft.world.level.levelgen.densityfunction.DfRewriteRule;
+import net.minecraft.world.level.levelgen.densityfunction.op.CacheFunction;
 import twilightforest.util.Codecs;
 
 import java.util.Map;
@@ -32,6 +35,14 @@ public final class TerrainColumn implements Comparable<TerrainColumn> {
 	private final ResourceKey<Biome> resourceKey;
 	private final Holder<Biome> keyBiome;
 	private final Double2ObjectSortedMap<Holder<Biome>> biomes;
+
+	private static final DfRewriteRule INLINE_UNCACHED = new DfRewriteRule() {
+		@Override
+		public DensityFunction rewrite(DensityFunction function) {
+			function = DfRewriteRule.INLINE_REFERENCE.rewrite(function);
+			return function instanceof CacheFunction(DensityFunction input) ? this.rewrite(input) : function.rewriteChildren(this);
+		}
+	};
 
 	private final DensityFunction noiseDepth, noiseScale, noiseWeight;
 
@@ -83,16 +94,15 @@ public final class TerrainColumn implements Comparable<TerrainColumn> {
 		return this.biomes.double2ObjectEntrySet().stream().reduce(reducer).map(Map.Entry::getValue).orElse(other);
 	}
 
-	public double depth(DensityFunction.FunctionContext context) {
-		return this.noiseDepth.compute(context);
+	public Sampler compileSampler(DensityFunction.CompileContext context) {
+		return new Sampler(
+			INLINE_UNCACHED.rewrite(this.noiseDepth).compileSampler(context),
+			INLINE_UNCACHED.rewrite(this.noiseScale).compileSampler(context),
+			INLINE_UNCACHED.rewrite(this.noiseWeight).compileSampler(context)
+		);
 	}
 
-	public double scale(DensityFunction.FunctionContext context) {
-		return this.noiseScale.compute(context);
-	}
-
-	public double weight(DensityFunction.FunctionContext context) {
-		return this.noiseWeight.compute(context);
+	public record Sampler(DensitySampler depth, DensitySampler scale, DensitySampler weight) {
 	}
 
 	public ResourceKey<Biome> getResourceKey() {

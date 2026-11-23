@@ -10,7 +10,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.SamplerContext;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
@@ -18,6 +19,7 @@ import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -70,6 +72,12 @@ public class BiomeDensitySource {
 		return Optional.ofNullable(this.biomeList.get(biome));
 	}
 
+	public TerrainSampler compileSampler(DensityFunction.CompileContext context) {
+		Map<ResourceKey<Biome>, TerrainColumn.Sampler> columns = new HashMap<>();
+		this.biomeList.forEach((biome, column) -> columns.put(biome, column.compileSampler(context)));
+		return new TerrainSampler(this.genBiomes, Map.copyOf(columns));
+	}
+
 	// Only used for building a cache
 	public Stream<Holder<Biome>> collectPossibleBiomes() {
 		return this.biomeList.values().stream().sorted().flatMap(TerrainColumn::getBiomes);
@@ -87,10 +95,10 @@ public class BiomeDensitySource {
 	}
 
 	public static final class DensityData {
-		public final double depth;
-		public final double scale;
+		public final float depth;
+		public final float scale;
 
-		public DensityData(double depth, double scale) {
+		public DensityData(float depth, float scale) {
 			this.depth = depth;
 			this.scale = scale;
 		}
@@ -102,59 +110,64 @@ public class BiomeDensitySource {
 	private static final int BLEND_RADIUS_INT = Mth.floor(BLEND_RADIUS + 1.0);
 	private static final int BLOCK_XYZ_OFFSET = QuartPos.SIZE / 2;
 
-	public DensityData sampleTerrain(int blockX, int blockZ, DensityFunction.FunctionContext context) {
-		double totalMappedDepth = 0.0;
-		double totalContribution = 0.0;
-		double totalScale = 0.0;
-		double totalScaleContribution = 0.0;
+	public record TerrainSampler(Supplier<LazyArea> genBiomes, Map<ResourceKey<Biome>, TerrainColumn.Sampler> columns) {
+		public DensityData sampleTerrain(SamplerContext context, int blockX, int blockY, int blockZ) {
+			float totalMappedDepth = 0.0f;
+			float totalContribution = 0.0f;
+			float totalScale = 0.0f;
+			float totalScaleContribution = 0.0f;
 
-		int blockXWithOffset = blockX - BLOCK_XYZ_OFFSET;
-		int blockZWithOffset = blockZ - BLOCK_XYZ_OFFSET;
+			int blockXWithOffset = blockX - BLOCK_XYZ_OFFSET;
+			int blockZWithOffset = blockZ - BLOCK_XYZ_OFFSET;
 
-		int xQuartStart = (blockXWithOffset - BLEND_RADIUS_INT) >> QuartPos.BITS;
-		int zQuartStart = (blockZWithOffset - BLEND_RADIUS_INT) >> QuartPos.BITS;
-		int xQuartEnd = (blockXWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
-		int zQuartEnd = (blockZWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
-		int xCount = xQuartEnd - xQuartStart + 1;
-		int zCount = zQuartEnd - zQuartStart + 1;
+			int xQuartStart = (blockXWithOffset - BLEND_RADIUS_INT) >> QuartPos.BITS;
+			int zQuartStart = (blockZWithOffset - BLEND_RADIUS_INT) >> QuartPos.BITS;
+			int xQuartEnd = (blockXWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
+			int zQuartEnd = (blockZWithOffset + BLEND_RADIUS_INT) >> QuartPos.BITS;
+			int xCount = xQuartEnd - xQuartStart + 1;
+			int zCount = zQuartEnd - zQuartStart + 1;
 
-		double xQuartDelta = (blockXWithOffset - (xQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
-		double zQuartDelta = (blockZWithOffset - (zQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
+			double xQuartDelta = (blockXWithOffset - (xQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
+			double zQuartDelta = (blockZWithOffset - (zQuartStart << QuartPos.BITS)) * (1.0 / QuartPos.SIZE);
 
-		for (int cz = 0, cx = 0; ; ) {
-			double dX = xQuartDelta - cx;
-			double dZ = zQuartDelta - cz;
+			LazyArea biomes = this.genBiomes.get();
 
-			double distSq = dX * dX + dZ * dZ;
+			for (int cz = 0, cx = 0; ; ) {
+				double dX = xQuartDelta - cx;
+				double dZ = zQuartDelta - cz;
 
-			if (distSq < BLEND_RADIUS * BLEND_RADIUS) {
-				Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
-				if (terrainColumn.isPresent()) {
-					double falloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
-					double scaleFalloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
+				double distSq = dX * dX + dZ * dZ;
 
-					double neighborDepth = terrainColumn.get().depth(context);
-					double neighborScale = terrainColumn.get().scale(context);
+				if (distSq < BLEND_RADIUS * BLEND_RADIUS) {
+					TerrainColumn.Sampler column = this.columns.get(biomes.getBiome(cx + xQuartStart, cz + zQuartStart));
+					if (column != null) {
+						double weight = column.weight().sampleValue(context, blockX, blockY, blockZ);
+						double falloff = BLEND_RADIUS * BLEND_RADIUS * weight;
+						double scaleFalloff = BLEND_RADIUS * BLEND_RADIUS * weight;
 
-					falloff *= Math.exp((distSq * 2f + neighborDepth) * -0.4f);
-					totalMappedDepth += neighborDepth * falloff;
-					totalContribution += falloff;
+						float neighborDepth = column.depth().sampleValue(context, blockX, blockY, blockZ);
+						float neighborScale = column.scale().sampleValue(context, blockX, blockY, blockZ);
 
-					scaleFalloff *= Math.exp((distSq * 2f + neighborScale) * -0.4f);
-					totalScale += neighborScale * scaleFalloff;
-					totalScaleContribution += scaleFalloff;
+						falloff *= Math.exp((distSq * 2f + neighborDepth) * -0.4f);
+						totalMappedDepth += neighborDepth * falloff;
+						totalContribution += falloff;
+
+						scaleFalloff *= Math.exp((distSq * 2f + neighborScale) * -0.4f);
+						totalScale += neighborScale * scaleFalloff;
+						totalScaleContribution += scaleFalloff;
+					}
 				}
+
+				cz++;
+				if (cz < zCount)
+					continue;
+				cz = 0;
+				cx++;
+				if (cx >= xCount)
+					break;
 			}
 
-			cz++;
-			if (cz < zCount)
-				continue;
-			cz = 0;
-			cx++;
-			if (cx >= xCount)
-				break;
+			return new DensityData(totalMappedDepth / totalContribution, totalScale / totalScaleContribution);
 		}
-
-		return new DensityData(totalMappedDepth / totalContribution, totalScale / totalScaleContribution);
 	}
 }
