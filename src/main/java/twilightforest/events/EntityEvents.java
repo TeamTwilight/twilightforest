@@ -211,7 +211,7 @@ public class EntityEvents {
 		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
 
 			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
-				living.invulnerableTime = 0;
+				living.setInvulnerableTime(0);
 			}
 		}
 	}
