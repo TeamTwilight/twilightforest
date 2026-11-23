@@ -1,43 +1,63 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.AbstractHugeMushroomFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.util.features.FeatureLogic;
 
-public class BigMushgloomFeature extends AbstractHugeMushroomFeature {
+public record BigMushgloomFeature(Holder<BlockStateProvider> capProvider, Holder<BlockStateProvider> stemProvider, int foliageRadius, BlockPredicate canPlaceOn) implements AbstractHugeMushroomFeature {
 
-	public BigMushgloomFeature(Codec<HugeMushroomFeatureConfiguration> config) {
-		super(config);
+	public static final MapCodec<BigMushgloomFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		BlockStateProvider.CODEC
+			.fieldOf("cap_provider")
+			.forGetter(BigMushgloomFeature::capProvider),
+		BlockStateProvider.CODEC
+			.fieldOf("stem_provider")
+			.forGetter(BigMushgloomFeature::stemProvider),
+		Codec.INT
+			.optionalFieldOf("foliage_radius", 2)
+			.forGetter(BigMushgloomFeature::foliageRadius),
+		BlockPredicate.CODEC
+			.fieldOf("can_place_on")
+			.forGetter(BigMushgloomFeature::canPlaceOn)
+	).apply(instance, BigMushgloomFeature::new));
+
+	@Override
+	public MapCodec<? extends AbstractHugeMushroomFeature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	protected int getTreeHeight(RandomSource rand) {
+	public int getTreeHeight(RandomSource rand) {
 		return 2 + rand.nextInt(2);
 	}
 
 	@Override
-	protected int getTreeRadiusForHeight(int i, int i1, int foliageRadius, int treeHeight) {
+	public int getTreeRadiusForHeight(int i, int i1, int foliageRadius, int treeHeight) {
 		return treeHeight <= 2 ? 0 : foliageRadius;
 	}
 
 	@Override
-	protected void makeCap(WorldGenLevel levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
-		int foliageRadius = featureConfiguration.foliageRadius();
-		int capHeight = random.nextBoolean() ? 1 : 2;
+	public void makeCap(WorldGenLevel worldGenLevel, RandomSource randomSource, BlockPos blockPos, int i, BlockPos.MutableBlockPos mutableBlockPos) {
+		int foliageRadius = foliageRadius();
+		int capHeight = randomSource.nextBoolean() ? 1 : 2;
 
 		for (int y = 0; y < capHeight; y++) {
 			for (int x = -foliageRadius; x <= foliageRadius; ++x) {
 				for (int z = -foliageRadius; z <= foliageRadius; ++z) {
-					mutableBlockPos.setWithOffset(pos, x, height + y, z);
-					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
-						BlockState blockstate = featureConfiguration.capProvider().getState(levelAccessor, random, pos);
+					mutableBlockPos.setWithOffset(blockPos, x, i + y, z);
+					if (!worldGenLevel.getBlockState(mutableBlockPos).isSolidRender()) {
+						BlockState blockstate = capProvider().value().getState(worldGenLevel, randomSource, blockPos);
 						blockstate = FeatureLogic.getSphericalMushroomBlockState(blockstate, x, y, z, foliageRadius, capHeight);
-						this.setBlock(levelAccessor, mutableBlockPos, blockstate);
+						this.setBlock(worldGenLevel, mutableBlockPos, blockstate);
 					}
 				}
 			}

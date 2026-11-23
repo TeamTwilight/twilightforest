@@ -1,6 +1,6 @@
 package twilightforest.world.components.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -9,9 +9,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.jspecify.annotations.Nullable;
 import twilightforest.tags.TFBlockTags;
@@ -19,34 +18,45 @@ import twilightforest.tags.TFBlockTags;
 import java.util.Optional;
 
 @SuppressWarnings("deprecation")
-public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration> {
+public record TFSmallLakeFeature(BlockStateProvider fluid, @Nullable BlockStateProvider barrier, @Nullable BlockStateProvider ice) implements Feature {
+
 	private static final BlockState AIR = Blocks.CAVE_AIR.defaultBlockState();
 
-	public TFSmallLakeFeature(Codec<TFSmallLakeFeature.Configuration> codec) {
-		super(codec);
+	public static final MapCodec<TFSmallLakeFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		BlockStateProvider.DIRECT_CODEC
+			.fieldOf("fluid")
+			.forGetter(TFSmallLakeFeature::fluid),
+		BlockStateProvider.DIRECT_CODEC
+			.optionalFieldOf("barrier")
+			.xmap(optional -> optional.orElse(null), Optional::ofNullable)
+			.forGetter(TFSmallLakeFeature::barrier),
+		BlockStateProvider.DIRECT_CODEC
+			.optionalFieldOf("ice")
+			.xmap(optional -> optional.orElse(null), Optional::ofNullable)
+			.forGetter(TFSmallLakeFeature::ice)
+	).apply(instance, TFSmallLakeFeature::new));
+
+	@Override
+	public MapCodec<? extends Feature> codec() {
+		return MAP_CODEC;
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<TFSmallLakeFeature.Configuration> context) {
-		BlockPos blockpos = context.origin();
-		WorldGenLevel worldgenlevel = context.level();
-		RandomSource randomsource = context.random();
-		TFSmallLakeFeature.Configuration config = context.config();
-
-		if (blockpos.getY() <= worldgenlevel.getMinY() + 4) {
+	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource randomSource, BlockPos blockPos) {
+		if (blockPos.getY() <= worldGenLevel.getMinY() + 4) {
 			return false;
 		} else {
-			blockpos = blockpos.below(4);
+			blockPos = blockPos.below(4);
 			boolean[] booleans = new boolean[2048];
-			int i = randomsource.nextInt(4) + 4;
+			int i = randomSource.nextInt(4) + 4;
 
 			for (int j = 0; j < i; j++) {
-				double d0 = randomsource.nextDouble() * 6.0 + 3.0;
-				double d1 = randomsource.nextDouble() * 4.0 + 2.0;
-				double d2 = randomsource.nextDouble() * 6.0 + 3.0;
-				double d3 = randomsource.nextDouble() * (16.0 - d0 - 2.0) + 1.0 + d0 / 2.0;
-				double d4 = randomsource.nextDouble() * (8.0 - d1 - 4.0) + 2.0 + d1 / 2.0;
-				double d5 = randomsource.nextDouble() * (16.0 - d2 - 2.0) + 1.0 + d2 / 2.0;
+				double d0 = randomSource.nextDouble() * 6.0 + 3.0;
+				double d1 = randomSource.nextDouble() * 4.0 + 2.0;
+				double d2 = randomSource.nextDouble() * 6.0 + 3.0;
+				double d3 = randomSource.nextDouble() * (16.0 - d0 - 2.0) + 1.0 + d0 / 2.0;
+				double d4 = randomSource.nextDouble() * (8.0 - d1 - 4.0) + 2.0 + d1 / 2.0;
+				double d5 = randomSource.nextDouble() * (16.0 - d2 - 2.0) + 1.0 + d2 / 2.0;
 
 				for (int l = 1; l < 15; l++) {
 					for (int i1 = 1; i1 < 15; i1++) {
@@ -63,7 +73,7 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 				}
 			}
 
-			BlockState fluidState = config.fluid().getState(worldgenlevel, randomsource, blockpos);
+			BlockState fluidState = fluid().getState(worldGenLevel, randomSource, blockPos);
 
 			for (int x = 0; x < 16; x++) {
 				for (int z = 0; z < 16; z++) {
@@ -78,12 +88,12 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 								|| y > 0 && booleans[(x * 16 + z) * 8 + (y - 1)]
 						);
 						if (flag) {
-							BlockState blockstate3 = worldgenlevel.getBlockState(blockpos.offset(x, y, z));
+							BlockState blockstate3 = worldGenLevel.getBlockState(blockPos.offset(x, y, z));
 							if (y >= 4 && blockstate3.liquid()) {
 								return false;
 							}
 
-							if (y < 4 && !blockstate3.isSolid() && worldgenlevel.getBlockState(blockpos.offset(x, y, z)) != fluidState) {
+							if (y < 4 && !blockstate3.isSolid() && worldGenLevel.getBlockState(blockPos.offset(x, y, z)) != fluidState) {
 								return false;
 							}
 						}
@@ -91,36 +101,36 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 				}
 			}
 
-			BlockState iceState = config.ice != null ? config.ice.getState(worldgenlevel, randomsource, blockpos) : null;
+			BlockState iceState = ice() != null ? ice().getState(worldGenLevel, randomSource, blockPos) : null;
 
 			for (int x = 0; x < 16; x++) {
 				for (int z = 0; z < 16; z++) {
 					for (int y = 0; y < 8; y++) {
 						if (booleans[(x * 16 + z) * 8 + y]) {
-							BlockPos offset = blockpos.offset(x, y, z);
-							if (!(worldgenlevel.getBlockState(offset).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE) ||
-								worldgenlevel.getBlockState(offset.above()).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE))) {
+							BlockPos offset = blockPos.offset(x, y, z);
+							if (!(worldGenLevel.getBlockState(offset).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE) ||
+								worldGenLevel.getBlockState(offset.above()).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE))) {
 								if (y >= 4) {
-									worldgenlevel.setBlock(offset, AIR, Block.UPDATE_CLIENTS);
-                                    worldgenlevel.scheduleTick(offset, AIR.getBlock(), 0);
-                                    this.markAboveForPostProcessing(worldgenlevel, offset);
-									continue;
-                                }
-
-								if (y == 3 && iceState != null) {
-									worldgenlevel.setBlock(offset, iceState, Block.UPDATE_CLIENTS);
+									worldGenLevel.setBlock(offset, AIR, Block.UPDATE_CLIENTS);
+									worldGenLevel.scheduleTick(offset, AIR.getBlock(), 0);
+									this.markAboveForPostProcessing(worldGenLevel, offset);
 									continue;
 								}
 
-								worldgenlevel.setBlock(offset, fluidState, Block.UPDATE_CLIENTS);
-                            }
+								if (y == 3 && iceState != null) {
+									worldGenLevel.setBlock(offset, iceState, Block.UPDATE_CLIENTS);
+									continue;
+								}
+
+								worldGenLevel.setBlock(offset, fluidState, Block.UPDATE_CLIENTS);
+							}
 						}
 					}
 				}
 			}
 
-			if (config.barrier() != null) {
-				BlockState barrierState = config.barrier().getState(worldgenlevel, randomsource, blockpos);
+			if (barrier() != null) {
+				BlockState barrierState = barrier().getState(worldGenLevel, randomSource, blockPos);
 				if (!barrierState.isAir()) {
 					for (int x = 0; x < 16; x++) {
 						for (int z = 0; z < 16; z++) {
@@ -134,12 +144,12 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 										|| y < 7 && booleans[(x * 16 + z) * 8 + y + 1]
 										|| y > 0 && booleans[(x * 16 + z) * 8 + (y - 1)]
 								);
-								if (flag2 && (y < 4 || randomsource.nextInt(2) != 0)) {
-									BlockState blockstate = worldgenlevel.getBlockState(blockpos.offset(x, y, z));
+								if (flag2 && (y < 4 || randomSource.nextInt(2) != 0)) {
+									BlockState blockstate = worldGenLevel.getBlockState(blockPos.offset(x, y, z));
 									if (blockstate.isSolid() && !blockstate.is(BlockTags.LAVA_POOL_STONE_CANNOT_REPLACE)) {
-										BlockPos blockpos3 = blockpos.offset(x, y, z);
-										worldgenlevel.setBlock(blockpos3, barrierState, Block.UPDATE_CLIENTS);
-										this.markAboveForPostProcessing(worldgenlevel, blockpos3);
+										BlockPos blockpos3 = blockPos.offset(x, y, z);
+										worldGenLevel.setBlock(blockpos3, barrierState, Block.UPDATE_CLIENTS);
+										this.markAboveForPostProcessing(worldGenLevel, blockpos3);
 									}
 								}
 							}
@@ -149,22 +159,6 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 			}
 
 			return true;
-		}
-	}
-
-	public record Configuration(BlockStateProvider fluid, @Nullable BlockStateProvider barrier, @Nullable BlockStateProvider ice) implements FeatureConfiguration {
-		public static final Codec<TFSmallLakeFeature.Configuration> CODEC = RecordCodecBuilder.create(
-			instance -> instance.group(
-					BlockStateProvider.CODEC.fieldOf("fluid").forGetter(Configuration::fluid),
-					BlockStateProvider.CODEC.optionalFieldOf("barrier").forGetter(configuration -> Optional.ofNullable(configuration.barrier())),
-					BlockStateProvider.CODEC.optionalFieldOf("ice").forGetter(configuration -> Optional.ofNullable(configuration.ice()))
-				)
-				.apply(instance, TFSmallLakeFeature.Configuration::new)
-		);
-
-		@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this shit too
-		private Configuration(BlockStateProvider fluid, Optional<BlockStateProvider> barrier, Optional<BlockStateProvider> ice) {
-			this(fluid, barrier.orElse(null), ice.orElse(null));
 		}
 	}
 }

@@ -19,8 +19,8 @@ public class TFFeatureTypes {
 
 	public static final DeferredRegister<MapCodec<? extends Feature>> FEATURES = DeferredRegister.create(Registries.FEATURE_TYPE, TwilightForestMod.ID);
 
-	public static final DeferredHolder<Feature<?>, Feature<TFSmallLakeFeature.Configuration>> SMALL_LAKE = FEATURES.register("small_lake", () -> new TFSmallLakeFeature(TFSmallLakeFeature.Configuration.CODEC));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () -> new BigMushgloomFeature(HugeMushroomFeatureConfiguration.CODEC));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TFSmallLakeFeature>> SMALL_LAKE = FEATURES.register("small_lake", () -> TFSmallLakeFeature.MAP_CODEC);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<BigMushgloomFeature>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () -> BigMushgloomFeature.MAP_CODEC);
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () -> new BrownCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_VANILLA_MUSHROOM = FEATURES.register("canopy_red_vanilla_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC, 0));
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_SMOOTH_MUSHROOM = FEATURES.register("canopy_red_smooth_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC, 1));
@@ -51,9 +51,9 @@ public class TFFeatureTypes {
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> UNDERGROUND_PLANTS_IN_STRUCTURE = FEATURES.register("underground_plants_in_structure", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC, true));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> OREBERRY_BUSHES = FEATURES.register("oreberry_bushes", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC, 1));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> TROLL_VINES = FEATURES.register("troll_vines", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC, true));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_BIG_MUSHGLOOM = FEATURES.register("troll_cave_big_mushgloom", () -> new TrollBigMushgloomFeature(HugeMushroomFeatureConfiguration.CODEC));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_HUGE_RED_MUSHROOM = FEATURES.register("troll_cave_huge_red_mushroom", () -> new TrollHugeRedMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
-	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_HUGE_BROWN_MUSHROOM = FEATURES.register("troll_cave_huge_brown_mushroom", () -> new TrollHugeBrownMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TrollBigMushgloomFeature>> TROLL_BIG_MUSHGLOOM = FEATURES.register("troll_cave_big_mushgloom", () -> TrollBigMushgloomFeature.MAP_CODEC);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TrollHugeRedMushroomFeature>> TROLL_HUGE_RED_MUSHROOM = FEATURES.register("troll_cave_huge_red_mushroom", () -> TrollHugeRedMushroomFeature.MAP_CODEC);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<TrollHugeBrownMushroomFeature>> TROLL_HUGE_BROWN_MUSHROOM = FEATURES.register("troll_cave_huge_brown_mushroom", () -> TrollHugeBrownMushroomFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<StoneCircleFeature>> STONE_CIRCLE = FEATURES.register("stone_circle", () -> StoneCircleFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<ThornFeature>> THORNS = FEATURES.register("thorns", () -> ThornFeature.MAP_CODEC);
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () -> new TimeTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
