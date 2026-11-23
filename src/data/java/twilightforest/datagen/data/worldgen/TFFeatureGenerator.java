@@ -43,6 +43,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TFRegistries;
 import twilightforest.block.FireflyBlock;
 import twilightforest.block.TorchberryPlantBlock;
+import twilightforest.enums.MushroomCapType;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFFeatures;
 import twilightforest.init.TFFeatureTypes;
@@ -53,6 +54,8 @@ import twilightforest.world.components.feature.TFSmallLakeFeature;
 import twilightforest.world.components.feature.UndergroundPlantFeature;
 import twilightforest.world.components.feature.WoodRootFeature;
 import twilightforest.world.components.feature.config.*;
+import twilightforest.world.components.feature.trees.BrownCanopyMushroomFeature;
+import twilightforest.world.components.feature.trees.RedCanopyMushroomFeature;
 import twilightforest.world.components.feature.trees.treeplacers.*;
 import twilightforest.world.registration.TreeDecorators;
 
@@ -491,13 +494,12 @@ public class TFFeatureGenerator {
 				).decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)).build()
 			)
 		);
-        context.register(TFFeatures.BROWN_CANOPY_MUSHROOM_TREE, new ConfiguredFeature<>(TFFeatureTypes.CANOPY_BROWN_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_BROWN_MUSHROOM_CAN_PLACE_ON))));
+        context.register(TFFeatures.BROWN_CANOPY_MUSHROOM_TREE, new BrownCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_BROWN_MUSHROOM_CAN_PLACE_ON)));
 
-        HugeMushroomFeatureConfiguration redCanopyMushroom = new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON));
-        context.register(TFFeatures.CANOPY_RED_VANILLA_MUSHROOM, new ConfiguredFeature<>(TFFeatureTypes.CANOPY_RED_VANILLA_MUSHROOM.get(), redCanopyMushroom));
-        context.register(TFFeatures.CANOPY_RED_SMOOTH_MUSHROOM, new ConfiguredFeature<>(TFFeatureTypes.CANOPY_RED_SMOOTH_MUSHROOM.get(), redCanopyMushroom));
-        context.register(TFFeatures.CANOPY_RED_SPHEROID_MUSHROOM, new ConfiguredFeature<>(TFFeatureTypes.CANOPY_RED_SPHEROID_MUSHROOM.get(), redCanopyMushroom));
-        context.register(TFFeatures.CANOPY_RED_FLAT_MUSHROOM, new ConfiguredFeature<>(TFFeatureTypes.CANOPY_RED_FLAT_MUSHROOM.get(), redCanopyMushroom));
+		context.register(TFFeatures.CANOPY_RED_VANILLA_MUSHROOM, new RedCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON), MushroomCapType.VANILLA));
+        context.register(TFFeatures.CANOPY_RED_SMOOTH_MUSHROOM, new RedCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON), MushroomCapType.SMOOTH));
+        context.register(TFFeatures.CANOPY_RED_SPHEROID_MUSHROOM, new RedCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON), MushroomCapType.SPHEROID));
+        context.register(TFFeatures.CANOPY_RED_FLAT_MUSHROOM, new RedCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON), MushroomCapType.FLAT));
 
         context.register(TFFeatures.RED_CANOPY_MUSHROOM_TREE, new ConfiguredFeature<>(TFFeatureTypes.WEIGHTED_LIST_SELECTOR.value(), new WeightedListFeatureConfig(WeightedList.<Holder<PlacedFeature>>builder()
             .add(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_RED_VANILLA_MUSHROOM)), 33)
