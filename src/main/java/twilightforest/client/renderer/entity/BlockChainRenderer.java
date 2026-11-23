@@ -37,7 +37,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 	public void submit(ChainBlockRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		super.submit(state, stack, submitNodeCollector, camera);
 		stack.pushPose();
-		RenderType foilRenderType = RenderTypes.entityGlint();
+		RenderType foilRenderType = RenderTypes.entitySolidGlint(TEXTURE);
 		stack.rotate(Axis.YP.rotationDegrees(state.yRot - 90.0F));
 		stack.rotate(Axis.ZP.rotationDegrees(state.xRot));
 
@@ -73,7 +73,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 
 	public static void renderChain(boolean renderFoil, Vec3 offset, PoseStack stack, SubmitNodeCollector collector, int light, int outlineColor, ChainModel model) {
 		stack.pushPose();
-		RenderType foilRenderType = RenderTypes.entityGlint();
+		RenderType foilRenderType = RenderTypes.entitySolidGlint(TEXTURE);
 
 		stack.translate(offset.x(), offset.y(), offset.z());
 
