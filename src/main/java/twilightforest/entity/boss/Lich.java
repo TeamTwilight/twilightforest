@@ -705,7 +705,8 @@ public class Lich extends BaseTFBoss {
 						packet.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), red, green, blue), false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
 					}
 
-					PacketDistributor.sendToPlayersTrackingEntity(this, packet);
+					// Was sendToPlayersTrackingEntity inside this per-player loop: every tracker got one copy per nearby player.
+					PacketDistributor.sendToPlayer(serverplayer, packet);
 				}
 			}
 		}

@@ -38,10 +38,15 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 	// Vanilla also makes this dirty cast on block entity tickers, poor mojank design.
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		int numticks = 8 * 3 * this.tickRate();
+		// One packet per run instead of one per affected block (that was up to ~480 packets/s per core).
+		ParticlePacket particlePacket = new ParticlePacket();
+		int queuedParticles = 0;
 
 		for (int i = 0; i < numticks; i++) {
 
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.timeCoreRange);
+			if (!level.isLoaded(dPos))  // don't load chunks (or tick blocks in unloaded ones) at large configured ranges
+				continue;
 
 			BlockState state = level.getBlockState(dPos);
 
@@ -62,16 +67,23 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 					}
 				}
 
-				if (worked) {
+				if (worked && queuedParticles < MAX_PARTICLES_PER_RUN) {
 					Vec3 xyz = Vec3.atCenterOf(dPos);
-					ParticlePacket particlePacket = new ParticlePacket();
 					double yOffset = state.getOcclusionShape(level, dPos).max(Direction.Axis.Y);
 					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
-					PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
+					queuedParticles++;
 				}
 			}
 		}
+
+		if (queuedParticles > 0) {
+			Vec3 center = Vec3.atCenterOf(pos);
+			// Previously each particle went to players within 64 of that block; widen by the core's range to cover the same players.
+			PacketDistributor.sendToPlayersNear(level, null, center.x(), center.y(), center.z(), 64.0D + TFConfig.timeCoreRange, particlePacket);
+		}
 	}
+
+	private static final int MAX_PARTICLES_PER_RUN = 128;
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {

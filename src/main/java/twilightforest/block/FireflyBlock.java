@@ -35,7 +35,7 @@ public class FireflyBlock extends CritterBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.FIREFLY.get(), FireflyBlockEntity::tick);
+		return level.isClientSide() ? createTickerHelper(type, TFBlockEntities.FIREFLY.get(), FireflyBlockEntity::tick) : null; // client-only animation: no server ticker
 	}
 
 	@Override

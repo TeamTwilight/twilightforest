@@ -67,7 +67,7 @@ public class BrazierBlock extends BaseEntityBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.BRAZIER.get(), BrazierBlockEntity::tick);
+		return level.isClientSide() ? createTickerHelper(type, TFBlockEntities.BRAZIER.get(), BrazierBlockEntity::tick) : null; // client-only animation: no server ticker
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.TROPHY.get(), TrophyBlockEntity::tick);
+		return level.isClientSide() ? createTickerHelper(type, TFBlockEntities.TROPHY.get(), TrophyBlockEntity::tick) : null; // client-only animation: no server ticker
 	}
 
 	public BossVariant getVariant() {

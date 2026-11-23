@@ -2,6 +2,7 @@ package twilightforest.network;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -28,16 +29,18 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 
 	public static void handle(GogglesZoomPacket packet, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
-			Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
-			if (player == null)
-				return;
-			if (player.level().isClientSide()) {
-				player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
+			if (ctx.flow() == PacketFlow.CLIENTBOUND) {
+				Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
+				if (player != null)
+					player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
 				return;
 			}
 
+			// Serverbound: only ever act on the sender (the UUID field is ignored, kept for wire compatibility),
+			// and only on an actual change so a spamming client can't spam sounds and relays.
+			Player player = ctx.player();
 			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ZOOM_ABILITY);
-			if (canChangeZoomState) {
+			if (canChangeZoomState && packet.isUsingZoom != player.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER)) {
 				player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
 				player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
 				PacketDistributor.sendToPlayersTrackingEntity(player, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));

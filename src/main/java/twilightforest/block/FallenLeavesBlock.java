@@ -160,8 +160,12 @@ public class FallenLeavesBlock extends TFPlantBlock {
 					level.getRandom().nextFloat() * 0.5F + 0.25F,
 					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
-			} else if (level instanceof ServerLevel)
-				PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
+			} else if (level instanceof ServerLevel && (entity.tickCount & 1) == 0) {
+				// Trackers only: the moving player already spawns these locally in the client branch above, so "AndSelf"
+				// doubled their particles. Halved on the server (every other tick) because this fires per entity, per
+				// overlapped leaf block, and Twilight biomes are carpeted with this block.
+				PacketDistributor.sendToPlayersTrackingEntity(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
+			}
 		}
 	}
 }

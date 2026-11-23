@@ -38,7 +38,7 @@ public class CicadaBlock extends CritterBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CICADA.get(), CicadaBlockEntity::tick);
+		return level.isClientSide() ? createTickerHelper(type, TFBlockEntities.CICADA.get(), CicadaBlockEntity::tick) : null; // client-only animation: no server ticker
 	}
 
 	@Override

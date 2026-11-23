@@ -144,7 +144,8 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersGearAutoRepair(LivingEntity livingEntity) {
-		long lastHitTime = livingEntity.getData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME);
+		// getExistingData: don't attach (and serialize) this onto every mob that never took armor damage
+		long lastHitTime = livingEntity.getExistingData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME).orElse(0L);
 		if (livingEntity.level().getGameTime() - lastHitTime <= 10 * 20)  // 10 seconds
 			return;
 
@@ -273,8 +274,8 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersBootsSlimySolesBounce(LivingEntity livingEntity) {
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
-		if (slimySolesAttachment.bounceVelocity == 0 || slimySolesAttachment.hasBounced)
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getExistingDataOrNull(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		if (slimySolesAttachment == null || slimySolesAttachment.bounceVelocity == 0 || slimySolesAttachment.hasBounced)
 			return;
 		Vec3 velocity = livingEntity.getDeltaMovement();
 		livingEntity.playSound(SoundEvents.SLIME_JUMP, 0.5F, 1F);
@@ -360,6 +361,18 @@ public class TravellersGearLogic {
 	}
 
 	public static void determineWingState(LivingEntity livingEntity) {
+		// Only entities actually wearing the wings have a wing state. Previously this ran for every living entity and
+		// broadcast a TravellersWingsStatePacket whenever any mob flickered between walk/idle/fall.
+		if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
+			// Players keep it: it also holds the sidestep cooldown, which must survive taking the wings off.
+			if (!(livingEntity instanceof Player) && livingEntity.hasData(TFDataAttachments.TRAVELLERS_WINGS))
+				livingEntity.removeData(TFDataAttachments.TRAVELLERS_WINGS);
+			return;
+		}
+
+		// A freshly created attachment means the wings were just equipped: always send the first state so the client
+		// doesn't keep a stale one from a previous equip.
+		boolean forceSync = !livingEntity.hasData(TFDataAttachments.TRAVELLERS_WINGS);
 		TravellersWingsAttachment attachment = livingEntity.getData(TFDataAttachments.TRAVELLERS_WINGS);
 		TravellersWingsAttachment.WingState newState = TravellersWingsAttachment.WingState.IDLE;
 
@@ -397,7 +410,7 @@ public class TravellersGearLogic {
 			}
 		}
 
-		if (newState != attachment.state) {
+		if (forceSync || newState != attachment.state) {
 			attachment.state = newState;
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, new TravellersWingsStatePacket(livingEntity.getId(), newState, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer));
 		}

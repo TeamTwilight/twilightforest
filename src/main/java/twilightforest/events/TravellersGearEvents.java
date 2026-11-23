@@ -146,8 +146,12 @@ public class TravellersGearEvents {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
-		if (!livingEntity.isShiftKeyDown() && TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null && (calculateFallDamage(event) > 0 || slimySolesAttachment.forceBounce)) {
+		if (coefficient == null)  // no slimy soles: don't create the (serialized) attachment on every falling mob
+			return;
+		SlimySolesAttachment existing = livingEntity.getExistingDataOrNull(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		boolean forceBounce = existing != null && existing.forceBounce;
+		if (!livingEntity.isShiftKeyDown() && TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && (calculateFallDamage(event) > 0 || forceBounce)) {
+			SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 			event.setCanceled(true);
 			slimySolesAttachment.bounceVelocity = -livingEntity.getDeltaMovement().y() * Math.sqrt(coefficient);
 			slimySolesAttachment.doubleJumpBoostVelocity = slimySolesAttachment.bounceVelocity;
@@ -166,7 +170,9 @@ public class TravellersGearEvents {
 
 	private void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
 		LivingEntity livingEntity = event.getEntity();
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getExistingDataOrNull(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		if (slimySolesAttachment == null)
+			return;
 		slimySolesAttachment.bounceVelocity = 0;
 		slimySolesAttachment.forceBounce = false;
 		livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
@@ -230,6 +236,13 @@ public class TravellersGearEvents {
 
 	private void updateOtherModifiers(EntityTickEvent.Post event) {
 		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
+		// Every gear effect below needs something in an armor slot. The vast majority of mobs wear nothing, so skip
+		// them before doing the per-modifier lookups and attachment reads.
+		if (!hasAnyArmor(livingEntity)) {
+			if (!livingEntity.level().isClientSide())
+				clearGearState(livingEntity);
+			return;
+		}
 		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 		TravellersGearLogic.travellersBootsSlimySolesBounce(livingEntity);
@@ -240,6 +253,26 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
 		TravellersGearLogic.determineWingState(livingEntity);
+	}
+
+	private static boolean hasAnyArmor(LivingEntity livingEntity) {
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.isArmor() && !livingEntity.getItemBySlot(slot).isEmpty())
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Undo the per-tick gear state that would otherwise linger once all armor is removed. Cheap: both checks are
+	 * plain lookups and are no-ops for entities that never wore travellers gear.
+	 */
+	private static void clearGearState(LivingEntity livingEntity) {
+		if (!(livingEntity instanceof Player) && livingEntity.hasData(TFDataAttachments.TRAVELLERS_WINGS))
+			livingEntity.removeData(TFDataAttachments.TRAVELLERS_WINGS);
+		AttributeInstance speed = livingEntity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
+		if (speed != null && speed.hasModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION))
+			speed.removeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {

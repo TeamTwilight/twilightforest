@@ -46,7 +46,7 @@ public class MoonwormBlock extends CritterBlock implements SimpleWaterloggedBloc
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.MOONWORM.get(), MoonwormBlockEntity::tick);
+		return level.isClientSide() ? createTickerHelper(type, TFBlockEntities.MOONWORM.get(), MoonwormBlockEntity::tick) : null; // client-only animation: no server ticker
 	}
 
 	@Override

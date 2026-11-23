@@ -176,7 +176,10 @@ public class TravellersClientEvents {
 		if (player == null) return;
 		boolean wasGraduallyGliding = player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
-		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
+		// Without the modifier the server rejects the state anyway; sending it caused a 20/s client<->server
+		// ping-pong (client sends true, server resets to false, client sends true again...).
+		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround()
+			&& TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER);
 		if (isGraduallyGliding == wasGraduallyGliding)
 			return;
 

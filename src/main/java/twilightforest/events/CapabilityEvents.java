@@ -58,8 +58,9 @@ public class CapabilityEvents {
 		LivingEntity living = event.getEntity();
 		// shields
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
-            FortificationShieldAttachment attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
-			if (attachment.shieldsLeft() > 0) {
+			// getExistingDataOrNull: getData would attach (serialize, sync and from then on tick) shields on every mob that takes damage
+			FortificationShieldAttachment attachment = living.getExistingDataOrNull(TFDataAttachments.FORTIFICATION_SHIELDS);
+			if (attachment != null && attachment.shieldsLeft() > 0) {
 				if (living.invulnerableTime <= 0) {
 					attachment.breakShield(living, false);
 					FortificationShieldAttachment.addShieldBreakParticles(event.getSource(), living);

@@ -277,7 +277,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);
+		return level.isClientSide() ? createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick) : null; // client-only animation: no server ticker
 	}
 
 	public enum CandleColors implements StringRepresentable {

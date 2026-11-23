@@ -118,6 +118,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), ChiseledCanopyShelfBlockEntity::tick);
+		// Only spawner shelves do anything, and only on the server. The ticker is re-queried when the block state changes.
+		return !level.isClientSide() && state.getValue(SPAWNER) ? createTickerHelper(type, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), ChiseledCanopyShelfBlockEntity::tick) : null;
 	}
 }
