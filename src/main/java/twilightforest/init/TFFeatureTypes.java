@@ -58,5 +58,5 @@ public class TFFeatureTypes {
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<SnowUnderTreeFeature>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () -> SnowUnderTreeFeature.MAP_CODEC);
 	public static final DeferredHolder<Feature<?>, Feature<TreeConfiguration>> SNOW_TREE = FEATURES.register("anywhere_tree", () -> new SnowTreeFeature(TreeConfiguration.CODEC));
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<EnchantedForestVinesFeature>> ENCHANTED_FOREST_VINES = FEATURES.register("enchanted_forest_vines", () -> EnchantedForestVinesFeature.MAP_CODEC);
-	public static final DeferredHolder<Feature<?>, Feature<WeightedListFeatureConfig>> WEIGHTED_LIST_SELECTOR = FEATURES.register("weighted_list", () -> new WeightedListFeature(WeightedListFeatureConfig.CODEC));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<WeightedListFeature>> WEIGHTED_LIST_SELECTOR = FEATURES.register("weighted_list", () -> WeightedListFeature.MAP_CODEC); // TODO: Perhaps we should use WeightedRandomSelectorFeature instead?
 }
