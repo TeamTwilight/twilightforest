@@ -18,19 +18,19 @@ public class ModdedEntityTypeTagGenerator extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(TFEntityTypeTags.AC_RESISTS_ACID).addAll(List.of(TFEntities.HYDRA.getKey(), TFEntities.NAGA.getKey()));
+		this.tag(TFEntityTypeTags.AC_RESISTS_ACID).addAll(List.of(TFEntities.HYDRA.key(), TFEntities.NAGA.key()));
 		this.tag(TFEntityTypeTags.AC_RESISTS_MAGNETS).addTag(TFEntityTypeTags.BOSSES);
-		this.tag(TFEntityTypeTags.AC_RESISTS_TREMORSAURUS_ROAR).addAll(List.of(TFEntities.HYDRA.getKey(), TFEntities.UR_GHAST.getKey()));
+		this.tag(TFEntityTypeTags.AC_RESISTS_TREMORSAURUS_ROAR).addAll(List.of(TFEntities.HYDRA.key(), TFEntities.UR_GHAST.key()));
 
 		this.tag(TFEntityTypeTags.AETHER_DEFLECTABLE_PROJECTILES).addAll(List.of(
-			TFEntities.NATURE_BOLT.getKey(),
-			TFEntities.LICH_BOLT.getKey(),
-			TFEntities.WAND_BOLT.getKey(),
-			TFEntities.SLIME_BLOB.getKey(),
-			TFEntities.ICE_SNOWBALL.getKey()));
+			TFEntities.NATURE_BOLT.key(),
+			TFEntities.LICH_BOLT.key(),
+			TFEntities.WAND_BOLT.key(),
+			TFEntities.SLIME_BLOB.key(),
+			TFEntities.ICE_SNOWBALL.key()));
 
-		this.tag(TFEntityTypeTags.AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.getKey());
-		this.tag(TFEntityTypeTags.AETHER_PIGS).add(TFEntities.BOAR.getKey());
+		this.tag(TFEntityTypeTags.AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.key());
+		this.tag(TFEntityTypeTags.AETHER_PIGS).add(TFEntities.BOAR.key());
 
 		this.tag(TFEntityTypeTags.AN_JAR_BLACKLIST).addTag(TFEntityTypeTags.BOSSES);
 		this.tag(TFEntityTypeTags.AN_JAR_RELEASE_BLACKLIST).addTag(TFEntityTypeTags.BOSSES);

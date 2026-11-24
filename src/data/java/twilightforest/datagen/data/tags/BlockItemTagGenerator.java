@@ -22,98 +22,98 @@ public abstract class BlockItemTagGenerator {
 		//------------
 
 		this.tag(BlockTags.PLANKS, ItemTags.PLANKS).add(
-				TFBlocks.TWILIGHT_OAK_PLANKS.getKey(),
-				TFBlocks.CANOPY_PLANKS.getKey(),
-				TFBlocks.MANGROVE_PLANKS.getKey(),
-				TFBlocks.DARK_PLANKS.getKey(),
-				TFBlocks.TIME_PLANKS.getKey(),
-				TFBlocks.TRANSFORMATION_PLANKS.getKey(),
-				TFBlocks.MINING_PLANKS.getKey(),
-				TFBlocks.SORTING_PLANKS.getKey())
+				TFBlocks.TWILIGHT_OAK_PLANKS.key(),
+				TFBlocks.CANOPY_PLANKS.key(),
+				TFBlocks.MANGROVE_PLANKS.key(),
+				TFBlocks.DARK_PLANKS.key(),
+				TFBlocks.TIME_PLANKS.key(),
+				TFBlocks.TRANSFORMATION_PLANKS.key(),
+				TFBlocks.MINING_PLANKS.key(),
+				TFBlocks.SORTING_PLANKS.key())
 			.addTag(TFBlockTags.TOWERWOOD);
 
 		this.tag(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS).add(
-			TFBlocks.TWILIGHT_OAK_BUTTON.getKey(),
-			TFBlocks.CANOPY_BUTTON.getKey(),
-			TFBlocks.MANGROVE_BUTTON.getKey(),
-			TFBlocks.DARK_BUTTON.getKey(),
-			TFBlocks.TIME_BUTTON.getKey(),
-			TFBlocks.TRANSFORMATION_BUTTON.getKey(),
-			TFBlocks.MINING_BUTTON.getKey(),
-			TFBlocks.SORTING_BUTTON.getKey());
+			TFBlocks.TWILIGHT_OAK_BUTTON.key(),
+			TFBlocks.CANOPY_BUTTON.key(),
+			TFBlocks.MANGROVE_BUTTON.key(),
+			TFBlocks.DARK_BUTTON.key(),
+			TFBlocks.TIME_BUTTON.key(),
+			TFBlocks.TRANSFORMATION_BUTTON.key(),
+			TFBlocks.MINING_BUTTON.key(),
+			TFBlocks.SORTING_BUTTON.key());
 
-		this.tag(BlockTags.WOOL_CARPETS, ItemTags.WOOL_CARPETS).add(TFBlocks.CORONATION_CARPET.getKey());
+		this.tag(BlockTags.WOOL_CARPETS, ItemTags.WOOL_CARPETS).add(TFBlocks.CORONATION_CARPET.key());
 		this.tag(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS).add(
-			TFBlocks.TWILIGHT_OAK_DOOR.getKey(),
-			TFBlocks.CANOPY_DOOR.getKey(),
-			TFBlocks.MANGROVE_DOOR.getKey(),
-			TFBlocks.DARK_DOOR.getKey(),
-			TFBlocks.TIME_DOOR.getKey(),
-			TFBlocks.TRANSFORMATION_DOOR.getKey(),
-			TFBlocks.MINING_DOOR.getKey(),
-			TFBlocks.SORTING_DOOR.getKey());
+			TFBlocks.TWILIGHT_OAK_DOOR.key(),
+			TFBlocks.CANOPY_DOOR.key(),
+			TFBlocks.MANGROVE_DOOR.key(),
+			TFBlocks.DARK_DOOR.key(),
+			TFBlocks.TIME_DOOR.key(),
+			TFBlocks.TRANSFORMATION_DOOR.key(),
+			TFBlocks.MINING_DOOR.key(),
+			TFBlocks.SORTING_DOOR.key());
 
 		this.tag(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS).add(
-			TFBlocks.TWILIGHT_OAK_STAIRS.getKey(),
-			TFBlocks.CANOPY_STAIRS.getKey(),
-			TFBlocks.MANGROVE_STAIRS.getKey(),
-			TFBlocks.DARK_STAIRS.getKey(),
-			TFBlocks.TIME_STAIRS.getKey(),
-			TFBlocks.TRANSFORMATION_STAIRS.getKey(),
-			TFBlocks.MINING_STAIRS.getKey(),
-			TFBlocks.SORTING_STAIRS.getKey());
+			TFBlocks.TWILIGHT_OAK_STAIRS.key(),
+			TFBlocks.CANOPY_STAIRS.key(),
+			TFBlocks.MANGROVE_STAIRS.key(),
+			TFBlocks.DARK_STAIRS.key(),
+			TFBlocks.TIME_STAIRS.key(),
+			TFBlocks.TRANSFORMATION_STAIRS.key(),
+			TFBlocks.MINING_STAIRS.key(),
+			TFBlocks.SORTING_STAIRS.key());
 
 		this.tag(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS).add(
-			TFBlocks.TWILIGHT_OAK_SLAB.getKey(),
-			TFBlocks.CANOPY_SLAB.getKey(),
-			TFBlocks.MANGROVE_SLAB.getKey(),
-			TFBlocks.DARK_SLAB.getKey(),
-			TFBlocks.TIME_SLAB.getKey(),
-			TFBlocks.TRANSFORMATION_SLAB.getKey(),
-			TFBlocks.MINING_SLAB.getKey(),
-			TFBlocks.SORTING_SLAB.getKey());
+			TFBlocks.TWILIGHT_OAK_SLAB.key(),
+			TFBlocks.CANOPY_SLAB.key(),
+			TFBlocks.MANGROVE_SLAB.key(),
+			TFBlocks.DARK_SLAB.key(),
+			TFBlocks.TIME_SLAB.key(),
+			TFBlocks.TRANSFORMATION_SLAB.key(),
+			TFBlocks.MINING_SLAB.key(),
+			TFBlocks.SORTING_SLAB.key());
 
 		this.tag(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES).add(
-			TFBlocks.TWILIGHT_OAK_FENCE.getKey(),
-			TFBlocks.CANOPY_FENCE.getKey(),
-			TFBlocks.MANGROVE_FENCE.getKey(),
-			TFBlocks.DARK_FENCE.getKey(),
-			TFBlocks.TIME_FENCE.getKey(),
-			TFBlocks.TRANSFORMATION_FENCE.getKey(),
-			TFBlocks.MINING_FENCE.getKey(),
-			TFBlocks.SORTING_FENCE.getKey());
+			TFBlocks.TWILIGHT_OAK_FENCE.key(),
+			TFBlocks.CANOPY_FENCE.key(),
+			TFBlocks.MANGROVE_FENCE.key(),
+			TFBlocks.DARK_FENCE.key(),
+			TFBlocks.TIME_FENCE.key(),
+			TFBlocks.TRANSFORMATION_FENCE.key(),
+			TFBlocks.MINING_FENCE.key(),
+			TFBlocks.SORTING_FENCE.key());
 
 		this.tag(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES).add(
-			TFBlocks.TWILIGHT_OAK_GATE.getKey(),
-			TFBlocks.CANOPY_GATE.getKey(),
-			TFBlocks.MANGROVE_GATE.getKey(),
-			TFBlocks.DARK_GATE.getKey(),
-			TFBlocks.TIME_GATE.getKey(),
-			TFBlocks.TRANSFORMATION_GATE.getKey(),
-			TFBlocks.MINING_GATE.getKey(),
-			TFBlocks.SORTING_GATE.getKey());
+			TFBlocks.TWILIGHT_OAK_GATE.key(),
+			TFBlocks.CANOPY_GATE.key(),
+			TFBlocks.MANGROVE_GATE.key(),
+			TFBlocks.DARK_GATE.key(),
+			TFBlocks.TIME_GATE.key(),
+			TFBlocks.TRANSFORMATION_GATE.key(),
+			TFBlocks.MINING_GATE.key(),
+			TFBlocks.SORTING_GATE.key());
 
 		this.tag(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES).add(
-			TFBlocks.TWILIGHT_OAK_PLATE.getKey(),
-			TFBlocks.CANOPY_PLATE.getKey(),
-			TFBlocks.MANGROVE_PLATE.getKey(),
-			TFBlocks.DARK_PLATE.getKey(),
-			TFBlocks.TIME_PLATE.getKey(),
-			TFBlocks.TRANSFORMATION_PLATE.getKey(),
-			TFBlocks.MINING_PLATE.getKey(),
-			TFBlocks.SORTING_PLATE.getKey());
+			TFBlocks.TWILIGHT_OAK_PLATE.key(),
+			TFBlocks.CANOPY_PLATE.key(),
+			TFBlocks.MANGROVE_PLATE.key(),
+			TFBlocks.DARK_PLATE.key(),
+			TFBlocks.TIME_PLATE.key(),
+			TFBlocks.TRANSFORMATION_PLATE.key(),
+			TFBlocks.MINING_PLATE.key(),
+			TFBlocks.SORTING_PLATE.key());
 
 		this.tag(BlockItemTags.SAPLINGS.block(), BlockItemTags.SAPLINGS.item()).add(
-			TFBlocks.TWILIGHT_OAK_SAPLING.getKey(),
-			TFBlocks.CANOPY_SAPLING.getKey(),
-			TFBlocks.MANGROVE_SAPLING.getKey(),
-			TFBlocks.DARKWOOD_SAPLING.getKey(),
-			TFBlocks.TIME_SAPLING.getKey(),
-			TFBlocks.TRANSFORMATION_SAPLING.getKey(),
-			TFBlocks.MINING_SAPLING.getKey(),
-			TFBlocks.SORTING_SAPLING.getKey(),
-			TFBlocks.HOLLOW_OAK_SAPLING.getKey(),
-			TFBlocks.RAINBOW_OAK_SAPLING.getKey());
+			TFBlocks.TWILIGHT_OAK_SAPLING.key(),
+			TFBlocks.CANOPY_SAPLING.key(),
+			TFBlocks.MANGROVE_SAPLING.key(),
+			TFBlocks.DARKWOOD_SAPLING.key(),
+			TFBlocks.TIME_SAPLING.key(),
+			TFBlocks.TRANSFORMATION_SAPLING.key(),
+			TFBlocks.MINING_SAPLING.key(),
+			TFBlocks.SORTING_SAPLING.key(),
+			TFBlocks.HOLLOW_OAK_SAPLING.key(),
+			TFBlocks.RAINBOW_OAK_SAPLING.key());
 
 
 		this.tag(BlockItemTags.LOGS_THAT_BURN.block(), BlockItemTags.LOGS_THAT_BURN.item()).addTags(
@@ -126,111 +126,111 @@ public abstract class BlockItemTagGenerator {
 			TFBlockTags.MINING_LOGS,
 			TFBlockTags.SORTING_LOGS);
 
-		this.tag(BlockItemTags.SLABS.block(), BlockItemTags.SLABS.item()).add(TFBlocks.AURORA_SLAB.getKey());
-		this.tag(BlockTags.WALLS, ItemTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE.getKey());
+		this.tag(BlockItemTags.SLABS.block(), BlockItemTags.SLABS.item()).add(TFBlocks.AURORA_SLAB.key());
+		this.tag(BlockTags.WALLS, ItemTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE.key());
 		this.tag(BlockItemTags.STAIRS.block(), BlockItemTags.STAIRS.item()).add(
-			TFBlocks.CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.WORN_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.BOLD_CASTLE_BRICK_STAIRS.getKey(),
-			TFBlocks.NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.NAGASTONE_STAIRS_RIGHT.getKey(),
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.getKey(),
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.getKey(),
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.getKey());
+			TFBlocks.CASTLE_BRICK_STAIRS.key(),
+			TFBlocks.WORN_CASTLE_BRICK_STAIRS.key(),
+			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.key(),
+			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.key(),
+			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.key(),
+			TFBlocks.BOLD_CASTLE_BRICK_STAIRS.key(),
+			TFBlocks.NAGASTONE_STAIRS_LEFT.key(),
+			TFBlocks.NAGASTONE_STAIRS_RIGHT.key(),
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.key(),
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.key(),
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.key(),
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.key());
 
 		this.tag(BlockTags.LEAVES, ItemTags.LEAVES).add(
-			TFBlocks.RAINBOW_OAK_LEAVES.getKey(),
-			TFBlocks.TWILIGHT_OAK_LEAVES.getKey(),
-			TFBlocks.CANOPY_LEAVES.getKey(),
-			TFBlocks.MANGROVE_LEAVES.getKey(),
-			TFBlocks.DARK_LEAVES.getKey(),
-			TFBlocks.TIME_LEAVES.getKey(),
-			TFBlocks.TRANSFORMATION_LEAVES.getKey(),
-			TFBlocks.MINING_LEAVES.getKey(),
-			TFBlocks.SORTING_LEAVES.getKey(),
-			TFBlocks.THORN_LEAVES.getKey(),
-			TFBlocks.BEANSTALK_LEAVES.getKey());
+			TFBlocks.RAINBOW_OAK_LEAVES.key(),
+			TFBlocks.TWILIGHT_OAK_LEAVES.key(),
+			TFBlocks.CANOPY_LEAVES.key(),
+			TFBlocks.MANGROVE_LEAVES.key(),
+			TFBlocks.DARK_LEAVES.key(),
+			TFBlocks.TIME_LEAVES.key(),
+			TFBlocks.TRANSFORMATION_LEAVES.key(),
+			TFBlocks.MINING_LEAVES.key(),
+			TFBlocks.SORTING_LEAVES.key(),
+			TFBlocks.THORN_LEAVES.key(),
+			TFBlocks.BEANSTALK_LEAVES.key());
 
 		this.tag(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS).add(
-			TFBlocks.TWILIGHT_OAK_TRAPDOOR.getKey(),
-			TFBlocks.CANOPY_TRAPDOOR.getKey(),
-			TFBlocks.MANGROVE_TRAPDOOR.getKey(),
-			TFBlocks.DARK_TRAPDOOR.getKey(),
-			TFBlocks.TIME_TRAPDOOR.getKey(),
-			TFBlocks.TRANSFORMATION_TRAPDOOR.getKey(),
-			TFBlocks.MINING_TRAPDOOR.getKey(),
-			TFBlocks.SORTING_TRAPDOOR.getKey());
+			TFBlocks.TWILIGHT_OAK_TRAPDOOR.key(),
+			TFBlocks.CANOPY_TRAPDOOR.key(),
+			TFBlocks.MANGROVE_TRAPDOOR.key(),
+			TFBlocks.DARK_TRAPDOOR.key(),
+			TFBlocks.TIME_TRAPDOOR.key(),
+			TFBlocks.TRANSFORMATION_TRAPDOOR.key(),
+			TFBlocks.MINING_TRAPDOOR.key(),
+			TFBlocks.SORTING_TRAPDOOR.key());
 
-		this.tag(BlockItemTags.SMALL_FLOWERS.block(), BlockItemTags.SMALL_FLOWERS.item()).add(TFBlocks.THORN_ROSE.getKey());
-		this.tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.getKey());
-		this.tag(BlockTags.DIRT, ItemTags.DIRT).add(TFBlocks.UBEROUS_SOIL.getKey());
+		this.tag(BlockItemTags.SMALL_FLOWERS.block(), BlockItemTags.SMALL_FLOWERS.item()).add(TFBlocks.THORN_ROSE.key());
+		this.tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.key());
+		this.tag(BlockTags.DIRT, ItemTags.DIRT).add(TFBlocks.UBEROUS_SOIL.key());
 		this.tag(BlockTags.STANDING_SIGNS, ItemTags.SIGNS).add(
-			TFBlocks.TWILIGHT_OAK_SIGN.getKey(),
-			TFBlocks.CANOPY_SIGN.getKey(),
-			TFBlocks.MANGROVE_SIGN.getKey(),
-			TFBlocks.DARK_SIGN.getKey(),
-			TFBlocks.TIME_SIGN.getKey(),
-			TFBlocks.TRANSFORMATION_SIGN.getKey(),
-			TFBlocks.MINING_SIGN.getKey(),
-			TFBlocks.SORTING_SIGN.getKey());
+			TFBlocks.TWILIGHT_OAK_SIGN.key(),
+			TFBlocks.CANOPY_SIGN.key(),
+			TFBlocks.MANGROVE_SIGN.key(),
+			TFBlocks.DARK_SIGN.key(),
+			TFBlocks.TIME_SIGN.key(),
+			TFBlocks.TRANSFORMATION_SIGN.key(),
+			TFBlocks.MINING_SIGN.key(),
+			TFBlocks.SORTING_SIGN.key());
 
 		this.tag(BlockTags.CEILING_HANGING_SIGNS, ItemTags.HANGING_SIGNS).add(
-			TFBlocks.TWILIGHT_OAK_HANGING_SIGN.getKey(),
-			TFBlocks.CANOPY_HANGING_SIGN.getKey(),
-			TFBlocks.MANGROVE_HANGING_SIGN.getKey(),
-			TFBlocks.DARK_HANGING_SIGN.getKey(),
-			TFBlocks.TIME_HANGING_SIGN.getKey(),
-			TFBlocks.TRANSFORMATION_HANGING_SIGN.getKey(),
-			TFBlocks.MINING_HANGING_SIGN.getKey(),
-			TFBlocks.SORTING_HANGING_SIGN.getKey());
+			TFBlocks.TWILIGHT_OAK_HANGING_SIGN.key(),
+			TFBlocks.CANOPY_HANGING_SIGN.key(),
+			TFBlocks.MANGROVE_HANGING_SIGN.key(),
+			TFBlocks.DARK_HANGING_SIGN.key(),
+			TFBlocks.TIME_HANGING_SIGN.key(),
+			TFBlocks.TRANSFORMATION_HANGING_SIGN.key(),
+			TFBlocks.MINING_HANGING_SIGN.key(),
+			TFBlocks.SORTING_HANGING_SIGN.key());
 
 		//------------
 		// COMMON TAGS
 		//------------
 
-		this.tag(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN).add(
-			TFBlocks.TWILIGHT_OAK_GATE.getKey(),
-			TFBlocks.CANOPY_GATE.getKey(),
-			TFBlocks.MANGROVE_GATE.getKey(),
-			TFBlocks.DARK_GATE.getKey(),
-			TFBlocks.TIME_GATE.getKey(),
-			TFBlocks.TRANSFORMATION_GATE.getKey(),
-			TFBlocks.MINING_GATE.getKey(),
-			TFBlocks.SORTING_GATE.getKey());
+		this.tag(Tags.BlockItems.FENCE_GATES_WOODEN.block(), Tags.BlockItems.FENCE_GATES_WOODEN.item()).add(
+			TFBlocks.TWILIGHT_OAK_GATE.key(),
+			TFBlocks.CANOPY_GATE.key(),
+			TFBlocks.MANGROVE_GATE.key(),
+			TFBlocks.DARK_GATE.key(),
+			TFBlocks.TIME_GATE.key(),
+			TFBlocks.TRANSFORMATION_GATE.key(),
+			TFBlocks.MINING_GATE.key(),
+			TFBlocks.SORTING_GATE.key());
 
-		this.tag(Tags.Blocks.CHESTS_WOODEN, Tags.Items.CHESTS_WOODEN).add(
-			TFBlocks.TWILIGHT_OAK_CHEST.getKey(),
-				TFBlocks.CANOPY_CHEST.getKey(),
-				TFBlocks.MANGROVE_CHEST.getKey(),
-				TFBlocks.DARK_CHEST.getKey(),
-				TFBlocks.TIME_CHEST.getKey(),
-				TFBlocks.TRANSFORMATION_CHEST.getKey(),
-				TFBlocks.MINING_CHEST.getKey(),
-				TFBlocks.SORTING_CHEST.getKey())
-			.add(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.getKey(),
-				TFBlocks.CANOPY_TRAPPED_CHEST.getKey(),
-				TFBlocks.MANGROVE_TRAPPED_CHEST.getKey(),
-				TFBlocks.DARK_TRAPPED_CHEST.getKey(),
-				TFBlocks.TIME_TRAPPED_CHEST.getKey(),
-				TFBlocks.TRANSFORMATION_TRAPPED_CHEST.getKey(),
-				TFBlocks.MINING_TRAPPED_CHEST.getKey(),
-				TFBlocks.SORTING_TRAPPED_CHEST.getKey());
+		this.tag(Tags.BlockItems.CHESTS_WOODEN.block(), Tags.BlockItems.CHESTS_WOODEN.item()).add(
+			TFBlocks.TWILIGHT_OAK_CHEST.key(),
+				TFBlocks.CANOPY_CHEST.key(),
+				TFBlocks.MANGROVE_CHEST.key(),
+				TFBlocks.DARK_CHEST.key(),
+				TFBlocks.TIME_CHEST.key(),
+				TFBlocks.TRANSFORMATION_CHEST.key(),
+				TFBlocks.MINING_CHEST.key(),
+				TFBlocks.SORTING_CHEST.key())
+			.add(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.key(),
+				TFBlocks.CANOPY_TRAPPED_CHEST.key(),
+				TFBlocks.MANGROVE_TRAPPED_CHEST.key(),
+				TFBlocks.DARK_TRAPPED_CHEST.key(),
+				TFBlocks.TIME_TRAPPED_CHEST.key(),
+				TFBlocks.TRANSFORMATION_TRAPPED_CHEST.key(),
+				TFBlocks.MINING_TRAPPED_CHEST.key(),
+				TFBlocks.SORTING_TRAPPED_CHEST.key());
 
-		this.tag(Tags.Blocks.CHESTS_TRAPPED, Tags.Items.CHESTS_TRAPPED).add(
-			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.getKey(),
-			TFBlocks.CANOPY_TRAPPED_CHEST.getKey(),
-			TFBlocks.MANGROVE_TRAPPED_CHEST.getKey(),
-			TFBlocks.DARK_TRAPPED_CHEST.getKey(),
-			TFBlocks.TIME_TRAPPED_CHEST.getKey(),
-			TFBlocks.TRANSFORMATION_TRAPPED_CHEST.getKey(),
-			TFBlocks.MINING_TRAPPED_CHEST.getKey(),
-			TFBlocks.SORTING_TRAPPED_CHEST.getKey());
+		this.tag(Tags.BlockItems.CHESTS_TRAPPED.block(), Tags.BlockItems.CHESTS_TRAPPED.item()).add(
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.key(),
+			TFBlocks.CANOPY_TRAPPED_CHEST.key(),
+			TFBlocks.MANGROVE_TRAPPED_CHEST.key(),
+			TFBlocks.DARK_TRAPPED_CHEST.key(),
+			TFBlocks.TIME_TRAPPED_CHEST.key(),
+			TFBlocks.TRANSFORMATION_TRAPPED_CHEST.key(),
+			TFBlocks.MINING_TRAPPED_CHEST.key(),
+			TFBlocks.SORTING_TRAPPED_CHEST.key());
 
-		this.tag(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS).addTags(
+		this.tag(Tags.BlockItems.STORAGE_BLOCKS.block(), Tags.BlockItems.STORAGE_BLOCKS.item()).addTags(
 			TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR,
 			TFBlockTags.STORAGE_BLOCKS_CARMINITE,
 			TFBlockTags.STORAGE_BLOCKS_FIERY,
@@ -239,122 +239,122 @@ public abstract class BlockItemTagGenerator {
 			TFBlockTags.STORAGE_BLOCKS_STEELEAF,
 			TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME);
 
-		this.tag(Tags.Blocks.STORAGE_BLOCKS_SLIME, Tags.Items.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.getKey());
-		this.tag(Tags.Blocks.NATURAL_LOGS, Tags.Items.NATURAL_LOGS).add(
-			TFBlocks.TWILIGHT_OAK_LOG.getKey(),
-			TFBlocks.CANOPY_LOG.getKey(),
-			TFBlocks.MANGROVE_LOG.getKey(),
-			TFBlocks.DARK_LOG.getKey(),
-			TFBlocks.TIME_LOG.getKey(),
-			TFBlocks.TRANSFORMATION_LOG.getKey(),
-			TFBlocks.MINING_LOG.getKey(),
-			TFBlocks.SORTING_LOG.getKey());
+		this.tag(Tags.BlockItems.STORAGE_BLOCKS_SLIME.block(), Tags.BlockItems.STORAGE_BLOCKS_SLIME.item()).add(TFBlocks.MAZE_SLIME_BLOCK.key());
+		this.tag(Tags.BlockItems.NATURAL_LOGS.block(), Tags.BlockItems.NATURAL_LOGS.item()).add(
+			TFBlocks.TWILIGHT_OAK_LOG.key(),
+			TFBlocks.CANOPY_LOG.key(),
+			TFBlocks.MANGROVE_LOG.key(),
+			TFBlocks.DARK_LOG.key(),
+			TFBlocks.TIME_LOG.key(),
+			TFBlocks.TRANSFORMATION_LOG.key(),
+			TFBlocks.MINING_LOG.key(),
+			TFBlocks.SORTING_LOG.key());
 
-		this.tag(Tags.Blocks.NATURAL_WOODS, Tags.Items.NATURAL_WOODS).add(
-			TFBlocks.TWILIGHT_OAK_WOOD.getKey(),
-			TFBlocks.CANOPY_WOOD.getKey(),
-			TFBlocks.MANGROVE_WOOD.getKey(),
-			TFBlocks.DARK_WOOD.getKey(),
-			TFBlocks.TIME_WOOD.getKey(),
-			TFBlocks.TRANSFORMATION_WOOD.getKey(),
-			TFBlocks.MINING_WOOD.getKey(),
-			TFBlocks.SORTING_WOOD.getKey());
+		this.tag(Tags.BlockItems.NATURAL_WOODS.block(), Tags.BlockItems.NATURAL_WOODS.item()).add(
+			TFBlocks.TWILIGHT_OAK_WOOD.key(),
+			TFBlocks.CANOPY_WOOD.key(),
+			TFBlocks.MANGROVE_WOOD.key(),
+			TFBlocks.DARK_WOOD.key(),
+			TFBlocks.TIME_WOOD.key(),
+			TFBlocks.TRANSFORMATION_WOOD.key(),
+			TFBlocks.MINING_WOOD.key(),
+			TFBlocks.SORTING_WOOD.key());
 
-		this.tag(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS).add(
-			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.getKey(),
-			TFBlocks.STRIPPED_CANOPY_LOG.getKey(),
-			TFBlocks.STRIPPED_MANGROVE_LOG.getKey(),
-			TFBlocks.STRIPPED_DARK_LOG.getKey(),
-			TFBlocks.STRIPPED_TIME_LOG.getKey(),
-			TFBlocks.STRIPPED_TRANSFORMATION_LOG.getKey(),
-			TFBlocks.STRIPPED_MINING_LOG.getKey(),
-			TFBlocks.STRIPPED_SORTING_LOG.getKey());
+		this.tag(Tags.BlockItems.STRIPPED_LOGS.block(), Tags.BlockItems.STRIPPED_LOGS.item()).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.key(),
+			TFBlocks.STRIPPED_CANOPY_LOG.key(),
+			TFBlocks.STRIPPED_MANGROVE_LOG.key(),
+			TFBlocks.STRIPPED_DARK_LOG.key(),
+			TFBlocks.STRIPPED_TIME_LOG.key(),
+			TFBlocks.STRIPPED_TRANSFORMATION_LOG.key(),
+			TFBlocks.STRIPPED_MINING_LOG.key(),
+			TFBlocks.STRIPPED_SORTING_LOG.key());
 
-		this.tag(Tags.Blocks.STRIPPED_WOODS, Tags.Items.STRIPPED_WOODS).add(
-			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.getKey(),
-			TFBlocks.STRIPPED_CANOPY_WOOD.getKey(),
-			TFBlocks.STRIPPED_MANGROVE_WOOD.getKey(),
-			TFBlocks.STRIPPED_DARK_WOOD.getKey(),
-			TFBlocks.STRIPPED_TIME_WOOD.getKey(),
-			TFBlocks.STRIPPED_TRANSFORMATION_WOOD.getKey(),
-			TFBlocks.STRIPPED_MINING_WOOD.getKey(),
-			TFBlocks.STRIPPED_SORTING_WOOD.getKey());
+		this.tag(Tags.BlockItems.STRIPPED_WOODS.block(), Tags.BlockItems.STRIPPED_WOODS.item()).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.key(),
+			TFBlocks.STRIPPED_CANOPY_WOOD.key(),
+			TFBlocks.STRIPPED_MANGROVE_WOOD.key(),
+			TFBlocks.STRIPPED_DARK_WOOD.key(),
+			TFBlocks.STRIPPED_TIME_WOOD.key(),
+			TFBlocks.STRIPPED_TRANSFORMATION_WOOD.key(),
+			TFBlocks.STRIPPED_MINING_WOOD.key(),
+			TFBlocks.STRIPPED_SORTING_WOOD.key());
 
-		this.tag(Tags.Blocks.BOOKSHELVES, Tags.Items.BOOKSHELVES).add(TFBlocks.CANOPY_BOOKSHELF.getKey());
-		this.tag(Tags.Blocks.GLASS_BLOCKS, Tags.Items.GLASS_BLOCKS).add(TFBlocks.AURORALIZED_GLASS.getKey());
-		this.tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFBlocks.UNCRAFTING_TABLE.getKey());
-		this.tag(Tags.Blocks.ROPES, Tags.Items.ROPES).add(TFBlocks.ROPE.getKey());
+		this.tag(Tags.BlockItems.BOOKSHELVES.block(), Tags.BlockItems.BOOKSHELVES.item()).add(TFBlocks.CANOPY_BOOKSHELF.key());
+		this.tag(Tags.BlockItems.GLASS_BLOCKS.block(), Tags.BlockItems.GLASS_BLOCKS.item()).add(TFBlocks.AURORALIZED_GLASS.key());
+		this.tag(Tags.BlockItems.PLAYER_WORKSTATIONS_CRAFTING_TABLES.block(), Tags.BlockItems.PLAYER_WORKSTATIONS_CRAFTING_TABLES.item()).add(TFBlocks.UNCRAFTING_TABLE.key());
+		this.tag(Tags.BlockItems.ROPES.block(), Tags.BlockItems.ROPES.item()).add(TFBlocks.ROPE.key());
 
 		//-----------
 		//  TF TAGS
 		//-----------
 
-		this.tag(TFBlockTags.TWILIGHT_OAK_LOGS, TFItemTags.TWILIGHT_OAK_LOGS).add(TFBlocks.TWILIGHT_OAK_LOG.getKey(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.getKey(), TFBlocks.TWILIGHT_OAK_WOOD.getKey(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.getKey());
-		this.tag(TFBlockTags.CANOPY_LOGS, TFItemTags.CANOPY_LOGS).add(TFBlocks.CANOPY_LOG.getKey(), TFBlocks.STRIPPED_CANOPY_LOG.getKey(), TFBlocks.CANOPY_WOOD.getKey(), TFBlocks.STRIPPED_CANOPY_WOOD.getKey());
-		this.tag(TFBlockTags.MANGROVE_LOGS, TFItemTags.MANGROVE_LOGS).add(TFBlocks.MANGROVE_LOG.getKey(), TFBlocks.STRIPPED_MANGROVE_LOG.getKey(), TFBlocks.MANGROVE_WOOD.getKey(), TFBlocks.STRIPPED_MANGROVE_WOOD.getKey());
-		this.tag(TFBlockTags.DARKWOOD_LOGS, TFItemTags.DARKWOOD_LOGS).add(TFBlocks.DARK_LOG.getKey(), TFBlocks.STRIPPED_DARK_LOG.getKey(), TFBlocks.DARK_WOOD.getKey(), TFBlocks.STRIPPED_DARK_WOOD.getKey());
-		this.tag(TFBlockTags.TIME_LOGS, TFItemTags.TIME_LOGS).add(TFBlocks.TIME_LOG.getKey(), TFBlocks.STRIPPED_TIME_LOG.getKey(), TFBlocks.TIME_WOOD.getKey(), TFBlocks.STRIPPED_TIME_WOOD.getKey());
-		this.tag(TFBlockTags.TRANSFORMATION_LOGS, TFItemTags.TRANSFORMATION_LOGS).add(TFBlocks.TRANSFORMATION_LOG.getKey(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.getKey(), TFBlocks.TRANSFORMATION_WOOD.getKey(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.getKey());
-		this.tag(TFBlockTags.MINING_LOGS, TFItemTags.MINING_LOGS).add(TFBlocks.MINING_LOG.getKey(), TFBlocks.STRIPPED_MINING_LOG.getKey(), TFBlocks.MINING_WOOD.getKey(), TFBlocks.STRIPPED_MINING_WOOD.getKey());
-		this.tag(TFBlockTags.SORTING_LOGS, TFItemTags.SORTING_LOGS).add(TFBlocks.SORTING_LOG.getKey(), TFBlocks.STRIPPED_SORTING_LOG.getKey(), TFBlocks.SORTING_WOOD.getKey(), TFBlocks.STRIPPED_SORTING_WOOD.getKey());
+		this.tag(TFBlockTags.TWILIGHT_OAK_LOGS, TFItemTags.TWILIGHT_OAK_LOGS).add(TFBlocks.TWILIGHT_OAK_LOG.key(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.key(), TFBlocks.TWILIGHT_OAK_WOOD.key(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.key());
+		this.tag(TFBlockTags.CANOPY_LOGS, TFItemTags.CANOPY_LOGS).add(TFBlocks.CANOPY_LOG.key(), TFBlocks.STRIPPED_CANOPY_LOG.key(), TFBlocks.CANOPY_WOOD.key(), TFBlocks.STRIPPED_CANOPY_WOOD.key());
+		this.tag(TFBlockTags.MANGROVE_LOGS, TFItemTags.MANGROVE_LOGS).add(TFBlocks.MANGROVE_LOG.key(), TFBlocks.STRIPPED_MANGROVE_LOG.key(), TFBlocks.MANGROVE_WOOD.key(), TFBlocks.STRIPPED_MANGROVE_WOOD.key());
+		this.tag(TFBlockTags.DARKWOOD_LOGS, TFItemTags.DARKWOOD_LOGS).add(TFBlocks.DARK_LOG.key(), TFBlocks.STRIPPED_DARK_LOG.key(), TFBlocks.DARK_WOOD.key(), TFBlocks.STRIPPED_DARK_WOOD.key());
+		this.tag(TFBlockTags.TIME_LOGS, TFItemTags.TIME_LOGS).add(TFBlocks.TIME_LOG.key(), TFBlocks.STRIPPED_TIME_LOG.key(), TFBlocks.TIME_WOOD.key(), TFBlocks.STRIPPED_TIME_WOOD.key());
+		this.tag(TFBlockTags.TRANSFORMATION_LOGS, TFItemTags.TRANSFORMATION_LOGS).add(TFBlocks.TRANSFORMATION_LOG.key(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.key(), TFBlocks.TRANSFORMATION_WOOD.key(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.key());
+		this.tag(TFBlockTags.MINING_LOGS, TFItemTags.MINING_LOGS).add(TFBlocks.MINING_LOG.key(), TFBlocks.STRIPPED_MINING_LOG.key(), TFBlocks.MINING_WOOD.key(), TFBlocks.STRIPPED_MINING_WOOD.key());
+		this.tag(TFBlockTags.SORTING_LOGS, TFItemTags.SORTING_LOGS).add(TFBlocks.SORTING_LOG.key(), TFBlocks.STRIPPED_SORTING_LOG.key(), TFBlocks.SORTING_WOOD.key(), TFBlocks.STRIPPED_SORTING_WOOD.key());
 
 		this.tag(TFBlockTags.BANISTERS, TFItemTags.BANISTERS).add(
-			TFBlocks.OAK_BANISTER.getKey(),
-			TFBlocks.SPRUCE_BANISTER.getKey(),
-			TFBlocks.BIRCH_BANISTER.getKey(),
-			TFBlocks.JUNGLE_BANISTER.getKey(),
-			TFBlocks.ACACIA_BANISTER.getKey(),
-			TFBlocks.DARK_OAK_BANISTER.getKey(),
-			TFBlocks.CRIMSON_BANISTER.getKey(),
-			TFBlocks.WARPED_BANISTER.getKey(),
-			TFBlocks.VANGROVE_BANISTER.getKey(),
-			TFBlocks.BAMBOO_BANISTER.getKey(),
-			TFBlocks.CHERRY_BANISTER.getKey(),
-			TFBlocks.PALE_OAK_BANISTER.getKey(),
+			TFBlocks.OAK_BANISTER.key(),
+			TFBlocks.SPRUCE_BANISTER.key(),
+			TFBlocks.BIRCH_BANISTER.key(),
+			TFBlocks.JUNGLE_BANISTER.key(),
+			TFBlocks.ACACIA_BANISTER.key(),
+			TFBlocks.DARK_OAK_BANISTER.key(),
+			TFBlocks.CRIMSON_BANISTER.key(),
+			TFBlocks.WARPED_BANISTER.key(),
+			TFBlocks.VANGROVE_BANISTER.key(),
+			TFBlocks.BAMBOO_BANISTER.key(),
+			TFBlocks.CHERRY_BANISTER.key(),
+			TFBlocks.PALE_OAK_BANISTER.key(),
 
-			TFBlocks.TWILIGHT_OAK_BANISTER.getKey(),
-			TFBlocks.CANOPY_BANISTER.getKey(),
-			TFBlocks.MANGROVE_BANISTER.getKey(),
-			TFBlocks.DARK_BANISTER.getKey(),
-			TFBlocks.TIME_BANISTER.getKey(),
-			TFBlocks.TRANSFORMATION_BANISTER.getKey(),
-			TFBlocks.MINING_BANISTER.getKey(),
-			TFBlocks.SORTING_BANISTER.getKey()
+			TFBlocks.TWILIGHT_OAK_BANISTER.key(),
+			TFBlocks.CANOPY_BANISTER.key(),
+			TFBlocks.MANGROVE_BANISTER.key(),
+			TFBlocks.DARK_BANISTER.key(),
+			TFBlocks.TIME_BANISTER.key(),
+			TFBlocks.TRANSFORMATION_BANISTER.key(),
+			TFBlocks.MINING_BANISTER.key(),
+			TFBlocks.SORTING_BANISTER.key()
 		);
 
-		this.tag(TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR, TFItemTags.STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.ARCTIC_FUR_BLOCK.getKey());
-		this.tag(TFBlockTags.STORAGE_BLOCKS_CARMINITE, TFItemTags.STORAGE_BLOCKS_CARMINITE).add(TFBlocks.CARMINITE_BLOCK.getKey());
-		this.tag(TFBlockTags.STORAGE_BLOCKS_FIERY, TFItemTags.STORAGE_BLOCKS_FIERY).add(TFBlocks.FIERY_BLOCK.getKey());
-		this.tag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD, TFItemTags.STORAGE_BLOCKS_IRONWOOD).add(TFBlocks.IRONWOOD_BLOCK.getKey());
-		this.tag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL, TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.KNIGHTMETAL_BLOCK.getKey());
-		this.tag(TFBlockTags.STORAGE_BLOCKS_STEELEAF, TFItemTags.STORAGE_BLOCKS_STEELEAF).add(TFBlocks.STEELEAF_BLOCK.getKey());
+		this.tag(TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR, TFItemTags.STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.ARCTIC_FUR_BLOCK.key());
+		this.tag(TFBlockTags.STORAGE_BLOCKS_CARMINITE, TFItemTags.STORAGE_BLOCKS_CARMINITE).add(TFBlocks.CARMINITE_BLOCK.key());
+		this.tag(TFBlockTags.STORAGE_BLOCKS_FIERY, TFItemTags.STORAGE_BLOCKS_FIERY).add(TFBlocks.FIERY_BLOCK.key());
+		this.tag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD, TFItemTags.STORAGE_BLOCKS_IRONWOOD).add(TFBlocks.IRONWOOD_BLOCK.key());
+		this.tag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL, TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.KNIGHTMETAL_BLOCK.key());
+		this.tag(TFBlockTags.STORAGE_BLOCKS_STEELEAF, TFItemTags.STORAGE_BLOCKS_STEELEAF).add(TFBlocks.STEELEAF_BLOCK.key());
 
 		this.tag(TFBlockTags.DRYING_RACKS, TFItemTags.DRYING_RACKS).add(
-			TFBlocks.OAK_DRYING_RACK.getKey(), TFBlocks.SPRUCE_DRYING_RACK.getKey(),
-			TFBlocks.BIRCH_DRYING_RACK.getKey(), TFBlocks.JUNGLE_DRYING_RACK.getKey(),
-			TFBlocks.ACACIA_DRYING_RACK.getKey(), TFBlocks.DARK_OAK_DRYING_RACK.getKey(),
-			TFBlocks.CRIMSON_DRYING_RACK.getKey(), TFBlocks.WARPED_DRYING_RACK.getKey(),
-			TFBlocks.VANGROVE_DRYING_RACK.getKey(), TFBlocks.BAMBOO_DRYING_RACK.getKey(),
-			TFBlocks.CHERRY_DRYING_RACK.getKey(), TFBlocks.PALE_OAK_DRYING_RACK.getKey(),
-			TFBlocks.TWILIGHT_OAK_DRYING_RACK.getKey(), TFBlocks.CANOPY_DRYING_RACK.getKey(),
-			TFBlocks.MANGROVE_DRYING_RACK.getKey(), TFBlocks.DARK_DRYING_RACK.getKey(),
-			TFBlocks.TIME_DRYING_RACK.getKey(), TFBlocks.TRANSFORMATION_DRYING_RACK.getKey(),
-			TFBlocks.MINING_DRYING_RACK.getKey(), TFBlocks.SORTING_DRYING_RACK.getKey()
+			TFBlocks.OAK_DRYING_RACK.key(), TFBlocks.SPRUCE_DRYING_RACK.key(),
+			TFBlocks.BIRCH_DRYING_RACK.key(), TFBlocks.JUNGLE_DRYING_RACK.key(),
+			TFBlocks.ACACIA_DRYING_RACK.key(), TFBlocks.DARK_OAK_DRYING_RACK.key(),
+			TFBlocks.CRIMSON_DRYING_RACK.key(), TFBlocks.WARPED_DRYING_RACK.key(),
+			TFBlocks.VANGROVE_DRYING_RACK.key(), TFBlocks.BAMBOO_DRYING_RACK.key(),
+			TFBlocks.CHERRY_DRYING_RACK.key(), TFBlocks.PALE_OAK_DRYING_RACK.key(),
+			TFBlocks.TWILIGHT_OAK_DRYING_RACK.key(), TFBlocks.CANOPY_DRYING_RACK.key(),
+			TFBlocks.MANGROVE_DRYING_RACK.key(), TFBlocks.DARK_DRYING_RACK.key(),
+			TFBlocks.TIME_DRYING_RACK.key(), TFBlocks.TRANSFORMATION_DRYING_RACK.key(),
+			TFBlocks.MINING_DRYING_RACK.key(), TFBlocks.SORTING_DRYING_RACK.key()
 		);
 
 		this.tag(TFBlockTags.TOWERWOOD, TFItemTags.TOWERWOOD).add(
-			TFBlocks.TOWERWOOD.getKey(),
-			TFBlocks.MOSSY_TOWERWOOD.getKey(),
-			TFBlocks.CRACKED_TOWERWOOD.getKey(),
-			TFBlocks.INFESTED_TOWERWOOD.getKey());
+			TFBlocks.TOWERWOOD.key(),
+			TFBlocks.MOSSY_TOWERWOOD.key(),
+			TFBlocks.CRACKED_TOWERWOOD.key(),
+			TFBlocks.INFESTED_TOWERWOOD.key());
 
-		this.tag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME, TFItemTags.STORAGE_BLOCKS_MAZE_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.getKey());
+		this.tag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME, TFItemTags.STORAGE_BLOCKS_MAZE_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.key());
 
 		this.tag(TFBlockTags.CLOUDS, TFItemTags.CLOUDS).add(
-			TFBlocks.FLUFFY_CLOUD.getKey(),
-			TFBlocks.WISPY_CLOUD.getKey(),
-			TFBlocks.RAINY_CLOUD.getKey(),
-			TFBlocks.SNOWY_CLOUD.getKey());
+			TFBlocks.FLUFFY_CLOUD.key(),
+			TFBlocks.WISPY_CLOUD.key(),
+			TFBlocks.RAINY_CLOUD.key(),
+			TFBlocks.SNOWY_CLOUD.key());
 	}
 
 	protected abstract TagAppender<Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag);
