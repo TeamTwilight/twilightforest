@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class VerticalDecayProcessor implements StructureProcessor {
 	public static final MapCodec<VerticalDecayProcessor> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-		Block.CODEC.codec().listOf().fieldOf("decay_blocks").forGetter(VerticalDecayProcessor::getDecayBlocks),
+		BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("decay_blocks").forGetter(VerticalDecayProcessor::getDecayBlocks),
 		Codec.FLOAT.fieldOf("decay_chance").forGetter(p -> p.decayChance)
 	).apply(inst, VerticalDecayProcessor::new));
 
