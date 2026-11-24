@@ -3,6 +3,7 @@ package twilightforest.datagen.data.world.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -32,14 +33,14 @@ public class TrollCaveStructureGenerator {
     public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {
         return new TrollCaveStructure(
             ControlledSpawns.ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 2), 5)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.TROLL.get(), 1, 2), 20)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, 1, 1), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, new UniformInt(1, 2)), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.TROLL.get(), new UniformInt(1, 2)), 20)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, new UniformInt(1, 1)), 5)
                 .build()
             , WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 1, 1), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 1, 1), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), new UniformInt(1, 1)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), new UniformInt(1, 1)), 10)
                 .build()
             ), WeightedList.of(), WeightedList.of()),
             context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.TROLL_CAVE),

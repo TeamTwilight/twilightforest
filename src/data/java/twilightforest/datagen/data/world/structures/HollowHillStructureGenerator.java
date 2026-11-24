@@ -3,6 +3,7 @@ package twilightforest.datagen.data.world.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -30,11 +31,11 @@ public class HollowHillStructureGenerator {
         return new HollowHillStructure(
             1,
             ControlledSpawns.ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SPIDER, 4, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE, 4, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 4, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), 4, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 4, 8), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SPIDER, new UniformInt(4, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE, new UniformInt(4, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), new UniformInt(4, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), new UniformInt(4, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), new UniformInt(4, 8)), 10)
                 .build()
             ), WeightedList.of(), WeightedList.of()),
             context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.SMALL_HILL),
@@ -53,16 +54,16 @@ public class HollowHillStructureGenerator {
         return new HollowHillStructure(
             2,
             ControlledSpawns.ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 2, 3), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SPIDER, 1, 3), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 2), 5)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 1, 1), 5)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 1, 1), 5)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, 1, 1), 1)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), new UniformInt(1, 2)), 2)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), new UniformInt(2, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, new UniformInt(2, 3)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), new UniformInt(2, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SPIDER, new UniformInt(1, 3)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, new UniformInt(1, 2)), 5)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), new UniformInt(1, 1)), 5)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), new UniformInt(1, 1)), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, new UniformInt(1, 1)), 1)
                 .build()
             ), WeightedList.of(), WeightedList.of()),
             context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.MEDIUM_HILL),
@@ -81,17 +82,17 @@ public class HollowHillStructureGenerator {
         return new HollowHillStructure(
             3,
             ControlledSpawns.ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 2, 3), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CAVE_SPIDER, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 1), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 1), 1)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.WRAITH.get(), 1, 2), 2)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, 1, 1), 1)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), new UniformInt(2, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), new UniformInt(1, 2)), 2)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, new UniformInt(2, 3)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CAVE_SPIDER, new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, new UniformInt(1, 1)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, new UniformInt(1, 1)), 1)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.WRAITH.get(), new UniformInt(1, 2)), 2)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, new UniformInt(1, 1)), 1)
                 .build()
             ),
             context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.LARGE_HILL),

@@ -3,6 +3,7 @@ package twilightforest.datagen.data.world.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -30,14 +31,14 @@ public class LabyrinthStructureGenerator {
     public static LabyrinthStructure buildLabyrinthConfig(BootstrapContext<Structure> context) {
         return new LabyrinthStructure(
             ControlledSpawns.ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR.get(), 2, 3), 20)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CAVE_SPIDER, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.MAZE_SLIME.get(), 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 2), 1)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 1, 1), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR.get(), new UniformInt(2, 3)), 20)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CAVE_SPIDER, new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.MAZE_SLIME.get(), new UniformInt(2, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, new UniformInt(1, 2)), 1)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), new UniformInt(1, 1)), 10)
                 .build()
             ),
             new AdvancementLockedStructure.AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),

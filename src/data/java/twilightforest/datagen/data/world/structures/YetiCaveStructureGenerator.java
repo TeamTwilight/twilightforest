@@ -3,6 +3,7 @@ package twilightforest.datagen.data.world.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -31,7 +32,7 @@ public class YetiCaveStructureGenerator {
     public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {
         return new YetiCaveStructure(
             ControlledSpawns.ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 1, 2), 5)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), new UniformInt(1, 2)), 5)
                 .build()
             ),
             new AdvancementLockedStructure.AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),

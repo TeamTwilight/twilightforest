@@ -3,6 +3,7 @@ package twilightforest.datagen.data.world.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -38,8 +39,8 @@ public class GiantHouseStructureGenerator {
                 TerrainAdjustment.NONE
             ),
             ControlledSpawns.ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder() // cloud monsters
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 1, 1), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 1, 1), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), new UniformInt(1, 1)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), new UniformInt(1, 1)), 10)
                 .build()
             ), WeightedList.of(), WeightedList.of())
         );

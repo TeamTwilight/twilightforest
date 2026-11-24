@@ -3,6 +3,7 @@ package twilightforest.datagen.data.world.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -30,15 +31,15 @@ public class LichTowerStructureGenerator {
     @SuppressWarnings("unchecked")
     public static LichTowerStructure buildLichTowerConfig(BootstrapContext<Structure> context) {
         WeightedList<MobSpawnSettings.SpawnerData> yardSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-            .add(new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), 1, 2), 2)
+            .add(new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), new UniformInt(1, 2)), 2)
             .build();
         WeightedList<MobSpawnSettings.SpawnerData> interiorSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE, 1, 2), 10)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 1, 2), 10)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 1), 1)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 2), 1)
-            .add(new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 2, 3), 10)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, 1, 1), 1)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE, new UniformInt(1, 2)), 10)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, new UniformInt(1, 2)), 10)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, new UniformInt(1, 1)), 1)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, new UniformInt(1, 2)), 1)
+            .add(new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), new UniformInt(2, 3)), 10)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, new UniformInt(1, 1)), 1)
             .build();
         ControlledSpawns.ControlledSpawningConfig monsters = ControlledSpawns.ControlledSpawningConfig.justMonsters(
             yardSpawns,

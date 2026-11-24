@@ -3,6 +3,7 @@ package twilightforest.datagen.data.world.structures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -30,14 +31,14 @@ public class KnightStrongholdStructureGenerator {
     public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<Structure> context) {
         return new KnightStrongholdStructure(
             ControlledSpawns.ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.get(), 1, 2), 5)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.get(), 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 2, 3), 10)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
-                .add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 2), 5)
-                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SLIME, 4, 4), 5)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), new UniformInt(1, 2)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.get(), new UniformInt(1, 2)), 5)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.get(), new UniformInt(2, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), new UniformInt(2, 3)), 10)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), new UniformInt(1, 2)), 2)
+                .add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), new UniformInt(2, 4)), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, new UniformInt(1, 2)), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SLIME, new UniformInt(4, 4)), 5)
                 .build()
             ),
             new AdvancementLockedStructure.AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_trophy_pedestal"))),
