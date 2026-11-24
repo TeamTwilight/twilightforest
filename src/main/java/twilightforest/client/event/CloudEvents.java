@@ -293,7 +293,7 @@ public class CloudEvents {
 				OptionalDouble.empty()
 			)
 		) {
-			renderPass.setPipeline(renderPipeline);
+			renderPass.setPipeline(RenderSystem.getCompiledPipeline(renderPipeline));
 			RenderSystem.bindDefaultUniforms(renderPass);
 			renderPass.setUniform("DynamicTransforms", dynamicTransforms);
 			renderPass.bindTexture("Sampler2", minecraft.gameRenderer.lightmap(), RenderSystem.getSamplerCache().getClampToEdge(FilterMode.LINEAR));
