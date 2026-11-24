@@ -82,7 +82,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		this.blockStateOutput.accept(createSimpleBlock(block, sapling));
 		MultiVariant potted = plainVariant(type.getCrossPot().create(pottedBlock, type.getPlantTextureMapping(block), this.modelOutput));
 		this.blockStateOutput.accept(createSimpleBlock(pottedBlock, potted));
-		this.registerSimpleItemModel(block.asItem(), type.createItemModel(this, block));
+		this.registerSimpleItemModel(block.asItem(), type.createItemModelUsingBlockTexture(this, block));
 	}
 
 	public void generateButton(Block button, TextureMapping mapping) {
