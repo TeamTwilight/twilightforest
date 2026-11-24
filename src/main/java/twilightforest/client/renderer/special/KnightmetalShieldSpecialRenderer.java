@@ -26,7 +26,7 @@ public record KnightmetalShieldSpecialRenderer(SpriteGetter sprites, Knightmetal
 		collector.submitModel(this.model, Unit.INSTANCE, stack, light, overlay, -1, SHIELD_BASE, this.sprites, outlineColor);
 
 		if (hasFoil) {
-			collector.submitModel(this.model, Unit.INSTANCE, stack, RenderTypes.entityGlint(), light, overlay, -1, this.sprites.get(SHIELD_BASE), 0, null);
+			collector.submitModel(this.model, Unit.INSTANCE, stack, RenderTypes.entitySolidGlint(SHIELD_BASE.texture()), light, overlay, -1, this.sprites.get(SHIELD_BASE), 0);
 		}
     }
 

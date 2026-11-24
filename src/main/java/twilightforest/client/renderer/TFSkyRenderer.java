@@ -63,7 +63,7 @@ public class TFSkyRenderer implements AutoCloseable {
 		//TF: replace sun, moon, and star rendering method with our own star renderer
 		//rotation is from SkyRenderer.renderSunMoonAndStars
 		posestack.pushPose();
-		posestack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+		posestack.rotate(Axis.YP.rotationDegrees(-90.0F));
 		renderStars(posestack);
 		posestack.popPose();
 		//TF: use custom height checks for the void sky as vanilla hardcodes to 63
