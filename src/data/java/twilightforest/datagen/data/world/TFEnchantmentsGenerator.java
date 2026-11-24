@@ -15,7 +15,7 @@ import net.minecraft.world.item.enchantment.effects.ChangeItemDamage;
 import net.minecraft.world.item.enchantment.effects.Ignite;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.enchantment.RechargeScepterEffect;
 import twilightforest.enchantment.SmashBlocksEffect;
@@ -48,7 +48,7 @@ public class TFEnchantmentsGenerator {
                 AllOf.entityEffects(
                     new Ignite(LevelBasedValue.perLevel(2.0F, 3.0F)),
                     new ChangeItemDamage(LevelBasedValue.constant(2.0F))),
-                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))));
+                LootItemRandomChanceCondition.randomChance(ContextFloatProviders.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))));
 
         register(context, TFEnchantments.CHILL_AURA, new Enchantment.Builder(Enchantment.definition(
             items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
@@ -66,7 +66,7 @@ public class TFEnchantmentsGenerator {
                 AllOf.entityEffects(
                     new ApplyFrostedEffect(LevelBasedValue.constant(200), LevelBasedValue.perLevel(0.0F, 1.0F)),
                     new ChangeItemDamage(LevelBasedValue.constant(2.0F))),
-                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))));
+                LootItemRandomChanceCondition.randomChance(ContextFloatProviders.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))));
 
         register(context, TFEnchantments.DESTRUCTION, new Enchantment.Builder(Enchantment.definition(
             items.getOrThrow(TFItemTags.BLOCK_AND_CHAIN_ENCHANTABLE),
