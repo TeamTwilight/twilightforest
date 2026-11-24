@@ -28,11 +28,11 @@ public class TFTimelineGenerator {
 				.addModifierTrack(
 					EnvironmentAttributes.FOG_COLOR,
 					ColorModifier.MULTIPLY_RGB,
-					track -> track.addKeyframe(0, ARGB.colorFromFloat(1.0F, 0.42F, 0.42F, 0.445F)))
+					track -> track.addKeyframe(0, ARGB.vector3fFromRGB24(0x6B6B71)))
 				.addModifierTrack(
 					EnvironmentAttributes.SKY_COLOR,
 					ColorModifier.MULTIPLY_RGB,
-					track -> track.addKeyframe(0, ARGB.colorFromFloat(1.0F, 0.25F, 0.25F, 0.375F)))
+					track -> track.addKeyframe(0, ARGB.vector3fFromRGB24(0x404060)))
 				.build()
 		);
 	}
