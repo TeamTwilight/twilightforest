@@ -13,7 +13,6 @@ import twilightforest.datagen.data.custom.structuredefinitions.CampStructureDefi
 import twilightforest.datagen.data.custom.structuredefinitions.FinalCastleStructureDefinitionGenerator;
 import twilightforest.datagen.data.custom.structuredefinitions.LichTowerStructureDefinitionGenerator;
 import twilightforest.datagen.data.custom.structuredefinitions.NagaCourtyardStructureDefinitionGenerator;
-import twilightforest.datagen.data.loot.LootGenerator;
 import twilightforest.datagen.data.recipes.CraftingGeneratorRunner;
 import twilightforest.datagen.data.recipes.RecipePriorityGenerator;
 import twilightforest.datagen.data.tags.*;
@@ -50,7 +49,6 @@ public class DataGenerator {
 		//the other stuff
 		generator.addProvider(true, new CraftingGeneratorRunner(output, lookupProvider));
 		generator.addProvider(true, new DataMapGenerator(output, lookupProvider));
-		generator.addProvider(true, new LootGenerator(output, lookupProvider));
 		generator.addProvider(true, new LootModifierGenerator(output, lookupProvider));
 		generator.addProvider(true, new QuestGenerator(output));
 		generator.addProvider(true, new RecipePriorityGenerator(output, lookupProvider));

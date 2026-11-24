@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.datagen.data.custom.*;
+import twilightforest.datagen.data.loot.TFLootTableProvider;
 import twilightforest.datagen.data.worldgen.*;
 
 import java.util.Set;
@@ -44,7 +45,8 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		.add(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlerGenerator::bootstrap)
 		.add(Registries.TIMELINE, TFTimelineGenerator::bootstrap)
 		.add(Registries.WORLD_CLOCK, TFWorldClockGenerator::bootstrap)
-		.add(Registries.CONTEXT_INT_PROVIDER, TFContextIntProviderGenerator::bootstrap);
+		.add(Registries.CONTEXT_INT_PROVIDER, TFContextIntProviderGenerator::bootstrap)
+		.add(Registries.LOOT_TABLE, TFLootTableProvider::create);
 
 	public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider, BUILDER, Set.of("minecraft", TwilightForestMod.ID));

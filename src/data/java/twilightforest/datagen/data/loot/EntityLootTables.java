@@ -3,9 +3,9 @@ package twilightforest.datagen.data.loot;
 import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.advancements.predicates.entity.CubeMobPredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.EntityType;
@@ -37,8 +37,8 @@ import java.util.stream.Stream;
 
 public class EntityLootTables extends EntityLootSubProvider {
 
-	protected EntityLootTables(HolderLookup.Provider provider) {
-		super(FeatureFlags.REGISTRY.allFlags(), provider);
+	protected EntityLootTables(LootTableSubProvider.Context output) {
+		super(FeatureFlags.REGISTRY.allFlags(), output);
 	}
 
 	@Override
