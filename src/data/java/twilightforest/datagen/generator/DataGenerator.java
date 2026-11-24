@@ -114,7 +114,10 @@ public class DataGenerator {
 				"TF World Registries",
 				event.getWorldLookupProvider(),
 				WORLD_BUILDER,
-				Set.of(TwilightForestMod.ID)
+				Set.of(
+					"minecraft",
+					TwilightForestMod.ID
+				)
 			)
 		);
 
