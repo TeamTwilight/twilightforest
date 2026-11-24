@@ -1,7 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
@@ -19,21 +17,11 @@ import twilightforest.enums.BossVariant;
 
 public class BossSpawnerBlock extends BaseEntityBlock {
 
-	public static final MapCodec<BossSpawnerBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			BossVariant.CODEC.fieldOf("variant").forGetter(o -> o.boss),
-			propertiesCodec())
-		.apply(instance, BossSpawnerBlock::new)
-	);
 	private final BossVariant boss;
 
 	public BossSpawnerBlock(BossVariant variant, BlockBehaviour.Properties properties) {
 		super(properties);
 		this.boss = variant;
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

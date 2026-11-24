@@ -1,15 +1,12 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -45,10 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class OminousCandleBlock extends BaseEntityBlock {
-	public static final MapCodec<OminousCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
-		app -> app.group(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("candle").forGetter(block -> block.candle), propertiesCodec())
-			.apply(app, OminousCandleBlock::new)
-	);
 
 	private static final VoxelShape ONE_AABB = Block.box(7.0, 0.0, 7.0, 9.0, 6.0, 9.0);
 	private static final VoxelShape TWO_AABB = Block.box(5.0, 0.0, 6.0, 11.0, 6.0, 9.0);
@@ -94,11 +87,6 @@ public class OminousCandleBlock extends BaseEntityBlock {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(CANDLES, 1));
 		this.candle = candle;
-	}
-
-	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
 	}
 
 	@Override
