@@ -10,7 +10,7 @@ import java.util.List;
 
 public class NoiseCarverWallProvider extends NoiseProvider implements CarverWallProvider {
 
-	public NoiseCarverWallProvider(long seed, NormalNoise.NoiseParameters parameters, float scale, List<BlockState> states) {
+	public NoiseCarverWallProvider(long seed, NormalNoise parameters, float scale, List<BlockState> states) {
 		super(seed, parameters, scale, states);
 	}
 
