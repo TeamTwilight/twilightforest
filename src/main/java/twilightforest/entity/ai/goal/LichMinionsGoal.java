@@ -106,7 +106,7 @@ public class LichMinionsGoal extends Goal {
 				// melee attack
 				this.lich.doHurtTarget(serverLevel, targetedEntity);
 
-				this.lich.swing(InteractionHand.MAIN_HAND);
+				this.lich.swingForAttack(InteractionHand.MAIN_HAND);
 				this.lich.setAttackCooldown(20);
 			} else if (dist < ATTACK_RANGE && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
 				if (this.lich.getNextAttackType() == 0)

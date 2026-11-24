@@ -36,6 +36,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			}
 		}.run();
 
+		this.tag(TFBlockTags.LICH_DOES_NOT_TELEPORT_TO).addTag(BlockTags.DANGEROUS_FOR_TELEPORTATION);
+
 		this.tag(BlockTags.FLOWER_POTS).add(
 			TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.key(),
 			TFBlocks.POTTED_CANOPY_SAPLING.key(),

@@ -26,6 +26,6 @@ public class TFMapDecorations {
 	public static final DeferredHolder<MapDecorationType, MapDecorationType> FINAL_CASTLE = register("final_castle");
 
 	private static DeferredHolder<MapDecorationType, MapDecorationType> register(String name) {
-		return DECORATIONS.register(name, () -> new MapDecorationType(TwilightForestMod.prefix(name), true, -1, false, true));
+		return DECORATIONS.register(name, () -> new MapDecorationType(TwilightForestMod.prefix(name), true, true));
 	}
 }

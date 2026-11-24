@@ -91,7 +91,7 @@ public class TFSkyRenderer implements AutoCloseable {
 		try (RenderPass renderPass = RenderSystem.getDevice()
 				.createCommandEncoder()
 				.createRenderPass(() -> "Stars", colorTexture, Optional.empty(), depthTexture, OptionalDouble.empty())) {
-			renderPass.setPipeline(renderPipeline);
+			renderPass.setPipeline(RenderSystem.getCompiledPipeline(renderPipeline));
 			RenderSystem.bindDefaultUniforms(renderPass);
 			renderPass.setUniform("DynamicTransforms", dynamicTransforms);
 			renderPass.setVertexBuffer(0, this.starBuffer.slice());

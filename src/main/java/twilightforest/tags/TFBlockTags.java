@@ -76,6 +76,7 @@ public class TFBlockTags {
 	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = create("penguins_spawnable_on");
 	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = create("giants_spawnable_on");
 	public static final TagKey<Block> DRUID_PROJECTILE_REPLACEABLE = create("druid_projectile_replaceable");
+	public static final TagKey<Block> LICH_DOES_NOT_TELEPORT_TO = create("lich_does_not_teleport_to");
 
 	public static final TagKey<Block> STORAGE_BLOCKS_ARCTIC_FUR = makeCommonTag("storage_blocks/arctic_fur");
 	public static final TagKey<Block> STORAGE_BLOCKS_CARMINITE = makeCommonTag("storage_blocks/carminite");

@@ -64,6 +64,7 @@ import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFDamageTypeTags;
 import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.entities.EntityUtil;
@@ -647,7 +648,7 @@ public class Lich extends BaseTFBoss {
 			double ty = targetEntity.getY() + 2;
 			double tz = targetEntity.getZ() + this.getRandom().nextGaussian() * 16D;
 
-			boolean destClear = this.randomTeleport(tx, ty, tz, false);
+			boolean destClear = this.randomTeleport(tx, ty, tz, false, TFBlockTags.LICH_DOES_NOT_TELEPORT_TO);
 			if (destClear) {
 				tx = this.getX();
 				ty = this.getY();
