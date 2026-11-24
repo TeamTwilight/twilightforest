@@ -1,13 +1,18 @@
 package twilightforest.datagen.helpers;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.triggers.InventoryChangeTrigger;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -31,9 +36,14 @@ import twilightforest.block.TFTrappedChestBlock;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 
+import java.util.Collections;
+import java.util.Optional;
+
+import static twilightforest.TwilightForestMod.prefix;
+
 public abstract class CraftingDataHelper extends RecipeProvider {
-	public CraftingDataHelper(RecipeOutput output, HolderLookup.Provider provider) {
-		super(provider, output);
+	public CraftingDataHelper(BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput) {
+		super(recipeOutput, advancementOutput);
 	}
 
 	protected final void charmRecipe(HolderGetter<Item> getter, String name, DeferredItem<? extends Item> result, DeferredItem<? extends Item> item) {
@@ -230,8 +240,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	@SafeVarargs
-	protected final DataComponentPatch.Builder buildEnchants(HolderLookup.Provider provider, Pair<ResourceKey<Enchantment>, Integer>... enchantments) {
-		HolderLookup.RegistryLookup<Enchantment> lookup = provider.lookupOrThrow(Registries.ENCHANTMENT);
+	protected final DataComponentPatch.Builder buildEnchants(HolderGetter<Enchantment> lookup, Pair<ResourceKey<Enchantment>, Integer>... enchantments) {
 		ItemEnchantments.Mutable itemEnchants = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
 		for (var pair : enchantments) {
 			itemEnchants.set(lookup.getOrThrow(pair.getFirst()), pair.getSecond());
@@ -441,10 +450,27 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.TRANSPORTATION, chestBoat)
 			.requires(boat)
-			.requires(Tags.Items.CHESTS_WOODEN)
+			.requires(Tags.BlockItems.CHESTS_WOODEN.item())
 			.group("chest_boat")
 			.unlockedBy("has_boat", has(ItemTags.BOATS))
 			.save(this.output);
+	}
+
+	protected void stonecutting(HolderGetter<Item> getter, RecipeOutput recipe, ItemLike input, ItemLike output) {
+		stonecutting(getter, recipe, input, output, 1);
+	}
+
+	protected void stonecutting(HolderGetter<Item> getter, RecipeOutput recipe, ItemLike input, ItemLike output, int count) {
+		SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output.asItem(), count).unlockedBy("has_block", has(getter, input)).save(recipe, getIdFor(input, output));
+	}
+
+	protected ResourceKey<Recipe<?>> getIdFor(ItemLike input, ItemLike output) {
+		String path = String.format("stonecutting/%s/%s", BuiltInRegistries.ITEM.getKey(input.asItem()).getPath(), BuiltInRegistries.ITEM.getKey(output.asItem()).getPath());
+		return ResourceKey.create(Registries.RECIPE, prefix(path));
+	}
+
+	protected Criterion<InventoryChangeTrigger.TriggerInstance> has(HolderGetter<Item> getter, ItemLike item) {
+		return CriteriaTriggers.INVENTORY_CHANGED.createCriterion(new InventoryChangeTrigger.TriggerInstance(Optional.empty(), InventoryChangeTrigger.TriggerInstance.Slots.ANY, Collections.singletonList(ItemPredicate.Builder.item().of(getter, item).build())));
 	}
 
 	protected final ResourceKey<Recipe<?>> locCastle(String name) {

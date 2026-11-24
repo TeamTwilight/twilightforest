@@ -1,0 +1,155 @@
+package twilightforest.datagen.data.world;
+
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.Music;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.TriState;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.attribute.*;
+import net.minecraft.world.clock.WorldClock;
+import net.minecraft.world.level.CardinalLighting;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
+import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
+import net.minecraft.world.timeline.Timeline;
+import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+import twilightforest.TFRegistries;
+import twilightforest.TwilightForestMod;
+import twilightforest.client.TwilightForestRenderInfo;
+import twilightforest.init.TFDimension;
+import twilightforest.init.TFSounds;
+import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.tags.TFTimelineTags;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.OpenWaterProximityFunction;
+import twilightforest.world.components.layer.BiomeDensitySource;
+
+import java.util.List;
+import java.util.Optional;
+
+public class TFDimensionGenerator {
+
+    public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
+    public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
+    public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM = ResourceKey.create(Registries.LEVEL_STEM, TFDimension.DIMENSION);
+
+    public static void bootstrapType(BootstrapContext<DimensionType> context) {
+		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
+        HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
+		HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
+        context.register(TFDimension.TWILIGHT_DIM_TYPE, new DimensionType(
+                true, //fixed time
+                true, //skylight
+                false, //ceiling
+                false, //ender dragon fight
+                1 / 8.0D, //coordinate scale
+                -32, // Minimum Y Level
+                32 + 256, // Height + Min Y = Max Y
+                32 + 256, // Logical Height
+                blocks.getOrThrow(BlockTags.INFINIBURN_OVERWORLD), //infiburn tag
+                0.01F, //ambient light
+                new DimensionType.MonsterSettings(UniformInt.of(0, 7), 7), //monster settings
+                DimensionType.Skybox.OVERWORLD, //skybox
+                CardinalLighting.Type.DEFAULT, //cardinal lighting
+                EnvironmentAttributeMap.builder() // attributes
+                        .set(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(new Music(TFSounds.MUSIC, 1200, 12000, true)))
+                        .set(EnvironmentAttributes.AMBIENT_SOUNDS, AmbientSounds.LEGACY_CAVE_SETTINGS)
+                        .set(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)
+                        .set(EnvironmentAttributes.BED_RULE, new BedRule(BedRule.Rule.NEVER, BedRule.Rule.ALWAYS, false, false, Optional.empty()))
+                        .set(EnvironmentAttributes.PIGLINS_ZOMBIFY, false)
+                        .set(EnvironmentAttributes.CAN_START_RAID, false)
+                        .set(EnvironmentAttributes.CREAKING_ACTIVE, true)
+                        .set(EnvironmentAttributes.EYEBLOSSOM_OPEN, TriState.TRUE)
+                        .set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
+                        .set(EnvironmentAttributes.SKY_LIGHT_LEVEL, 9.0F)
+						.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
+                        .set(EnvironmentAttributes.SKY_LIGHT_COLOR, new Vector3f(0.65F, 0.65F, 1.0F))
+						.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, new Vector3f(10f / 255f, 10f / 255f, 10f / 255f))
+						.set(EnvironmentAttributes.CLOUD_HEIGHT, 128.0F)
+						.set(EnvironmentAttributes.CLOUD_COLOR, new Vector4f(1.0F, 0.5F, 0.5F, 0.55F))
+						.set(EnvironmentAttributes.CLOUD_FOG_END_DISTANCE, 768.0F)
+                        .set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
+                        .set(NeoForgeEnvironmentAttributes.CUSTOM_WEATHER_EFFECTS, TwilightForestRenderInfo.WEATHER_RENDERER)
+                        .build(),
+            timelines.getOrThrow(TFTimelineTags.IN_TWILIGHT), //timelines
+            Optional.of(clocks.getOrThrow(TFWorldClockGenerator.TWILIGHT_FOREST)) //clock
+        ));
+    }
+
+    public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
+		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+        HolderGetter<MaterialCondition> conditions = context.lookup(Registries.MATERIAL_CONDITION);
+        DensityFunction finalDensity = DensityFunctions.add(new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctionGenerator.SKYLIGHT_TERRAIN : TFDensityFunctionGenerator.FORESTED_TERRAIN)), DensityFunctions.beardifier());
+
+        NoiseSettings tfNoise = NoiseSettings.create(
+            -32, //TODO Deliberate over this. For now it'll be -32
+            256
+        );
+
+        return new NoiseGeneratorSettings(
+            tfNoise,
+            Blocks.STONE.defaultBlockState(),
+            skylight ? Blocks.AIR.defaultBlockState() : Blocks.WATER.defaultBlockState(),
+            new NoiseRouter(
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(),
+                    finalDensity,
+                    finalDensity
+            ),
+            TFMaterialRules.tfSurface(biomes, conditions),
+            List.of(),
+            TFDimension.SEALEVEL,
+            false,
+            skylight ? Optional.empty() : Optional.of(new Aquifer.Config(
+                    DensityFunctions.zero(),
+                    new OpenWaterProximityFunction(finalDensity, TFDimension.SEALEVEL, 4),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(),
+                    DensityFunctions.zero(), // FIXME new aquifer param, verify that this works
+                    DensityFunctions.zero()  // FIXME new aquifer param, verify that this works
+            )),
+            false,
+            new NoiseGeneratorSettings.DebugFunctions(List.of())
+        );
+    }
+
+    public static void bootstrapNoise(BootstrapContext<NoiseGeneratorSettings> context) {
+        context.register(TWILIGHT_NOISE_GEN, makeNoiseSettings(context, false));
+        context.register(SKYLIGHT_NOISE_GEN, makeNoiseSettings(context, true));
+    }
+
+    public static void bootstrapStem(BootstrapContext<LevelStem> context) {
+        HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
+        HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
+
+        HolderGetter<BiomeDensitySource> biomeDataRegistry = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA);
+
+        NoiseBasedChunkGenerator twilightChunkGenerator = new NoiseBasedChunkGenerator(
+                new TFBiomeProvider(biomeDataRegistry.getOrThrow(BiomeLayerStack.BIOME_GRID)),
+                noiseGenSettings.getOrThrow(TWILIGHT_NOISE_GEN)
+        );
+
+        LevelStem stem = new LevelStem(
+                dimTypes.getOrThrow(TFDimension.TWILIGHT_DIM_TYPE),
+                twilightChunkGenerator
+        );
+
+        context.register(TWILIGHT_LEVEL_STEM, stem);
+    }
+}

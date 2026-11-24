@@ -6,7 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.timeline.Timeline;
 import twilightforest.TwilightForestMod;
-import twilightforest.datagen.data.TFTimelineGenerator;
+import twilightforest.datagen.data.world.TFTimelineGenerator;
 import twilightforest.tags.TFTimelineTags;
 
 import java.util.concurrent.CompletableFuture;
