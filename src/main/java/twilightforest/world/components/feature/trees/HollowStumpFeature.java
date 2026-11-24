@@ -1,21 +1,24 @@
 package twilightforest.world.components.feature.trees;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import tamaized.beanification.Autowired;
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.features.FeatureUtil;
 import twilightforest.util.RootPlacer;
 import twilightforest.util.features.HollowTreeUtil;
-import twilightforest.world.components.feature.config.TreeConfig;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -23,13 +26,33 @@ import java.util.function.BiConsumer;
  *
  * @author Ben
  */
-public record HollowStumpFeature(TreeConfig config) implements TFTreeFeature {
+public record HollowStumpFeature(
+	Holder<BlockStateProvider> trunkProvider,
+	Holder<BlockStateProvider> leavesProvider,
+	Holder<BlockStateProvider> branchProvider,
+	Holder<BlockStateProvider> rootsProvider,
+	int minHeight,
+	int chanceAddFiveFirst,
+	int chanceAddFiveSecond,
+	boolean hasLeaves,
+	boolean checkWater,
+	List<TreeDecorator> decorators
+) implements TFTreeFeature {
 
 	@Autowired
 	private static HollowTreeUtil hollowTreeUtil;
 
 	public static final MapCodec<HollowStumpFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		TreeConfig.MAP_CODEC.forGetter(HollowStumpFeature::config)
+		BlockStateProvider.CODEC.fieldOf("trunk_provider").forGetter(HollowStumpFeature::trunkProvider),
+		BlockStateProvider.CODEC.fieldOf("leaves_provider").forGetter(HollowStumpFeature::leavesProvider),
+		BlockStateProvider.CODEC.fieldOf("branch_provider").forGetter(HollowStumpFeature::branchProvider),
+		BlockStateProvider.CODEC.fieldOf("roots_provider").forGetter(HollowStumpFeature::rootsProvider),
+		Codec.INT.fieldOf("minimum_size").forGetter(HollowStumpFeature::minHeight),
+		Codec.INT.fieldOf("add_first_five_chance").forGetter(HollowStumpFeature::chanceAddFiveFirst),
+		Codec.INT.fieldOf("add_second_five_chance").forGetter(HollowStumpFeature::chanceAddFiveSecond),
+		Codec.BOOL.fieldOf("has_leaves").forGetter(HollowStumpFeature::hasLeaves),
+		Codec.BOOL.fieldOf("check_water").forGetter(HollowStumpFeature::checkWater),
+		TreeDecorator.CODEC.listOf().fieldOf("decorators").forGetter(HollowStumpFeature::decorators)
 	).apply(instance, HollowStumpFeature::new));
 
 	@Override
@@ -49,10 +72,10 @@ public record HollowStumpFeature(TreeConfig config) implements TFTreeFeature {
 
 		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
 		// 3-5 roots at the bottom
-		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 3, 2, 6, 0.75D, 3, 5, HollowTreeUtil.BranchType.ROOT, false, config());
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 3, 2, 6, 0.75D, 3, 5, HollowTreeUtil.BranchType.ROOT, false, branchProvider(), leavesProvider(), rootsProvider());
 
 		// Several more taproots
-		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 2, 8, 0.9D, 3, 5, HollowTreeUtil.BranchType.ROOT, false, config());
+		hollowTreeUtil.buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 2, 8, 0.9D, 3, 5, HollowTreeUtil.BranchType.ROOT, false, branchProvider(), leavesProvider(), rootsProvider());
 
 		return true;
 	}
@@ -72,10 +95,10 @@ public record HollowStumpFeature(TreeConfig config) implements TFTreeFeature {
 					if (dist <= diameter) {
 						BlockPos dPos = pos.offset(dx, dy, dz);
 						if (FeatureLogic.hasEmptyNeighborExceptBelow(world, dPos)) {
-							BlockStateProvider trunkProvider = dist > hollow ? config().trunkProvider() : config().branchProvider();
+							BlockStateProvider trunkProvider = dist > hollow ? trunkProvider().value() : branchProvider().value();
 							trunkPlacer.accept(dPos, trunkProvider.getState(world, random, dPos));
 						} else {
-							FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, config().rootsProvider());
+							FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, rootsProvider().value());
 						}
 					}
 				}
@@ -95,7 +118,7 @@ public record HollowStumpFeature(TreeConfig config) implements TFTreeFeature {
 
 					// Make a trunk!
 					if (dist <= diameter && dist > hollow) {
-						FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.offset(dx, dy, dz), config().trunkProvider());
+						FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.offset(dx, dy, dz), trunkProvider().value());
 					}
 				}
 			}

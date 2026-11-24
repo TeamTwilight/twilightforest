@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.*;
-import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -44,7 +43,6 @@ import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.enums.MushroomCapType;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFFeatures;
-import twilightforest.init.TFFeatureTypes;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFWoodPaletteTags;
 import twilightforest.util.woods.WoodPalette;
@@ -119,7 +117,7 @@ public class TFFeatureGenerator {
         context.register(TFFeatures.FOUNDATION, FoundationFeature.withDefaultBlocks(false));
         context.register(TFFeatures.GROVE_RUINS, new GroveRuinsFeature());
         context.register(TFFeatures.HOLLOW_LOG, new FallenHollowLogFeature());
-        context.register(TFFeatures.HOLLOW_STUMP, new HollowStumpFeature(new TreeConfig.Builder(BlockStateProvider.of(TFBlocks.TWILIGHT_OAK_LOG.get()), BlockStateProvider.of(TFBlocks.TWILIGHT_OAK_LEAVES.get()), BlockStateProvider.of(TFBlocks.TWILIGHT_OAK_WOOD.get()), BlockStateProvider.of(TFBlocks.ROOT_BLOCK.get())).build()));
+        context.register(TFFeatures.HOLLOW_STUMP, new HollowStumpFeature(BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LOG.get()), BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LEAVES.get()), BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_WOOD.get()), BlockStateProvider.holderOf(TFBlocks.ROOT_BLOCK.get()), 20, 1, 1, true, false, ImmutableList.of()));
         context.register(TFFeatures.HUGE_LILY_PAD, new HugeLilypadFeature());
         context.register(TFFeatures.HUGE_WATER_LILY, new HugeWaterLilyFeature());
         context.register(TFFeatures.CICADA_LAMPPOST, new LampostFeature(TFBlocks.CICADA_JAR.get().defaultBlockState()));
@@ -152,7 +150,7 @@ public class TFFeatureGenerator {
 		context.register(TFFeatures.WOOD_ROOTS_SPREAD, new WoodRootFeature(TreeDecorators.ROOT_BLEND_PROVIDER, BlockStateProvider.of(TFBlocks.LIVEROOT_BLOCK.get())));
         context.register(TFFeatures.SNOW_UNDER_TREES, new SnowUnderTreeFeature());
         context.register(TFFeatures.ENCHANTED_FOREST_VINES, new EnchantedForestVinesFeature());
-        context.register(TFFeatures.OAK_BUSH, new ConfiguredFeature<>(Feature.TREE, createOakBush(belowTrunkProvider)));
+        context.register(TFFeatures.OAK_BUSH, createOakBush(belowTrunkProvider));
 
         context.register(TFFeatures.TF_OAK_FALLEN_LOG, new SmallFallenLogFeature(TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get().defaultBlockState()));
         context.register(TFFeatures.CANOPY_FALLEN_LOG, new SmallFallenLogFeature(TFBlocks.CANOPY_LOG.get().defaultBlockState(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get().defaultBlockState()));
@@ -245,12 +243,16 @@ public class TFFeatureGenerator {
         context.register(
 			TFFeatures.MEGA_CANOPY_TREE,
 			new MegaCanopyTreeFeature(
-				new TreeConfig.Builder(
-					BlockStateProvider.of(TFBlocks.CANOPY_LOG.get()),
-					BlockStateProvider.of(TFBlocks.CANOPY_LEAVES.get()),
-					BlockStateProvider.of(TFBlocks.CANOPY_WOOD.get()),
-					BlockStateProvider.of(TFBlocks.ROOT_BLOCK.get())
-				).minHeight(30).chanceFirstFive(2).chanceSecondFive(3).build()
+				BlockStateProvider.holderOf(TFBlocks.CANOPY_LOG.get()),
+				BlockStateProvider.holderOf(TFBlocks.CANOPY_LEAVES.get()),
+				BlockStateProvider.holderOf(TFBlocks.CANOPY_WOOD.get()),
+				BlockStateProvider.holderOf(TFBlocks.ROOT_BLOCK.get()),
+				30,
+				2,
+				3,
+				true,
+				false,
+				ImmutableList.of()
 			)
 		);
         context.register(
@@ -324,160 +326,171 @@ public class TFFeatureGenerator {
 		);
         context.register(
 			TFFeatures.DARKWOOD_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.DARK_CANOPY_TREE.get(),
-				new TreeFeature(
-					BlockStateProvider.simple(TFBlocks.DARK_LOG.get()),
-					new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
-					BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES.get()),
-					new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-					new TwoLayersFeatureSize(4, 1, 1),
-					belowTrunkProvider
-				).decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)).ignoreVines().build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
+				new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
+				BlockStateProvider.holderOf(TFBlocks.HARDENED_DARK_LEAVES.get()),
+				new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
+				Optional.empty(),
+				new TwoLayersFeatureSize(4, 1, 1),
+				ImmutableList.of(TreeDecorators.LIVING_ROOTS),
+				true,
+				belowTrunkProvider
 			)
 		);
         context.register(
 			TFFeatures.HOMEGROWN_DARKWOOD_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.DARK_CANOPY_TREE.get(),
-				new TreeFeature(
-					BlockStateProvider.simple(TFBlocks.DARK_LOG.get()),
-					new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
-					BlockStateProvider.simple(TFBlocks.DARK_LEAVES.get()),
-					new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-					new TwoLayersFeatureSize(4, 1, 1),
-					belowTrunkProvider
-				).decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)).ignoreVines().build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
+				new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
+				BlockStateProvider.holderOf(TFBlocks.DARK_LEAVES.get()),
+				new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
+				Optional.empty(),
+				new TwoLayersFeatureSize(4, 1, 1),
+				ImmutableList.of(TreeDecorators.LIVING_ROOTS),
+				true,
+				belowTrunkProvider
 			)
 		);
         context.register(
 			TFFeatures.DARKWOOD_LANTERN_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.DARK_CANOPY_TREE.get(),
-				new TreeFeature(
-					BlockStateProvider.simple(TFBlocks.DARK_LOG.get()),
-					new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
-					BlockStateProvider.simple(TFBlocks.DARK_LEAVES.get()),
-					new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-					new TwoLayersFeatureSize(4, 1, 1),
-					belowTrunkProvider
-				).decorators(
-					ImmutableList.of(
-						TreeDecorators.LIVING_ROOTS,
-						new DangleFromTreeDecorator(
-							0,
-							1,
-							2,
-							4,
-							2,
-							new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.IRON_CHAIN.defaultBlockState(), 1).build()),
-							new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true), 1).build())
-						)
-					)).ignoreVines().build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
+				new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
+				BlockStateProvider.holderOf(TFBlocks.DARK_LEAVES.get()),
+				new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
+				Optional.empty(),
+				new TwoLayersFeatureSize(4, 1, 1),
+				ImmutableList.of(
+					TreeDecorators.LIVING_ROOTS,
+					new DangleFromTreeDecorator(
+						0,
+						1,
+						2,
+						4,
+						2,
+						new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.IRON_CHAIN.defaultBlockState(), 1).build()),
+						new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true), 1).build())
+					)
+				),
+				true,
+				belowTrunkProvider
 			)
 		);
         context.register(
 			TFFeatures.TIME_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.TREE_OF_TIME.get(),
-				new TFTreeFeatureConfig.Builder(
-					BlockStateProvider.simple(TFBlocks.TIME_LOG.get()),
-					BlockStateProvider.simple(TFBlocks.TIME_LEAVES.get()),
-					BlockStateProvider.simple(TFBlocks.TIME_WOOD.get()),
-					BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
-				).build()
+			new TimeTreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.TIME_LOG.get()),
+				BlockStateProvider.holderOf(TFBlocks.TIME_LEAVES.get()),
+				BlockStateProvider.holderOf(TFBlocks.TIME_WOOD.get()),
+				BlockStateProvider.holderOf(TFBlocks.ROOT_BLOCK.get()),
+				20,
+				1,
+				1,
+				true,
+				false,
+				ImmutableList.of()
 			)
 		);
         context.register(
 			TFFeatures.TRANSFORMATION_TREE,
-			new ConfiguredFeature<>(
-				Feature.TREE,
-				new TreeFeature(
-					BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LOG.get()),
-					new BranchingTrunkPlacer(6, 5, 5, 7, new BranchesConfig(BlockStateProvider.simple(TFBlocks.TRANSFORMATION_WOOD.get()), 3, 1, 10, 1, 0.3, 0.2), false, false),
-					BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LEAVES.get()),
-					new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, 0),
-					new TwoLayersFeatureSize(4, 1, CANOPY_DISTANCING),
-					belowTrunkProvider
-				).ignoreVines().decorators(ImmutableList.of(new TreeCorePlacer(3, BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LOG_CORE.get().defaultBlockState())))).build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.TRANSFORMATION_LOG.get()),
+				new BranchingTrunkPlacer(6, 5, 5, 7, new BranchesConfig(BlockStateProvider.of(TFBlocks.TRANSFORMATION_WOOD.get()), 3, 1, 10, 1, 0.3, 0.2), false, false),
+				BlockStateProvider.holderOf(TFBlocks.TRANSFORMATION_LEAVES.get()),
+				new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, 0),
+				Optional.empty(),
+				new TwoLayersFeatureSize(4, 1, CANOPY_DISTANCING),
+				ImmutableList.of(new TreeCorePlacer(3, BlockStateProvider.of(TFBlocks.TRANSFORMATION_LOG_CORE.get().defaultBlockState()))),
+				true,
+				belowTrunkProvider
 			)
 		);
         context.register(
 			TFFeatures.MINING_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.MINERS_TREE.get(),
-				new TFTreeFeatureConfig.Builder(
-					BlockStateProvider.simple(TFBlocks.MINING_LOG.get()),
-					BlockStateProvider.simple(TFBlocks.MINING_LEAVES.get()),
-					BlockStateProvider.simple(TFBlocks.MINING_WOOD.get()),
-					BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
-				).build()
+			new MiningTreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.MINING_LOG.get()),
+				BlockStateProvider.holderOf(TFBlocks.MINING_LEAVES.get()),
+				BlockStateProvider.holderOf(TFBlocks.MINING_WOOD.get()),
+				BlockStateProvider.holderOf(TFBlocks.ROOT_BLOCK.get()),
+				20,
+				1,
+				1,
+				true,
+				false,
+				ImmutableList.of()
 			)
 		);
         context.register(
 			TFFeatures.SORTING_TREE,
-			new ConfiguredFeature<>(
-				Feature.TREE,
-				new TreeFeature(
-					BlockStateProvider.simple(TFBlocks.SORTING_LOG.get()),
-					new StraightTrunkPlacer(5, 0, 0),
-					BlockStateProvider.simple(TFBlocks.SORTING_LEAVES.get()),
-					new LeafSpheroidFoliagePlacer(1.5F, 2.5F, ConstantInt.of(-2), 0, 0, 0.5F, 0),
-					new TwoLayersFeatureSize(1, 1, 1),
-					belowTrunkProvider
-				).ignoreVines().decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState())))).build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.SORTING_LOG.get()),
+				new StraightTrunkPlacer(5, 0, 0),
+				BlockStateProvider.holderOf(TFBlocks.SORTING_LEAVES.get()),
+				new LeafSpheroidFoliagePlacer(1.5F, 2.5F, ConstantInt.of(-2), 0, 0, 0.5F, 0),
+				Optional.empty(),
+				new TwoLayersFeatureSize(1, 1, 1),
+				ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.of(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState()))),
+				true,
+				belowTrunkProvider
 			)
 		);
         context.register(
 			TFFeatures.FOREST_MEGA_OAK_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.MEGA_OAK.get(),
-				new TFTreeFeatureConfig.Builder(
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.get()),
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.get()),
-					BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
-				).minHeight(24).build()
+			new MegaOakTreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LOG.get()),
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LEAVES.get()),
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_WOOD.get()),
+				BlockStateProvider.holderOf(TFBlocks.ROOT_BLOCK.get()),
+				24,
+				1,
+				1,
+				true,
+				false,
+				ImmutableList.of()
 			)
 		);
         context.register(
 			TFFeatures.SAVANNAH_MEGA_OAK_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.MEGA_OAK.get(),
-				new TFTreeFeatureConfig.Builder(
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.get()),
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.get()),
-					BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
-				).minHeight(16).build()
+			new MegaOakTreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LOG.get()),
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LEAVES.get()),
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_WOOD.get()),
+				BlockStateProvider.holderOf(TFBlocks.ROOT_BLOCK.get()),
+				16,
+				1,
+				1,
+				true,
+				false,
+				ImmutableList.of()
 			)
 		);
         context.register(
 			TFFeatures.RAINBOW_OAK_TREE,
-			new ConfiguredFeature<>(
-				Feature.TREE,
-				new TreeFeature(
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
-					new StraightTrunkPlacer(4, 2, 0),
-					BlockStateProvider.simple(TFBlocks.RAINBOW_OAK_LEAVES.get()),
-					new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-					new TwoLayersFeatureSize(1, 1, 1),
-					belowTrunkProvider
-				).decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)).build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LOG.get()),
+				new StraightTrunkPlacer(4, 2, 0),
+				BlockStateProvider.holderOf(TFBlocks.RAINBOW_OAK_LEAVES.get()),
+				new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+				Optional.empty(),
+				new TwoLayersFeatureSize(1, 1, 1),
+				ImmutableList.of(TreeDecorators.LIVING_ROOTS),
+				false,
+				belowTrunkProvider
 			)
 		);
         context.register(
 			TFFeatures.LARGE_RAINBOW_OAK_TREE,
-			new ConfiguredFeature<>(
-				Feature.TREE,
-				new TreeFeature(
-					BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
-					new FancyTrunkPlacer(3, 11, 0),
-					BlockStateProvider.simple(TFBlocks.RAINBOW_OAK_LEAVES.get()),
-					new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
-					new TwoLayersFeatureSize(4, 1, 0, OptionalInt.of(4)),
-					belowTrunkProvider
-				).decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)).build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(TFBlocks.TWILIGHT_OAK_LOG.get()),
+				new FancyTrunkPlacer(3, 11, 0),
+				BlockStateProvider.holderOf(TFBlocks.RAINBOW_OAK_LEAVES.get()),
+				new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+				Optional.empty(),
+				new TwoLayersFeatureSize(4, 1, 0, OptionalInt.of(4)),
+				ImmutableList.of(TreeDecorators.LIVING_ROOTS),
+				false,
+				belowTrunkProvider
 			)
 		);
         context.register(TFFeatures.BROWN_CANOPY_MUSHROOM_TREE, new BrownCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_BROWN_MUSHROOM_CAN_PLACE_ON)));
@@ -487,40 +500,41 @@ public class TFFeatureGenerator {
         context.register(TFFeatures.CANOPY_RED_SPHEROID_MUSHROOM, new RedCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON), MushroomCapType.SPHEROID));
         context.register(TFFeatures.CANOPY_RED_FLAT_MUSHROOM, new RedCanopyMushroomFeature(BlockStateProvider.holderOf(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.holderOf(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3, BlockPredicate.matchesTag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON), MushroomCapType.FLAT));
 
-        context.register(TFFeatures.RED_CANOPY_MUSHROOM_TREE, new ConfiguredFeature<>(TFFeatureTypes.WEIGHTED_LIST_SELECTOR.value(), new WeightedListFeatureConfig(WeightedList.<Holder<PlacedFeature>>builder()
+        context.register(TFFeatures.RED_CANOPY_MUSHROOM_TREE, new WeightedListFeature(WeightedList.<Holder<PlacedFeature>>builder()
             .add(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_RED_VANILLA_MUSHROOM)), 33)
             .add(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_RED_SMOOTH_MUSHROOM)), 33)
             .add(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_RED_SPHEROID_MUSHROOM)), 33)
             .add(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_RED_FLAT_MUSHROOM)), 1)
-            .build())));
+            .build()));
 
 		//[VanillaCopy] of Features.MEGA_SPRUCE, just without all the nasty podzol so it fits better
         context.register(
 			TFFeatures.MEGA_SPRUCE_TREE,
-			new ConfiguredFeature<>(
-				Feature.TREE,
-				new TreeFeature(
-					BlockStateProvider.simple(Blocks.SPRUCE_LOG),
-					new GiantTrunkPlacer(13, 2, 14),
-					BlockStateProvider.simple(Blocks.SPRUCE_LEAVES),
-					new MegaPineFoliagePlacer(ConstantInt.of(0),
-						ConstantInt.of(0),
-						UniformInt.of(13, 17)),
-					new TwoLayersFeatureSize(4, 1, 2),
-					belowTrunkProvider
-				).build()
+			new TreeFeature(
+				BlockStateProvider.holderOf(Blocks.SPRUCE_LOG),
+				new GiantTrunkPlacer(13, 2, 14),
+				BlockStateProvider.holderOf(Blocks.SPRUCE_LEAVES),
+				new MegaPineFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), UniformInt.of(13, 17)),
+				Optional.empty(),
+				new TwoLayersFeatureSize(4, 1, 2),
+				ImmutableList.of(),
+				false,
+				belowTrunkProvider
 			)
 		);
         context.register(
 			TFFeatures.LARGE_WINTER_TREE,
-			new ConfiguredFeature<>(
-				TFFeatureTypes.LARGE_WINTER_TREE.get(),
-				new TFTreeFeatureConfig.Builder(
-					BlockStateProvider.simple(Blocks.SPRUCE_LOG),
-					BlockStateProvider.simple(Blocks.SPRUCE_LEAVES),
-					BlockStateProvider.simple(Blocks.SPRUCE_LOG),
-					BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
-				).build()
+			new LargeWinterTreeFeature(
+				BlockStateProvider.holderOf(Blocks.SPRUCE_LOG),
+				BlockStateProvider.holderOf(Blocks.SPRUCE_LEAVES),
+				BlockStateProvider.holderOf(Blocks.SPRUCE_LOG),
+				BlockStateProvider.holderOf(TFBlocks.ROOT_BLOCK.get()),
+				20,
+				1,
+				1,
+				true,
+				false,
+				ImmutableList.of()
 			)
 		);
         context.register(TFFeatures.SNOWY_SPRUCE_TREE, new TreeFeature(BlockStateProvider.holderOf(Blocks.SPRUCE_LOG), new StraightTrunkPlacer(5, 2, 1), BlockStateProvider.holderOf(Blocks.SPRUCE_LEAVES), new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(1, 2)), Optional.empty(), new TwoLayersFeatureSize(2, 0, 2), ImmutableList.of(), true, belowTrunkProvider));
@@ -547,26 +561,26 @@ public class TFFeatureGenerator {
 				belowTrunkProvider
 			)
 		);
-        context.register(TFFeatures.DUMMY_TREE, new ConfiguredFeature<>(Feature.NO_OP, NoneFeatureConfiguration.INSTANCE));
+        context.register(TFFeatures.DUMMY_TREE, new NoOpFeature());
 
-        context.register(TFFeatures.WELL_PLACER, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.FANCY_WELL)), 0.05F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.SIMPLE_WELL)))));
-        context.register(TFFeatures.LAMPPOST_PLACER, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CICADA_LAMPPOST)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.FIREFLY_LAMPPOST)))));
-        context.register(TFFeatures.DEFAULT_FALLEN_LOGS, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.BIRCH_FALLEN_LOG)), 0.1F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.OAK_FALLEN_LOG)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_FALLEN_LOG)), 0.4F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TF_OAK_FALLEN_LOG)))));
+        context.register(TFFeatures.WELL_PLACER, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.FANCY_WELL)), 0.05F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.SIMPLE_WELL))));
+        context.register(TFFeatures.LAMPPOST_PLACER, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CICADA_LAMPPOST)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.FIREFLY_LAMPPOST))));
+        context.register(TFFeatures.DEFAULT_FALLEN_LOGS, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.BIRCH_FALLEN_LOG)), 0.1F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.OAK_FALLEN_LOG)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_FALLEN_LOG)), 0.4F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TF_OAK_FALLEN_LOG))));
 
-        context.register(TFFeatures.CANOPY_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_TREE)), 0.6F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE)))));
-        context.register(TFFeatures.DENSE_CANOPY_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_TREE)), 0.7F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE)))));
-        context.register(TFFeatures.FIREFLY_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_TREE)), 0.33F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.FIREFLY_CANOPY_TREE)), 0.45F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE)))));
-        context.register(TFFeatures.DARK_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARK_FOREST_BIRCH_TREE)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARK_FOREST_OAK_TREE)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARK_OAK_BUSH)), 0.4F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARKWOOD_TREE)))));
-        context.register(TFFeatures.HIGHLANDS_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_BIRCH_TREE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.SPRUCE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.PINE)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.MEGA_SPRUCE_TREE)))));
-        context.register(TFFeatures.ENCHANTED_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_OAK_TREE)), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_BIRCH_TREE)), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.LARGE_RAINBOW_OAK_TREE)), 0.15F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.RAINBOW_OAK_TREE)))));
-        context.register(TFFeatures.SNOWY_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.MEGA_SPRUCE_TREE)), 0.33F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.LARGE_WINTER_TREE)), 0.125F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.SNOWY_SPRUCE_TREE)))));
-        context.register(TFFeatures.VANILLA_TF_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_BIRCH_TREE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_OAK_TREE)), 0.25F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE)))));
-        context.register(TFFeatures.VANILLA_TF_BIG_MUSH, new ConfiguredFeature<>(Feature.RANDOM_BOOLEAN_SELECTOR, new RandomBooleanFeatureConfiguration(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.HUGE_RED_MUSHROOM)), PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.HUGE_BROWN_MUSHROOM)))));
+        context.register(TFFeatures.CANOPY_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_TREE)), 0.6F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE))));
+        context.register(TFFeatures.DENSE_CANOPY_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_TREE)), 0.7F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE))));
+        context.register(TFFeatures.FIREFLY_FOREST_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.CANOPY_TREE)), 0.33F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.FIREFLY_CANOPY_TREE)), 0.45F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE))));
+        context.register(TFFeatures.DARK_FOREST_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARK_FOREST_BIRCH_TREE)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARK_FOREST_OAK_TREE)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARK_OAK_BUSH)), 0.4F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DARKWOOD_TREE))));
+        context.register(TFFeatures.HIGHLANDS_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_BIRCH_TREE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.SPRUCE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.PINE)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.MEGA_SPRUCE_TREE))));
+        context.register(TFFeatures.ENCHANTED_FOREST_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_OAK_TREE)), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_BIRCH_TREE)), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.LARGE_RAINBOW_OAK_TREE)), 0.15F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.RAINBOW_OAK_TREE))));
+        context.register(TFFeatures.SNOWY_FOREST_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.MEGA_SPRUCE_TREE)), 0.33F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.LARGE_WINTER_TREE)), 0.125F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.SNOWY_SPRUCE_TREE))));
+        context.register(TFFeatures.VANILLA_TF_TREES, new RandomSelectorFeature(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_BIRCH_TREE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.VANILLA_OAK_TREE)), 0.25F)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.TWILIGHT_OAK_TREE))));
+        context.register(TFFeatures.VANILLA_TF_BIG_MUSH, new RandomBooleanSelectorFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.HUGE_RED_MUSHROOM)), PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.HUGE_BROWN_MUSHROOM))));
 
-        context.register(TFFeatures.CANOPY_MUSHROOMS_SPARSE, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.BROWN_CANOPY_MUSHROOM_TREE)), 0.15f), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.RED_CANOPY_MUSHROOM_TREE)), 0.05f)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DUMMY_TREE)))));
-        context.register(TFFeatures.CANOPY_MUSHROOMS_DENSE, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.BROWN_CANOPY_MUSHROOM_TREE)), 0.675f), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.RED_CANOPY_MUSHROOM_TREE)), 0.225f)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DUMMY_TREE)))));
-        context.register(TFFeatures.FLOWER_PLACER, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, TFFeatureGenerator.SMALL_FLOWER_CONFIG));
-        context.register(TFFeatures.FLOWER_PLACER_ALT, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, TFFeatureGenerator.SMALL_FLOWER_CONFIG_ALT));
+        context.register(TFFeatures.CANOPY_MUSHROOMS_SPARSE, new RandomSelectorFeature(List.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.BROWN_CANOPY_MUSHROOM_TREE)), 0.15f), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.RED_CANOPY_MUSHROOM_TREE)), 0.05f)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DUMMY_TREE))));
+        context.register(TFFeatures.CANOPY_MUSHROOMS_DENSE, new RandomSelectorFeature(List.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.BROWN_CANOPY_MUSHROOM_TREE)), 0.675f), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.RED_CANOPY_MUSHROOM_TREE)), 0.225f)), PlacementUtils.inlinePlaced(features.getOrThrow(TFFeatures.DUMMY_TREE))));
+        context.register(TFFeatures.FLOWER_PLACER, TFFeatureGenerator.SMALL_FLOWER_CONFIG);
+        context.register(TFFeatures.FLOWER_PLACER_ALT, TFFeatureGenerator.SMALL_FLOWER_CONFIG_ALT);
     }
 
     private static void registerTemplateFeatures(BootstrapContext<Feature> context) {

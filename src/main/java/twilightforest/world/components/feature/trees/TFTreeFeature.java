@@ -3,6 +3,7 @@ package twilightforest.world.components.feature.trees;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -10,13 +11,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 import twilightforest.util.RootPlacer;
-import twilightforest.world.components.feature.config.TreeConfig;
 
+import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
@@ -46,9 +48,9 @@ public interface TFTreeFeature extends Feature {
 		};
 		boolean flag = this.generate(level, random, origin, biconsumer, biconsumer1, new RootPlacer(biconsumer2, 1));
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
-			if (!config().decorators().isEmpty()) {
+			if (!decorators().isEmpty()) {
 				TreeDecorator.Context treeDecoratorContext = new TreeDecorator.Context(level, biconsumer3, random, set1, set2, set);
-				config().decorators().forEach(decorator -> decorator.place(treeDecoratorContext));
+				decorators().forEach(decorator -> decorator.place(treeDecoratorContext));
 			}
 			return BoundingBox.encapsulatingPositions(Iterables.concat(set, set1, set2, set3)).map((boundingBox) -> {
 				DiscreteVoxelShape discretevoxelshape = TreeFeature.updateLeaves(level, boundingBox, set1, set3, set);
@@ -60,7 +62,25 @@ public interface TFTreeFeature extends Feature {
 		}
 	}
 
-	TreeConfig config();
+	Holder<BlockStateProvider> trunkProvider();
+
+	Holder<BlockStateProvider> leavesProvider();
+
+	Holder<BlockStateProvider> branchProvider();
+
+	Holder<BlockStateProvider> rootsProvider();
+
+	int minHeight();
+
+	int chanceAddFiveFirst();
+
+	int chanceAddFiveSecond();
+
+	boolean hasLeaves();
+
+	boolean checkWater();
+
+	List<TreeDecorator> decorators();
 
 	boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer);
 }

@@ -1,16 +1,17 @@
 package twilightforest.util.features;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import tamaized.beanification.Component;
 import twilightforest.util.RootPlacer;
 import twilightforest.util.iterators.VoxelBresenhamIterator;
-import twilightforest.world.components.feature.config.TreeConfig;
 
 import java.util.function.BiConsumer;
 
@@ -26,7 +27,7 @@ public class HollowTreeUtil {
 	/**
 	 * Build a ring of branches around the tree
 	 */
-	public void buildBranchRing(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int radius, int branchHeight, int heightVar, int length, double tilt, int minBranches, int maxBranches, BranchType type, boolean leafy, TreeConfig config) {
+	public void buildBranchRing(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int radius, int branchHeight, int heightVar, int length, double tilt, int minBranches, int maxBranches, BranchType type, boolean leafy, Holder<BlockStateProvider> branchProvider, Holder<BlockStateProvider> leavesProvider, Holder<BlockStateProvider> rootsProvider) {
 		// Let's do this!
 		int numBranches = random.nextInt(maxBranches - minBranches) + minBranches;
 		double branchRotation = 1.0 / (numBranches + 1);
@@ -41,9 +42,9 @@ public class HollowTreeUtil {
 				dHeight = branchHeight;
 
 			switch (type) {
-				case SMALL -> makeSmallBranch(world, trunkPlacer, leavesPlacer, random, pos, radius, dHeight, length, i * branchRotation + branchOffset, tilt, leafy, config);
-				case MEDIUM -> makeMedBranch(world, trunkPlacer, leavesPlacer, random, pos, radius, dHeight, length, i * branchRotation + branchOffset, tilt, leafy, config);
-				case ROOT -> makeRoot(world, random, pos, radius, dHeight, length, i * branchRotation + branchOffset, tilt, config);
+				case SMALL -> makeSmallBranch(world, trunkPlacer, leavesPlacer, random, pos, radius, dHeight, length, i * branchRotation + branchOffset, tilt, leafy, branchProvider, leavesProvider);
+				case MEDIUM -> makeMedBranch(world, trunkPlacer, leavesPlacer, random, pos, radius, dHeight, length, i * branchRotation + branchOffset, tilt, leafy, branchProvider, leavesProvider);
+				case ROOT -> makeRoot(world, random, pos, radius, dHeight, length, i * branchRotation + branchOffset, tilt, branchProvider, rootsProvider);
 			}
 		}
 	}
@@ -51,7 +52,7 @@ public class HollowTreeUtil {
 	/**
 	 * This function builds the hollow trunk of the tree
 	 */
-	public void buildTrunk(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, int radius, int height, TreeConfig config) {
+	public void buildTrunk(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, int radius, int height, Holder<BlockStateProvider> trunkProvider, Holder<BlockStateProvider> branchProvider, Holder<BlockStateProvider> rootsProvider) {
 		final int hollow = radius >> 1;
 
 		// Go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain
@@ -68,11 +69,11 @@ public class HollowTreeUtil {
 					BlockPos dPos = pos.offset(dx, dy, dz);
 					if (FeatureUtil.hasAirAround(world, dPos)) {
 						if (dist > hollow)
-							trunkPlacer.accept(dPos, config.trunkProvider().getState(world, random, dPos));
+							trunkPlacer.accept(dPos, trunkProvider.value().getState(world, random, dPos));
 						else
-							trunkPlacer.accept(dPos, config.branchProvider().getState(world, random, dPos));
+							trunkPlacer.accept(dPos, branchProvider.value().getState(world, random, dPos));
 					} else {
-						FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, config.rootsProvider());
+						FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, rootsProvider.value());
 					}
 				}
 			}
@@ -90,7 +91,7 @@ public class HollowTreeUtil {
 
 					// Make a trunk!
 					if (dist <= radius && dist > hollow)
-						FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.trunkProvider());
+						FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, trunkProvider.value());
 
 					// How about a ladder?  Is that okay?
 					if (dist == hollow && dx == hollow)
@@ -103,24 +104,24 @@ public class HollowTreeUtil {
 	/**
 	 * Make a branch!
 	 */
-	public void makeMedBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, TreeConfig config) {
+	public void makeMedBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, Holder<BlockStateProvider> branchProvider, Holder<BlockStateProvider> leavesProvider) {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
-		makeMedBranch(world, trunkPlacer, leavesPlacer, random, src, length, angle, tilt, leafy, config);
+		makeMedBranch(world, trunkPlacer, leavesPlacer, random, src, length, angle, tilt, leafy, branchProvider, leavesProvider);
 	}
 
 	/**
 	 * Make a branch!
 	 */
-	public void makeMedBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, TreeConfig config) {
+	public void makeMedBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, Holder<BlockStateProvider> branchProvider, Holder<BlockStateProvider> leavesProvider) {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider());
+		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, branchProvider.value());
 
 		// With leaves!
 
 		if (leafy) {
 			// And a blob at the end
-			FeaturePlacers.placeSpheroid(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, random, dest, 2.5f, 2.5f, config.leavesProvider());
+			FeaturePlacers.placeSpheroid(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, random, dest, 2.5f, 2.5f, leavesProvider.value());
 		}
 
 		// And several small branches
@@ -135,42 +136,42 @@ public class HollowTreeUtil {
 			tiltVar = (random.nextDouble() * 0.75) + 0.15;
 			BlockPos bsrc = FeatureLogic.translate(src, length * outVar, angle, tilt);
 			double slength = length * 0.4;
-			makeSmallBranch(world, trunkPlacer, leavesPlacer, random, bsrc, slength, angle + angleVar, tilt * tiltVar, leafy, config);
+			makeSmallBranch(world, trunkPlacer, leavesPlacer, random, bsrc, slength, angle + angleVar, tilt * tiltVar, leafy, branchProvider, leavesProvider);
 		}
 	}
 
 	/**
 	 * Make a small branch with a leaf blob at the end
 	 */
-	public void makeSmallBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, TreeConfig config) {
+	public void makeSmallBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, Holder<BlockStateProvider> branchProvider, Holder<BlockStateProvider> leavesProvider) {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider());
+		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, branchProvider.value());
 
 		if (leafy) {
 			float leafRad = random.nextInt(2) + 1.5f;
-			FeaturePlacers.placeSpheroid(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, random, dest, leafRad, leafRad, config.leavesProvider());
+			FeaturePlacers.placeSpheroid(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, random, dest, leafRad, leafRad, leavesProvider.value());
 		}
 	}
 
 	/**
 	 * Make a small branch at a certain height
 	 */
-	public void makeSmallBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, TreeConfig config) {
+	public void makeSmallBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, Holder<BlockStateProvider> branchProvider, Holder<BlockStateProvider> leavesProvider) {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
-		makeSmallBranch(world, trunkPlacer, leavesPlacer, random, src, length, angle, tilt, leafy, config);
+		makeSmallBranch(world, trunkPlacer, leavesPlacer, random, src, length, angle, tilt, leafy, branchProvider, leavesProvider);
 	}
 
 	/**
 	 * Make a root
 	 */
-	public void makeRoot(WorldGenLevel world, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, TreeConfig config) {
+	public void makeRoot(WorldGenLevel world, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, Holder<BlockStateProvider> branchProvider, Holder<BlockStateProvider> rootsProvider) {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		FeaturePlacers.traceExposedRoot(world, new RootPlacer((checkedPos, state) -> {
 			world.setBlock(checkedPos, state, Block.UPDATE_ALL);
 			world.setBlock(checkedPos.below(), state, Block.UPDATE_ALL);
-		}, 2), random, config.branchProvider(), config.rootsProvider(), new VoxelBresenhamIterator(src, dest));
+		}, 2), random, branchProvider.value(), rootsProvider.value(), new VoxelBresenhamIterator(src, dest));
 	}
 }

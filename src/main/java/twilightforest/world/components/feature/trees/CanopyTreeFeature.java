@@ -3,15 +3,16 @@ package twilightforest.world.components.feature.trees;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.features.FeatureUtil;
 import twilightforest.util.RootPlacer;
-import twilightforest.world.components.feature.config.TreeConfig;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -27,11 +28,11 @@ public interface CanopyTreeFeature extends TFTreeFeature {
 	default boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer) {
 		// Determine a height
 		List<BlockPos> leaves = Lists.newArrayList();
-		int treeHeight = config().minHeight();
-		if (random.nextInt(config().chanceAddFiveFirst()) == 0) {
+		int treeHeight = minHeight();
+		if (random.nextInt(chanceAddFiveFirst()) == 0) {
 			treeHeight += random.nextInt(5);
 
-			if (random.nextInt(config().chanceAddFiveSecond()) == 0) {
+			if (random.nextInt(chanceAddFiveSecond()) == 0) {
 				treeHeight += random.nextInt(5);
 			}
 		}
@@ -57,23 +58,23 @@ public interface CanopyTreeFeature extends TFTreeFeature {
 		}
 
 		// Add the actual leaves
-		if (config().hasLeaves())
+		if (hasLeaves())
 			for (BlockPos leafPos : leaves) {
-				makeLeafBlob(world, leavesPlacer, random, leafPos, config());
+				makeLeafBlob(world, leavesPlacer, random, leafPos, leavesProvider());
 			}
 
 		// Root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config().trunkProvider());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), trunkProvider().value());
 		} else {
-			FeaturePlacers.placeIfValidRootPos(world, decorationPlacer, random, pos.below(), config().rootsProvider());
+			FeaturePlacers.placeIfValidRootPos(world, decorationPlacer, random, pos.below(), rootsProvider().value());
 		}
 
 		// Roots!
 		int numRoots = 3 + random.nextInt(2);
 		offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			FeaturePlacers.buildRoot(world, decorationPlacer, random, pos, offset, b, config().rootsProvider());
+			FeaturePlacers.buildRoot(world, decorationPlacer, random, pos, offset, b, rootsProvider().value());
 		}
 
 		return true;
@@ -90,9 +91,9 @@ public interface CanopyTreeFeature extends TFTreeFeature {
 		if (world.isAreaLoaded(dest, 5)) {
 
 			if (trunk) {
-				FeaturePlacers.drawBresenhamTree(world, trunkPlacer, FeaturePlacers.VALID_TREE_POS, src, dest, config().trunkProvider(), treeRNG);
+				FeaturePlacers.drawBresenhamTree(world, trunkPlacer, FeaturePlacers.VALID_TREE_POS, src, dest, trunkProvider().value(), treeRNG);
 			} else {
-				FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, config().branchProvider());
+				FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, branchProvider().value());
 			}
 
 			// Seems to help lighting to place this firefly now
@@ -101,35 +102,35 @@ public interface CanopyTreeFeature extends TFTreeFeature {
 				FeaturePlacers.addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 			}
 
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.east(), config().branchProvider());
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.west(), config().branchProvider());
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.south(), config().branchProvider());
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.north(), config().branchProvider());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.east(), branchProvider().value());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.west(), branchProvider().value());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.south(), branchProvider().value());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.north(), branchProvider().value());
 
 			// Save leaf position for later
 			leaves.add(dest);
 		}
 	}
 
-	static void makeLeafBlob(WorldGenLevel world, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource random, BlockPos leafPos, TreeConfig config) {
-		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.below(), 3, config.leavesProvider());
-		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos, 4, config.leavesProvider());
-		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.above(), 2, config.leavesProvider());
+	static void makeLeafBlob(WorldGenLevel world, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource random, BlockPos leafPos, Holder<BlockStateProvider> leavesProvider) {
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.below(), 3, leavesProvider.value());
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos, 4, leavesProvider.value());
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.above(), 2, leavesProvider.value());
 	}
 
-	static void makeRoots(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, TreeConfig config) {
+	static void makeRoots(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, Holder<BlockStateProvider> trunkProvider, Holder<BlockStateProvider> rootsProvider) {
 		// Root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), trunkProvider.value());
 		} else {
-			FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, pos.below(), config.rootsProvider());
+			FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, pos.below(), rootsProvider.value());
 		}
 
 		// Roots!
 		int numRoots = 1 + random.nextInt(2);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			FeaturePlacers.buildRoot(world, decoPlacer, random, pos, offset, b, config.rootsProvider());
+			FeaturePlacers.buildRoot(world, decoPlacer, random, pos, offset, b, rootsProvider.value());
 		}
 	}
 }

@@ -1,28 +1,51 @@
 package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeatureLogic;
 import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.RootPlacer;
-import twilightforest.world.components.feature.config.TreeConfig;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public record MegaOakTreeFeature(TreeConfig config) implements CanopyTreeFeature {
+public record MegaOakTreeFeature(
+	Holder<BlockStateProvider> trunkProvider,
+	Holder<BlockStateProvider> leavesProvider,
+	Holder<BlockStateProvider> branchProvider,
+	Holder<BlockStateProvider> rootsProvider,
+	int minHeight,
+	int chanceAddFiveFirst,
+	int chanceAddFiveSecond,
+	boolean hasLeaves,
+	boolean checkWater,
+	List<TreeDecorator> decorators
+) implements CanopyTreeFeature {
 
 	public static final MapCodec<MegaOakTreeFeature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		TreeConfig.MAP_CODEC.forGetter(MegaOakTreeFeature::config)
+		BlockStateProvider.CODEC.fieldOf("trunk_provider").forGetter(MegaOakTreeFeature::trunkProvider),
+		BlockStateProvider.CODEC.fieldOf("leaves_provider").forGetter(MegaOakTreeFeature::leavesProvider),
+		BlockStateProvider.CODEC.fieldOf("branch_provider").forGetter(MegaOakTreeFeature::branchProvider),
+		BlockStateProvider.CODEC.fieldOf("roots_provider").forGetter(MegaOakTreeFeature::rootsProvider),
+		Codec.INT.fieldOf("minimum_size").forGetter(MegaOakTreeFeature::minHeight),
+		Codec.INT.fieldOf("add_first_five_chance").forGetter(MegaOakTreeFeature::chanceAddFiveFirst),
+		Codec.INT.fieldOf("add_second_five_chance").forGetter(MegaOakTreeFeature::chanceAddFiveSecond),
+		Codec.BOOL.fieldOf("has_leaves").forGetter(MegaOakTreeFeature::hasLeaves),
+		Codec.BOOL.fieldOf("check_water").forGetter(MegaOakTreeFeature::checkWater),
+		TreeDecorator.CODEC.listOf().fieldOf("decorators").forGetter(MegaOakTreeFeature::decorators)
 	).apply(instance, MegaOakTreeFeature::new));
 
 	@Override
@@ -34,11 +57,11 @@ public record MegaOakTreeFeature(TreeConfig config) implements CanopyTreeFeature
 	public boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer) {
 		List<BlockPos> leaves = Lists.newArrayList();
 		// Determine a height
-		int treeHeight = config().minHeight();
-		if (random.nextInt(config().chanceAddFiveFirst()) == 0) {
+		int treeHeight = minHeight();
+		if (random.nextInt(chanceAddFiveFirst()) == 0) {
 			treeHeight += random.nextInt(treeHeight / 2);
 
-			if (random.nextInt(config().chanceAddFiveSecond()) == 0) {
+			if (random.nextInt(chanceAddFiveSecond()) == 0) {
 				treeHeight += random.nextInt(5);
 			}
 		}
@@ -75,24 +98,24 @@ public record MegaOakTreeFeature(TreeConfig config) implements CanopyTreeFeature
 			makeLeafBlob(world, leavesPlacer, random, leafPos);
 		}
 
-		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos, config());
-		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east(), config());
-		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.south(), config());
-		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east().south(), config());
+		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos, trunkProvider(), rootsProvider());
+		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east(), trunkProvider(), rootsProvider());
+		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.south(), trunkProvider(), rootsProvider());
+		CanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east().south(), trunkProvider(), rootsProvider());
 
 		return true;
 	}
 
 	private void makeLeafBlob(WorldGenLevel world, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource rand, BlockPos leafPos) {
-		FeaturePlacers.placeSpheroid(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos, 2.5f, 2.5f, config().leavesProvider());
+		FeaturePlacers.placeSpheroid(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos, 2.5f, 2.5f, leavesProvider().value());
 	}
 
 	private void buildTrunk(WorldGenLevel world, List<BlockPos> leaves, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config().trunkProvider());
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config().trunkProvider());
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), config().trunkProvider());
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), config().trunkProvider());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), trunkProvider().value());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), trunkProvider().value());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), trunkProvider().value());
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), trunkProvider().value());
 		}
 
 		for (int i = 0; i < 7; i++) {
@@ -138,15 +161,15 @@ public record MegaOakTreeFeature(TreeConfig config) implements CanopyTreeFeature
 		}
 
 		if (trunk) {
-			FeaturePlacers.drawBresenhamTree(world, trunkPlacer, FeaturePlacers.VALID_TREE_POS, src, dest, config().trunkProvider(), treeRNG);
+			FeaturePlacers.drawBresenhamTree(world, trunkPlacer, FeaturePlacers.VALID_TREE_POS, src, dest, trunkProvider().value(), treeRNG);
 		} else {
-			FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, config().branchProvider());
+			FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, branchProvider().value());
 		}
 
-		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.east(), config().branchProvider());
-		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.west(), config().branchProvider());
-		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.north(), config().branchProvider());
-		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.south(), config().branchProvider());
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.east(), branchProvider().value());
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.west(), branchProvider().value());
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.north(), branchProvider().value());
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.south(), branchProvider().value());
 
 		leaves.add(dest);
 	}
