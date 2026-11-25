@@ -1,7 +1,8 @@
 package twilightforest.datagen.data.reloadable.loot;
 
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
@@ -51,8 +53,6 @@ public class TFBlockLoot extends BlockLootSubProvider {
 
 	@Override
 	protected void generate() {
-		HolderLookup<Enchantment> registryLookup = output.holderLookup(Registries.ENCHANTMENT).orElseThrow();
-
 		dropSelf(TFBlocks.TOWERWOOD.get());
 		dropSelf(TFBlocks.ENCASED_TOWERWOOD.get());
 		dropSelf(TFBlocks.CRACKED_TOWERWOOD.get());
@@ -76,8 +76,8 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MOSSY_UNDERBRICK.get());
 		dropSelf(TFBlocks.UNDERBRICK_FLOOR.get());
 		dropSelf(TFBlocks.THORN_ROSE.get());
-		add(TFBlocks.THORN_LEAVES.get(), silkAndStick(TFBlocks.THORN_LEAVES.get(), Items.STICK, registryLookup, RARE_SAPLING_DROP_RATES));
-		add(TFBlocks.BEANSTALK_LEAVES.get(), silkAndStick(TFBlocks.BEANSTALK_LEAVES.get(), TFItems.MAGIC_BEANS.get(), registryLookup, RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.THORN_LEAVES.get(), silkAndStick(TFBlocks.THORN_LEAVES.get(), Items.STICK, enchantments, RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.BEANSTALK_LEAVES.get(), silkAndStick(TFBlocks.BEANSTALK_LEAVES.get(), TFItems.MAGIC_BEANS.get(), enchantments, RARE_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.DEADROCK.get());
 		dropSelf(TFBlocks.CRACKED_DEADROCK.get());
 		dropSelf(TFBlocks.WEATHERED_DEADROCK.get());
@@ -96,7 +96,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		add(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), createMushroomBlockDrop(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), TFBlocks.MUSHGLOOM.get()));
 		add(TFBlocks.TROLLVIDR.get(), createShearsOnlyDrop(TFBlocks.TROLLVIDR.get()));
 		add(TFBlocks.UNRIPE_TROLLBER.get(), createShearsOnlyDrop(TFBlocks.UNRIPE_TROLLBER.get()));
-		add(TFBlocks.TROLLBER.get(), createShearsDispatchTable(TFBlocks.TROLLBER.get(), LootItem.lootTableItem(TFItems.TORCHBERRIES.get()).apply(SetItemCountFunction.setCount(ContextIntProviders.between(4, 8))).apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(Enchantments.FORTUNE)))));
+		add(TFBlocks.TROLLBER.get(), createShearsDispatchTable(TFBlocks.TROLLBER.get(), LootItem.lootTableItem(TFItems.TORCHBERRIES.get()).apply(SetItemCountFunction.setCount(ContextIntProviders.between(4, 8))).apply(ApplyBonusCount.addOreBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))));
 		dropSelf(TFBlocks.HUGE_LILY_PAD.get());
 		dropSelf(TFBlocks.HUGE_WATER_LILY.get());
 		dropSelf(TFBlocks.CASTLE_BRICK.get());
@@ -149,7 +149,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		add(TFBlocks.RED_THREAD.get(), redThread());
 		dropWhenSilkTouch(TFBlocks.HEDGE.get());
 		add(TFBlocks.ROOT_BLOCK.get(), createSingleItemTableWithSilkTouch(TFBlocks.ROOT_BLOCK.get(), Items.STICK, ContextIntProviders.between(3, 5)));
-		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(Enchantments.FORTUNE))))));
+		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE))))));
 		add(TFBlocks.MANGROVE_ROOT.get(), createSingleItemTableWithSilkTouch(TFBlocks.MANGROVE_ROOT.get(), Items.STICK, ContextIntProviders.between(3, 5)));
 		dropSelf(TFBlocks.UNCRAFTING_TABLE.get());
 		add(TFBlocks.BRAZIER.get(), block -> this.createSinglePropConditionTable(block, BrazierBlock.HALF, DoubleBlockHalf.LOWER));
@@ -344,65 +344,65 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.CHERRY_DRYING_RACK.get());
 		dropSelf(TFBlocks.PALE_OAK_DRYING_RACK.get());
 
-		add(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_PALE_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_PALE_OAK_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), registryLookup));
+		add(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_PALE_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_PALE_OAK_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), enchantments));
 
-		add(TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_JUNGLE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_ACACIA_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_ACACIA_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_PALE_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_PALE_OAK_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), registryLookup));
-		add(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), registryLookup));
+		add(TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_JUNGLE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_ACACIA_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_ACACIA_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_PALE_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_PALE_OAK_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), enchantments));
+		add(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), enchantments));
 
-		add(TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_PALE_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_PALE_OAK_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), registryLookup));
-		add(TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get(), registryLookup));
+		add(TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_PALE_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_PALE_OAK_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), enchantments));
+		add(TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get(), enchantments));
 
 
 		dropSelf(TFBlocks.TWILIGHT_OAK_LOG.get());
@@ -410,9 +410,9 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_OAK_WOOD.get());
 		dropSelf(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_SAPLING.get());
-		add(TFBlocks.TWILIGHT_OAK_LEAVES.get(), silkAndStick(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.TWILIGHT_OAK_SAPLING.get(), registryLookup, DEFAULT_SAPLING_DROP_RATES));
+		add(TFBlocks.TWILIGHT_OAK_LEAVES.get(), silkAndStick(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.TWILIGHT_OAK_SAPLING.get(), enchantments, DEFAULT_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.RAINBOW_OAK_SAPLING.get());
-		add(TFBlocks.RAINBOW_OAK_LEAVES.get(), silkAndStick(TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.RAINBOW_OAK_SAPLING.get(), registryLookup, RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.RAINBOW_OAK_LEAVES.get(), silkAndStick(TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.RAINBOW_OAK_SAPLING.get(), enchantments, RARE_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.HOLLOW_OAK_SAPLING.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_PLANKS.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_STAIRS.get());
@@ -437,7 +437,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.CANOPY_WOOD.get());
 		dropSelf(TFBlocks.STRIPPED_CANOPY_WOOD.get());
 		dropSelf(TFBlocks.CANOPY_SAPLING.get());
-		add(TFBlocks.CANOPY_LEAVES.get(), silkAndStick(TFBlocks.CANOPY_LEAVES.get(), TFBlocks.CANOPY_SAPLING.get(), registryLookup, DEFAULT_SAPLING_DROP_RATES));
+		add(TFBlocks.CANOPY_LEAVES.get(), silkAndStick(TFBlocks.CANOPY_LEAVES.get(), TFBlocks.CANOPY_SAPLING.get(), enchantments, DEFAULT_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.CANOPY_PLANKS.get());
 		dropSelf(TFBlocks.CANOPY_STAIRS.get());
 		add(TFBlocks.CANOPY_SLAB.get(), createSlabItemTable(TFBlocks.CANOPY_SLAB.get()));
@@ -463,7 +463,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MANGROVE_WOOD.get());
 		dropSelf(TFBlocks.STRIPPED_MANGROVE_WOOD.get());
 		dropSelf(TFBlocks.MANGROVE_SAPLING.get());
-		add(TFBlocks.MANGROVE_LEAVES.get(), silkAndStick(TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.MANGROVE_SAPLING.get(), registryLookup, DEFAULT_SAPLING_DROP_RATES));
+		add(TFBlocks.MANGROVE_LEAVES.get(), silkAndStick(TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.MANGROVE_SAPLING.get(), enchantments, DEFAULT_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.MANGROVE_PLANKS.get());
 		dropSelf(TFBlocks.MANGROVE_STAIRS.get());
 		add(TFBlocks.MANGROVE_SLAB.get(), createSlabItemTable(TFBlocks.MANGROVE_SLAB.get()));
@@ -487,8 +487,8 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.DARK_WOOD.get());
 		dropSelf(TFBlocks.STRIPPED_DARK_WOOD.get());
 		dropSelf(TFBlocks.DARKWOOD_SAPLING.get());
-		add(TFBlocks.DARK_LEAVES.get(), silkAndStick(TFBlocks.DARK_LEAVES.get(), TFBlocks.DARKWOOD_SAPLING.get(), registryLookup, RARE_SAPLING_DROP_RATES));
-		add(TFBlocks.HARDENED_DARK_LEAVES.get(), silkAndStick(TFBlocks.DARK_LEAVES.get(), TFBlocks.DARKWOOD_SAPLING.get(), registryLookup, RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.DARK_LEAVES.get(), silkAndStick(TFBlocks.DARK_LEAVES.get(), TFBlocks.DARKWOOD_SAPLING.get(), enchantments, RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.HARDENED_DARK_LEAVES.get(), silkAndStick(TFBlocks.DARK_LEAVES.get(), TFBlocks.DARKWOOD_SAPLING.get(), enchantments, RARE_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.DARK_PLANKS.get());
 		dropSelf(TFBlocks.DARK_STAIRS.get());
 		add(TFBlocks.DARK_SLAB.get(), createSlabItemTable(TFBlocks.DARK_SLAB.get()));
@@ -513,7 +513,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.STRIPPED_TIME_WOOD.get());
 		dropOther(TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TIME_LOG.get());
 		dropSelf(TFBlocks.TIME_SAPLING.get());
-		registerLeavesNoSapling(TFBlocks.TIME_LEAVES.get(), registryLookup);
+		registerLeavesNoSapling(TFBlocks.TIME_LEAVES.get(), enchantments);
 		dropSelf(TFBlocks.TIME_PLANKS.get());
 		dropSelf(TFBlocks.TIME_STAIRS.get());
 		add(TFBlocks.TIME_SLAB.get(), createSlabItemTable(TFBlocks.TIME_SLAB.get()));
@@ -538,7 +538,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get());
 		dropOther(TFBlocks.TRANSFORMATION_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG.get());
 		dropSelf(TFBlocks.TRANSFORMATION_SAPLING.get());
-		registerLeavesNoSapling(TFBlocks.TRANSFORMATION_LEAVES.get(), registryLookup);
+		registerLeavesNoSapling(TFBlocks.TRANSFORMATION_LEAVES.get(), enchantments);
 		dropSelf(TFBlocks.TRANSFORMATION_PLANKS.get());
 		dropSelf(TFBlocks.TRANSFORMATION_STAIRS.get());
 		add(TFBlocks.TRANSFORMATION_SLAB.get(), createSlabItemTable(TFBlocks.TRANSFORMATION_SLAB.get()));
@@ -563,7 +563,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.STRIPPED_MINING_WOOD.get());
 		dropOther(TFBlocks.MINING_LOG_CORE.get(), TFBlocks.MINING_LOG.get());
 		dropSelf(TFBlocks.MINING_SAPLING.get());
-		registerLeavesNoSapling(TFBlocks.MINING_LEAVES.get(), registryLookup);
+		registerLeavesNoSapling(TFBlocks.MINING_LEAVES.get(), enchantments);
 		dropSelf(TFBlocks.MINING_PLANKS.get());
 		dropSelf(TFBlocks.MINING_STAIRS.get());
 		add(TFBlocks.MINING_SLAB.get(), createSlabItemTable(TFBlocks.MINING_SLAB.get()));
@@ -588,7 +588,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		dropSelf(TFBlocks.STRIPPED_SORTING_WOOD.get());
 		dropOther(TFBlocks.SORTING_LOG_CORE.get(), TFBlocks.SORTING_LOG.get());
 		dropSelf(TFBlocks.SORTING_SAPLING.get());
-		registerLeavesNoSapling(TFBlocks.SORTING_LEAVES.get(), registryLookup);
+		registerLeavesNoSapling(TFBlocks.SORTING_LEAVES.get(), enchantments);
 		dropSelf(TFBlocks.SORTING_PLANKS.get());
 		dropSelf(TFBlocks.SORTING_STAIRS.get());
 		add(TFBlocks.SORTING_SLAB.get(), createSlabItemTable(TFBlocks.SORTING_SLAB.get()));
@@ -627,42 +627,42 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		ominousCandle(TFBlocks.OMINOUS_BLACK_CANDLE);
 	}
 
-	private void registerLeavesNoSapling(Block leaves, HolderLookup<Enchantment> registryLookup) {
+	private void registerLeavesNoSapling(Block leaves, HolderGetter<Enchantment> enchantments) {
 		LootPoolEntryContainer.Builder<?> sticks = applyExplosionDecay(leaves, LootItem.lootTableItem(Items.STICK)
 			.apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 2)))
-			.when(BonusLevelTableCondition.bonusLevelFlatChance(registryLookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
+			.when(BonusLevelTableCondition.bonusLevelFlatChance(enchantments.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
 		add(leaves, createSilkTouchOrShearsDispatchTable(leaves, sticks));
 	}
 
-	private LootTable.Builder hollowLog(Block log, HolderLookup<Enchantment> registryLookup) {
+	private LootTable.Builder hollowLog(Block log, HolderGetter<Enchantment> enchantments) {
 		return LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(log.asItem()).when(this.hasSilkTouch()).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(ContextIntProviders.between(2, 4))).apply(ApplyBonusCount.addUniformBonusCount(registryLookup.getOrThrow(Enchantments.FORTUNE))))))
+				.add(LootItem.lootTableItem(log.asItem()).when(this.hasSilkTouch()).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(ContextIntProviders.between(2, 4))).apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE))))))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(Blocks.SHORT_GRASS).when(this.hasSilkTouch()).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
+				.add(LootItem.lootTableItem(Blocks.SHORT_GRASS).when(this.hasSilkTouch()).when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), log, StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(this.hasSilkTouch()).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
+				.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(this.hasSilkTouch()).when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), log, StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(this.hasSilkTouch()).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.MOSS)))))
+				.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(this.hasSilkTouch()).when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), log, StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.MOSS)))))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(Items.SNOWBALL).when(this.hasSilkTouch()).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.SNOW)))))
+				.add(LootItem.lootTableItem(Items.SNOWBALL).when(this.hasSilkTouch()).when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), log, StatePropertiesPredicate.Builder.properties().hasProperty(HorizontalHollowLogBlock.VARIANT, HollowLogVariants.Horizontal.SNOW)))))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(Blocks.VINE).when(this.hasSilkTouch()).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ClimbableHollowLogBlock.VARIANT, HollowLogVariants.Climbable.VINE)))))
+				.add(LootItem.lootTableItem(Blocks.VINE).when(this.hasSilkTouch()).when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), log, StatePropertiesPredicate.Builder.properties().hasProperty(ClimbableHollowLogBlock.VARIANT, HollowLogVariants.Climbable.VINE)))))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(Blocks.LADDER).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ClimbableHollowLogBlock.VARIANT, HollowLogVariants.Climbable.LADDER)))))
+				.add(LootItem.lootTableItem(Blocks.LADDER).when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), log, StatePropertiesPredicate.Builder.properties().hasProperty(ClimbableHollowLogBlock.VARIANT, HollowLogVariants.Climbable.LADDER)))))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(Blocks.LADDER).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ClimbableHollowLogBlock.VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED)))));
+				.add(LootItem.lootTableItem(Blocks.LADDER).when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), log, StatePropertiesPredicate.Builder.properties().hasProperty(ClimbableHollowLogBlock.VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED)))));
 	}
 
-	private LootTable.Builder verticalHollowLog(Block log, HolderLookup<Enchantment> registryLookup) {
+	private LootTable.Builder verticalHollowLog(Block log, HolderGetter<Enchantment> enchantments) {
 		return LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-				.add(LootItem.lootTableItem(log.asItem()).when(this.hasSilkTouch()).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(ContextIntProviders.between(2, 4))).apply(ApplyBonusCount.addUniformBonusCount(registryLookup.getOrThrow(Enchantments.FORTUNE))))));
+				.add(LootItem.lootTableItem(log.asItem()).when(this.hasSilkTouch()).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(ContextIntProviders.between(2, 4))).apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE))))));
 	}
 
 	// [VanillaCopy] super.droppingWithChancesAndSticks, but non-silk touch parameter can be an item instead of a block
-	private LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, HolderLookup<Enchantment> registryLookup, float... nonSilkFortune) {
-		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(registryLookup.getOrThrow(Enchantments.FORTUNE), nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).when((HAS_SHEARS.or(this.hasSilkTouch())).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 2)))).when(BonusLevelTableCondition.bonusLevelFlatChance(registryLookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+	private LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, HolderGetter<Enchantment> enchantments, float... nonSilkFortune) {
+		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(enchantments.getOrThrow(Enchantments.FORTUNE), nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).when((HAS_SHEARS.or(this.hasSilkTouch())).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 2)))).when(BonusLevelTableCondition.bonusLevelFlatChance(enchantments.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
 	}
 
 	private void addTFBush(Block block, ResourceKey<LootTable> berry) {
@@ -674,10 +674,9 @@ public class TFBlockLoot extends BlockLootSubProvider {
 				.withPool(
 					LootPool.lootPool()
 						.when(
-							LootItemBlockStatePropertyCondition.hasBlockStateProperties(bush)
-								.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TFBushBlock.AGE, 3))
+							MatchBlock.blockMatches(output.lookup(Registries.BLOCK), bush, StatePropertiesPredicate.Builder.properties().hasProperty(TFBushBlock.AGE, 3))
 						)
-						.add(NestedLootTable.lootTableReference(berry))
+						.add(NestedLootTable.lootTableReference(output.lookup(Registries.LOOT_TABLE).getOrThrow(berry)))
 				)
 				.withPool(
 					LootPool.lootPool()
@@ -718,8 +717,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FireflySpawnerBlock.RADIUS.getPossibleValues(), layer ->
 					LootItem.lootTableItem(TFBlocks.FIREFLY.get())
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FireflySpawnerBlock.RADIUS, layer)))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.FIREFLY_SPAWNER.get(), StatePropertiesPredicate.Builder.properties().hasProperty(FireflySpawnerBlock.RADIUS, layer)))
 						.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(layer - 1)))))));
 	}
 
@@ -729,7 +727,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 				.add(LootItem.lootTableItem(pBlock).when(HAS_SHEARS)))
 			.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
 				.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.get())
-					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(pBlock).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TorchberryPlantBlock.HAS_BERRIES, true)))));
+					.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), pBlock, StatePropertiesPredicate.Builder.properties().hasProperty(TorchberryPlantBlock.HAS_BERRIES, true)))));
 	}
 
 	protected LootTable.Builder redThread() {
@@ -737,29 +735,17 @@ public class TFBlockLoot extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.add(this.applyExplosionDecay(TFBlocks.RED_THREAD.get(), LootItem.lootTableItem(TFBlocks.RED_THREAD.get())
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(PipeBlock.EAST, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.RED_THREAD.get(), StatePropertiesPredicate.Builder.properties().hasProperty(PipeBlock.EAST, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(PipeBlock.WEST, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.RED_THREAD.get(), StatePropertiesPredicate.Builder.properties().hasProperty(PipeBlock.WEST, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(PipeBlock.NORTH, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.RED_THREAD.get(), StatePropertiesPredicate.Builder.properties().hasProperty(PipeBlock.NORTH, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(PipeBlock.SOUTH, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.RED_THREAD.get(), StatePropertiesPredicate.Builder.properties().hasProperty(PipeBlock.SOUTH, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(PipeBlock.UP, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.RED_THREAD.get(), StatePropertiesPredicate.Builder.properties().hasProperty(PipeBlock.UP, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(PipeBlock.DOWN, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.RED_THREAD.get(), StatePropertiesPredicate.Builder.properties().hasProperty(PipeBlock.DOWN, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(-1), true)))));
 	}
 
@@ -768,17 +754,11 @@ public class TFBlockLoot extends BlockLootSubProvider {
 			.withPool(LootPool.lootPool()
 				.add(this.applyExplosionDecay(TFBlocks.ROPE.get(), LootItem.lootTableItem(TFBlocks.ROPE.get())
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(RopeBlock.X, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.ROPE.get(), StatePropertiesPredicate.Builder.properties().hasProperty(RopeBlock.X, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(RopeBlock.Y, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.ROPE.get(), StatePropertiesPredicate.Builder.properties().hasProperty(RopeBlock.Y, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1), true)
-						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-								.hasProperty(RopeBlock.Z, true))))
+						.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.ROPE.get(), StatePropertiesPredicate.Builder.properties().hasProperty(RopeBlock.Z, true))))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(-1), true)))));
 	}
 
@@ -786,8 +766,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 		return LootTable.lootTable().withPool(LootPool.lootPool()
 			.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FallenLeavesBlock.LAYERS.getPossibleValues(), layer ->
 				LootItem.lootTableItem(TFBlocks.FALLEN_LEAVES.get())
-					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES.get())
-						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
+					.when(MatchBlock.blockMatches(output.lookup(Registries.BLOCK), TFBlocks.FALLEN_LEAVES.get(), StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
 					.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(layer)))).when(HAS_SHEARS))));
 	}
 
@@ -804,10 +783,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 									List.of(2, 3, 4),
 									value -> SetItemCountFunction.setCount(ContextIntProviders.exactly(value))
 										.when(
-											LootItemBlockStatePropertyCondition.hasBlockStateProperties(block.get())
-												.setProperties(
-													StatePropertiesPredicate.Builder.properties().hasProperty(OminousCandleBlock.CANDLES, value)
-												)
+											MatchBlock.blockMatches(output.lookup(Registries.BLOCK), block.get(), StatePropertiesPredicate.Builder.properties().hasProperty(OminousCandleBlock.CANDLES, value))
 										)
 								)
 						)
@@ -818,7 +794,7 @@ public class TFBlockLoot extends BlockLootSubProvider {
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing
 	@Override
 	protected LootTable.Builder createShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
-		return createSelfDropDispatchTable(block, HAS_SHEARS, builder);
+		return createSelfDropDispatchTable(block, Holder.direct(CanItemPerformAbility.canItemPerformAbility(ItemAbilities.SHEARS_DIG).build()), builder);
 	}
 
 	@Override

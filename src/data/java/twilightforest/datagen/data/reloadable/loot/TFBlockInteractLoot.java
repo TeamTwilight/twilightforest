@@ -1,15 +1,16 @@
 package twilightforest.datagen.data.reloadable.loot;
 
+import net.minecraft.advancements.predicates.ItemPredicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
 import twilightforest.init.TFItems;
 import twilightforest.loot.TFLootTables;
 
@@ -45,7 +46,7 @@ public class TFBlockInteractLoot implements LootTableSubProvider {
 				LootPool.lootPool()
 					.setRolls(ContextIntProviders.exactly(1))
 					.add(LootItem.lootTableItem(TFItems.LIVEROOT).apply(ApplyBonusCount.addOreBonusCount(output.holderLookup(Registries.ENCHANTMENT).orElseThrow().getOrThrow(Enchantments.FORTUNE))))
-					.when(CanItemPerformAbility.canItemPerformAbility(ItemAbilities.AXE_STRIP))
+					.when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(output.lookup(Registries.ITEM), ItemTags.AXES)))
 			)
 		);
 	}

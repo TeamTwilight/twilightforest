@@ -2,6 +2,7 @@ package twilightforest.loot;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.ValidationContext;
@@ -23,8 +24,8 @@ public record MultiplayerBasedNumberProvider(ContextFloatProvider rollsPerPlayer
 		return MAP_CODEC;
 	}
 
-	public static MultiplayerBasedNumberProvider rollsForPlayers(ContextFloatProvider rollsPerPlayer, ContextFloatProvider defaultRolls) {
-		return new MultiplayerBasedNumberProvider(rollsPerPlayer, defaultRolls);
+	public static MultiplayerBasedNumberProvider rollsForPlayers(Holder<ContextFloatProvider> rollsPerPlayer, Holder<ContextFloatProvider> defaultRolls) {
+		return new MultiplayerBasedNumberProvider(rollsPerPlayer.value(), defaultRolls.value());
 	}
 
 	@Override

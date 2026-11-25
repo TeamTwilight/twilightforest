@@ -3,8 +3,7 @@ package twilightforest.loot;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -35,9 +34,8 @@ public class LootingEnchantNumberProvider implements ContextFloatProvider {
 		return MAP_CODEC;
 	}
 
-	public static LootingEnchantNumberProvider applyLootingLevelTo(HolderLookup.Provider provider, ContextFloatProvider baseValue) {
-		HolderLookup.RegistryLookup<Enchantment> registrylookup = provider.lookupOrThrow(Registries.ENCHANTMENT);
-		return new LootingEnchantNumberProvider(registrylookup.getOrThrow(Enchantments.LOOTING), baseValue);
+	public static LootingEnchantNumberProvider applyLootingLevelTo(HolderGetter<Enchantment> enchantments, ContextFloatProvider baseValue) {
+		return new LootingEnchantNumberProvider(enchantments.getOrThrow(Enchantments.LOOTING), baseValue);
 	}
 
 	@Override

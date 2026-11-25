@@ -32,8 +32,8 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 		this.value = value;
 	}
 
-	public static MultiplayerBasedAdditionLootFunction.Builder addForAllParticipatingPlayers(ContextIntProvider additionPerPlayer) {
-		return new MultiplayerBasedAdditionLootFunction.Builder(additionPerPlayer);
+	public static MultiplayerBasedAdditionLootFunction.Builder addForAllParticipatingPlayers(Holder<ContextIntProvider> additionPerPlayer) {
+		return new MultiplayerBasedAdditionLootFunction.Builder(additionPerPlayer.value());
 	}
 
 	@Override
