@@ -118,7 +118,7 @@ public record UnbakedConnectedTextureModel(Textures textures, List<Either<TagKey
 
 	private static BakedQuad bakeQuad(ModelBaker baker, Vector3fc from, Vector3fc to, Direction face, @Nullable Direction cull, CuboidFace.UVs uvs, Material.Baked material, LayerSettings layer) {
 		CuboidFace cuboidFace = new CuboidFace(cull, layer.tintIndex(), material.sprite().contents().name().toString(), uvs, Quadrant.R0);
-		return FaceBakery.bakeQuad(baker, from, to, cuboidFace, material, face, BlockModelRotation.IDENTITY, null, true, layer.lightEmission());
+		return FaceBakery.bakeQuad(baker, from, to, cuboidFace, material, face, BlockModelRotation.IDENTITY, null, null, layer.lightEmission());
 	}
 
 	/**
