@@ -7,15 +7,14 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -274,15 +273,15 @@ public class TravellersClientEvents {
 		if (!TFConfig.firstPersonGloveOverlay)
 			return;
 
-		Avatar avatar = event.getAvatar();
-		ItemStack chestStack = avatar.getItemBySlot(EquipmentSlot.CHEST);
+		AvatarRenderState avatarRenderState = event.getPlayerRenderState().avatarRenderState;
+		if (avatarRenderState == null)
+			return;
+
+		ItemStack chestStack = avatarRenderState.chestEquipment;
 		if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
 			return;
 
-		EntityRenderer<?, ?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(avatar);
-		if (!(renderer instanceof AvatarRenderer<?> avatarRenderer))
-			return;
-
+		AvatarRenderer<?> avatarRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(avatarRenderState);
 		if (!(IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, avatarRenderer.getModel()) instanceof HumanoidModel<?> model))
 			return;
 
