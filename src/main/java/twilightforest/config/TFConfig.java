@@ -1,9 +1,9 @@
 package twilightforest.config;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.minecraft.SessionService;
+import com.mojang.authlib.services.MinecraftServicesDiscoveryService;
 import com.mojang.authlib.services.ProfileResult;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -222,8 +222,8 @@ public class TFConfig {
 				@Override
 				public void run() {
 					GAME_PROFILES.clear();
-					YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
-					MinecraftSessionService session = service.createMinecraftSessionService();
+					MinecraftServicesDiscoveryService service = MinecraftServicesDiscoveryService.create(Proxy.NO_PROXY);
+					SessionService session = service.createMinecraftSessionService();
 					for (String stringUUID : config.giantSkinUUIDs.get()) {
 						try {
 							ProfileResult result = session.fetchProfile(UUID.fromString(stringUUID), false);
