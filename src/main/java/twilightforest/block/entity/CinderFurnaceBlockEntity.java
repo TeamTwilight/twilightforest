@@ -65,7 +65,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 					ItemStack burnResult = recipe.value().assemble(input);
 					if (!burnResult.isEmpty() && entity.canBurn(level, maxStackSize, burnResult)) {
 						if (!isLit) {
-							int newLitTime = entity.getBurnDuration(level.fuelValues(), fuel);
+							int newLitTime = entity.getBurnDuration((ServerLevel) level, fuel);
 							entity.litTimeRemaining = newLitTime;
 							entity.litTotalTime = newLitTime;
 							if (newLitTime > 0) {
