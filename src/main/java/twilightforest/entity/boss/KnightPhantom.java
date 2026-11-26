@@ -332,7 +332,7 @@ public class KnightPhantom extends BaseTFBoss {
 		if (!damageSource.is(DamageTypeTags.BYPASSES_SHIELD) && itemstack != null && !flag) {
 			Vec3 vec3 = damageSource.getSourcePosition();
 			if (vec3 != null) {
-				Vec3 vec31 = this.calculateViewVector(0.0F, this.getYHeadRot());
+				Vec3 vec31 = calculateViewVector(0.0F, this.getYHeadRot());
 				Vec3 vec32 = vec3.vectorTo(this.position());
 				vec32 = (new Vec3(vec32.x, 0.0F, vec32.z)).normalize();
 				return vec32.dot(vec31) < (double) 0.0F;

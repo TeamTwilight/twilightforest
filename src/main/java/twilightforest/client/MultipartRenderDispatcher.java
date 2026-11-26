@@ -64,7 +64,7 @@ public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRende
 
 		TFPart.forEachPart(level.entitiesForRendering(), part -> {
 			EntityRenderer<Entity, EntityRenderState> renderer = BakedMultiPartRenderers.lookup(part.renderer());
-			if (!renderer.shouldRender(part, frustum, cameraPos.x(), cameraPos.y(), cameraPos.z()))
+			if (!renderer.shouldRender(part, frustum, cameraPos.x(), cameraPos.y(), cameraPos.z(), deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(part))))
 				return;
 
 			EntityRenderState state = renderer.createRenderState(part, deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(part)));

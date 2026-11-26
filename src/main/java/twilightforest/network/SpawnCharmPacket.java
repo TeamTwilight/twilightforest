@@ -51,7 +51,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event, i
 					ClientLevel level = (ClientLevel) player.level();
 					Entity camera = Minecraft.getInstance().getCameraEntity();
 					if (TFConfig.spawnCharmAnimationAsTotem) {
-						Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
+						Minecraft.getInstance().player.displayItemActivation(packet.charm());
 						//prefer the camera pos over the player as the player position isnt quite synced to the client yet
 						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
 					} else {
