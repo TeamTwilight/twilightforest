@@ -1,5 +1,6 @@
 package twilightforest.asmhooks;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import tamaized.beanification.Autowired;
@@ -15,7 +16,7 @@ public class ArmorHooks {
 	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)}
+	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(ServerLevel, Entity)}
 	 * Targets: {@link net.minecraft.world.entity.LivingEntity.getArmorCoverPercentage()}
 	 */
 	public static float modifyArmorVisibility(float o, LivingEntity entity) {

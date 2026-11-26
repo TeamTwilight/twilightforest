@@ -44,7 +44,7 @@ public class ArmorVisibilityRenderingTransformer extends SimpleMethodProcessor {
 		return Set.of(new Target(
 			"net.minecraft.world.entity.LivingEntity",
 			"getVisibilityPercent",
-			"(Lnet/minecraft/world/entity/Entity;)D"
+			"(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/Entity;)D"
 		));
 	}
 
