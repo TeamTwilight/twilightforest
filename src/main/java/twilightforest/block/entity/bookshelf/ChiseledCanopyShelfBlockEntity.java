@@ -11,6 +11,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.Spawner;
@@ -109,6 +110,13 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 		if (this.level != null) {
 			this.level.setBlockAndUpdate(this.worldPosition, this.getBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, true));
 		}
+		this.setChanged();
+	}
+
+	// [VanillaCopy] SpawnerBlockEntity
+	@Override
+	public void setEntityData(TypedEntityData<EntityType<?>> data, RandomSource random) {
+		this.spawner.setEntityData(data, this.level, random, this.worldPosition);
 		this.setChanged();
 	}
 

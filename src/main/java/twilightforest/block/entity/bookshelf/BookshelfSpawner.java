@@ -11,6 +11,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -59,6 +60,12 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		this.getOrCreateNextSpawnData(level, random, pos)
 			.getEntityToSpawn()
 			.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(type).toString());
+	}
+
+	// [VanillaCopy] BaseSpawner
+	public void setEntityData(TypedEntityData<EntityType<?>> entityData, @Nullable Level level, RandomSource random, BlockPos pos) {
+		SpawnData spawnData = this.getOrCreateNextSpawnData(level, random, pos);
+		entityData.loadInto(spawnData, BuiltInRegistries.ENTITY_TYPE);
 	}
 
 	private boolean isNearPlayer(ServerLevel level, BlockPos pos) {
