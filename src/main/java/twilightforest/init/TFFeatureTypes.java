@@ -3,7 +3,6 @@ package twilightforest.init;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
@@ -26,7 +25,7 @@ public class TFFeatureTypes {
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<MegaOakTreeFeature>> MEGA_OAK = FEATURES.register("mega_oak", () -> MegaOakTreeFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<MegaCanopyTreeFeature>> MEGA_CANOPY = FEATURES.register("mega_canopy", () -> MegaCanopyTreeFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<BlockSpikeFeature>> CAVE_STALACTITE = FEATURES.register("block_spike", () -> BlockSpikeFeature.MAP_CODEC);
-	public static final DeferredHolder<Feature<?>, Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () -> new DarkCanopyTreeFeature(TreeConfiguration.CODEC));
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<DarkCanopyTreeFeature>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () -> DarkCanopyTreeFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<DruidHutFeature>> DRUID_HUT = FEATURES.register("druid_hut", () -> DruidHutFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<FallenHollowLogFeature>> FALLEN_HOLLOW_LOG = FEATURES.register("fallen_hollow_log", () -> FallenHollowLogFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<FallenLeavesFeature>> FALLEN_LEAVES = FEATURES.register("fallen_leaves", () -> FallenLeavesFeature.MAP_CODEC);
@@ -56,7 +55,6 @@ public class TFFeatureTypes {
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<FancyWellFeature>> FANCY_WELL = FEATURES.register("fancy_well", () -> FancyWellFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<WoodRootFeature>> WOOD_ROOTS = FEATURES.register("wood_roots", () -> WoodRootFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<SnowUnderTreeFeature>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () -> SnowUnderTreeFeature.MAP_CODEC);
-	public static final DeferredHolder<Feature<?>, Feature<TreeConfiguration>> SNOW_TREE = FEATURES.register("anywhere_tree", () -> new SnowTreeFeature(TreeConfiguration.CODEC));
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<EnchantedForestVinesFeature>> ENCHANTED_FOREST_VINES = FEATURES.register("enchanted_forest_vines", () -> EnchantedForestVinesFeature.MAP_CODEC);
 	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<WeightedListFeature>> WEIGHTED_LIST_SELECTOR = FEATURES.register("weighted_list", () -> WeightedListFeature.MAP_CODEC); // TODO: Perhaps we should use WeightedRandomSelectorFeature instead?
 }

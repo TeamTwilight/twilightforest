@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import twilightforest.util.features.FeaturePlacers;
@@ -69,7 +70,7 @@ public record LargeWinterTreeFeature(
 		}
 
 		// Check if we're on a valid block
-		if (!SnowTreeFeature.validTreePos(world, pos)) {
+		if (!TreeFeature.validTreePos(world, pos)) {
 			return false;
 		}
 
