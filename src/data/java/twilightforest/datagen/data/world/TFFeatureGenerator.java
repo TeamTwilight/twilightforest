@@ -326,55 +326,60 @@ public class TFFeatureGenerator {
 		);
         context.register(
 			TFFeatures.DARKWOOD_TREE,
-			new TreeFeature(
-				BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
-				new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
-				BlockStateProvider.holderOf(TFBlocks.HARDENED_DARK_LEAVES.get()),
-				new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-				Optional.empty(),
-				new TwoLayersFeatureSize(4, 1, 1),
-				ImmutableList.of(TreeDecorators.LIVING_ROOTS),
-				true,
-				belowTrunkProvider
+			new DarkCanopyTreeFeature(
+				new TreeFeature(
+					BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
+					new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
+					BlockStateProvider.holderOf(TFBlocks.HARDENED_DARK_LEAVES.get()),
+					new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
+					Optional.empty(),
+					new TwoLayersFeatureSize(4, 1, 1),
+					ImmutableList.of(TreeDecorators.LIVING_ROOTS),
+					true,
+					belowTrunkProvider)
 			)
 		);
         context.register(
 			TFFeatures.HOMEGROWN_DARKWOOD_TREE,
-			new TreeFeature(
-				BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
-				new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
-				BlockStateProvider.holderOf(TFBlocks.DARK_LEAVES.get()),
-				new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-				Optional.empty(),
-				new TwoLayersFeatureSize(4, 1, 1),
-				ImmutableList.of(TreeDecorators.LIVING_ROOTS),
-				true,
-				belowTrunkProvider
+			new DarkCanopyTreeFeature(
+				new TreeFeature(
+					BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
+					new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
+					BlockStateProvider.holderOf(TFBlocks.DARK_LEAVES.get()),
+					new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
+					Optional.empty(),
+					new TwoLayersFeatureSize(4, 1, 1),
+					ImmutableList.of(TreeDecorators.LIVING_ROOTS),
+					true,
+					belowTrunkProvider
+				)
 			)
 		);
         context.register(
 			TFFeatures.DARKWOOD_LANTERN_TREE,
-			new TreeFeature(
-				BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
-				new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
-				BlockStateProvider.holderOf(TFBlocks.DARK_LEAVES.get()),
-				new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-				Optional.empty(),
-				new TwoLayersFeatureSize(4, 1, 1),
-				ImmutableList.of(
-					TreeDecorators.LIVING_ROOTS,
-					new DangleFromTreeDecorator(
-						0,
-						1,
-						2,
-						4,
-						2,
-						new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.IRON_CHAIN.defaultBlockState(), 1).build()),
-						new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true), 1).build())
-					)
-				),
-				true,
-				belowTrunkProvider
+			new DarkCanopyTreeFeature(
+				new TreeFeature(
+					BlockStateProvider.holderOf(TFBlocks.DARK_LOG.get()),
+					new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.of(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false, false),
+					BlockStateProvider.holderOf(TFBlocks.DARK_LEAVES.get()),
+					new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
+					Optional.empty(),
+					new TwoLayersFeatureSize(4, 1, 1),
+					ImmutableList.of(
+						TreeDecorators.LIVING_ROOTS,
+						new DangleFromTreeDecorator(
+							0,
+							1,
+							2,
+							4,
+							2,
+							new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.IRON_CHAIN.defaultBlockState(), 1).build()),
+							new WeightedStateProvider(WeightedList.<BlockState>builder().add(Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true), 1).build())
+						)
+					),
+					true,
+					belowTrunkProvider
+				)
 			)
 		);
         context.register(
@@ -538,9 +543,9 @@ public class TFFeatureGenerator {
 			)
 		);
         context.register(TFFeatures.SNOWY_SPRUCE_TREE, new TreeFeature(BlockStateProvider.holderOf(Blocks.SPRUCE_LOG), new StraightTrunkPlacer(5, 2, 1), BlockStateProvider.holderOf(Blocks.SPRUCE_LEAVES), new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(1, 2)), Optional.empty(), new TwoLayersFeatureSize(2, 0, 2), ImmutableList.of(), true, belowTrunkProvider));
-        context.register(TFFeatures.DARK_FOREST_OAK_TREE, new TreeFeature(BlockStateProvider.holderOf(Blocks.OAK_LOG), new StraightTrunkPlacer(4, 2, 0), BlockStateProvider.holderOf(Blocks.OAK_LEAVES), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), Optional.empty(), new TwoLayersFeatureSize(1, 0, 1), ImmutableList.of(), true, belowTrunkProvider));
-        context.register(TFFeatures.DARK_FOREST_BIRCH_TREE, new TreeFeature(BlockStateProvider.holderOf(Blocks.BIRCH_LOG), new StraightTrunkPlacer(5, 2, 0), BlockStateProvider.holderOf(Blocks.BIRCH_LEAVES), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), Optional.empty(), new TwoLayersFeatureSize(1, 0, 1), ImmutableList.of(), true, belowTrunkProvider));
-        context.register(TFFeatures.DARK_OAK_BUSH, createOakBush(belowTrunkProvider));
+        context.register(TFFeatures.DARK_FOREST_OAK_TREE, new DarkCanopyTreeFeature(new TreeFeature(BlockStateProvider.holderOf(Blocks.OAK_LOG), new StraightTrunkPlacer(4, 2, 0), BlockStateProvider.holderOf(Blocks.OAK_LEAVES), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), Optional.empty(), new TwoLayersFeatureSize(1, 0, 1), ImmutableList.of(), true, belowTrunkProvider)));
+        context.register(TFFeatures.DARK_FOREST_BIRCH_TREE, new DarkCanopyTreeFeature(new TreeFeature(BlockStateProvider.holderOf(Blocks.BIRCH_LOG), new StraightTrunkPlacer(5, 2, 0), BlockStateProvider.holderOf(Blocks.BIRCH_LEAVES), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), Optional.empty(), new TwoLayersFeatureSize(1, 0, 1), ImmutableList.of(), true, belowTrunkProvider)));
+        context.register(TFFeatures.DARK_OAK_BUSH, new DarkCanopyTreeFeature(createOakBush(belowTrunkProvider)));
         context.register(TFFeatures.VANILLA_OAK_TREE, new TreeFeature(BlockStateProvider.holderOf(Blocks.OAK_LOG), new StraightTrunkPlacer(4, 2, 0), BlockStateProvider.holderOf(Blocks.OAK_LEAVES), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), Optional.empty(), new TwoLayersFeatureSize(1, 0, 1), ImmutableList.of(), true, belowTrunkProvider));
         context.register(TFFeatures.VANILLA_BIRCH_TREE, new TreeFeature(BlockStateProvider.holderOf(Blocks.BIRCH_LOG), new StraightTrunkPlacer(5, 2, 0), BlockStateProvider.holderOf(Blocks.BIRCH_LEAVES), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), Optional.empty(), new TwoLayersFeatureSize(1, 0, 1), ImmutableList.of(), true, belowTrunkProvider));
         context.register(
