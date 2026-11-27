@@ -46,7 +46,7 @@ public class GlassSwordItem extends Item {
 
 		this.hurtAndBreak(stack, attacker, (user) -> {
 			user.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
-			user.onEquippedItemBroken(this, EquipmentSlot.MAINHAND);
+			user.onEquippedItemBroken(stack, EquipmentSlot.MAINHAND);
 		});
 	}
 

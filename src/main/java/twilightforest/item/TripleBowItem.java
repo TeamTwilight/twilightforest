@@ -31,7 +31,7 @@ public class TripleBowItem extends BowItem {
 			ItemStack arrowStack = player.getProjectile(stack);
 
 			int i = this.getUseDuration(stack, player) - timeLeft;
-			i = EventHooks.onArrowLoose(stack, level, player, i, !arrowStack.isEmpty());
+			i = EventHooks.onArrowLoose(stack, level, player, i);
 			if (i < 0)
 				return false;
 
