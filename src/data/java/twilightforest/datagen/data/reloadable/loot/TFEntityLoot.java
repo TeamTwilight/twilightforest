@@ -3,6 +3,7 @@ package twilightforest.datagen.data.reloadable.loot;
 import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.advancements.predicates.entity.CubeMobPredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.core.Holder;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.network.chat.Component;
@@ -445,14 +446,14 @@ public class TFEntityLoot extends EntityLootSubProvider {
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.name("lich_scepters")
-					.setRolls(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(-2.0F, 1.0F), ContextFloatProviders.exactly(1.0F)))
+					.setRolls(Holder.direct(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(-2.0F, 1.0F), ContextFloatProviders.exactly(1.0F))))
 					.add(LootItem.lootTableItem(TFItems.TWILIGHT_SCEPTER.get()))
 					.add(LootItem.lootTableItem(TFItems.LIFEDRAIN_SCEPTER.get()))
 					.add(LootItem.lootTableItem(TFItems.ZOMBIE_SCEPTER.get()))
 					.add(LootItem.lootTableItem(TFItems.FORTIFICATION_SCEPTER.get())))
 				.withPool(LootPool.lootPool()
 					.name("lich_armor")
-					.setRolls(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(0.0F, 1.0F), ContextFloatProviders.between(2, 4)))
+					.setRolls(Holder.direct(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(0.0F, 1.0F), ContextFloatProviders.between(2, 4))))
 					.add(LootItem.lootTableItem(Items.GOLDEN_SWORD)
 						.apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.between(10, 40))))
 					.add(LootItem.lootTableItem(Items.GOLDEN_HELMET)
@@ -492,7 +493,7 @@ public class TFEntityLoot extends EntityLootSubProvider {
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.name("minoshroom_stroganoff")
-					.setRolls(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(0.0F, 1.0F), ContextFloatProviders.between(2.0F, 5.0F)))
+					.setRolls(Holder.direct(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(0.0F, 1.0F), ContextFloatProviders.between(2.0F, 5.0F))))
 					.add(LootItem.lootTableItem(TFItems.MEEF_STROGANOFF.get())
 						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(enchantments, ContextFloatProviders.between(0.0F, 1.0F)))))
 				.withPool(LootPool.lootPool()
@@ -529,17 +530,17 @@ public class TFEntityLoot extends EntityLootSubProvider {
 		add(TFEntities.KNIGHT_PHANTOM.get(), LootTable.lootTable()
 			.withPool(LootPool.lootPool()
 				.name("knight_phantom_weapon")
-				.setRolls(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(enchantments, MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.exactly(1.5F), ContextFloatProviders.exactly(4.0F))), ContextFloatProviders.exactly(0.17F)))
+				.setRolls(Holder.direct(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(enchantments, MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.exactly(1.5F), ContextFloatProviders.exactly(4.0F))), ContextFloatProviders.exactly(0.17F))))
 				.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.exactly(20))))
 				.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_PICKAXE).apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.exactly(20))))
 				.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_AXE).apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.exactly(20)))))
 			.withPool(LootPool.lootPool()
-				.setRolls(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(enchantments, MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.exactly(1.0F), ContextFloatProviders.exactly(2.0F))), ContextFloatProviders.exactly(0.17F)))
+				.setRolls(Holder.direct(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(enchantments, MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.exactly(1.0F), ContextFloatProviders.exactly(2.0F))), ContextFloatProviders.exactly(0.17F))))
 				.name("knight_phantom_armor")
 				.add(LootItem.lootTableItem(TFItems.PHANTOM_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.exactly(20))))
 				.add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE).apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.exactly(20)))))
 			.withPool(LootPool.lootPool()
-				.setRolls(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(enchantments, MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.exactly(0.5F), ContextFloatProviders.exactly(1.0F))), ContextFloatProviders.exactly(0.17F)))
+				.setRolls(Holder.direct(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(enchantments, MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.exactly(0.5F), ContextFloatProviders.exactly(1.0F))), ContextFloatProviders.exactly(0.17F))))
 				.name("knight_phantom_rare_armor")
 				.add(LootItem.lootTableItem(TFItems.PHANTOM_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.exactly(30))))
 				.add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE).apply(EnchantWithLevelsFunction.enchantWithLevels(enchantments, ContextIntProviders.exactly(30))))));
@@ -590,7 +591,7 @@ public class TFEntityLoot extends EntityLootSubProvider {
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.name("snow_queen_bows")
-					.setRolls(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(-2.0F, 1.0F), ContextFloatProviders.exactly(1.0F)))
+					.setRolls(Holder.direct(MultiplayerBasedNumberProvider.rollsForPlayers(ContextFloatProviders.between(-2.0F, 1.0F), ContextFloatProviders.exactly(1.0F))))
 					.add(LootItem.lootTableItem(TFItems.TRIPLE_BOW.get()))
 					.add(LootItem.lootTableItem(TFItems.SEEKER_BOW.get())))
 				.withPool(LootPool.lootPool()

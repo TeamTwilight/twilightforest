@@ -11,39 +11,39 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProvider;
-import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
-public class LootingEnchantNumberProvider implements ContextFloatProvider {
+public class LootingEnchantNumberProvider implements ContextIntProvider {
 	public static final MapCodec<LootingEnchantNumberProvider> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Enchantment.CODEC.fieldOf("enchantment").forGetter(provider -> provider.enchantment),
-			ContextFloatProviders.DIRECT_CODEC.fieldOf("base_value").forGetter(provider -> provider.baseValue))
+			ContextIntProviders.DIRECT_CODEC.fieldOf("base_value").forGetter(provider -> provider.baseValue))
 		.apply(instance, LootingEnchantNumberProvider::new)
 	);
 
 	private final Holder<Enchantment> enchantment;
-	private final ContextFloatProvider baseValue;
+	private final ContextIntProvider baseValue;
 
-	protected LootingEnchantNumberProvider(Holder<Enchantment> enchantment, ContextFloatProvider baseValue) {
+	protected LootingEnchantNumberProvider(Holder<Enchantment> enchantment, ContextIntProvider baseValue) {
 		this.enchantment = enchantment;
 		this.baseValue = baseValue;
 	}
 
 	@Override
-	public MapCodec<? extends ContextFloatProvider> codec() {
+	public MapCodec<? extends ContextIntProvider> codec() {
 		return MAP_CODEC;
 	}
 
-	public static LootingEnchantNumberProvider applyLootingLevelTo(HolderGetter<Enchantment> enchantments, ContextFloatProvider baseValue) {
-		return new LootingEnchantNumberProvider(enchantments.getOrThrow(Enchantments.LOOTING), baseValue);
+	public static Holder<ContextIntProvider> applyLootingLevelTo(HolderGetter<Enchantment> enchantments, ContextIntProvider baseValue) {
+		return Holder.direct(new LootingEnchantNumberProvider(enchantments.getOrThrow(Enchantments.LOOTING), baseValue));
 	}
 
 	@Override
-	public float getFloatUnsafe(LootContext lootContext) throws ArithmeticException {
+	public int getIntUnsafe(LootContext lootContext) throws ArithmeticException {
 		if (lootContext.getOptional(LootContextParams.ATTACKING_ENTITY) instanceof LivingEntity living) {
-			return EnchantmentHelper.getEnchantmentLevel(enchantment, living) + baseValue.getFloat(lootContext);
+			return EnchantmentHelper.getEnchantmentLevel(enchantment, living) + baseValue.getInt(lootContext);
 		}
-		return baseValue.getFloat(lootContext);
+		return baseValue.getInt(lootContext);
 	}
 
 	@Override
