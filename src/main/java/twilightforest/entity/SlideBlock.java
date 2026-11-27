@@ -55,7 +55,7 @@ public class SlideBlock extends Entity {
 	}
 
 	private void determineMoveDirection() {
-		BlockPos pos = new BlockPos(this.blockPosition());
+		BlockPos pos = this.blockPosition();
 
 		Direction[] toCheck = switch (myState.getValue(RotatedPillarBlock.AXIS)) {
 			case X -> // horizontal blocks will go up or down if there is a block on one side and air on the other
@@ -120,7 +120,7 @@ public class SlideBlock extends Entity {
 					this.playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
 
-				BlockPos pos = new BlockPos(this.blockPosition());
+				BlockPos pos = this.blockPosition();
 
 				if (this.slideTime == 1) {
 					if (this.level().getBlockState(pos) != this.myState) {

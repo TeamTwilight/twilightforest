@@ -186,7 +186,7 @@ public class ProgressionEvents {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas
 		if (living.level() instanceof ServerLevel serverLevel && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !living.is(TFEntityTypeTags.PROGRESSION_LOCK_VULNERABLE)
-			&& isAreaProtected(serverLevel, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
+			&& isAreaProtected(serverLevel, (Player) event.getSource().getEntity(), living.blockPosition())) {
 
 			event.setCanceled(true);
 		}

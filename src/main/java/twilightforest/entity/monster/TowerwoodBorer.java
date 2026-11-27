@@ -197,7 +197,7 @@ public class TowerwoodBorer extends Monster {
 
 				Level world = this.borer.level();
 				RandomSource random = this.borer.getRandom();
-				BlockPos pos = new BlockPos(this.borer.blockPosition());
+				BlockPos pos = this.borer.blockPosition();
 
 				for (int i = 0; i <= 5 && i >= -5; i = (i <= 0 ? 1 : 0) - i) {
 					for (int j = 0; j <= 10 && j >= -10; j = (j <= 0 ? 1 : 0) - j) {

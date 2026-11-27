@@ -221,7 +221,7 @@ public class Troll extends Monster implements RangedAttackMob {
 
 	private void ripenTrollBerNearby(int offset) {
 		int range = 12;
-		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this.blockPosition()), range)) {
+		for (BlockPos pos : WorldUtil.getAllAround(this.blockPosition(), range)) {
 			ripenBer(offset, pos);
 		}
 	}

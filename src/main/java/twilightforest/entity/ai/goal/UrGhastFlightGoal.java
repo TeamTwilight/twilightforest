@@ -80,7 +80,7 @@ public class UrGhastFlightGoal extends Goal {
 
 	private List<BlockPos> createPath() {
 		List<BlockPos> potentialPoints = new ArrayList<>();
-		BlockPos pos = new BlockPos(this.ghast.getLogicalScanPoint());
+		BlockPos pos = this.ghast.getLogicalScanPoint();
 
 		if (!this.ghast.getTrapLocations().isEmpty()) {
 			// make a copy of the trap locations list

@@ -200,7 +200,7 @@ public class ToolEvents {
 				// Break all the other blocks, if they're the same type
 				for (BlockPos offsetPos : GiantBlock.getVolume(pos)) {
 					if (!offsetPos.equals(pos) && player.level().getBlockState(offsetPos).is(state.getBlock())) {
-						BlockPos newPos = new BlockPos(offsetPos); // This feels dumb, but without it, the client thinks the last block in the iterator is broken too
+						BlockPos newPos = offsetPos.immutable();
 						player.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, newPos, Block.getId(player.level().getBlockState(newPos)));
 						player.gameMode.destroyBlock(newPos);
 					}

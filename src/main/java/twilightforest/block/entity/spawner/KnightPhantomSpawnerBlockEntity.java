@@ -47,7 +47,7 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 			double rz = this.getBlockPos().getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
 			myCreature.snapTo(rx, ry, rz, level.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-			EventHooks.finalizeMobSpawn(myCreature, level, level.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), EntitySpawnReason.SPAWNER, null);
+			EventHooks.finalizeMobSpawn(myCreature, level, level.getCurrentDifficultyAt(myCreature.blockPosition()), EntitySpawnReason.SPAWNER, null);
 
 			if (i == 5 && level.getDifficulty() == Difficulty.HARD) {
 				myCreature.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(TFItems.KNIGHTMETAL_SHIELD.get()));

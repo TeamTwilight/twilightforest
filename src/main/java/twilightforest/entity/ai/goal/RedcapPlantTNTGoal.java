@@ -28,7 +28,7 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public void start() {
-		BlockPos entityPos = new BlockPos(this.redcap.blockPosition());
+		BlockPos entityPos = this.redcap.blockPosition();
 
 		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, this.redcap.heldTNT);
 

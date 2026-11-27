@@ -69,7 +69,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 		Rotation rotation = this.placeSettings.getRotation();
 		Vec3i size = this.TEMPLATE.getSize(rotation);
 
-		rotatedPosition = new BlockPos(this.templatePosition);
+		rotatedPosition = this.templatePosition;
 
 		if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.CLOCKWISE_180) {
 			rotatedPosition = rotatedPosition.east(size.getZ() - 1);

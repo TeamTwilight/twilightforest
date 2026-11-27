@@ -52,7 +52,7 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 	 * Search the area for a redstone circle (8 redstone dust around a blank square)
 	 */
 	private @Nullable BlockPos searchForRedstoneSymbol(RovingCube cube) {
-		BlockPos curPos = new BlockPos(cube.blockPosition());
+		BlockPos curPos = cube.blockPosition();
 
 		for (int x = -16; x < 16; x++) {
 			for (int z = -16; z < 16; z++) {
