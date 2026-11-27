@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -105,7 +106,7 @@ public class TravellersGearEvents {
 		}
 		AbstractArrow.Pickup pickup = arrow.pickup;
 		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED)) {
-			InventoryUtil.giveItemToPlayerAndPlaySound(player, arrow.getPickupItemStackOrigin());
+			InventoryUtil.giveItemToPlayerAndPlaySound(player, arrow.getPickupItemStackOrigin(), Prediction.SERVER_ONLY);
 			player.getInventory().setChanged();
 		}
 		if (pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
@@ -360,7 +361,7 @@ public class TravellersGearEvents {
 		).map(stack -> stack.get(componentType))
 			.ifPresent(component ->
 				itemStreamExtractor.apply(component)
-					.forEach(itemStack -> InventoryUtil.giveItemToPlayerAndPlaySound(event.getPlayer(), itemStack))
+					.forEach(itemStack -> InventoryUtil.giveItemToPlayerAndPlaySound(event.getPlayer(), itemStack, Prediction.PREDICTED))
 			);
 	}
 

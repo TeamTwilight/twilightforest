@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -162,7 +163,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 							player.getInventory().add(itemstack);
 						}
 					} else {
-						InventoryUtil.giveItemToPlayer(player, itemstack);
+						InventoryUtil.giveItemToPlayer(player, itemstack, Prediction.PREDICTED);
 					}
 					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 					return InteractionResult.SUCCESS;

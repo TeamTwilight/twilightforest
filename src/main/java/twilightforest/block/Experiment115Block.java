@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -95,7 +96,7 @@ public class Experiment115Block extends Block {
 				}
 				player.playSound(SoundEvents.ITEM_PICKUP, 0.5F, 1.0F);
 				if (!player.isCreative()) {
-					InventoryUtil.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()), Prediction.PREDICTED);
 				}
 				return InteractionResult.SUCCESS;
 			}

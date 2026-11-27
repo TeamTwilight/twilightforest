@@ -10,6 +10,7 @@ import net.minecraft.commands.arguments.ResourceKeyArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -39,7 +40,7 @@ public class GenerateBookCommand {
 					ItemStackTemplate book = hint.createHintBook(source.registryAccess());
 					if (!book.create().isEmpty()) {
 						if (!player.addItem(book.create())) {
-							player.drop(book.create(), true);
+							player.drop(book.create(), true, Prediction.SERVER_ONLY);
 						}
 					}
 				}
@@ -49,13 +50,13 @@ public class GenerateBookCommand {
 				ItemStackTemplate book = hint.createHintBook(source.registryAccess());
 				if (!book.create().isEmpty()) {
 					if (!player.addItem(book.create())) {
-						player.drop(book.create(), true);
+						player.drop(book.create(), true, Prediction.SERVER_ONLY);
 					}
 				}
 			} else {
 				ItemStackTemplate book = StructureHints.HintConfig.defaultBook();
 				if (!player.addItem(book.create())) {
-					player.drop(book.create(), true);
+					player.drop(book.create(), true, Prediction.SERVER_ONLY);
 				}
 			}
 		}

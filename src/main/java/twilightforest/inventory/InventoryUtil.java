@@ -2,6 +2,7 @@ package twilightforest.inventory;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,15 +10,15 @@ import net.minecraft.world.level.Level;
 
 public final class InventoryUtil {
 
-	public static void giveItemToPlayer(Player player, ItemStack stack) {
-		giveItemToPlayer(player, stack, false);
+	public static void giveItemToPlayer(Player player, ItemStack stack, Prediction prediction) {
+		giveItemToPlayer(player, stack, prediction, false);
 	}
 
-	public static void giveItemToPlayerAndPlaySound(Player player, ItemStack stack) {
-		giveItemToPlayer(player, stack, true);
+	public static void giveItemToPlayerAndPlaySound(Player player, ItemStack stack, Prediction prediction) {
+		giveItemToPlayer(player, stack, prediction, true);
 	}
 
-	private static void giveItemToPlayer(Player player, ItemStack stack, boolean playSound) {
+	private static void giveItemToPlayer(Player player, ItemStack stack, Prediction prediction, boolean playSound) {
 		if (player.getInventory().add(stack)) {
 			if (playSound) {
 				Level level = player.level();
@@ -35,7 +36,7 @@ public final class InventoryUtil {
 			return;
 		}
 
-		ItemEntity drop = player.drop(stack, false);
+		ItemEntity drop = player.drop(stack, false, prediction);
 		if (drop == null)
 			return;
 		drop.setNoPickUpDelay();

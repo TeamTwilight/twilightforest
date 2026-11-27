@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
@@ -137,7 +138,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (state.getValue(AGE) == MAX_AGE) {
 			if (level instanceof ServerLevel serverLevel) {
-				Block.dropFromBlockInteractLootTable(serverLevel, this.berryLoot, pos, state, level.getBlockEntity(pos), null, player, (_, stack) -> InventoryUtil.giveItemToPlayerAndPlaySound(player, stack));
+				Block.dropFromBlockInteractLootTable(serverLevel, this.berryLoot, pos, state, level.getBlockEntity(pos), null, player, (_, stack) -> InventoryUtil.giveItemToPlayerAndPlaySound(player, stack, Prediction.SERVER_ONLY));
 
 				level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.getRandom().nextFloat() * 0.4F);
 				BlockState newState = state.setValue(AGE, MAX_AGE - 1);

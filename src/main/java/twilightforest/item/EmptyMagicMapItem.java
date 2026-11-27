@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +41,7 @@ public class EmptyMagicMapItem extends Item {
 			if (emptyMapStack.isEmpty()) {
 				return InteractionResult.SUCCESS.heldItemTransformedTo(newMapStack);
 			} else {
-				InventoryUtil.giveItemToPlayer(player, newMapStack.copy());
+				InventoryUtil.giveItemToPlayer(player, newMapStack.copy(), Prediction.SERVER_ONLY);
 				return InteractionResult.SUCCESS;
 			}
 		}

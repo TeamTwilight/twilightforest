@@ -2,6 +2,7 @@ package twilightforest.inventory.slot;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -90,15 +91,15 @@ public class UncraftingSlot extends Slot {
 			}
 
 			if (inputStack.has(DataComponents.CONTAINER)) {
-				inputStack.get(DataComponents.CONTAINER).nonEmptyItems().forEach(s -> InventoryUtil.giveItemToPlayer(player, s.create()));
+				inputStack.get(DataComponents.CONTAINER).nonEmptyItems().forEach(s -> InventoryUtil.giveItemToPlayer(player, s.create(), Prediction.PREDICTED));
 			}
 
 			if (inputStack.has(DataComponents.BUNDLE_CONTENTS)) {
-				inputStack.get(DataComponents.BUNDLE_CONTENTS).items().forEach(s -> InventoryUtil.giveItemToPlayer(player, s.create()));
+				inputStack.get(DataComponents.BUNDLE_CONTENTS).items().forEach(s -> InventoryUtil.giveItemToPlayer(player, s.create(), Prediction.PREDICTED));
 			}
 
 			if (inputStack.has(TFDataComponents.ITEM_DISPLAY)) {
-				inputStack.get(TFDataComponents.ITEM_DISPLAY).items().forEach(s -> InventoryUtil.giveItemToPlayer(player, s.copy()));
+				inputStack.get(TFDataComponents.ITEM_DISPLAY).items().forEach(s -> InventoryUtil.giveItemToPlayer(player, s.copy(), Prediction.PREDICTED));
 			}
 
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);

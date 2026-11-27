@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -124,7 +125,7 @@ public class PotionFlaskItem extends Item {
 
 		drunk.set(TFDataComponents.POTION_FLASK_CONTENTS, remaining);
 		if (!single && entity instanceof Player player) {
-			InventoryUtil.giveItemToPlayer(player, drunk);
+			InventoryUtil.giveItemToPlayer(player, drunk, Prediction.PREDICTED);
 		}
 		return stack;
 	}
@@ -140,7 +141,7 @@ public class PotionFlaskItem extends Item {
 					ItemStack flaskCopy = flask.copyWithCount(1);
 					flask.shrink(1);
 					flaskCopy.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents));
-					InventoryUtil.giveItemToPlayer(player, flaskCopy);
+					InventoryUtil.giveItemToPlayer(player, flaskCopy, Prediction.PREDICTED);
 				} else {
 					// Otherwise, just use the existing stack. Having it jump around the inventory is weird.
 					flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents));
@@ -148,7 +149,7 @@ public class PotionFlaskItem extends Item {
 
 				if (!player.getAbilities().instabuild) {
 					other.shrink(1);
-					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE));
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(Items.GLASS_BOTTLE), Prediction.PREDICTED);
 				}
 
 				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);

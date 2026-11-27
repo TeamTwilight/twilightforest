@@ -2,6 +2,7 @@ package twilightforest.enchantment;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -61,7 +62,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 							stack.shrink(1);
 							ItemStackTemplate remainder = stack.getCraftingRemainder();
 							if (remainder != null) {
-								InventoryUtil.giveItemToPlayer(player, remainder.create());
+								InventoryUtil.giveItemToPlayer(player, remainder.create(), Prediction.SERVER_ONLY);
 							}
 						}
 						item.setDamageValue(item.getDamageValue() - recipe.getRepairDurability());

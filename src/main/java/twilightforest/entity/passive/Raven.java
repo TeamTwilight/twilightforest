@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -66,7 +67,7 @@ public class Raven extends FlyingBird {
 		}
 
 		this.hurtServer(level, this.damageSources().playerAttack(player), 0.0F);
-		this.dropFromEntityInteractLootTable(level, TFLootTables.RAVEN_INTERACTION, player, player.getItemInHand(hand), (_, stack) -> InventoryUtil.giveItemToPlayerAndPlaySound(player, stack));
+		this.dropFromEntityInteractLootTable(level, TFLootTables.RAVEN_INTERACTION, player, player.getItemInHand(hand), (_, stack) -> InventoryUtil.giveItemToPlayerAndPlaySound(player, stack, Prediction.SERVER_ONLY));
 		this.setHasDroppedItem(true);
 		return InteractionResult.SUCCESS;
 	}

@@ -2,6 +2,7 @@ package twilightforest.inventory.slot;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -100,7 +101,7 @@ public class UncraftingResultSlot extends ResultSlot {
 					if (currentStack.isEmpty()) {
 						this.assemblyMatrix.setItem(index, remainingStack);
 					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack)) {
-						InventoryUtil.giveItemToPlayer(this.player, remainingStack);
+						InventoryUtil.giveItemToPlayer(this.player, remainingStack, Prediction.PREDICTED);
 					}
 				}
 			}

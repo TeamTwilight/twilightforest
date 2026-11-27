@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
@@ -165,7 +166,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					player.getInventory().add(candle);
 				}
 			} else {
-				InventoryUtil.giveItemToPlayer(player, candle);
+				InventoryUtil.giveItemToPlayer(player, candle, Prediction.PREDICTED);
 			}
 			return InteractionResult.SUCCESS;
 		}
